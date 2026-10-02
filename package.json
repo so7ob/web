@@ -21,7 +21,9 @@
     "db:check": "node --env-file-if-exists=.env --import tsx packages/server/src/database/cli.ts check",
     "test:e2e": "playwright test",
     "test:infra": "bash tools/test/infra.sh",
-    "build:server": "tsc -b packages/contracts packages/server apps/api apps/worker"
+    "build:server": "tsc -b packages/contracts packages/server apps/api apps/worker",
+    "data:transfer": "node --env-file-if-exists=.env --import tsx packages/server/src/migration/cli.ts",
+    "data:backup": "node --env-file-if-exists=.env --import tsx packages/server/src/migration/backup-cli.ts"
   },
   "dependencies": {
     "@dnd-kit/core": "6.3.1",
