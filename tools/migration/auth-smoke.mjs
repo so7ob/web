@@ -35,8 +35,13 @@ try {
   const listed=await (await request('/api/auth/sessions')).json(); assert(listed.sessions.some(s=>s.current)); assert(!JSON.stringify(listed).includes('fingerprint'));
   const foreign=await post('/api/v1/auth/sessions',{id:'someone-elses-session'}); assert.equal(foreign.status,404);
   const cross=await post('/api/auth/sessions',{all:true},{Origin:'https://attacker.example.invalid'}); assert.equal(cross.status,403);
-  const invalid=await post('/api/auth/register',{name:'x',email:'invalid',password:'short'}); assert.equal(invalid.status,400); assert((await invalid.json()).errors.password);
+  const invalid=await post('/api/auth/register',{name:'x',email:'invalid',password:'short'}); assert.equal(invalid.status,400); assert.deepEqual((await invalid.json()).errors,{name:'name_invalid',email:'email_invalid',password:'password_short'});
   const register=await post('/api/auth/register',{name:'Synthetic Client',email:prefix+'-registered@example.invalid',password,locale:'en',roleKey:'super_admin'}); assert.equal(register.status,201); assert.deepEqual(await register.json(),{ok:true,emailStatus:'queued'});
+  // One invalid DTO + one successful registration consumed two attempts. Malformed JSON is the third.
+  const malformed=await request('/api/auth/register',{method:'POST',headers:{'Content-Type':'application/json'},body:'{'});assert.equal(malformed.status,400);assert.deepEqual(await malformed.json(),{ok:false,code:'invalid'});
+  const throttled=await post('/api/v1/auth/register',{name:'Never Created',email:prefix+'-limited@example.invalid',password});assert.equal(throttled.status,429);
+  for(let n=0;n<3;n++){const bad=await request('/api/auth/forgot-password',{method:'POST',headers:{'Content-Type':'application/json'},body:'{'});assert.equal(bad.status,400);}
+  assert.equal((await post('/api/v1/auth/forgot-password',{email:'missing@example.invalid'})).status,429);
   const [registered]=await db.query('SELECT id,roleKey FROM User WHERE email=?',[prefix+'-registered@example.invalid']); assert.equal(registered.roleKey,'client');
   const [job]=await db.query('SELECT j.id,j.payload FROM MailJob j JOIN EmailLog e ON e.id=j.emailLogId WHERE e.`to`=?',[prefix+'-registered@example.invalid']);
   const link=new PayloadCipher(key).decrypt(job.payload,job.id).text.match(/http:\/\/[^\s]+/)[0]; const parsed=new URL(link);
@@ -46,12 +51,12 @@ try {
   await db.query("UPDATE User SET status='active' WHERE id=?",[prefix]); await login();
   const logout=await post('/api/auth/signout',{csrfToken:await csrf(),callbackUrl:origin+'/ar/auth/login',json:'true'}); assert.equal(logout.status,200); assert.deepEqual(await (await request('/api/auth/session')).json(),{});
   const legacy=await request('/api/auth/session',{headers:{Cookie:'next-auth.session-token=legacy.jwt.cookie'}}); assert.deepEqual(await legacy.json(),{});
-  process.stdout.write(JSON.stringify({test:'compiled Nest HTTP authentication',passed:true,checks:['legacy + v1 routes','DTO field errors','secure HttpOnly cookie','CSRF/origin','record ownership','fixed registration role','encrypted queued verification','single-use redirect','suspension','logout','legacy cookie rejected']})+'\n');
+  process.stdout.write(JSON.stringify({test:'compiled Nest HTTP authentication',passed:true,checks:['legacy + v1 routes','DTO field errors','invalid and malformed attempts counted once before validation','secure HttpOnly cookie','CSRF/origin','record ownership','fixed registration role','encrypted queued verification','single-use redirect','suspension','logout','legacy cookie rejected']})+'\n');
 } finally {
   if (child && child.exitCode===null) { const exited=once(child,'exit'); child.kill('SIGTERM'); await Promise.race([exited,delay(5000).then(()=>{if(child.exitCode===null)child.kill('SIGKILL');})]); }
   await db.query('DELETE j FROM MailJob j JOIN EmailLog e ON e.id=j.emailLogId WHERE e.`to` LIKE ?',[prefix+'%']); await db.query('DELETE FROM EmailLog WHERE `to` LIKE ?',[prefix+'%']);
   const users=await db.query('SELECT id FROM User WHERE email LIKE ?',[prefix+'%']); for (const user of users) { await db.query('DELETE FROM AuditLog WHERE actorId=?',[user.id]); await db.query('DELETE FROM User WHERE id=?',[user.id]); }
-  for (const flow of ['register','login']) await db.query('DELETE FROM RateLimitBucket WHERE bucketKey=?',[sha256(flow+':127.0.0.1')]);
+  for (const flow of ['register','login','forgot']) await db.query('DELETE FROM RateLimitBucket WHERE bucketKey=?',[sha256(flow+':127.0.0.1')]);
   await db.query('DELETE FROM AuditLog WHERE ipHash=? AND actorId IS NULL',[sha256('ip:127.0.0.1')]);
   if (createdRole) await db.query("DELETE FROM Role WHERE `key`='client'"); await db.destroy();
 }

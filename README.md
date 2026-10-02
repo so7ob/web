@@ -5,7 +5,7 @@ Independent migration of [so7ob/Website](https://github.com/so7ob/Website), pres
 Source baseline: `5321b7fd11db421c83290b262f276811e5f04e5f`.
 Architecture reference only: [so7ob/Rakim](https://github.com/so7ob/Rakim) at `cae0950bac45d97971bd3766c8c34f9869a856af`.
 
-Implementation status: partial migration under review, **not a replacement release**. The target runtime, data-transfer tools, durable mail worker, server authentication and public/authentication presentation are implemented. Most business APIs, private screens and the full editor remain unfinished. Source repositories and their deployments remain unchanged.
+Implementation status: partial migration under review, **not a replacement release**. The target runtime, data-transfer tools, durable mail worker, server authentication and public/authentication presentation are implemented. Public submissions and account conversation/profile/draft/notification APIs are also implemented. Claims/files, admin APIs, private screens and the full editor remain unfinished. Source repositories and their deployments remain unchanged.
 
 All implementation, documentation, issues and pull requests belong exclusively to `so7ob/web`. See [CONTRIBUTING.md](CONTRIBUTING.md).
 

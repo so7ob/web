@@ -49,7 +49,7 @@ test('404 retains its actual HTTP status and published HTML carries SEO',async({
   expect((await page.request.get('/server/entry-server.js')).status()).toBe(404);
 });
 test('forgot/reset forms preserve one-use tokens and reject a mismatched confirmation',async({page})=>{
-  const {prefix}=fixture(); const email=prefix+'other@example.invalid'; const password='Synthetic-Reset-5930';
+  const {prefix}=fixture(); const email=prefix+'recovery@example.invalid'; const password='Synthetic-Reset-5930';
   await page.goto('/en/auth/forgot-password'); await page.locator('#forgot-email').focus(); await expect(page.locator('#forgot-email')).toBeFocused(); await page.keyboard.type(email); await page.keyboard.press('Tab'); await page.keyboard.press('Enter');
   await expect(page.locator('form')).toHaveCount(0);
   const db=await createDataSource().initialize();let link:string;

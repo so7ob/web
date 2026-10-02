@@ -31,3 +31,7 @@ Real MariaDB integration checks cover concurrent account lockout, shared rate li
 The API logger/filter emits no SQL bindings, password hashes, tokenized URLs or provider payloads on failures. Swagger documents the DTOs. This is not full Website parity: admin authorization/last-active-admin operation checks, request/inquiry ownership, private attachment access, all UI account journeys, CMS and the editor remain acceptance work. The AuthorizationLock schema prepares serialization of last-admin changes but is not itself evidence that those operations are implemented.
 
 Original pure validation, all 27 block schemas, permission rules and status-transition tests now run from the shared contracts package without changing their expectations (44 additional source tests). Browser and server can use the same rules without exposing persistence types. Password/name length checks retain the source UTF-16 length semantics, including emoji. Framework-provided NextAuth interstitial pages, complete auth browser screens and full account journey comparison are not yet accepted.
+
+## Follow-up admission correction
+
+The request/account-services portion now counts registration/recovery attempts before parsing and DTO validation, matching the source even for malformed JSON. Single-use permits avoid counting a valid request twice. Compiled HTTP checks cover invalid/malformed attempts and shared alias limits. Registration password errors retain source precedence (short, long, weak). See [business services](business-services.md).
