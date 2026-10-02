@@ -19,7 +19,7 @@ let template=readFileSync('ops/nginx/so7ob-web.conf.template','utf8');
 for (const [key,value] of Object.entries({DOMAIN:'isolated.example.invalid',CERTIFICATE:join(dir,'cert.pem'),CERTIFICATE_KEY:join(dir,'key.pem'),LOG_DIR:dir,RELEASE:cwd})) template=template.replaceAll(`__${key}__`,value);
 const directives = template.split('\n').filter(line => !line.trimStart().startsWith('#')).join('\n');
 assert(!directives.includes('try_files'));  assert(!template.includes('$request"')); assert(!template.includes('$http_referer')); assert(template.includes('proxy_set_header X-Forwarded-For $remote_addr;')); assert(!template.includes('/Website'));
-writeFileSync(join(dir,'nginx.conf'),`pid ${dir}/nginx.pid;\nerror_log ${dir}/error.log;\nevents { worker_connections 16; }\nhttp { ${template} }\n`);
+writeFileSync(join(dir,'nginx.conf'),`pid ${dir}/nginx.pid;\nerror_log ${dir}/error.log;\nevents { worker_connections 16; }\nhttp { access_log off; ${template} }\n`);
 for (const name of ['api','worker']) {
  const source=readFileSync(`ops/systemd/so7ob-web-${name}.service`,'utf8');
  assert(source.includes('ProtectSystem=strict')); assert(source.includes('User=so7ob-web')); assert(!source.includes('/Website')); assert(source.includes('NoNewPrivileges=true'));

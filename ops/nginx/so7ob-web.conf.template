@@ -3,6 +3,8 @@
 log_format so7ob_no_query '$remote_addr [$time_local] "$request_method $uri $server_protocol" $status $body_bytes_sent $request_time';
 server {
     listen 80;
+    access_log __LOG_DIR__/access.log so7ob_no_query;
+    error_log __LOG_DIR__/error.log warn;
     server_name __DOMAIN__;
     return 308 https://__DOMAIN__$request_uri;
 }
