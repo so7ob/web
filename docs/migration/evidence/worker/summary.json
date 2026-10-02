@@ -1,0 +1,10 @@
+{
+  "phase": "E independent worker and deployment preparation",
+  "tests": 35,
+  "database": "MariaDB 10.11.18",
+  "smtp": "real local TCP only",
+  "workerProcessCrashRestart": "passed; no resend after ambiguous DATA",
+  "infra": "actual nginx -t and systemd-analyze verify passed; no deployment",
+  "utcDefaultRegression": "fixed by explicit new migration, tested at session +03:00",
+  "production": "not deployed; business integrations and full acceptance pending"
+}

@@ -32,7 +32,7 @@ async function main() {
   const vite = production ? null : await (await import('vite')).createServer({ root: web, configFile: resolve(web, 'vite.config.ts'), server: { middlewareMode: true }, appType: 'custom' });
   if (vite) app.use(vite.middlewares);
   else app.use('/assets', express.static(resolve(web, 'dist/assets'), { immutable: true, maxAge: '1y', fallthrough: false }));
-  app.use(express.static(resolve(web, production ? 'dist' : 'public'), { index: false, redirect: false }));
+  app.use(express.static(resolve(web, 'public'), { index: false, redirect: false })); // Never expose SSR bundles/source maps from dist/server.
   app.use(async (req: Request, res: Response, next: NextFunction) => {
     if (req.path.startsWith('/api/') || !['GET','HEAD'].includes(req.method)) return next();
     try {

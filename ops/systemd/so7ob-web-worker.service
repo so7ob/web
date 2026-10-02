@@ -1,0 +1,39 @@
+[Unit]
+Description=So7ob independent durable mail worker
+After=network-online.target mariadb.service
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=so7ob-web
+Group=so7ob-web
+WorkingDirectory=/opt/so7ob-web/current
+Environment=NODE_ENV=production
+Environment=TZ=UTC
+EnvironmentFile=/etc/so7ob-web/worker.env
+ExecStartPre=/opt/node-v24.21.0/bin/node /opt/so7ob-web/current/ops/check-runtime.mjs
+ExecStart=/opt/node-v24.21.0/bin/node apps/worker/dist/main.js
+Restart=on-failure
+RestartSec=5s
+TimeoutStopSec=60s
+KillSignal=SIGTERM
+UMask=0077
+StateDirectory=so7ob-web
+ReadWritePaths=/var/lib/so7ob-web
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ProtectKernelTunables=true
+ProtectKernelModules=true
+ProtectControlGroups=true
+RestrictSUIDSGID=true
+RestrictAddressFamilies=AF_UNIX AF_INET AF_INET6
+LockPersonality=true
+LimitNOFILE=8192
+MemoryMax=512M
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target
