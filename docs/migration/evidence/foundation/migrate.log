@@ -1,0 +1,6 @@
+
+> so7ob-web@1.0.0 db:migrate
+> tsx packages/server/src/database/cli.ts migrate
+
+Applied migrations: [ 'Website1790899200000' ]
+Schema verified; synchronize and destructive reset are disabled.
