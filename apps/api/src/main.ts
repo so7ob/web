@@ -1,4 +1,8 @@
 import 'reflect-metadata';
+import { AuthController } from './auth/controller.js';
+import { AuthHttpPolicy } from './auth/policy.js';
+import { SafeExceptionFilter } from './errors.js';
+import { AuthenticationService, AuthFault } from '@so7ob/server';
 import { Controller, Get, Module, ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
@@ -18,7 +22,7 @@ class HealthController {
     return { ok: true, database: true };
   }
 }
-@Module({ controllers: [HealthController, PublicController], providers: [PublicService] })
+@Module({ controllers: [HealthController, PublicController, AuthController], providers: [PublicService, { provide: AuthHttpPolicy, useFactory: () => new AuthHttpPolicy() }, { provide: AuthenticationService, useFactory: async () => new AuthenticationService(await database()) }] })
 class ApplicationModule {}
 type Renderer = { render(url: string, data: PublicView): Promise<{ html: string; head: string; lang: string; dir: string }> };
 async function main() {
@@ -26,7 +30,8 @@ async function main() {
   const app = await NestFactory.create<NestExpressApplication>(ApplicationModule, { cors: false });
   app.set('trust proxy', Number(process.env.TRUST_PROXY_HOPS ?? 0));
   app.enableCors({ origin: (process.env.WEB_ORIGIN ?? process.env.SITE_URL ?? 'http://127.0.0.1:3000').split(','), credentials: true, methods: ['GET','POST','PUT','PATCH','DELETE','OPTIONS'] });
-  app.useGlobalPipes(new ValidationPipe({ transform: true, whitelist: true, forbidNonWhitelisted: true }));
+  app.useGlobalPipes(new ValidationPipe({ transform: true, whitelist: true, forbidNonWhitelisted: false, exceptionFactory: errors => new AuthFault(400, 'invalid', { errors: Object.fromEntries(errors.map(e => [e.property, Object.values(e.constraints ?? {})[0] ?? 'invalid'])) }) }));
+  app.useGlobalFilters(new SafeExceptionFilter());
   app.enableShutdownHooks();
   const web = resolve('apps/web'); const production = process.env.NODE_ENV === 'production';
   const vite = production ? null : await (await import('vite')).createServer({ root: web, configFile: resolve(web, 'vite.config.ts'), server: { middlewareMode: true }, appType: 'custom' });
@@ -60,7 +65,7 @@ async function main() {
       res.type('html').send(template.replace('__LANG__', rendered.lang).replace('__DIR__', rendered.dir).replace('<!--head-->', rendered.head).replace('<!--app-->', rendered.html).replace('<!--data-->', `<script>window.__SO7OB__=${payload}</script>`));
     } catch (error) {
       if (error && typeof error === 'object' && 'status' in error && error.status === 404) { res.status(404).type('html').send('<!doctype html><html lang="ar" dir="rtl"><title>404 — سُحُب</title><body><h1>الصفحة غير موجودة — Page not found</h1><a href="/ar">العربية</a> <a href="/en">English</a></body></html>'); return; }
-      next(error);
+      process.stderr.write('ssr_failed: internal_error\n'); res.status(500).type('text/plain').send('Internal server error');
     }
   });
   SwaggerModule.setup('api/docs', app, SwaggerModule.createDocument(app, new DocumentBuilder().setTitle('سُحُب — REST API').setVersion('1.0').addCookieAuth('so7ob.session').build()));

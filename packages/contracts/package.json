@@ -12,5 +12,8 @@
   "scripts": {
     "build": "tsc -b"
   },
-  "types": "./dist/index.d.ts"
+  "types": "./dist/index.d.ts",
+  "dependencies": {
+    "zod": "4.3.5"
+  }
 }
