@@ -43,3 +43,5 @@ Stop API and worker before a consistent DB/files backup. The backup/restore comm
 Business services are not yet connected to enqueue; UI outbox state labels and recovery operations still require migration. This is an implemented worker foundation, not a claim that all Website background behavior or deployment acceptance is complete.
 
 CI initially found that the isolated Nginx harness inherited `/var/log/nginx/access.log`, unavailable to the unprivileged runner. The harness now disables only its implicit HTTP-context default log, while both destination server blocks explicitly retain sanitized logs in the test directory. This also prevents query-token logging by the HTTP redirect server. No production check was skipped.
+
+The unprivileged CI network environment also rejects binding ports 80/443 during `nginx -t`. The isolated harness validates the expected production listen directives, then substitutes loopback ports 18080/18443 only in its temporary configuration. TLS/proxy/logging directives are still parsed by Nginx; production templates retain ports 80/443.
