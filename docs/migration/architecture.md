@@ -1,3 +1,5 @@
+> Historical foundation-stage report. Later implemented portions and remaining acceptance work are recorded in [authentication](authentication.md), [worker/operations](worker-and-operations.md), and [public/auth UI](public-and-auth-ui.md). Counts and unfinished items below describe that earlier commit.
+
 # Runtime foundation — phase B (#3)
 
 Predecessor: PR #8 / `a2dc18cff582159ef14b66250d600aa8307918cf`. This is a stacked branch; no PR has been merged.

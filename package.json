@@ -13,7 +13,7 @@
     "dev": "npm run build:server && node --env-file-if-exists=.env apps/api/dist/main.js",
     "build": "tsc -b packages/contracts packages/server apps/api apps/worker && npm run build -w @so7ob/web",
     "typecheck": "tsc --noEmit -p tsconfig.workspaces.json",
-    "lint": "eslint apps packages tools ops --max-warnings=0",
+    "lint": "eslint apps packages tools ops tests playwright.config.ts --max-warnings=0",
     "test": "vitest run --config vitest.workspaces.config.ts",
     "start": "node --env-file-if-exists=.env apps/api/dist/main.js",
     "start:worker": "node --env-file-if-exists=.env apps/worker/dist/main.js",
@@ -127,5 +127,10 @@
     "npm": "10.8.2"
   },
   "packageManager": "npm@10.8.2",
-  "type": "module"
+  "type": "module",
+  "overrides": {
+    "@axe-core/playwright": {
+      "playwright-core": "1.62.1"
+    }
+  }
 }

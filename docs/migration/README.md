@@ -9,7 +9,12 @@ Source: Website/main `5321b7fd11db421c83290b262f276811e5f04e5f`. Technical refer
 ## Gates and status
 
 - A: source imported; isolated build, 133 tests, 40 browser captures and repeated read-performance baseline passed. Full behavior/SQL profiling remains required for final parity.
-- B–F: target runtime, migration, UI, worker, infrastructure and final acceptance remain pending.
+- B: target workspaces/Node/Nest/Vite SSR/MariaDB foundation implemented; [PR #9](https://github.com/so7ob/web/pull/9).
+- C: explicit 23-model schema and SQLite/files transfer/verification/restart/backup tooling ([PR #10](https://github.com/so7ob/web/pull/10)); server authentication and encrypted account mail ([PR #12](https://github.com/so7ob/web/pull/12)). Most business APIs and record/attachment authorization remain pending.
+- D: public and authentication presentation implemented with scoped browser/visual/performance evidence; see [details and limitations](public-and-auth-ui.md). Private portal/admin/editor and public business submissions are pending.
+- E: durable mail worker and Nginx/systemd checks implemented ([PR #11](https://github.com/so7ob/web/pull/11)); full operational restore/cutover rehearsal and remaining job integrations pending.
+- F: full parity, all-role journeys, complete SQL/concurrency/load acceptance and final rollback rehearsal are pending. No migration completion claim. The original source files at root remain transitional reference material.
+- A–E portions are stacked for review, with no automatic merges. CI success is reported per PR, not inferred for later commits.
 - Production data/files have not been inspected, copied or migrated. Local synthetic data only.
 - No source repository, branch, configuration, issue, PR or deployment was changed.
 

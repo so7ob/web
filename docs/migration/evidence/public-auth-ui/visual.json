@@ -1,0 +1,535 @@
+{
+  "sourceSHA": "5321b7fd11db421c83290b262f276811e5f04e5f",
+  "threshold": 0.005,
+  "metric": "Exact RGB pixel inequality, no masks; dimension differences fail",
+  "results": [
+    {
+      "file": "ar-home-375.png",
+      "status": 200,
+      "baselineSize": [
+        375,
+        9254
+      ],
+      "targetSize": [
+        375,
+        9254
+      ],
+      "differentPixelFraction": 0,
+      "pass": true,
+      "errors": [],
+      "failedRequests": [],
+      "scripts": [
+        {
+          "url": "/assets/index-FcW6AdxS.js",
+          "encoded": 196715,
+          "decoded": 196715
+        },
+        {
+          "url": "/assets/cms-B01Wxghe.js",
+          "encoded": 211577,
+          "decoded": 211577
+        },
+        {
+          "url": "/assets/dist-DvRmLoqU.js",
+          "encoded": 920,
+          "decoded": 920
+        }
+      ]
+    },
+    {
+      "file": "ar-contact-375.png",
+      "status": 200,
+      "baselineSize": [
+        375,
+        3915
+      ],
+      "targetSize": [
+        375,
+        3915
+      ],
+      "differentPixelFraction": 0,
+      "pass": true,
+      "errors": [],
+      "failedRequests": [],
+      "scripts": [
+        {
+          "url": "/assets/index-FcW6AdxS.js",
+          "encoded": 196715,
+          "decoded": 196715
+        },
+        {
+          "url": "/assets/cms-B01Wxghe.js",
+          "encoded": 211577,
+          "decoded": 211577
+        },
+        {
+          "url": "/assets/dist-DvRmLoqU.js",
+          "encoded": 920,
+          "decoded": 920
+        }
+      ]
+    },
+    {
+      "file": "ar-works-375.png",
+      "status": 200,
+      "baselineSize": [
+        375,
+        6152
+      ],
+      "targetSize": [
+        375,
+        6152
+      ],
+      "differentPixelFraction": 0,
+      "pass": true,
+      "errors": [],
+      "failedRequests": [],
+      "scripts": [
+        {
+          "url": "/assets/index-FcW6AdxS.js",
+          "encoded": 196715,
+          "decoded": 196715
+        },
+        {
+          "url": "/assets/cms-B01Wxghe.js",
+          "encoded": 211577,
+          "decoded": 211577
+        },
+        {
+          "url": "/assets/dist-DvRmLoqU.js",
+          "encoded": 920,
+          "decoded": 920
+        }
+      ]
+    },
+    {
+      "file": "ar-login-375.png",
+      "status": 200,
+      "baselineSize": [
+        375,
+        1679
+      ],
+      "targetSize": [
+        375,
+        1679
+      ],
+      "differentPixelFraction": 0,
+      "pass": true,
+      "errors": [],
+      "failedRequests": [],
+      "scripts": [
+        {
+          "url": "/assets/index-FcW6AdxS.js",
+          "encoded": 196715,
+          "decoded": 196715
+        },
+        {
+          "url": "/assets/auth-BYMLgwF0.js",
+          "encoded": 62353,
+          "decoded": 62353
+        },
+        {
+          "url": "/assets/dist-DvRmLoqU.js",
+          "encoded": 920,
+          "decoded": 920
+        }
+      ]
+    },
+    {
+      "file": "en-home-375.png",
+      "status": 200,
+      "baselineSize": [
+        375,
+        10205
+      ],
+      "targetSize": [
+        375,
+        10205
+      ],
+      "differentPixelFraction": 0,
+      "pass": true,
+      "errors": [],
+      "failedRequests": [],
+      "scripts": [
+        {
+          "url": "/assets/index-FcW6AdxS.js",
+          "encoded": 196715,
+          "decoded": 196715
+        },
+        {
+          "url": "/assets/cms-B01Wxghe.js",
+          "encoded": 211577,
+          "decoded": 211577
+        },
+        {
+          "url": "/assets/dist-DvRmLoqU.js",
+          "encoded": 920,
+          "decoded": 920
+        }
+      ]
+    },
+    {
+      "file": "en-contact-375.png",
+      "status": 200,
+      "baselineSize": [
+        375,
+        4328
+      ],
+      "targetSize": [
+        375,
+        4328
+      ],
+      "differentPixelFraction": 0.0013770794824399261,
+      "pass": true,
+      "errors": [],
+      "failedRequests": [],
+      "scripts": [
+        {
+          "url": "/assets/index-FcW6AdxS.js",
+          "encoded": 196715,
+          "decoded": 196715
+        },
+        {
+          "url": "/assets/cms-B01Wxghe.js",
+          "encoded": 211577,
+          "decoded": 211577
+        },
+        {
+          "url": "/assets/dist-DvRmLoqU.js",
+          "encoded": 920,
+          "decoded": 920
+        }
+      ]
+    },
+    {
+      "file": "en-works-375.png",
+      "status": 200,
+      "baselineSize": [
+        375,
+        6860
+      ],
+      "targetSize": [
+        375,
+        6860
+      ],
+      "differentPixelFraction": 0,
+      "pass": true,
+      "errors": [],
+      "failedRequests": [],
+      "scripts": [
+        {
+          "url": "/assets/index-FcW6AdxS.js",
+          "encoded": 196715,
+          "decoded": 196715
+        },
+        {
+          "url": "/assets/cms-B01Wxghe.js",
+          "encoded": 211577,
+          "decoded": 211577
+        },
+        {
+          "url": "/assets/dist-DvRmLoqU.js",
+          "encoded": 920,
+          "decoded": 920
+        }
+      ]
+    },
+    {
+      "file": "en-login-375.png",
+      "status": 200,
+      "baselineSize": [
+        375,
+        1679
+      ],
+      "targetSize": [
+        375,
+        1679
+      ],
+      "differentPixelFraction": 0,
+      "pass": true,
+      "errors": [],
+      "failedRequests": [],
+      "scripts": [
+        {
+          "url": "/assets/index-FcW6AdxS.js",
+          "encoded": 196715,
+          "decoded": 196715
+        },
+        {
+          "url": "/assets/auth-BYMLgwF0.js",
+          "encoded": 62353,
+          "decoded": 62353
+        },
+        {
+          "url": "/assets/dist-DvRmLoqU.js",
+          "encoded": 920,
+          "decoded": 920
+        }
+      ]
+    },
+    {
+      "file": "ar-home-1280.png",
+      "status": 200,
+      "baselineSize": [
+        1280,
+        5511
+      ],
+      "targetSize": [
+        1280,
+        5511
+      ],
+      "differentPixelFraction": 0,
+      "pass": true,
+      "errors": [],
+      "failedRequests": [],
+      "scripts": [
+        {
+          "url": "/assets/index-FcW6AdxS.js",
+          "encoded": 196715,
+          "decoded": 196715
+        },
+        {
+          "url": "/assets/cms-B01Wxghe.js",
+          "encoded": 211577,
+          "decoded": 211577
+        },
+        {
+          "url": "/assets/dist-DvRmLoqU.js",
+          "encoded": 920,
+          "decoded": 920
+        }
+      ]
+    },
+    {
+      "file": "ar-contact-1280.png",
+      "status": 200,
+      "baselineSize": [
+        1280,
+        2229
+      ],
+      "targetSize": [
+        1280,
+        2229
+      ],
+      "differentPixelFraction": 0,
+      "pass": true,
+      "errors": [],
+      "failedRequests": [],
+      "scripts": [
+        {
+          "url": "/assets/index-FcW6AdxS.js",
+          "encoded": 196715,
+          "decoded": 196715
+        },
+        {
+          "url": "/assets/cms-B01Wxghe.js",
+          "encoded": 211577,
+          "decoded": 211577
+        },
+        {
+          "url": "/assets/dist-DvRmLoqU.js",
+          "encoded": 920,
+          "decoded": 920
+        }
+      ]
+    },
+    {
+      "file": "ar-works-1280.png",
+      "status": 200,
+      "baselineSize": [
+        1280,
+        3752
+      ],
+      "targetSize": [
+        1280,
+        3752
+      ],
+      "differentPixelFraction": 0,
+      "pass": true,
+      "errors": [],
+      "failedRequests": [],
+      "scripts": [
+        {
+          "url": "/assets/index-FcW6AdxS.js",
+          "encoded": 196715,
+          "decoded": 196715
+        },
+        {
+          "url": "/assets/cms-B01Wxghe.js",
+          "encoded": 211577,
+          "decoded": 211577
+        },
+        {
+          "url": "/assets/dist-DvRmLoqU.js",
+          "encoded": 920,
+          "decoded": 920
+        }
+      ]
+    },
+    {
+      "file": "ar-login-1280.png",
+      "status": 200,
+      "baselineSize": [
+        1280,
+        1219
+      ],
+      "targetSize": [
+        1280,
+        1219
+      ],
+      "differentPixelFraction": 0,
+      "pass": true,
+      "errors": [],
+      "failedRequests": [],
+      "scripts": [
+        {
+          "url": "/assets/index-FcW6AdxS.js",
+          "encoded": 196715,
+          "decoded": 196715
+        },
+        {
+          "url": "/assets/auth-BYMLgwF0.js",
+          "encoded": 62353,
+          "decoded": 62353
+        },
+        {
+          "url": "/assets/dist-DvRmLoqU.js",
+          "encoded": 920,
+          "decoded": 920
+        }
+      ]
+    },
+    {
+      "file": "en-home-1280.png",
+      "status": 200,
+      "baselineSize": [
+        1280,
+        5843
+      ],
+      "targetSize": [
+        1280,
+        5843
+      ],
+      "differentPixelFraction": 0,
+      "pass": true,
+      "errors": [],
+      "failedRequests": [],
+      "scripts": [
+        {
+          "url": "/assets/index-FcW6AdxS.js",
+          "encoded": 196715,
+          "decoded": 196715
+        },
+        {
+          "url": "/assets/cms-B01Wxghe.js",
+          "encoded": 211577,
+          "decoded": 211577
+        },
+        {
+          "url": "/assets/dist-DvRmLoqU.js",
+          "encoded": 920,
+          "decoded": 920
+        }
+      ]
+    },
+    {
+      "file": "en-contact-1280.png",
+      "status": 200,
+      "baselineSize": [
+        1280,
+        2315
+      ],
+      "targetSize": [
+        1280,
+        2315
+      ],
+      "differentPixelFraction": 0,
+      "pass": true,
+      "errors": [],
+      "failedRequests": [],
+      "scripts": [
+        {
+          "url": "/assets/index-FcW6AdxS.js",
+          "encoded": 196715,
+          "decoded": 196715
+        },
+        {
+          "url": "/assets/cms-B01Wxghe.js",
+          "encoded": 211577,
+          "decoded": 211577
+        },
+        {
+          "url": "/assets/dist-DvRmLoqU.js",
+          "encoded": 920,
+          "decoded": 920
+        }
+      ]
+    },
+    {
+      "file": "en-works-1280.png",
+      "status": 200,
+      "baselineSize": [
+        1280,
+        4041
+      ],
+      "targetSize": [
+        1280,
+        4041
+      ],
+      "differentPixelFraction": 0,
+      "pass": true,
+      "errors": [],
+      "failedRequests": [],
+      "scripts": [
+        {
+          "url": "/assets/index-FcW6AdxS.js",
+          "encoded": 196715,
+          "decoded": 196715
+        },
+        {
+          "url": "/assets/cms-B01Wxghe.js",
+          "encoded": 211577,
+          "decoded": 211577
+        },
+        {
+          "url": "/assets/dist-DvRmLoqU.js",
+          "encoded": 920,
+          "decoded": 920
+        }
+      ]
+    },
+    {
+      "file": "en-login-1280.png",
+      "status": 200,
+      "baselineSize": [
+        1280,
+        1219
+      ],
+      "targetSize": [
+        1280,
+        1219
+      ],
+      "differentPixelFraction": 0,
+      "pass": true,
+      "errors": [],
+      "failedRequests": [],
+      "scripts": [
+        {
+          "url": "/assets/index-FcW6AdxS.js",
+          "encoded": 196715,
+          "decoded": 196715
+        },
+        {
+          "url": "/assets/auth-BYMLgwF0.js",
+          "encoded": 62353,
+          "decoded": 62353
+        },
+        {
+          "url": "/assets/dist-DvRmLoqU.js",
+          "encoded": 920,
+          "decoded": 920
+        }
+      ]
+    }
+  ]
+}
