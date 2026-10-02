@@ -1,0 +1,13 @@
+{
+  "phase": "B",
+  "source": "5321b7fd11db421c83290b262f276811e5f04e5f",
+  "node": "24.21.0",
+  "npm": "10.8.2",
+  "database": "MariaDB 10.11.18 isolated localhost:3307",
+  "npmCi": "passed",
+  "lint": "passed",
+  "typecheck": "passed",
+  "tests": 18,
+  "build": "passed",
+  "remaining": "Operational API/auth/private UI/editor/worker/data migration and full acceptance remain pending"
+}
