@@ -1,0 +1,16 @@
+.migration/
+node_modules/
+.env
+.env.*
+!.env.example
+dist/
+.next/
+*.tsbuildinfo
+*.log
+coverage/
+playwright-report/
+test-results/
+data/
+db/*.db*
+db/uploads/
+db/backups/
