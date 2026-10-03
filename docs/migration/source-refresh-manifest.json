@@ -838,40 +838,60 @@
       "change": "added",
       "oldSHA256": null,
       "newSHA256": "b36825982180fc8fb5e40782ecef927eec3bd06d867b398a9f06033a4a4aad07",
-      "status": "pending-review-and-port",
-      "evidence": []
+      "status": "shared-contracts-ported; editor integration pending",
+      "evidence": [
+        "docs/migration/content-tree.md",
+        "docs/migration/evidence/content-tree/"
+      ],
+      "destination": "packages/contracts/src/content/clipboard.ts"
     },
     {
       "source": "src/lib/blocks/inline-fields.ts",
       "change": "added",
       "oldSHA256": null,
       "newSHA256": "34fb1548cdb7b13e48739db4e28a98255fbb0b1486ba4957de8fee7dd1bc1b8c",
-      "status": "pending-review-and-port",
-      "evidence": []
+      "status": "shared-contracts-ported; editor integration pending",
+      "evidence": [
+        "docs/migration/content-tree.md",
+        "docs/migration/evidence/content-tree/"
+      ],
+      "destination": "packages/contracts/src/content/inline-fields.ts"
     },
     {
       "source": "src/lib/blocks/migrate.ts",
       "change": "added",
       "oldSHA256": null,
       "newSHA256": "c92555ddd49f10fd844b1460695fd272a66652b660d85c686b65e8514e24dc1a",
-      "status": "pending-review-and-port",
-      "evidence": []
+      "status": "shared-contracts-ported; editor integration pending",
+      "evidence": [
+        "docs/migration/content-tree.md",
+        "docs/migration/evidence/content-tree/"
+      ],
+      "destination": "packages/contracts/src/content/migrate.ts"
     },
     {
       "source": "src/lib/blocks/style.ts",
       "change": "added",
       "oldSHA256": null,
       "newSHA256": "ad8d7257e931583bea815ae02a18cbbecc7b2c411730ee80c36ab412872e3da8",
-      "status": "pending-review-and-port",
-      "evidence": []
+      "status": "shared-contracts-ported; editor integration pending",
+      "evidence": [
+        "docs/migration/content-tree.md",
+        "docs/migration/evidence/content-tree/"
+      ],
+      "destination": "packages/contracts/src/content/style.ts"
     },
     {
       "source": "src/lib/blocks/tree.ts",
       "change": "added",
       "oldSHA256": null,
       "newSHA256": "78d2ec40cda741e418f8e5e664bd45e5366626e8e8e5de4dbc4d9a98b5d2dac4",
-      "status": "pending-review-and-port",
-      "evidence": []
+      "status": "shared-contracts-ported; editor integration pending",
+      "evidence": [
+        "docs/migration/content-tree.md",
+        "docs/migration/evidence/content-tree/"
+      ],
+      "destination": "packages/contracts/src/content/tree.ts"
     },
     {
       "source": "src/lib/blocks/types.ts",
@@ -892,8 +912,12 @@
       "change": "added",
       "oldSHA256": null,
       "newSHA256": "dbc7c6a4e0ad1325306222faa051bc95dfb655065a8492b85e5be96ca7fb69ea",
-      "status": "pending-review-and-port",
-      "evidence": []
+      "status": "shared-contracts-ported; editor integration pending",
+      "evidence": [
+        "docs/migration/content-tree.md",
+        "docs/migration/evidence/content-tree/"
+      ],
+      "destination": "packages/contracts/src/content/validate.ts"
     },
     {
       "source": "src/lib/file-storage.ts",
@@ -924,8 +948,12 @@
       "change": "added",
       "oldSHA256": null,
       "newSHA256": "070400d828f2d32c56bcff88502be57df3b554cbba93fdc213c6446402399dd6",
-      "status": "pending-review-and-port",
-      "evidence": []
+      "status": "shared-contracts-ported; editor integration pending",
+      "evidence": [
+        "docs/migration/content-tree.md",
+        "docs/migration/evidence/content-tree/"
+      ],
+      "destination": "packages/contracts/src/page-settings.ts"
     },
     {
       "source": "src/lib/pages/publish-core.ts",

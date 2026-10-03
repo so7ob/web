@@ -1,0 +1,56 @@
+
+ RUN  v5.0.3 /root/So7ob/web
+
+ ❯ packages/contracts/src/content/safety.test.ts (3 tests | 2 failed) 29ms
+   ❯ untrusted content boundaries (3)
+     × rejects very deep untrusted JSON before recursive migration can exhaust the stack 17ms
+     × duplicates long identifiers without collisions even when the suffix source repeats 5ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  packages/contracts/src/content/safety.test.ts > untrusted content boundaries > rejects very deep untrusted JSON before recursive migration can exhaust the stack
+RangeError: Maximum call stack size exceeded
+ ❯ sanitizeV1Nodes packages/contracts/src/content/migrate.ts:120:31
+    118|       return { ok: false, error: `block_type_unknown:${String(type)}` …
+    119|     }
+    120|     const node: ContentNode = {
+       |                               ^
+    121|       id: typeof rec.id === "string" && rec.id ? rec.id : uniqueId("b-…
+    122|       type: type as BlockType,
+ ❯ sanitizeV1Nodes packages/contracts/src/content/migrate.ts:133:19
+ ❯ sanitizeV1Nodes packages/contracts/src/content/migrate.ts:133:19
+ ❯ sanitizeV1Nodes packages/contracts/src/content/migrate.ts:133:19
+ ❯ sanitizeV1Nodes packages/contracts/src/content/migrate.ts:133:19
+ ❯ sanitizeV1Nodes packages/contracts/src/content/migrate.ts:133:19
+ ❯ sanitizeV1Nodes packages/contracts/src/content/migrate.ts:133:19
+ ❯ sanitizeV1Nodes packages/contracts/src/content/migrate.ts:133:19
+ ❯ sanitizeV1Nodes packages/contracts/src/content/migrate.ts:133:19
+ ❯ sanitizeV1Nodes packages/contracts/src/content/migrate.ts:133:19
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  packages/contracts/src/content/safety.test.ts > untrusted content boundaries > duplicates long identifiers without collisions even when the suffix source repeats
+AssertionError: expected 3 to be 6 // Object.is equality
+
+- Expected
++ Received
+
+- 6
++ 3
+
+ ❯ packages/contracts/src/content/safety.test.ts:25:50
+     23|     const first = cloneWithNewIds(node,taken,()=> 'same');
+     24|     const second = cloneWithNewIds(node,taken,()=> 'same');
+     25|     expect(collectIds([node,first,second]).size).toBe(6);
+       |                                                  ^
+     26|   });
+     27| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 1 passed (3)
+   Start at  22:37:26
+   Duration  429ms (transform 41%, setup 26%, import 22%, tests 9%, worker 2%)
+

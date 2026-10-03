@@ -1,0 +1,38 @@
+{
+  "sourceSHA": "fc4a959e87e7c3750a0546f9d4fa10e31ac3b63c",
+  "syntheticOnly": true,
+  "results": [
+    {
+      "locale": "ar",
+      "width": 375,
+      "status": 200,
+      "errors": [],
+      "screenshot": "ar-mobile.png",
+      "padding": "24px"
+    },
+    {
+      "locale": "ar",
+      "width": 1280,
+      "status": 200,
+      "errors": [],
+      "screenshot": "ar-desktop.png",
+      "padding": "80px"
+    },
+    {
+      "locale": "en",
+      "width": 375,
+      "status": 200,
+      "errors": [],
+      "screenshot": "en-mobile.png",
+      "padding": "24px"
+    },
+    {
+      "locale": "en",
+      "width": 1280,
+      "status": 200,
+      "errors": [],
+      "screenshot": "en-desktop.png",
+      "padding": "80px"
+    }
+  ]
+}
