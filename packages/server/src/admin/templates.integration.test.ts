@@ -17,7 +17,7 @@ const user = (suffix: string, roleKey: string): AuthUser => ({ id: prefix + suff
 const editor = user('editor', 'content_editor'), admin = user('admin', 'super_admin'), client = user('client', 'client');
 const svc = new PageTemplateService(db), pages = new PageAdministrationService(db);
 const blocks = (text = 'Template secret') => JSON.stringify({ schemaVersion: 1, blocks: [{ id: 'heading', type: 'heading', props: { text }, discardMe: 'not stored' }] });
-async function create() { const r = await svc.create(editor, { nameAr: 'قالب اصطناعي', blocksAr: blocks(), descAr: 'وصف' }); ids.push(r.template.id); return r.template.id; }
+async function create(creator = editor) { const r = await svc.create(creator, { nameAr: 'قالب اصطناعي', blocksAr: blocks(), descAr: 'وصف' }); ids.push(r.template.id); return r.template.id; }
 async function page() { const r = await pages.create(editor, { slug: prefix + '-' + pageIds.length, titleAr: 'صفحة', titleEn: 'Page', template: 'blank-section' }); pageIds.push(r.page.id); return r.page.id; }
 beforeAll(async () => {
     await db.initialize();
@@ -161,10 +161,11 @@ it('keeps list SELECT count constant as custom templates and creators grow', asy
     try {
         const small = await svc.list(editor);
         const initialSelects = selects;
-        for (let index = 0; index < 20; index++) await create();
+        for (let index = 0; index < 20; index++) await create(index % 2 ? admin : editor);
         selects = 0;
         const large = await svc.list(editor);
         expect(large.templates.length - small.templates.length).toBe(20);
+        expect(new Set(large.templates.map(t => t.createdBy).filter(Boolean)).size).toBeGreaterThan(new Set(small.templates.map(t => t.createdBy).filter(Boolean)).size);
         expect(selects).toBe(initialSelects);
         expect(selects).toBeGreaterThan(0);
     } finally {
