@@ -1,0 +1,29 @@
+{
+  "sourceSHA": "fc4a959e87e7c3750a0546f9d4fa10e31ac3b63c",
+  "syntheticOnly": true,
+  "checks": {
+    "lint": "passed",
+    "typecheck": "passed",
+    "tests": {
+      "passed": 249,
+      "files": 26
+    },
+    "build": "passed",
+    "e2e": {
+      "passed": 68
+    },
+    "infra": "passed",
+    "diff": "passed"
+  },
+  "initialBrowserRun": {
+    "passed": 62,
+    "failed": 6,
+    "reason": "Four tree fixture cases used unsupported heading level 1; two legacy publication cases were incorrectly subjected to v1 validation. Corrected fixture and preserved v0 compatibility; focused 6 and final 68 passed without retries."
+  },
+  "visualScope": "one synthetic published tree in ar/en at 375/1280; full-page exact RGB threshold 0.005; human acceptance pending",
+  "limitations": [
+    "New editor and new write-side CMS/template/schedule/tracking flows pending.",
+    "No five-round performance or full operational recovery acceptance.",
+    "No production data, deployment, merge or release."
+  ]
+}

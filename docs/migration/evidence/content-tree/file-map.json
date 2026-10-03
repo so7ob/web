@@ -1,0 +1,47 @@
+{
+  "sourceSHA": "fc4a959e87e7c3750a0546f9d4fa10e31ac3b63c",
+  "files": [
+    {
+      "source": "src/lib/blocks/tree.ts",
+      "destination": "packages/contracts/src/content/tree.ts",
+      "sourceSHA256": "78d2ec40cda741e418f8e5e664bd45e5366626e8e8e5de4dbc4d9a98b5d2dac4",
+      "destinationSHA256": "ec0b6094017fc744bebf83d9864e59b6817ac3bdd5da9323b52119578046a78d"
+    },
+    {
+      "source": "src/lib/blocks/style.ts",
+      "destination": "packages/contracts/src/content/style.ts",
+      "sourceSHA256": "ad8d7257e931583bea815ae02a18cbbecc7b2c411730ee80c36ab412872e3da8",
+      "destinationSHA256": "ad8d7257e931583bea815ae02a18cbbecc7b2c411730ee80c36ab412872e3da8"
+    },
+    {
+      "source": "src/lib/blocks/migrate.ts",
+      "destination": "packages/contracts/src/content/migrate.ts",
+      "sourceSHA256": "c92555ddd49f10fd844b1460695fd272a66652b660d85c686b65e8514e24dc1a",
+      "destinationSHA256": "443a23450517abc49eb668e04566c4c4be2600cb5d4071147379749435976a2f"
+    },
+    {
+      "source": "src/lib/blocks/validate.ts",
+      "destination": "packages/contracts/src/content/validate.ts",
+      "sourceSHA256": "dbc7c6a4e0ad1325306222faa051bc95dfb655065a8492b85e5be96ca7fb69ea",
+      "destinationSHA256": "64ef5cc5963d748be749892bbd06b2a19cada9b95ca4b334087ed75c83e9d122"
+    },
+    {
+      "source": "src/lib/blocks/clipboard.ts",
+      "destination": "packages/contracts/src/content/clipboard.ts",
+      "sourceSHA256": "b36825982180fc8fb5e40782ecef927eec3bd06d867b398a9f06033a4a4aad07",
+      "destinationSHA256": "ba4e8434b2cb3cf0a6300d4d2b23a15d56ee3fa770bb4aad8a2d25ce7e1d63a8"
+    },
+    {
+      "source": "src/lib/blocks/inline-fields.ts",
+      "destination": "packages/contracts/src/content/inline-fields.ts",
+      "sourceSHA256": "34fb1548cdb7b13e48739db4e28a98255fbb0b1486ba4957de8fee7dd1bc1b8c",
+      "destinationSHA256": "34fb1548cdb7b13e48739db4e28a98255fbb0b1486ba4957de8fee7dd1bc1b8c"
+    },
+    {
+      "source": "src/lib/page-settings.ts",
+      "destination": "packages/contracts/src/page-settings.ts",
+      "sourceSHA256": "070400d828f2d32c56bcff88502be57df3b554cbba93fdc213c6446402399dd6",
+      "destinationSHA256": "070400d828f2d32c56bcff88502be57df3b554cbba93fdc213c6446402399dd6"
+    }
+  ]
+}

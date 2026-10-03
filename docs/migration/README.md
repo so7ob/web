@@ -43,3 +43,5 @@ The next stacked phase C portion ports private attachments, public/admin media, 
 User-administration APIs now have a separate [implementation and verification record](user-administration.md). Administrative operations/screens and CMS/editor now have a separate [implementation record](administration-and-editor.md), with final parity gates still pending.
 
 The source v2 schema and both-generation data transfer implementation are recorded in [source-schema-v2.md](source-schema-v2.md). Business/UI parity remains independently tracked.
+
+- [شجرة المحتوى والعرض المنشور وحدود النقل](content-tree.md).

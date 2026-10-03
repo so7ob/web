@@ -10,6 +10,7 @@ import {
   authScreens,
   can,
   validateBlocks,
+  loadContentForRender,
   canAccessPage,
   type AdminPayload,
   type AdminScreen,
@@ -258,14 +259,14 @@ export class PublicService {
     };
     const blocks =
       locale === "ar" ? page.publishedBlocksAr : page.publishedBlocksEn;
-    try {
-      if (
-        !Array.isArray(JSON.parse(blocks ?? "[]")) ||
-        JSON.parse(blocks ?? "[]").length === 0
-      )
-        throw new Error();
-    } catch {
-      throw new NotFoundException();
+    let parsed: unknown;
+    try { parsed = JSON.parse(blocks ?? "[]"); } catch { throw new NotFoundException(); }
+    if (Array.isArray(parsed)) {
+      // Keep the accepted v0 contract during the staged editor migration.
+      if (parsed.length === 0) throw new NotFoundException();
+    } else {
+      const rendered = loadContentForRender(blocks);
+      if (!rendered.ok || rendered.tree.length === 0) throw new NotFoundException();
     }
     return { ...shell, kind: "cms", page };
   }

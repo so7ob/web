@@ -1,0 +1,59 @@
+{
+  "sourceSHA": "fc4a959e87e7c3750a0546f9d4fa10e31ac3b63c",
+  "threshold": 0.005,
+  "metric": "Exact RGB inequality, full-page, no masks",
+  "results": [
+    {
+      "file": "ar-desktop.png",
+      "sourceSize": [
+        1280,
+        1036
+      ],
+      "targetSize": [
+        1280,
+        1036
+      ],
+      "differentPixelFraction": 0.001779681467181467,
+      "pass": true
+    },
+    {
+      "file": "ar-mobile.png",
+      "sourceSize": [
+        375,
+        1427
+      ],
+      "targetSize": [
+        375,
+        1427
+      ],
+      "differentPixelFraction": 0.004410184536323289,
+      "pass": true
+    },
+    {
+      "file": "en-desktop.png",
+      "sourceSize": [
+        1280,
+        1036
+      ],
+      "targetSize": [
+        1280,
+        1036
+      ],
+      "differentPixelFraction": 0.001779681467181467,
+      "pass": true
+    },
+    {
+      "file": "en-mobile.png",
+      "sourceSize": [
+        375,
+        1468
+      ],
+      "targetSize": [
+        375,
+        1468
+      ],
+      "differentPixelFraction": 0.004287011807447775,
+      "pass": true
+    }
+  ]
+}

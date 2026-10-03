@@ -77,7 +77,7 @@ function BlockView({ block, locale }: { block: Block; locale: Locale }) {
   const isDefaultStyle =
     !style || ((style.background ?? "default") === "default" && (style.paddingY ?? "md") === "md");
 
-  const content = <BlockContent block={block} locale={locale} />;
+  const content = <LeafContent block={block} locale={locale} />;
 
   if (isDefaultStyle && !visibilityClasses && !block.anchorId) {
     return content;
@@ -102,7 +102,7 @@ function BlockView({ block, locale }: { block: Block; locale: Locale }) {
   );
 }
 
-function BlockContent({ block, locale }: { block: Block; locale: Locale }) {
+export function LeafContent({ block, locale }: { block: Block; locale: Locale }) {
   switch (block.type) {
     case "hero":
       return <HeroBlock props={block.props as HeroBlockProps} locale={locale} />;
