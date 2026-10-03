@@ -13,6 +13,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: a2dc18cff582159ef14b66250d600aa8307918cf
       - uses: actions/setup-node@v4
         with:
           node-version: '24.21.0'
@@ -27,4 +29,41 @@ jobs:
         env:
           DATABASE_URL: file:./ci-build.db
           NEXT_PUBLIC_SITE_URL: http://localhost:3000
+      - run: git diff --check
+
+  foundation:
+    name: Target lint, TypeScript, MariaDB tests and SSR build
+    runs-on: ubuntu-24.04
+    services:
+      mariadb:
+        image: mariadb:10.11.18
+        env:
+          MARIADB_DATABASE: so7ob_schema_test
+          MARIADB_USER: so7ob_test
+          MARIADB_PASSWORD: synthetic-ci-only
+          MARIADB_ROOT_PASSWORD: synthetic-ci-root-only
+        ports: ['3306:3306']
+        options: >-
+          --health-cmd="healthcheck.sh --connect --innodb_initialized"
+          --health-interval=5s --health-timeout=5s --health-retries=20
+    env:
+      DATABASE_HOST: 127.0.0.1
+      DATABASE_PORT: 3306
+      DATABASE_NAME: so7ob_schema_test
+      TEST_DATABASE_NAME: so7ob_schema_test
+      DATABASE_USER: so7ob_test
+      DATABASE_PASSWORD: synthetic-ci-only
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24.21.0'
+          cache: npm
+      - run: npm install --global npm@10.8.2
+      - run: npm ci
+      - run: npm run lint
+      - run: npm run typecheck
+      - run: npm run db:migrate
+      - run: npm test
+      - run: npm run build
       - run: git diff --check
