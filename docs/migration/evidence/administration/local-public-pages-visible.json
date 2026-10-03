@@ -1,0 +1,35 @@
+{
+  "capturedAt": "2026-10-03T16:31:15.826Z",
+  "origin": "http://localhost:3108",
+  "motion": "reduce",
+  "rows": [
+    {
+      "locale": "ar",
+      "width": 375,
+      "status": 200,
+      "heading": "تُمطِرُ حلولًا ذكية.",
+      "headingAndAncestorsOpaque": true
+    },
+    {
+      "locale": "en",
+      "width": 375,
+      "status": 200,
+      "heading": "Raining smart solutions.",
+      "headingAndAncestorsOpaque": true
+    },
+    {
+      "locale": "ar",
+      "width": 1280,
+      "status": 200,
+      "heading": "تُمطِرُ حلولًا ذكية.",
+      "headingAndAncestorsOpaque": true
+    },
+    {
+      "locale": "en",
+      "width": 1280,
+      "status": 200,
+      "heading": "Raining smart solutions.",
+      "headingAndAncestorsOpaque": true
+    }
+  ]
+}

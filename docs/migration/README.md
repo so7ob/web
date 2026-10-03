@@ -10,13 +10,17 @@ Source: Website/main `5321b7fd11db421c83290b262f276811e5f04e5f`. Technical refer
 
 - A: source imported; isolated build, 133 tests, 40 browser captures and repeated read-performance baseline passed. Full behavior/SQL profiling remains required for final parity.
 - B: target workspaces/Node/Nest/Vite SSR/MariaDB foundation implemented; [PR #9](https://github.com/so7ob/web/pull/9).
-- C: explicit 23-model schema and SQLite/files transfer/verification/restart/backup tooling ([PR #10](https://github.com/so7ob/web/pull/10)); server authentication and encrypted account mail ([PR #12](https://github.com/so7ob/web/pull/12)). Submission/account request/inquiry/profile/draft/notification services are implemented in the next stacked portion; see [business services](business-services.md). Claims/files are implemented in [PR #15](https://github.com/so7ob/web/pull/15), whose reference and target CI passed. Admin operations remain pending.
-- D: public and authentication presentation implemented with scoped browser/visual/performance evidence; see [details and limitations](public-and-auth-ui.md). The original public request form now submits to real services. The nine client portal screens are ported in the next stacked portion; see [client portal](client-portal.md). Admin/editor screens remain pending.
+- C: explicit 23-model schema and SQLite/files transfer/verification/restart/backup tooling ([PR #10](https://github.com/so7ob/web/pull/10)); server authentication and encrypted account mail ([PR #12](https://github.com/so7ob/web/pull/12)). Submission/account request/inquiry/profile/draft/notification services are implemented in the next stacked portion; see [business services](business-services.md). Claims/files are implemented in [PR #15](https://github.com/so7ob/web/pull/15), whose reference and target CI passed. Administrative operations are ported with scoped checks; see [administration and editor](administration-and-editor.md).
+- D: public and authentication presentation implemented with scoped browser/visual/performance evidence; see [details and limitations](public-and-auth-ui.md). The original public request form now submits to real services. The nine client portal screens are ported in the next stacked portion; see [client portal](client-portal.md). Administrative screens and the original full editor are ported with scoped checks; complete visual/performance acceptance remains open.
 - E: durable mail worker and Nginx/systemd checks implemented ([PR #11](https://github.com/so7ob/web/pull/11)); full operational restore/cutover rehearsal and remaining job integrations pending.
 - F: full parity, all-role journeys, complete SQL/concurrency/load acceptance and final rollback rehearsal are pending. No migration completion claim. The original source files at root remain transitional reference material.
-- A–E portions are stacked for review, with no automatic merges. CI success is reported per PR, not inferred for later commits.
+- PRs #8–#17 were merged into develop on 2026-10-03 following the explicit merge request; each latest CI was checked. Later work remains on issue branches for review. No main merge or deployment occurred. CI success is reported per PR, not inferred for later commits.
 - Production data/files have not been inspected, copied or migrated. Local synthetic data only.
 - No source repository, branch, configuration, issue, PR or deployment was changed.
+
+## Local startup
+
+[Arabic local startup and first administrator guide](local-development.ar.md) explains schema migration, optional non-destructive content initialization for an empty development site, and `admin:create`. Neither command migrates production data.
 
 ## Frozen acceptance budgets
 
@@ -24,7 +28,7 @@ Before target implementation: stable screenshot differing pixels <=0.5%, with hu
 
 ## Cutover decisions
 
-One-time re-login is accepted. Preserve accounts, bcrypt hashes, token hashes, original expiry/use and all records/files. Full rollback is permitted only before write access reopens. Afterwards recover forward while retaining MariaDB, files and queue state. No production cutover, merge or release is authorized by this work.
+One-time re-login is accepted. Preserve accounts, bcrypt hashes, token hashes, original expiry/use and all records/files. Full rollback is permitted only before write access reopens. Afterwards recover forward while retaining MariaDB, files and queue state. No production cutover, main merge or release is authorized by this work. New PRs require separate merge authorization.
 
 ## Baseline isolation
 
@@ -34,4 +38,4 @@ The pinned source is archived without `.git` under ignored `.migration/reference
 
 The next stacked phase C portion ports private attachments, public/admin media, durable physical file cleanup and prior-request ownership claims. See [files and claims](files-and-claims.md) for server authorization, transactional proof consumption, tests and explicit remaining scope. This does not establish complete migration or operational restore acceptance.
 
-User-administration APIs now have a separate [implementation and verification record](user-administration.md). Other admin/CMS/editor operations and admin screens remain pending.
+User-administration APIs now have a separate [implementation and verification record](user-administration.md). Administrative operations/screens and CMS/editor now have a separate [implementation record](administration-and-editor.md), with final parity gates still pending.

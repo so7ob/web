@@ -1,0 +1,83 @@
+{
+  "recordedAt": "2026-10-03T16:56:54.533874+00:00",
+  "sourceSHA": "5321b7fd11db421c83290b262f276811e5f04e5f",
+  "baseDevelopSHA": "f3e5d8c0a48d0e06b82be8f4bd652177f3e90253",
+  "runtime": {
+    "node": "24.21.0",
+    "npm": "10.8.2",
+    "mariadb": "10.11.18",
+    "testDatabasePort": 3307,
+    "databaseIsolation": "separate so7ob_admin_routes_test, so7ob_admin_e2e_test and so7ob_bootstrap_test; synthetic only"
+  },
+  "checks": {
+    "npm run lint": "passed; ESLint --max-warnings=0",
+    "npm run typecheck": "passed; independent tsc --noEmit",
+    "npm test": {
+      "passed": 171,
+      "files": 21
+    },
+    "npm run build": "passed; TypeScript projects, Vite client and SSR",
+    "npm run test:e2e": {
+      "passed": 54,
+      "failed": 0,
+      "stats": {
+        "startTime": "2026-10-03T16:49:46.241Z",
+        "duration": 232156.543,
+        "expected": 54,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      }
+    },
+    "npm run test:infra": "passed; actual Nginx syntax, runtime and systemd validation; no deployment",
+    "git diff --check": "passed"
+  },
+  "bootstrapCLI": {
+    "created": {
+      "pages": 7,
+      "menuItems": 12,
+      "settings": 6,
+      "users": 1
+    },
+    "repeatedSiteInitialization": "rejected without changing records",
+    "secondAdministrator": "rejected without changing accounts",
+    "productionAndRemoteTarget": "rejected before database connection",
+    "passwordStorage": "bcrypt cost 12; no plaintext audit fields; service login and concurrent first-admin test passed"
+  },
+  "localDevelopment": {
+    "origin": "http://localhost:3108",
+    "ar": 200,
+    "en": 200,
+    "anonymousAdmin": 307,
+    "redirect": "/ar/auth/login?next=%2Far%2Fadmin",
+    "personalAdministrator": "not created by this work; user runs documented CLI",
+    "initialPublishedContent": "initialized once into a verified empty destination database; no production data"
+  },
+  "accessibility": {
+    "dashboardAxe": {
+      "ar-desktop": [],
+      "en-desktop": [],
+      "ar-mobile": [],
+      "en-mobile": []
+    },
+    "sourceReducedMotionHero": "reproduced invisible heading at 375/1280 in both languages; ordinary motion visible",
+    "targetHero": "all 8 browser motion/language/viewport cases passed; heading and illustration visibly opaque",
+    "clockAndTimezone": "4 real browser cases with 2031 clock and Pacific/Honolulu timezone passed against Asia/Aden server"
+  },
+  "remainingAcceptance": [
+    "complete administrative/editor visual and p50/p95/JavaScript/SQL comparison",
+    "all editor fields and role journeys",
+    "largest legal CMS document and production MariaDB packet configuration",
+    "complete operational restore/cutover/rollback rehearsal",
+    "full source HTTP contract comparison and response OpenAPI coverage",
+    "production data and private files not available: not transferred or verified"
+  ],
+  "delivery": {
+    "uploaded": "recorded by PR",
+    "ci": "checked separately after upload",
+    "merge": "not authorized for this new PR",
+    "mainRelease": "not performed",
+    "productionDeployment": "not performed",
+    "migrationComplete": false
+  }
+}

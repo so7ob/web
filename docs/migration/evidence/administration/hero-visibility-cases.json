@@ -1,0 +1,68 @@
+{
+  "stats": {
+    "startTime": "2026-10-03T16:27:46.761Z",
+    "duration": 19646.669,
+    "expected": 8,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  },
+  "cases": [
+    {
+      "suite": "public hero with motion preference reduce",
+      "title": "ar: public heading and illustration become visibly opaque after hydration",
+      "project": "desktop",
+      "status": "passed",
+      "durationMs": 1442
+    },
+    {
+      "suite": "public hero with motion preference reduce",
+      "title": "en: public heading and illustration become visibly opaque after hydration",
+      "project": "desktop",
+      "status": "passed",
+      "durationMs": 1137
+    },
+    {
+      "suite": "public hero with motion preference reduce",
+      "title": "ar: public heading and illustration become visibly opaque after hydration",
+      "project": "mobile",
+      "status": "passed",
+      "durationMs": 1162
+    },
+    {
+      "suite": "public hero with motion preference reduce",
+      "title": "en: public heading and illustration become visibly opaque after hydration",
+      "project": "mobile",
+      "status": "passed",
+      "durationMs": 1060
+    },
+    {
+      "suite": "public hero with motion preference no-preference",
+      "title": "ar: public heading and illustration become visibly opaque after hydration",
+      "project": "desktop",
+      "status": "passed",
+      "durationMs": 1640
+    },
+    {
+      "suite": "public hero with motion preference no-preference",
+      "title": "en: public heading and illustration become visibly opaque after hydration",
+      "project": "desktop",
+      "status": "passed",
+      "durationMs": 1730
+    },
+    {
+      "suite": "public hero with motion preference no-preference",
+      "title": "ar: public heading and illustration become visibly opaque after hydration",
+      "project": "mobile",
+      "status": "passed",
+      "durationMs": 1647
+    },
+    {
+      "suite": "public hero with motion preference no-preference",
+      "title": "en: public heading and illustration become visibly opaque after hydration",
+      "project": "mobile",
+      "status": "passed",
+      "durationMs": 1660
+    }
+  ]
+}

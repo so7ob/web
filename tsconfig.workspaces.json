@@ -1,11 +1,7 @@
 {
   "compilerOptions": {
     "target": "ES2022",
-    "lib": [
-      "ES2023",
-      "DOM",
-      "DOM.Iterable"
-    ],
+    "lib": ["ES2023", "DOM", "DOM.Iterable"],
     "module": "ESNext",
     "moduleResolution": "Bundler",
     "strict": true,
@@ -16,21 +12,11 @@
     "esModuleInterop": true,
     "resolveJsonModule": true,
     "jsx": "react-jsx",
-    "types": [
-      "node",
-      "vitest/globals",
-      "@testing-library/jest-dom/vitest"
-    ],
+    "types": ["node", "vitest/globals", "@testing-library/jest-dom/vitest"],
     "paths": {
-      "@so7ob/contracts": [
-        "./packages/contracts/src/index.ts"
-      ],
-      "@so7ob/server": [
-        "./packages/server/src/index.ts"
-      ],
-      "@/*": [
-        "./apps/web/src/*"
-      ]
+      "@so7ob/contracts": ["./packages/contracts/src/index.ts"],
+      "@so7ob/server": ["./packages/server/src/index.ts"],
+      "@/*": ["./apps/web/src/*"]
     }
   },
   "include": [
@@ -38,11 +24,8 @@
     "apps/**/*.tsx",
     "packages/**/*.ts",
     "tests/**/*.ts",
-    "playwright.config.ts"
+    "playwright.config.ts",
+    "tools/development/**/*.ts"
   ],
-  "exclude": [
-    "**/dist",
-    "node_modules",
-    ".migration"
-  ]
+  "exclude": ["**/dist", "node_modules", ".migration"]
 }

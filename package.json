@@ -27,7 +27,9 @@
     "test:worker": "node tools/migration/worker-smoke.mjs",
     "test:auth": "node tools/migration/auth-smoke.mjs",
     "test:webhook": "node tools/migration/webhook-smoke.mjs",
-    "test:file-worker": "node tools/migration/file-worker-smoke.mjs"
+    "test:file-worker": "node tools/migration/file-worker-smoke.mjs",
+    "site:init": "node --env-file-if-exists=.env --import tsx tools/development/initialize-site.ts",
+    "admin:create": "node --env-file-if-exists=.env --import tsx tools/development/create-admin.ts"
   },
   "dependencies": {
     "@dnd-kit/core": "6.3.1",

@@ -1,0 +1,14 @@
+{
+  "stats": {
+    "startTime": "2026-10-03T16:34:00.526Z",
+    "duration": 224231.70200000002,
+    "expected": 49,
+    "skipped": 0,
+    "unexpected": 1,
+    "flaky": 0
+  },
+  "failedCase": "English mobile administrative journey",
+  "error": "React hydration error 418 (text mismatch)",
+  "correction": "Move the original server-only date, relative-time and chart-label formatting into the server presentation layer; serialize strings without suppressing hydration errors",
+  "regression": "Browser clock 2031 and Pacific/Honolulu timezone against current Asia/Aden server"
+}
