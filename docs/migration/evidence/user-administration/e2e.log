@@ -1,0 +1,52 @@
+> so7ob-web@1.0.0 test:e2e
+> playwright test
+
+[WebServer] (node:265008) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:265017) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 36 tests using 1 worker
+
+(node:265080) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   1 [desktop] › tests/e2e/account-portal.spec.ts:80:3 › ar: client portal preserves drafts, conversations, files, claims, profile and session controls (22.7s)
+  ✓   2 [desktop] › tests/e2e/account-portal.spec.ts:80:3 › en: client portal preserves drafts, conversations, files, claims, profile and session controls (23.0s)
+  ✓   3 [desktop] › tests/e2e/account-portal.spec.ts:370:1 › profile language save navigates and reloads the protected screen in both directions (2.2s)
+  ✓   4 [desktop] › tests/e2e/admin-users.spec.ts:24:1 › administration legacy and v1 contracts preserve projections, filters and separate operation permissions (1.1s)
+  ✓   5 [desktop] › tests/e2e/admin-users.spec.ts:129:1 › invitation HTTP admission counts malformed input and delivers a single-use encrypted proof (665ms)
+  ✓   6 [desktop] › tests/e2e/auth-public.spec.ts:7:3 › ar: SSR, direct reload, language and authentication navigation (1.5s)
+  ✓   7 [desktop] › tests/e2e/auth-public.spec.ts:22:3 › ar: login uses the server session and logout clears the local draft (1.5s)
+  ✓   8 [desktop] › tests/e2e/auth-public.spec.ts:7:3 › en: SSR, direct reload, language and authentication navigation (1.5s)
+  ✓   9 [desktop] › tests/e2e/auth-public.spec.ts:22:3 › en: login uses the server session and logout clears the local draft (1.4s)
+  ✓  10 [desktop] › tests/e2e/auth-public.spec.ts:31:1 › registration and one-use verification use the encrypted outbox; no development link in production (1.3s)
+  ✓  11 [desktop] › tests/e2e/auth-public.spec.ts:46:1 › 404 retains its actual HTTP status and published HTML carries SEO (650ms)
+  ✓  12 [desktop] › tests/e2e/auth-public.spec.ts:51:1 › forgot/reset forms preserve one-use tokens and reject a mismatched confirmation (2.3s)
+  ✓  13 [desktop] › tests/e2e/files-claims.spec.ts:48:1 › multipart uploads retain bytes, legacy errors and server file authorization (2.4s)
+  ✓  14 [desktop] › tests/e2e/files-claims.spec.ts:203:1 › claim HTTP contracts bind the original email proof and charge malformed attempts before parsing (1.1s)
+  ✓  15 [desktop] › tests/e2e/publication.spec.ts:6:1 › publication updates HTML and SEO immediately; redirects and page authorization survive direct requests (1.1s)
+  ✓  16 [desktop] › tests/e2e/submissions.spec.ts:9:1 › the original public request form validates, preserves its draft and confirms a real persisted submission (4.6s)
+  ✓  17 [desktop] › tests/e2e/submissions.spec.ts:76:1 › legacy and v1 account contracts enforce ownership, CSRF and field projection (704ms)
+  ✓  18 [desktop] › tests/e2e/submissions.spec.ts:161:1 › conversation endpoints reject cross-account access, hide staff notes and serialize repeated replies (1.0s)
+(node:267637) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  19 [mobile] › tests/e2e/account-portal.spec.ts:80:3 › ar: client portal preserves drafts, conversations, files, claims, profile and session controls (22.6s)
+  ✓  20 [mobile] › tests/e2e/account-portal.spec.ts:80:3 › en: client portal preserves drafts, conversations, files, claims, profile and session controls (23.1s)
+  ✓  21 [mobile] › tests/e2e/account-portal.spec.ts:370:1 › profile language save navigates and reloads the protected screen in both directions (1.9s)
+  ✓  22 [mobile] › tests/e2e/admin-users.spec.ts:24:1 › administration legacy and v1 contracts preserve projections, filters and separate operation permissions (1.0s)
+  ✓  23 [mobile] › tests/e2e/admin-users.spec.ts:129:1 › invitation HTTP admission counts malformed input and delivers a single-use encrypted proof (657ms)
+  ✓  24 [mobile] › tests/e2e/auth-public.spec.ts:7:3 › ar: SSR, direct reload, language and authentication navigation (1.3s)
+  ✓  25 [mobile] › tests/e2e/auth-public.spec.ts:22:3 › ar: login uses the server session and logout clears the local draft (1.2s)
+  ✓  26 [mobile] › tests/e2e/auth-public.spec.ts:7:3 › en: SSR, direct reload, language and authentication navigation (1.5s)
+  ✓  27 [mobile] › tests/e2e/auth-public.spec.ts:22:3 › en: login uses the server session and logout clears the local draft (1.2s)
+  ✓  28 [mobile] › tests/e2e/auth-public.spec.ts:31:1 › registration and one-use verification use the encrypted outbox; no development link in production (1.1s)
+  ✓  29 [mobile] › tests/e2e/auth-public.spec.ts:46:1 › 404 retains its actual HTTP status and published HTML carries SEO (566ms)
+  ✓  30 [mobile] › tests/e2e/auth-public.spec.ts:51:1 › forgot/reset forms preserve one-use tokens and reject a mismatched confirmation (1.5s)
+  ✓  31 [mobile] › tests/e2e/files-claims.spec.ts:48:1 › multipart uploads retain bytes, legacy errors and server file authorization (2.3s)
+  ✓  32 [mobile] › tests/e2e/files-claims.spec.ts:203:1 › claim HTTP contracts bind the original email proof and charge malformed attempts before parsing (970ms)
+  ✓  33 [mobile] › tests/e2e/publication.spec.ts:6:1 › publication updates HTML and SEO immediately; redirects and page authorization survive direct requests (1.0s)
+  ✓  34 [mobile] › tests/e2e/submissions.spec.ts:9:1 › the original public request form validates, preserves its draft and confirms a real persisted submission (4.5s)
+  ✓  35 [mobile] › tests/e2e/submissions.spec.ts:76:1 › legacy and v1 account contracts enforce ownership, CSRF and field projection (696ms)
+  ✓  36 [mobile] › tests/e2e/submissions.spec.ts:161:1 › conversation endpoints reject cross-account access, hide staff notes and serialize repeated replies (994ms)
+
+  36 passed (2.6m)

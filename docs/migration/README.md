@@ -33,3 +33,5 @@ The pinned source is archived without `.git` under ignored `.migration/reference
 `tools/migration/fixture.mjs` populates only that fixed synthetic database after applying source migrations and seed-content. `tools/migration/capture-baseline.mjs` captures both languages, mobile/desktop, role views, HTML contracts and axe results against loopback port 3107 with external browser requests blocked. Screenshots are observations, not yet complete interaction acceptance tests.
 
 The next stacked phase C portion ports private attachments, public/admin media, durable physical file cleanup and prior-request ownership claims. See [files and claims](files-and-claims.md) for server authorization, transactional proof consumption, tests and explicit remaining scope. This does not establish complete migration or operational restore acceptance.
+
+User-administration APIs now have a separate [implementation and verification record](user-administration.md). Other admin/CMS/editor operations and admin screens remain pending.

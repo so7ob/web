@@ -19,7 +19,7 @@ export default async function setup() {
     if ((await db.query(`SELECT ${q(pk)} FROM ${q(table)} WHERE ${q(pk)}=?`,[row[pk]])).length) continue;
     const columns=Object.keys(row); await db.query(`INSERT INTO ${q(table)} (${columns.map(q).join(',')}) VALUES (${columns.map(()=>'?').join(',')})`,columns.map(k=>schema[table].columns[k].type==='DateTime'&&row[k]!==null ? new Date(String(row[k])):row[k]));
   }
-  for (const [name,role] of [['owner','client'],['other','client'],['recovery','client'],['editor','content_editor'],['admin','super_admin'],...['desktop','mobile'].flatMap(size=>['ar','en'].map(locale=>['portal'+size+locale,'client']))]) await db.query('INSERT INTO User(id,email,name,passwordHash,roleKey,status,emailVerifiedAt,locale) VALUES(?,?,?,?,?,\'active\',UTC_TIMESTAMP(3),?)',[prefix+name,prefix+name+'@example.invalid','Synthetic '+name,passwordHash,role,name.endsWith('en')?'en':'ar']);
+  for (const [name,role] of [['owner','client'],['other','client'],['recovery','client'],['editor','content_editor'],['admin','super_admin'],['ops','ops_manager'],...['desktop','mobile'].flatMap(size=>['ar','en'].map(locale=>['portal'+size+locale,'client']))]) await db.query('INSERT INTO User(id,email,name,passwordHash,roleKey,status,emailVerifiedAt,locale) VALUES(?,?,?,?,?,\'active\',UTC_TIMESTAMP(3),?)',[prefix+name,prefix+name+'@example.invalid','Synthetic '+name,passwordHash,role,name.endsWith('en')?'en':'ar']);
   mkdirSync('.migration/e2e',{recursive:true,mode:0o700}); writeFileSync('.migration/e2e/run.json',JSON.stringify({prefix,password}),{mode:0o600});
   await db.destroy();
   return async()=>{
@@ -36,6 +36,7 @@ export default async function setup() {
       const inquiries=await cleanup.query('SELECT id,refCode FROM Inquiry WHERE email LIKE ?',[prefix+'%']);for(const inquiry of inquiries){await cleanup.query('DELETE FROM AuditLog WHERE entityId=?',[inquiry.id]);await cleanup.query("DELETE FROM Notification WHERE type='new_inquiry' AND JSON_UNQUOTE(JSON_EXTRACT(payload,'$.ref'))=?",[inquiry.refCode]);await cleanup.query('DELETE FROM Inquiry WHERE id=?',[inquiry.id]);}
       for(const key of ['request:'+sha256('ip:127.0.0.1'),'inquiry:127.0.0.1'])await cleanup.query('DELETE FROM RateLimitBucket WHERE bucketKey=?',[sha256(key)]);
       await cleanup.query('DELETE j FROM MailJob j JOIN EmailLog e ON e.id=j.emailLogId WHERE e.`to` LIKE ?',[prefix+'%']); await cleanup.query('DELETE FROM EmailLog WHERE `to` LIKE ?',[prefix+'%']);
+      await cleanup.query('DELETE FROM UserInvite WHERE email LIKE ?',[prefix+'%']);
       const users:Array<{id:string}>=await cleanup.query('SELECT id FROM User WHERE email LIKE ?',[prefix+'%']);
       for (const user of users) { await cleanup.query('DELETE FROM RateLimitBucket WHERE bucketKey=?',[sha256('claim:'+user.id+':127.0.0.1')]); await cleanup.query('DELETE FROM MediaItem WHERE uploadedById=?',[user.id]); await cleanup.query('DELETE FROM RateLimitBucket WHERE bucketKey=?',[sha256('account-inquiry:'+user.id)]); await cleanup.query('DELETE FROM AuditLog WHERE actorId=?',[user.id]); await cleanup.query('DELETE FROM UserInvite WHERE acceptedUserId=?',[user.id]); await cleanup.query('DELETE FROM User WHERE id=?',[user.id]); }
       for (const flow of ['register','login','forgot']) await cleanup.query('DELETE FROM RateLimitBucket WHERE bucketKey=?',[sha256(flow+':127.0.0.1')]);
