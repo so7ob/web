@@ -1,5 +1,5 @@
 import type { MigrationInterface, QueryRunner } from 'typeorm';
-import { schema, identifier as q, type ColumnDefinition } from '../schema.js';
+import { schemaV1 as schema, identifier as q, type ColumnDefinition } from '../schema.js';
 function literal(value: string | number | boolean): string {
   if (typeof value === 'boolean') return value ? '1' : '0';
   if (typeof value === 'number') return String(value);

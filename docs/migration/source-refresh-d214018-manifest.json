@@ -1,9 +1,9 @@
 {
   "source": "https://github.com/so7ob/Website",
-  "sourceSHA": "fc4a959e87e7c3750a0546f9d4fa10e31ac3b63c",
+  "sourceSHA": "d214018f3337198d8e17e5e7efa535a846ba6be2",
   "previousSourceSHA": "5321b7fd11db421c83290b262f276811e5f04e5f",
-  "verifiedAt": "2026-10-03T19:09:25Z",
-  "commits": 15,
+  "verifiedAt": "2026-10-03T18:12:19Z",
+  "commits": 13,
   "files": [
     {
       "source": ".gitignore",
@@ -418,18 +418,10 @@
       "evidence": []
     },
     {
-      "source": "src/components/admin/editor/clipboard-menu.tsx",
-      "change": "added",
-      "oldSHA256": null,
-      "newSHA256": "b5e0972262dcb9b82a22b33d8647cbfa03ab166ae744f9f93236b2eaccde22bf",
-      "status": "pending-review-and-port",
-      "evidence": []
-    },
-    {
       "source": "src/components/admin/editor/editor-canvas.tsx",
       "change": "modified",
       "oldSHA256": "0fb120c5d85e52fdf58e7c74dfbee82d257dc21ad5b1704d70c496587871273e",
-      "newSHA256": "aec078d03fdf8b9698162a0294a7804da67c5fbdf600011de28b94b16a3d5248",
+      "newSHA256": "46a5df23883437bc86f30f6f38700021af763eda6fd563ce6246b8117485537b",
       "status": "pending-review-and-port",
       "evidence": []
     },
@@ -445,7 +437,7 @@
       "source": "src/components/admin/editor/layer-tree.tsx",
       "change": "added",
       "oldSHA256": null,
-      "newSHA256": "1d3217e5987e5e63eff32db05413cdf38eabb10dde8407f5e9231c7e57bba24f",
+      "newSHA256": "6830ca03d1e8dea23da4c5f6e3c670772566db7a85c2c4e8bbd3468701f8cd61",
       "status": "pending-review-and-port",
       "evidence": []
     },
@@ -461,7 +453,7 @@
       "source": "src/components/admin/editor/page-editor.tsx",
       "change": "modified",
       "oldSHA256": "76d3b998a2b4beca21e5cbfa8a9128c0fc5e372643ae5b66d670d52bb481a10c",
-      "newSHA256": "47c56b3b297dbb6aa05183420bbe38b7aa678adfc212efcbfd42feea8a1fc4c3",
+      "newSHA256": "2838932667d26d8a51124f087a7e46e9fbbb56385e53c3da7245cdcd691ee7af",
       "status": "pending-review-and-port",
       "evidence": []
     },
@@ -485,7 +477,7 @@
       "source": "src/components/admin/editor/properties-panel.tsx",
       "change": "modified",
       "oldSHA256": "a22656bb024e135bc3dce3afb64252d327970fccd0714e8c9acf75eabd0edc5f",
-      "newSHA256": "4867846762e61b7f524b60ac4b93ab81f445157ced0132d82d4b42e7f9480ccc",
+      "newSHA256": "a39bb0545926fe0917464947e2d468077904b4c3f6e11a4e8c6189980b33650c",
       "status": "pending-review-and-port",
       "evidence": []
     },
@@ -677,25 +669,31 @@
       "source": "src/content/portal/ar.ts",
       "change": "modified",
       "oldSHA256": "b6313d2b4b3f1e6e1c9e10ce6902ace16cc0c6e22145b19c5961ee7b3f36e6c6",
-      "newSHA256": "ca6887e141ecaab2953d05f73fe9589ee5d4f5512840fb87405aea897bc3c05d",
-      "status": "pending-review-and-port",
-      "evidence": []
+      "newSHA256": "5a68e17a9d4b3d9681e6c27189a5b33df088b0034e5b5b44b55d9b6ab2758448",
+      "status": "partially-ported: credentials message only; tracking/editor translations pending",
+      "evidence": [
+        "tests/e2e/login-hydration.spec.ts"
+      ]
     },
     {
       "source": "src/content/portal/en.ts",
       "change": "modified",
       "oldSHA256": "b3ce99fd4918c1e1c50fe89a2c9ab4d84d4fbd28a9df9d92f0b8ea6d0f21fb33",
-      "newSHA256": "7e9006a58a41e58f35006784b3b45681871600885b5ee59590dc712c61403727",
-      "status": "pending-review-and-port",
-      "evidence": []
+      "newSHA256": "4794e360a9f9681a015e59638f97bfcf9b0bc04487175b050858b3494dd5fc5d",
+      "status": "partially-ported: credentials message only; tracking/editor translations pending",
+      "evidence": [
+        "tests/e2e/login-hydration.spec.ts"
+      ]
     },
     {
       "source": "src/content/portal/types.ts",
       "change": "modified",
       "oldSHA256": "8ba0d2af759ea47c0190502abc2621b94aa3761aa406585fa5dcef3c9eceb4d1",
-      "newSHA256": "b3f03885a4bbb7bc722b6c96dd802b9fac4168e2d94e619b3ec80523e9258cdf",
-      "status": "pending-review-and-port",
-      "evidence": []
+      "newSHA256": "cb6d6f2a24362cb8c610f11c0038f8eea7877b86fff4a910004a30992f5add36",
+      "status": "partially-ported: credentials message only; tracking/editor translations pending",
+      "evidence": [
+        "tests/e2e/login-hydration.spec.ts"
+      ]
     },
     {
       "source": "src/instrumentation.ts",
@@ -718,14 +716,6 @@
       "change": "modified",
       "oldSHA256": "561a7f4745a66c188a8becb4f6276c730df860c3543a89d54fc79c5374fe156c",
       "newSHA256": "f12edceda2536a31fb40c30d32090d76a15bcb002b93fd8960c1e319d0e28d44",
-      "status": "pending-review-and-port",
-      "evidence": []
-    },
-    {
-      "source": "src/lib/__tests__/clipboard.test.ts",
-      "change": "added",
-      "oldSHA256": null,
-      "newSHA256": "207e6f9b45de70f866f7e23b5ec1bc16036130d679ccd8a706661355f10ca8ca",
       "status": "pending-review-and-port",
       "evidence": []
     },
@@ -830,14 +820,6 @@
       "change": "modified",
       "oldSHA256": "b9c8c6077e3d9b1f868db5981ca13502fce4aa28e7ec886a4f3dee125a91a3dd",
       "newSHA256": "866f1f9a855c937c1cdafc27e5a8716aceede30f2524f9da6a680fe195d3e532",
-      "status": "pending-review-and-port",
-      "evidence": []
-    },
-    {
-      "source": "src/lib/blocks/clipboard.ts",
-      "change": "added",
-      "oldSHA256": null,
-      "newSHA256": "b36825982180fc8fb5e40782ecef927eec3bd06d867b398a9f06033a4a4aad07",
       "status": "pending-review-and-port",
       "evidence": []
     },
@@ -1011,7 +993,7 @@
       "source": "worklog.md",
       "change": "modified",
       "oldSHA256": "cfa226dcd064e54ed8c5519b2cbbd729000842043d26fbd9123aeb7c474c44cb",
-      "newSHA256": "ad50a51f6a65504cac0249c921671e34e30dabfb83b370a280e1ef2b249d2c91",
+      "newSHA256": "c2ad9bb7271a8f6c897f687778692be047cd15d73effc1d7bd055d8426e12828",
       "status": "pending-review-and-port",
       "evidence": []
     }
@@ -1559,6 +1541,5 @@
       }
     ],
     "explicitHttpHandlers": 82
-  },
-  "previousRefreshSHA": "d214018f3337198d8e17e5e7efa535a846ba6be2"
+  }
 }

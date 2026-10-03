@@ -1,4 +1,5 @@
-import snapshot from './schema-v1.json' with { type: 'json' };
+import snapshotV1 from './schema-v1.json' with { type: 'json' };
+import snapshot from './schema-v2.json' with { type: 'json' };
 export interface ColumnDefinition {
   type: 'String' | 'Boolean' | 'DateTime' | 'Int' | 'Float';
   nullable: boolean; primary: boolean; unique: boolean; updated: boolean; indexed: boolean;
@@ -15,6 +16,7 @@ export interface ModelDefinition {
 }
 // This snapshot is immutable. Future schema changes require a new migration.
 export const schema = snapshot as Record<string, ModelDefinition>;
+export const schemaV1 = snapshotV1 as Record<string, ModelDefinition>;
 export function identifier(name: string): string {
   if (!/^[a-zA-Z_][a-zA-Z0-9_]*$/.test(name)) throw new Error('Invalid database identifier');
   return `\`${name}\``;

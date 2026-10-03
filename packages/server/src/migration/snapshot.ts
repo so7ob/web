@@ -2,11 +2,11 @@ import { DatabaseSync } from 'node:sqlite';
 import { createHash } from 'node:crypto';
 import { constants, lstatSync, openSync, closeSync, readFileSync, readdirSync, realpathSync, existsSync } from 'node:fs';
 import { basename, join, resolve } from 'node:path';
-import { schema, identifier as q, type ColumnDefinition } from '../database/schema.js';
+import { schema, schemaV1, identifier as q, type ColumnDefinition, type ModelDefinition } from '../database/schema.js';
 export type Value = string | number | null;
 export type Row = Record<string, Value>;
 export interface FileEntry { name: string; size: number; sha256: string; references: string[] }
-export interface Snapshot { id: string; sqliteHash: string; rows: Record<string, Row[]>; files: FileEntry[]; uploads: string }
+export interface Snapshot { id: string; sqliteHash: string; sourceSchemaVersion: 1 | 2; rows: Record<string, Row[]>; files: FileEntry[]; uploads: string }
 export class TransferError extends Error {}
 export function hash(data: string | Buffer): string { return createHash('sha256').update(data).digest('hex'); }
 export function regularFile(path: string): Buffer {
@@ -48,14 +48,21 @@ export function canonicalRow(table: string, row: Record<string, unknown>): Row {
   return Object.fromEntries(Object.entries(schema[table].columns).map(([key, c]) => [key, normalize(row[key], c)]));
 }
 export function primaryKey(table: string): string { return Object.keys(schema[table].columns).find(k => schema[table].columns[k].primary)!; }
-export function orderedTables(): string[] {
-  const remaining = new Set(Object.keys(schema)); const done: string[] = [];
+export function orderedTables(definition: Record<string, ModelDefinition> = schema): string[] {
+  const remaining = new Set(Object.keys(definition)); const done: string[] = [];
   while (remaining.size) {
-    const ready = [...remaining].filter(t => Object.values(schema[t].relations).every(r => !r.fields.length || !remaining.has(r.model)));
+    const ready = [...remaining].filter(t => Object.values(definition[t].relations).every(r => !r.fields.length || !remaining.has(r.model)));
     if (!ready.length) throw new TransferError('Cyclic schema requires an explicit migration strategy');
     for (const t of ready) { done.push(t); remaining.delete(t); }
   }
   return done;
+}
+function upgradeLegacyRow(table: string, row: Record<string, unknown>): Record<string, unknown> {
+  if (table !== 'Page') return row;
+  const draftSettings = JSON.stringify(Object.fromEntries(['slug', 'visibility', 'allowedRoles', 'titleAr', 'titleEn', 'seoTitleAr', 'seoTitleEn', 'seoDescAr', 'seoDescEn', 'order'].map(key => [key, row[key]])));
+  return { ...row, draftSettings, draftRevision: 0, publishedRevision: null,
+    publishedSettings: row.status === 'published' && row.publishedBlocksAr !== null ? draftSettings : null,
+    scheduledPublishAt: null, scheduledRevision: null, scheduledPublishById: null };
 }
 export function readSnapshot(sqlitePath: string, uploadPath: string): Snapshot {
   const path = resolve(sqlitePath); const uploads = safeDirectory(uploadPath);
@@ -63,20 +70,31 @@ export function readSnapshot(sqlitePath: string, uploadPath: string): Snapshot {
   const sqliteHash = hash(regularFile(path));
   const sqlite = new DatabaseSync(path, { readOnly: true });
   const rows: Record<string, Row[]> = {};
+  let sourceSchemaVersion: 1 | 2 = 1;
   try {
     sqlite.exec('BEGIN');
     if (JSON.stringify(sqlite.prepare('PRAGMA integrity_check').all()) !== '[{"integrity_check":"ok"}]') throw new TransferError('SQLite integrity check failed');
     if (sqlite.prepare('PRAGMA foreign_key_check').all().length) throw new TransferError('SQLite contains orphan foreign keys');
     const tables = sqlite.prepare("SELECT name FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%'").all().map(r => String(r.name));
-    if (tables.some(t => t !== '_prisma_migrations' && !schema[t])) throw new TransferError('Unknown source tables would be lost; schema review required');
-    for (const [table, model] of Object.entries(schema)) {
+    const pageColumns = sqlite.prepare('PRAGMA table_info(Page)').all().map(r => String(r.name));
+    sourceSchemaVersion = tables.includes('TrackLink') || tables.includes('PageTemplate') || pageColumns.includes('draftRevision') ? 2 : 1;
+    const sourceSchema = sourceSchemaVersion === 1 ? schemaV1 : schema;
+    if (tables.some(t => t !== '_prisma_migrations' && !sourceSchema[t])) throw new TransferError('Unknown source tables would be lost; schema review required');
+    for (const table of Object.keys(schema)) {
+      if (!sourceSchema[table]) { rows[table] = []; continue; }
       const actual = sqlite.prepare(`PRAGMA table_info(${q(table)})`).all().map(r => String(r.name)).sort();
-      if (JSON.stringify(actual) !== JSON.stringify(Object.keys(model.columns).sort())) throw new TransferError(`Source schema mismatch in ${table}`);
-      rows[table] = sqlite.prepare(`SELECT * FROM ${q(table)} ORDER BY ${q(primaryKey(table))} COLLATE BINARY`).all().map(r => canonicalRow(table, r));
+      if (JSON.stringify(actual) !== JSON.stringify(Object.keys(sourceSchema[table].columns).sort())) throw new TransferError(`Source schema mismatch in ${table}; incomplete source migrations are not repaired by transfer`);
+      rows[table] = sqlite.prepare(`SELECT * FROM ${q(table)} ORDER BY ${q(primaryKey(table))} COLLATE BINARY`).all().map(r => canonicalRow(table, sourceSchemaVersion === 1 ? upgradeLegacyRow(table, r) : r));
     }
     sqlite.exec('ROLLBACK');
   } finally { sqlite.close(); }
   if (sqliteHash !== hash(regularFile(path))) throw new TransferError('SQLite snapshot changed while reading');
+  for (const link of rows.TrackLink) {
+    if (!((link.scope === 'request' && link.requestId !== null && link.inquiryId === null) ||
+      (link.scope === 'inquiry' && link.inquiryId !== null && link.requestId === null))) {
+      throw new TransferError('Invalid tracking scope or card ownership');
+    }
+  }
   // Validate from the pinned contract even if a source database had FK enforcement disabled.
   for (const [table, model] of Object.entries(schema)) {
     for (const relation of Object.values(model.relations)) {
@@ -115,5 +133,5 @@ export function readSnapshot(sqlitePath: string, uploadPath: string): Snapshot {
     files.push({ name, size: bytes.length, sha256: hash(bytes), references: refs.map(r => r.id).sort() });
   }
   if ([...references.keys()].some(name => !files.some(f => f.name === name))) throw new TransferError('Referenced attachment or media file is missing');
-  return { id: hash(JSON.stringify({ sqliteHash, files })), sqliteHash, rows, files, uploads };
+  return { id: hash(JSON.stringify({ mappingVersion: 2, sqliteHash, files })), sqliteHash, sourceSchemaVersion, rows, files, uploads };
 }
