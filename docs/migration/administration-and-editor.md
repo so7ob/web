@@ -1,6 +1,6 @@
 # الإدارة والمحرر وتشغيل النسخة المحلية
 
-المصدر: Website/main عند `5321b7fd11db421c83290b262f276811e5f04e5f`. وجهة التنفيذ الوحيدة هي `so7ob/web`، على فرع `fix/5-admin-routing` من `develop` عند `f3e5d8c0a48d0e06b82be8f4bd652177f3e90253`. يتبع العمل [واجهة الإدارة والمحرر #5](https://github.com/so7ob/web/issues/5) و[خدمات الأعمال #4](https://github.com/so7ob/web/issues/4). لا يعتمد على PR غير مدمج.
+المصدر: Website/main عند `5321b7fd11db421c83290b262f276811e5f04e5f`. وجهة التنفيذ الوحيدة هي `so7ob/web`، على فرع `fix/5-admin-routing` من `develop` عند `f3e5d8c0a48d0e06b82be8f4bd652177f3e90253`. يتبع العمل [واجهة الإدارة والمحرر #5](https://github.com/so7ob/web/issues/5) و[خدمات الأعمال #4](https://github.com/so7ob/web/issues/4). لا يعتمد على PR غير مدمج. طلب المراجعة: [PR #18](https://github.com/so7ob/web/pull/18) إلى `develop`؛ حالة CI والمراجعة تُتابع هناك ولا تعني نشرًا.
 
 ## العطل والنتيجة
 

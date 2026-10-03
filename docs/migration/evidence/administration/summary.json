@@ -73,11 +73,12 @@
     "production data and private files not available: not transferred or verified"
   ],
   "delivery": {
-    "uploaded": "recorded by PR",
-    "ci": "checked separately after upload",
+    "uploaded": "https://github.com/so7ob/web/pull/18",
+    "ci": "Local checks passed; remote check state is reported on PR #18 and is not inferred from local results",
     "merge": "not authorized for this new PR",
     "mainRelease": "not performed",
     "productionDeployment": "not performed",
-    "migrationComplete": false
+    "migrationComplete": false,
+    "implementationCommit": "123e5bd23ab89bf761703975f8b621619b9bf5f2"
   }
 }
