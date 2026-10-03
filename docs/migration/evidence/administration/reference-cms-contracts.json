@@ -1,0 +1,240 @@
+{
+  "sourceSHA": "5321b7fd11db421c83290b262f276811e5f04e5f",
+  "capturedAt": "2026-10-03T01:45:12.078Z",
+  "cases": [
+    {
+      "name": "reserved slug",
+      "method": "POST",
+      "path": "/api/admin/pages",
+      "status": 400,
+      "body": {
+        "ok": false,
+        "code": "invalid_slug"
+      }
+    },
+    {
+      "name": "create template",
+      "method": "POST",
+      "path": "/api/admin/pages",
+      "status": 201,
+      "body": {
+        "ok": true,
+        "page": {
+          "id": "cmurqcc0x000kg9ux6kzum4j8",
+          "slug": "migration-cms-murqcc0m"
+        }
+      }
+    },
+    {
+      "name": "draft detail",
+      "method": "GET",
+      "path": "/api/admin/pages/cmurqcc0x000kg9ux6kzum4j8",
+      "status": 200,
+      "body": {
+        "ok": true,
+        "page": {
+          "id": "cmurqcc0x000kg9ux6kzum4j8",
+          "slug": "migration-cms-murqcc0m",
+          "isHome": false,
+          "order": 6,
+          "status": "draft",
+          "visibility": "public",
+          "allowedRoles": [],
+          "titleAr": "صفحة اختبار",
+          "titleEn": "Synthetic CMS",
+          "seoTitleAr": "صفحة اختبار",
+          "seoTitleEn": "Synthetic CMS",
+          "seoDescAr": null,
+          "seoDescEn": null,
+          "draftBlocksAr": "[{\"id\":\"b-ph-murqcc0u\",\"type\":\"pageHeader\",\"props\":{\"kicker\":\"صفحة اختبار\",\"title\":\"صفحة اختبار\",\"intro\":[],\"quickLinks\":[]}},{\"id\":\"b-rt-murqcc0u\",\"type\":\"richText\",\"props\":{\"paragraphs\":[\"صفحة اختبار\"],\"align\":\"start\"}}]",
+          "draftBlocksEn": "[{\"id\":\"b-ph-murqcc0u\",\"type\":\"pageHeader\",\"props\":{\"kicker\":\"Synthetic CMS\",\"title\":\"Synthetic CMS\",\"intro\":[],\"quickLinks\":[]}},{\"id\":\"b-rt-murqcc0u\",\"type\":\"richText\",\"props\":{\"paragraphs\":[\"Synthetic CMS\"],\"align\":\"start\"}}]",
+          "publishedBlocksAr": null,
+          "publishedBlocksEn": null,
+          "draftUpdatedAt": "2026-10-03T01:45:12.417Z",
+          "draftUpdatedById": null,
+          "publishedAt": null,
+          "sourceKey": null,
+          "editorTouchedAt": "2026-10-03T01:45:12.417Z",
+          "versions": []
+        }
+      }
+    },
+    {
+      "name": "invalid block",
+      "method": "PATCH",
+      "path": "/api/admin/pages/cmurqcc0x000kg9ux6kzum4j8",
+      "status": 400,
+      "body": {
+        "ok": false,
+        "code": "invalid_blocks",
+        "error": "block_type_unknown"
+      }
+    },
+    {
+      "name": "stale draft",
+      "method": "PATCH",
+      "path": "/api/admin/pages/cmurqcc0x000kg9ux6kzum4j8",
+      "status": 409,
+      "body": {
+        "ok": false,
+        "code": "conflict",
+        "serverDraftUpdatedAt": "2026-10-03T01:45:12.417Z"
+      }
+    },
+    {
+      "name": "publish",
+      "method": "POST",
+      "path": "/api/admin/pages/cmurqcc0x000kg9ux6kzum4j8/publish",
+      "status": 200,
+      "body": {
+        "ok": true,
+        "publishedAt": "2026-10-03T01:45:12.470Z"
+      }
+    },
+    {
+      "name": "versions",
+      "method": "GET",
+      "path": "/api/admin/pages/cmurqcc0x000kg9ux6kzum4j8/versions",
+      "status": 200,
+      "body": {
+        "ok": true,
+        "versions": [
+          {
+            "id": "cmurqcc2f000og9uxp5rvo0j2",
+            "locale": "ar",
+            "version": 1,
+            "note": null,
+            "author": "Synthetic admin",
+            "createdAt": "2026-10-03T01:45:12.472Z",
+            "blockCount": 2
+          },
+          {
+            "id": "cmurqcc2f000qg9ux8l615bye",
+            "locale": "en",
+            "version": 1,
+            "note": null,
+            "author": "Synthetic admin",
+            "createdAt": "2026-10-03T01:45:12.472Z",
+            "blockCount": 2
+          }
+        ]
+      }
+    },
+    {
+      "name": "restore draft only",
+      "method": "POST",
+      "path": "/api/admin/pages/cmurqcc0x000kg9ux6kzum4j8/versions/1/restore",
+      "status": 200,
+      "body": {
+        "ok": true,
+        "restoredVersion": 1
+      }
+    },
+    {
+      "name": "missing restore source behavior",
+      "method": "POST",
+      "path": "/api/admin/pages/cmurqcc0x000kg9ux6kzum4j8/versions/999/restore",
+      "status": 200,
+      "body": {
+        "ok": true,
+        "restoredVersion": 999
+      }
+    },
+    {
+      "name": "renamed published page",
+      "method": "PATCH",
+      "path": "/api/admin/pages/cmurqcc0x000kg9ux6kzum4j8",
+      "status": 200,
+      "body": {
+        "ok": true,
+        "page": {
+          "id": "cmurqcc0x000kg9ux6kzum4j8",
+          "slug": "migration-cms-murqcc0m-new",
+          "draftUpdatedAt": "2026-10-03T01:45:12.542Z",
+          "status": "published"
+        }
+      }
+    },
+    {
+      "name": "duplicate block IDs",
+      "method": "PATCH",
+      "path": "/api/admin/pages/cmurqcc0x000kg9ux6kzum4j8",
+      "status": 400,
+      "body": {
+        "ok": false,
+        "code": "invalid_blocks",
+        "error": "block_duplicate_id"
+      }
+    },
+    {
+      "name": "archive",
+      "method": "DELETE",
+      "path": "/api/admin/pages/cmurqcc0x000kg9ux6kzum4j8",
+      "status": 200,
+      "body": {
+        "ok": true
+      }
+    },
+    {
+      "name": "archived detail",
+      "method": "GET",
+      "path": "/api/admin/pages/cmurqcc0x000kg9ux6kzum4j8",
+      "status": 200,
+      "body": {
+        "ok": true,
+        "page": {
+          "id": "cmurqcc0x000kg9ux6kzum4j8",
+          "slug": "migration-cms-murqcc0m-new",
+          "isHome": false,
+          "order": 6,
+          "status": "archived",
+          "visibility": "public",
+          "allowedRoles": [],
+          "titleAr": "صفحة اختبار",
+          "titleEn": "Synthetic CMS",
+          "seoTitleAr": "صفحة اختبار",
+          "seoTitleEn": "Changed synthetic SEO",
+          "seoDescAr": null,
+          "seoDescEn": null,
+          "draftBlocksAr": "[{\"id\":\"b-ph-murqcc0u\",\"type\":\"pageHeader\",\"props\":{\"kicker\":\"صفحة اختبار\",\"title\":\"صفحة اختبار\",\"intro\":[],\"quickLinks\":[]}},{\"id\":\"b-rt-murqcc0u\",\"type\":\"richText\",\"props\":{\"paragraphs\":[\"صفحة اختبار\"],\"align\":\"start\"}}]",
+          "draftBlocksEn": "[{\"id\":\"b-ph-murqcc0u\",\"type\":\"pageHeader\",\"props\":{\"kicker\":\"Synthetic CMS\",\"title\":\"Synthetic CMS\",\"intro\":[],\"quickLinks\":[]}},{\"id\":\"b-rt-murqcc0u\",\"type\":\"richText\",\"props\":{\"paragraphs\":[\"Synthetic CMS\"],\"align\":\"start\"}}]",
+          "publishedBlocksAr": "[{\"id\":\"b-ph-murqcc0u\",\"type\":\"pageHeader\",\"props\":{\"kicker\":\"صفحة اختبار\",\"title\":\"صفحة اختبار\",\"intro\":[],\"quickLinks\":[]}},{\"id\":\"b-rt-murqcc0u\",\"type\":\"richText\",\"props\":{\"paragraphs\":[\"صفحة اختبار\"],\"align\":\"start\"}}]",
+          "publishedBlocksEn": "[{\"id\":\"b-ph-murqcc0u\",\"type\":\"pageHeader\",\"props\":{\"kicker\":\"Synthetic CMS\",\"title\":\"Synthetic CMS\",\"intro\":[],\"quickLinks\":[]}},{\"id\":\"b-rt-murqcc0u\",\"type\":\"richText\",\"props\":{\"paragraphs\":[\"Synthetic CMS\"],\"align\":\"start\"}}]",
+          "draftUpdatedAt": "2026-10-03T01:45:12.542Z",
+          "draftUpdatedById": "admin",
+          "publishedAt": "2026-10-03T01:45:12.470Z",
+          "sourceKey": null,
+          "editorTouchedAt": "2026-10-03T01:45:12.542Z",
+          "versions": [
+            {
+              "id": "cmurqcc2f000og9uxp5rvo0j2",
+              "locale": "ar",
+              "version": 1,
+              "authorId": "admin",
+              "note": null,
+              "createdAt": "2026-10-03T01:45:12.472Z",
+              "author": {
+                "name": "Synthetic admin"
+              }
+            },
+            {
+              "id": "cmurqcc2f000qg9ux8l615bye",
+              "locale": "en",
+              "version": 1,
+              "authorId": "admin",
+              "note": null,
+              "createdAt": "2026-10-03T01:45:12.472Z",
+              "author": {
+                "name": "Synthetic admin"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "templateBlocks": {
+    "ar": "[{\"id\":\"b-ph-murqcc0u\",\"type\":\"pageHeader\",\"props\":{\"kicker\":\"صفحة اختبار\",\"title\":\"صفحة اختبار\",\"intro\":[],\"quickLinks\":[]}},{\"id\":\"b-rt-murqcc0u\",\"type\":\"richText\",\"props\":{\"paragraphs\":[\"صفحة اختبار\"],\"align\":\"start\"}}]",
+    "en": "[{\"id\":\"b-ph-murqcc0u\",\"type\":\"pageHeader\",\"props\":{\"kicker\":\"Synthetic CMS\",\"title\":\"Synthetic CMS\",\"intro\":[],\"quickLinks\":[]}},{\"id\":\"b-rt-murqcc0u\",\"type\":\"richText\",\"props\":{\"paragraphs\":[\"Synthetic CMS\"],\"align\":\"start\"}}]"
+  }
+}

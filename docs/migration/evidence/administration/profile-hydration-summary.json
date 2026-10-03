@@ -1,0 +1,30 @@
+{
+  "recordedAt": "2026-10-03T17:29:00.279089+00:00",
+  "checks": {
+    "lint": "passed",
+    "independentTypecheck": "passed",
+    "clientAndSsrBuild": "passed",
+    "focusedBrowserCases": {
+      "passed": 8,
+      "failed": 0,
+      "scope": [
+        "all Arabic/English client journeys at 375/1280",
+        "profile language change both directions",
+        "delayed real profile chunk and first-edit persistence at 375/1280"
+      ]
+    }
+  },
+  "unitAndOtherBrowserEvidence": "Original 171 unit/integration and 54 browser cases retained in summary.json; this UI-only follow-up does not change server authentication/data services",
+  "ciFailure": "remote-profile-hydration-failure.json",
+  "fullRerun": "tracked separately on PR #18",
+  "additionalObservation": {
+    "fullLocalRun": {
+      "passed": 55,
+      "failed": 1
+    },
+    "failure": "Toast stability helper expected hover expansion after the previous toast was dequeued; Sonner resets expanded=false whenever its count becomes <=1",
+    "attemptedCorrection": "Waiting for departing toast removal and exercising the real Alt+T accessibility shortcut did not stabilize the helper: focused recheck passed 6 and failed 2. That experimental test change was withdrawn; the committed browser assertions and axe rules remain unchanged.",
+    "remaining": "Investigate notification transition/timer ordering with real browser traces and rerun the full suite; the local 55/56 run remains a recorded failure, even though remote CI at 24ac93dd05aaf3c2a0bc4aa4dc767c56bfcb310c passed both jobs.",
+    "remoteCi": "https://github.com/so7ob/web/actions/runs/37140665740"
+  }
+}

@@ -8,9 +8,20 @@ import { localePath, type Locale } from "@/lib/i18n";
 import type { SiteContent } from "@/content/types";
 
 /** الواجهة الافتتاحية للصفحة الرئيسية */
-export function Hero({ locale, content }: { locale: Locale; content: SiteContent }) {
+export function Hero({
+  locale,
+  content,
+}: {
+  locale: Locale;
+  content: SiteContent;
+}) {
   const reduce = useReducedMotion();
-  const arrow = locale === "ar" ? <ArrowLeft className="h-4 w-4" aria-hidden="true" /> : <ArrowRight className="h-4 w-4" aria-hidden="true" />;
+  const arrow =
+    locale === "ar" ? (
+      <ArrowLeft className="h-4 w-4" aria-hidden="true" />
+    ) : (
+      <ArrowRight className="h-4 w-4" aria-hidden="true" />
+    );
   const h = content.home.hero;
 
   return (
@@ -23,10 +34,23 @@ export function Hero({ locale, content }: { locale: Locale; content: SiteContent
 
       <div className="relative mx-auto grid max-w-7xl items-center gap-12 px-4 pb-16 pt-12 sm:px-6 sm:pb-20 sm:pt-16 lg:grid-cols-[1.05fr_0.95fr] lg:gap-8 lg:px-8 lg:pb-28 lg:pt-24">
         <motion.div
-          {...(reduce ? {} : { initial: { opacity: 0, y: 24 }, animate: { opacity: 1, y: 0 }, transition: { duration: 0.6, ease: "easeOut" } })}
+          {...(reduce
+            ? {
+                initial: false as const,
+                animate: { opacity: 1, y: 0 },
+                transition: { duration: 0 },
+              }
+            : {
+                initial: { opacity: 0, y: 24 },
+                animate: { opacity: 1, y: 0 },
+                transition: { duration: 0.6, ease: "easeOut" },
+              })}
         >
           <p className="mb-5 inline-flex items-center gap-2 rounded-full border border-skydrop/40 bg-white px-4 py-2 text-sm font-semibold text-brand-strong shadow-sm">
-            <span className="inline-block h-2 w-2 rounded-full bg-skydrop" aria-hidden="true" />
+            <span
+              className="inline-block h-2 w-2 rounded-full bg-skydrop"
+              aria-hidden="true"
+            />
             {h.kicker}
           </p>
           <h1 className="text-balance text-4xl font-bold leading-[1.25] text-navy sm:text-5xl lg:text-[3.4rem]">
@@ -40,7 +64,13 @@ export function Hero({ locale, content }: { locale: Locale; content: SiteContent
                 aria-hidden="true"
                 preserveAspectRatio="none"
               >
-                <path d="M3 9C60 3 160 3 217 8" stroke="currentColor" strokeWidth="5" strokeLinecap="round" opacity="0.55" />
+                <path
+                  d="M3 9C60 3 160 3 217 8"
+                  stroke="currentColor"
+                  strokeWidth="5"
+                  strokeLinecap="round"
+                  opacity="0.55"
+                />
               </svg>
             </span>
           </h1>
@@ -66,9 +96,16 @@ export function Hero({ locale, content }: { locale: Locale; content: SiteContent
 
           <ul className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-2">
             {h.support.map((item) => (
-              <li key={item} className="flex items-center gap-2 text-sm font-medium text-foreground/80">
+              <li
+                key={item}
+                className="flex items-center gap-2 text-sm font-medium text-foreground/80"
+              >
                 <span className="flex h-5 w-5 items-center justify-center rounded-full bg-brand-soft text-brand-strong">
-                  <Check className="h-3 w-3" strokeWidth={3} aria-hidden="true" />
+                  <Check
+                    className="h-3 w-3"
+                    strokeWidth={3}
+                    aria-hidden="true"
+                  />
                 </span>
                 {item}
               </li>
@@ -77,7 +114,17 @@ export function Hero({ locale, content }: { locale: Locale; content: SiteContent
         </motion.div>
 
         <motion.div
-          {...(reduce ? {} : { initial: { opacity: 0, scale: 0.96 }, animate: { opacity: 1, scale: 1 }, transition: { duration: 0.7, delay: 0.15, ease: "easeOut" } })}
+          {...(reduce
+            ? {
+                initial: false as const,
+                animate: { opacity: 1, scale: 1 },
+                transition: { duration: 0 },
+              }
+            : {
+                initial: { opacity: 0, scale: 0.96 },
+                animate: { opacity: 1, scale: 1 },
+                transition: { duration: 0.7, delay: 0.15, ease: "easeOut" },
+              })}
           className="relative"
         >
           <CloudHeroArt />

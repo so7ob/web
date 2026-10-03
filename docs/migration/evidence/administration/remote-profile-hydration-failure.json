@@ -1,0 +1,20 @@
+{
+  "run": "https://github.com/so7ob/web/actions/runs/37138957462",
+  "head": "a7cbc8d0c1d43623b079af4190c5034e6e43e673",
+  "passed": 53,
+  "failed": 1,
+  "case": "Arabic desktop account journey: profile name persistence",
+  "observedPatchPayload": {
+    "name": "Synthetic portaldesktopar",
+    "phone": "",
+    "company": "",
+    "locale": "ar"
+  },
+  "expectedInputs": {
+    "name": "Updated Portal ar",
+    "phone": "+967 123456789"
+  },
+  "actualHttpStatus": 200,
+  "diagnosis": "SSR input accepted edits before the matched route chunk had hydrated React/onChange; submission later used untouched initial React state. Server correctly persisted the received payload.",
+  "regression": "Delay the actual profile JS chunk; controls must wait for hydration; first edit must appear in request body, real GET and reload; no mocked application data"
+}

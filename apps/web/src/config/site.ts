@@ -24,7 +24,7 @@ export const siteConfig = {
   github: "https://github.com/so7ob/Website",
 
   /** نطاق الموقع العام (يُتجاوز بمتغير البيئة NEXT_PUBLIC_SITE_URL) */
-  url: import.meta.env.VITE_SITE_URL ?? "http://localhost:3000",
+  url: import.meta.env?.VITE_SITE_URL ?? "http://localhost:3000",
 } as const;
 
 export type SiteConfig = typeof siteConfig;

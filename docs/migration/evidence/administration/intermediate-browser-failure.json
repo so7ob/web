@@ -1,0 +1,14 @@
+{
+  "observedAt": "2026-10-03",
+  "suite": "50 browser cases after hero visibility fix",
+  "passed": 47,
+  "failed": 3,
+  "failures": [
+    "desktop Arabic administrative journey",
+    "desktop English administrative journey",
+    "mobile Arabic administrative journey"
+  ],
+  "failure": "Ctrl+K was pressed immediately after page.goto returned at load, before the hydrated window keyboard listener was attached; dialog remained absent",
+  "correction": "Await completed local bundle/network loading before pressing the shortcut; dialog, keyboard, axe and API assertions are retained",
+  "scope": "test readiness; no product shortcut or assertion removed"
+}

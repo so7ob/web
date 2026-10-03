@@ -1,0 +1,391 @@
+{
+  "startedAt": "2026-10-03T16:49:46.241Z",
+  "stats": {
+    "startTime": "2026-10-03T16:49:46.241Z",
+    "duration": 232156.543,
+    "expected": 54,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  },
+  "tests": [
+    {
+      "title": "ar: client portal preserves drafts, conversations, files, claims, profile and session controls",
+      "suite": "account-portal.spec.ts",
+      "project": "desktop",
+      "status": "passed",
+      "durationMs": 23575
+    },
+    {
+      "title": "en: client portal preserves drafts, conversations, files, claims, profile and session controls",
+      "suite": "account-portal.spec.ts",
+      "project": "desktop",
+      "status": "passed",
+      "durationMs": 22281
+    },
+    {
+      "title": "profile language save navigates and reloads the protected screen in both directions",
+      "suite": "account-portal.spec.ts",
+      "project": "desktop",
+      "status": "passed",
+      "durationMs": 1727
+    },
+    {
+      "title": "ar: client portal preserves drafts, conversations, files, claims, profile and session controls",
+      "suite": "account-portal.spec.ts",
+      "project": "mobile",
+      "status": "passed",
+      "durationMs": 20814
+    },
+    {
+      "title": "en: client portal preserves drafts, conversations, files, claims, profile and session controls",
+      "suite": "account-portal.spec.ts",
+      "project": "mobile",
+      "status": "passed",
+      "durationMs": 21740
+    },
+    {
+      "title": "profile language save navigates and reloads the protected screen in both directions",
+      "suite": "account-portal.spec.ts",
+      "project": "mobile",
+      "status": "passed",
+      "durationMs": 1613
+    },
+    {
+      "title": "ar: administrative SSR labels survive a different browser clock and timezone",
+      "suite": "admin-hydration.spec.ts",
+      "project": "desktop",
+      "status": "passed",
+      "durationMs": 1535
+    },
+    {
+      "title": "en: administrative SSR labels survive a different browser clock and timezone",
+      "suite": "admin-hydration.spec.ts",
+      "project": "desktop",
+      "status": "passed",
+      "durationMs": 1507
+    },
+    {
+      "title": "ar: administrative SSR labels survive a different browser clock and timezone",
+      "suite": "admin-hydration.spec.ts",
+      "project": "mobile",
+      "status": "passed",
+      "durationMs": 1496
+    },
+    {
+      "title": "en: administrative SSR labels survive a different browser clock and timezone",
+      "suite": "admin-hydration.spec.ts",
+      "project": "mobile",
+      "status": "passed",
+      "durationMs": 1460
+    },
+    {
+      "title": "administrator routes, full editor and immediate published HTML (ar)",
+      "suite": "admin-navigation.spec.ts",
+      "project": "desktop",
+      "status": "passed",
+      "durationMs": 14732
+    },
+    {
+      "title": "administrator routes, full editor and immediate published HTML (en)",
+      "suite": "admin-navigation.spec.ts",
+      "project": "desktop",
+      "status": "passed",
+      "durationMs": 14354
+    },
+    {
+      "title": "administrative screens and APIs preserve server authorization and reject unsafe mutations",
+      "suite": "admin-navigation.spec.ts",
+      "project": "desktop",
+      "status": "passed",
+      "durationMs": 1189
+    },
+    {
+      "title": "administrator routes, full editor and immediate published HTML (ar)",
+      "suite": "admin-navigation.spec.ts",
+      "project": "mobile",
+      "status": "passed",
+      "durationMs": 14560
+    },
+    {
+      "title": "administrator routes, full editor and immediate published HTML (en)",
+      "suite": "admin-navigation.spec.ts",
+      "project": "mobile",
+      "status": "passed",
+      "durationMs": 15354
+    },
+    {
+      "title": "administrative screens and APIs preserve server authorization and reject unsafe mutations",
+      "suite": "admin-navigation.spec.ts",
+      "project": "mobile",
+      "status": "passed",
+      "durationMs": 1420
+    },
+    {
+      "title": "administration legacy and v1 contracts preserve projections, filters and separate operation permissions",
+      "suite": "admin-users.spec.ts",
+      "project": "desktop",
+      "status": "passed",
+      "durationMs": 982
+    },
+    {
+      "title": "invitation HTTP admission counts malformed input and delivers a single-use encrypted proof",
+      "suite": "admin-users.spec.ts",
+      "project": "desktop",
+      "status": "passed",
+      "durationMs": 648
+    },
+    {
+      "title": "administration legacy and v1 contracts preserve projections, filters and separate operation permissions",
+      "suite": "admin-users.spec.ts",
+      "project": "mobile",
+      "status": "passed",
+      "durationMs": 1145
+    },
+    {
+      "title": "invitation HTTP admission counts malformed input and delivers a single-use encrypted proof",
+      "suite": "admin-users.spec.ts",
+      "project": "mobile",
+      "status": "passed",
+      "durationMs": 709
+    },
+    {
+      "title": "ar: SSR, direct reload, language and authentication navigation",
+      "suite": "auth-public.spec.ts",
+      "project": "desktop",
+      "status": "passed",
+      "durationMs": 1442
+    },
+    {
+      "title": "ar: login uses the server session and logout clears the local draft",
+      "suite": "auth-public.spec.ts",
+      "project": "desktop",
+      "status": "passed",
+      "durationMs": 1393
+    },
+    {
+      "title": "en: SSR, direct reload, language and authentication navigation",
+      "suite": "auth-public.spec.ts",
+      "project": "desktop",
+      "status": "passed",
+      "durationMs": 1485
+    },
+    {
+      "title": "en: login uses the server session and logout clears the local draft",
+      "suite": "auth-public.spec.ts",
+      "project": "desktop",
+      "status": "passed",
+      "durationMs": 1297
+    },
+    {
+      "title": "registration and one-use verification use the encrypted outbox; no development link in production",
+      "suite": "auth-public.spec.ts",
+      "project": "desktop",
+      "status": "passed",
+      "durationMs": 1226
+    },
+    {
+      "title": "404 retains its actual HTTP status and published HTML carries SEO",
+      "suite": "auth-public.spec.ts",
+      "project": "desktop",
+      "status": "passed",
+      "durationMs": 602
+    },
+    {
+      "title": "forgot/reset forms preserve one-use tokens and reject a mismatched confirmation",
+      "suite": "auth-public.spec.ts",
+      "project": "desktop",
+      "status": "passed",
+      "durationMs": 2126
+    },
+    {
+      "title": "ar: SSR, direct reload, language and authentication navigation",
+      "suite": "auth-public.spec.ts",
+      "project": "mobile",
+      "status": "passed",
+      "durationMs": 1545
+    },
+    {
+      "title": "ar: login uses the server session and logout clears the local draft",
+      "suite": "auth-public.spec.ts",
+      "project": "mobile",
+      "status": "passed",
+      "durationMs": 1582
+    },
+    {
+      "title": "en: SSR, direct reload, language and authentication navigation",
+      "suite": "auth-public.spec.ts",
+      "project": "mobile",
+      "status": "passed",
+      "durationMs": 1679
+    },
+    {
+      "title": "en: login uses the server session and logout clears the local draft",
+      "suite": "auth-public.spec.ts",
+      "project": "mobile",
+      "status": "passed",
+      "durationMs": 1515
+    },
+    {
+      "title": "registration and one-use verification use the encrypted outbox; no development link in production",
+      "suite": "auth-public.spec.ts",
+      "project": "mobile",
+      "status": "passed",
+      "durationMs": 1304
+    },
+    {
+      "title": "404 retains its actual HTTP status and published HTML carries SEO",
+      "suite": "auth-public.spec.ts",
+      "project": "mobile",
+      "status": "passed",
+      "durationMs": 643
+    },
+    {
+      "title": "forgot/reset forms preserve one-use tokens and reject a mismatched confirmation",
+      "suite": "auth-public.spec.ts",
+      "project": "mobile",
+      "status": "passed",
+      "durationMs": 2288
+    },
+    {
+      "title": "multipart uploads retain bytes, legacy errors and server file authorization",
+      "suite": "files-claims.spec.ts",
+      "project": "desktop",
+      "status": "passed",
+      "durationMs": 2320
+    },
+    {
+      "title": "claim HTTP contracts bind the original email proof and charge malformed attempts before parsing",
+      "suite": "files-claims.spec.ts",
+      "project": "desktop",
+      "status": "passed",
+      "durationMs": 1018
+    },
+    {
+      "title": "multipart uploads retain bytes, legacy errors and server file authorization",
+      "suite": "files-claims.spec.ts",
+      "project": "mobile",
+      "status": "passed",
+      "durationMs": 2582
+    },
+    {
+      "title": "claim HTTP contracts bind the original email proof and charge malformed attempts before parsing",
+      "suite": "files-claims.spec.ts",
+      "project": "mobile",
+      "status": "passed",
+      "durationMs": 1116
+    },
+    {
+      "title": "ar: public heading and illustration become visibly opaque after hydration",
+      "suite": "public hero with motion preference reduce",
+      "project": "desktop",
+      "status": "passed",
+      "durationMs": 1141
+    },
+    {
+      "title": "en: public heading and illustration become visibly opaque after hydration",
+      "suite": "public hero with motion preference reduce",
+      "project": "desktop",
+      "status": "passed",
+      "durationMs": 1149
+    },
+    {
+      "title": "ar: public heading and illustration become visibly opaque after hydration",
+      "suite": "public hero with motion preference reduce",
+      "project": "mobile",
+      "status": "passed",
+      "durationMs": 1168
+    },
+    {
+      "title": "en: public heading and illustration become visibly opaque after hydration",
+      "suite": "public hero with motion preference reduce",
+      "project": "mobile",
+      "status": "passed",
+      "durationMs": 1130
+    },
+    {
+      "title": "ar: public heading and illustration become visibly opaque after hydration",
+      "suite": "public hero with motion preference no-preference",
+      "project": "desktop",
+      "status": "passed",
+      "durationMs": 1754
+    },
+    {
+      "title": "en: public heading and illustration become visibly opaque after hydration",
+      "suite": "public hero with motion preference no-preference",
+      "project": "desktop",
+      "status": "passed",
+      "durationMs": 1832
+    },
+    {
+      "title": "ar: public heading and illustration become visibly opaque after hydration",
+      "suite": "public hero with motion preference no-preference",
+      "project": "mobile",
+      "status": "passed",
+      "durationMs": 1806
+    },
+    {
+      "title": "en: public heading and illustration become visibly opaque after hydration",
+      "suite": "public hero with motion preference no-preference",
+      "project": "mobile",
+      "status": "passed",
+      "durationMs": 1773
+    },
+    {
+      "title": "publication updates HTML and SEO immediately; redirects and page authorization survive direct requests",
+      "suite": "publication.spec.ts",
+      "project": "desktop",
+      "status": "passed",
+      "durationMs": 1194
+    },
+    {
+      "title": "publication updates HTML and SEO immediately; redirects and page authorization survive direct requests",
+      "suite": "publication.spec.ts",
+      "project": "mobile",
+      "status": "passed",
+      "durationMs": 1256
+    },
+    {
+      "title": "the original public request form validates, preserves its draft and confirms a real persisted submission",
+      "suite": "submissions.spec.ts",
+      "project": "desktop",
+      "status": "passed",
+      "durationMs": 4678
+    },
+    {
+      "title": "legacy and v1 account contracts enforce ownership, CSRF and field projection",
+      "suite": "submissions.spec.ts",
+      "project": "desktop",
+      "status": "passed",
+      "durationMs": 723
+    },
+    {
+      "title": "conversation endpoints reject cross-account access, hide staff notes and serialize repeated replies",
+      "suite": "submissions.spec.ts",
+      "project": "desktop",
+      "status": "passed",
+      "durationMs": 1107
+    },
+    {
+      "title": "the original public request form validates, preserves its draft and confirms a real persisted submission",
+      "suite": "submissions.spec.ts",
+      "project": "mobile",
+      "status": "passed",
+      "durationMs": 4862
+    },
+    {
+      "title": "legacy and v1 account contracts enforce ownership, CSRF and field projection",
+      "suite": "submissions.spec.ts",
+      "project": "mobile",
+      "status": "passed",
+      "durationMs": 814
+    },
+    {
+      "title": "conversation endpoints reject cross-account access, hide staff notes and serialize repeated replies",
+      "suite": "submissions.spec.ts",
+      "project": "mobile",
+      "status": "passed",
+      "durationMs": 1144
+    }
+  ]
+}
