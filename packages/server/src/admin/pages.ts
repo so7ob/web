@@ -3,6 +3,8 @@ import {
   can,
   isValidSlug,
   validateBlocks,
+  validateContent,
+  countNodes,
   type AuthUser,
   type Permission,
 } from "@so7ob/contracts";
@@ -25,6 +27,16 @@ function checkedBlocks(raw: unknown) {
   if (!checked.ok)
     throw new AuthFault(400, "invalid_blocks", { error: checked.error });
   return checked.blocks;
+}
+/** Keep v0 stored representation while accepting normalized v1 from template application. */
+function checkedDocument(raw: string) {
+  if (raw.trimStart().startsWith("[")) {
+    const blocks = checkedBlocks(raw);
+    return { json: JSON.stringify(blocks), count: blocks.length };
+  }
+  const content = validateContent(raw);
+  if (!content.ok) throw new AuthFault(400, "invalid_blocks", {error: content.error});
+  return { json: content.json, count: content.tree.length };
 }
 export class PageAdministrationService {
   constructor(private readonly db: DataSource) {}
@@ -121,6 +133,7 @@ export class PageAdministrationService {
         publishedBlocksEn: p.publishedBlocksEn,
         draftUpdatedAt: p.draftUpdatedAt,
         draftUpdatedById: p.draftUpdatedById,
+        draftRevision: p.draftRevision,
         publishedAt: p.publishedAt,
         sourceKey: p.sourceKey,
         editorTouchedAt: p.editorTouchedAt,
@@ -216,6 +229,11 @@ export class PageAdministrationService {
     return transaction(this.db, async (r) => {
       const page = await this.locked(r, id),
         updates: Record<string, unknown> = {};
+      const writesTree = [body.draftBlocksAr, body.draftBlocksEn].some(value => typeof value === "string" && value.trimStart().startsWith("{"));
+      if (writesTree || body.baseRevision !== undefined) {
+        if (typeof body.baseRevision !== "number" || !Number.isInteger(body.baseRevision)) throw new AuthFault(409, "revision_required");
+        if (body.baseRevision !== page.draftRevision) throw new AuthFault(409, "conflict", {serverRevision: page.draftRevision});
+      }
       if (typeof body.draftUpdatedAt === "string" && page.draftUpdatedAt) {
         const stamp = new Date(body.draftUpdatedAt).getTime();
         if (!Number.isFinite(stamp)) throw new AuthFault(400, "invalid");
@@ -227,13 +245,14 @@ export class PageAdministrationService {
       }
       for (const key of ["draftBlocksAr", "draftBlocksEn"] as const)
         if (typeof body[key] === "string") {
-          updates[key] = JSON.stringify(checkedBlocks(body[key]));
+          updates[key] = checkedDocument(body[key]).json;
         }
       if (Object.keys(updates).length) {
         updates.draftUpdatedAt = new Date(
           Math.max(Date.now(), (page.draftUpdatedAt?.getTime() ?? 0) + 1),
         );
         updates.draftUpdatedById = actor.id;
+        updates.draftRevision = page.draftRevision + 1;
         updates.editorTouchedAt = new Date();
       }
       for (const key of ["titleAr", "titleEn"])
@@ -304,9 +323,10 @@ export class PageAdministrationService {
         id: string;
         slug: string;
         draftUpdatedAt: Date | null;
+        draftRevision: number;
         status: string;
       }> = await r.query(
-        "SELECT id,slug,draftUpdatedAt,status FROM Page WHERE id=?",
+        "SELECT id,slug,draftUpdatedAt,draftRevision,status FROM Page WHERE id=?",
         [id],
       );
       if (body.draftBlocksAr !== undefined || body.draftBlocksEn !== undefined)
@@ -338,9 +358,9 @@ export class PageAdministrationService {
     permit(actor, "pages.publish");
     return transaction(this.db, async (r) => {
       const p = await this.locked(r, id),
-        ar = checkedBlocks(p.draftBlocksAr),
-        en = checkedBlocks(p.draftBlocksEn);
-      if (!ar.length && !en.length) throw new AuthFault(400, "empty_page");
+        ar = checkedDocument(p.draftBlocksAr),
+        en = checkedDocument(p.draftBlocksEn);
+      if (!ar.count && !en.count) throw new AuthFault(400, "empty_page");
       const maxima: Array<{ locale: string; n: number }> = await r.query(
         "SELECT locale,MAX(version) n FROM PageVersion WHERE pageId=? GROUP BY locale",
         [id],
@@ -353,8 +373,8 @@ export class PageAdministrationService {
       await r.query(
         "UPDATE Page SET publishedBlocksAr=?,publishedBlocksEn=?,publishedAt=?,publishedById=?,status='published',updatedAt=UTC_TIMESTAMP(3) WHERE id=?",
         [
-          ar.length ? JSON.stringify(ar) : null,
-          en.length ? JSON.stringify(en) : null,
+          ar.count ? ar.json : null,
+          en.count ? en.json : null,
           now,
           actor.id,
           id,
@@ -366,7 +386,7 @@ export class PageAdministrationService {
           pageId: id,
           locale,
           version: versions[locale],
-          blocks: JSON.stringify(locale === "ar" ? ar : en),
+          blocks: locale === "ar" ? ar.json : en.json,
           authorId: actor.id,
         });
       await audit(
@@ -419,6 +439,7 @@ export class PageAdministrationService {
           try {
             const value = JSON.parse(blocks);
             if (Array.isArray(value)) blockCount = value.length;
+            else { const content = validateContent(blocks); if (content.ok) blockCount = countNodes(content.tree); }
           } catch {
             /* Source count fallback for historical malformed versions. */
           }
@@ -444,10 +465,10 @@ export class PageAdministrationService {
           versions.find((v) => v.locale === "en")?.blocks ?? page.draftBlocksEn;
       // Source restores available locales and keeps a missing locale's current draft, without publishing.
       await r.query(
-        "UPDATE Page SET draftBlocksAr=?,draftBlocksEn=?,draftUpdatedAt=?,draftUpdatedById=?,editorTouchedAt=UTC_TIMESTAMP(3),updatedAt=UTC_TIMESTAMP(3) WHERE id=?",
+        "UPDATE Page SET draftBlocksAr=?,draftBlocksEn=?,draftRevision=draftRevision+1,draftUpdatedAt=?,draftUpdatedById=?,editorTouchedAt=UTC_TIMESTAMP(3),updatedAt=UTC_TIMESTAMP(3) WHERE id=?",
         [
-          JSON.stringify(checkedBlocks(ar)),
-          JSON.stringify(checkedBlocks(en)),
+          checkedDocument(ar).json,
+          checkedDocument(en).json,
           new Date(
             Math.max(Date.now(), (page.draftUpdatedAt?.getTime() ?? 0) + 1),
           ),

@@ -1,0 +1,50 @@
+{
+  "sourceSHA": "fc4a959e87e7c3750a0546f9d4fa10e31ac3b63c",
+  "baseDevelopSHA": "68b92209e8fe134451ea0d93d841183d01543239",
+  "branch": "feat/4-page-templates",
+  "syntheticOnly": true,
+  "checks": {
+    "lint": "passed",
+    "typecheck": "passed",
+    "unitIntegration": {
+      "passed": 290,
+      "files": 28,
+      "database": "isolated MariaDB on loopback:3307"
+    },
+    "build": "passed",
+    "e2e": {
+      "passed": 72,
+      "retries": 0
+    },
+    "infra": "passed",
+    "diff": "passed"
+  },
+  "scopedEvidence": {
+    "newTemplateCases": {
+      "sourceContractCases": 31,
+      "MariaDbIntegrationCases": 10,
+      "httpJourneysAcrossTwoProjects": 4
+    },
+    "listQueryGrowth": "SELECT count unchanged after adding 20 custom templates; real MariaDB with query logger instrumentation",
+    "concurrency": "One apply winner; one backup and one usage increment",
+    "rollback": "Injected AuditLog failure rolls back Page, PageVersion and PageTemplate together"
+  },
+  "initialFailures": [
+    {
+      "scope": "focused test",
+      "cause": "Fixture replaced heading in the identifier instead of the type; corrected the explicit type field."
+    },
+    {
+      "scope": "first full browser run",
+      "passed": 70,
+      "failed": 2,
+      "cause": "Oversized authenticated JSON returned generic 500; map body-parser size error to 413 in the template admission middleware."
+    }
+  ],
+  "limitations": [
+    "Template dialog/new editor integration pending.",
+    "Draft/published settings, scheduling and tracking parity pending.",
+    "No complete visual/performance/operational recovery acceptance.",
+    "No production data, deployment or release."
+  ]
+}

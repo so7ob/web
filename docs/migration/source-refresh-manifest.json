@@ -270,24 +270,33 @@
       "change": "added",
       "oldSHA256": null,
       "newSHA256": "874707944ba6bb0b129baad18ce95d53f9a906be03ae41be8bc940261caa4d60",
-      "status": "pending-review-and-port",
-      "evidence": []
+      "status": "template services implemented; UI integration pending",
+      "evidence": [
+        "docs/migration/page-templates.md"
+      ],
+      "destination": "packages/server/src/admin/templates.ts"
     },
     {
       "source": "src/app/api/admin/templates/[id]/route.ts",
       "change": "added",
       "oldSHA256": null,
       "newSHA256": "2d1531521d0bd011b9b7f500373cf73d04868e2f878185c0dd08ad13402619b4",
-      "status": "pending-review-and-port",
-      "evidence": []
+      "status": "template services implemented; UI integration pending",
+      "evidence": [
+        "docs/migration/page-templates.md"
+      ],
+      "destination": "packages/server/src/admin/templates.ts"
     },
     {
       "source": "src/app/api/admin/templates/route.ts",
       "change": "added",
       "oldSHA256": null,
       "newSHA256": "c8d48d4abadc08f4dce3e123597e923002bad35b7e0d2456e84ab29598ef1390",
-      "status": "pending-review-and-port",
-      "evidence": []
+      "status": "template services implemented; UI integration pending",
+      "evidence": [
+        "docs/migration/page-templates.md"
+      ],
+      "destination": "apps/api/src/admin/templates.controller.ts"
     },
     {
       "source": "src/app/api/admin/track/route.ts",
@@ -790,8 +799,11 @@
       "change": "added",
       "oldSHA256": null,
       "newSHA256": "cc9a1affbe11d2c30004c63808c4b0fb7498aaa87b2a2ce28add5b704975e298",
-      "status": "pending-review-and-port",
-      "evidence": []
+      "status": "template services implemented; UI integration pending",
+      "evidence": [
+        "docs/migration/page-templates.md"
+      ],
+      "destination": "packages/server/src/admin/templates/contracts.test.ts"
     },
     {
       "source": "src/lib/__tests__/track-policy.test.ts",
@@ -984,16 +996,22 @@
       "change": "added",
       "oldSHA256": null,
       "newSHA256": "feb19a9ff9398ace957dfb6335848f0b8d2aeba9870541e3f288b73f85c0bea9",
-      "status": "pending-review-and-port",
-      "evidence": []
+      "status": "template services implemented; UI integration pending",
+      "evidence": [
+        "docs/migration/page-templates.md"
+      ],
+      "destination": "packages/server/src/admin/templates/builtin.ts"
     },
     {
       "source": "src/lib/templates/service.ts",
       "change": "added",
       "oldSHA256": null,
       "newSHA256": "3dafab4b842bb2c7b3f55c88907edae4d424de3dfa6176ce71bc57801047d8e3",
-      "status": "pending-review-and-port",
-      "evidence": []
+      "status": "template services implemented; UI integration pending",
+      "evidence": [
+        "docs/migration/page-templates.md"
+      ],
+      "destination": "packages/server/src/admin/templates/contracts.ts"
     },
     {
       "source": "src/lib/track/notify.ts",

@@ -16,7 +16,7 @@ Source: Website/main `5321b7fd11db421c83290b262f276811e5f04e5f`. Technical refer
 - D: public and authentication presentation implemented with scoped browser/visual/performance evidence; see [details and limitations](public-and-auth-ui.md). The original public request form now submits to real services. The nine client portal screens are ported in the next stacked portion; see [client portal](client-portal.md). Administrative screens and the original full editor are ported with scoped checks; complete visual/performance acceptance remains open.
 - E: durable mail worker and Nginx/systemd checks implemented ([PR #11](https://github.com/so7ob/web/pull/11)); full operational restore/cutover rehearsal and remaining job integrations pending.
 - F: full parity, all-role journeys, complete SQL/concurrency/load acceptance and final rollback rehearsal are pending. No migration completion claim. The original source files at root remain transitional reference material.
-- PRs #8–#17 were merged into develop on 2026-10-03 following the explicit merge request; each latest CI was checked. Later work remains on issue branches for review. No main merge or deployment occurred. CI success is reported per PR, not inferred for later commits.
+- PRs #8–#17 were merged into develop on 2026-10-03 following the explicit merge request; each latest CI was checked. At that checkpoint, later work remained on issue branches and no main merge or deployment had occurred. Subsequent authorized merges/releases are recorded below. CI success is reported per PR, not inferred for later commits.
 - Production data/files have not been inspected, copied or migrated. Local synthetic data only.
 - No source repository, branch, configuration, issue, PR or deployment was changed.
 
@@ -45,3 +45,6 @@ User-administration APIs now have a separate [implementation and verification re
 The source v2 schema and both-generation data transfer implementation are recorded in [source-schema-v2.md](source-schema-v2.md). Business/UI parity remains independently tracked.
 
 - [شجرة المحتوى والعرض المنشور وحدود النقل](content-tree.md).
+
+- دمج المستخدم #23 و#24 إلى develop عند `68b92209e8fe134451ea0d93d841183d01543239` في 2026-10-04 (Asia/Aden). main ما زال عند إصدار v1.0.0 السابق؛ لا إصدار جديد في هذا الجزء.
+- [خدمات قوالب الصفحات وعقودها واختباراتها](page-templates.md).

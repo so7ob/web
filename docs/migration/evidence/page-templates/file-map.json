@@ -1,0 +1,41 @@
+{
+  "sourceSHA": "fc4a959e87e7c3750a0546f9d4fa10e31ac3b63c",
+  "files": [
+    {
+      "source": "src/lib/templates/builtin.ts",
+      "destination": "packages/server/src/admin/templates/builtin.ts",
+      "sourceSHA256": "feb19a9ff9398ace957dfb6335848f0b8d2aeba9870541e3f288b73f85c0bea9",
+      "destinationSHA256": "af2b9ce0aa846bb179fe834bf90f3f976307e4a89fb957a70313025fd5494c6f"
+    },
+    {
+      "source": "src/lib/templates/service.ts",
+      "destination": "packages/server/src/admin/templates/contracts.ts",
+      "sourceSHA256": "3dafab4b842bb2c7b3f55c88907edae4d424de3dfa6176ce71bc57801047d8e3",
+      "destinationSHA256": "be3585dacae6e933c24ccd4aefc6d328973c600c1fd7513da11c35698c7a3eed"
+    },
+    {
+      "source": "src/lib/__tests__/templates.test.ts",
+      "destination": "packages/server/src/admin/templates/contracts.test.ts",
+      "sourceSHA256": "cc9a1affbe11d2c30004c63808c4b0fb7498aaa87b2a2ce28add5b704975e298",
+      "destinationSHA256": "370f5ec6b71888867dad4cf1c90b6238b7bb937c0724da65813b5ce0a8c86f00"
+    },
+    {
+      "source": "src/app/api/admin/templates/route.ts",
+      "destination": "apps/api/src/admin/templates.controller.ts",
+      "sourceSHA256": "c8d48d4abadc08f4dce3e123597e923002bad35b7e0d2456e84ab29598ef1390",
+      "destinationSHA256": "0cc84df503efaa475cb9f82dd4f8984d5ea9fd3555caa0b9dc092c80cc75795a"
+    },
+    {
+      "source": "src/app/api/admin/templates/[id]/route.ts",
+      "destination": "packages/server/src/admin/templates.ts",
+      "sourceSHA256": "2d1531521d0bd011b9b7f500373cf73d04868e2f878185c0dd08ad13402619b4",
+      "destinationSHA256": "f9b111c6b4e73e615b631107d810c82a6fe65d73e6df9272534a116697acb198"
+    },
+    {
+      "source": "src/app/api/admin/templates/[id]/apply/route.ts",
+      "destination": "packages/server/src/admin/templates.ts",
+      "sourceSHA256": "874707944ba6bb0b129baad18ce95d53f9a906be03ae41be8bc940261caa4d60",
+      "destinationSHA256": "f9b111c6b4e73e615b631107d810c82a6fe65d73e6df9272534a116697acb198"
+    }
+  ]
+}
