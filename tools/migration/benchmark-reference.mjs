@@ -1,5 +1,7 @@
 import fs from 'node:fs';
 import { createRequire } from 'node:module';
+import { join } from 'node:path';
+import { baselinePath, sourceSHA } from './reference-paths.mjs';
 const load = createRequire(import.meta.url);
 const { request } = load(process.env.PLAYWRIGHT_MODULE || '/usr/lib/node_modules/playwright');
 const origin = 'http://127.0.0.1:3107';
@@ -21,5 +23,5 @@ for (const route of ['/ar', '/en', '/api/admin/requests', '/api/admin/inquiries'
     results.push({ route, repeat, samples: ms.length, p50: ms[24], p95: ms[47] });
   }
 }
-fs.writeFileSync('.migration/baseline/evidence/performance.json', JSON.stringify({ sourceSHA: '5321b7fd11db421c83290b262f276811e5f04e5f', fixture: '8 synthetic users, 1 request, 1 inquiry, source seeded pages', concurrency: 1, productionCapacityClaim: false, results }, null, 2));
+fs.writeFileSync(join(baselinePath, 'evidence/performance.json'), JSON.stringify({ sourceSHA, fixture: '8 synthetic users, 1 request, 1 inquiry, source seeded pages', concurrency: 1, productionCapacityClaim: false, results }, null, 2));
 await context.dispose();
