@@ -1,0 +1,418 @@
+{
+  "sourceSHA": "fc4a959e87e7c3750a0546f9d4fa10e31ac3b63c",
+  "verifiedAt": "2026-10-03T19:09:25Z",
+  "referenceTests": {
+    "vitest": 288,
+    "bun": 6
+  },
+  "build": "passed",
+  "syntheticOnly": true,
+  "captures": 40,
+  "consoleErrors": 0,
+  "axeViolationsByCapture": {
+    "0": [
+      {
+        "id": "color-contrast",
+        "impact": "serious",
+        "targets": [
+          [
+            ".bg-green-600"
+          ]
+        ]
+      }
+    ],
+    "1": [
+      {
+        "id": "color-contrast",
+        "impact": "serious",
+        "targets": [
+          [
+            ".mt-1\\.5.ltr-isolate.text-slate-400"
+          ],
+          [
+            "label[for=\"company\"] > .ms-1.font-normal.text-slate-400"
+          ],
+          [
+            "label[for=\"phone\"] > .ms-1.font-normal.text-slate-400"
+          ],
+          [
+            "label[for=\"referenceUrl\"] > .ms-1.font-normal.text-slate-400"
+          ]
+        ]
+      }
+    ],
+    "2": [
+      {
+        "id": "color-contrast",
+        "impact": "serious",
+        "targets": [
+          [
+            ".bg-green-600"
+          ]
+        ]
+      }
+    ],
+    "6": [
+      {
+        "id": "color-contrast",
+        "impact": "serious",
+        "targets": [
+          [
+            "a[aria-label=\"إجمالي المستخدمين: 8\"] > .mt-0\\.5.text-muted-foreground\\/70.text-\\[11px\\]"
+          ],
+          [
+            "a[aria-label=\"طلبات مفتوحة: 1\"] > .mt-0\\.5.text-muted-foreground\\/70.text-\\[11px\\]"
+          ],
+          [
+            ".hover\\:-translate-y-0\\.5.hover\\:shadow-lg.hover\\:shadow-navy\\/10:nth-child(7) > .mt-0\\.5.text-muted-foreground\\/70.text-\\[11px\\]"
+          ]
+        ]
+      }
+    ],
+    "7": [
+      {
+        "id": "aria-valid-attr-value",
+        "impact": "critical",
+        "targets": [
+          [
+            "#radix-_r_0_-trigger-ar"
+          ]
+        ]
+      }
+    ],
+    "9": [
+      {
+        "id": "color-contrast",
+        "impact": "serious",
+        "targets": [
+          [
+            ".mt-0\\.5"
+          ]
+        ]
+      }
+    ],
+    "10": [
+      {
+        "id": "color-contrast",
+        "impact": "serious",
+        "targets": [
+          [
+            ".bg-green-600"
+          ]
+        ]
+      }
+    ],
+    "11": [
+      {
+        "id": "color-contrast",
+        "impact": "serious",
+        "targets": [
+          [
+            ".mt-1\\.5.ltr-isolate.text-slate-400"
+          ],
+          [
+            ".mt-1\\.5.leading-6.text-slate-400"
+          ],
+          [
+            "label[for=\"company\"] > .ms-1.font-normal.text-slate-400"
+          ],
+          [
+            "label[for=\"phone\"] > .ms-1.font-normal.text-slate-400"
+          ],
+          [
+            "label[for=\"referenceUrl\"] > .ms-1.font-normal.text-slate-400"
+          ]
+        ]
+      }
+    ],
+    "12": [
+      {
+        "id": "color-contrast",
+        "impact": "serious",
+        "targets": [
+          [
+            ".bg-green-600"
+          ]
+        ]
+      }
+    ],
+    "16": [
+      {
+        "id": "color-contrast",
+        "impact": "serious",
+        "targets": [
+          [
+            "a[aria-label=\"Total users: 8\"] > .mt-0\\.5.text-muted-foreground\\/70.text-\\[11px\\]"
+          ],
+          [
+            "a[aria-label=\"Open requests: 1\"] > .mt-0\\.5.text-muted-foreground\\/70.text-\\[11px\\]"
+          ],
+          [
+            "a[aria-label=\"Overdue replies: 0\"] > .mt-0\\.5.text-muted-foreground\\/70.text-\\[11px\\]"
+          ],
+          [
+            ".hover\\:-translate-y-0\\.5.hover\\:shadow-lg.hover\\:shadow-navy\\/10:nth-child(7) > .mt-0\\.5.text-muted-foreground\\/70.text-\\[11px\\]"
+          ]
+        ]
+      }
+    ],
+    "17": [
+      {
+        "id": "aria-valid-attr-value",
+        "impact": "critical",
+        "targets": [
+          [
+            "#radix-_r_0_-trigger-en"
+          ]
+        ]
+      }
+    ],
+    "19": [
+      {
+        "id": "color-contrast",
+        "impact": "serious",
+        "targets": [
+          [
+            ".mt-0\\.5"
+          ]
+        ]
+      }
+    ],
+    "20": [
+      {
+        "id": "color-contrast",
+        "impact": "serious",
+        "targets": [
+          [
+            ".bg-green-600"
+          ]
+        ]
+      }
+    ],
+    "21": [
+      {
+        "id": "color-contrast",
+        "impact": "serious",
+        "targets": [
+          [
+            ".bottom-4"
+          ],
+          [
+            ".mt-1\\.5.ltr-isolate.text-slate-400"
+          ],
+          [
+            "label[for=\"company\"] > .ms-1.font-normal.text-slate-400"
+          ],
+          [
+            "label[for=\"phone\"] > .ms-1.font-normal.text-slate-400"
+          ],
+          [
+            "label[for=\"referenceUrl\"] > .ms-1.font-normal.text-slate-400"
+          ]
+        ]
+      }
+    ],
+    "22": [
+      {
+        "id": "color-contrast",
+        "impact": "serious",
+        "targets": [
+          [
+            ".bottom-4"
+          ],
+          [
+            ".gap-2:nth-child(3) > .sm\\:inline.hidden.text-slate-400"
+          ],
+          [
+            ".bg-green-600"
+          ]
+        ]
+      }
+    ],
+    "26": [
+      {
+        "id": "color-contrast",
+        "impact": "serious",
+        "targets": [
+          [
+            "a[aria-label=\"إجمالي المستخدمين: 8\"] > .mt-0\\.5.text-muted-foreground\\/70.text-\\[11px\\]"
+          ],
+          [
+            "a[aria-label=\"طلبات مفتوحة: 1\"] > .mt-0\\.5.text-muted-foreground\\/70.text-\\[11px\\]"
+          ],
+          [
+            ".hover\\:-translate-y-0\\.5.hover\\:shadow-lg.hover\\:shadow-navy\\/10:nth-child(7) > .mt-0\\.5.text-muted-foreground\\/70.text-\\[11px\\]"
+          ]
+        ]
+      }
+    ],
+    "27": [
+      {
+        "id": "aria-valid-attr-value",
+        "impact": "critical",
+        "targets": [
+          [
+            "#radix-_r_0_-trigger-ar"
+          ]
+        ]
+      }
+    ],
+    "29": [
+      {
+        "id": "color-contrast",
+        "impact": "serious",
+        "targets": [
+          [
+            ".mt-0\\.5"
+          ]
+        ]
+      }
+    ],
+    "30": [
+      {
+        "id": "color-contrast",
+        "impact": "serious",
+        "targets": [
+          [
+            ".bg-green-600"
+          ]
+        ]
+      }
+    ],
+    "31": [
+      {
+        "id": "color-contrast",
+        "impact": "serious",
+        "targets": [
+          [
+            ".bottom-4"
+          ],
+          [
+            ".mt-1\\.5.ltr-isolate.text-slate-400"
+          ],
+          [
+            ".mt-1\\.5.leading-6.text-slate-400"
+          ],
+          [
+            "label[for=\"company\"] > .ms-1.font-normal.text-slate-400"
+          ],
+          [
+            "label[for=\"phone\"] > .ms-1.font-normal.text-slate-400"
+          ],
+          [
+            "label[for=\"referenceUrl\"] > .ms-1.font-normal.text-slate-400"
+          ]
+        ]
+      }
+    ],
+    "32": [
+      {
+        "id": "color-contrast",
+        "impact": "serious",
+        "targets": [
+          [
+            ".bottom-4"
+          ],
+          [
+            ".gap-2:nth-child(2) > .sm\\:inline.hidden.text-slate-400"
+          ],
+          [
+            ".gap-2:nth-child(3) > .sm\\:inline.hidden.text-slate-400"
+          ],
+          [
+            ".bg-green-600"
+          ]
+        ]
+      }
+    ],
+    "36": [
+      {
+        "id": "color-contrast",
+        "impact": "serious",
+        "targets": [
+          [
+            "a[aria-label=\"Total users: 8\"] > .mt-0\\.5.text-muted-foreground\\/70.text-\\[11px\\]"
+          ],
+          [
+            "a[aria-label=\"Open requests: 1\"] > .mt-0\\.5.text-muted-foreground\\/70.text-\\[11px\\]"
+          ],
+          [
+            "a[aria-label=\"Overdue replies: 0\"] > .mt-0\\.5.text-muted-foreground\\/70.text-\\[11px\\]"
+          ],
+          [
+            ".hover\\:-translate-y-0\\.5.hover\\:shadow-lg.hover\\:shadow-navy\\/10:nth-child(7) > .mt-0\\.5.text-muted-foreground\\/70.text-\\[11px\\]"
+          ]
+        ]
+      }
+    ],
+    "37": [
+      {
+        "id": "aria-valid-attr-value",
+        "impact": "critical",
+        "targets": [
+          [
+            "#radix-_r_0_-trigger-en"
+          ]
+        ]
+      }
+    ],
+    "39": [
+      {
+        "id": "color-contrast",
+        "impact": "serious",
+        "targets": [
+          [
+            ".mt-0\\.5"
+          ]
+        ]
+      }
+    ]
+  },
+  "screenshots": {
+    "screenshots/ar-account-1280.png": "86fd821bd09ac65e653b852160259505970309e3a6b0d116393eafb0681622c2",
+    "screenshots/ar-account-375.png": "db11f78eed0a7851b5d48b0cb0e98b735586e162d9d6a840f4fdfc815275ff6b",
+    "screenshots/ar-admin-1280.png": "87738557b5cc3a73605ccdafe6c215d41c0ea11113ec4e27cf10fa5c16e1ee76",
+    "screenshots/ar-admin-375.png": "8d032aa1e76938f52847da01d3d2426fbfdaab30fc8adebf1c274c23bb4a1f47",
+    "screenshots/ar-contact-1280.png": "b5b8f72bd7f0a9252c1daad772bfdb06feaa5fb9b7afeca2dd7426c9300a6b44",
+    "screenshots/ar-contact-375.png": "fe29bbf3d9a588b7bee7fcfb7ec57765e4823b48d3b2a229009d4e11f74de87f",
+    "screenshots/ar-content-editor-1280.png": "3a3e47dcb8f0352fa4cbbc6b396f06baf3675af909faa2f8ec16f1eaad14af3c",
+    "screenshots/ar-content-editor-375.png": "d258c43be7207a8f533fa9b29a37b4699f04d02c398cb1e51469f8fd405b7a52",
+    "screenshots/ar-editor-1280.png": "76e700eab4f8930d63864eb4fb01c6812fac4ba51ad10898d7b59d29e77486ef",
+    "screenshots/ar-editor-375.png": "43cdf453f96c6dfa7cb4f25342d63cc93fd8e4a49009ce1e8d6178d6598844ad",
+    "screenshots/ar-home-1280.png": "544005afac63747aba49b5feb6510446c348963aeb4fd5eb1d774adf45f43180",
+    "screenshots/ar-home-375.png": "5bae381a16e81bf6c87bf071e2cdd6e3cd9ab7802a51d61ce206e1db51a4ee31",
+    "screenshots/ar-login-1280.png": "e729344e566057272a7394254484fe7ed315e48d1db3451c387e5d9ece7d9666",
+    "screenshots/ar-login-375.png": "65f164c332501841c7b709473bbf9e6d69026eafd54bd2afb3e0049c23fb59e5",
+    "screenshots/ar-request-1280.png": "b5da462e360495de1977de20a2e8efd3749864985667fa474d300be5fa5d6532",
+    "screenshots/ar-request-375.png": "17d5ab90406caa4a3ba01ad1b32f95a9e8d62b3df5599d706c5038083d6d3a8b",
+    "screenshots/ar-support-1280.png": "5b80cb95aff45de7cf49429c2dbb1c41a41f2e9a390ddf6efb5d8b969d04c5ba",
+    "screenshots/ar-support-375.png": "eb14ffcb307293be296784273106e61732b0a8f739b26fe7e178fd99e13e3f45",
+    "screenshots/ar-works-1280.png": "999aec79b940e07eab90cc9b55849fbf4e3a797ed2a4ae795be021699a8fbbe8",
+    "screenshots/ar-works-375.png": "8fbe07b4341c5a6d50e144aa68210c90db7c86283bf93096e7b52293e2a2ff28",
+    "screenshots/en-account-1280.png": "8a10777ee143a7091f9bf33c783f739e622a95b7f488fff14e24ecd633cf8fa2",
+    "screenshots/en-account-375.png": "87be0a44ca46af416302f5c87b4ad5bb6e5b6c35985b71962ddb21a8e9c232d3",
+    "screenshots/en-admin-1280.png": "4d34af0ffb9bbaef7211054eb826b39400eac5e14b2a93c5d3baeac36395a312",
+    "screenshots/en-admin-375.png": "1922c3cc38feab51c2c278e672db02ad6be2698c3c0aab50af6c90b202a416f6",
+    "screenshots/en-contact-1280.png": "dffd5fe253d31f948693342da0f8ea8c91dc524278df8583c1daa19c1a6fb3af",
+    "screenshots/en-contact-375.png": "d3bf4ef527cf30ef6c289b5c764a4126102c7011b28e0e0aa707ed2d80a8718f",
+    "screenshots/en-content-editor-1280.png": "fdd0ec85553169892bbf9b4dc9d2f6b3f408901980656efcbcc3334ae38b66f5",
+    "screenshots/en-content-editor-375.png": "9d1f642eb1b84b614f3fd48f8b461b424afb39b663fe81f58138121841d265a9",
+    "screenshots/en-editor-1280.png": "79722a7a071ce80dae98d0f61588f4ff08cdba28a9858dca967df12972f8c663",
+    "screenshots/en-editor-375.png": "7da8e3c9dd26e4776d39225b2a8a6c7554bb5f199e1d8bed9bf0c59c43261b5f",
+    "screenshots/en-home-1280.png": "913988d6c5614b0ce5b191475ba9dd5f31dca7337c66985ecd23e7b23ef354a6",
+    "screenshots/en-home-375.png": "7934da8f2b9c689fd77f8cd392e033bb0241acfeca008d2c04bdd1be0171668d",
+    "screenshots/en-login-1280.png": "baf0fefe43ef38b40c5629083ea696f99a339f6b67f2c6a5e8aadccfbe6cac0a",
+    "screenshots/en-login-375.png": "116499c31279b0b4c6a1df993d1a1e5257582bc22b1e0decb11fb07fd2d03065",
+    "screenshots/en-request-1280.png": "006778253b966bc0b31651a8367bcb6efff21da2bede350f18006826110300e8",
+    "screenshots/en-request-375.png": "c505edf879c59c4053cf24681333ef9c221313e14dc05e232e4f11e17f31ddb2",
+    "screenshots/en-support-1280.png": "7b929b9befc2f91464237dd66fab7affaee5522da9728fc10790c3a5a5061725",
+    "screenshots/en-support-375.png": "cbcb49b6788358668839ee6578fbcae3e98b2019b74e4926e5800c507783e9ab",
+    "screenshots/en-works-1280.png": "8bf95cd2a42f432b144a62ba885010ee1ab00b5adbf02beb45d9958bcc5c0b4b",
+    "screenshots/en-works-375.png": "0ee3a77dd40ab8ad6b2336b69c4411b73e35fc924f5a3ccff7a8ce5273c2902c"
+  },
+  "limitations": [
+    "Reference uses complete schema SQL: source tracked migrations remain incomplete.",
+    "Reduced-motion Hero source defect retained; these captures are a frozen reference, not target visual acceptance.",
+    "Network failures are preserved in browser.json, not treated as passing journeys."
+  ]
+}

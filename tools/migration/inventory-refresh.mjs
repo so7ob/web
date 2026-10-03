@@ -12,7 +12,7 @@ if (!/^[a-f0-9]{40}$/.test(sha ?? '') || !verifiedAt || Number.isNaN(Date.parse(
 const root = resolve('.');
 const snapshot = resolve(root, `.migration/reference/Website-${sha.slice(0, 7)}`);
 const original = JSON.parse(readFileSync('docs/migration/import-manifest.json', 'utf8'));
-const compare = JSON.parse(readFileSync('.migration/source-refresh/compare.json', 'utf8'));
+const compare = JSON.parse(readFileSync(process.argv[4] ?? '.migration/source-refresh/compare.json', 'utf8'));
 if (compare.base_commit.sha !== original.sourceSHA || compare.commits.at(-1)?.sha !== sha) {
   throw new Error('Compare response does not match the original import and pinned head');
 }
@@ -48,7 +48,13 @@ const record = { source: 'https://github.com/so7ob/Website', sourceSHA: sha,
 const output = 'docs/migration/source-refresh-manifest.json';
 if (existsSync(output)) {
   const previous = JSON.parse(readFileSync(output, 'utf8'));
-  if (previous.sourceSHA !== sha) throw new Error('Archive the previous refresh cycle before replacing it');
+  if (previous.sourceSHA !== sha) {
+    const archive = `docs/migration/source-refresh-${previous.sourceSHA.slice(0, 7)}-manifest.json`;
+    if (!existsSync(archive) || readFileSync(archive, 'utf8') !== readFileSync(output, 'utf8')) {
+      throw new Error('Archive the complete previous refresh cycle before replacing it');
+    }
+    record.previousRefreshSHA = previous.sourceSHA;
+  }
   for (const file of record.files) {
     const prior = previous.files.find(entry => entry.source === file.source && entry.newSHA256 === file.newSHA256);
     if (prior) {

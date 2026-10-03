@@ -1,0 +1,11 @@
+{
+  "database": "so7ob_v2_upgrade_dates_test",
+  "sourceSchemaVersion": 1,
+  "targetSchemaVersion": 2,
+  "originalTables": 23,
+  "targetTables": 25,
+  "allOriginalIdsAndValuesPreserved": true,
+  "repeatApplied": 0,
+  "productionData": false,
+  "fixtureDirectory": ".migration/upgrade-v2-tLslm1"
+}

@@ -2,7 +2,7 @@
 
 Tracking: [parent #1](https://github.com/so7ob/web/issues/1). Phase issues are recorded in `issues.json`.
 
-Current source refresh: Website/main `d214018f3337198d8e17e5e7efa535a846ba6be2`, directly verified on 2026-10-03. [Refresh inventory, isolated reference and inherited migration failure](source-refresh.md). The new source has substantial changes not yet ported; historical counts and evidence below do not establish parity with it.
+Current source refresh: Website/main `fc4a959e87e7c3750a0546f9d4fa10e31ac3b63c`, directly verified on 2026-10-03. [Refresh inventory, isolated reference and inherited migration failure](source-refresh.md). The new source has substantial changes not yet ported; historical counts and evidence below do not establish parity with it.
 
 Source: Website/main `5321b7fd11db421c83290b262f276811e5f04e5f`. Technical reference: Rakim/main `cae0950bac45d97971bd3766c8c34f9869a856af`; develop `8b50b222185c60d9d06af8417f77765dada1bb8b` was inspected separately, not imported.
 
@@ -41,3 +41,5 @@ The pinned source is archived without `.git` under ignored `.migration/reference
 The next stacked phase C portion ports private attachments, public/admin media, durable physical file cleanup and prior-request ownership claims. See [files and claims](files-and-claims.md) for server authorization, transactional proof consumption, tests and explicit remaining scope. This does not establish complete migration or operational restore acceptance.
 
 User-administration APIs now have a separate [implementation and verification record](user-administration.md). Administrative operations/screens and CMS/editor now have a separate [implementation record](administration-and-editor.md), with final parity gates still pending.
+
+The source v2 schema and both-generation data transfer implementation are recorded in [source-schema-v2.md](source-schema-v2.md). Business/UI parity remains independently tracked.

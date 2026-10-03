@@ -1,4 +1,4 @@
-// Imported scalar/relationship contracts from Website SHA 5321b7f; no database client dependency.
+// Scalar/relationship contracts from Website fc4a959; no source ORM runtime dependency.
 export interface Models {
   Role: Role;
   User: User;
@@ -20,9 +20,11 @@ export interface Models {
   AuditLog: AuditLog;
   Page: Page;
   PageVersion: PageVersion;
+  PageTemplate: PageTemplate;
   PageRedirect: PageRedirect;
   MenuItem: MenuItem;
   SiteSetting: SiteSetting;
+  TrackLink: TrackLink;
 }
 export interface Role {
   key: string;
@@ -75,6 +77,7 @@ export interface User {
   requestDrafts: RequestDraft[];
   savedReplies: SavedReply[];
   settingsUpdated: SiteSetting[];
+  pageTemplates: PageTemplate[];
   _count: Record<string, number>;
 }
 export interface AuthSession {
@@ -168,6 +171,7 @@ export interface ProjectRequest {
   attachments: Attachment[];
   statusHistory: RequestStatusEvent[];
   claim: RequestClaim | null;
+  trackLinks: TrackLink[];
   _count: Record<string, number>;
 }
 export interface RequestMessage {
@@ -245,6 +249,7 @@ export interface Inquiry {
   assignee: User | null;
   messages: InquiryMessage[];
   attachments: Attachment[];
+  trackLinks: TrackLink[];
   _count: Record<string, number>;
 }
 export interface InquiryMessage {
@@ -334,10 +339,17 @@ export interface Page {
   draftBlocksEn: string;
   draftUpdatedAt: Date | null;
   draftUpdatedById: string | null;
+  draftSettings: string;
+  draftRevision: number;
+  publishedRevision: number | null;
+  publishedSettings: string | null;
   publishedBlocksAr: string | null;
   publishedBlocksEn: string | null;
   publishedAt: Date | null;
   publishedById: string | null;
+  scheduledPublishAt: Date | null;
+  scheduledRevision: number | null;
+  scheduledPublishById: string | null;
   sourceKey: string | null;
   seedVersion: number;
   editorTouchedAt: Date | null;
@@ -357,6 +369,23 @@ export interface PageVersion {
   createdAt: Date;
   page: Page;
   author: User | null;
+  _count: Record<string, number>;
+}
+export interface PageTemplate {
+  id: string;
+  key: string | null;
+  nameAr: string;
+  nameEn: string;
+  descAr: string | null;
+  descEn: string | null;
+  kind: string;
+  blocksAr: string | null;
+  blocksEn: string | null;
+  usageCount: number;
+  createdById: string | null;
+  createdAt: Date;
+  updatedAt: Date;
+  createdBy: User | null;
   _count: Record<string, number>;
 }
 export interface PageRedirect {
@@ -384,5 +413,21 @@ export interface SiteSetting {
   updatedById: string | null;
   updatedAt: Date;
   updatedBy: User | null;
+  _count: Record<string, number>;
+}
+export interface TrackLink {
+  id: string;
+  tokenHash: string;
+  scope: string;
+  requestId: string | null;
+  inquiryId: string | null;
+  expiresAt: Date;
+  revokedAt: Date | null;
+  revokedReason: string | null;
+  createdById: string | null;
+  createdAt: Date;
+  updatedAt: Date;
+  request: ProjectRequest | null;
+  inquiry: Inquiry | null;
   _count: Record<string, number>;
 }
