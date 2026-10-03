@@ -1,0 +1,207 @@
+{
+  "format": 1,
+  "snapshot": "b9c84d9784904249038b906290da7377f186776d8067e254cfb95648c4e47395",
+  "sqliteHash": "c27420dc5cf8029c2fd3210696b829da31761b4cb7fba7320f763ba9c24307a7",
+  "mode": "dry-run",
+  "startedAt": "2026-10-02T21:09:53.205Z",
+  "status": "ready",
+  "tables": {
+    "Role": {
+      "sourceCount": 5,
+      "destinationCount": 0,
+      "sourceHash": "89b1e3d0a61e3cc51a695733a0360d3b4532bf98590ea77b68228ed6b2cf836d",
+      "destinationHash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "idsMatch": false,
+      "valuesMatch": false
+    },
+    "EmailLog": {
+      "sourceCount": 0,
+      "destinationCount": 0,
+      "sourceHash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "destinationHash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "idsMatch": true,
+      "valuesMatch": true
+    },
+    "Page": {
+      "sourceCount": 7,
+      "destinationCount": 0,
+      "sourceHash": "8319353eb9da38e2dc0730ae0f5ac26db5fdb7528ea694a65cfe7f124239facb",
+      "destinationHash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "idsMatch": false,
+      "valuesMatch": false
+    },
+    "PageRedirect": {
+      "sourceCount": 0,
+      "destinationCount": 0,
+      "sourceHash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "destinationHash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "idsMatch": true,
+      "valuesMatch": true
+    },
+    "MenuItem": {
+      "sourceCount": 12,
+      "destinationCount": 0,
+      "sourceHash": "9ee7d49d9b7c8a5022cc2b1a31db7a9f5e68815e1f942c3aa7e5620ec7534f4d",
+      "destinationHash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "idsMatch": false,
+      "valuesMatch": false
+    },
+    "User": {
+      "sourceCount": 8,
+      "destinationCount": 0,
+      "sourceHash": "f47754bfcb54d7c9a5d6918ba49bf43fd0d39baa14fdef802d1eb83b476040a8",
+      "destinationHash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "idsMatch": false,
+      "valuesMatch": false
+    },
+    "AuthSession": {
+      "sourceCount": 25,
+      "destinationCount": 0,
+      "sourceHash": "de07007b593a18e4ab0f51bad423c2ee8f60fc86857c69f15ce4c53e16e9111f",
+      "destinationHash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "idsMatch": false,
+      "valuesMatch": false
+    },
+    "AuthToken": {
+      "sourceCount": 0,
+      "destinationCount": 0,
+      "sourceHash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "destinationHash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "idsMatch": true,
+      "valuesMatch": true
+    },
+    "UserInvite": {
+      "sourceCount": 0,
+      "destinationCount": 0,
+      "sourceHash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "destinationHash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "idsMatch": true,
+      "valuesMatch": true
+    },
+    "ProjectRequest": {
+      "sourceCount": 1,
+      "destinationCount": 0,
+      "sourceHash": "bfc1c3cf5a6b1859f7369b80d4f1a3394b039ee48c127f0cb32fe21376c0dad9",
+      "destinationHash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "idsMatch": false,
+      "valuesMatch": false
+    },
+    "SavedReply": {
+      "sourceCount": 0,
+      "destinationCount": 0,
+      "sourceHash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "destinationHash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "idsMatch": true,
+      "valuesMatch": true
+    },
+    "RequestDraft": {
+      "sourceCount": 0,
+      "destinationCount": 0,
+      "sourceHash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "destinationHash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "idsMatch": true,
+      "valuesMatch": true
+    },
+    "Inquiry": {
+      "sourceCount": 1,
+      "destinationCount": 0,
+      "sourceHash": "6b658d6e5b622b8dc1117b600f090b4f067b47da3f83075e9db4e325545310d3",
+      "destinationHash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "idsMatch": false,
+      "valuesMatch": false
+    },
+    "MediaItem": {
+      "sourceCount": 0,
+      "destinationCount": 0,
+      "sourceHash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "destinationHash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "idsMatch": true,
+      "valuesMatch": true
+    },
+    "Notification": {
+      "sourceCount": 0,
+      "destinationCount": 0,
+      "sourceHash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "destinationHash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "idsMatch": true,
+      "valuesMatch": true
+    },
+    "AuditLog": {
+      "sourceCount": 0,
+      "destinationCount": 0,
+      "sourceHash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "destinationHash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "idsMatch": true,
+      "valuesMatch": true
+    },
+    "PageVersion": {
+      "sourceCount": 0,
+      "destinationCount": 0,
+      "sourceHash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "destinationHash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "idsMatch": true,
+      "valuesMatch": true
+    },
+    "SiteSetting": {
+      "sourceCount": 6,
+      "destinationCount": 0,
+      "sourceHash": "6b09fafe20950440589ff72378887b389ef2b7817703c4399e479764f59949f0",
+      "destinationHash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "idsMatch": false,
+      "valuesMatch": false
+    },
+    "RequestMessage": {
+      "sourceCount": 2,
+      "destinationCount": 0,
+      "sourceHash": "9683ae8c81284b384542f8dad766b8d15d5308ec6eec1a01d7de83172e6e9c97",
+      "destinationHash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "idsMatch": false,
+      "valuesMatch": false
+    },
+    "RequestStatusEvent": {
+      "sourceCount": 0,
+      "destinationCount": 0,
+      "sourceHash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "destinationHash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "idsMatch": true,
+      "valuesMatch": true
+    },
+    "RequestClaim": {
+      "sourceCount": 0,
+      "destinationCount": 0,
+      "sourceHash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "destinationHash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "idsMatch": true,
+      "valuesMatch": true
+    },
+    "InquiryMessage": {
+      "sourceCount": 0,
+      "destinationCount": 0,
+      "sourceHash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "destinationHash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "idsMatch": true,
+      "valuesMatch": true
+    },
+    "Attachment": {
+      "sourceCount": 1,
+      "destinationCount": 0,
+      "sourceHash": "1c21956d63a3ea574b4c177db22900b5e3b8c2d677c25ef1d2d855663f4f3767",
+      "destinationHash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "idsMatch": false,
+      "valuesMatch": false
+    }
+  },
+  "files": [
+    {
+      "name": "synthetic.pdf",
+      "size": 46,
+      "sha256": "8d9529ac7a472be9169613a0e972c821994430238bf5b9c2dacad0bb4abd6933",
+      "references": [
+        "Attachment:migrationattachment"
+      ]
+    }
+  ],
+  "unreferencedFiles": [],
+  "productionData": "operator-supplied",
+  "finishedAt": "2026-10-02T21:09:53.239Z"
+}

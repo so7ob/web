@@ -1,0 +1,15 @@
+{
+  "phase": "C/data only",
+  "fixture": "synthetic; no production data",
+  "node": "24.21.0",
+  "mariadb": "10.11.18",
+  "tests": 26,
+  "lint": "passed",
+  "typecheck": "passed",
+  "build": "passed",
+  "migration": "all 23 table values and IDs matched",
+  "files": "copied and SHA-256 verified",
+  "backupRestore": "restored into separate empty so7ob_restore_20261003_test and reconciled",
+  "targetRead": "GET /ar returned 200 with MariaDB publication HTML and SEO",
+  "remaining": "auth/business/private UI/editor/queue and full acceptance"
+}
