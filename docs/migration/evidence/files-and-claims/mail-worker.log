@@ -1,0 +1,4 @@
+> so7ob-web@1.0.0 test:worker
+> node tools/migration/worker-smoke.mjs
+
+{"test":"actual worker process","smtpAccepted":1,"killedAfterData":1,"restart":"uncertain without resend","database":"real MariaDB","passed":true}

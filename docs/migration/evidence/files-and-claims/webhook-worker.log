@@ -1,0 +1,4 @@
+> so7ob-web@1.0.0 test:webhook
+> node tools/migration/webhook-smoke.mjs
+
+{"test":"compiled worker webhook dispatch and SIGKILL recovery","passed":true,"actualHttpDeliveries":2,"ambiguousResends":0}

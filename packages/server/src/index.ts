@@ -15,3 +15,8 @@ export { AccountService } from './business/account.js';
 export { WebhookQueue, WebhookCipher, processWebhook } from './queue/webhook.js';
 export { RequestService } from './business/requests.js';
 export { InquiryService } from './business/inquiries.js';
+export { ClaimService } from './auth/claims.js';
+export { FileService } from './files/service.js';
+export { FileStore } from './files/storage.js';
+export { FileCleanupQueue } from './files/cleanup.js';
+export { MAX_ATTACHMENT_SIZE,MAX_MEDIA_SIZE } from './files/upload-validation.js';

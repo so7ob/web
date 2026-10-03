@@ -1,4 +1,6 @@
 import 'reflect-metadata';
+import { FileReferenceIndexes1790985606000 } from './migrations/1790985606000-file-reference-indexes.js';
+import { FileCleanup1790985605000 } from './migrations/1790985605000-file-cleanup.js';
 import { BusinessControls1790985604000 } from './migrations/1790985604000-business-controls.js';
 import { AuthControls1790985603000 } from './migrations/1790985603000-auth-controls.js';
 import { UtcDefaults1790985602000 } from './migrations/1790985602000-utc-defaults.js';
@@ -27,7 +29,7 @@ export function createDataSource(env: NodeJS.ProcessEnv = process.env): DataSour
     username: env.DATABASE_USER, password: env.DATABASE_PASSWORD ?? '', database: env.DATABASE_NAME,
     charset: 'utf8mb4', timezone: 'Z', synchronize: false, migrationsRun: false,
     migrationsTransactionMode: 'none', migrationsTableName: 'so7ob_schema_migrations',
-    entities, migrations: [Website1790899200000, Transfer1790985600000, MailQueue1790985601000, UtcDefaults1790985602000, AuthControls1790985603000, BusinessControls1790985604000], logging: false,
+    entities, migrations: [Website1790899200000, Transfer1790985600000, MailQueue1790985601000, UtcDefaults1790985602000, AuthControls1790985603000, BusinessControls1790985604000, FileCleanup1790985605000, FileReferenceIndexes1790985606000], logging: false,
     extra: { connectionLimit: 10, multipleStatements: false, supportBigNumbers: true, bigNumberStrings: true },
   });
 }

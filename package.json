@@ -26,7 +26,8 @@
     "data:backup": "node --env-file-if-exists=.env --import tsx packages/server/src/migration/backup-cli.ts",
     "test:worker": "node tools/migration/worker-smoke.mjs",
     "test:auth": "node tools/migration/auth-smoke.mjs",
-    "test:webhook": "node tools/migration/webhook-smoke.mjs"
+    "test:webhook": "node tools/migration/webhook-smoke.mjs",
+    "test:file-worker": "node tools/migration/file-worker-smoke.mjs"
   },
   "dependencies": {
     "@dnd-kit/core": "6.3.1",
