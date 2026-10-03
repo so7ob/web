@@ -1,0 +1,5 @@
+> so7ob-web@1.0.0 db:migrate
+> node --env-file-if-exists=.env --import tsx packages/server/src/database/cli.ts migrate
+
+Applied migrations: [ 'FileReferenceIndexes1790985606000' ]
+Schema verified; synchronize and destructive reset are disabled.

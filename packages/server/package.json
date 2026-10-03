@@ -15,7 +15,8 @@
     "mysql2": "3.24.3",
     "reflect-metadata": "0.2.2",
     "bcryptjs": "3.0.3",
-    "nodemailer": "10.0.13"
+    "nodemailer": "10.0.13",
+    "sharp": "0.34.5"
   },
   "scripts": {
     "build": "tsc -b"

@@ -1,0 +1,6 @@
+> so7ob-web@1.0.0 test:infra
+> bash tools/test/infra.sh
+
+nginx: the configuration file /tmp/so7ob-infra.958aROxF/nginx.conf syntax is ok
+nginx: configuration file /tmp/so7ob-infra.958aROxF/nginx.conf test is successful
+Node runtime, Nginx TLS/proxy configuration and systemd units verified; no service started or deployed.

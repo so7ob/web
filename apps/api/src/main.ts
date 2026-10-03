@@ -1,4 +1,8 @@
 import 'reflect-metadata';
+import { FileController,MediaController } from './files/controller.js';
+import { PermissionGuard } from './business/permission.guard.js';
+import { ClaimController,claimAttemptMiddleware } from './auth/claim-controller.js';
+import { FileService,ClaimService } from '@so7ob/server';
 import { SubmissionController,AccountController,SubmissionGuard,AccountGuard,ConversationController } from './business/controller.js';
 import { SubmissionService,AccountService,RequestService,InquiryService } from '@so7ob/server';
 import { authAttemptMiddleware } from './auth/attempts.js';
@@ -25,7 +29,7 @@ class HealthController {
     return { ok: true, database: true };
   }
 }
-@Module({ controllers: [HealthController, PublicController, AuthController, SubmissionController, AccountController, ConversationController], providers: [PublicService, { provide: RequestService, useFactory: async () => new RequestService(await database()) }, { provide: InquiryService, useFactory: async () => new InquiryService(await database()) }, SubmissionGuard, AccountGuard, { provide: SubmissionService, useFactory: async () => new SubmissionService(await database()) }, { provide: AccountService, useFactory: async () => new AccountService(await database()) }, { provide: AuthHttpPolicy, useFactory: () => new AuthHttpPolicy() }, { provide: AuthenticationService, useFactory: async () => new AuthenticationService(await database()) }] })
+@Module({ controllers: [HealthController, PublicController, AuthController, SubmissionController, AccountController, ConversationController, FileController, MediaController, ClaimController], providers: [PublicService, PermissionGuard, { provide: FileService, useFactory: async () => new FileService(await database()) }, { provide: ClaimService, useFactory: async () => new ClaimService(await database()) }, { provide: RequestService, useFactory: async () => new RequestService(await database()) }, { provide: InquiryService, useFactory: async () => new InquiryService(await database()) }, SubmissionGuard, AccountGuard, { provide: SubmissionService, useFactory: async () => new SubmissionService(await database()) }, { provide: AccountService, useFactory: async () => new AccountService(await database()) }, { provide: AuthHttpPolicy, useFactory: () => new AuthHttpPolicy() }, { provide: AuthenticationService, useFactory: async () => new AuthenticationService(await database()) }] })
 class ApplicationModule {}
 type Renderer = { render(url: string, data: PublicView): Promise<{ html: string; head: string; lang: string; dir: string }> };
 async function main() {
@@ -34,6 +38,7 @@ async function main() {
   app.set('trust proxy', Number(process.env.TRUST_PROXY_HOPS ?? 0));
   app.enableCors({ origin: (process.env.WEB_ORIGIN ?? process.env.SITE_URL ?? 'http://127.0.0.1:3000').split(','), credentials: true, methods: ['GET','POST','PUT','PATCH','DELETE','OPTIONS'] });
   app.use(authAttemptMiddleware(app.get(AuthenticationService),app.get(AuthHttpPolicy)));
+  app.use(claimAttemptMiddleware(app.get(AuthenticationService),app.get(ClaimService),app.get(AuthHttpPolicy)));
   app.use(express.json({limit:'128kb'}));app.use(express.urlencoded({extended:false,limit:'128kb'}));
   app.use((error:unknown,_req:Request,res:Response,next:NextFunction)=>{if(error&&typeof error==='object'&&'type'in error&&error.type==='entity.parse.failed'){res.status(400).json({ok:false,code:'invalid'});return;}next(error);});
   app.useGlobalPipes(new ValidationPipe({ transform: true, whitelist: true, forbidNonWhitelisted: false, exceptionFactory: errors => new AuthFault(400, 'invalid', { errors: Object.fromEntries(errors.map(e => [e.property, Object.values(e.constraints ?? {})[0] ?? 'invalid'])) }) }));
