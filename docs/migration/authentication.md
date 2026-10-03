@@ -14,7 +14,7 @@ Registration, token issue, encrypted mail enqueue and audit now commit in one tr
 
 ## Session transition and CSRF
 
-A fresh random 32-byte cookie is fingerprinted using a new namespace in AuthSession. Legacy JWT cookies are ignored; imported session rows remain historical. The approved one-time re-login preserves account IDs and passwords. The lifetime is 30 days without silently extending old token/session expiry. Each request checks expiry, revocation, current account status, global cutoff and current role permissions. Password changes and session-revoke operations recheck the session inside their database transaction.
+A fresh random 32-byte cookie is fingerprinted using a new namespace in AuthSession. Legacy JWT cookies are ignored; imported session rows remain historical. The client-portal portion adds an explicit `opaque-v1:` stored fingerprint tag so historical or cutoff-invalid sessions are excluded from active-device listings without modifying the imported records. The approved one-time re-login preserves account IDs and passwords. The lifetime is 30 days without silently extending old token/session expiry. Each request checks expiry, revocation, current account status, global cutoff and current role permissions. Password changes and session-revoke operations recheck the session inside their database transaction.
 
 Production cookies use `__Host-` names, Secure, HttpOnly, SameSite=Lax and Path=/ with no Domain attribute. AUTH_SECRET signs one-hour CSRF challenges and has no known development fallback. Rotating AUTH_SECRET invalidates CSRF challenges, not opaque sessions; session invalidation is controlled explicitly through database revocation/cutoffs.
 

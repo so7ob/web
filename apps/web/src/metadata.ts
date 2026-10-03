@@ -16,6 +16,10 @@ export function headMarkup(data:PublicView):string {
     const names={login:auth.loginTitle,register:auth.registerTitle,'forgot-password':auth.forgotTitle,'reset-password':auth.resetTitle,invite:auth.registerTitle,verified:auth.verifyTitle,logout:meta.pages.home.title};
     title=data.screen==='logout'?meta.pages.home.title:names[data.screen]+' | '+meta.shortName; ogTitle=title;
     if (['logout','reset-password','invite'].includes(data.screen)) robots='noindex, nofollow';
+  } else if(data.kind==='account'){
+    const portal=getPortalContent(data.locale).account;
+    const titles={dashboard:portal.dashboard.title,requests:portal.requests.title,'new-request':portal.nav.newRequest,'request-detail':portal.requests.title,inquiries:portal.inquiries.title,'inquiry-detail':portal.inquiries.title,profile:portal.profile.title,security:portal.security.title,notifications:portal.notifications.title};
+    title=titles[data.account.screen]+' | '+meta.shortName;ogTitle=title;
   } else robots='noindex, nofollow';
   const tag=(name:string,value:string,property=false)=>`<meta data-so7ob-meta ${property?'property':'name'}="${name}" content="${escape(value)}">`;
   return `<title data-so7ob-meta>${escape(title)}</title>`+tag('description',description)+tag('application-name',meta.siteName)+tag('robots',robots)+alternates+tag('og:title',ogTitle,true)+tag('og:description',description,true)+ogUrl+

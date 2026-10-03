@@ -1,3 +1,4 @@
+import type { AccountPayload,AccountIdentity } from './account.js';
 export interface PublicPage {
   id: string; slug: string; titleAr: string; titleEn: string;
   seoTitleAr: string | null; seoTitleEn: string | null;
@@ -16,4 +17,5 @@ export type AuthScreen = typeof authScreens[number];
 export type PublicView =
   | (SiteViewBase & { kind:'cms'; page:PublicPage })
   | (SiteViewBase & { kind:'auth'; screen:AuthScreen; parameters:{ token:string; next:string; status:string } })
+  | (SiteViewBase & { kind:'account'; account:AccountPayload; user:AccountIdentity })
   | (SiteViewBase & { kind:'not-found' });

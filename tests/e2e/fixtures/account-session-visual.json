@@ -1,0 +1,348 @@
+{
+  "sourceSHA": "5321b7fd11db421c83290b262f276811e5f04e5f",
+  "purpose": "Visual-only equal session metadata; all functional session tests use actual MariaDB. Source records read-only and bounded by the frozen screenshot timestamp. No product mocks.",
+  "cases": {
+    "375:ar": {
+      "instant": "2026-10-03T00:19:44.607Z",
+      "sessions": [
+        {
+          "id": "cmurna68q001lg9s9ezvozmax",
+          "userAgent": null,
+          "createdAt": "2026-10-03T00:19:32.762Z",
+          "lastSeenAt": "2026-10-03T00:19:32.762Z",
+          "current": true
+        },
+        {
+          "id": "cmurlh74u001fg9s9txojuy80",
+          "userAgent": null,
+          "createdAt": "2026-10-02T23:29:01.278Z",
+          "lastSeenAt": "2026-10-02T23:29:01.278Z",
+          "current": false
+        },
+        {
+          "id": "cmurevphk0013g9s931ep8p9e",
+          "userAgent": null,
+          "createdAt": "2026-10-02T20:24:20.936Z",
+          "lastSeenAt": "2026-10-02T20:24:20.936Z",
+          "current": false
+        },
+        {
+          "id": "cmurevnds0011g9s9fanzci5i",
+          "userAgent": null,
+          "createdAt": "2026-10-02T20:24:18.208Z",
+          "lastSeenAt": "2026-10-02T20:24:18.208Z",
+          "current": false
+        },
+        {
+          "id": "cmurev68j000rg9s94v8k2edm",
+          "userAgent": null,
+          "createdAt": "2026-10-02T20:23:55.987Z",
+          "lastSeenAt": "2026-10-02T20:23:55.987Z",
+          "current": false
+        },
+        {
+          "id": "cmurev4jz000pg9s9a2z1xts7",
+          "userAgent": null,
+          "createdAt": "2026-10-02T20:23:53.807Z",
+          "lastSeenAt": "2026-10-02T20:23:53.807Z",
+          "current": false
+        },
+        {
+          "id": "cmureupo5000fg9s91cf1rxxq",
+          "userAgent": null,
+          "createdAt": "2026-10-02T20:23:34.518Z",
+          "lastSeenAt": "2026-10-02T20:23:34.518Z",
+          "current": false
+        },
+        {
+          "id": "cmureunxz000dg9s9z5mqbsu1",
+          "userAgent": null,
+          "createdAt": "2026-10-02T20:23:32.280Z",
+          "lastSeenAt": "2026-10-02T20:23:32.280Z",
+          "current": false
+        },
+        {
+          "id": "cmureu9b60003g9s9ee9t7wdz",
+          "userAgent": null,
+          "createdAt": "2026-10-02T20:23:13.314Z",
+          "lastSeenAt": "2026-10-02T20:23:13.314Z",
+          "current": false
+        },
+        {
+          "id": "cmureu7pr0001g9s9o89j4ukt",
+          "userAgent": null,
+          "createdAt": "2026-10-02T20:23:11.247Z",
+          "lastSeenAt": "2026-10-02T20:23:11.247Z",
+          "current": false
+        }
+      ]
+    },
+    "1280:ar": {
+      "instant": "2026-10-03T00:20:14.747Z",
+      "sessions": [
+        {
+          "id": "cmurnasid001xg9s9jngu5d7z",
+          "userAgent": null,
+          "createdAt": "2026-10-03T00:20:01.621Z",
+          "lastSeenAt": "2026-10-03T00:20:01.621Z",
+          "current": true
+        },
+        {
+          "id": "cmurnahaz001rg9s90orbo9eh",
+          "userAgent": null,
+          "createdAt": "2026-10-03T00:19:47.099Z",
+          "lastSeenAt": "2026-10-03T00:19:47.099Z",
+          "current": false
+        },
+        {
+          "id": "cmurna68q001lg9s9ezvozmax",
+          "userAgent": null,
+          "createdAt": "2026-10-03T00:19:32.762Z",
+          "lastSeenAt": "2026-10-03T00:19:32.762Z",
+          "current": false
+        },
+        {
+          "id": "cmurlh74u001fg9s9txojuy80",
+          "userAgent": null,
+          "createdAt": "2026-10-02T23:29:01.278Z",
+          "lastSeenAt": "2026-10-02T23:29:01.278Z",
+          "current": false
+        },
+        {
+          "id": "cmurevphk0013g9s931ep8p9e",
+          "userAgent": null,
+          "createdAt": "2026-10-02T20:24:20.936Z",
+          "lastSeenAt": "2026-10-02T20:24:20.936Z",
+          "current": false
+        },
+        {
+          "id": "cmurevnds0011g9s9fanzci5i",
+          "userAgent": null,
+          "createdAt": "2026-10-02T20:24:18.208Z",
+          "lastSeenAt": "2026-10-02T20:24:18.208Z",
+          "current": false
+        },
+        {
+          "id": "cmurev68j000rg9s94v8k2edm",
+          "userAgent": null,
+          "createdAt": "2026-10-02T20:23:55.987Z",
+          "lastSeenAt": "2026-10-02T20:23:55.987Z",
+          "current": false
+        },
+        {
+          "id": "cmurev4jz000pg9s9a2z1xts7",
+          "userAgent": null,
+          "createdAt": "2026-10-02T20:23:53.807Z",
+          "lastSeenAt": "2026-10-02T20:23:53.807Z",
+          "current": false
+        },
+        {
+          "id": "cmureupo5000fg9s91cf1rxxq",
+          "userAgent": null,
+          "createdAt": "2026-10-02T20:23:34.518Z",
+          "lastSeenAt": "2026-10-02T20:23:34.518Z",
+          "current": false
+        },
+        {
+          "id": "cmureunxz000dg9s9z5mqbsu1",
+          "userAgent": null,
+          "createdAt": "2026-10-02T20:23:32.280Z",
+          "lastSeenAt": "2026-10-02T20:23:32.280Z",
+          "current": false
+        },
+        {
+          "id": "cmureu9b60003g9s9ee9t7wdz",
+          "userAgent": null,
+          "createdAt": "2026-10-02T20:23:13.314Z",
+          "lastSeenAt": "2026-10-02T20:23:13.314Z",
+          "current": false
+        },
+        {
+          "id": "cmureu7pr0001g9s9o89j4ukt",
+          "userAgent": null,
+          "createdAt": "2026-10-02T20:23:11.247Z",
+          "lastSeenAt": "2026-10-02T20:23:11.247Z",
+          "current": false
+        }
+      ]
+    },
+    "375:en": {
+      "instant": "2026-10-03T00:19:59.039Z",
+      "sessions": [
+        {
+          "id": "cmurnahaz001rg9s90orbo9eh",
+          "userAgent": null,
+          "createdAt": "2026-10-03T00:19:47.099Z",
+          "lastSeenAt": "2026-10-03T00:19:47.099Z",
+          "current": true
+        },
+        {
+          "id": "cmurna68q001lg9s9ezvozmax",
+          "userAgent": null,
+          "createdAt": "2026-10-03T00:19:32.762Z",
+          "lastSeenAt": "2026-10-03T00:19:32.762Z",
+          "current": false
+        },
+        {
+          "id": "cmurlh74u001fg9s9txojuy80",
+          "userAgent": null,
+          "createdAt": "2026-10-02T23:29:01.278Z",
+          "lastSeenAt": "2026-10-02T23:29:01.278Z",
+          "current": false
+        },
+        {
+          "id": "cmurevphk0013g9s931ep8p9e",
+          "userAgent": null,
+          "createdAt": "2026-10-02T20:24:20.936Z",
+          "lastSeenAt": "2026-10-02T20:24:20.936Z",
+          "current": false
+        },
+        {
+          "id": "cmurevnds0011g9s9fanzci5i",
+          "userAgent": null,
+          "createdAt": "2026-10-02T20:24:18.208Z",
+          "lastSeenAt": "2026-10-02T20:24:18.208Z",
+          "current": false
+        },
+        {
+          "id": "cmurev68j000rg9s94v8k2edm",
+          "userAgent": null,
+          "createdAt": "2026-10-02T20:23:55.987Z",
+          "lastSeenAt": "2026-10-02T20:23:55.987Z",
+          "current": false
+        },
+        {
+          "id": "cmurev4jz000pg9s9a2z1xts7",
+          "userAgent": null,
+          "createdAt": "2026-10-02T20:23:53.807Z",
+          "lastSeenAt": "2026-10-02T20:23:53.807Z",
+          "current": false
+        },
+        {
+          "id": "cmureupo5000fg9s91cf1rxxq",
+          "userAgent": null,
+          "createdAt": "2026-10-02T20:23:34.518Z",
+          "lastSeenAt": "2026-10-02T20:23:34.518Z",
+          "current": false
+        },
+        {
+          "id": "cmureunxz000dg9s9z5mqbsu1",
+          "userAgent": null,
+          "createdAt": "2026-10-02T20:23:32.280Z",
+          "lastSeenAt": "2026-10-02T20:23:32.280Z",
+          "current": false
+        },
+        {
+          "id": "cmureu9b60003g9s9ee9t7wdz",
+          "userAgent": null,
+          "createdAt": "2026-10-02T20:23:13.314Z",
+          "lastSeenAt": "2026-10-02T20:23:13.314Z",
+          "current": false
+        },
+        {
+          "id": "cmureu7pr0001g9s9o89j4ukt",
+          "userAgent": null,
+          "createdAt": "2026-10-02T20:23:11.247Z",
+          "lastSeenAt": "2026-10-02T20:23:11.247Z",
+          "current": false
+        }
+      ]
+    },
+    "1280:en": {
+      "instant": "2026-10-03T00:20:31.047Z",
+      "sessions": [
+        {
+          "id": "cmurnb4s30023g9s9grwn4md0",
+          "userAgent": null,
+          "createdAt": "2026-10-03T00:20:17.523Z",
+          "lastSeenAt": "2026-10-03T00:20:17.523Z",
+          "current": true
+        },
+        {
+          "id": "cmurnasid001xg9s9jngu5d7z",
+          "userAgent": null,
+          "createdAt": "2026-10-03T00:20:01.621Z",
+          "lastSeenAt": "2026-10-03T00:20:01.621Z",
+          "current": false
+        },
+        {
+          "id": "cmurnahaz001rg9s90orbo9eh",
+          "userAgent": null,
+          "createdAt": "2026-10-03T00:19:47.099Z",
+          "lastSeenAt": "2026-10-03T00:19:47.099Z",
+          "current": false
+        },
+        {
+          "id": "cmurna68q001lg9s9ezvozmax",
+          "userAgent": null,
+          "createdAt": "2026-10-03T00:19:32.762Z",
+          "lastSeenAt": "2026-10-03T00:19:32.762Z",
+          "current": false
+        },
+        {
+          "id": "cmurlh74u001fg9s9txojuy80",
+          "userAgent": null,
+          "createdAt": "2026-10-02T23:29:01.278Z",
+          "lastSeenAt": "2026-10-02T23:29:01.278Z",
+          "current": false
+        },
+        {
+          "id": "cmurevphk0013g9s931ep8p9e",
+          "userAgent": null,
+          "createdAt": "2026-10-02T20:24:20.936Z",
+          "lastSeenAt": "2026-10-02T20:24:20.936Z",
+          "current": false
+        },
+        {
+          "id": "cmurevnds0011g9s9fanzci5i",
+          "userAgent": null,
+          "createdAt": "2026-10-02T20:24:18.208Z",
+          "lastSeenAt": "2026-10-02T20:24:18.208Z",
+          "current": false
+        },
+        {
+          "id": "cmurev68j000rg9s94v8k2edm",
+          "userAgent": null,
+          "createdAt": "2026-10-02T20:23:55.987Z",
+          "lastSeenAt": "2026-10-02T20:23:55.987Z",
+          "current": false
+        },
+        {
+          "id": "cmurev4jz000pg9s9a2z1xts7",
+          "userAgent": null,
+          "createdAt": "2026-10-02T20:23:53.807Z",
+          "lastSeenAt": "2026-10-02T20:23:53.807Z",
+          "current": false
+        },
+        {
+          "id": "cmureupo5000fg9s91cf1rxxq",
+          "userAgent": null,
+          "createdAt": "2026-10-02T20:23:34.518Z",
+          "lastSeenAt": "2026-10-02T20:23:34.518Z",
+          "current": false
+        },
+        {
+          "id": "cmureunxz000dg9s9z5mqbsu1",
+          "userAgent": null,
+          "createdAt": "2026-10-02T20:23:32.280Z",
+          "lastSeenAt": "2026-10-02T20:23:32.280Z",
+          "current": false
+        },
+        {
+          "id": "cmureu9b60003g9s9ee9t7wdz",
+          "userAgent": null,
+          "createdAt": "2026-10-02T20:23:13.314Z",
+          "lastSeenAt": "2026-10-02T20:23:13.314Z",
+          "current": false
+        },
+        {
+          "id": "cmureu7pr0001g9s9o89j4ukt",
+          "userAgent": null,
+          "createdAt": "2026-10-02T20:23:11.247Z",
+          "lastSeenAt": "2026-10-02T20:23:11.247Z",
+          "current": false
+        }
+      ]
+    }
+  }
+}

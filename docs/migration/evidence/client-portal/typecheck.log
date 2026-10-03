@@ -1,0 +1,2 @@
+> so7ob-web@1.0.0 typecheck
+> tsc --noEmit -p tsconfig.workspaces.json

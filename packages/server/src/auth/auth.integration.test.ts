@@ -58,6 +58,7 @@ describe('Nest authentication persistence on real MariaDB', { concurrent:false }
     const current=await auth.session(logged!.raw); expect(current?.user.id).toBe(prefix+'login'); expect(JSON.stringify(current)).not.toContain(hash); expect(current?.user.permissions).toEqual([]);
     await db.query('INSERT INTO AuthSession(id,userId,fingerprint,expiresAt) VALUES(?,?,?,DATE_ADD(UTC_TIMESTAMP(3),INTERVAL 1 DAY))',[prefix+'old',prefix+'legacy',sha256('session:'+prefix+'legacy:1728000000')]);
     expect(await auth.session('legacy.jwt.cookie')).toBeNull(); expect(await auth.session('a'.repeat(64))).toBeNull();
+    const migratedLogin=await auth.login(email('legacy'),password,'Synthetic browser',ip('legacy'));const migratedCurrent=await auth.session(migratedLogin!.raw);expect((await auth.sessions(migratedCurrent!)).map(row=>row.id)).toEqual([migratedCurrent!.id]);expect((await db.query('SELECT revokedAt FROM AuthSession WHERE id=?',[prefix+'old']))[0].revokedAt).toBeNull();
     await auth.logout(logged!.raw); expect(await auth.session(logged!.raw)).toBeNull();
   });
   it('serializes five simultaneous failures into a temporary account lock',async()=>{

@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { database } from '@so7ob/server';
-import { authScreens, canAccessPage, type AuthScreen, type AuthUser, type SiteViewBase, type PublicPage, type PublicView } from '@so7ob/contracts';
+import { database, PortalService } from '@so7ob/server';
+import { authScreens, canAccessPage, type AccountPayload, type AuthScreen, type AuthUser, type SiteViewBase, type PublicPage, type PublicView } from '@so7ob/contracts';
 const settingsKeys = ['contact.email','contact.phone','contact.address','social.github','site.nameAr','site.nameEn','announcement.enabled','announcement.messageAr','announcement.messageEn','announcement.ctaLabelAr','announcement.ctaLabelEn','announcement.ctaUrl','announcement.variant','announcement.revision','announcement.startAt','announcement.endAt'];
 function schedule(value: string, end = false): number | null {
   if (!value) return null;
@@ -15,10 +15,21 @@ export class PublicService {
     const url = new URL(path, 'http://local.invalid');
     const match = /^\/(ar|en)(?:\/(.*))?$/.exec(url.pathname);
     if (!match) throw new NotFoundException();
-    const locale = match[1] as 'ar' | 'en'; let slug:string;
-    try { slug = decodeURIComponent(match[2] || '').toLowerCase(); } catch { throw new NotFoundException(); }
+    const locale = match[1] as 'ar' | 'en'; let slug:string;let decoded:string;
+    try { decoded = decodeURIComponent(match[2] || '');slug=decoded.toLowerCase(); } catch { throw new NotFoundException(); }
     const db = await database();
     const shell = await this.shell(locale, viewer);
+    const accountRoute=/^account(?:\/(requests(?:\/([^/]+))?|inquiries(?:\/([^/]+))?|profile|security|notifications))?\/?$/.exec(decoded);
+    if(accountRoute){
+      if(!viewer)return {redirect:`/${locale}/auth/login?next=/${locale}/account`};
+      const portal=new PortalService(db);let account:AccountPayload;
+      if(!accountRoute[1])account={screen:'dashboard',dashboard:await portal.dashboard(viewer,locale)};
+      else if(accountRoute[1]==='profile')account={screen:'profile',profile:await portal.profile(viewer)};
+      else if(accountRoute[2])account=accountRoute[2]==='new'?{screen:'new-request'}:{screen:'request-detail',id:accountRoute[2]};
+      else if(accountRoute[3])account={screen:'inquiry-detail',id:accountRoute[3]};
+      else account={screen:accountRoute[1] as 'requests'|'inquiries'|'security'|'notifications'};
+      return {...shell,kind:'account',account,user:{name:viewer.name,email:viewer.email,roleKey:viewer.roleKey,emailVerified:viewer.emailVerified}};
+    }
     const screen = /^auth\/([^/]+)$/.exec(slug)?.[1];
     if (screen && (authScreens as readonly string[]).includes(screen)) return { ...shell,kind:'auth',screen:screen as AuthScreen,parameters:{ token:url.searchParams.get('token') ?? '',next:url.searchParams.get('next') ?? '',status:url.searchParams.get('status') ?? '' } };
     // Explicit publication projection: drafts, allowed-role lists and internal fields never reach this DTO.

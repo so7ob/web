@@ -1,0 +1,295 @@
+{
+  "sourceSHA": "5321b7fd11db421c83290b262f276811e5f04e5f",
+  "threshold": 0.005,
+  "metric": "Exact RGB inequality; viewport 900px; no masks",
+  "results": [
+    {
+      "file": "ar-dashboard-375.png",
+      "ratio": 0,
+      "pass": true,
+      "newViolations": [],
+      "errors": [],
+      "failedRequests": []
+    },
+    {
+      "file": "ar-requests-375.png",
+      "ratio": 0,
+      "pass": true,
+      "newViolations": [],
+      "errors": [],
+      "failedRequests": []
+    },
+    {
+      "file": "ar-requests-new-375.png",
+      "ratio": 0,
+      "pass": true,
+      "newViolations": [],
+      "errors": [],
+      "failedRequests": []
+    },
+    {
+      "file": "ar-requests-migrationrequest-375.png",
+      "ratio": 0,
+      "pass": true,
+      "newViolations": [],
+      "errors": [],
+      "failedRequests": []
+    },
+    {
+      "file": "ar-inquiries-375.png",
+      "ratio": 0.00013333333333333334,
+      "pass": true,
+      "newViolations": [],
+      "errors": [],
+      "failedRequests": []
+    },
+    {
+      "file": "ar-inquiries-migrationinquiry-375.png",
+      "ratio": 0,
+      "pass": true,
+      "newViolations": [],
+      "errors": [],
+      "failedRequests": []
+    },
+    {
+      "file": "ar-profile-375.png",
+      "ratio": 0,
+      "pass": true,
+      "newViolations": [],
+      "errors": [],
+      "failedRequests": []
+    },
+    {
+      "file": "ar-security-375.png",
+      "ratio": 0.00023703703703703704,
+      "pass": true,
+      "newViolations": [],
+      "errors": [],
+      "failedRequests": []
+    },
+    {
+      "file": "ar-notifications-375.png",
+      "ratio": 0,
+      "pass": true,
+      "newViolations": [],
+      "errors": [],
+      "failedRequests": []
+    },
+    {
+      "file": "en-dashboard-375.png",
+      "ratio": 0,
+      "pass": true,
+      "newViolations": [],
+      "errors": [],
+      "failedRequests": []
+    },
+    {
+      "file": "en-requests-375.png",
+      "ratio": 0,
+      "pass": true,
+      "newViolations": [],
+      "errors": [],
+      "failedRequests": []
+    },
+    {
+      "file": "en-requests-new-375.png",
+      "ratio": 0,
+      "pass": true,
+      "newViolations": [],
+      "errors": [],
+      "failedRequests": []
+    },
+    {
+      "file": "en-requests-migrationrequest-375.png",
+      "ratio": 0,
+      "pass": true,
+      "newViolations": [],
+      "errors": [],
+      "failedRequests": []
+    },
+    {
+      "file": "en-inquiries-375.png",
+      "ratio": 0,
+      "pass": true,
+      "newViolations": [],
+      "errors": [],
+      "failedRequests": []
+    },
+    {
+      "file": "en-inquiries-migrationinquiry-375.png",
+      "ratio": 0,
+      "pass": true,
+      "newViolations": [],
+      "errors": [],
+      "failedRequests": []
+    },
+    {
+      "file": "en-profile-375.png",
+      "ratio": 0,
+      "pass": true,
+      "newViolations": [],
+      "errors": [],
+      "failedRequests": []
+    },
+    {
+      "file": "en-security-375.png",
+      "ratio": 0,
+      "pass": true,
+      "newViolations": [],
+      "errors": [],
+      "failedRequests": []
+    },
+    {
+      "file": "en-notifications-375.png",
+      "ratio": 0,
+      "pass": true,
+      "newViolations": [],
+      "errors": [],
+      "failedRequests": []
+    },
+    {
+      "file": "ar-dashboard-1280.png",
+      "ratio": 0,
+      "pass": true,
+      "newViolations": [],
+      "errors": [],
+      "failedRequests": []
+    },
+    {
+      "file": "ar-requests-1280.png",
+      "ratio": 0,
+      "pass": true,
+      "newViolations": [],
+      "errors": [],
+      "failedRequests": []
+    },
+    {
+      "file": "ar-requests-new-1280.png",
+      "ratio": 0.000015625,
+      "pass": true,
+      "newViolations": [],
+      "errors": [],
+      "failedRequests": []
+    },
+    {
+      "file": "ar-requests-migrationrequest-1280.png",
+      "ratio": 0,
+      "pass": true,
+      "newViolations": [],
+      "errors": [],
+      "failedRequests": []
+    },
+    {
+      "file": "ar-inquiries-1280.png",
+      "ratio": 0.0000390625,
+      "pass": true,
+      "newViolations": [],
+      "errors": [],
+      "failedRequests": []
+    },
+    {
+      "file": "ar-inquiries-migrationinquiry-1280.png",
+      "ratio": 0.000015625,
+      "pass": true,
+      "newViolations": [],
+      "errors": [],
+      "failedRequests": []
+    },
+    {
+      "file": "ar-profile-1280.png",
+      "ratio": 0.000015625,
+      "pass": true,
+      "newViolations": [],
+      "errors": [],
+      "failedRequests": []
+    },
+    {
+      "file": "ar-security-1280.png",
+      "ratio": 0.22360069444444444,
+      "pass": false,
+      "newViolations": [],
+      "errors": [],
+      "failedRequests": []
+    },
+    {
+      "file": "ar-notifications-1280.png",
+      "ratio": 0,
+      "pass": true,
+      "newViolations": [],
+      "errors": [],
+      "failedRequests": []
+    },
+    {
+      "file": "en-dashboard-1280.png",
+      "ratio": 0,
+      "pass": true,
+      "newViolations": [],
+      "errors": [],
+      "failedRequests": []
+    },
+    {
+      "file": "en-requests-1280.png",
+      "ratio": 0.000015625,
+      "pass": true,
+      "newViolations": [],
+      "errors": [],
+      "failedRequests": []
+    },
+    {
+      "file": "en-requests-new-1280.png",
+      "ratio": 0,
+      "pass": true,
+      "newViolations": [],
+      "errors": [],
+      "failedRequests": []
+    },
+    {
+      "file": "en-requests-migrationrequest-1280.png",
+      "ratio": 0,
+      "pass": true,
+      "newViolations": [],
+      "errors": [],
+      "failedRequests": []
+    },
+    {
+      "file": "en-inquiries-1280.png",
+      "ratio": 0.0000546875,
+      "pass": true,
+      "newViolations": [],
+      "errors": [],
+      "failedRequests": []
+    },
+    {
+      "file": "en-inquiries-migrationinquiry-1280.png",
+      "ratio": 0.000015625,
+      "pass": true,
+      "newViolations": [],
+      "errors": [],
+      "failedRequests": []
+    },
+    {
+      "file": "en-profile-1280.png",
+      "ratio": 0.000015625,
+      "pass": true,
+      "newViolations": [],
+      "errors": [],
+      "failedRequests": []
+    },
+    {
+      "file": "en-security-1280.png",
+      "ratio": 0.1066953125,
+      "pass": false,
+      "newViolations": [],
+      "errors": [],
+      "failedRequests": []
+    },
+    {
+      "file": "en-notifications-1280.png",
+      "ratio": 0.000015625,
+      "pass": true,
+      "newViolations": [],
+      "errors": [],
+      "failedRequests": []
+    }
+  ]
+}

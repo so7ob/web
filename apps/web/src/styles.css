@@ -187,3 +187,9 @@
   outline-offset: 2px;
   border-radius: 4px;
 }
+
+/* Sonner's light success text was 4.29:1 on its original background. Preserve hue/surface,
+   raise small-text contrast to 5.57:1, and leave the dark palette unchanged. */
+.toaster[data-sonner-toaster][data-sonner-theme="light"] {
+  --success-text: hsl(140 100% 23%);
+}
