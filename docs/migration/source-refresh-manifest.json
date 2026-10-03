@@ -860,8 +860,14 @@
       "change": "modified",
       "oldSHA256": "32ff1886606d49729e969a3b1eb350bf89311b2aa6b1e8c26b2d8ed8688b9e65",
       "newSHA256": "a06b4e3cfa419414b13989725f9e07a6ae847318457f404718e8c0f649133a25",
-      "status": "pending-review-and-port",
-      "evidence": []
+      "status": "partially-ported: own-key validation and normalized legacy blocks; container tree types pending",
+      "evidence": [
+        "packages/contracts/src/blocks.test.ts",
+        "packages/server/src/admin/pages.integration.test.ts",
+        "tests/e2e/admin-navigation.spec.ts",
+        "cms-block-normalization.md"
+      ],
+      "destination": "packages/contracts/src/blocks.ts"
     },
     {
       "source": "src/lib/blocks/validate.ts",
@@ -993,6 +999,41 @@
     }
   ],
   "inventory": {
+    "blocks": [
+      "hero",
+      "servicesGrid",
+      "featureGrid",
+      "worksShowcase",
+      "processSteps",
+      "faqSection",
+      "ctaSection",
+      "pageHeader",
+      "richText",
+      "visionMission",
+      "numberedValues",
+      "numberedList",
+      "navCtaBanner",
+      "servicesDetail",
+      "worksFull",
+      "processFull",
+      "requestForm",
+      "contactInfo",
+      "heading",
+      "text",
+      "image",
+      "gallery",
+      "buttonLink",
+      "columns",
+      "simpleTable",
+      "divider",
+      "spacer"
+    ],
+    "containers": [
+      "section",
+      "container",
+      "row",
+      "column"
+    ],
     "models": [
       "Role",
       "User",

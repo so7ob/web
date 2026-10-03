@@ -218,5 +218,7 @@
       "sha256": "0ee3a77dd40ab8ad6b2336b69c4411b73e35fc924f5a3ccff7a8ce5273c2902c",
       "bytes": 358011
     }
-  ]
+  ],
+  "referenceLint": "passed",
+  "referenceTypecheck": "passed"
 }

@@ -181,8 +181,8 @@ export class PageAdministrationService {
         blocksAr = make(titleAr || titleEn);
         blocksEn = make(titleEn || titleAr);
       }
-      checkedBlocks(blocksAr);
-      checkedBlocks(blocksEn);
+      blocksAr = JSON.stringify(checkedBlocks(blocksAr));
+      blocksEn = JSON.stringify(checkedBlocks(blocksEn));
       const [max] = await r.query("SELECT MAX(`order`) n FROM Page"),
         id = newId(),
         now = new Date();
@@ -227,8 +227,7 @@ export class PageAdministrationService {
       }
       for (const key of ["draftBlocksAr", "draftBlocksEn"] as const)
         if (typeof body[key] === "string") {
-          checkedBlocks(body[key]);
-          updates[key] = body[key];
+          updates[key] = JSON.stringify(checkedBlocks(body[key]));
         }
       if (Object.keys(updates).length) {
         updates.draftUpdatedAt = new Date(
@@ -354,8 +353,8 @@ export class PageAdministrationService {
       await r.query(
         "UPDATE Page SET publishedBlocksAr=?,publishedBlocksEn=?,publishedAt=?,publishedById=?,status='published',updatedAt=UTC_TIMESTAMP(3) WHERE id=?",
         [
-          ar.length ? p.draftBlocksAr : null,
-          en.length ? p.draftBlocksEn : null,
+          ar.length ? JSON.stringify(ar) : null,
+          en.length ? JSON.stringify(en) : null,
           now,
           actor.id,
           id,
@@ -367,7 +366,7 @@ export class PageAdministrationService {
           pageId: id,
           locale,
           version: versions[locale],
-          blocks: locale === "ar" ? p.draftBlocksAr : p.draftBlocksEn,
+          blocks: JSON.stringify(locale === "ar" ? ar : en),
           authorId: actor.id,
         });
       await audit(
@@ -443,14 +442,12 @@ export class PageAdministrationService {
           versions.find((v) => v.locale === "ar")?.blocks ?? page.draftBlocksAr,
         en =
           versions.find((v) => v.locale === "en")?.blocks ?? page.draftBlocksEn;
-      checkedBlocks(ar);
-      checkedBlocks(en);
       // Source restores available locales and keeps a missing locale's current draft, without publishing.
       await r.query(
         "UPDATE Page SET draftBlocksAr=?,draftBlocksEn=?,draftUpdatedAt=?,draftUpdatedById=?,editorTouchedAt=UTC_TIMESTAMP(3),updatedAt=UTC_TIMESTAMP(3) WHERE id=?",
         [
-          ar,
-          en,
+          JSON.stringify(checkedBlocks(ar)),
+          JSON.stringify(checkedBlocks(en)),
           new Date(
             Math.max(Date.now(), (page.draftUpdatedAt?.getTime() ?? 0) + 1),
           ),

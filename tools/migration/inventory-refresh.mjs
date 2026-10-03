@@ -38,6 +38,8 @@ const apiFiles = sourceFiles.filter(path => path.includes('/src/app/api/') && pa
 const record = { source: 'https://github.com/so7ob/Website', sourceSHA: sha,
   previousSourceSHA: original.sourceSHA, verifiedAt, commits: compare.total_commits, files,
   inventory: {
+    blocks: [...readFileSync(resolve(snapshot, 'src/lib/blocks/types.ts'), 'utf8').matchAll(/^ {2}(\w+): z\.object\(/gm)].map(match => match[1]),
+    containers: JSON.parse(readFileSync(resolve(snapshot, 'src/lib/blocks/tree.ts'), 'utf8').match(/CONTAINER_TYPES = (\[[^\]]+\])/)[1]),
     models: [...readFileSync(resolve(snapshot, 'prisma/schema.prisma'), 'utf8').matchAll(/^model\s+(\w+)/gm)].map(match => match[1]),
     pages: sourceFiles.filter(path => path.endsWith('/page.tsx')).sort().map(path => relative(snapshot, path)),
     apiFiles, explicitHttpHandlers: apiFiles.reduce((sum, file) => sum + file.methods.length, 0),
@@ -49,7 +51,10 @@ if (existsSync(output)) {
   if (previous.sourceSHA !== sha) throw new Error('Archive the previous refresh cycle before replacing it');
   for (const file of record.files) {
     const prior = previous.files.find(entry => entry.source === file.source && entry.newSHA256 === file.newSHA256);
-    if (prior) { file.status = prior.status; file.evidence = prior.evidence; }
+    if (prior) {
+      file.status = prior.status; file.evidence = prior.evidence;
+      if (prior.destination) file.destination = prior.destination;
+    }
   }
 }
 writeFileSync(output, JSON.stringify(record, null, 2) + '\n');

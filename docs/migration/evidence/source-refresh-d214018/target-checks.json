@@ -1,0 +1,65 @@
+{
+  "recordedAt": "2026-10-03T18:34:02.653957+00:00",
+  "sourceSHA": "d214018f3337198d8e17e5e7efa535a846ba6be2",
+  "sourceLastVerifiedAt": "2026-10-03T18:33:25Z",
+  "sourceAdvanced": false,
+  "productionData": false,
+  "checks": {
+    "lint": "passed: standalone ESLint",
+    "typecheck": "passed",
+    "test": {
+      "passed": 177,
+      "failed": 0,
+      "database": "isolated MariaDB on loopback:3307; separate unit and browser databases"
+    },
+    "build": "passed: TypeScript workspaces and Vite browser/SSR",
+    "test:e2e": {
+      "passed": 64,
+      "failed": 0,
+      "retries": 0,
+      "scope": "existing journeys plus delayed login/profile chunks and refreshed block normalization across legacy/v1 routes"
+    },
+    "test:infra": "passed",
+    "git diff --check": "passed"
+  },
+  "codeSHA256": {
+    "packages/contracts/src/blocks.ts": "6a3b40b3b6b7e5b257946f3f4dbeeac5f0a8249a7f360496d435e7d549eccacd",
+    "packages/server/src/admin/pages.ts": "bf47ac695663a31a16e29b0bf7cd00155de05437dc5dd9704a9e7cae38bf5f90",
+    "tests/e2e/admin-navigation.spec.ts": "93f238f297f888dd0f80bb512fb5cae6f41570b6b176aecbdf8883c859b4c024",
+    "packages/server/src/admin/pages.integration.test.ts": "689b212f430971c4fa1a1ff7df16fc5b9e1d563408c3c545ce229beb882a1cc2",
+    "packages/contracts/src/blocks.test.ts": "da1ebc69d35f72460c85a676146f438254ace2d7a0f090be4ffdb4e74718f35b"
+  },
+  "earlierFailures": [
+    {
+      "test": "unit/integration on browser-seeded database",
+      "passed": 166,
+      "failed": 5,
+      "reason": "Persistent synthetic CMS conflicts with transfer empty-destination precondition. Preserved database; used a separately created unit database. No reset."
+    },
+    {
+      "test": "full browser after toast-helper correction before login hydration correction",
+      "passed": 55,
+      "failed": 1,
+      "reason": "Real pre-hydration login input loss; controlled regression reproduced; corrected in PR #20."
+    }
+  ],
+  "ci": {
+    "sourceRefresh": {
+      "sha": "909429bb65a4544c73dde010d0fbeb429df7c2c0",
+      "status": "success",
+      "url": "https://github.com/so7ob/web/actions/runs/37143922175"
+    },
+    "login": {
+      "sha": "4625c6110643e3f7821b675f5b4015e4651508dd",
+      "status": "success",
+      "url": "https://github.com/so7ob/web/actions/runs/37144049980"
+    },
+    "cms": "not yet pushed when recorded"
+  },
+  "limitations": [
+    "Source schema and most refreshed features are pending; not full source parity",
+    "Reference CI still runs the original historical import; refreshed reference checked locally",
+    "No completed performance or human visual acceptance",
+    "No production migration or complete operational restore rehearsal"
+  ]
+}
