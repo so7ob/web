@@ -1,0 +1,30 @@
+name: Migration checks
+on:
+  pull_request:
+    branches: [develop]
+permissions:
+  contents: read
+concurrency:
+  group: migration-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  reference:
+    name: Imported reference checks (transitional runtime)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24.21.0'
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: '1.4.2'
+      - run: bun install --frozen-lockfile
+      - run: npm run lint
+      - run: npm run typecheck
+      - run: npm test
+      - run: npm run build
+        env:
+          DATABASE_URL: file:./ci-build.db
+          NEXT_PUBLIC_SITE_URL: http://localhost:3000
+      - run: git diff --check

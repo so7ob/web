@@ -1,0 +1,218 @@
+{
+  "sourceSHA": "5321b7fd11db421c83290b262f276811e5f04e5f",
+  "fixture": "8 synthetic users, 1 request, 1 inquiry, source seeded pages",
+  "concurrency": 1,
+  "productionCapacityClaim": false,
+  "results": [
+    {
+      "route": "/ar",
+      "repeat": 0,
+      "samples": 50,
+      "p50": 30.40716799999973,
+      "p95": 49.82991300000003
+    },
+    {
+      "route": "/ar",
+      "repeat": 1,
+      "samples": 50,
+      "p50": 25.21003900000005,
+      "p95": 36.69396000000006
+    },
+    {
+      "route": "/ar",
+      "repeat": 2,
+      "samples": 50,
+      "p50": 27.763762999999926,
+      "p95": 40.887133999999605
+    },
+    {
+      "route": "/ar",
+      "repeat": 3,
+      "samples": 50,
+      "p50": 25.67957099999967,
+      "p95": 43.9924689999998
+    },
+    {
+      "route": "/ar",
+      "repeat": 4,
+      "samples": 50,
+      "p50": 24.85952400000042,
+      "p95": 32.37240600000041
+    },
+    {
+      "route": "/en",
+      "repeat": 0,
+      "samples": 50,
+      "p50": 22.542719000000034,
+      "p95": 41.78165600000102
+    },
+    {
+      "route": "/en",
+      "repeat": 1,
+      "samples": 50,
+      "p50": 23.02713500000027,
+      "p95": 36.76834400000007
+    },
+    {
+      "route": "/en",
+      "repeat": 2,
+      "samples": 50,
+      "p50": 22.91866999999911,
+      "p95": 29.903933999999936
+    },
+    {
+      "route": "/en",
+      "repeat": 3,
+      "samples": 50,
+      "p50": 21.661950000001525,
+      "p95": 33.45553199999995
+    },
+    {
+      "route": "/en",
+      "repeat": 4,
+      "samples": 50,
+      "p50": 23.115372000000207,
+      "p95": 36.42346400000133
+    },
+    {
+      "route": "/api/admin/requests",
+      "repeat": 0,
+      "samples": 50,
+      "p50": 8.764204999999492,
+      "p95": 11.374751999999717
+    },
+    {
+      "route": "/api/admin/requests",
+      "repeat": 1,
+      "samples": 50,
+      "p50": 7.824040999999852,
+      "p95": 9.370103999999628
+    },
+    {
+      "route": "/api/admin/requests",
+      "repeat": 2,
+      "samples": 50,
+      "p50": 8.256188999999722,
+      "p95": 13.460570999999618
+    },
+    {
+      "route": "/api/admin/requests",
+      "repeat": 3,
+      "samples": 50,
+      "p50": 9.32932399999845,
+      "p95": 12.737929000000804
+    },
+    {
+      "route": "/api/admin/requests",
+      "repeat": 4,
+      "samples": 50,
+      "p50": 9.527036000001317,
+      "p95": 16.289040000001478
+    },
+    {
+      "route": "/api/admin/inquiries",
+      "repeat": 0,
+      "samples": 50,
+      "p50": 7.483034000000771,
+      "p95": 10.305293000001257
+    },
+    {
+      "route": "/api/admin/inquiries",
+      "repeat": 1,
+      "samples": 50,
+      "p50": 8.077810999999201,
+      "p95": 12.962574000001041
+    },
+    {
+      "route": "/api/admin/inquiries",
+      "repeat": 2,
+      "samples": 50,
+      "p50": 8.767879999999423,
+      "p95": 11.589015000001382
+    },
+    {
+      "route": "/api/admin/inquiries",
+      "repeat": 3,
+      "samples": 50,
+      "p50": 7.746444000000338,
+      "p95": 10.453279000001203
+    },
+    {
+      "route": "/api/admin/inquiries",
+      "repeat": 4,
+      "samples": 50,
+      "p50": 8.528652000000875,
+      "p95": 14.117010000001756
+    },
+    {
+      "route": "/api/admin/dashboard",
+      "repeat": 0,
+      "samples": 50,
+      "p50": 10.46929000000091,
+      "p95": 16.930419000000256
+    },
+    {
+      "route": "/api/admin/dashboard",
+      "repeat": 1,
+      "samples": 50,
+      "p50": 9.651653000000806,
+      "p95": 12.89448800000173
+    },
+    {
+      "route": "/api/admin/dashboard",
+      "repeat": 2,
+      "samples": 50,
+      "p50": 10.002975999999762,
+      "p95": 13.62399699999878
+    },
+    {
+      "route": "/api/admin/dashboard",
+      "repeat": 3,
+      "samples": 50,
+      "p50": 9.136666999998852,
+      "p95": 11.618340000000899
+    },
+    {
+      "route": "/api/admin/dashboard",
+      "repeat": 4,
+      "samples": 50,
+      "p50": 8.748329999998532,
+      "p95": 12.826345999998011
+    },
+    {
+      "route": "/api/admin/pages",
+      "repeat": 0,
+      "samples": 50,
+      "p50": 6.217525000000023,
+      "p95": 8.7532910000009
+    },
+    {
+      "route": "/api/admin/pages",
+      "repeat": 1,
+      "samples": 50,
+      "p50": 6.994975000001432,
+      "p95": 8.330698999998276
+    },
+    {
+      "route": "/api/admin/pages",
+      "repeat": 2,
+      "samples": 50,
+      "p50": 6.265725000001112,
+      "p95": 8.068821000000753
+    },
+    {
+      "route": "/api/admin/pages",
+      "repeat": 3,
+      "samples": 50,
+      "p50": 7.121611999999004,
+      "p95": 11.552521000001434
+    },
+    {
+      "route": "/api/admin/pages",
+      "repeat": 4,
+      "samples": 50,
+      "p50": 7.33154999999897,
+      "p95": 10.361005999999179
+    }
+  ]
+}

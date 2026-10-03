@@ -1,0 +1,529 @@
+{
+  "sourceSHA": "5321b7fd11db421c83290b262f276811e5f04e5f",
+  "node": "24.21.0",
+  "bun": "1.4.2",
+  "checks": {
+    "frozenInstall": 0,
+    "sourceMigrations": 0,
+    "sourceSeed": 0,
+    "referenceBuild": 0,
+    "importLint": 0,
+    "importTypecheck": 0,
+    "tests": {
+      "vitest": 127,
+      "bun": 6
+    }
+  },
+  "browserRuns": 40,
+  "javascriptErrors": 0,
+  "inheritedAxe": [
+    {
+      "name": "home",
+      "route": "/ar",
+      "actor": null,
+      "width": 375,
+      "axe": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "targets": [
+            [
+              ".bg-green-600"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "name": "contact",
+      "route": "/ar/contact",
+      "actor": null,
+      "width": 375,
+      "axe": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "targets": [
+            [
+              ".mt-1\\.5.ltr-isolate.text-slate-400"
+            ],
+            [
+              "label[for=\"company\"] > .ms-1.font-normal.text-slate-400"
+            ],
+            [
+              "label[for=\"phone\"] > .ms-1.font-normal.text-slate-400"
+            ],
+            [
+              "label[for=\"referenceUrl\"] > .ms-1.font-normal.text-slate-400"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "name": "works",
+      "route": "/ar/works",
+      "actor": null,
+      "width": 375,
+      "axe": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "targets": [
+            [
+              ".bg-green-600"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "name": "admin",
+      "route": "/ar/admin",
+      "actor": "admin",
+      "width": 375,
+      "axe": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "targets": [
+            [
+              "a[aria-label=\"إجمالي المستخدمين: 8\"] > .mt-0\\.5.text-muted-foreground\\/70.text-\\[11px\\]"
+            ],
+            [
+              "a[aria-label=\"طلبات مفتوحة: 1\"] > .mt-0\\.5.text-muted-foreground\\/70.text-\\[11px\\]"
+            ],
+            [
+              ".hover\\:-translate-y-0\\.5.hover\\:shadow-lg.hover\\:shadow-navy\\/10:nth-child(7) > .mt-0\\.5.text-muted-foreground\\/70.text-\\[11px\\]"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "name": "editor",
+      "route": "/ar/admin/pages/cmurepgv80000g9h7v2kqe5sb/edit",
+      "actor": "admin",
+      "width": 375,
+      "axe": [
+        {
+          "id": "aria-valid-attr-value",
+          "impact": "critical",
+          "targets": [
+            [
+              "#radix-_r_0_-trigger-ar"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "name": "content-editor",
+      "route": "/ar/admin",
+      "actor": "editor",
+      "width": 375,
+      "axe": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "targets": [
+            [
+              ".mt-0\\.5"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "name": "home",
+      "route": "/en",
+      "actor": null,
+      "width": 375,
+      "axe": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "targets": [
+            [
+              ".bg-green-600"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "name": "contact",
+      "route": "/en/contact",
+      "actor": null,
+      "width": 375,
+      "axe": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "targets": [
+            [
+              ".mt-1\\.5.ltr-isolate.text-slate-400"
+            ],
+            [
+              ".mt-1\\.5.leading-6.text-slate-400"
+            ],
+            [
+              "label[for=\"company\"] > .ms-1.font-normal.text-slate-400"
+            ],
+            [
+              "label[for=\"phone\"] > .ms-1.font-normal.text-slate-400"
+            ],
+            [
+              "label[for=\"referenceUrl\"] > .ms-1.font-normal.text-slate-400"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "name": "works",
+      "route": "/en/works",
+      "actor": null,
+      "width": 375,
+      "axe": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "targets": [
+            [
+              ".bg-green-600"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "name": "admin",
+      "route": "/en/admin",
+      "actor": "admin",
+      "width": 375,
+      "axe": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "targets": [
+            [
+              "a[aria-label=\"Total users: 8\"] > .mt-0\\.5.text-muted-foreground\\/70.text-\\[11px\\]"
+            ],
+            [
+              "a[aria-label=\"Open requests: 1\"] > .mt-0\\.5.text-muted-foreground\\/70.text-\\[11px\\]"
+            ],
+            [
+              "a[aria-label=\"Overdue replies: 0\"] > .mt-0\\.5.text-muted-foreground\\/70.text-\\[11px\\]"
+            ],
+            [
+              ".hover\\:-translate-y-0\\.5.hover\\:shadow-lg.hover\\:shadow-navy\\/10:nth-child(7) > .mt-0\\.5.text-muted-foreground\\/70.text-\\[11px\\]"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "name": "editor",
+      "route": "/en/admin/pages/cmurepgv80000g9h7v2kqe5sb/edit",
+      "actor": "admin",
+      "width": 375,
+      "axe": [
+        {
+          "id": "aria-valid-attr-value",
+          "impact": "critical",
+          "targets": [
+            [
+              "#radix-_r_0_-trigger-en"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "name": "content-editor",
+      "route": "/en/admin",
+      "actor": "editor",
+      "width": 375,
+      "axe": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "targets": [
+            [
+              ".mt-0\\.5"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "name": "home",
+      "route": "/ar",
+      "actor": null,
+      "width": 1280,
+      "axe": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "targets": [
+            [
+              ".bg-green-600"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "name": "contact",
+      "route": "/ar/contact",
+      "actor": null,
+      "width": 1280,
+      "axe": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "targets": [
+            [
+              ".bottom-4"
+            ],
+            [
+              ".mt-1\\.5.ltr-isolate.text-slate-400"
+            ],
+            [
+              "label[for=\"company\"] > .ms-1.font-normal.text-slate-400"
+            ],
+            [
+              "label[for=\"phone\"] > .ms-1.font-normal.text-slate-400"
+            ],
+            [
+              "label[for=\"referenceUrl\"] > .ms-1.font-normal.text-slate-400"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "name": "works",
+      "route": "/ar/works",
+      "actor": null,
+      "width": 1280,
+      "axe": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "targets": [
+            [
+              ".bottom-4"
+            ],
+            [
+              ".gap-2:nth-child(3) > .sm\\:inline.hidden.text-slate-400"
+            ],
+            [
+              ".bg-green-600"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "name": "admin",
+      "route": "/ar/admin",
+      "actor": "admin",
+      "width": 1280,
+      "axe": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "targets": [
+            [
+              "a[aria-label=\"إجمالي المستخدمين: 8\"] > .mt-0\\.5.text-muted-foreground\\/70.text-\\[11px\\]"
+            ],
+            [
+              "a[aria-label=\"طلبات مفتوحة: 1\"] > .mt-0\\.5.text-muted-foreground\\/70.text-\\[11px\\]"
+            ],
+            [
+              ".hover\\:-translate-y-0\\.5.hover\\:shadow-lg.hover\\:shadow-navy\\/10:nth-child(7) > .mt-0\\.5.text-muted-foreground\\/70.text-\\[11px\\]"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "name": "editor",
+      "route": "/ar/admin/pages/cmurepgv80000g9h7v2kqe5sb/edit",
+      "actor": "admin",
+      "width": 1280,
+      "axe": [
+        {
+          "id": "aria-valid-attr-value",
+          "impact": "critical",
+          "targets": [
+            [
+              "#radix-_r_0_-trigger-ar"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "name": "content-editor",
+      "route": "/ar/admin",
+      "actor": "editor",
+      "width": 1280,
+      "axe": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "targets": [
+            [
+              ".mt-0\\.5"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "name": "home",
+      "route": "/en",
+      "actor": null,
+      "width": 1280,
+      "axe": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "targets": [
+            [
+              ".bg-green-600"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "name": "contact",
+      "route": "/en/contact",
+      "actor": null,
+      "width": 1280,
+      "axe": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "targets": [
+            [
+              ".bottom-4"
+            ],
+            [
+              ".mt-1\\.5.ltr-isolate.text-slate-400"
+            ],
+            [
+              ".mt-1\\.5.leading-6.text-slate-400"
+            ],
+            [
+              "label[for=\"company\"] > .ms-1.font-normal.text-slate-400"
+            ],
+            [
+              "label[for=\"phone\"] > .ms-1.font-normal.text-slate-400"
+            ],
+            [
+              "label[for=\"referenceUrl\"] > .ms-1.font-normal.text-slate-400"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "name": "works",
+      "route": "/en/works",
+      "actor": null,
+      "width": 1280,
+      "axe": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "targets": [
+            [
+              ".bottom-4"
+            ],
+            [
+              ".gap-2:nth-child(2) > .sm\\:inline.hidden.text-slate-400"
+            ],
+            [
+              ".gap-2:nth-child(3) > .sm\\:inline.hidden.text-slate-400"
+            ],
+            [
+              ".bg-green-600"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "name": "admin",
+      "route": "/en/admin",
+      "actor": "admin",
+      "width": 1280,
+      "axe": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "targets": [
+            [
+              "a[aria-label=\"Total users: 8\"] > .mt-0\\.5.text-muted-foreground\\/70.text-\\[11px\\]"
+            ],
+            [
+              "a[aria-label=\"Open requests: 1\"] > .mt-0\\.5.text-muted-foreground\\/70.text-\\[11px\\]"
+            ],
+            [
+              "a[aria-label=\"Overdue replies: 0\"] > .mt-0\\.5.text-muted-foreground\\/70.text-\\[11px\\]"
+            ],
+            [
+              ".hover\\:-translate-y-0\\.5.hover\\:shadow-lg.hover\\:shadow-navy\\/10:nth-child(7) > .mt-0\\.5.text-muted-foreground\\/70.text-\\[11px\\]"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "name": "editor",
+      "route": "/en/admin/pages/cmurepgv80000g9h7v2kqe5sb/edit",
+      "actor": "admin",
+      "width": 1280,
+      "axe": [
+        {
+          "id": "aria-valid-attr-value",
+          "impact": "critical",
+          "targets": [
+            [
+              "#radix-_r_0_-trigger-en"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "name": "content-editor",
+      "route": "/en/admin",
+      "actor": "editor",
+      "width": 1280,
+      "axe": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "targets": [
+            [
+              ".mt-0\\.5"
+            ]
+          ]
+        }
+      ]
+    }
+  ],
+  "limitations": [
+    "Screenshots cover ten representative screens per locale/viewport, not all interactions.",
+    "Performance samples use a small synthetic fixture at concurrency 1, not production capacity.",
+    "SQL query counts and complete behavioral contracts remain required before final acceptance.",
+    "Nested reference build inferred destination workspace root; next start serves the successful reference build.",
+    "Original source and production data were never changed."
+  ]
+}
