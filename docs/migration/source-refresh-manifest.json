@@ -146,8 +146,12 @@
       "change": "modified",
       "oldSHA256": "5248932e81f7964bb1a82d7c3be6f7ddc1e8765f4de3fa782d18636719018a04",
       "newSHA256": "335489645d12ca8644580835b7b38fcbd27158ba9dd20560154bb5aa817acd51",
-      "status": "pending-review-and-port",
-      "evidence": []
+      "status": "ported-source-delta; hydration correction added; focused tests passed",
+      "evidence": [
+        "tests/e2e/login-hydration.spec.ts",
+        "evidence/administration/login-hydration-summary.json"
+      ],
+      "destination": "apps/web/src/components/auth/login-form.tsx"
     },
     {
       "source": "src/app/[locale]/track/page.tsx",
@@ -666,24 +670,30 @@
       "change": "modified",
       "oldSHA256": "b6313d2b4b3f1e6e1c9e10ce6902ace16cc0c6e22145b19c5961ee7b3f36e6c6",
       "newSHA256": "5a68e17a9d4b3d9681e6c27189a5b33df088b0034e5b5b44b55d9b6ab2758448",
-      "status": "pending-review-and-port",
-      "evidence": []
+      "status": "partially-ported: credentials message only; tracking/editor translations pending",
+      "evidence": [
+        "tests/e2e/login-hydration.spec.ts"
+      ]
     },
     {
       "source": "src/content/portal/en.ts",
       "change": "modified",
       "oldSHA256": "b3ce99fd4918c1e1c50fe89a2c9ab4d84d4fbd28a9df9d92f0b8ea6d0f21fb33",
       "newSHA256": "4794e360a9f9681a015e59638f97bfcf9b0bc04487175b050858b3494dd5fc5d",
-      "status": "pending-review-and-port",
-      "evidence": []
+      "status": "partially-ported: credentials message only; tracking/editor translations pending",
+      "evidence": [
+        "tests/e2e/login-hydration.spec.ts"
+      ]
     },
     {
       "source": "src/content/portal/types.ts",
       "change": "modified",
       "oldSHA256": "8ba0d2af759ea47c0190502abc2621b94aa3761aa406585fa5dcef3c9eceb4d1",
       "newSHA256": "cb6d6f2a24362cb8c610f11c0038f8eea7877b86fff4a910004a30992f5add36",
-      "status": "pending-review-and-port",
-      "evidence": []
+      "status": "partially-ported: credentials message only; tracking/editor translations pending",
+      "evidence": [
+        "tests/e2e/login-hydration.spec.ts"
+      ]
     },
     {
       "source": "src/instrumentation.ts",

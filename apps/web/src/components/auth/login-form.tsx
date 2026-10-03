@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "@/routing/link";
 import { useRouter } from "@/routing/navigation";
 import { signIn } from "@/routing/auth";
@@ -19,6 +19,8 @@ export function LoginForm({ locale, t, next }: { locale: Locale; t: PortalConten
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
+  const [interactive, setInteractive] = useState(false);
+  useEffect(() => { setInteractive(true); }, []);
 
   // هدف آمن داخلي فقط — نمنع الروابط الخارجية
   const safeNext = safeInternalPath(next);
@@ -42,8 +44,8 @@ export function LoginForm({ locale, t, next }: { locale: Locale; t: PortalConten
       });
 
       if (!result || !result.ok || result.error) {
-        // بيانات غير صحيحة أو حساب مقفل/موقوف — رسالة عامة لا تكشف السبب
-        setError(result?.error === "rateLimited" ? t.errors.rateLimited : t.errors.generic);
+        // نفس رسالة المصدر لكل رفض اعتماد؛ لا تكشف وجود الحساب أو حالته.
+        setError(result?.error === "rateLimited" ? t.errors.rateLimited : result?.error ? t.errors.credentials : t.errors.generic);
         setSubmitting(false);
         return;
       }
@@ -108,6 +110,7 @@ export function LoginForm({ locale, t, next }: { locale: Locale; t: PortalConten
           onChange={setEmail}
           autoComplete="email"
           dir="ltr"
+          disabled={!interactive}
         />
         <TextField
           id="login-password"
@@ -116,10 +119,11 @@ export function LoginForm({ locale, t, next }: { locale: Locale; t: PortalConten
           value={password}
           onChange={setPassword}
           autoComplete="current-password"
+          disabled={!interactive}
         />
         <Button
           type="submit"
-          disabled={submitting}
+          disabled={!interactive || submitting}
           className="h-12 w-full rounded-full bg-primary text-base font-bold text-primary-foreground shadow-md shadow-brand/20 transition-all hover:bg-brand-strong"
         >
           {submitting ? <Loader2 className="h-5 w-5 animate-spin" aria-hidden="true" /> : <LogIn className="h-5 w-5" aria-hidden="true" />}

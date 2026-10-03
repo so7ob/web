@@ -1,0 +1,33 @@
+{
+  "sourceSHA": "d214018f3337198d8e17e5e7efa535a846ba6be2",
+  "syntheticDataOnly": true,
+  "observedBeforeFix": {
+    "fullSuitePassed": 55,
+    "fullSuiteFailed": 1,
+    "failure": "English desktop portal login remained on /en/auth/login; form displayed required-field alert after inputs had been filled before hydration",
+    "log": ".migration/source-refresh/target-e2e.log",
+    "trace": ".migration/source-refresh/login-failure/trace.zip",
+    "controlledRegression": "Delaying the actual auth route JS reproduces enabled SSR controls before hydration; new regression fails on the pre-fix build"
+  },
+  "toastDiagnosis": {
+    "dependency": "sonner 2.0.7",
+    "cause": "Sonner's toasts effect resets expanded=false when toasts.length <= 1; an unmount after hover can reset this flag while the single front notification remains readable",
+    "correction": "Removed the internal expanded flag assertion only. Retained full opacity assertions on every visible notification and its content, removal/transition waits and all existing axe tags and baseline comparisons. No retries or excluded axe nodes.",
+    "focusedBefore": "6 passed",
+    "focusedAfter": "8 passed (portal and delayed profile hydration)",
+    "fullAfter": "55 passed, unrelated login hydration failure documented above; not a full pass"
+  },
+  "loginCorrection": "Disable email, password and submit until the mounted effect. Preserve first input via real keyboard, actual credential POST, session read and reload. Port the new source's bilingual credential-rejection message without disclosing account state.",
+  "validation": {
+    "focusedBrowser": {
+      "passed": 16,
+      "failed": 0,
+      "retries": 0
+    },
+    "fullBrowser": "pending",
+    "unitIntegration": "171 passed before login-only changes on isolated MariaDB",
+    "typecheck": "passed",
+    "build": "passed",
+    "lint": "passed"
+  }
+}

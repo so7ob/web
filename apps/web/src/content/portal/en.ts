@@ -44,6 +44,7 @@ export const portalEn: PortalContent = {
       wrongPassword: "Current password is incorrect",
       emailTaken: "Email already used by another account",
       rateLimited: "Too many attempts — wait a moment and retry",
+      credentials: "Sign-in failed — check your email and password (or the account is unavailable)",
       locked: "Account temporarily locked after repeated failed sign-ins",
       passwordWeak: "Weak password: 8+ characters with letters and numbers",
       passwordMismatch: "Passwords do not match",
