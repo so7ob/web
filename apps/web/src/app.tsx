@@ -44,5 +44,5 @@ function RouteError() {
   return status === 404 ? <NotFound /> : <main id="main-content" className="p-12"><h1>{status}</h1><a href="/ar">سُحُب — so7ob</a></main>;
 }
 export const routes = (loader: LoaderFunction): RouteObject[] => [{ id: 'root', path: '/', loader, shouldRevalidate: () => true, Component: App, ErrorBoundary: RouteError,
-  children: [{ path: ':locale/auth/:screen', lazy: () => import('./screens/auth') }, { path: '*', lazy: () => import('./screens/cms') }],
+  children: [{ path: ':locale/account', lazy:()=>import('./screens/account/layout'), children:[{index:true,lazy:()=>import('./screens/account/dashboard')},{path:'requests',lazy:()=>import('./screens/account/requests')},{path:'requests/new',lazy:()=>import('./screens/account/new-request')},{path:'requests/:id',lazy:()=>import('./screens/account/request-detail')},{path:'inquiries',lazy:()=>import('./screens/account/inquiries')},{path:'inquiries/:id',lazy:()=>import('./screens/account/inquiry-detail')},{path:'profile',lazy:()=>import('./screens/account/profile')},{path:'security',lazy:()=>import('./screens/account/security')},{path:'notifications',lazy:()=>import('./screens/account/notifications')} ] },{ path: ':locale/auth/:screen', lazy: () => import('./screens/auth') }, { path: '*', lazy: () => import('./screens/cms') }],
 }];

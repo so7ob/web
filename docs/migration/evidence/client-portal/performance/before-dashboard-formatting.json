@@ -1,0 +1,1180 @@
+{
+  "conditions": {
+    "rounds": 5,
+    "requestsPerRound": 50,
+    "concurrency": 1,
+    "viewport": [
+      1280,
+      900
+    ],
+    "compression": "gzip level 6 of initial script response bodies; unique cold browser context per sample",
+    "latencyThreshold": "larger of 10% and 20ms",
+    "javascriptThreshold": 1.05,
+    "scope": "nine account screens and three scoped read APIs; same host and synthetic fixture; source HTTP, target loopback HTTPS; alternating warm runs"
+  },
+  "runs": [
+    {
+      "site": "reference",
+      "route": "/ar/account",
+      "round": 1,
+      "p50": 24.317047999999886,
+      "p95": 31.271657000000232,
+      "initialJavaScriptGzipBytes": 171944
+    },
+    {
+      "site": "target",
+      "route": "/ar/account",
+      "round": 1,
+      "p50": 8.725142000000233,
+      "p95": 11.468764000000192,
+      "initialJavaScriptGzipBytes": 187952
+    },
+    {
+      "site": "target",
+      "route": "/ar/account",
+      "round": 2,
+      "p50": 8.201665999999932,
+      "p95": 9.624026999999842,
+      "initialJavaScriptGzipBytes": 187952
+    },
+    {
+      "site": "reference",
+      "route": "/ar/account",
+      "round": 2,
+      "p50": 23.767847999999503,
+      "p95": 28.378969999999754,
+      "initialJavaScriptGzipBytes": 171944
+    },
+    {
+      "site": "reference",
+      "route": "/ar/account",
+      "round": 3,
+      "p50": 22.89599999999882,
+      "p95": 33.0199190000003,
+      "initialJavaScriptGzipBytes": 171944
+    },
+    {
+      "site": "target",
+      "route": "/ar/account",
+      "round": 3,
+      "p50": 8.032880999999179,
+      "p95": 12.363471999999092,
+      "initialJavaScriptGzipBytes": 187952
+    },
+    {
+      "site": "target",
+      "route": "/ar/account",
+      "round": 4,
+      "p50": 7.564707000001363,
+      "p95": 10.06994400000076,
+      "initialJavaScriptGzipBytes": 187952
+    },
+    {
+      "site": "reference",
+      "route": "/ar/account",
+      "round": 4,
+      "p50": 22.509804000001168,
+      "p95": 28.039327000000412,
+      "initialJavaScriptGzipBytes": 171944
+    },
+    {
+      "site": "reference",
+      "route": "/ar/account",
+      "round": 5,
+      "p50": 22.534246999999596,
+      "p95": 28.916896999999153,
+      "initialJavaScriptGzipBytes": 171944
+    },
+    {
+      "site": "target",
+      "route": "/ar/account",
+      "round": 5,
+      "p50": 7.608189999999013,
+      "p95": 10.341330999999627,
+      "initialJavaScriptGzipBytes": 187952
+    },
+    {
+      "site": "reference",
+      "route": "/en/account/requests",
+      "round": 1,
+      "p50": 17.941831000000093,
+      "p95": 26.445580999999947,
+      "initialJavaScriptGzipBytes": 191831
+    },
+    {
+      "site": "target",
+      "route": "/en/account/requests",
+      "round": 1,
+      "p50": 7.289099000001443,
+      "p95": 9.22226099999898,
+      "initialJavaScriptGzipBytes": 197717
+    },
+    {
+      "site": "target",
+      "route": "/en/account/requests",
+      "round": 2,
+      "p50": 7.089155999998184,
+      "p95": 10.769514999999956,
+      "initialJavaScriptGzipBytes": 197717
+    },
+    {
+      "site": "reference",
+      "route": "/en/account/requests",
+      "round": 2,
+      "p50": 18.52807699999903,
+      "p95": 24.350557000001572,
+      "initialJavaScriptGzipBytes": 191831
+    },
+    {
+      "site": "reference",
+      "route": "/en/account/requests",
+      "round": 3,
+      "p50": 18.304018999999244,
+      "p95": 24.889870999999403,
+      "initialJavaScriptGzipBytes": 191831
+    },
+    {
+      "site": "target",
+      "route": "/en/account/requests",
+      "round": 3,
+      "p50": 7.069743000000017,
+      "p95": 8.021071000002848,
+      "initialJavaScriptGzipBytes": 197717
+    },
+    {
+      "site": "target",
+      "route": "/en/account/requests",
+      "round": 4,
+      "p50": 6.715588999999454,
+      "p95": 7.539316000002145,
+      "initialJavaScriptGzipBytes": 197717
+    },
+    {
+      "site": "reference",
+      "route": "/en/account/requests",
+      "round": 4,
+      "p50": 18.491140000001906,
+      "p95": 24.722539000002143,
+      "initialJavaScriptGzipBytes": 191831
+    },
+    {
+      "site": "reference",
+      "route": "/en/account/requests",
+      "round": 5,
+      "p50": 18.631185999998706,
+      "p95": 31.621338999997533,
+      "initialJavaScriptGzipBytes": 191831
+    },
+    {
+      "site": "target",
+      "route": "/en/account/requests",
+      "round": 5,
+      "p50": 7.006896999999299,
+      "p95": 9.953200999996625,
+      "initialJavaScriptGzipBytes": 197717
+    },
+    {
+      "site": "reference",
+      "route": "/ar/account/requests/new",
+      "round": 1,
+      "p50": 17.684433000002173,
+      "p95": 26.283134999997856,
+      "initialJavaScriptGzipBytes": 178491
+    },
+    {
+      "site": "target",
+      "route": "/ar/account/requests/new",
+      "round": 1,
+      "p50": 6.44810800000414,
+      "p95": 8.135389999995823,
+      "initialJavaScriptGzipBytes": 183939
+    },
+    {
+      "site": "target",
+      "route": "/ar/account/requests/new",
+      "round": 2,
+      "p50": 5.8543510000017704,
+      "p95": 7.319492999995418,
+      "initialJavaScriptGzipBytes": 183939
+    },
+    {
+      "site": "reference",
+      "route": "/ar/account/requests/new",
+      "round": 2,
+      "p50": 17.40543400000024,
+      "p95": 28.276621000004525,
+      "initialJavaScriptGzipBytes": 178491
+    },
+    {
+      "site": "reference",
+      "route": "/ar/account/requests/new",
+      "round": 3,
+      "p50": 18.014883999996528,
+      "p95": 25.446544999998878,
+      "initialJavaScriptGzipBytes": 178491
+    },
+    {
+      "site": "target",
+      "route": "/ar/account/requests/new",
+      "round": 3,
+      "p50": 5.866973999996844,
+      "p95": 7.060800999999628,
+      "initialJavaScriptGzipBytes": 183939
+    },
+    {
+      "site": "target",
+      "route": "/ar/account/requests/new",
+      "round": 4,
+      "p50": 5.5378879999989294,
+      "p95": 8.53634299999976,
+      "initialJavaScriptGzipBytes": 183939
+    },
+    {
+      "site": "reference",
+      "route": "/ar/account/requests/new",
+      "round": 4,
+      "p50": 17.686272999999346,
+      "p95": 29.259181999994325,
+      "initialJavaScriptGzipBytes": 178491
+    },
+    {
+      "site": "reference",
+      "route": "/ar/account/requests/new",
+      "round": 5,
+      "p50": 17.619688999999198,
+      "p95": 23.479615000003832,
+      "initialJavaScriptGzipBytes": 178491
+    },
+    {
+      "site": "target",
+      "route": "/ar/account/requests/new",
+      "round": 5,
+      "p50": 5.998117000002821,
+      "p95": 8.024740000000747,
+      "initialJavaScriptGzipBytes": 183939
+    },
+    {
+      "site": "reference",
+      "route": "/en/account/requests/migrationrequest",
+      "round": 1,
+      "p50": 16.781021999995573,
+      "p95": 25.25279600000067,
+      "initialJavaScriptGzipBytes": 187147
+    },
+    {
+      "site": "target",
+      "route": "/en/account/requests/migrationrequest",
+      "round": 1,
+      "p50": 5.664239000005182,
+      "p95": 9.31787500000064,
+      "initialJavaScriptGzipBytes": 193063
+    },
+    {
+      "site": "target",
+      "route": "/en/account/requests/migrationrequest",
+      "round": 2,
+      "p50": 5.935021000004781,
+      "p95": 7.9945410000000265,
+      "initialJavaScriptGzipBytes": 193063
+    },
+    {
+      "site": "reference",
+      "route": "/en/account/requests/migrationrequest",
+      "round": 2,
+      "p50": 17.217510999995284,
+      "p95": 25.041470999996818,
+      "initialJavaScriptGzipBytes": 187147
+    },
+    {
+      "site": "reference",
+      "route": "/en/account/requests/migrationrequest",
+      "round": 3,
+      "p50": 16.790542999995523,
+      "p95": 23.699923000000126,
+      "initialJavaScriptGzipBytes": 187147
+    },
+    {
+      "site": "target",
+      "route": "/en/account/requests/migrationrequest",
+      "round": 3,
+      "p50": 6.077567000000272,
+      "p95": 7.471088000005693,
+      "initialJavaScriptGzipBytes": 193063
+    },
+    {
+      "site": "target",
+      "route": "/en/account/requests/migrationrequest",
+      "round": 4,
+      "p50": 5.854485999996541,
+      "p95": 7.103368000003684,
+      "initialJavaScriptGzipBytes": 193063
+    },
+    {
+      "site": "reference",
+      "route": "/en/account/requests/migrationrequest",
+      "round": 4,
+      "p50": 16.573272999994515,
+      "p95": 20.976298000001407,
+      "initialJavaScriptGzipBytes": 187147
+    },
+    {
+      "site": "reference",
+      "route": "/en/account/requests/migrationrequest",
+      "round": 5,
+      "p50": 17.02422900000238,
+      "p95": 24.37354500000947,
+      "initialJavaScriptGzipBytes": 187147
+    },
+    {
+      "site": "target",
+      "route": "/en/account/requests/migrationrequest",
+      "round": 5,
+      "p50": 5.869209000011324,
+      "p95": 9.421780000004219,
+      "initialJavaScriptGzipBytes": 193063
+    },
+    {
+      "site": "reference",
+      "route": "/ar/account/inquiries",
+      "round": 1,
+      "p50": 18.990835999997216,
+      "p95": 24.598025999992387,
+      "initialJavaScriptGzipBytes": 209751
+    },
+    {
+      "site": "target",
+      "route": "/ar/account/inquiries",
+      "round": 1,
+      "p50": 6.752934000003734,
+      "p95": 14.185751999990316,
+      "initialJavaScriptGzipBytes": 214727
+    },
+    {
+      "site": "target",
+      "route": "/ar/account/inquiries",
+      "round": 2,
+      "p50": 6.5522429999982705,
+      "p95": 9.46231399998942,
+      "initialJavaScriptGzipBytes": 214727
+    },
+    {
+      "site": "reference",
+      "route": "/ar/account/inquiries",
+      "round": 2,
+      "p50": 17.79486199999519,
+      "p95": 25.500549000003957,
+      "initialJavaScriptGzipBytes": 209751
+    },
+    {
+      "site": "reference",
+      "route": "/ar/account/inquiries",
+      "round": 3,
+      "p50": 19.16750699999102,
+      "p95": 23.570776000007754,
+      "initialJavaScriptGzipBytes": 209751
+    },
+    {
+      "site": "target",
+      "route": "/ar/account/inquiries",
+      "round": 3,
+      "p50": 6.52297499999986,
+      "p95": 7.299338999990141,
+      "initialJavaScriptGzipBytes": 214727
+    },
+    {
+      "site": "target",
+      "route": "/ar/account/inquiries",
+      "round": 4,
+      "p50": 6.3604230000055395,
+      "p95": 8.946765999993659,
+      "initialJavaScriptGzipBytes": 214727
+    },
+    {
+      "site": "reference",
+      "route": "/ar/account/inquiries",
+      "round": 4,
+      "p50": 19.006606999988435,
+      "p95": 27.53225499999826,
+      "initialJavaScriptGzipBytes": 209751
+    },
+    {
+      "site": "reference",
+      "route": "/ar/account/inquiries",
+      "round": 5,
+      "p50": 18.958133000007365,
+      "p95": 33.040709000008064,
+      "initialJavaScriptGzipBytes": 209751
+    },
+    {
+      "site": "target",
+      "route": "/ar/account/inquiries",
+      "round": 5,
+      "p50": 6.3824880000029225,
+      "p95": 7.417822999996133,
+      "initialJavaScriptGzipBytes": 214727
+    },
+    {
+      "site": "reference",
+      "route": "/en/account/inquiries/migrationinquiry",
+      "round": 1,
+      "p50": 17.011188999997103,
+      "p95": 24.028810999996495,
+      "initialJavaScriptGzipBytes": 185147
+    },
+    {
+      "site": "target",
+      "route": "/en/account/inquiries/migrationinquiry",
+      "round": 1,
+      "p50": 5.814383999997517,
+      "p95": 6.257146999996621,
+      "initialJavaScriptGzipBytes": 191136
+    },
+    {
+      "site": "target",
+      "route": "/en/account/inquiries/migrationinquiry",
+      "round": 2,
+      "p50": 5.640943000005791,
+      "p95": 6.435719000000972,
+      "initialJavaScriptGzipBytes": 191136
+    },
+    {
+      "site": "reference",
+      "route": "/en/account/inquiries/migrationinquiry",
+      "round": 2,
+      "p50": 17.6557829999947,
+      "p95": 26.912584999998217,
+      "initialJavaScriptGzipBytes": 185147
+    },
+    {
+      "site": "reference",
+      "route": "/en/account/inquiries/migrationinquiry",
+      "round": 3,
+      "p50": 16.494203000009293,
+      "p95": 21.074676999996882,
+      "initialJavaScriptGzipBytes": 185147
+    },
+    {
+      "site": "target",
+      "route": "/en/account/inquiries/migrationinquiry",
+      "round": 3,
+      "p50": 5.809666999994079,
+      "p95": 9.017414000001736,
+      "initialJavaScriptGzipBytes": 191136
+    },
+    {
+      "site": "target",
+      "route": "/en/account/inquiries/migrationinquiry",
+      "round": 4,
+      "p50": 5.6953080000093905,
+      "p95": 6.6610340000042925,
+      "initialJavaScriptGzipBytes": 191136
+    },
+    {
+      "site": "reference",
+      "route": "/en/account/inquiries/migrationinquiry",
+      "round": 4,
+      "p50": 17.209130999995978,
+      "p95": 25.921884000010323,
+      "initialJavaScriptGzipBytes": 185147
+    },
+    {
+      "site": "reference",
+      "route": "/en/account/inquiries/migrationinquiry",
+      "round": 5,
+      "p50": 17.273120000012568,
+      "p95": 20.511152999999467,
+      "initialJavaScriptGzipBytes": 185147
+    },
+    {
+      "site": "target",
+      "route": "/en/account/inquiries/migrationinquiry",
+      "round": 5,
+      "p50": 5.944356000007247,
+      "p95": 7.782418999995571,
+      "initialJavaScriptGzipBytes": 191136
+    },
+    {
+      "site": "reference",
+      "route": "/en/account/profile",
+      "round": 1,
+      "p50": 18.828447000007145,
+      "p95": 24.040565999996033,
+      "initialJavaScriptGzipBytes": 195815
+    },
+    {
+      "site": "target",
+      "route": "/en/account/profile",
+      "round": 1,
+      "p50": 6.59018699999433,
+      "p95": 8.713943000009749,
+      "initialJavaScriptGzipBytes": 199036
+    },
+    {
+      "site": "target",
+      "route": "/en/account/profile",
+      "round": 2,
+      "p50": 6.423392999990028,
+      "p95": 8.565237000002526,
+      "initialJavaScriptGzipBytes": 199036
+    },
+    {
+      "site": "reference",
+      "route": "/en/account/profile",
+      "round": 2,
+      "p50": 17.807492000007187,
+      "p95": 23.623439999995753,
+      "initialJavaScriptGzipBytes": 195815
+    },
+    {
+      "site": "reference",
+      "route": "/en/account/profile",
+      "round": 3,
+      "p50": 18.216153000001214,
+      "p95": 22.52812800000538,
+      "initialJavaScriptGzipBytes": 195815
+    },
+    {
+      "site": "target",
+      "route": "/en/account/profile",
+      "round": 3,
+      "p50": 6.019419000003836,
+      "p95": 7.332987999994657,
+      "initialJavaScriptGzipBytes": 199036
+    },
+    {
+      "site": "target",
+      "route": "/en/account/profile",
+      "round": 4,
+      "p50": 6.437495000005583,
+      "p95": 7.412765999994008,
+      "initialJavaScriptGzipBytes": 199036
+    },
+    {
+      "site": "reference",
+      "route": "/en/account/profile",
+      "round": 4,
+      "p50": 17.898884000009275,
+      "p95": 22.805005999995046,
+      "initialJavaScriptGzipBytes": 195815
+    },
+    {
+      "site": "reference",
+      "route": "/en/account/profile",
+      "round": 5,
+      "p50": 18.570410000000265,
+      "p95": 22.910476999997627,
+      "initialJavaScriptGzipBytes": 195815
+    },
+    {
+      "site": "target",
+      "route": "/en/account/profile",
+      "round": 5,
+      "p50": 6.413375000003725,
+      "p95": 9.413207999998122,
+      "initialJavaScriptGzipBytes": 199036
+    },
+    {
+      "site": "reference",
+      "route": "/ar/account/security",
+      "round": 1,
+      "p50": 18.252866000009817,
+      "p95": 22.90838399999484,
+      "initialJavaScriptGzipBytes": 193202
+    },
+    {
+      "site": "target",
+      "route": "/ar/account/security",
+      "round": 1,
+      "p50": 5.781422999993083,
+      "p95": 6.912916999994195,
+      "initialJavaScriptGzipBytes": 190097
+    },
+    {
+      "site": "target",
+      "route": "/ar/account/security",
+      "round": 2,
+      "p50": 5.807471000007354,
+      "p95": 6.750826000003144,
+      "initialJavaScriptGzipBytes": 190097
+    },
+    {
+      "site": "reference",
+      "route": "/ar/account/security",
+      "round": 2,
+      "p50": 17.42300100000284,
+      "p95": 21.326344000000972,
+      "initialJavaScriptGzipBytes": 193202
+    },
+    {
+      "site": "reference",
+      "route": "/ar/account/security",
+      "round": 3,
+      "p50": 17.964696000010008,
+      "p95": 24.750058000005083,
+      "initialJavaScriptGzipBytes": 193202
+    },
+    {
+      "site": "target",
+      "route": "/ar/account/security",
+      "round": 3,
+      "p50": 6.073214000003645,
+      "p95": 7.077134999999544,
+      "initialJavaScriptGzipBytes": 190097
+    },
+    {
+      "site": "target",
+      "route": "/ar/account/security",
+      "round": 4,
+      "p50": 5.890741999988677,
+      "p95": 6.890459999995073,
+      "initialJavaScriptGzipBytes": 190097
+    },
+    {
+      "site": "reference",
+      "route": "/ar/account/security",
+      "round": 4,
+      "p50": 18.019327000001795,
+      "p95": 23.54719599999953,
+      "initialJavaScriptGzipBytes": 193202
+    },
+    {
+      "site": "reference",
+      "route": "/ar/account/security",
+      "round": 5,
+      "p50": 17.677045000004,
+      "p95": 22.8999829999957,
+      "initialJavaScriptGzipBytes": 193202
+    },
+    {
+      "site": "target",
+      "route": "/ar/account/security",
+      "round": 5,
+      "p50": 5.624020999995992,
+      "p95": 6.911852000004728,
+      "initialJavaScriptGzipBytes": 190097
+    },
+    {
+      "site": "reference",
+      "route": "/en/account/notifications",
+      "round": 1,
+      "p50": 16.922414000000572,
+      "p95": 21.745824999990873,
+      "initialJavaScriptGzipBytes": 183670
+    },
+    {
+      "site": "target",
+      "route": "/en/account/notifications",
+      "round": 1,
+      "p50": 5.52245699998457,
+      "p95": 6.532700000010664,
+      "initialJavaScriptGzipBytes": 188837
+    },
+    {
+      "site": "target",
+      "route": "/en/account/notifications",
+      "round": 2,
+      "p50": 5.806554999988293,
+      "p95": 6.907751999999164,
+      "initialJavaScriptGzipBytes": 188837
+    },
+    {
+      "site": "reference",
+      "route": "/en/account/notifications",
+      "round": 2,
+      "p50": 17.01930600000196,
+      "p95": 20.382483000023058,
+      "initialJavaScriptGzipBytes": 183670
+    },
+    {
+      "site": "reference",
+      "route": "/en/account/notifications",
+      "round": 3,
+      "p50": 17.30312899997807,
+      "p95": 24.537134999991395,
+      "initialJavaScriptGzipBytes": 183670
+    },
+    {
+      "site": "target",
+      "route": "/en/account/notifications",
+      "round": 3,
+      "p50": 5.864996999996947,
+      "p95": 7.920572999981232,
+      "initialJavaScriptGzipBytes": 188837
+    },
+    {
+      "site": "target",
+      "route": "/en/account/notifications",
+      "round": 4,
+      "p50": 6.051078999997117,
+      "p95": 9.386104000004707,
+      "initialJavaScriptGzipBytes": 188837
+    },
+    {
+      "site": "reference",
+      "route": "/en/account/notifications",
+      "round": 4,
+      "p50": 15.969492999982322,
+      "p95": 20.506976000004215,
+      "initialJavaScriptGzipBytes": 183670
+    },
+    {
+      "site": "reference",
+      "route": "/en/account/notifications",
+      "round": 5,
+      "p50": 16.12644300001557,
+      "p95": 25.75344899998163,
+      "initialJavaScriptGzipBytes": 183670
+    },
+    {
+      "site": "target",
+      "route": "/en/account/notifications",
+      "round": 5,
+      "p50": 6.324712000001455,
+      "p95": 7.691003000014462,
+      "initialJavaScriptGzipBytes": 188837
+    },
+    {
+      "site": "reference",
+      "route": "/api/account/requests",
+      "round": 1,
+      "p50": 6.555116999981692,
+      "p95": 7.356597000005422,
+      "initialJavaScriptGzipBytes": null
+    },
+    {
+      "site": "target",
+      "route": "/api/account/requests",
+      "round": 1,
+      "p50": 3.6371459999936633,
+      "p95": 4.385305000003427,
+      "initialJavaScriptGzipBytes": null
+    },
+    {
+      "site": "target",
+      "route": "/api/account/requests",
+      "round": 2,
+      "p50": 3.3781599999929313,
+      "p95": 5.008601000008639,
+      "initialJavaScriptGzipBytes": null
+    },
+    {
+      "site": "reference",
+      "route": "/api/account/requests",
+      "round": 2,
+      "p50": 6.260897000000114,
+      "p95": 7.376600999996299,
+      "initialJavaScriptGzipBytes": null
+    },
+    {
+      "site": "reference",
+      "route": "/api/account/requests",
+      "round": 3,
+      "p50": 6.324691999994684,
+      "p95": 6.971250000002328,
+      "initialJavaScriptGzipBytes": null
+    },
+    {
+      "site": "target",
+      "route": "/api/account/requests",
+      "round": 3,
+      "p50": 3.4366589999990538,
+      "p95": 3.9317429999937303,
+      "initialJavaScriptGzipBytes": null
+    },
+    {
+      "site": "target",
+      "route": "/api/account/requests",
+      "round": 4,
+      "p50": 3.532777000014903,
+      "p95": 4.1888400000170805,
+      "initialJavaScriptGzipBytes": null
+    },
+    {
+      "site": "reference",
+      "route": "/api/account/requests",
+      "round": 4,
+      "p50": 6.550239999982296,
+      "p95": 7.54076800000621,
+      "initialJavaScriptGzipBytes": null
+    },
+    {
+      "site": "reference",
+      "route": "/api/account/requests",
+      "round": 5,
+      "p50": 6.582383000000846,
+      "p95": 7.830719999998109,
+      "initialJavaScriptGzipBytes": null
+    },
+    {
+      "site": "target",
+      "route": "/api/account/requests",
+      "round": 5,
+      "p50": 3.913671999995131,
+      "p95": 5.16895600000862,
+      "initialJavaScriptGzipBytes": null
+    },
+    {
+      "site": "reference",
+      "route": "/api/account/requests/migrationrequest",
+      "round": 1,
+      "p50": 7.568854000011925,
+      "p95": 8.801244000002043,
+      "initialJavaScriptGzipBytes": null
+    },
+    {
+      "site": "target",
+      "route": "/api/account/requests/migrationrequest",
+      "round": 1,
+      "p50": 4.3177490000089165,
+      "p95": 4.839221000001999,
+      "initialJavaScriptGzipBytes": null
+    },
+    {
+      "site": "target",
+      "route": "/api/account/requests/migrationrequest",
+      "round": 2,
+      "p50": 4.262812000000849,
+      "p95": 4.820460000017192,
+      "initialJavaScriptGzipBytes": null
+    },
+    {
+      "site": "reference",
+      "route": "/api/account/requests/migrationrequest",
+      "round": 2,
+      "p50": 7.308757999999216,
+      "p95": 8.715094999992289,
+      "initialJavaScriptGzipBytes": null
+    },
+    {
+      "site": "reference",
+      "route": "/api/account/requests/migrationrequest",
+      "round": 3,
+      "p50": 7.350697999994736,
+      "p95": 8.265795999992406,
+      "initialJavaScriptGzipBytes": null
+    },
+    {
+      "site": "target",
+      "route": "/api/account/requests/migrationrequest",
+      "round": 3,
+      "p50": 4.18239000000176,
+      "p95": 7.131671000010101,
+      "initialJavaScriptGzipBytes": null
+    },
+    {
+      "site": "target",
+      "route": "/api/account/requests/migrationrequest",
+      "round": 4,
+      "p50": 4.061532000021543,
+      "p95": 4.668199999985518,
+      "initialJavaScriptGzipBytes": null
+    },
+    {
+      "site": "reference",
+      "route": "/api/account/requests/migrationrequest",
+      "round": 4,
+      "p50": 7.486846999992849,
+      "p95": 8.387593999999808,
+      "initialJavaScriptGzipBytes": null
+    },
+    {
+      "site": "reference",
+      "route": "/api/account/requests/migrationrequest",
+      "round": 5,
+      "p50": 7.5045309999841265,
+      "p95": 8.167824000003748,
+      "initialJavaScriptGzipBytes": null
+    },
+    {
+      "site": "target",
+      "route": "/api/account/requests/migrationrequest",
+      "round": 5,
+      "p50": 4.377454000001308,
+      "p95": 4.974909000011394,
+      "initialJavaScriptGzipBytes": null
+    },
+    {
+      "site": "reference",
+      "route": "/api/account/inquiries",
+      "round": 1,
+      "p50": 6.369544000015594,
+      "p95": 8.725169000012102,
+      "initialJavaScriptGzipBytes": null
+    },
+    {
+      "site": "target",
+      "route": "/api/account/inquiries",
+      "round": 1,
+      "p50": 3.547690000006696,
+      "p95": 4.412944999989122,
+      "initialJavaScriptGzipBytes": null
+    },
+    {
+      "site": "target",
+      "route": "/api/account/inquiries",
+      "round": 2,
+      "p50": 3.504272000020137,
+      "p95": 4.0871489999990445,
+      "initialJavaScriptGzipBytes": null
+    },
+    {
+      "site": "reference",
+      "route": "/api/account/inquiries",
+      "round": 2,
+      "p50": 6.223439000023063,
+      "p95": 7.121916999982204,
+      "initialJavaScriptGzipBytes": null
+    },
+    {
+      "site": "reference",
+      "route": "/api/account/inquiries",
+      "round": 3,
+      "p50": 6.358254000020679,
+      "p95": 7.177462000021478,
+      "initialJavaScriptGzipBytes": null
+    },
+    {
+      "site": "target",
+      "route": "/api/account/inquiries",
+      "round": 3,
+      "p50": 3.503639000002295,
+      "p95": 4.280754000006709,
+      "initialJavaScriptGzipBytes": null
+    },
+    {
+      "site": "target",
+      "route": "/api/account/inquiries",
+      "round": 4,
+      "p50": 3.5529260000039358,
+      "p95": 4.284057000011671,
+      "initialJavaScriptGzipBytes": null
+    },
+    {
+      "site": "reference",
+      "route": "/api/account/inquiries",
+      "round": 4,
+      "p50": 6.3566289999871515,
+      "p95": 7.809374000004027,
+      "initialJavaScriptGzipBytes": null
+    },
+    {
+      "site": "reference",
+      "route": "/api/account/inquiries",
+      "round": 5,
+      "p50": 6.302763000014238,
+      "p95": 7.617849000002025,
+      "initialJavaScriptGzipBytes": null
+    },
+    {
+      "site": "target",
+      "route": "/api/account/inquiries",
+      "round": 5,
+      "p50": 3.5351990000053775,
+      "p95": 4.112693000002764,
+      "initialJavaScriptGzipBytes": null
+    }
+  ],
+  "comparison": [
+    {
+      "route": "/ar/account",
+      "p50": {
+        "reference": 23.204989399999796,
+        "target": 8.026517199999944,
+        "pass": true
+      },
+      "p95": {
+        "reference": 29.92535399999997,
+        "target": 10.773507599999903,
+        "pass": true
+      },
+      "initialJavaScriptGzipBytes": {
+        "reference": 171944,
+        "target": 187952,
+        "pass": false
+      }
+    },
+    {
+      "route": "/en/account/requests",
+      "p50": {
+        "reference": 18.379250599999796,
+        "target": 7.034096799999679,
+        "pass": true
+      },
+      "p95": {
+        "reference": 26.40597740000012,
+        "target": 9.10107280000011,
+        "pass": true
+      },
+      "initialJavaScriptGzipBytes": {
+        "reference": 191831,
+        "target": 197717,
+        "pass": true
+      }
+    },
+    {
+      "route": "/ar/account/requests/new",
+      "p50": {
+        "reference": 17.682142599999498,
+        "target": 5.941087600000901,
+        "pass": true
+      },
+      "p95": {
+        "reference": 26.549019599999884,
+        "target": 7.815353399998275,
+        "pass": true
+      },
+      "initialJavaScriptGzipBytes": {
+        "reference": 178491,
+        "target": 183939,
+        "pass": true
+      }
+    },
+    {
+      "route": "/en/account/requests/migrationrequest",
+      "p50": {
+        "reference": 16.877315599996656,
+        "target": 5.88010440000362,
+        "pass": true
+      },
+      "p95": {
+        "reference": 23.868806600001697,
+        "target": 8.261730400002852,
+        "pass": true
+      },
+      "initialJavaScriptGzipBytes": {
+        "reference": 187147,
+        "target": 193063,
+        "pass": true
+      }
+    },
+    {
+      "route": "/ar/account/inquiries",
+      "p50": {
+        "reference": 18.783588999995846,
+        "target": 6.5142126000020655,
+        "pass": true
+      },
+      "p95": {
+        "reference": 26.848463000002084,
+        "target": 9.462398799991934,
+        "pass": true
+      },
+      "initialJavaScriptGzipBytes": {
+        "reference": 209751,
+        "target": 214727,
+        "pass": true
+      }
+    },
+    {
+      "route": "/en/account/inquiries/migrationinquiry",
+      "p50": {
+        "reference": 17.12868520000193,
+        "target": 5.780931600002805,
+        "pass": true
+      },
+      "p95": {
+        "reference": 23.689822000000277,
+        "target": 7.230746599999838,
+        "pass": true
+      },
+      "initialJavaScriptGzipBytes": {
+        "reference": 185147,
+        "target": 191136,
+        "pass": true
+      }
+    },
+    {
+      "route": "/en/account/profile",
+      "p50": {
+        "reference": 18.26427720000502,
+        "target": 6.3767737999995004,
+        "pass": true
+      },
+      "p95": {
+        "reference": 23.181523399997968,
+        "target": 8.287628399999813,
+        "pass": true
+      },
+      "initialJavaScriptGzipBytes": {
+        "reference": 195815,
+        "target": 199036,
+        "pass": true
+      }
+    },
+    {
+      "route": "/ar/account/security",
+      "p50": {
+        "reference": 17.867387000005692,
+        "target": 5.83537419999775,
+        "pass": true
+      },
+      "p95": {
+        "reference": 23.086392999999227,
+        "target": 6.908637999999337,
+        "pass": true
+      },
+      "initialJavaScriptGzipBytes": {
+        "reference": 193202,
+        "target": 190097,
+        "pass": true
+      }
+    },
+    {
+      "route": "/en/account/notifications",
+      "p50": {
+        "reference": 16.6681569999957,
+        "target": 5.9139599999936765,
+        "pass": true
+      },
+      "p95": {
+        "reference": 22.585173599998235,
+        "target": 7.687626400002046,
+        "pass": true
+      },
+      "initialJavaScriptGzipBytes": {
+        "reference": 183670,
+        "target": 188837,
+        "pass": true
+      }
+    },
+    {
+      "route": "/api/account/requests",
+      "p50": {
+        "reference": 6.454665799991926,
+        "target": 3.5796827999991363,
+        "pass": true
+      },
+      "p95": {
+        "reference": 7.415187200001673,
+        "target": 4.5366890000063,
+        "pass": true
+      }
+    },
+    {
+      "route": "/api/account/requests/migrationrequest",
+      "p50": {
+        "reference": 7.443937599996571,
+        "target": 4.240387400006876,
+        "pass": true
+      },
+      "p95": {
+        "reference": 8.467510599998059,
+        "target": 5.286892200005241,
+        "pass": true
+      }
+    },
+    {
+      "route": "/api/account/inquiries",
+      "p50": {
+        "reference": 6.322125800012145,
+        "target": 3.5287452000076884,
+        "pass": true
+      },
+      "p95": {
+        "reference": 7.690354200004367,
+        "target": 4.2355196000018625,
+        "pass": true
+      }
+    }
+  ]
+}

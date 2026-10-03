@@ -72,6 +72,12 @@ jobs:
       - run: npm run test:auth
       - run: npx playwright install --with-deps chromium
       - run: npm run test:e2e
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: synthetic-browser-failure
+          path: test-results/
+          retention-days: 7
       - run: sudo apt-get update && sudo apt-get install -y nginx openssl
       - run: npm run test:infra
       - run: git diff --check

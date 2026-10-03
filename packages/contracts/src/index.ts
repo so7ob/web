@@ -6,3 +6,5 @@ export * from './requests.js';
 export * from './validation.js';
 export * from './blocks.js';
 export * from './resource-access.js';
+
+export type { AccountDashboardData,AccountProfileData,AccountScreen,AccountPayload,AccountIdentity } from './account.js';

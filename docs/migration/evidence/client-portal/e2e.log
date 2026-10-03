@@ -1,0 +1,48 @@
+> so7ob-web@1.0.0 test:e2e
+> playwright test
+
+[WebServer] (node:231098) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:231176) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 32 tests using 1 worker
+
+(node:231536) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   1 [desktop] › tests/e2e/account-portal.spec.ts:71:3 › ar: client portal preserves drafts, conversations, files, claims, profile and session controls (22.7s)
+  ✓   2 [desktop] › tests/e2e/account-portal.spec.ts:71:3 › en: client portal preserves drafts, conversations, files, claims, profile and session controls (22.1s)
+  ✓   3 [desktop] › tests/e2e/account-portal.spec.ts:361:1 › profile language save navigates and reloads the protected screen in both directions (2.1s)
+  ✓   4 [desktop] › tests/e2e/auth-public.spec.ts:7:3 › ar: SSR, direct reload, language and authentication navigation (1.4s)
+  ✓   5 [desktop] › tests/e2e/auth-public.spec.ts:22:3 › ar: login uses the server session and logout clears the local draft (1.5s)
+  ✓   6 [desktop] › tests/e2e/auth-public.spec.ts:7:3 › en: SSR, direct reload, language and authentication navigation (1.4s)
+  ✓   7 [desktop] › tests/e2e/auth-public.spec.ts:22:3 › en: login uses the server session and logout clears the local draft (1.3s)
+  ✓   8 [desktop] › tests/e2e/auth-public.spec.ts:31:1 › registration and one-use verification use the encrypted outbox; no development link in production (1.1s)
+  ✓   9 [desktop] › tests/e2e/auth-public.spec.ts:46:1 › 404 retains its actual HTTP status and published HTML carries SEO (570ms)
+  ✓  10 [desktop] › tests/e2e/auth-public.spec.ts:51:1 › forgot/reset forms preserve one-use tokens and reject a mismatched confirmation (2.0s)
+  ✓  11 [desktop] › tests/e2e/files-claims.spec.ts:48:1 › multipart uploads retain bytes, legacy errors and server file authorization (2.2s)
+  ✓  12 [desktop] › tests/e2e/files-claims.spec.ts:203:1 › claim HTTP contracts bind the original email proof and charge malformed attempts before parsing (984ms)
+  ✓  13 [desktop] › tests/e2e/publication.spec.ts:6:1 › publication updates HTML and SEO immediately; redirects and page authorization survive direct requests (1.1s)
+  ✓  14 [desktop] › tests/e2e/submissions.spec.ts:9:1 › the original public request form validates, preserves its draft and confirms a real persisted submission (4.6s)
+  ✓  15 [desktop] › tests/e2e/submissions.spec.ts:76:1 › legacy and v1 account contracts enforce ownership, CSRF and field projection (774ms)
+  ✓  16 [desktop] › tests/e2e/submissions.spec.ts:161:1 › conversation endpoints reject cross-account access, hide staff notes and serialize repeated replies (1.0s)
+(node:235158) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  17 [mobile] › tests/e2e/account-portal.spec.ts:71:3 › ar: client portal preserves drafts, conversations, files, claims, profile and session controls (23.1s)
+  ✓  18 [mobile] › tests/e2e/account-portal.spec.ts:71:3 › en: client portal preserves drafts, conversations, files, claims, profile and session controls (22.6s)
+  ✓  19 [mobile] › tests/e2e/account-portal.spec.ts:361:1 › profile language save navigates and reloads the protected screen in both directions (1.9s)
+  ✓  20 [mobile] › tests/e2e/auth-public.spec.ts:7:3 › ar: SSR, direct reload, language and authentication navigation (1.3s)
+  ✓  21 [mobile] › tests/e2e/auth-public.spec.ts:22:3 › ar: login uses the server session and logout clears the local draft (1.2s)
+  ✓  22 [mobile] › tests/e2e/auth-public.spec.ts:7:3 › en: SSR, direct reload, language and authentication navigation (1.4s)
+  ✓  23 [mobile] › tests/e2e/auth-public.spec.ts:22:3 › en: login uses the server session and logout clears the local draft (1.2s)
+  ✓  24 [mobile] › tests/e2e/auth-public.spec.ts:31:1 › registration and one-use verification use the encrypted outbox; no development link in production (1.1s)
+  ✓  25 [mobile] › tests/e2e/auth-public.spec.ts:46:1 › 404 retains its actual HTTP status and published HTML carries SEO (532ms)
+  ✓  26 [mobile] › tests/e2e/auth-public.spec.ts:51:1 › forgot/reset forms preserve one-use tokens and reject a mismatched confirmation (2.1s)
+  ✓  27 [mobile] › tests/e2e/files-claims.spec.ts:48:1 › multipart uploads retain bytes, legacy errors and server file authorization (2.2s)
+  ✓  28 [mobile] › tests/e2e/files-claims.spec.ts:203:1 › claim HTTP contracts bind the original email proof and charge malformed attempts before parsing (960ms)
+  ✓  29 [mobile] › tests/e2e/publication.spec.ts:6:1 › publication updates HTML and SEO immediately; redirects and page authorization survive direct requests (1.0s)
+  ✓  30 [mobile] › tests/e2e/submissions.spec.ts:9:1 › the original public request form validates, preserves its draft and confirms a real persisted submission (4.5s)
+  ✓  31 [mobile] › tests/e2e/submissions.spec.ts:76:1 › legacy and v1 account contracts enforce ownership, CSRF and field projection (676ms)
+  ✓  32 [mobile] › tests/e2e/submissions.spec.ts:161:1 › conversation endpoints reject cross-account access, hide staff notes and serialize repeated replies (993ms)
+
+  32 passed (2.5m)

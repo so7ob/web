@@ -1,0 +1,186 @@
+{
+  "sourceCommit": "5321b7fd11db421c83290b262f276811e5f04e5f",
+  "date": "2026-10-03",
+  "files": [
+    {
+      "source": "src/components/account/dev-link.tsx",
+      "destination": "apps/web/src/components/account/dev-link.tsx",
+      "sourceSHA256": "622b255a9812a3e8d40ca2ac2511ba0b7d2bd51dbe84fbb17b702ac821c342d6",
+      "destinationSHA256": "622b255a9812a3e8d40ca2ac2511ba0b7d2bd51dbe84fbb17b702ac821c342d6",
+      "change": "Original implementation; Next imports mapped to the React Router/session adapters where applicable"
+    },
+    {
+      "source": "src/components/account/profile-form.tsx",
+      "destination": "apps/web/src/components/account/profile-form.tsx",
+      "sourceSHA256": "7bf2e3d8b329ebb3e277c1905f5597cd179e79b48d5e84e0603dc430fc2b7a48",
+      "destinationSHA256": "655b83e6de64251f2a427d4d5a41aa60526a7c8e35a11d4fc06326e0c1546d0a",
+      "change": "Original implementation; Next imports mapped to the React Router/session adapters where applicable"
+    },
+    {
+      "source": "src/components/account/use-debounced.ts",
+      "destination": "apps/web/src/components/account/use-debounced.ts",
+      "sourceSHA256": "8d019241ba6edc15119f392b3828773592026bf558ca504ef4e897cbff73a018",
+      "destinationSHA256": "8d019241ba6edc15119f392b3828773592026bf558ca504ef4e897cbff73a018",
+      "change": "Original implementation; Next imports mapped to the React Router/session adapters where applicable"
+    },
+    {
+      "source": "src/components/account/api.ts",
+      "destination": "apps/web/src/components/account/api.ts",
+      "sourceSHA256": "68e33000e34b07b2dc0c4135b769f105c8b997b3c56297f02b4cb21cac352e05",
+      "destinationSHA256": "68e33000e34b07b2dc0c4135b769f105c8b997b3c56297f02b4cb21cac352e05",
+      "change": "Original implementation; Next imports mapped to the React Router/session adapters where applicable"
+    },
+    {
+      "source": "src/components/account/new-inquiry-dialog.tsx",
+      "destination": "apps/web/src/components/account/new-inquiry-dialog.tsx",
+      "sourceSHA256": "069ec54bbfd8b99b7ab7b6a5a1a9874672d067030f840320311cd869387df7cb",
+      "destinationSHA256": "c336718effcde844945be2ce2e569dacf5e72286f99001cd67ddf8b3d4b44f1b",
+      "change": "Original implementation; Next imports mapped to the React Router/session adapters where applicable"
+    },
+    {
+      "source": "src/components/account/new-request-view.tsx",
+      "destination": "apps/web/src/components/account/new-request-view.tsx",
+      "sourceSHA256": "40f1fb40235cdc4dc4e31010d8b3d7dccb8efd73ef882a422b7d45bd848ee5d1",
+      "destinationSHA256": "83f277da9136483acfda16dd45661c523994e403db5756dfd95690aa84c5422f",
+      "change": "Original implementation; Next imports mapped to the React Router/session adapters where applicable"
+    },
+    {
+      "source": "src/components/account/notifications-view.tsx",
+      "destination": "apps/web/src/components/account/notifications-view.tsx",
+      "sourceSHA256": "dbb43c1d54b172b025b04739fde7d1235c62dca8dfd58e85c53d8af0970781b3",
+      "destinationSHA256": "8c33f73180077b171b848e27063b649207b12813c8a23ce34e26bd26d7822bd4",
+      "change": "Original implementation; Next imports mapped to the React Router/session adapters where applicable"
+    },
+    {
+      "source": "src/components/account/inquiries-view.tsx",
+      "destination": "apps/web/src/components/account/inquiries-view.tsx",
+      "sourceSHA256": "8df7d63e0c5d4f6c5a4592b16dd310ea9121ba1d7de217417b5d8f8880d11403",
+      "destinationSHA256": "2197b10b14e77fbc1640b5e2544f3a8cc4008268ebe09ed113ae6207f912dba9",
+      "change": "Original implementation; Next imports mapped to the React Router/session adapters where applicable"
+    },
+    {
+      "source": "src/components/account/types.ts",
+      "destination": "apps/web/src/components/account/types.ts",
+      "sourceSHA256": "67202869478b07bd72aea0f1d5d9cfd1d241b382e8d8107b2ff964f605884b00",
+      "destinationSHA256": "67202869478b07bd72aea0f1d5d9cfd1d241b382e8d8107b2ff964f605884b00",
+      "change": "Original implementation; Next imports mapped to the React Router/session adapters where applicable"
+    },
+    {
+      "source": "src/components/account/security-view.tsx",
+      "destination": "apps/web/src/components/account/security-view.tsx",
+      "sourceSHA256": "c7aef8bf5b6bf3177210b07150086fb3c5541b09bb155df822bb26b9cfc99c26",
+      "destinationSHA256": "80cb04cada35d24e05c8c4b759b23a63114d6eaff5436e82653a80933630e32d",
+      "change": "Original implementation; Next imports mapped to the React Router/session adapters where applicable"
+    },
+    {
+      "source": "src/components/account/inquiry-detail-view.tsx",
+      "destination": "apps/web/src/components/account/inquiry-detail-view.tsx",
+      "sourceSHA256": "12666a5bd358ce463b5aecc157259274b3d30c5139e0886ade89a6a24ef89c5f",
+      "destinationSHA256": "382bff1182a7b97f35476baa23aa9bbd96bee8e3482fdde9e946395290fee138",
+      "change": "Original implementation; Next imports mapped to the React Router/session adapters where applicable; remove inherited client timestamp opacity for readable contrast"
+    },
+    {
+      "source": "src/components/account/request-detail-view.tsx",
+      "destination": "apps/web/src/components/account/request-detail-view.tsx",
+      "sourceSHA256": "96e6bd8d8ccde18de1a77d5985718b3709c77b5e480cd5af8a1333d2eaf66283",
+      "destinationSHA256": "53bb8c1b71426ab1520e3045b6255a5993269f442291f347c3127e8d6877ce3b",
+      "change": "Original implementation; Next imports mapped to the React Router/session adapters where applicable; remove inherited client timestamp opacity for readable contrast"
+    },
+    {
+      "source": "src/components/account/status-badge.tsx",
+      "destination": "apps/web/src/components/account/status-badge.tsx",
+      "sourceSHA256": "b88dffdb628c7087b146f6627f0e5c90dc10743cd45a0df11d5c7f5df57834f6",
+      "destinationSHA256": "b88dffdb628c7087b146f6627f0e5c90dc10743cd45a0df11d5c7f5df57834f6",
+      "change": "Original implementation; Next imports mapped to the React Router/session adapters where applicable"
+    },
+    {
+      "source": "src/components/account/account-shell.tsx",
+      "destination": "apps/web/src/components/account/account-shell.tsx",
+      "sourceSHA256": "9fc61eabb0e832826b820c3671798d55b699a5f6650f36a7249079975e2a89f9",
+      "destinationSHA256": "6ecc3da790ca710d3bc6968f730f3a0efacf7928484f8aa40b4649fd7d3e2598",
+      "change": "Original implementation; Next imports mapped to the React Router/session adapters where applicable"
+    },
+    {
+      "source": "src/components/account/requests-view.tsx",
+      "destination": "apps/web/src/components/account/requests-view.tsx",
+      "sourceSHA256": "a48d0ed49f51abd5d627abd8e8fc87f248842c76f18c9a9de8784154d852de14",
+      "destinationSHA256": "add24b85cc05ec84d5438b428a839836d5e1b7194b439bda83bcf59c3b55c4e7",
+      "change": "Original implementation; Next imports mapped to the React Router/session adapters where applicable"
+    },
+    {
+      "source": "src/components/account/format.ts",
+      "destination": "apps/web/src/components/account/format.ts",
+      "sourceSHA256": "168a0552bd97de92562eba050ee8da5fd3216e408fddd943c5d53b482db65483",
+      "destinationSHA256": "168a0552bd97de92562eba050ee8da5fd3216e408fddd943c5d53b482db65483",
+      "change": "Original implementation; Next imports mapped to the React Router/session adapters where applicable"
+    },
+    {
+      "source": "src/app/[locale]/account/page.tsx",
+      "destination": "apps/web/src/screens/account/dashboard.tsx",
+      "sourceSHA256": "47b9e95d3e7a597df75425fb2ec491b7bc26f32a69bd1cd9f18e2f422eb19ea7",
+      "destinationSHA256": "f30f0cb90d40af2d3b6629978f1d9e9452d1f5369bc383a2a2604202d142b72e",
+      "change": "Server framework wrapper replaced by protected view contract and lazy screen; dashboard markup in components/account/dashboard.tsx"
+    },
+    {
+      "source": "src/app/[locale]/account/requests/page.tsx",
+      "destination": "apps/web/src/screens/account/requests.tsx",
+      "sourceSHA256": "88b47108b30603095d318cb8ca8da8c401331b4519e3e072010d8aa3e25314bc",
+      "destinationSHA256": "14afa73c3881f9c1aac83f8fc40b8afad31442278f458cb5b8f25d1db16022da",
+      "change": "Server framework wrapper replaced by protected view contract and lazy screen; dashboard markup in components/account/dashboard.tsx"
+    },
+    {
+      "source": "src/app/[locale]/account/requests/new/page.tsx",
+      "destination": "apps/web/src/screens/account/new-request.tsx",
+      "sourceSHA256": "2a1a46155c185aa8ea77e2557e3a7968d3cd6efc441f01e98f76a916e3ee636b",
+      "destinationSHA256": "5227bc35a52c2d5bbf6e303d23a691d4b4812bee5c51107114d9e31a75a2dd9a",
+      "change": "Server framework wrapper replaced by protected view contract and lazy screen; dashboard markup in components/account/dashboard.tsx"
+    },
+    {
+      "source": "src/app/[locale]/account/requests/[id]/page.tsx",
+      "destination": "apps/web/src/screens/account/request-detail.tsx",
+      "sourceSHA256": "66a4b68cc43fb3e070302cec16ce1f1d0cc49b5ee4fd27bbe7680402e71fe21c",
+      "destinationSHA256": "852a7a49f1b6062c38c56dd7327d40d6e83b02002594773fe7139d08675d27b3",
+      "change": "Server framework wrapper replaced by protected view contract and lazy screen; dashboard markup in components/account/dashboard.tsx"
+    },
+    {
+      "source": "src/app/[locale]/account/inquiries/page.tsx",
+      "destination": "apps/web/src/screens/account/inquiries.tsx",
+      "sourceSHA256": "b6587c4b9265884326781698ef7f54628c73ca0204118ec9e225872cc8c0127d",
+      "destinationSHA256": "ab3e7003cb4d052baf27819f76eb89cf7e18e00b0ee4416a2f351281608a6559",
+      "change": "Server framework wrapper replaced by protected view contract and lazy screen; dashboard markup in components/account/dashboard.tsx"
+    },
+    {
+      "source": "src/app/[locale]/account/inquiries/[id]/page.tsx",
+      "destination": "apps/web/src/screens/account/inquiry-detail.tsx",
+      "sourceSHA256": "1d4e73eb9aebbd3c8a6aedde345ff22714ea3c4e7518625fbdc5b7d200fd94e2",
+      "destinationSHA256": "b173b7b01446b8932e0c00c230f7ad9098483ee82bba1c802a25ad2ba9837b89",
+      "change": "Server framework wrapper replaced by protected view contract and lazy screen; dashboard markup in components/account/dashboard.tsx"
+    },
+    {
+      "source": "src/app/[locale]/account/profile/page.tsx",
+      "destination": "apps/web/src/screens/account/profile.tsx",
+      "sourceSHA256": "2af2f7b58decde21a5a528efdd11529e833b6f18c80ec01a03e0320cfc4e5653",
+      "destinationSHA256": "78a8e95be2ca5af0d1e6ac287590abaa7ec0e8a00d12af5f34bac9e07d12a124",
+      "change": "Server framework wrapper replaced by protected view contract and lazy screen; dashboard markup in components/account/dashboard.tsx"
+    },
+    {
+      "source": "src/app/[locale]/account/security/page.tsx",
+      "destination": "apps/web/src/screens/account/security.tsx",
+      "sourceSHA256": "26f1b37f0819977c34de8092bd7f762d80a66e3a9df831fbd17c1e1e27a038b3",
+      "destinationSHA256": "d15668bdf32810903298e576118380f2596a274cff2db5cbf62de1d2afbc019a",
+      "change": "Server framework wrapper replaced by protected view contract and lazy screen; dashboard markup in components/account/dashboard.tsx"
+    },
+    {
+      "source": "src/app/[locale]/account/notifications/page.tsx",
+      "destination": "apps/web/src/screens/account/notifications.tsx",
+      "sourceSHA256": "411c5a8250bfa6582b4f33bd7824b9891b45fbd97373443116b5f39c87b79985",
+      "destinationSHA256": "0b427db94f1db95588073903a888bf18392cd5fd36f8cf6057a574e50ac4cc50",
+      "change": "Server framework wrapper replaced by protected view contract and lazy screen; dashboard markup in components/account/dashboard.tsx"
+    }
+  ],
+  "additional": [
+    "src/components/admin/empty-state.tsx -> apps/web/src/components/admin/empty-state.tsx (unchanged)",
+    "src/app/[locale]/account/layout.tsx -> apps/web/src/screens/account/layout.tsx (router outlet and authenticated DTO)",
+    "Dashboard/profile database work -> packages/server/src/business/portal.ts"
+  ]
+}

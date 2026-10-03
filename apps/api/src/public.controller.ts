@@ -10,7 +10,7 @@ export class PublicViewQuery {
   @IsString() @MaxLength(2048) @Matches(/^\/(?!\/)/)
   path!: string;
 }
-@ApiTags('Published content')
+@ApiTags('Site rendering (public content and authenticated views)')
 @Controller('api/v1/public')
 export class PublicController {
   constructor(@Inject(PublicService) private readonly content: PublicService, @Inject(AuthenticationService) private readonly auth: AuthenticationService, @Inject(AuthHttpPolicy) private readonly policy: AuthHttpPolicy) {}

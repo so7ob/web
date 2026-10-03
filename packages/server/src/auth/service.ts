@@ -2,7 +2,7 @@ import { randomBytes } from 'node:crypto';
 import bcrypt from 'bcryptjs';
 import type { DataSource, QueryRunner } from 'typeorm';
 import type { AuthUser, Permission } from '@so7ob/contracts';
-import type { User } from '../database/models.js';
+import type { User,AuthSession } from '../database/models.js';
 import { MailQueue } from '../queue/mail-queue.js';
 import { PayloadCipher, type MailInput } from '../queue/crypto.js';
 import { AuthFault, audit, consumeRateLimit, newId, sha256, transaction } from './persistence.js';
@@ -12,7 +12,7 @@ export interface AuthenticatedSession { user: AuthUser; id: string; fingerprint:
 export interface RegisterInput { name: string; email: string; password: string; locale: 'ar' | 'en' }
 export const validPassword = (p: string): boolean => p.length >= 8 && p.length <= 100 && /[A-Za-z]/.test(p) && /\d/.test(p);
 const limits = { shortMax: 3, shortWindowMs: 600000, dailyMax: 10, dailyWindowMs: 86400000 };
-const opaqueFingerprint = (raw: string) => sha256('so7ob-opaque-session:v1:'+raw);
+const opaqueFingerprint = (raw: string) => 'opaque-v1:'+sha256('so7ob-opaque-session:v1:'+raw);
 export class AuthenticationService {
   private readonly queue: MailQueue;
   private readonly attempts=new WeakMap<object,{flow:string;ip:string}>();
@@ -148,7 +148,7 @@ export class AuthenticationService {
     } catch(error) { if (error && typeof error === 'object' && 'code' in error && error.code === 'ER_DUP_ENTRY') throw new AuthFault(409,'email_taken'); throw error; }
   }
   async sessions(current: AuthenticatedSession) {
-    const rows = await this.db.query('SELECT id,fingerprint,userAgent,createdAt,lastSeenAt FROM AuthSession WHERE userId=? AND revokedAt IS NULL AND expiresAt>UTC_TIMESTAMP(3) ORDER BY lastSeenAt DESC',[current.user.id]);
+    const rows: Array<Pick<AuthSession,'id'|'fingerprint'|'userAgent'|'createdAt'|'lastSeenAt'>> = await this.db.query(`SELECT s.id,s.fingerprint,s.userAgent,s.createdAt,s.lastSeenAt FROM AuthSession s JOIN User u ON u.id=s.userId WHERE s.userId=? AND s.fingerprint LIKE 'opaque-v1:%' AND s.revokedAt IS NULL AND s.expiresAt>UTC_TIMESTAMP(3) AND (u.sessionsRevokedAt IS NULL OR s.createdAt>u.sessionsRevokedAt) ORDER BY s.lastSeenAt DESC`,[current.user.id]);
     return rows.map((row: { id:string; fingerprint:string; userAgent:string|null; createdAt:Date; lastSeenAt:Date }) => ({ id:row.id,current:row.id===current.id,userAgent:row.userAgent,createdAt:row.createdAt,lastSeenAt:row.lastSeenAt }));
   }
   async revoke(current: AuthenticatedSession, id: string | undefined, all: boolean) {

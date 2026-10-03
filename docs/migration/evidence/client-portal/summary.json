@@ -1,0 +1,37 @@
+{
+  "date": "2026-10-03",
+  "source": "so7ob/Website@5321b7fd11db421c83290b262f276811e5f04e5f",
+  "predecessor": "so7ob/web PR #15 @ 8288946",
+  "runtime": "Node 24.21.0; MariaDB 10.11.18; isolated synthetic fixtures",
+  "targetTests": 137,
+  "browserTests": 32,
+  "visualCases": 36,
+  "visualPassing": 36,
+  "maxVisualFraction": 0.00017447916666666667,
+  "securityVisualFixtureOnly": true,
+  "visualMasks": false,
+  "ci": "Pending this branch remote run",
+  "completeMigration": false,
+  "productionDataMigrated": false,
+  "limitations": [
+    "Admin and editor migration pending",
+    "Full operational backup and rollback rehearsal pending",
+    "No merge, release, deployment or production cutover performed"
+  ],
+  "performance": {
+    "workloads": 12,
+    "alternatingRounds": 5,
+    "samplesPerRuntimePerRound": 50,
+    "allLatencyAndJavaScriptBudgetsPass": true
+  },
+  "checks": {
+    "lint": "passed locally",
+    "typecheck": "passed locally",
+    "test": "passed locally",
+    "build": "passed locally",
+    "test:e2e": "passed locally",
+    "test:infra": "passed locally",
+    "test:auth": "passed locally",
+    "git diff --check": "passed locally"
+  }
+}

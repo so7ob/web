@@ -1,0 +1,331 @@
+{
+  "sourceSHA": "5321b7fd11db421c83290b262f276811e5f04e5f",
+  "threshold": 0.005,
+  "metric": "Exact RGB inequality; viewport 900px; no masks; equal source-bounded display fixture for security sessions only",
+  "results": [
+    {
+      "file": "ar-dashboard-375.png",
+      "visualSessionFixture": null,
+      "ratio": 0,
+      "pass": true,
+      "newViolations": [],
+      "errors": [],
+      "failedRequests": []
+    },
+    {
+      "file": "ar-requests-375.png",
+      "visualSessionFixture": null,
+      "ratio": 0,
+      "pass": true,
+      "newViolations": [],
+      "errors": [],
+      "failedRequests": []
+    },
+    {
+      "file": "ar-requests-new-375.png",
+      "visualSessionFixture": null,
+      "ratio": 0,
+      "pass": true,
+      "newViolations": [],
+      "errors": [],
+      "failedRequests": []
+    },
+    {
+      "file": "ar-requests-migrationrequest-375.png",
+      "visualSessionFixture": null,
+      "ratio": 0.00011555555555555555,
+      "pass": true,
+      "newViolations": [],
+      "errors": [],
+      "failedRequests": []
+    },
+    {
+      "file": "ar-inquiries-375.png",
+      "visualSessionFixture": null,
+      "ratio": 0.00013333333333333334,
+      "pass": true,
+      "newViolations": [],
+      "errors": [],
+      "failedRequests": []
+    },
+    {
+      "file": "ar-inquiries-migrationinquiry-375.png",
+      "visualSessionFixture": null,
+      "ratio": 0,
+      "pass": true,
+      "newViolations": [],
+      "errors": [],
+      "failedRequests": []
+    },
+    {
+      "file": "ar-profile-375.png",
+      "visualSessionFixture": null,
+      "ratio": 0,
+      "pass": true,
+      "newViolations": [],
+      "errors": [],
+      "failedRequests": []
+    },
+    {
+      "file": "ar-security-375.png",
+      "visualSessionFixture": "account-session-visual.json",
+      "ratio": 0,
+      "pass": true,
+      "newViolations": [],
+      "errors": [],
+      "failedRequests": []
+    },
+    {
+      "file": "ar-notifications-375.png",
+      "visualSessionFixture": null,
+      "ratio": 0,
+      "pass": true,
+      "newViolations": [],
+      "errors": [],
+      "failedRequests": []
+    },
+    {
+      "file": "en-dashboard-375.png",
+      "visualSessionFixture": null,
+      "ratio": 0,
+      "pass": true,
+      "newViolations": [],
+      "errors": [],
+      "failedRequests": []
+    },
+    {
+      "file": "en-requests-375.png",
+      "visualSessionFixture": null,
+      "ratio": 0,
+      "pass": true,
+      "newViolations": [],
+      "errors": [],
+      "failedRequests": []
+    },
+    {
+      "file": "en-requests-new-375.png",
+      "visualSessionFixture": null,
+      "ratio": 0,
+      "pass": true,
+      "newViolations": [],
+      "errors": [],
+      "failedRequests": []
+    },
+    {
+      "file": "en-requests-migrationrequest-375.png",
+      "visualSessionFixture": null,
+      "ratio": 0.00013037037037037037,
+      "pass": true,
+      "newViolations": [],
+      "errors": [],
+      "failedRequests": []
+    },
+    {
+      "file": "en-inquiries-375.png",
+      "visualSessionFixture": null,
+      "ratio": 0,
+      "pass": true,
+      "newViolations": [],
+      "errors": [],
+      "failedRequests": []
+    },
+    {
+      "file": "en-inquiries-migrationinquiry-375.png",
+      "visualSessionFixture": null,
+      "ratio": 0,
+      "pass": true,
+      "newViolations": [],
+      "errors": [],
+      "failedRequests": []
+    },
+    {
+      "file": "en-profile-375.png",
+      "visualSessionFixture": null,
+      "ratio": 0,
+      "pass": true,
+      "newViolations": [],
+      "errors": [],
+      "failedRequests": []
+    },
+    {
+      "file": "en-security-375.png",
+      "visualSessionFixture": "account-session-visual.json",
+      "ratio": 0,
+      "pass": true,
+      "newViolations": [],
+      "errors": [],
+      "failedRequests": []
+    },
+    {
+      "file": "en-notifications-375.png",
+      "visualSessionFixture": null,
+      "ratio": 0,
+      "pass": true,
+      "newViolations": [],
+      "errors": [],
+      "failedRequests": []
+    },
+    {
+      "file": "ar-dashboard-1280.png",
+      "visualSessionFixture": null,
+      "ratio": 0.00017447916666666667,
+      "pass": true,
+      "newViolations": [],
+      "errors": [],
+      "failedRequests": []
+    },
+    {
+      "file": "ar-requests-1280.png",
+      "visualSessionFixture": null,
+      "ratio": 0.000033854166666666665,
+      "pass": true,
+      "newViolations": [],
+      "errors": [],
+      "failedRequests": []
+    },
+    {
+      "file": "ar-requests-new-1280.png",
+      "visualSessionFixture": null,
+      "ratio": 0.000015625,
+      "pass": true,
+      "newViolations": [],
+      "errors": [],
+      "failedRequests": []
+    },
+    {
+      "file": "ar-requests-migrationrequest-1280.png",
+      "visualSessionFixture": null,
+      "ratio": 0.0000842013888888889,
+      "pass": true,
+      "newViolations": [],
+      "errors": [],
+      "failedRequests": []
+    },
+    {
+      "file": "ar-inquiries-1280.png",
+      "visualSessionFixture": null,
+      "ratio": 0.00007291666666666667,
+      "pass": true,
+      "newViolations": [],
+      "errors": [],
+      "failedRequests": []
+    },
+    {
+      "file": "ar-inquiries-migrationinquiry-1280.png",
+      "visualSessionFixture": null,
+      "ratio": 0.00006597222222222222,
+      "pass": true,
+      "newViolations": [],
+      "errors": [],
+      "failedRequests": []
+    },
+    {
+      "file": "ar-profile-1280.png",
+      "visualSessionFixture": null,
+      "ratio": 0.000015625,
+      "pass": true,
+      "newViolations": [],
+      "errors": [],
+      "failedRequests": []
+    },
+    {
+      "file": "ar-security-1280.png",
+      "visualSessionFixture": "account-session-visual.json",
+      "ratio": 0,
+      "pass": true,
+      "newViolations": [],
+      "errors": [],
+      "failedRequests": []
+    },
+    {
+      "file": "ar-notifications-1280.png",
+      "visualSessionFixture": null,
+      "ratio": 0,
+      "pass": true,
+      "newViolations": [],
+      "errors": [],
+      "failedRequests": []
+    },
+    {
+      "file": "en-dashboard-1280.png",
+      "visualSessionFixture": null,
+      "ratio": 0.00005295138888888889,
+      "pass": true,
+      "newViolations": [],
+      "errors": [],
+      "failedRequests": []
+    },
+    {
+      "file": "en-requests-1280.png",
+      "visualSessionFixture": null,
+      "ratio": 0.000038194444444444444,
+      "pass": true,
+      "newViolations": [],
+      "errors": [],
+      "failedRequests": []
+    },
+    {
+      "file": "en-requests-new-1280.png",
+      "visualSessionFixture": null,
+      "ratio": 0,
+      "pass": true,
+      "newViolations": [],
+      "errors": [],
+      "failedRequests": []
+    },
+    {
+      "file": "en-requests-migrationrequest-1280.png",
+      "visualSessionFixture": null,
+      "ratio": 0.00011284722222222222,
+      "pass": true,
+      "newViolations": [],
+      "errors": [],
+      "failedRequests": []
+    },
+    {
+      "file": "en-inquiries-1280.png",
+      "visualSessionFixture": null,
+      "ratio": 0.00009288194444444444,
+      "pass": true,
+      "newViolations": [],
+      "errors": [],
+      "failedRequests": []
+    },
+    {
+      "file": "en-inquiries-migrationinquiry-1280.png",
+      "visualSessionFixture": null,
+      "ratio": 0.00007465277777777777,
+      "pass": true,
+      "newViolations": [],
+      "errors": [],
+      "failedRequests": []
+    },
+    {
+      "file": "en-profile-1280.png",
+      "visualSessionFixture": null,
+      "ratio": 0.000015625,
+      "pass": true,
+      "newViolations": [],
+      "errors": [],
+      "failedRequests": []
+    },
+    {
+      "file": "en-security-1280.png",
+      "visualSessionFixture": "account-session-visual.json",
+      "ratio": 0.000015625,
+      "pass": true,
+      "newViolations": [],
+      "errors": [],
+      "failedRequests": []
+    },
+    {
+      "file": "en-notifications-1280.png",
+      "visualSessionFixture": null,
+      "ratio": 0,
+      "pass": true,
+      "newViolations": [],
+      "errors": [],
+      "failedRequests": []
+    }
+  ]
+}

@@ -1,0 +1,15 @@
+> so7ob-web@1.0.0 test
+> vitest run --config vitest.workspaces.config.ts
+
+
+ RUN  v5.0.3 /root/So7ob/web
+
+
+ Test Files  17 passed (17)
+      Tests  137 passed (137)
+   Start at  03:44:11
+   Duration  24.29s (import 45%, tests 44%, setup 5%, transform 3%, environment 2%)
+
+     Import  79 modules were evaluated 223 times · 10.15s total, 45% of tracked time
+             ~6.55s faster with isolate: false — shared modules are evaluated once per worker instead of once per file
+             learn more: https://vitest.dev/guide/improving-performance#test-isolation
