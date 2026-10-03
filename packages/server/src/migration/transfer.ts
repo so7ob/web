@@ -101,12 +101,12 @@ export async function transfer(db: DataSource, options: TransferOptions): Promis
             await r.query(`INSERT INTO ${q(table)} (${columns.map(q).join(',')}) VALUES (${columns.map(() => '?').join(',')})`, values);
           }
           completed.push(table);
-          await r.query('UPDATE MigrationTransfer SET completedTables=?,updatedAt=CURRENT_TIMESTAMP(3) WHERE id=?', [JSON.stringify(completed), snapshot.id]);
+          await r.query('UPDATE MigrationTransfer SET completedTables=?,updatedAt=UTC_TIMESTAMP(3) WHERE id=?', [JSON.stringify(completed), snapshot.id]);
           await r.commitTransaction();
         } catch (error) { await r.rollbackTransaction(); throw error; }
       }
       report.tables = await compare(r, snapshot, true); checkFiles(snapshot, target, true);
-      await r.query("UPDATE MigrationTransfer SET status='verified',updatedAt=CURRENT_TIMESTAMP(3) WHERE id=?", [snapshot.id]);
+      await r.query("UPDATE MigrationTransfer SET status='verified',updatedAt=UTC_TIMESTAMP(3) WHERE id=?", [snapshot.id]);
     }
     // Detect concurrent changes to either source before reporting success.
     if (readSnapshot(options.sqlite, source).id !== snapshot.id) throw new TransferError('Source snapshot or files changed during transfer');

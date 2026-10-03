@@ -1,0 +1,51 @@
+# Render for the independently approved destination domain only. Never use Website's domain.
+# Include this file inside nginx's http context. Query strings can contain account tokens.
+log_format so7ob_no_query '$remote_addr [$time_local] "$request_method $uri $server_protocol" $status $body_bytes_sent $request_time';
+server {
+    listen 80;
+    access_log __LOG_DIR__/access.log so7ob_no_query;
+    error_log __LOG_DIR__/error.log warn;
+    server_name __DOMAIN__;
+    return 308 https://__DOMAIN__$request_uri;
+}
+server {
+    listen 443 ssl http2;
+    server_name __DOMAIN__;
+    ssl_certificate __CERTIFICATE__;
+    ssl_certificate_key __CERTIFICATE_KEY__;
+    ssl_protocols TLSv1.2 TLSv1.3;
+    access_log __LOG_DIR__/access.log so7ob_no_query;
+    error_log __LOG_DIR__/error.log warn;
+    client_max_body_size 10m;
+    client_body_timeout 30s;
+    send_timeout 60s;
+    add_header X-Content-Type-Options nosniff always;
+    add_header Referrer-Policy strict-origin-when-cross-origin always;
+    add_header X-Frame-Options SAMEORIGIN always;
+    add_header Content-Security-Policy "frame-ancestors 'self'; base-uri 'self'; object-src 'none'" always;
+    gzip on;
+    gzip_vary on;
+    gzip_types application/javascript application/json text/css image/svg+xml;
+    location ~* \.map$ { return 404; }
+    location /assets/ {
+        alias __RELEASE__/apps/web/dist/assets/;
+        expires 1y;
+        add_header Cache-Control "public, immutable";
+        add_header X-Content-Type-Options nosniff always;
+    }
+    # Attachments are served only by the API after record-level authorization.
+    # No DATA_DIR/uploads alias and no SPA try_files fallback.
+    location / {
+        proxy_pass http://127.0.0.1:3108;
+        proxy_http_version 1.1;
+        proxy_set_header Host $host;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_set_header X-Forwarded-For $remote_addr;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header Connection "";
+        proxy_connect_timeout 5s;
+        proxy_read_timeout 60s;
+        proxy_send_timeout 60s;
+        proxy_buffering off;
+    }
+}

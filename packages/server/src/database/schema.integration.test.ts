@@ -37,6 +37,17 @@ describe('Website schema on real MariaDB', () => {
     const rows: Array<{ phone: string | null; createdAt: Date }> = await db.query('SELECT phone,createdAt FROM User WHERE id=?', [prefix+'user']);
     expect(rows[0].phone).toBeNull(); expect(rows[0].createdAt.toISOString()).toBe(instant.toISOString());
   });
+  it('uses UTC defaults even when the MariaDB session timezone differs', async () => {
+    const r = db.createQueryRunner(); await r.connect();
+    try {
+      await r.query("SET time_zone='+03:00'");
+      const before = Date.now();
+      await r.query('INSERT INTO Role (`key`,nameAr,nameEn) VALUES (?,?,?)',[prefix+'timezone','توقيت','Timezone']);
+      const [row] = await r.query('SELECT createdAt,updatedAt FROM Role WHERE `key`=?',[prefix+'timezone']);
+      expect(Math.abs(row.createdAt.valueOf()-before)).toBeLessThan(2000);
+      expect(Math.abs(row.updatedAt.valueOf()-before)).toBeLessThan(2000);
+    } finally { await r.query("SET time_zone='SYSTEM'"); await r.release(); }
+  });
   it('refuses an unreviewed destructive down migration', async () => {
     await expect(db.undoLastMigration({ transaction: 'none' })).rejects.toThrow('Destructive schema rollback is disabled');
     await assertSchema(db);
