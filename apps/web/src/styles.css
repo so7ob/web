@@ -192,4 +192,6 @@
    raise small-text contrast to 5.57:1, and leave the dark palette unchanged. */
 .toaster[data-sonner-toaster][data-sonner-theme="light"] {
   --success-text: hsl(140 100% 23%);
+  /* Source info text was 4.35:1; keep its hue/background at 5.71:1. */
+  --info-text: hsl(210 92% 38%);
 }

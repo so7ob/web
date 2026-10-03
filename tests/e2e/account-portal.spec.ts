@@ -4,6 +4,8 @@ import { test, expect } from "@playwright/test";
 import { readFileSync } from "node:fs";
 import { createDataSource, PayloadCipher, sha256 } from "@so7ob/server";
 import { getPortalContent } from "../../apps/web/src/content/portal";
+// Measure stable presentation with the same reduced-motion context as frozen captures.
+test.use({ contextOptions: { reducedMotion: "reduce" } });
 const fixture = () =>
   JSON.parse(readFileSync(".migration/e2e/run.json", "utf8")) as {
     prefix: string;
@@ -38,9 +40,20 @@ async function assertPortalAxe(page: Page, locale: string, name: string) {
       );
     });
   }
+  await expect(
+    page.locator('[data-sonner-toast][data-removed="true"]'),
+  ).toHaveCount(0);
+  for (const notice of await page
+    .locator('[data-sonner-toast][data-visible="true"][data-removed="false"]')
+    .all()) {
+    await expect(notice).toHaveCSS("opacity", "1");
+    await expect(notice.locator("[data-content]")).toHaveCSS("opacity", "1");
+  }
   const result = await new AxeBuilder({ page })
     .withTags(["wcag2a", "wcag2aa", "wcag21aa", "wcag22aa"])
     .analyze();
+  if (locale === "en" && name === "requests-migrationrequest" && page.viewportSize()!.width === 1280)
+    await test.info().attach("visible-toast-contrast", {body:await page.screenshot(),contentType:"image/png"});
   const signature = (target: unknown) =>
     JSON.stringify(target).replace(
       /#radix-[^\s]*?-trigger-/g,
@@ -59,7 +72,14 @@ async function assertPortalAxe(page: Page, locale: string, name: string) {
           v.nodes.length > baseline[v.id].length ||
           v.nodes.some((n) => !baseline[v.id].includes(signature(n.target))),
       )
-      .map((v) => ({ id: v.id, targets: v.nodes.map((n) => n.target) })),
+      .map((v) => ({
+        id: v.id,
+        nodes: v.nodes.map((n) => ({
+          target: n.target,
+          html: n.html,
+          summary: n.failureSummary,
+        })),
+      })),
   ).toEqual([]);
 }
 async function isolateScenarioQuota() {
