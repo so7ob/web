@@ -24,6 +24,19 @@ async function assertPortalAxe(page: Page, locale: string, name: string) {
     // while axe measures the visible notification, without altering its colors or DOM.
     await expect(toast).toHaveCSS("opacity", "1");
     await toast.hover();
+    await expect(toast).toHaveAttribute("data-expanded", "true");
+    // Hover expands every queued toast; wait for background text transitions too.
+    await page.locator("[data-sonner-toaster]").evaluate(async (root) => {
+      await Promise.all(
+        root
+          .getAnimations({ subtree: true })
+          .filter(
+            (animation) =>
+              animation.effect?.getTiming().iterations !== Infinity,
+          )
+          .map((animation) => animation.finished.catch(() => undefined)),
+      );
+    });
   }
   const result = await new AxeBuilder({ page })
     .withTags(["wcag2a", "wcag2aa", "wcag21aa", "wcag22aa"])
@@ -34,12 +47,10 @@ async function assertPortalAxe(page: Page, locale: string, name: string) {
       "#radix-trigger-",
     );
   if (result.violations.length)
-    await test
-      .info()
-      .attach(`axe-${locale}-${name}`, {
-        body: JSON.stringify(result.violations, null, 2),
-        contentType: "application/json",
-      });
+    await test.info().attach(`axe-${locale}-${name}`, {
+      body: JSON.stringify(result.violations, null, 2),
+      contentType: "application/json",
+    });
   expect(
     result.violations
       .filter(
