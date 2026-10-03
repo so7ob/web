@@ -1,0 +1,5 @@
+
+> so7ob-web@1.0.0 test:auth
+> node tools/migration/auth-smoke.mjs
+
+{"test":"compiled Nest HTTP authentication","passed":true,"checks":["legacy + v1 routes","DTO field errors","invalid and malformed attempts counted once before validation","secure HttpOnly cookie","CSRF/origin","record ownership","fixed registration role","encrypted queued verification","single-use redirect","suspension","logout","legacy cookie rejected"]}

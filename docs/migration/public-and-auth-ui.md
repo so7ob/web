@@ -30,3 +30,5 @@ The evidence directory records the exact outcomes. Logs have trailing whitespace
 ## Review and rollback
 
 Review incrementally against PR #12. No production service/domain/database was changed. Before any future cutover, the full acceptance matrix must pass. The approved full rollback window ends before reopening writes; after new writes, recover forward and preserve MariaDB, files, queue and sessions. This UI PR adds no schema migration and does not authorize deployment.
+
+Follow-up: [business services](business-services.md) now supplies the public request submission and account APIs referenced by this UI portion; private screens/editor still await migration. The evidence above remains scoped to the earlier UI commit.

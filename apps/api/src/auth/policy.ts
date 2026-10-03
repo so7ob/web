@@ -29,15 +29,18 @@ export class AuthHttpPolicy {
     const expected=this.sign(parts[0]+'.'+parts[1]);
     return parts[0]===raw && timingSafeEqual(Buffer.from(expected,'hex'),Buffer.from(parts[2],'hex'));
   }
-  mutation(req: Request, requireToken=false): void {
+  origin(req: Request): void {
     const origin=req.headers.origin;
     if (origin) {
       const allowed=(this.env.WEB_ORIGIN ?? this.env.SITE_URL!).split(',').map(s=>new URL(s.trim()).origin);
       if (!allowed.includes(origin)) throw new AuthFault(403,'bad_origin');
     }
     if (req.headers['sec-fetch-site']==='cross-site') throw new AuthFault(403,'bad_origin');
+  }
+  mutation(req: Request, requireToken=false): void {
+    this.origin(req);
     const token=req.headers['x-csrf-token'] ?? (req.body as { csrfToken?: unknown } | undefined)?.csrfToken;
-    if ((requireToken || !origin) && !this.validCsrf(req,token)) throw new AuthFault(403,'csrf');
+    if ((requireToken || !req.headers.origin) && !this.validCsrf(req,token)) throw new AuthFault(403,'csrf');
   }
   callback(value: unknown): string {
     const origin=new URL(this.env.SITE_URL!).origin;

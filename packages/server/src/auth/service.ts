@@ -15,6 +15,7 @@ const limits = { shortMax: 3, shortWindowMs: 600000, dailyMax: 10, dailyWindowMs
 const opaqueFingerprint = (raw: string) => sha256('so7ob-opaque-session:v1:'+raw);
 export class AuthenticationService {
   private readonly queue: MailQueue;
+  private readonly attempts=new WeakMap<object,{flow:string;ip:string}>();
   constructor(private readonly db: DataSource, private readonly env: NodeJS.ProcessEnv = process.env) { this.queue = new MailQueue(db,new PayloadCipher(env.OUTBOX_KEY)); }
   private get dev(): boolean { return this.env.NODE_ENV !== 'production' && this.env.EMAIL_DEV_MODE === 'true'; }
   private absolute(path: string): string {
@@ -29,8 +30,10 @@ export class AuthenticationService {
     const result = await consumeRateLimit(this.db,flow+':'+ip,limits);
     if (!result.allowed) throw new AuthFault(429,'rate_limited',{ retryAfterSec:result.retryAfterSec });
   }
-  async register(input: RegisterInput, ip: string) {
-    await this.rate('register',ip);
+  async reserveAttempt(flow:'register'|'forgot',ip:string):Promise<object>{await this.rate(flow,ip);const permit={};this.attempts.set(permit,{flow,ip});return permit;}
+  private async takeAttempt(flow:string,ip:string,permit?:object){const stored=permit?this.attempts.get(permit):undefined;if(stored?.flow===flow&&stored.ip===ip){this.attempts.delete(permit!);return;}await this.rate(flow,ip);}
+  async register(input: RegisterInput, ip: string, permit?:object) {
+    await this.takeAttempt('register',ip,permit);
     if (!validPassword(input.password)) throw new AuthFault(400,'invalid',{ errors:{ password: input.password.length<8 ? 'password_short' : input.password.length>100 ? 'password_long' : 'password_weak' } });
     const passwordHash = await bcrypt.hash(input.password,12);
     try {
@@ -89,8 +92,8 @@ export class AuthenticationService {
       await audit(r,'user.email_verified',user); return already ? 'already' : 'ok';
     });
   }
-  async forgot(email: string, ip: string) {
-    await this.rate('forgot',ip); const generic = { ok:true,message:'if_account_exists' };
+  async forgot(email: string, ip: string, permit?:object) {
+    await this.takeAttempt('forgot',ip,permit); const generic = { ok:true,message:'if_account_exists' };
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) return generic;
     return transaction(this.db,async r => {
       const [user]: User[] = await r.query('SELECT * FROM User WHERE email=? FOR UPDATE',[email]);

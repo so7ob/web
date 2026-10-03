@@ -2,6 +2,7 @@ import { Body, Controller, Get, HttpCode, Inject, Post, Query, Req, Res, UsePipe
 import { ApiTags } from '@nestjs/swagger';
 import type { Request, Response } from 'express';
 import { AuthenticationService, AuthFault } from '@so7ob/server';
+import { requestAttempt } from './attempts.js';
 import { AuthHttpPolicy } from './policy.js';
 import { RegisterDto, LoginDto, ForgotDto, ResetDto, ChangePasswordDto, InviteDto, RevokeDto, SignoutDto } from './dto.js';
 @ApiTags('Authentication')
@@ -28,11 +29,11 @@ export class AuthController {
   }
   @Get('error') error(@Res() res:Response) { res.redirect(307,'/ar/auth/login?error=CredentialsSignin'); }
   @HttpCode(200) @Post('signout') async signout(@Req() req:Request,@Body() body:SignoutDto,@Res() res:Response) { this.policy.mutation(req,true); await this.auth.logout(this.raw(req)); this.policy.clearSession(res); res.json({ url:this.policy.callback(body.callbackUrl) }); }
-  @HttpCode(200) @Post('register') async register(@Req() req:Request,@Body() body:RegisterDto,@Res() res:Response) { this.policy.mutation(req); res.status(201).json(await this.auth.register(body,req.ip ?? 'unknown')); }
+  @HttpCode(200) @Post('register') async register(@Req() req:Request,@Body() body:RegisterDto,@Res() res:Response) { this.policy.mutation(req); res.status(201).json(await this.auth.register(body,req.ip ?? 'unknown',requestAttempt(req))); }
   @Get('verify-email') async verify(@Query('token') token:string|undefined,@Query('locale') locale:string|undefined,@Res() res:Response) {
     const status=await this.auth.verifyEmail(typeof token==='string'?token:''); res.redirect(307,`/${locale==='en'?'en':'ar'}/auth/verified?status=${status}`);
   }
-  @HttpCode(200) @Post('forgot-password') async forgot(@Req() req:Request,@Body() body:ForgotDto,@Res() res:Response) { this.policy.mutation(req); res.json(await this.auth.forgot(body.email,req.ip ?? 'unknown')); }
+  @HttpCode(200) @Post('forgot-password') async forgot(@Req() req:Request,@Body() body:ForgotDto,@Res() res:Response) { this.policy.mutation(req); res.json(await this.auth.forgot(body.email,req.ip ?? 'unknown',requestAttempt(req))); }
   @HttpCode(200) @Post('reset-password') async reset(@Req() req:Request,@Body() body:ResetDto,@Res() res:Response) { this.policy.mutation(req); await this.auth.reset(body.token,body.password); res.json({ ok:true }); }
   @HttpCode(200) @Post('change-password') async change(@Req() req:Request,@Body() body:ChangePasswordDto,@Res() res:Response) { this.policy.mutation(req); await this.auth.changePassword(await this.required(req),body.currentPassword,body.newPassword); this.policy.clearSession(res); res.json({ ok:true,signedOut:true }); }
   @HttpCode(200) @Post('invite') async invite(@Req() req:Request,@Body() body:InviteDto,@Res() res:Response) { this.policy.mutation(req); await this.auth.acceptInvite(body.token,body.name,body.password); res.status(201).json({ ok:true }); }
