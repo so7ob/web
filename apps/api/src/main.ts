@@ -54,7 +54,14 @@ async function main() {
         const urls = pages.flatMap(p => ['ar','en'].map(locale => `<url><loc>${xml(`${origin}/${locale}${p.slug ? '/' + p.slug : ''}`)}</loc><lastmod>${(p.publishedAt ?? new Date()).toISOString()}</lastmod><changefreq>monthly</changefreq><priority>${p.isHome ? locale === 'ar' ? '1' : '0.9' : '0.7'}</priority>${['ar','en'].map(l => `<xhtml:link rel="alternate" hreflang="${l}" href="${xml(`${origin}/${l}${p.slug ? '/' + p.slug : ''}`)}"/>`).join('')}</url>`)).join('');
         res.type('application/xml').send(`<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">${urls}</urlset>`); return;
       }
-      const data = await app.get(PublicService).view(req.originalUrl);
+      const policy=app.get(AuthHttpPolicy);
+      const session=await app.get(AuthenticationService).session(policy.cookie(req,policy.sessionCookie));
+      let data: PublicView | { redirect:string }; let status=200;
+      try { data=await app.get(PublicService).view(req.originalUrl,session?.user ?? null); }
+      catch(error) {
+        if (!error || typeof error!=='object' || !('status' in error) || error.status!==404) throw error;
+        status=404; data={ kind:'not-found',locale:req.path.startsWith('/en')?'en':'ar',menus:[],settings:{},canonicalOrigin:process.env.SITE_URL!,viewer:null };
+      }
       if ('redirect' in data) { res.redirect(307, data.redirect); return; }
       const renderer: Renderer = vite ? await vite.ssrLoadModule('/src/entry-server.tsx') as Renderer : await import(pathToFileURL(resolve(web, 'dist/server/entry-server.js')).href);
       let template = await readFile(resolve(web, production ? 'dist/index.html' : 'index.html'), 'utf8');
@@ -62,9 +69,8 @@ async function main() {
       const rendered = await renderer.render(data.canonicalOrigin + req.originalUrl, data);
       const payload = JSON.stringify(data).replace(/[<>&\u2028\u2029]/g, char => `\\u${char.charCodeAt(0).toString(16).padStart(4,'0')}`);
       res.setHeader('Cache-Control', 'no-store');
-      res.type('html').send(template.replace('__LANG__', rendered.lang).replace('__DIR__', rendered.dir).replace('<!--head-->', rendered.head).replace('<!--app-->', rendered.html).replace('<!--data-->', `<script>window.__SO7OB__=${payload}</script>`));
-    } catch (error) {
-      if (error && typeof error === 'object' && 'status' in error && error.status === 404) { res.status(404).type('html').send('<!doctype html><html lang="ar" dir="rtl"><title>404 — سُحُب</title><body><h1>الصفحة غير موجودة — Page not found</h1><a href="/ar">العربية</a> <a href="/en">English</a></body></html>'); return; }
+      res.status(status).type('html').send(template.replace('__LANG__', rendered.lang).replace('__DIR__', rendered.dir).replace('<!--head-->', rendered.head).replace('<!--app-->', rendered.html).replace('<!--data-->', `<script>window.__SO7OB__=${payload}</script>`));
+    } catch {
       process.stderr.write('ssr_failed: internal_error\n'); res.status(500).type('text/plain').send('Internal server error');
     }
   });

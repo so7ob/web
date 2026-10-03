@@ -1,0 +1,16 @@
+{
+  "sourceSHA": "5321b7fd11db421c83290b262f276811e5f04e5f",
+  "date": "2026-10-03",
+  "node": "24.21.0",
+  "npm": "10.8.2",
+  "mariadb": "10.11.18",
+  "targetUnitIntegrationTests": 91,
+  "browserCases": 16,
+  "visualCases": 16,
+  "visualPassed": true,
+  "maximumDifferingPixelFraction": 0.0013770794824399261,
+  "performancePassed": true,
+  "privateWorkflowsAccepted": false,
+  "productionDataMigrated": false,
+  "completeMigration": false
+}

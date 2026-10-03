@@ -9,7 +9,7 @@ User=so7ob-web
 Group=so7ob-web
 WorkingDirectory=/opt/so7ob-web/current
 Environment=NODE_ENV=production
-Environment=TZ=UTC
+Environment=TZ=Asia/Aden
 EnvironmentFile=/etc/so7ob-web/api.env
 ExecStartPre=/opt/node-v24.21.0/bin/node /opt/so7ob-web/current/ops/check-runtime.mjs
 ExecStart=/opt/node-v24.21.0/bin/node apps/api/dist/main.js

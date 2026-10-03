@@ -36,7 +36,9 @@
   "include": [
     "apps/**/*.ts",
     "apps/**/*.tsx",
-    "packages/**/*.ts"
+    "packages/**/*.ts",
+    "tests/**/*.ts",
+    "playwright.config.ts"
   ],
   "exclude": [
     "**/dist",

@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { database } from '@so7ob/server';
-import type { PublicPage, PublicView } from '@so7ob/contracts';
+import { authScreens, canAccessPage, type AuthScreen, type AuthUser, type SiteViewBase, type PublicPage, type PublicView } from '@so7ob/contracts';
 const settingsKeys = ['contact.email','contact.phone','contact.address','social.github','site.nameAr','site.nameEn','announcement.enabled','announcement.messageAr','announcement.messageEn','announcement.ctaLabelAr','announcement.ctaLabelEn','announcement.ctaUrl','announcement.variant','announcement.revision','announcement.startAt','announcement.endAt'];
 function schedule(value: string, end = false): number | null {
   if (!value) return null;
@@ -11,23 +11,36 @@ function schedule(value: string, end = false): number | null {
 }
 @Injectable()
 export class PublicService {
-  async view(path: string): Promise<PublicView | { redirect: string }> {
+  async view(path: string, viewer: AuthUser | null = null): Promise<PublicView | { redirect: string }> {
     const url = new URL(path, 'http://local.invalid');
     const match = /^\/(ar|en)(?:\/(.*))?$/.exec(url.pathname);
     if (!match) throw new NotFoundException();
-    const locale = match[1] as 'ar' | 'en'; const slug = decodeURIComponent(match[2] || '').toLowerCase();
+    const locale = match[1] as 'ar' | 'en'; let slug:string;
+    try { slug = decodeURIComponent(match[2] || '').toLowerCase(); } catch { throw new NotFoundException(); }
     const db = await database();
+    const shell = await this.shell(locale, viewer);
+    const screen = /^auth\/([^/]+)$/.exec(slug)?.[1];
+    if (screen && (authScreens as readonly string[]).includes(screen)) return { ...shell,kind:'auth',screen:screen as AuthScreen,parameters:{ token:url.searchParams.get('token') ?? '',next:url.searchParams.get('next') ?? '',status:url.searchParams.get('status') ?? '' } };
     // Explicit publication projection: drafts, allowed-role lists and internal fields never reach this DTO.
-    const pages: PublicPage[] = await db.query('SELECT id,slug,titleAr,titleEn,seoTitleAr,seoTitleEn,seoDescAr,seoDescEn,publishedBlocksAr,publishedBlocksEn FROM Page WHERE slug=? AND status=? AND visibility=? LIMIT 1', [slug, 'published', 'public']);
-    const page = pages[0];
-    if (!page) {
+    const pages: Array<Omit<PublicPage,'restricted'> & { visibility:string; allowedRoles:string }> = await db.query('SELECT id,slug,titleAr,titleEn,seoTitleAr,seoTitleEn,seoDescAr,seoDescEn,publishedBlocksAr,publishedBlocksEn,visibility,allowedRoles FROM Page WHERE slug=? AND status=? LIMIT 1', [slug, 'published']);
+    const stored = pages[0];
+    if (!stored) {
       const redirects: Array<{ toSlug: string }> = await db.query('SELECT toSlug FROM PageRedirect WHERE fromSlug=? LIMIT 1', [slug]);
       if (redirects[0]) return { redirect: `/${locale}${redirects[0].toSlug ? '/' + redirects[0].toSlug : ''}` };
       throw new NotFoundException();
     }
+    if (stored.visibility !== 'public' && !viewer) return { redirect:`/${locale}/auth/login?next=/${locale}${slug?'/'+slug:''}` };
+    if (!canAccessPage(viewer,stored)) throw new NotFoundException();
+    const { visibility,allowedRoles,...published }=stored;
+    void allowedRoles; // Authorization-only metadata is deliberately omitted from the DTO.
+    const page: PublicPage = { ...published,restricted:visibility!=='public' };
     const blocks = locale === 'ar' ? page.publishedBlocksAr : page.publishedBlocksEn;
     try { if (!Array.isArray(JSON.parse(blocks ?? '[]')) || JSON.parse(blocks ?? '[]').length === 0) throw new Error(); }
     catch { throw new NotFoundException(); }
+    return { ...shell,kind:'cms',page };
+  }
+  async shell(locale:'ar'|'en',viewer:AuthUser|null):Promise<SiteViewBase> {
+    const db=await database();
     const [menus, rows]: [PublicView['menus'], Array<{ key: string; value: string }>] = await Promise.all([
       db.query('SELECT location,labelAr,labelEn,url,pageSlug,`order`,enabled FROM MenuItem WHERE enabled=1 ORDER BY `order` ASC'),
       db.query(`SELECT \`key\`,value FROM SiteSetting WHERE \`key\` IN (${settingsKeys.map(() => '?').join(',')})`, settingsKeys),
@@ -35,6 +48,6 @@ export class PublicService {
     const settings = Object.fromEntries(rows.map(row => [row.key, row.value]));
     const start = schedule(settings['announcement.startAt']); const end = schedule(settings['announcement.endAt'], true); const now = Date.now();
     settings['announcement.visible'] = String(settings['announcement.enabled'] === 'true' && !(start !== null && now < start) && !(end !== null && now > end));
-    return { kind: 'cms', locale, page, menus, settings, canonicalOrigin: (process.env.SITE_URL ?? 'http://127.0.0.1:3000').replace(/\/+$/, ''), viewer: null };
+    return { locale, menus, settings, canonicalOrigin: (process.env.SITE_URL ?? 'http://127.0.0.1:3000').replace(/\/+$/, ''), viewer: viewer ? { name:viewer.name,roleKey:viewer.roleKey } : null };
   }
 }

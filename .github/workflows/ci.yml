@@ -68,6 +68,8 @@ jobs:
       - run: npm run build
       - run: npm run test:worker
       - run: npm run test:auth
+      - run: npx playwright install --with-deps chromium
+      - run: npm run test:e2e
       - run: sudo apt-get update && sudo apt-get install -y nginx openssl
       - run: npm run test:infra
       - run: git diff --check
