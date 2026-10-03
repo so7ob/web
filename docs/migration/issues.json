@@ -1,0 +1,44 @@
+[
+  {
+    "phase": "parent",
+    "number": 1,
+    "url": "https://github.com/so7ob/web/issues/1",
+    "title": "Migration: preserve Website on the independent Node/Nest/Vite/MariaDB stack"
+  },
+  {
+    "phase": "A",
+    "number": 2,
+    "url": "https://github.com/so7ob/web/issues/2",
+    "title": "A: import pinned Website and freeze behavioral baseline"
+  },
+  {
+    "phase": "B",
+    "number": 3,
+    "url": "https://github.com/so7ob/web/issues/3",
+    "title": "B: establish npm workspaces and target runtime"
+  },
+  {
+    "phase": "C",
+    "number": 4,
+    "url": "https://github.com/so7ob/web/issues/4",
+    "title": "C: migrate business services, authentication and data"
+  },
+  {
+    "phase": "D",
+    "number": 5,
+    "url": "https://github.com/so7ob/web/issues/5",
+    "title": "D: preserve bilingual interfaces and full page editor"
+  },
+  {
+    "phase": "E",
+    "number": 6,
+    "url": "https://github.com/so7ob/web/issues/6",
+    "title": "E: durable worker and Debian operations"
+  },
+  {
+    "phase": "F",
+    "number": 7,
+    "url": "https://github.com/so7ob/web/issues/7",
+    "title": "F: parity acceptance and migration rehearsal"
+  }
+]

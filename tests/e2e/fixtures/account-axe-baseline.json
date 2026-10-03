@@ -1,0 +1,103 @@
+{
+  "sourceSHA": "5321b7fd11db421c83290b262f276811e5f04e5f",
+  "cases": {
+    "375:ar:dashboard": {},
+    "375:ar:requests": {
+      "aria-valid-attr-value": [
+        "[\"#radix-trigger-all\"]"
+      ]
+    },
+    "375:ar:requests-new": {
+      "color-contrast": [
+        "[\".mt-1\\\\.5.ltr-isolate.text-slate-400\"]",
+        "[\"label[for=\\\"company\\\"] > .ms-1.font-normal.text-slate-400\"]",
+        "[\"label[for=\\\"phone\\\"] > .ms-1.font-normal.text-slate-400\"]",
+        "[\"label[for=\\\"referenceUrl\\\"] > .ms-1.font-normal.text-slate-400\"]"
+      ]
+    },
+    "375:ar:requests-migrationrequest": {},
+    "375:ar:inquiries": {
+      "aria-valid-attr-value": [
+        "[\"#radix-trigger-all\"]"
+      ]
+    },
+    "375:ar:inquiries-migrationinquiry": {},
+    "375:ar:profile": {},
+    "375:ar:security": {},
+    "375:ar:notifications": {},
+    "375:en:dashboard": {},
+    "375:en:requests": {
+      "aria-valid-attr-value": [
+        "[\"#radix-trigger-all\"]"
+      ]
+    },
+    "375:en:requests-new": {
+      "color-contrast": [
+        "[\".mt-1\\\\.5.ltr-isolate.text-slate-400\"]",
+        "[\".leading-6.mt-1\\\\.5.text-slate-400\"]",
+        "[\"label[for=\\\"company\\\"] > .ms-1.font-normal.text-slate-400\"]",
+        "[\"label[for=\\\"phone\\\"] > .ms-1.font-normal.text-slate-400\"]",
+        "[\"label[for=\\\"referenceUrl\\\"] > .ms-1.font-normal.text-slate-400\"]"
+      ]
+    },
+    "375:en:requests-migrationrequest": {},
+    "375:en:inquiries": {
+      "aria-valid-attr-value": [
+        "[\"#radix-trigger-all\"]"
+      ]
+    },
+    "375:en:inquiries-migrationinquiry": {},
+    "375:en:profile": {},
+    "375:en:security": {},
+    "375:en:notifications": {},
+    "1280:ar:dashboard": {},
+    "1280:ar:requests": {
+      "aria-valid-attr-value": [
+        "[\"#radix-trigger-all\"]"
+      ]
+    },
+    "1280:ar:requests-new": {
+      "color-contrast": [
+        "[\".mt-1\\\\.5.ltr-isolate.text-slate-400\"]",
+        "[\"label[for=\\\"company\\\"] > .ms-1.font-normal.text-slate-400\"]",
+        "[\"label[for=\\\"phone\\\"] > .ms-1.font-normal.text-slate-400\"]",
+        "[\"label[for=\\\"referenceUrl\\\"] > .ms-1.font-normal.text-slate-400\"]"
+      ]
+    },
+    "1280:ar:requests-migrationrequest": {},
+    "1280:ar:inquiries": {
+      "aria-valid-attr-value": [
+        "[\"#radix-trigger-all\"]"
+      ]
+    },
+    "1280:ar:inquiries-migrationinquiry": {},
+    "1280:ar:profile": {},
+    "1280:ar:security": {},
+    "1280:ar:notifications": {},
+    "1280:en:dashboard": {},
+    "1280:en:requests": {
+      "aria-valid-attr-value": [
+        "[\"#radix-trigger-all\"]"
+      ]
+    },
+    "1280:en:requests-new": {
+      "color-contrast": [
+        "[\".mt-1\\\\.5.ltr-isolate.text-slate-400\"]",
+        "[\".leading-6.mt-1\\\\.5.text-slate-400\"]",
+        "[\"label[for=\\\"company\\\"] > .ms-1.font-normal.text-slate-400\"]",
+        "[\"label[for=\\\"phone\\\"] > .ms-1.font-normal.text-slate-400\"]",
+        "[\"label[for=\\\"referenceUrl\\\"] > .ms-1.font-normal.text-slate-400\"]"
+      ]
+    },
+    "1280:en:requests-migrationrequest": {},
+    "1280:en:inquiries": {
+      "aria-valid-attr-value": [
+        "[\"#radix-trigger-all\"]"
+      ]
+    },
+    "1280:en:inquiries-migrationinquiry": {},
+    "1280:en:profile": {},
+    "1280:en:security": {},
+    "1280:en:notifications": {}
+  }
+}

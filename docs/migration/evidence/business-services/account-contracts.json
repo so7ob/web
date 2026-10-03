@@ -1,0 +1,1156 @@
+{
+  "sourceSHA": "5321b7fd11db421c83290b262f276811e5f04e5f",
+  "ignoredVolatileFields": [
+    "lastLoginAt",
+    "clientReadAt",
+    "staffReadAt",
+    "updatedAt"
+  ],
+  "actors": {
+    "owner": {
+      "reference": [
+        {
+          "route": "/api/account/profile",
+          "status": 200,
+          "body": {
+            "ok": true,
+            "user": {
+              "id": "owner",
+              "email": "owner@migration.example.invalid",
+              "name": "Synthetic owner",
+              "phone": null,
+              "company": null,
+              "locale": "ar",
+              "roleKey": "client",
+              "status": "active",
+              "emailVerifiedAt": "2026-10-01T00:00:00.000Z",
+              "createdAt": "2026-10-02T20:22:25.959Z",
+              "lastLoginAt": null,
+              "emailVerified": true
+            }
+          }
+        },
+        {
+          "route": "/api/account/drafts",
+          "status": 200,
+          "body": {
+            "ok": true,
+            "draft": null
+          }
+        },
+        {
+          "route": "/api/account/notifications",
+          "status": 200,
+          "body": {
+            "ok": true,
+            "total": 0,
+            "unread": 0,
+            "page": 1,
+            "pageSize": 20,
+            "notifications": []
+          }
+        },
+        {
+          "route": "/api/account/requests",
+          "status": 200,
+          "body": {
+            "ok": true,
+            "total": 1,
+            "page": 1,
+            "pageSize": 20,
+            "requests": [
+              {
+                "id": "migrationrequest",
+                "refCode": "S7-MIGRATE01",
+                "serviceType": "web",
+                "requestType": "discussion",
+                "status": "new",
+                "priority": "normal",
+                "createdAt": "2026-10-02T20:22:25.975Z",
+                "lastActivityAt": "2026-10-02T20:22:25.975Z",
+                "lastClientReplyAt": null,
+                "lastStaffReplyAt": null,
+                "archivedAt": null,
+                "assignee": {
+                  "name": "Synthetic support"
+                },
+                "messageCount": 1,
+                "awaitingClientReply": false
+              }
+            ]
+          }
+        },
+        {
+          "route": "/api/account/requests/migrationrequest",
+          "status": 200,
+          "body": {
+            "ok": true,
+            "request": {
+              "id": "migrationrequest",
+              "refCode": "S7-MIGRATE01",
+              "requestType": "discussion",
+              "serviceType": "web",
+              "description": "Synthetic bilingual migration request — طلب اصطناعي",
+              "budget": "unspecified",
+              "currency": null,
+              "timeline": "flexible",
+              "name": "Synthetic owner",
+              "company": null,
+              "email": "owner@migration.example.invalid",
+              "phone": null,
+              "preferredContact": "email",
+              "referenceUrl": null,
+              "locale": "ar",
+              "descriptionHash": "synthetic",
+              "clientIpHash": null,
+              "userAgent": null,
+              "status": "new",
+              "notifiedAt": null,
+              "createdAt": "2026-10-02T20:22:25.975Z",
+              "clientId": "owner",
+              "assigneeId": "support",
+              "priority": "normal",
+              "resolutionNote": null,
+              "closedAt": null,
+              "archivedAt": null,
+              "lastActivityAt": "2026-10-02T20:22:25.975Z",
+              "lastClientReplyAt": null,
+              "lastStaffReplyAt": null,
+              "clientReadAt": null,
+              "staffReadAt": null,
+              "updatedAt": "2026-10-02T20:22:25.975Z",
+              "messages": [
+                {
+                  "id": "visiblemessage",
+                  "requestId": "migrationrequest",
+                  "authorId": "support",
+                  "authorType": "staff",
+                  "kind": "message",
+                  "body": "Synthetic visible reply",
+                  "editedAt": null,
+                  "createdAt": "2026-10-02T20:22:25.981Z"
+                }
+              ],
+              "statusHistory": [],
+              "attachments": [
+                {
+                  "id": "migrationattachment",
+                  "filename": "synthetic.pdf",
+                  "storedName": "synthetic.pdf",
+                  "mimeType": "application/pdf",
+                  "size": 46,
+                  "kind": "request_attachment",
+                  "uploaderId": "owner",
+                  "requestId": "migrationrequest",
+                  "inquiryId": null,
+                  "messageId": null,
+                  "createdAt": "2026-10-02T20:22:25.991Z"
+                }
+              ],
+              "assignee": {
+                "id": "support",
+                "name": "Synthetic support"
+              },
+              "claim": null
+            }
+          }
+        },
+        {
+          "route": "/api/account/inquiries",
+          "status": 200,
+          "body": {
+            "ok": true,
+            "total": 1,
+            "page": 1,
+            "pageSize": 20,
+            "inquiries": [
+              {
+                "id": "migrationinquiry",
+                "refCode": "IQ-MIGRATE01",
+                "subject": "Synthetic inquiry",
+                "category": "general",
+                "status": "new",
+                "locale": "ar",
+                "createdAt": "2026-10-02T20:22:25.987Z",
+                "lastActivityAt": "2026-10-02T20:22:25.987Z",
+                "closedAt": null,
+                "messageCount": 0,
+                "assigneeName": "Synthetic support"
+              }
+            ]
+          }
+        },
+        {
+          "route": "/api/account/inquiries/migrationinquiry",
+          "status": 200,
+          "body": {
+            "ok": true,
+            "inquiry": {
+              "id": "migrationinquiry",
+              "refCode": "IQ-MIGRATE01",
+              "subject": "Synthetic inquiry",
+              "name": "Synthetic owner",
+              "email": "owner@migration.example.invalid",
+              "category": "general",
+              "status": "new",
+              "priority": "normal",
+              "locale": "ar",
+              "clientId": "owner",
+              "assigneeId": "support",
+              "closedAt": null,
+              "archivedAt": null,
+              "lastActivityAt": "2026-10-02T20:22:25.987Z",
+              "createdAt": "2026-10-02T20:22:25.987Z",
+              "updatedAt": "2026-10-02T20:22:25.987Z",
+              "messages": [],
+              "attachments": [],
+              "assignee": {
+                "id": "support",
+                "name": "Synthetic support"
+              }
+            }
+          }
+        }
+      ],
+      "target": [
+        {
+          "route": "/api/account/profile",
+          "status": 200,
+          "body": {
+            "ok": true,
+            "user": {
+              "id": "owner",
+              "email": "owner@migration.example.invalid",
+              "name": "Synthetic owner",
+              "phone": null,
+              "company": null,
+              "locale": "ar",
+              "roleKey": "client",
+              "status": "active",
+              "emailVerifiedAt": "2026-10-01T00:00:00.000Z",
+              "createdAt": "2026-10-02T20:22:25.959Z",
+              "lastLoginAt": "2026-10-02T23:29:01.941Z",
+              "emailVerified": true
+            }
+          }
+        },
+        {
+          "route": "/api/account/drafts",
+          "status": 200,
+          "body": {
+            "ok": true,
+            "draft": null
+          }
+        },
+        {
+          "route": "/api/account/notifications",
+          "status": 200,
+          "body": {
+            "ok": true,
+            "total": 0,
+            "unread": 0,
+            "page": 1,
+            "pageSize": 20,
+            "notifications": []
+          }
+        },
+        {
+          "route": "/api/account/requests",
+          "status": 200,
+          "body": {
+            "ok": true,
+            "total": 1,
+            "page": 1,
+            "pageSize": 20,
+            "requests": [
+              {
+                "id": "migrationrequest",
+                "refCode": "S7-MIGRATE01",
+                "serviceType": "web",
+                "requestType": "discussion",
+                "status": "new",
+                "priority": "normal",
+                "createdAt": "2026-10-02T20:22:25.975Z",
+                "lastActivityAt": "2026-10-02T20:22:25.975Z",
+                "lastClientReplyAt": null,
+                "lastStaffReplyAt": null,
+                "archivedAt": null,
+                "messageCount": 1,
+                "assignee": {
+                  "name": "Synthetic support"
+                },
+                "awaitingClientReply": false
+              }
+            ]
+          }
+        },
+        {
+          "route": "/api/account/requests/migrationrequest",
+          "status": 200,
+          "body": {
+            "ok": true,
+            "request": {
+              "id": "migrationrequest",
+              "refCode": "S7-MIGRATE01",
+              "requestType": "discussion",
+              "serviceType": "web",
+              "description": "Synthetic bilingual migration request — طلب اصطناعي",
+              "budget": "unspecified",
+              "currency": null,
+              "timeline": "flexible",
+              "name": "Synthetic owner",
+              "company": null,
+              "email": "owner@migration.example.invalid",
+              "phone": null,
+              "preferredContact": "email",
+              "referenceUrl": null,
+              "locale": "ar",
+              "descriptionHash": "synthetic",
+              "clientIpHash": null,
+              "userAgent": null,
+              "status": "new",
+              "notifiedAt": null,
+              "createdAt": "2026-10-02T20:22:25.975Z",
+              "clientId": "owner",
+              "assigneeId": "support",
+              "priority": "normal",
+              "resolutionNote": null,
+              "closedAt": null,
+              "archivedAt": null,
+              "lastActivityAt": "2026-10-02T20:22:25.975Z",
+              "lastClientReplyAt": null,
+              "lastStaffReplyAt": null,
+              "clientReadAt": null,
+              "staffReadAt": null,
+              "updatedAt": "2026-10-02T20:22:25.975Z",
+              "messages": [
+                {
+                  "id": "visiblemessage",
+                  "requestId": "migrationrequest",
+                  "authorId": "support",
+                  "authorType": "staff",
+                  "kind": "message",
+                  "body": "Synthetic visible reply",
+                  "editedAt": null,
+                  "createdAt": "2026-10-02T20:22:25.981Z"
+                }
+              ],
+              "statusHistory": [],
+              "attachments": [
+                {
+                  "id": "migrationattachment",
+                  "filename": "synthetic.pdf",
+                  "storedName": "synthetic.pdf",
+                  "mimeType": "application/pdf",
+                  "size": 46,
+                  "kind": "request_attachment",
+                  "uploaderId": "owner",
+                  "requestId": "migrationrequest",
+                  "inquiryId": null,
+                  "messageId": null,
+                  "createdAt": "2026-10-02T20:22:25.991Z"
+                }
+              ],
+              "assignee": {
+                "id": "support",
+                "name": "Synthetic support"
+              },
+              "claim": null
+            }
+          }
+        },
+        {
+          "route": "/api/account/inquiries",
+          "status": 200,
+          "body": {
+            "ok": true,
+            "total": 1,
+            "page": 1,
+            "pageSize": 20,
+            "inquiries": [
+              {
+                "id": "migrationinquiry",
+                "refCode": "IQ-MIGRATE01",
+                "subject": "Synthetic inquiry",
+                "category": "general",
+                "status": "new",
+                "locale": "ar",
+                "createdAt": "2026-10-02T20:22:25.987Z",
+                "lastActivityAt": "2026-10-02T20:22:25.987Z",
+                "closedAt": null,
+                "assigneeName": "Synthetic support",
+                "messageCount": 0
+              }
+            ]
+          }
+        },
+        {
+          "route": "/api/account/inquiries/migrationinquiry",
+          "status": 200,
+          "body": {
+            "ok": true,
+            "inquiry": {
+              "id": "migrationinquiry",
+              "refCode": "IQ-MIGRATE01",
+              "subject": "Synthetic inquiry",
+              "name": "Synthetic owner",
+              "email": "owner@migration.example.invalid",
+              "category": "general",
+              "status": "new",
+              "priority": "normal",
+              "locale": "ar",
+              "clientId": "owner",
+              "assigneeId": "support",
+              "closedAt": null,
+              "archivedAt": null,
+              "lastActivityAt": "2026-10-02T20:22:25.987Z",
+              "createdAt": "2026-10-02T20:22:25.987Z",
+              "updatedAt": "2026-10-02T20:22:25.987Z",
+              "messages": [],
+              "attachments": [],
+              "assignee": {
+                "id": "support",
+                "name": "Synthetic support"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "other": {
+      "reference": [
+        {
+          "route": "/api/account/profile",
+          "status": 200,
+          "body": {
+            "ok": true,
+            "user": {
+              "id": "other",
+              "email": "other@migration.example.invalid",
+              "name": "Synthetic other",
+              "phone": null,
+              "company": null,
+              "locale": "ar",
+              "roleKey": "client",
+              "status": "active",
+              "emailVerifiedAt": "2026-10-01T00:00:00.000Z",
+              "createdAt": "2026-10-02T20:22:25.964Z",
+              "lastLoginAt": null,
+              "emailVerified": true
+            }
+          }
+        },
+        {
+          "route": "/api/account/drafts",
+          "status": 200,
+          "body": {
+            "ok": true,
+            "draft": null
+          }
+        },
+        {
+          "route": "/api/account/notifications",
+          "status": 200,
+          "body": {
+            "ok": true,
+            "total": 0,
+            "unread": 0,
+            "page": 1,
+            "pageSize": 20,
+            "notifications": []
+          }
+        },
+        {
+          "route": "/api/account/requests",
+          "status": 200,
+          "body": {
+            "ok": true,
+            "total": 0,
+            "page": 1,
+            "pageSize": 20,
+            "requests": []
+          }
+        },
+        {
+          "route": "/api/account/requests/migrationrequest",
+          "status": 403,
+          "body": {
+            "ok": false,
+            "code": "forbidden"
+          }
+        },
+        {
+          "route": "/api/account/inquiries",
+          "status": 200,
+          "body": {
+            "ok": true,
+            "total": 0,
+            "page": 1,
+            "pageSize": 20,
+            "inquiries": []
+          }
+        },
+        {
+          "route": "/api/account/inquiries/migrationinquiry",
+          "status": 404,
+          "body": {
+            "ok": false,
+            "code": "not_found"
+          }
+        }
+      ],
+      "target": [
+        {
+          "route": "/api/account/profile",
+          "status": 200,
+          "body": {
+            "ok": true,
+            "user": {
+              "id": "other",
+              "email": "other@migration.example.invalid",
+              "name": "Synthetic other",
+              "phone": null,
+              "company": null,
+              "locale": "ar",
+              "roleKey": "client",
+              "status": "active",
+              "emailVerifiedAt": "2026-10-01T00:00:00.000Z",
+              "createdAt": "2026-10-02T20:22:25.964Z",
+              "lastLoginAt": "2026-10-02T23:29:02.898Z",
+              "emailVerified": true
+            }
+          }
+        },
+        {
+          "route": "/api/account/drafts",
+          "status": 200,
+          "body": {
+            "ok": true,
+            "draft": null
+          }
+        },
+        {
+          "route": "/api/account/notifications",
+          "status": 200,
+          "body": {
+            "ok": true,
+            "total": 0,
+            "unread": 0,
+            "page": 1,
+            "pageSize": 20,
+            "notifications": []
+          }
+        },
+        {
+          "route": "/api/account/requests",
+          "status": 200,
+          "body": {
+            "ok": true,
+            "total": 0,
+            "page": 1,
+            "pageSize": 20,
+            "requests": []
+          }
+        },
+        {
+          "route": "/api/account/requests/migrationrequest",
+          "status": 403,
+          "body": {
+            "ok": false,
+            "code": "forbidden"
+          }
+        },
+        {
+          "route": "/api/account/inquiries",
+          "status": 200,
+          "body": {
+            "ok": true,
+            "total": 0,
+            "page": 1,
+            "pageSize": 20,
+            "inquiries": []
+          }
+        },
+        {
+          "route": "/api/account/inquiries/migrationinquiry",
+          "status": 404,
+          "body": {
+            "ok": false,
+            "code": "not_found"
+          }
+        }
+      ]
+    },
+    "support": {
+      "reference": [
+        {
+          "route": "/api/account/profile",
+          "status": 200,
+          "body": {
+            "ok": true,
+            "user": {
+              "id": "support",
+              "email": "support@migration.example.invalid",
+              "name": "Synthetic support",
+              "phone": null,
+              "company": null,
+              "locale": "ar",
+              "roleKey": "support",
+              "status": "active",
+              "emailVerifiedAt": "2026-10-01T00:00:00.000Z",
+              "createdAt": "2026-10-02T20:22:25.952Z",
+              "lastLoginAt": null,
+              "emailVerified": true
+            }
+          }
+        },
+        {
+          "route": "/api/account/drafts",
+          "status": 200,
+          "body": {
+            "ok": true,
+            "draft": null
+          }
+        },
+        {
+          "route": "/api/account/notifications",
+          "status": 200,
+          "body": {
+            "ok": true,
+            "total": 0,
+            "unread": 0,
+            "page": 1,
+            "pageSize": 20,
+            "notifications": []
+          }
+        },
+        {
+          "route": "/api/account/requests",
+          "status": 200,
+          "body": {
+            "ok": true,
+            "total": 1,
+            "page": 1,
+            "pageSize": 20,
+            "requests": [
+              {
+                "id": "migrationrequest",
+                "refCode": "S7-MIGRATE01",
+                "serviceType": "web",
+                "requestType": "discussion",
+                "status": "new",
+                "priority": "normal",
+                "createdAt": "2026-10-02T20:22:25.975Z",
+                "lastActivityAt": "2026-10-02T20:22:25.975Z",
+                "lastClientReplyAt": null,
+                "lastStaffReplyAt": null,
+                "archivedAt": null,
+                "assignee": {
+                  "name": "Synthetic support"
+                },
+                "messageCount": 1,
+                "awaitingClientReply": false
+              }
+            ]
+          }
+        },
+        {
+          "route": "/api/account/requests/migrationrequest",
+          "status": 200,
+          "body": {
+            "ok": true,
+            "request": {
+              "id": "migrationrequest",
+              "refCode": "S7-MIGRATE01",
+              "requestType": "discussion",
+              "serviceType": "web",
+              "description": "Synthetic bilingual migration request — طلب اصطناعي",
+              "budget": "unspecified",
+              "currency": null,
+              "timeline": "flexible",
+              "name": "Synthetic owner",
+              "company": null,
+              "email": "owner@migration.example.invalid",
+              "phone": null,
+              "preferredContact": "email",
+              "referenceUrl": null,
+              "locale": "ar",
+              "descriptionHash": "synthetic",
+              "clientIpHash": null,
+              "userAgent": null,
+              "status": "new",
+              "notifiedAt": null,
+              "createdAt": "2026-10-02T20:22:25.975Z",
+              "clientId": "owner",
+              "assigneeId": "support",
+              "priority": "normal",
+              "resolutionNote": null,
+              "closedAt": null,
+              "archivedAt": null,
+              "lastActivityAt": "2026-10-02T20:22:25.975Z",
+              "lastClientReplyAt": null,
+              "lastStaffReplyAt": null,
+              "clientReadAt": null,
+              "staffReadAt": null,
+              "updatedAt": "2026-10-02T20:22:25.975Z",
+              "messages": [
+                {
+                  "id": "visiblemessage",
+                  "requestId": "migrationrequest",
+                  "authorId": "support",
+                  "authorType": "staff",
+                  "kind": "message",
+                  "body": "Synthetic visible reply",
+                  "editedAt": null,
+                  "createdAt": "2026-10-02T20:22:25.981Z",
+                  "author": {
+                    "id": "support",
+                    "name": "Synthetic support",
+                    "roleKey": "support"
+                  }
+                },
+                {
+                  "id": "internalmessage",
+                  "requestId": "migrationrequest",
+                  "authorId": "support",
+                  "authorType": "staff",
+                  "kind": "internal_note",
+                  "body": "MIGRATION_PRIVATE_NOTE",
+                  "editedAt": null,
+                  "createdAt": "2026-10-02T20:22:25.984Z",
+                  "author": {
+                    "id": "support",
+                    "name": "Synthetic support",
+                    "roleKey": "support"
+                  }
+                }
+              ],
+              "statusHistory": [],
+              "attachments": [
+                {
+                  "id": "migrationattachment",
+                  "filename": "synthetic.pdf",
+                  "storedName": "synthetic.pdf",
+                  "mimeType": "application/pdf",
+                  "size": 46,
+                  "kind": "request_attachment",
+                  "uploaderId": "owner",
+                  "requestId": "migrationrequest",
+                  "inquiryId": null,
+                  "messageId": null,
+                  "createdAt": "2026-10-02T20:22:25.991Z"
+                }
+              ],
+              "client": {
+                "id": "owner",
+                "name": "Synthetic owner",
+                "email": "owner@migration.example.invalid",
+                "phone": null,
+                "company": null,
+                "status": "active"
+              },
+              "assignee": {
+                "id": "support",
+                "name": "Synthetic support"
+              }
+            }
+          }
+        },
+        {
+          "route": "/api/account/inquiries",
+          "status": 200,
+          "body": {
+            "ok": true,
+            "total": 1,
+            "page": 1,
+            "pageSize": 20,
+            "inquiries": [
+              {
+                "id": "migrationinquiry",
+                "refCode": "IQ-MIGRATE01",
+                "subject": "Synthetic inquiry",
+                "category": "general",
+                "status": "new",
+                "locale": "ar",
+                "createdAt": "2026-10-02T20:22:25.987Z",
+                "lastActivityAt": "2026-10-02T20:22:25.987Z",
+                "closedAt": null,
+                "messageCount": 0,
+                "assigneeName": "Synthetic support"
+              }
+            ]
+          }
+        },
+        {
+          "route": "/api/account/inquiries/migrationinquiry",
+          "status": 200,
+          "body": {
+            "ok": true,
+            "inquiry": {
+              "id": "migrationinquiry",
+              "refCode": "IQ-MIGRATE01",
+              "subject": "Synthetic inquiry",
+              "name": "Synthetic owner",
+              "email": "owner@migration.example.invalid",
+              "category": "general",
+              "status": "new",
+              "priority": "normal",
+              "locale": "ar",
+              "clientId": "owner",
+              "assigneeId": "support",
+              "closedAt": null,
+              "archivedAt": null,
+              "lastActivityAt": "2026-10-02T20:22:25.987Z",
+              "createdAt": "2026-10-02T20:22:25.987Z",
+              "updatedAt": "2026-10-02T20:22:25.987Z",
+              "messages": [],
+              "attachments": [],
+              "assignee": {
+                "id": "support",
+                "name": "Synthetic support"
+              }
+            }
+          }
+        }
+      ],
+      "target": [
+        {
+          "route": "/api/account/profile",
+          "status": 200,
+          "body": {
+            "ok": true,
+            "user": {
+              "id": "support",
+              "email": "support@migration.example.invalid",
+              "name": "Synthetic support",
+              "phone": null,
+              "company": null,
+              "locale": "ar",
+              "roleKey": "support",
+              "status": "active",
+              "emailVerifiedAt": "2026-10-01T00:00:00.000Z",
+              "createdAt": "2026-10-02T20:22:25.952Z",
+              "lastLoginAt": "2026-10-02T23:29:03.807Z",
+              "emailVerified": true
+            }
+          }
+        },
+        {
+          "route": "/api/account/drafts",
+          "status": 200,
+          "body": {
+            "ok": true,
+            "draft": null
+          }
+        },
+        {
+          "route": "/api/account/notifications",
+          "status": 200,
+          "body": {
+            "ok": true,
+            "total": 0,
+            "unread": 0,
+            "page": 1,
+            "pageSize": 20,
+            "notifications": []
+          }
+        },
+        {
+          "route": "/api/account/requests",
+          "status": 200,
+          "body": {
+            "ok": true,
+            "total": 1,
+            "page": 1,
+            "pageSize": 20,
+            "requests": [
+              {
+                "id": "migrationrequest",
+                "refCode": "S7-MIGRATE01",
+                "serviceType": "web",
+                "requestType": "discussion",
+                "status": "new",
+                "priority": "normal",
+                "createdAt": "2026-10-02T20:22:25.975Z",
+                "lastActivityAt": "2026-10-02T20:22:25.975Z",
+                "lastClientReplyAt": null,
+                "lastStaffReplyAt": null,
+                "archivedAt": null,
+                "messageCount": 1,
+                "assignee": {
+                  "name": "Synthetic support"
+                },
+                "awaitingClientReply": false
+              }
+            ]
+          }
+        },
+        {
+          "route": "/api/account/requests/migrationrequest",
+          "status": 200,
+          "body": {
+            "ok": true,
+            "request": {
+              "id": "migrationrequest",
+              "refCode": "S7-MIGRATE01",
+              "requestType": "discussion",
+              "serviceType": "web",
+              "description": "Synthetic bilingual migration request — طلب اصطناعي",
+              "budget": "unspecified",
+              "currency": null,
+              "timeline": "flexible",
+              "name": "Synthetic owner",
+              "company": null,
+              "email": "owner@migration.example.invalid",
+              "phone": null,
+              "preferredContact": "email",
+              "referenceUrl": null,
+              "locale": "ar",
+              "descriptionHash": "synthetic",
+              "clientIpHash": null,
+              "userAgent": null,
+              "status": "new",
+              "notifiedAt": null,
+              "createdAt": "2026-10-02T20:22:25.975Z",
+              "clientId": "owner",
+              "assigneeId": "support",
+              "priority": "normal",
+              "resolutionNote": null,
+              "closedAt": null,
+              "archivedAt": null,
+              "lastActivityAt": "2026-10-02T20:22:25.975Z",
+              "lastClientReplyAt": null,
+              "lastStaffReplyAt": null,
+              "clientReadAt": null,
+              "staffReadAt": null,
+              "updatedAt": "2026-10-02T20:22:25.975Z",
+              "messages": [
+                {
+                  "id": "visiblemessage",
+                  "requestId": "migrationrequest",
+                  "authorId": "support",
+                  "authorType": "staff",
+                  "kind": "message",
+                  "body": "Synthetic visible reply",
+                  "editedAt": null,
+                  "createdAt": "2026-10-02T20:22:25.981Z",
+                  "author": {
+                    "id": "support",
+                    "name": "Synthetic support",
+                    "roleKey": "support"
+                  }
+                },
+                {
+                  "id": "internalmessage",
+                  "requestId": "migrationrequest",
+                  "authorId": "support",
+                  "authorType": "staff",
+                  "kind": "internal_note",
+                  "body": "MIGRATION_PRIVATE_NOTE",
+                  "editedAt": null,
+                  "createdAt": "2026-10-02T20:22:25.984Z",
+                  "author": {
+                    "id": "support",
+                    "name": "Synthetic support",
+                    "roleKey": "support"
+                  }
+                }
+              ],
+              "statusHistory": [],
+              "attachments": [
+                {
+                  "id": "migrationattachment",
+                  "filename": "synthetic.pdf",
+                  "storedName": "synthetic.pdf",
+                  "mimeType": "application/pdf",
+                  "size": 46,
+                  "kind": "request_attachment",
+                  "uploaderId": "owner",
+                  "requestId": "migrationrequest",
+                  "inquiryId": null,
+                  "messageId": null,
+                  "createdAt": "2026-10-02T20:22:25.991Z"
+                }
+              ],
+              "assignee": {
+                "id": "support",
+                "name": "Synthetic support"
+              },
+              "client": {
+                "id": "owner",
+                "name": "Synthetic owner",
+                "email": "owner@migration.example.invalid",
+                "phone": null,
+                "company": null,
+                "status": "active"
+              }
+            }
+          }
+        },
+        {
+          "route": "/api/account/inquiries",
+          "status": 200,
+          "body": {
+            "ok": true,
+            "total": 1,
+            "page": 1,
+            "pageSize": 20,
+            "inquiries": [
+              {
+                "id": "migrationinquiry",
+                "refCode": "IQ-MIGRATE01",
+                "subject": "Synthetic inquiry",
+                "category": "general",
+                "status": "new",
+                "locale": "ar",
+                "createdAt": "2026-10-02T20:22:25.987Z",
+                "lastActivityAt": "2026-10-02T20:22:25.987Z",
+                "closedAt": null,
+                "assigneeName": "Synthetic support",
+                "messageCount": 0
+              }
+            ]
+          }
+        },
+        {
+          "route": "/api/account/inquiries/migrationinquiry",
+          "status": 200,
+          "body": {
+            "ok": true,
+            "inquiry": {
+              "id": "migrationinquiry",
+              "refCode": "IQ-MIGRATE01",
+              "subject": "Synthetic inquiry",
+              "name": "Synthetic owner",
+              "email": "owner@migration.example.invalid",
+              "category": "general",
+              "status": "new",
+              "priority": "normal",
+              "locale": "ar",
+              "clientId": "owner",
+              "assigneeId": "support",
+              "closedAt": null,
+              "archivedAt": null,
+              "lastActivityAt": "2026-10-02T20:22:25.987Z",
+              "createdAt": "2026-10-02T20:22:25.987Z",
+              "updatedAt": "2026-10-02T20:22:25.987Z",
+              "messages": [],
+              "attachments": [],
+              "assignee": {
+                "id": "support",
+                "name": "Synthetic support"
+              }
+            }
+          }
+        }
+      ]
+    }
+  },
+  "comparisons": [
+    {
+      "actor": "owner",
+      "route": "/api/account/profile",
+      "pass": true
+    },
+    {
+      "actor": "owner",
+      "route": "/api/account/drafts",
+      "pass": true
+    },
+    {
+      "actor": "owner",
+      "route": "/api/account/notifications",
+      "pass": true
+    },
+    {
+      "actor": "owner",
+      "route": "/api/account/requests",
+      "pass": true
+    },
+    {
+      "actor": "owner",
+      "route": "/api/account/requests/migrationrequest",
+      "pass": true
+    },
+    {
+      "actor": "owner",
+      "route": "/api/account/inquiries",
+      "pass": true
+    },
+    {
+      "actor": "owner",
+      "route": "/api/account/inquiries/migrationinquiry",
+      "pass": true
+    },
+    {
+      "actor": "other",
+      "route": "/api/account/profile",
+      "pass": true
+    },
+    {
+      "actor": "other",
+      "route": "/api/account/drafts",
+      "pass": true
+    },
+    {
+      "actor": "other",
+      "route": "/api/account/notifications",
+      "pass": true
+    },
+    {
+      "actor": "other",
+      "route": "/api/account/requests",
+      "pass": true
+    },
+    {
+      "actor": "other",
+      "route": "/api/account/requests/migrationrequest",
+      "pass": true
+    },
+    {
+      "actor": "other",
+      "route": "/api/account/inquiries",
+      "pass": true
+    },
+    {
+      "actor": "other",
+      "route": "/api/account/inquiries/migrationinquiry",
+      "pass": true
+    },
+    {
+      "actor": "support",
+      "route": "/api/account/profile",
+      "pass": true
+    },
+    {
+      "actor": "support",
+      "route": "/api/account/drafts",
+      "pass": true
+    },
+    {
+      "actor": "support",
+      "route": "/api/account/notifications",
+      "pass": true
+    },
+    {
+      "actor": "support",
+      "route": "/api/account/requests",
+      "pass": true
+    },
+    {
+      "actor": "support",
+      "route": "/api/account/requests/migrationrequest",
+      "pass": true
+    },
+    {
+      "actor": "support",
+      "route": "/api/account/inquiries",
+      "pass": true
+    },
+    {
+      "actor": "support",
+      "route": "/api/account/inquiries/migrationinquiry",
+      "pass": true
+    }
+  ]
+}

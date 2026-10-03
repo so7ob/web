@@ -1,0 +1,921 @@
+[
+  {
+    "id": "API-001",
+    "method": "GET",
+    "path": "/api/account/claim-verify",
+    "source": "src/app/api/account/claim-verify/route.ts",
+    "guards": [],
+    "entities": []
+  },
+  {
+    "id": "API-002",
+    "method": "GET",
+    "path": "/api/account/drafts",
+    "source": "src/app/api/account/drafts/route.ts",
+    "guards": [
+      "guardApi(req);",
+      "guardApi(req);",
+      "guardApi(req);"
+    ],
+    "entities": [
+      "requestDraft"
+    ]
+  },
+  {
+    "id": "API-003",
+    "method": "PUT",
+    "path": "/api/account/drafts",
+    "source": "src/app/api/account/drafts/route.ts",
+    "guards": [
+      "guardApi(req);",
+      "guardApi(req);",
+      "guardApi(req);"
+    ],
+    "entities": [
+      "requestDraft"
+    ]
+  },
+  {
+    "id": "API-004",
+    "method": "DELETE",
+    "path": "/api/account/drafts",
+    "source": "src/app/api/account/drafts/route.ts",
+    "guards": [
+      "guardApi(req);",
+      "guardApi(req);",
+      "guardApi(req);"
+    ],
+    "entities": [
+      "requestDraft"
+    ]
+  },
+  {
+    "id": "API-005",
+    "method": "POST",
+    "path": "/api/account/inquiries/[id]/messages",
+    "source": "src/app/api/account/inquiries/[id]/messages/route.ts",
+    "guards": [
+      "guardApi(req);"
+    ],
+    "entities": [
+      "inquiry",
+      "inquiryMessage"
+    ]
+  },
+  {
+    "id": "API-006",
+    "method": "GET",
+    "path": "/api/account/inquiries/[id]",
+    "source": "src/app/api/account/inquiries/[id]/route.ts",
+    "guards": [
+      "guardApi(req);"
+    ],
+    "entities": [
+      "inquiry"
+    ]
+  },
+  {
+    "id": "API-007",
+    "method": "GET",
+    "path": "/api/account/inquiries",
+    "source": "src/app/api/account/inquiries/route.ts",
+    "guards": [
+      "guardApi(req);",
+      "guardApi(req);"
+    ],
+    "entities": [
+      "inquiry"
+    ]
+  },
+  {
+    "id": "API-008",
+    "method": "POST",
+    "path": "/api/account/inquiries",
+    "source": "src/app/api/account/inquiries/route.ts",
+    "guards": [
+      "guardApi(req);",
+      "guardApi(req);"
+    ],
+    "entities": [
+      "inquiry"
+    ]
+  },
+  {
+    "id": "API-009",
+    "method": "GET",
+    "path": "/api/account/notifications",
+    "source": "src/app/api/account/notifications/route.ts",
+    "guards": [
+      "guardApi(req);",
+      "guardApi(req);"
+    ],
+    "entities": [
+      "notification"
+    ]
+  },
+  {
+    "id": "API-010",
+    "method": "POST",
+    "path": "/api/account/notifications",
+    "source": "src/app/api/account/notifications/route.ts",
+    "guards": [
+      "guardApi(req);",
+      "guardApi(req);"
+    ],
+    "entities": [
+      "notification"
+    ]
+  },
+  {
+    "id": "API-011",
+    "method": "GET",
+    "path": "/api/account/profile",
+    "source": "src/app/api/account/profile/route.ts",
+    "guards": [
+      "guardApi(req);",
+      "guardApi(req);"
+    ],
+    "entities": [
+      "user"
+    ]
+  },
+  {
+    "id": "API-012",
+    "method": "PATCH",
+    "path": "/api/account/profile",
+    "source": "src/app/api/account/profile/route.ts",
+    "guards": [
+      "guardApi(req);",
+      "guardApi(req);"
+    ],
+    "entities": [
+      "user"
+    ]
+  },
+  {
+    "id": "API-013",
+    "method": "POST",
+    "path": "/api/account/requests/[id]/messages",
+    "source": "src/app/api/account/requests/[id]/messages/route.ts",
+    "guards": [
+      "guardApi(req);"
+    ],
+    "entities": []
+  },
+  {
+    "id": "API-014",
+    "method": "GET",
+    "path": "/api/account/requests/[id]",
+    "source": "src/app/api/account/requests/[id]/route.ts",
+    "guards": [
+      "guardApi(req);",
+      "guardApi(req);"
+    ],
+    "entities": [
+      "projectRequest",
+      "requestMessage",
+      "requestStatusEvent"
+    ]
+  },
+  {
+    "id": "API-015",
+    "method": "PATCH",
+    "path": "/api/account/requests/[id]",
+    "source": "src/app/api/account/requests/[id]/route.ts",
+    "guards": [
+      "guardApi(req);",
+      "guardApi(req);"
+    ],
+    "entities": [
+      "projectRequest",
+      "requestMessage",
+      "requestStatusEvent"
+    ]
+  },
+  {
+    "id": "API-016",
+    "method": "POST",
+    "path": "/api/account/requests/claim",
+    "source": "src/app/api/account/requests/claim/route.ts",
+    "guards": [
+      "guardApi(req);"
+    ],
+    "entities": []
+  },
+  {
+    "id": "API-017",
+    "method": "GET",
+    "path": "/api/account/requests",
+    "source": "src/app/api/account/requests/route.ts",
+    "guards": [
+      "guardApi(req);"
+    ],
+    "entities": [
+      "projectRequest"
+    ]
+  },
+  {
+    "id": "API-018",
+    "method": "GET",
+    "path": "/api/admin/audit",
+    "source": "src/app/api/admin/audit/route.ts",
+    "guards": [
+      "guardApi(req, \"audit.view\");"
+    ],
+    "entities": [
+      "auditLog"
+    ]
+  },
+  {
+    "id": "API-019",
+    "method": "GET",
+    "path": "/api/admin/dashboard",
+    "source": "src/app/api/admin/dashboard/route.ts",
+    "guards": [
+      "guardApi(req, \"admin.dashboard\");"
+    ],
+    "entities": [
+      "auditLog",
+      "inquiry",
+      "page",
+      "projectRequest",
+      "user"
+    ]
+  },
+  {
+    "id": "API-020",
+    "method": "POST",
+    "path": "/api/admin/inquiries/[id]/messages",
+    "source": "src/app/api/admin/inquiries/[id]/messages/route.ts",
+    "guards": [
+      "guardApi(req);"
+    ],
+    "entities": [
+      "inquiry",
+      "inquiryMessage"
+    ]
+  },
+  {
+    "id": "API-021",
+    "method": "GET",
+    "path": "/api/admin/inquiries/[id]",
+    "source": "src/app/api/admin/inquiries/[id]/route.ts",
+    "guards": [
+      "guardApi(req, \"inquiries.view.all\");",
+      "guardApi(req);"
+    ],
+    "entities": [
+      "inquiry",
+      "inquiryMessage",
+      "user"
+    ]
+  },
+  {
+    "id": "API-022",
+    "method": "PATCH",
+    "path": "/api/admin/inquiries/[id]",
+    "source": "src/app/api/admin/inquiries/[id]/route.ts",
+    "guards": [
+      "guardApi(req, \"inquiries.view.all\");",
+      "guardApi(req);"
+    ],
+    "entities": [
+      "inquiry",
+      "inquiryMessage",
+      "user"
+    ]
+  },
+  {
+    "id": "API-023",
+    "method": "POST",
+    "path": "/api/admin/inquiries/bulk",
+    "source": "src/app/api/admin/inquiries/bulk/route.ts",
+    "guards": [
+      "guardApi(req);"
+    ],
+    "entities": [
+      "inquiry"
+    ]
+  },
+  {
+    "id": "API-024",
+    "method": "GET",
+    "path": "/api/admin/inquiries/export",
+    "source": "src/app/api/admin/inquiries/export/route.ts",
+    "guards": [
+      "guardApi(req, \"inquiries.export\");"
+    ],
+    "entities": [
+      "inquiry"
+    ]
+  },
+  {
+    "id": "API-025",
+    "method": "GET",
+    "path": "/api/admin/inquiries",
+    "source": "src/app/api/admin/inquiries/route.ts",
+    "guards": [
+      "guardApi(req, \"inquiries.view.all\");"
+    ],
+    "entities": [
+      "inquiry",
+      "inquiryMessage"
+    ]
+  },
+  {
+    "id": "API-026",
+    "method": "PATCH",
+    "path": "/api/admin/media/[id]",
+    "source": "src/app/api/admin/media/[id]/route.ts",
+    "guards": [
+      "guardApi(req, \"media.manage\");",
+      "guardApi(req, \"media.manage\");"
+    ],
+    "entities": [
+      "mediaItem"
+    ]
+  },
+  {
+    "id": "API-027",
+    "method": "DELETE",
+    "path": "/api/admin/media/[id]",
+    "source": "src/app/api/admin/media/[id]/route.ts",
+    "guards": [
+      "guardApi(req, \"media.manage\");",
+      "guardApi(req, \"media.manage\");"
+    ],
+    "entities": [
+      "mediaItem"
+    ]
+  },
+  {
+    "id": "API-028",
+    "method": "GET",
+    "path": "/api/admin/media",
+    "source": "src/app/api/admin/media/route.ts",
+    "guards": [
+      "guardApi(req, \"media.manage\");",
+      "guardApi(req, \"media.upload\");"
+    ],
+    "entities": [
+      "mediaItem"
+    ]
+  },
+  {
+    "id": "API-029",
+    "method": "POST",
+    "path": "/api/admin/media",
+    "source": "src/app/api/admin/media/route.ts",
+    "guards": [
+      "guardApi(req, \"media.manage\");",
+      "guardApi(req, \"media.upload\");"
+    ],
+    "entities": [
+      "mediaItem"
+    ]
+  },
+  {
+    "id": "API-030",
+    "method": "GET",
+    "path": "/api/admin/menus",
+    "source": "src/app/api/admin/menus/route.ts",
+    "guards": [
+      "guardApi(req, \"menus.manage\");",
+      "guardApi(req, \"menus.manage\");"
+    ],
+    "entities": [
+      "menuItem",
+      "page"
+    ]
+  },
+  {
+    "id": "API-031",
+    "method": "PUT",
+    "path": "/api/admin/menus",
+    "source": "src/app/api/admin/menus/route.ts",
+    "guards": [
+      "guardApi(req, \"menus.manage\");",
+      "guardApi(req, \"menus.manage\");"
+    ],
+    "entities": [
+      "menuItem",
+      "page"
+    ]
+  },
+  {
+    "id": "API-032",
+    "method": "GET",
+    "path": "/api/admin/outbox",
+    "source": "src/app/api/admin/outbox/route.ts",
+    "guards": [
+      "guardApi(req, \"email.outbox\");"
+    ],
+    "entities": [
+      "emailLog"
+    ]
+  },
+  {
+    "id": "API-033",
+    "method": "POST",
+    "path": "/api/admin/pages/[id]/publish",
+    "source": "src/app/api/admin/pages/[id]/publish/route.ts",
+    "guards": [
+      "guardApi(req, \"pages.publish\");"
+    ],
+    "entities": [
+      "page",
+      "pageVersion",
+      "user"
+    ]
+  },
+  {
+    "id": "API-034",
+    "method": "GET",
+    "path": "/api/admin/pages/[id]",
+    "source": "src/app/api/admin/pages/[id]/route.ts",
+    "guards": [
+      "guardApi(req, \"pages.view\");",
+      "guardApi(req, \"pages.edit\");",
+      "guardApi(req, \"pages.delete\");"
+    ],
+    "entities": [
+      "page",
+      "pageRedirect"
+    ]
+  },
+  {
+    "id": "API-035",
+    "method": "PATCH",
+    "path": "/api/admin/pages/[id]",
+    "source": "src/app/api/admin/pages/[id]/route.ts",
+    "guards": [
+      "guardApi(req, \"pages.view\");",
+      "guardApi(req, \"pages.edit\");",
+      "guardApi(req, \"pages.delete\");"
+    ],
+    "entities": [
+      "page",
+      "pageRedirect"
+    ]
+  },
+  {
+    "id": "API-036",
+    "method": "DELETE",
+    "path": "/api/admin/pages/[id]",
+    "source": "src/app/api/admin/pages/[id]/route.ts",
+    "guards": [
+      "guardApi(req, \"pages.view\");",
+      "guardApi(req, \"pages.edit\");",
+      "guardApi(req, \"pages.delete\");"
+    ],
+    "entities": [
+      "page",
+      "pageRedirect"
+    ]
+  },
+  {
+    "id": "API-037",
+    "method": "POST",
+    "path": "/api/admin/pages/[id]/versions/[version]/restore",
+    "source": "src/app/api/admin/pages/[id]/versions/[version]/restore/route.ts",
+    "guards": [
+      "guardApi(req, \"pages.restore\");"
+    ],
+    "entities": [
+      "page",
+      "pageVersion"
+    ]
+  },
+  {
+    "id": "API-038",
+    "method": "GET",
+    "path": "/api/admin/pages/[id]/versions",
+    "source": "src/app/api/admin/pages/[id]/versions/route.ts",
+    "guards": [
+      "guardApi(req, \"pages.view\");"
+    ],
+    "entities": [
+      "pageVersion"
+    ]
+  },
+  {
+    "id": "API-039",
+    "method": "GET",
+    "path": "/api/admin/pages",
+    "source": "src/app/api/admin/pages/route.ts",
+    "guards": [
+      "guardApi(req, \"pages.view\");",
+      "guardApi(req, \"pages.edit\");"
+    ],
+    "entities": [
+      "page"
+    ]
+  },
+  {
+    "id": "API-040",
+    "method": "POST",
+    "path": "/api/admin/pages",
+    "source": "src/app/api/admin/pages/route.ts",
+    "guards": [
+      "guardApi(req, \"pages.view\");",
+      "guardApi(req, \"pages.edit\");"
+    ],
+    "entities": [
+      "page"
+    ]
+  },
+  {
+    "id": "API-041",
+    "method": "GET",
+    "path": "/api/admin/requests/[id]",
+    "source": "src/app/api/admin/requests/[id]/route.ts",
+    "guards": [
+      "guardApi(req, \"requests.view.all\");",
+      "guardApi(req);"
+    ],
+    "entities": [
+      "projectRequest",
+      "requestMessage",
+      "requestStatusEvent",
+      "user"
+    ]
+  },
+  {
+    "id": "API-042",
+    "method": "PATCH",
+    "path": "/api/admin/requests/[id]",
+    "source": "src/app/api/admin/requests/[id]/route.ts",
+    "guards": [
+      "guardApi(req, \"requests.view.all\");",
+      "guardApi(req);"
+    ],
+    "entities": [
+      "projectRequest",
+      "requestMessage",
+      "requestStatusEvent",
+      "user"
+    ]
+  },
+  {
+    "id": "API-043",
+    "method": "POST",
+    "path": "/api/admin/requests/bulk",
+    "source": "src/app/api/admin/requests/bulk/route.ts",
+    "guards": [
+      "guardApi(req);"
+    ],
+    "entities": [
+      "projectRequest"
+    ]
+  },
+  {
+    "id": "API-044",
+    "method": "GET",
+    "path": "/api/admin/requests/export",
+    "source": "src/app/api/admin/requests/export/route.ts",
+    "guards": [
+      "guardApi(req, \"requests.export\");"
+    ],
+    "entities": [
+      "projectRequest"
+    ]
+  },
+  {
+    "id": "API-045",
+    "method": "GET",
+    "path": "/api/admin/requests",
+    "source": "src/app/api/admin/requests/route.ts",
+    "guards": [
+      "guardApi(req, \"requests.view.all\");"
+    ],
+    "entities": [
+      "projectRequest",
+      "requestMessage",
+      "user"
+    ]
+  },
+  {
+    "id": "API-046",
+    "method": "PATCH",
+    "path": "/api/admin/saved-replies/[id]",
+    "source": "src/app/api/admin/saved-replies/[id]/route.ts",
+    "guards": [
+      "guardApi(req, \"requests.reply\");",
+      "guardApi(req, \"requests.reply\");"
+    ],
+    "entities": [
+      "savedReply"
+    ]
+  },
+  {
+    "id": "API-047",
+    "method": "DELETE",
+    "path": "/api/admin/saved-replies/[id]",
+    "source": "src/app/api/admin/saved-replies/[id]/route.ts",
+    "guards": [
+      "guardApi(req, \"requests.reply\");",
+      "guardApi(req, \"requests.reply\");"
+    ],
+    "entities": [
+      "savedReply"
+    ]
+  },
+  {
+    "id": "API-048",
+    "method": "GET",
+    "path": "/api/admin/saved-replies",
+    "source": "src/app/api/admin/saved-replies/route.ts",
+    "guards": [
+      "guardApi(req, \"requests.view.all\");",
+      "guardApi(req, \"requests.reply\");"
+    ],
+    "entities": [
+      "savedReply"
+    ]
+  },
+  {
+    "id": "API-049",
+    "method": "POST",
+    "path": "/api/admin/saved-replies",
+    "source": "src/app/api/admin/saved-replies/route.ts",
+    "guards": [
+      "guardApi(req, \"requests.view.all\");",
+      "guardApi(req, \"requests.reply\");"
+    ],
+    "entities": [
+      "savedReply"
+    ]
+  },
+  {
+    "id": "API-050",
+    "method": "GET",
+    "path": "/api/admin/search",
+    "source": "src/app/api/admin/search/route.ts",
+    "guards": [
+      "guardApi(req, \"admin.dashboard\");"
+    ],
+    "entities": [
+      "inquiry",
+      "page",
+      "projectRequest",
+      "user"
+    ]
+  },
+  {
+    "id": "API-051",
+    "method": "GET",
+    "path": "/api/admin/settings",
+    "source": "src/app/api/admin/settings/route.ts",
+    "guards": [
+      "guardApi(req, \"settings.manage\");",
+      "guardApi(req, \"settings.manage\");"
+    ],
+    "entities": [
+      "siteSetting"
+    ]
+  },
+  {
+    "id": "API-052",
+    "method": "PATCH",
+    "path": "/api/admin/settings",
+    "source": "src/app/api/admin/settings/route.ts",
+    "guards": [
+      "guardApi(req, \"settings.manage\");",
+      "guardApi(req, \"settings.manage\");"
+    ],
+    "entities": [
+      "siteSetting"
+    ]
+  },
+  {
+    "id": "API-053",
+    "method": "GET",
+    "path": "/api/admin/users/[id]",
+    "source": "src/app/api/admin/users/[id]/route.ts",
+    "guards": [
+      "guardApi(req, \"users.view\");",
+      "guardApi(req, \"users.update\");"
+    ],
+    "entities": [
+      "auditLog",
+      "authSession",
+      "projectRequest",
+      "role",
+      "user"
+    ]
+  },
+  {
+    "id": "API-054",
+    "method": "PATCH",
+    "path": "/api/admin/users/[id]",
+    "source": "src/app/api/admin/users/[id]/route.ts",
+    "guards": [
+      "guardApi(req, \"users.view\");",
+      "guardApi(req, \"users.update\");"
+    ],
+    "entities": [
+      "auditLog",
+      "authSession",
+      "projectRequest",
+      "role",
+      "user"
+    ]
+  },
+  {
+    "id": "API-055",
+    "method": "GET",
+    "path": "/api/admin/users",
+    "source": "src/app/api/admin/users/route.ts",
+    "guards": [
+      "guardApi(req, \"users.view\");",
+      "guardApi(req, \"users.create\");"
+    ],
+    "entities": [
+      "user",
+      "userInvite"
+    ]
+  },
+  {
+    "id": "API-056",
+    "method": "POST",
+    "path": "/api/admin/users",
+    "source": "src/app/api/admin/users/route.ts",
+    "guards": [
+      "guardApi(req, \"users.view\");",
+      "guardApi(req, \"users.create\");"
+    ],
+    "entities": [
+      "user",
+      "userInvite"
+    ]
+  },
+  {
+    "id": "API-057",
+    "method": "GET",
+    "path": "/api/attachments/[id]",
+    "source": "src/app/api/attachments/[id]/route.ts",
+    "guards": [],
+    "entities": [
+      "attachment"
+    ]
+  },
+  {
+    "id": "API-058",
+    "method": "POST",
+    "path": "/api/attachments",
+    "source": "src/app/api/attachments/route.ts",
+    "guards": [
+      "guardApi(req);"
+    ],
+    "entities": [
+      "attachment",
+      "projectRequest"
+    ]
+  },
+  {
+    "id": "API-059",
+    "method": "GET",
+    "path": "/api/auth/[...nextauth]",
+    "source": "src/app/api/auth/[...nextauth]/route.ts",
+    "guards": [],
+    "entities": []
+  },
+  {
+    "id": "API-060",
+    "method": "POST",
+    "path": "/api/auth/[...nextauth]",
+    "source": "src/app/api/auth/[...nextauth]/route.ts",
+    "guards": [],
+    "entities": []
+  },
+  {
+    "id": "API-061",
+    "method": "POST",
+    "path": "/api/auth/change-password",
+    "source": "src/app/api/auth/change-password/route.ts",
+    "guards": [
+      "guardApi(req);"
+    ],
+    "entities": [
+      "authSession",
+      "user"
+    ]
+  },
+  {
+    "id": "API-062",
+    "method": "POST",
+    "path": "/api/auth/forgot-password",
+    "source": "src/app/api/auth/forgot-password/route.ts",
+    "guards": [],
+    "entities": [
+      "user"
+    ]
+  },
+  {
+    "id": "API-063",
+    "method": "POST",
+    "path": "/api/auth/invite",
+    "source": "src/app/api/auth/invite/route.ts",
+    "guards": [],
+    "entities": [
+      "user",
+      "userInvite"
+    ]
+  },
+  {
+    "id": "API-064",
+    "method": "POST",
+    "path": "/api/auth/register",
+    "source": "src/app/api/auth/register/route.ts",
+    "guards": [],
+    "entities": [
+      "user"
+    ]
+  },
+  {
+    "id": "API-065",
+    "method": "POST",
+    "path": "/api/auth/reset-password",
+    "source": "src/app/api/auth/reset-password/route.ts",
+    "guards": [],
+    "entities": [
+      "authSession",
+      "authToken",
+      "user"
+    ]
+  },
+  {
+    "id": "API-066",
+    "method": "GET",
+    "path": "/api/auth/sessions",
+    "source": "src/app/api/auth/sessions/route.ts",
+    "guards": [
+      "guardApi(req);"
+    ],
+    "entities": [
+      "authSession",
+      "user"
+    ]
+  },
+  {
+    "id": "API-067",
+    "method": "POST",
+    "path": "/api/auth/sessions",
+    "source": "src/app/api/auth/sessions/route.ts",
+    "guards": [
+      "guardApi(req);"
+    ],
+    "entities": [
+      "authSession",
+      "user"
+    ]
+  },
+  {
+    "id": "API-068",
+    "method": "GET",
+    "path": "/api/auth/verify-email",
+    "source": "src/app/api/auth/verify-email/route.ts",
+    "guards": [],
+    "entities": [
+      "user"
+    ]
+  },
+  {
+    "id": "API-069",
+    "method": "GET",
+    "path": "/api/health/ready",
+    "source": "src/app/api/health/ready/route.ts",
+    "guards": [],
+    "entities": []
+  },
+  {
+    "id": "API-070",
+    "method": "POST",
+    "path": "/api/inquiries",
+    "source": "src/app/api/inquiries/route.ts",
+    "guards": [],
+    "entities": [
+      "inquiry"
+    ]
+  },
+  {
+    "id": "API-071",
+    "method": "GET",
+    "path": "/api/media/[id]",
+    "source": "src/app/api/media/[id]/route.ts",
+    "guards": [],
+    "entities": [
+      "mediaItem"
+    ]
+  },
+  {
+    "id": "API-072",
+    "method": "POST",
+    "path": "/api/requests",
+    "source": "src/app/api/requests/route.ts",
+    "guards": [],
+    "entities": [
+      "projectRequest"
+    ]
+  }
+]

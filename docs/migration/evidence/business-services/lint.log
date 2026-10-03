@@ -1,0 +1,3 @@
+
+> so7ob-web@1.0.0 lint
+> eslint apps packages tools ops tests playwright.config.ts --max-warnings=0

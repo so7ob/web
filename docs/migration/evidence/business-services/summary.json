@@ -1,0 +1,28 @@
+{
+  "sourceSHA": "5321b7fd11db421c83290b262f276811e5f04e5f",
+  "date": "2026-10-03",
+  "node": "24.21.0",
+  "npm": "10.8.2",
+  "mariadb": "10.11.18",
+  "targetTests": 109,
+  "browserCases": 22,
+  "sourceTargetReadContracts": 21,
+  "legacyBusinessHandlers": 17,
+  "webhookProcessCrashTest": {
+    "actualDeliveries": 2,
+    "ambiguousResends": 0
+  },
+  "requestListStatements": {
+    "oneRow": 2,
+    "twentyRows": 2
+  },
+  "migrationComplete": false,
+  "productionDataMigrated": false,
+  "remaining": [
+    "claims and files/media",
+    "admin API",
+    "private UI and full editor",
+    "full operational backup/cutover/rollback rehearsal",
+    "complete workload acceptance"
+  ]
+}

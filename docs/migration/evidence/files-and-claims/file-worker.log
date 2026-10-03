@@ -1,0 +1,4 @@
+> so7ob-web@1.0.0 test:file-worker
+> node tools/migration/file-worker-smoke.mjs
+
+{"test":"compiled file cleanup worker","database":"real MariaDB","abandonedLeaseRecovered":true,"actualBytesRemoved":true,"restartIdempotent":true,"passed":true}

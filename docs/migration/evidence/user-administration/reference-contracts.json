@@ -1,0 +1,882 @@
+{
+  "sourceSHA": "5321b7fd11db421c83290b262f276811e5f04e5f",
+  "capturedAt": "2026-10-03T01:29:49.199Z",
+  "actors": {
+    "admin": [
+      {
+        "path": "/api/admin/users",
+        "status": 200,
+        "body": {
+          "ok": true,
+          "total": 8,
+          "page": 1,
+          "pageSize": 20,
+          "users": [
+            {
+              "id": "suspended",
+              "name": "Synthetic suspended",
+              "email": "suspended@migration.example.invalid",
+              "phone": null,
+              "company": null,
+              "roleKey": "client",
+              "status": "suspended",
+              "emailVerified": true,
+              "createdAt": "2026-10-02T20:22:25.971Z",
+              "lastLoginAt": null,
+              "requestsCount": 0,
+              "assignedCount": 0
+            },
+            {
+              "id": "pending",
+              "name": "Synthetic pending",
+              "email": "pending@migration.example.invalid",
+              "phone": null,
+              "company": null,
+              "roleKey": "client",
+              "status": "pending_verification",
+              "emailVerified": false,
+              "createdAt": "2026-10-02T20:22:25.967Z",
+              "lastLoginAt": null,
+              "requestsCount": 0,
+              "assignedCount": 0
+            },
+            {
+              "id": "other",
+              "name": "Synthetic other",
+              "email": "other@migration.example.invalid",
+              "phone": null,
+              "company": null,
+              "roleKey": "client",
+              "status": "active",
+              "emailVerified": true,
+              "createdAt": "2026-10-02T20:22:25.964Z",
+              "lastLoginAt": null,
+              "requestsCount": 0,
+              "assignedCount": 0
+            },
+            {
+              "id": "owner",
+              "name": "Synthetic owner",
+              "email": "owner@migration.example.invalid",
+              "phone": null,
+              "company": null,
+              "roleKey": "client",
+              "status": "active",
+              "emailVerified": true,
+              "createdAt": "2026-10-02T20:22:25.959Z",
+              "lastLoginAt": null,
+              "requestsCount": 1,
+              "assignedCount": 0
+            },
+            {
+              "id": "editor",
+              "name": "Synthetic editor",
+              "email": "editor@migration.example.invalid",
+              "phone": null,
+              "company": null,
+              "roleKey": "content_editor",
+              "status": "active",
+              "emailVerified": true,
+              "createdAt": "2026-10-02T20:22:25.955Z",
+              "lastLoginAt": null,
+              "requestsCount": 0,
+              "assignedCount": 0
+            },
+            {
+              "id": "support",
+              "name": "Synthetic support",
+              "email": "support@migration.example.invalid",
+              "phone": null,
+              "company": null,
+              "roleKey": "support",
+              "status": "active",
+              "emailVerified": true,
+              "createdAt": "2026-10-02T20:22:25.952Z",
+              "lastLoginAt": null,
+              "requestsCount": 0,
+              "assignedCount": 1
+            },
+            {
+              "id": "ops",
+              "name": "Synthetic ops",
+              "email": "ops@migration.example.invalid",
+              "phone": null,
+              "company": null,
+              "roleKey": "ops_manager",
+              "status": "active",
+              "emailVerified": true,
+              "createdAt": "2026-10-02T20:22:25.948Z",
+              "lastLoginAt": null,
+              "requestsCount": 0,
+              "assignedCount": 0
+            },
+            {
+              "id": "admin",
+              "name": "Synthetic admin",
+              "email": "admin@migration.example.invalid",
+              "phone": null,
+              "company": null,
+              "roleKey": "super_admin",
+              "status": "active",
+              "emailVerified": true,
+              "createdAt": "2026-10-02T20:22:25.942Z",
+              "lastLoginAt": null,
+              "requestsCount": 0,
+              "assignedCount": 0
+            }
+          ]
+        }
+      },
+      {
+        "path": "/api/admin/users?q=owner",
+        "status": 200,
+        "body": {
+          "ok": true,
+          "total": 1,
+          "page": 1,
+          "pageSize": 20,
+          "users": [
+            {
+              "id": "owner",
+              "name": "Synthetic owner",
+              "email": "owner@migration.example.invalid",
+              "phone": null,
+              "company": null,
+              "roleKey": "client",
+              "status": "active",
+              "emailVerified": true,
+              "createdAt": "2026-10-02T20:22:25.959Z",
+              "lastLoginAt": null,
+              "requestsCount": 1,
+              "assignedCount": 0
+            }
+          ]
+        }
+      },
+      {
+        "path": "/api/admin/users?role=client&status=active&sort=email&dir=asc",
+        "status": 200,
+        "body": {
+          "ok": true,
+          "total": 2,
+          "page": 1,
+          "pageSize": 20,
+          "users": [
+            {
+              "id": "other",
+              "name": "Synthetic other",
+              "email": "other@migration.example.invalid",
+              "phone": null,
+              "company": null,
+              "roleKey": "client",
+              "status": "active",
+              "emailVerified": true,
+              "createdAt": "2026-10-02T20:22:25.964Z",
+              "lastLoginAt": null,
+              "requestsCount": 0,
+              "assignedCount": 0
+            },
+            {
+              "id": "owner",
+              "name": "Synthetic owner",
+              "email": "owner@migration.example.invalid",
+              "phone": null,
+              "company": null,
+              "roleKey": "client",
+              "status": "active",
+              "emailVerified": true,
+              "createdAt": "2026-10-02T20:22:25.959Z",
+              "lastLoginAt": null,
+              "requestsCount": 1,
+              "assignedCount": 0
+            }
+          ]
+        }
+      },
+      {
+        "path": "/api/admin/users?sort=not-a-column&dir=asc",
+        "status": 200,
+        "body": {
+          "ok": true,
+          "total": 8,
+          "page": 1,
+          "pageSize": 20,
+          "users": [
+            {
+              "id": "suspended",
+              "name": "Synthetic suspended",
+              "email": "suspended@migration.example.invalid",
+              "phone": null,
+              "company": null,
+              "roleKey": "client",
+              "status": "suspended",
+              "emailVerified": true,
+              "createdAt": "2026-10-02T20:22:25.971Z",
+              "lastLoginAt": null,
+              "requestsCount": 0,
+              "assignedCount": 0
+            },
+            {
+              "id": "pending",
+              "name": "Synthetic pending",
+              "email": "pending@migration.example.invalid",
+              "phone": null,
+              "company": null,
+              "roleKey": "client",
+              "status": "pending_verification",
+              "emailVerified": false,
+              "createdAt": "2026-10-02T20:22:25.967Z",
+              "lastLoginAt": null,
+              "requestsCount": 0,
+              "assignedCount": 0
+            },
+            {
+              "id": "other",
+              "name": "Synthetic other",
+              "email": "other@migration.example.invalid",
+              "phone": null,
+              "company": null,
+              "roleKey": "client",
+              "status": "active",
+              "emailVerified": true,
+              "createdAt": "2026-10-02T20:22:25.964Z",
+              "lastLoginAt": null,
+              "requestsCount": 0,
+              "assignedCount": 0
+            },
+            {
+              "id": "owner",
+              "name": "Synthetic owner",
+              "email": "owner@migration.example.invalid",
+              "phone": null,
+              "company": null,
+              "roleKey": "client",
+              "status": "active",
+              "emailVerified": true,
+              "createdAt": "2026-10-02T20:22:25.959Z",
+              "lastLoginAt": null,
+              "requestsCount": 1,
+              "assignedCount": 0
+            },
+            {
+              "id": "editor",
+              "name": "Synthetic editor",
+              "email": "editor@migration.example.invalid",
+              "phone": null,
+              "company": null,
+              "roleKey": "content_editor",
+              "status": "active",
+              "emailVerified": true,
+              "createdAt": "2026-10-02T20:22:25.955Z",
+              "lastLoginAt": null,
+              "requestsCount": 0,
+              "assignedCount": 0
+            },
+            {
+              "id": "support",
+              "name": "Synthetic support",
+              "email": "support@migration.example.invalid",
+              "phone": null,
+              "company": null,
+              "roleKey": "support",
+              "status": "active",
+              "emailVerified": true,
+              "createdAt": "2026-10-02T20:22:25.952Z",
+              "lastLoginAt": null,
+              "requestsCount": 0,
+              "assignedCount": 1
+            },
+            {
+              "id": "ops",
+              "name": "Synthetic ops",
+              "email": "ops@migration.example.invalid",
+              "phone": null,
+              "company": null,
+              "roleKey": "ops_manager",
+              "status": "active",
+              "emailVerified": true,
+              "createdAt": "2026-10-02T20:22:25.948Z",
+              "lastLoginAt": null,
+              "requestsCount": 0,
+              "assignedCount": 0
+            },
+            {
+              "id": "admin",
+              "name": "Synthetic admin",
+              "email": "admin@migration.example.invalid",
+              "phone": null,
+              "company": null,
+              "roleKey": "super_admin",
+              "status": "active",
+              "emailVerified": true,
+              "createdAt": "2026-10-02T20:22:25.942Z",
+              "lastLoginAt": null,
+              "requestsCount": 0,
+              "assignedCount": 0
+            }
+          ]
+        }
+      },
+      {
+        "path": "/api/admin/users?page=2",
+        "status": 200,
+        "body": {
+          "ok": true,
+          "total": 8,
+          "page": 2,
+          "pageSize": 20,
+          "users": []
+        }
+      },
+      {
+        "path": "/api/admin/users/owner",
+        "status": 200,
+        "body": {
+          "ok": true,
+          "user": {
+            "id": "owner",
+            "email": "owner@migration.example.invalid",
+            "name": "Synthetic owner",
+            "phone": null,
+            "company": null,
+            "locale": "ar",
+            "roleKey": "client",
+            "status": "active",
+            "emailVerified": true,
+            "createdAt": "2026-10-02T20:22:25.959Z",
+            "updatedAt": "2026-10-02T20:22:25.959Z",
+            "lastLoginAt": null,
+            "suspendedAt": null,
+            "lastSeen": "2026-10-03T01:27:52.417Z"
+          },
+          "stats": {
+            "totalRequests": 1,
+            "openRequests": 1
+          },
+          "requests": [
+            {
+              "id": "migrationrequest",
+              "refCode": "S7-MIGRATE01",
+              "status": "new",
+              "serviceType": "web",
+              "createdAt": "2026-10-02T20:22:25.975Z",
+              "lastActivityAt": "2026-10-02T20:22:25.975Z",
+              "assigneeName": "Synthetic support"
+            }
+          ],
+          "sessions": {
+            "activeCount": 17,
+            "last5": [
+              {
+                "createdAt": "2026-10-03T01:27:52.417Z",
+                "lastSeenAt": "2026-10-03T01:27:52.417Z",
+                "userAgent": null,
+                "ipHash": null
+              },
+              {
+                "createdAt": "2026-10-03T01:22:18.897Z",
+                "lastSeenAt": "2026-10-03T01:22:18.897Z",
+                "userAgent": null,
+                "ipHash": null
+              },
+              {
+                "createdAt": "2026-10-03T00:46:10.466Z",
+                "lastSeenAt": "2026-10-03T00:46:10.466Z",
+                "userAgent": null,
+                "ipHash": null
+              },
+              {
+                "createdAt": "2026-10-03T00:38:37.927Z",
+                "lastSeenAt": "2026-10-03T00:38:37.927Z",
+                "userAgent": null,
+                "ipHash": null
+              },
+              {
+                "createdAt": "2026-10-03T00:20:17.523Z",
+                "lastSeenAt": "2026-10-03T00:20:17.523Z",
+                "userAgent": null,
+                "ipHash": null
+              }
+            ]
+          },
+          "auditLog": []
+        }
+      },
+      {
+        "path": "/api/admin/users/absent",
+        "status": 404,
+        "body": {
+          "ok": false,
+          "code": "not_found"
+        }
+      }
+    ],
+    "ops": [
+      {
+        "path": "/api/admin/users",
+        "status": 200,
+        "body": {
+          "ok": true,
+          "total": 8,
+          "page": 1,
+          "pageSize": 20,
+          "users": [
+            {
+              "id": "suspended",
+              "name": "Synthetic suspended",
+              "email": "suspended@migration.example.invalid",
+              "phone": null,
+              "company": null,
+              "roleKey": "client",
+              "status": "suspended",
+              "emailVerified": true,
+              "createdAt": "2026-10-02T20:22:25.971Z",
+              "lastLoginAt": null,
+              "requestsCount": 0,
+              "assignedCount": 0
+            },
+            {
+              "id": "pending",
+              "name": "Synthetic pending",
+              "email": "pending@migration.example.invalid",
+              "phone": null,
+              "company": null,
+              "roleKey": "client",
+              "status": "pending_verification",
+              "emailVerified": false,
+              "createdAt": "2026-10-02T20:22:25.967Z",
+              "lastLoginAt": null,
+              "requestsCount": 0,
+              "assignedCount": 0
+            },
+            {
+              "id": "other",
+              "name": "Synthetic other",
+              "email": "other@migration.example.invalid",
+              "phone": null,
+              "company": null,
+              "roleKey": "client",
+              "status": "active",
+              "emailVerified": true,
+              "createdAt": "2026-10-02T20:22:25.964Z",
+              "lastLoginAt": null,
+              "requestsCount": 0,
+              "assignedCount": 0
+            },
+            {
+              "id": "owner",
+              "name": "Synthetic owner",
+              "email": "owner@migration.example.invalid",
+              "phone": null,
+              "company": null,
+              "roleKey": "client",
+              "status": "active",
+              "emailVerified": true,
+              "createdAt": "2026-10-02T20:22:25.959Z",
+              "lastLoginAt": null,
+              "requestsCount": 1,
+              "assignedCount": 0
+            },
+            {
+              "id": "editor",
+              "name": "Synthetic editor",
+              "email": "editor@migration.example.invalid",
+              "phone": null,
+              "company": null,
+              "roleKey": "content_editor",
+              "status": "active",
+              "emailVerified": true,
+              "createdAt": "2026-10-02T20:22:25.955Z",
+              "lastLoginAt": null,
+              "requestsCount": 0,
+              "assignedCount": 0
+            },
+            {
+              "id": "support",
+              "name": "Synthetic support",
+              "email": "support@migration.example.invalid",
+              "phone": null,
+              "company": null,
+              "roleKey": "support",
+              "status": "active",
+              "emailVerified": true,
+              "createdAt": "2026-10-02T20:22:25.952Z",
+              "lastLoginAt": null,
+              "requestsCount": 0,
+              "assignedCount": 1
+            },
+            {
+              "id": "ops",
+              "name": "Synthetic ops",
+              "email": "ops@migration.example.invalid",
+              "phone": null,
+              "company": null,
+              "roleKey": "ops_manager",
+              "status": "active",
+              "emailVerified": true,
+              "createdAt": "2026-10-02T20:22:25.948Z",
+              "lastLoginAt": null,
+              "requestsCount": 0,
+              "assignedCount": 0
+            },
+            {
+              "id": "admin",
+              "name": "Synthetic admin",
+              "email": "admin@migration.example.invalid",
+              "phone": null,
+              "company": null,
+              "roleKey": "super_admin",
+              "status": "active",
+              "emailVerified": true,
+              "createdAt": "2026-10-02T20:22:25.942Z",
+              "lastLoginAt": null,
+              "requestsCount": 0,
+              "assignedCount": 0
+            }
+          ]
+        }
+      },
+      {
+        "path": "/api/admin/users?q=owner",
+        "status": 200,
+        "body": {
+          "ok": true,
+          "total": 1,
+          "page": 1,
+          "pageSize": 20,
+          "users": [
+            {
+              "id": "owner",
+              "name": "Synthetic owner",
+              "email": "owner@migration.example.invalid",
+              "phone": null,
+              "company": null,
+              "roleKey": "client",
+              "status": "active",
+              "emailVerified": true,
+              "createdAt": "2026-10-02T20:22:25.959Z",
+              "lastLoginAt": null,
+              "requestsCount": 1,
+              "assignedCount": 0
+            }
+          ]
+        }
+      },
+      {
+        "path": "/api/admin/users?role=client&status=active&sort=email&dir=asc",
+        "status": 200,
+        "body": {
+          "ok": true,
+          "total": 2,
+          "page": 1,
+          "pageSize": 20,
+          "users": [
+            {
+              "id": "other",
+              "name": "Synthetic other",
+              "email": "other@migration.example.invalid",
+              "phone": null,
+              "company": null,
+              "roleKey": "client",
+              "status": "active",
+              "emailVerified": true,
+              "createdAt": "2026-10-02T20:22:25.964Z",
+              "lastLoginAt": null,
+              "requestsCount": 0,
+              "assignedCount": 0
+            },
+            {
+              "id": "owner",
+              "name": "Synthetic owner",
+              "email": "owner@migration.example.invalid",
+              "phone": null,
+              "company": null,
+              "roleKey": "client",
+              "status": "active",
+              "emailVerified": true,
+              "createdAt": "2026-10-02T20:22:25.959Z",
+              "lastLoginAt": null,
+              "requestsCount": 1,
+              "assignedCount": 0
+            }
+          ]
+        }
+      },
+      {
+        "path": "/api/admin/users?sort=not-a-column&dir=asc",
+        "status": 200,
+        "body": {
+          "ok": true,
+          "total": 8,
+          "page": 1,
+          "pageSize": 20,
+          "users": [
+            {
+              "id": "suspended",
+              "name": "Synthetic suspended",
+              "email": "suspended@migration.example.invalid",
+              "phone": null,
+              "company": null,
+              "roleKey": "client",
+              "status": "suspended",
+              "emailVerified": true,
+              "createdAt": "2026-10-02T20:22:25.971Z",
+              "lastLoginAt": null,
+              "requestsCount": 0,
+              "assignedCount": 0
+            },
+            {
+              "id": "pending",
+              "name": "Synthetic pending",
+              "email": "pending@migration.example.invalid",
+              "phone": null,
+              "company": null,
+              "roleKey": "client",
+              "status": "pending_verification",
+              "emailVerified": false,
+              "createdAt": "2026-10-02T20:22:25.967Z",
+              "lastLoginAt": null,
+              "requestsCount": 0,
+              "assignedCount": 0
+            },
+            {
+              "id": "other",
+              "name": "Synthetic other",
+              "email": "other@migration.example.invalid",
+              "phone": null,
+              "company": null,
+              "roleKey": "client",
+              "status": "active",
+              "emailVerified": true,
+              "createdAt": "2026-10-02T20:22:25.964Z",
+              "lastLoginAt": null,
+              "requestsCount": 0,
+              "assignedCount": 0
+            },
+            {
+              "id": "owner",
+              "name": "Synthetic owner",
+              "email": "owner@migration.example.invalid",
+              "phone": null,
+              "company": null,
+              "roleKey": "client",
+              "status": "active",
+              "emailVerified": true,
+              "createdAt": "2026-10-02T20:22:25.959Z",
+              "lastLoginAt": null,
+              "requestsCount": 1,
+              "assignedCount": 0
+            },
+            {
+              "id": "editor",
+              "name": "Synthetic editor",
+              "email": "editor@migration.example.invalid",
+              "phone": null,
+              "company": null,
+              "roleKey": "content_editor",
+              "status": "active",
+              "emailVerified": true,
+              "createdAt": "2026-10-02T20:22:25.955Z",
+              "lastLoginAt": null,
+              "requestsCount": 0,
+              "assignedCount": 0
+            },
+            {
+              "id": "support",
+              "name": "Synthetic support",
+              "email": "support@migration.example.invalid",
+              "phone": null,
+              "company": null,
+              "roleKey": "support",
+              "status": "active",
+              "emailVerified": true,
+              "createdAt": "2026-10-02T20:22:25.952Z",
+              "lastLoginAt": null,
+              "requestsCount": 0,
+              "assignedCount": 1
+            },
+            {
+              "id": "ops",
+              "name": "Synthetic ops",
+              "email": "ops@migration.example.invalid",
+              "phone": null,
+              "company": null,
+              "roleKey": "ops_manager",
+              "status": "active",
+              "emailVerified": true,
+              "createdAt": "2026-10-02T20:22:25.948Z",
+              "lastLoginAt": null,
+              "requestsCount": 0,
+              "assignedCount": 0
+            },
+            {
+              "id": "admin",
+              "name": "Synthetic admin",
+              "email": "admin@migration.example.invalid",
+              "phone": null,
+              "company": null,
+              "roleKey": "super_admin",
+              "status": "active",
+              "emailVerified": true,
+              "createdAt": "2026-10-02T20:22:25.942Z",
+              "lastLoginAt": null,
+              "requestsCount": 0,
+              "assignedCount": 0
+            }
+          ]
+        }
+      },
+      {
+        "path": "/api/admin/users?page=2",
+        "status": 200,
+        "body": {
+          "ok": true,
+          "total": 8,
+          "page": 2,
+          "pageSize": 20,
+          "users": []
+        }
+      },
+      {
+        "path": "/api/admin/users/owner",
+        "status": 200,
+        "body": {
+          "ok": true,
+          "user": {
+            "id": "owner",
+            "email": "owner@migration.example.invalid",
+            "name": "Synthetic owner",
+            "phone": null,
+            "company": null,
+            "locale": "ar",
+            "roleKey": "client",
+            "status": "active",
+            "emailVerified": true,
+            "createdAt": "2026-10-02T20:22:25.959Z",
+            "updatedAt": "2026-10-02T20:22:25.959Z",
+            "lastLoginAt": null,
+            "suspendedAt": null,
+            "lastSeen": "2026-10-03T01:27:52.417Z"
+          },
+          "stats": {
+            "totalRequests": 1,
+            "openRequests": 1
+          },
+          "requests": [
+            {
+              "id": "migrationrequest",
+              "refCode": "S7-MIGRATE01",
+              "status": "new",
+              "serviceType": "web",
+              "createdAt": "2026-10-02T20:22:25.975Z",
+              "lastActivityAt": "2026-10-02T20:22:25.975Z",
+              "assigneeName": "Synthetic support"
+            }
+          ],
+          "sessions": {
+            "activeCount": 17,
+            "last5": [
+              {
+                "createdAt": "2026-10-03T01:27:52.417Z",
+                "lastSeenAt": "2026-10-03T01:27:52.417Z",
+                "userAgent": null,
+                "ipHash": null
+              },
+              {
+                "createdAt": "2026-10-03T01:22:18.897Z",
+                "lastSeenAt": "2026-10-03T01:22:18.897Z",
+                "userAgent": null,
+                "ipHash": null
+              },
+              {
+                "createdAt": "2026-10-03T00:46:10.466Z",
+                "lastSeenAt": "2026-10-03T00:46:10.466Z",
+                "userAgent": null,
+                "ipHash": null
+              },
+              {
+                "createdAt": "2026-10-03T00:38:37.927Z",
+                "lastSeenAt": "2026-10-03T00:38:37.927Z",
+                "userAgent": null,
+                "ipHash": null
+              },
+              {
+                "createdAt": "2026-10-03T00:20:17.523Z",
+                "lastSeenAt": "2026-10-03T00:20:17.523Z",
+                "userAgent": null,
+                "ipHash": null
+              }
+            ]
+          },
+          "auditLog": []
+        }
+      },
+      {
+        "path": "/api/admin/users/absent",
+        "status": 404,
+        "body": {
+          "ok": false,
+          "code": "not_found"
+        }
+      }
+    ],
+    "owner": [
+      {
+        "path": "/api/admin/users",
+        "status": 403,
+        "body": {
+          "ok": false,
+          "code": "forbidden"
+        }
+      },
+      {
+        "path": "/api/admin/users?q=owner",
+        "status": 403,
+        "body": {
+          "ok": false,
+          "code": "forbidden"
+        }
+      },
+      {
+        "path": "/api/admin/users?role=client&status=active&sort=email&dir=asc",
+        "status": 403,
+        "body": {
+          "ok": false,
+          "code": "forbidden"
+        }
+      },
+      {
+        "path": "/api/admin/users?sort=not-a-column&dir=asc",
+        "status": 403,
+        "body": {
+          "ok": false,
+          "code": "forbidden"
+        }
+      },
+      {
+        "path": "/api/admin/users?page=2",
+        "status": 403,
+        "body": {
+          "ok": false,
+          "code": "forbidden"
+        }
+      },
+      {
+        "path": "/api/admin/users/owner",
+        "status": 403,
+        "body": {
+          "ok": false,
+          "code": "forbidden"
+        }
+      },
+      {
+        "path": "/api/admin/users/absent",
+        "status": 403,
+        "body": {
+          "ok": false,
+          "code": "forbidden"
+        }
+      }
+    ]
+  }
+}

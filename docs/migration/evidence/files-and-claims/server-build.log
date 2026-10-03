@@ -1,0 +1,2 @@
+> so7ob-web@1.0.0 build:server
+> tsc -b packages/contracts packages/server apps/api apps/worker

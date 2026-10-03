@@ -1,0 +1,30 @@
+[
+  {
+    "path": ".github/PULL_REQUEST_TEMPLATE.md",
+    "reason": "Normalize imported whitespace for git diff --check; no runtime logic change",
+    "before": "a90cc2c6858679cc4638c921cfecc5f2ce8617d7aca52cdefc4129370147f6f1",
+    "after": "bc8cbdb5ffb79be9cb4c92077753acc08052551fdf2e8ef5b4e4c36623bcf6a1",
+    "lines": 1
+  },
+  {
+    "path": "docs/migration/feature-parity.csv",
+    "reason": "Normalize imported whitespace for git diff --check; no runtime logic change",
+    "before": "e0ea3dfaab79f7568bbb37e09bcf09da8a04ab6fd57c94664dfce33d473ce227",
+    "after": "89f898e12830ff42306fcb9c419a60b49cd4a7a5a5eb73b3b5f0bfb6ac57b748",
+    "lines": 138
+  },
+  {
+    "path": "eslint.config.mjs",
+    "reason": "Normalize imported whitespace for git diff --check; no runtime logic change",
+    "before": "6e7417ebd8b39c0e3804cdbb9a582e6ffc223e9c09e8a8401a1a2e08f172a32a",
+    "after": "3f2af84fd3c4e26162d658b79ce8a9e72170608375a00906d64a3d24cb566265",
+    "lines": 3
+  },
+  {
+    "path": "tailwind.config.ts",
+    "reason": "Normalize imported whitespace for git diff --check; no runtime logic change",
+    "before": "ade682235e52f45b1c1dfc020f0bdb9f27b94fcff60afaa3272fae22fe5c0c54",
+    "after": "d122c0f68f4ce8bdb9103d3e7959734939f94b5e0e2fdf7985f8c249e0add610",
+    "lines": 49
+  }
+]

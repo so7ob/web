@@ -1,0 +1,105 @@
+
+> so7ob-web@1.0.0 build
+> tsc -b packages/contracts packages/server apps/api apps/worker && npm run build -w @so7ob/web
+
+
+> @so7ob/web@0.1.0 build
+> vite build && vite build --ssr src/entry-server.tsx --outDir dist/server
+
+vite v8.2.2 building client environment for production...
+transforming...
+✓ 2117 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                                                         0.48 kB │ gzip:   0.33 kB
+dist/assets/ibm-plex-sans-arabic-latin-ext-700-normal-C7GcWn11.woff     5.08 kB
+dist/assets/ibm-plex-sans-arabic-latin-ext-400-normal-BeVLg08x.woff     5.10 kB
+dist/assets/ibm-plex-sans-arabic-latin-ext-500-normal-eJxPnL1P.woff     5.11 kB
+dist/assets/ibm-plex-sans-arabic-latin-ext-600-normal-DT29Q8HW.woff     5.12 kB
+dist/assets/ibm-plex-sans-vietnamese-400-normal-fK1oJ5dG.woff           6.39 kB
+dist/assets/ibm-plex-sans-vietnamese-700-normal-BV5B8Are.woff           6.42 kB
+dist/assets/ibm-plex-sans-arabic-latin-ext-500-normal-Ck_W4G78.woff2    6.54 kB
+dist/assets/ibm-plex-sans-arabic-latin-ext-700-normal-BSbyEp0V.woff2    6.56 kB
+dist/assets/ibm-plex-sans-vietnamese-600-normal-DgdngZtN.woff           6.58 kB
+dist/assets/ibm-plex-sans-vietnamese-500-normal-BEb3_waV.woff           6.58 kB
+dist/assets/ibm-plex-sans-arabic-latin-ext-400-normal-BpLfq-63.woff2    6.65 kB
+dist/assets/ibm-plex-sans-arabic-latin-ext-600-normal-DjDAeNQD.woff2    6.68 kB
+dist/assets/ibm-plex-sans-vietnamese-400-normal-DG4YqDda.woff2          8.20 kB
+dist/assets/ibm-plex-sans-vietnamese-700-normal-CkEo6LDy.woff2          8.22 kB
+dist/assets/ibm-plex-sans-vietnamese-500-normal-e4dixQRQ.woff2          8.41 kB
+dist/assets/ibm-plex-sans-vietnamese-600-normal-DpPYBSTl.woff2          8.46 kB
+dist/assets/ibm-plex-sans-greek-700-normal-CkZN0sRy.woff                8.74 kB
+dist/assets/ibm-plex-sans-greek-400-normal-D9ESIMu3.woff                8.76 kB
+dist/assets/ibm-plex-sans-greek-500-normal-CuWXN6rf.woff                9.14 kB
+dist/assets/ibm-plex-sans-greek-600-normal-D-CqTdkO.woff                9.22 kB
+dist/assets/ibm-plex-sans-greek-700-normal-wyJ6jzdA.woff2               9.92 kB
+dist/assets/ibm-plex-sans-greek-400-normal-_efipK4i.woff2               9.94 kB
+dist/assets/ibm-plex-sans-cyrillic-ext-700-normal-DCQwxkRk.woff        10.16 kB
+dist/assets/ibm-plex-sans-cyrillic-ext-400-normal-Dsrv2Tcn.woff        10.28 kB
+dist/assets/ibm-plex-sans-greek-600-normal-DzTrcv_p.woff2              10.36 kB
+dist/assets/ibm-plex-sans-greek-500-normal-JMMifIXV.woff2              10.37 kB
+dist/assets/ibm-plex-sans-cyrillic-ext-500-normal-DB5PtV2g.woff        10.59 kB
+dist/assets/ibm-plex-sans-cyrillic-ext-600-normal-Bz0x94Yp.woff        10.61 kB
+dist/assets/ibm-plex-sans-cyrillic-ext-700-normal-BmRLXWpJ.woff2       12.05 kB
+dist/assets/ibm-plex-sans-cyrillic-ext-400-normal-g30qAdWV.woff2       12.14 kB
+dist/assets/ibm-plex-sans-cyrillic-ext-600-normal-DUMzJB7m.woff2       12.30 kB
+dist/assets/ibm-plex-sans-cyrillic-ext-500-normal-Cs5J6C77.woff2       12.30 kB
+dist/assets/ibm-plex-sans-cyrillic-700-normal-RFb1v-CK.woff            13.32 kB
+dist/assets/ibm-plex-sans-cyrillic-400-normal-BTotfTJu.woff            13.51 kB
+dist/assets/ibm-plex-sans-cyrillic-500-normal-ByOcLdNv.woff            13.85 kB
+dist/assets/ibm-plex-sans-cyrillic-600-normal-BGq0mW3O.woff            13.88 kB
+dist/assets/ibm-plex-sans-latin-ext-400-normal-RBey6euL.woff           14.36 kB
+dist/assets/ibm-plex-sans-latin-ext-700-normal-DZH6Xh-4.woff           14.42 kB
+dist/assets/ibm-plex-sans-cyrillic-700-normal-D_uavGvn.woff2           14.57 kB
+dist/assets/ibm-plex-sans-latin-ext-500-normal-D0aIdm-b.woff           14.73 kB
+dist/assets/ibm-plex-sans-latin-ext-600-normal-DIrixKbi.woff           14.77 kB
+dist/assets/ibm-plex-sans-cyrillic-400-normal-DZqxrq2p.woff2           14.80 kB
+dist/assets/ibm-plex-sans-cyrillic-500-normal-CocWQlwt.woff2           15.00 kB
+dist/assets/ibm-plex-sans-cyrillic-600-normal-71GNu3SW.woff2           15.04 kB
+dist/assets/ibm-plex-sans-latin-ext-400-normal-C5H60-Va.woff2          15.98 kB
+dist/assets/ibm-plex-sans-latin-ext-700-normal-aMgXseD4.woff2          16.18 kB
+dist/assets/ibm-plex-sans-latin-ext-600-normal-DOrvGEcy.woff2          16.44 kB
+dist/assets/ibm-plex-sans-latin-ext-500-normal-DakdToA3.woff2          16.45 kB
+dist/assets/ibm-plex-sans-arabic-latin-400-normal-CFZh1unN.woff        17.51 kB
+dist/assets/ibm-plex-sans-arabic-latin-700-normal-Cl4F7CZR.woff        17.78 kB
+dist/assets/ibm-plex-sans-arabic-latin-500-normal-BletK1Hp.woff        18.64 kB
+dist/assets/ibm-plex-sans-arabic-latin-600-normal-Dk5eISD_.woff        18.88 kB
+dist/assets/ibm-plex-sans-arabic-latin-400-normal-Bo5KPYvw.woff2       19.16 kB
+dist/assets/ibm-plex-sans-arabic-latin-700-normal-BzSf6GNr.woff2       19.50 kB
+dist/assets/ibm-plex-sans-arabic-latin-500-normal-Cd6jVIg7.woff2       20.08 kB
+dist/assets/ibm-plex-sans-arabic-latin-600-normal-KrqB56Mw.woff2       20.50 kB
+dist/assets/ibm-plex-sans-latin-400-normal-CYLoc0-x.woff               22.10 kB
+dist/assets/ibm-plex-sans-latin-700-normal-Bth3BMcD.woff               22.28 kB
+dist/assets/ibm-plex-sans-latin-400-normal-CDDApCn2.woff2              22.58 kB
+dist/assets/ibm-plex-sans-latin-700-normal-Bxkt5Cjx.woff2              22.83 kB
+dist/assets/ibm-plex-sans-latin-600-normal-Cu4Hd6ag.woff               23.87 kB
+dist/assets/ibm-plex-sans-latin-500-normal-BgVn5rGT.woff               23.91 kB
+dist/assets/ibm-plex-sans-latin-500-normal-6ng42L7E.woff2              24.18 kB
+dist/assets/ibm-plex-sans-latin-600-normal-CuJfVYMP.woff2              24.25 kB
+dist/.vite/manifest.json                                               25.67 kB │ gzip:   1.83 kB
+dist/assets/ibm-plex-sans-arabic-arabic-400-normal-CyU-ddYS.woff2      42.84 kB
+dist/assets/ibm-plex-sans-arabic-arabic-400-normal-EA1o-u_Q.woff       44.13 kB
+dist/assets/ibm-plex-sans-arabic-arabic-700-normal-DrtBj6UE.woff2      44.28 kB
+dist/assets/ibm-plex-sans-arabic-arabic-700-normal-9rXc6cUL.woff       44.36 kB
+dist/assets/ibm-plex-sans-arabic-arabic-500-normal-C4MQITzh.woff2      45.29 kB
+dist/assets/ibm-plex-sans-arabic-arabic-600-normal-0pRdybE_.woff2      45.68 kB
+dist/assets/ibm-plex-sans-arabic-arabic-600-normal-MJZ0liF5.woff       46.78 kB
+dist/assets/ibm-plex-sans-arabic-arabic-500-normal-DPXcppbm.woff       46.92 kB
+dist/assets/index-Ba7zeZVx.css                                        159.42 kB │ gzip:  32.13 kB
+dist/assets/index-BU1qqzSs.js                                         655.43 kB │ gzip: 201.71 kB │ map: 2,815.93 kB
+
+[plugin builtin:vite-reporter] 
+(!) Some chunks are larger than 500 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rolldownOptions.output.codeSplitting to improve chunking: https://rolldown.rs/reference/OutputOptions.codeSplitting
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+✓ built in 1.14s
+vite v8.2.2 building ssr environment for production...
+transforming...
+✓ 1675 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/server/.vite/manifest.json    0.14 kB │ gzip:  0.10 kB
+dist/server/entry-server.js      294.47 kB │ gzip: 73.17 kB │ map: 450.47 kB
+
+✓ built in 220ms

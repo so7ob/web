@@ -1,0 +1,72 @@
+# التبعيات
+node_modules/
+.pnp/
+.pnp.js
+
+# بناء Next.js
+.next/
+out/
+build/
+
+# البيئة — لا تُرفع قيم فعلية أبدًا (يُسمح بنشر .env.example للتوثيق)
+.env
+.env.*
+!.env.example
+
+# قواعد البيانات المحلية وبيانات الطلبات الحقيقية — لا تُنشر أبدًا
+db/*.db
+db/*.db-journal
+db/*.db-wal
+db/*.db-shm
+*.sqlite
+*.sqlite-journal
+prisma/*.db
+prisma/dev.db*
+
+# السجلات
+*.log
+dev.log
+server.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# تغطية الاختبارات
+coverage/
+.vitest-cache/
+
+# أنظمة ومحررات
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
+*.swo
+*.pem
+
+# TypeScript
+*.tsbuildinfo
+next-env.d.ts
+
+# بيئة التطوير المحلية للمنصة التفاعلية
+.env
+*.log
+db/*.db
+db/uploads/
+prisma/*.db
+sandbox-local/
+.zscripts/
+download/
+upload/
+tool-results
+
+# Persistent data / snapshots must never be committed
+db/backups/
+backups/
+*.db
+*.db-wal
+*.db-shm
+*.db-journal
+*.sqlite-wal
+*.sqlite-shm

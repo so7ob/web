@@ -1,0 +1,91 @@
+{
+  "capturedAt": "2026-10-03T16:15:27.462Z",
+  "origin": "http://localhost:3108",
+  "databaseKind": "destination local development; original published content; no production records",
+  "rows": [
+    {
+      "locale": "ar",
+      "width": 375,
+      "status": 200,
+      "title": "سُحُب التقنية | تُمطِرُ حلولًا ذكية — تطوير مواقع وتطبيقات وأنظمة | سُحُب التقنية",
+      "dir": "rtl",
+      "h1": [
+        "تُمطِرُ حلولًا ذكية."
+      ],
+      "errors": [],
+      "axe": [
+        {
+          "id": "color-contrast",
+          "targets": [
+            [
+              ".bg-green-600"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "locale": "en",
+      "width": 375,
+      "status": 200,
+      "title": "so7ob | Raining smart solutions — websites, apps & systems | so7ob",
+      "dir": "ltr",
+      "h1": [
+        "Raining smart solutions."
+      ],
+      "errors": [],
+      "axe": [
+        {
+          "id": "color-contrast",
+          "targets": [
+            [
+              ".bg-green-600"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "locale": "ar",
+      "width": 1280,
+      "status": 200,
+      "title": "سُحُب التقنية | تُمطِرُ حلولًا ذكية — تطوير مواقع وتطبيقات وأنظمة | سُحُب التقنية",
+      "dir": "rtl",
+      "h1": [
+        "تُمطِرُ حلولًا ذكية."
+      ],
+      "errors": [],
+      "axe": [
+        {
+          "id": "color-contrast",
+          "targets": [
+            [
+              ".bg-green-600"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "locale": "en",
+      "width": 1280,
+      "status": 200,
+      "title": "so7ob | Raining smart solutions — websites, apps & systems | so7ob",
+      "dir": "ltr",
+      "h1": [
+        "Raining smart solutions."
+      ],
+      "errors": [],
+      "axe": [
+        {
+          "id": "color-contrast",
+          "targets": [
+            [
+              ".bg-green-600"
+            ]
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "name": "@so7ob/server",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "dependencies": {
+    "@so7ob/contracts": "*",
+    "typeorm": "1.1.1",
+    "mysql2": "3.24.3",
+    "reflect-metadata": "0.2.2",
+    "bcryptjs": "3.0.3",
+    "nodemailer": "10.0.13",
+    "sharp": "0.34.5",
+    "date-fns": "4.1.0"
+  },
+  "scripts": {
+    "build": "tsc -b"
+  },
+  "types": "./dist/index.d.ts"
+}

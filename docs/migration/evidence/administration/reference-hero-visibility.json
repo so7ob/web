@@ -1,0 +1,71 @@
+{
+  "sourceSHA": "5321b7fd11db421c83290b262f276811e5f04e5f",
+  "capturedAt": "2026-10-03T16:25:07.178Z",
+  "syntheticReadOnlyReference": true,
+  "rows": [
+    {
+      "locale": "ar",
+      "width": 375,
+      "motion": "reduce",
+      "status": 200,
+      "headingOpaque": false,
+      "text": "تُمطِرُ حلولًا ذكية."
+    },
+    {
+      "locale": "ar",
+      "width": 375,
+      "motion": "no-preference",
+      "status": 200,
+      "headingOpaque": true,
+      "text": "تُمطِرُ حلولًا ذكية."
+    },
+    {
+      "locale": "en",
+      "width": 375,
+      "motion": "reduce",
+      "status": 200,
+      "headingOpaque": false,
+      "text": "Raining smart solutions."
+    },
+    {
+      "locale": "en",
+      "width": 375,
+      "motion": "no-preference",
+      "status": 200,
+      "headingOpaque": true,
+      "text": "Raining smart solutions."
+    },
+    {
+      "locale": "ar",
+      "width": 1280,
+      "motion": "reduce",
+      "status": 200,
+      "headingOpaque": false,
+      "text": "تُمطِرُ حلولًا ذكية."
+    },
+    {
+      "locale": "ar",
+      "width": 1280,
+      "motion": "no-preference",
+      "status": 200,
+      "headingOpaque": true,
+      "text": "تُمطِرُ حلولًا ذكية."
+    },
+    {
+      "locale": "en",
+      "width": 1280,
+      "motion": "reduce",
+      "status": 200,
+      "headingOpaque": false,
+      "text": "Raining smart solutions."
+    },
+    {
+      "locale": "en",
+      "width": 1280,
+      "motion": "no-preference",
+      "status": 200,
+      "headingOpaque": true,
+      "text": "Raining smart solutions."
+    }
+  ]
+}

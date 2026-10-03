@@ -1,0 +1,4 @@
+
+> so7ob-web@1.0.0 lint
+> eslint apps packages tools --max-warnings=0
+

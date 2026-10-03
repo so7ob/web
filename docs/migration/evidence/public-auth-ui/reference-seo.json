@@ -1,0 +1,526 @@
+{
+  "/ar": {
+    "status": 200,
+    "tags": [
+      [
+        "meta",
+        {
+          "name": "viewport",
+          "content": "width=device-width, initial-scale=1"
+        }
+      ],
+      [
+        "meta",
+        {
+          "name": "next-size-adjust",
+          "content": ""
+        }
+      ],
+      [
+        "title",
+        "سُحُب التقنية | تُمطِرُ حلولًا ذكية — تطوير مواقع وتطبيقات وأنظمة | سُحُب التقنية"
+      ],
+      [
+        "meta",
+        {
+          "name": "description",
+          "content": "نحوّل أفكارك واحتياجات أعمالك إلى مواقع وتطبيقات وأنظمة سهلة الاستخدام، ونؤتمت إجراءاتك. تنفيذ على مراحل واضحة، ونطاق مكتوب، ودعم بعد الإطلاق."
+        }
+      ],
+      [
+        "meta",
+        {
+          "name": "application-name",
+          "content": "سُحُب التقنية | so7ob"
+        }
+      ],
+      [
+        "meta",
+        {
+          "name": "robots",
+          "content": "index, follow"
+        }
+      ],
+      [
+        "link",
+        {
+          "rel": "canonical",
+          "href": "http://127.0.0.1:3107/ar"
+        }
+      ],
+      [
+        "link",
+        {
+          "rel": "alternate",
+          "hreflang": "ar",
+          "href": "http://127.0.0.1:3107/ar"
+        }
+      ],
+      [
+        "link",
+        {
+          "rel": "alternate",
+          "hreflang": "en",
+          "href": "http://127.0.0.1:3107/en"
+        }
+      ],
+      [
+        "link",
+        {
+          "rel": "alternate",
+          "hreflang": "x-default",
+          "href": "http://127.0.0.1:3107/ar"
+        }
+      ],
+      [
+        "meta",
+        {
+          "property": "og:title",
+          "content": "سُحُب التقنية | تُمطِرُ حلولًا ذكية — تطوير مواقع وتطبيقات وأنظمة"
+        }
+      ],
+      [
+        "meta",
+        {
+          "property": "og:description",
+          "content": "نحوّل أفكارك واحتياجات أعمالك إلى مواقع وتطبيقات وأنظمة سهلة الاستخدام، ونؤتمت إجراءاتك. تنفيذ على مراحل واضحة، ونطاق مكتوب، ودعم بعد الإطلاق."
+        }
+      ],
+      [
+        "meta",
+        {
+          "property": "og:url",
+          "content": "http://127.0.0.1:3107/ar"
+        }
+      ],
+      [
+        "meta",
+        {
+          "property": "og:locale",
+          "content": "ar_SA"
+        }
+      ],
+      [
+        "meta",
+        {
+          "property": "og:locale:alternate",
+          "content": "en_US"
+        }
+      ],
+      [
+        "meta",
+        {
+          "name": "twitter:card",
+          "content": "summary"
+        }
+      ],
+      [
+        "meta",
+        {
+          "name": "twitter:title",
+          "content": "سُحُب التقنية | تُمطِرُ حلولًا ذكية — تطوير مواقع وتطبيقات وأنظمة"
+        }
+      ],
+      [
+        "meta",
+        {
+          "name": "twitter:description",
+          "content": "نحوّل أفكارك واحتياجات أعمالك إلى مواقع وتطبيقات وأنظمة سهلة الاستخدام، ونؤتمت إجراءاتك. تنفيذ على مراحل واضحة، ونطاق مكتوب، ودعم بعد الإطلاق."
+        }
+      ],
+      [
+        "link",
+        {
+          "rel": "icon",
+          "href": "/icon.png?icon.7b020345.png",
+          "sizes": "256x256",
+          "type": "image/png"
+        }
+      ],
+      [
+        "link",
+        {
+          "rel": "apple-touch-icon",
+          "href": "/apple-icon.png?apple-icon.aaa46e8c.png",
+          "sizes": "180x180",
+          "type": "image/png"
+        }
+      ]
+    ]
+  },
+  "/ar/auth/login": {
+    "status": 200,
+    "tags": [
+      [
+        "meta",
+        {
+          "name": "viewport",
+          "content": "width=device-width, initial-scale=1"
+        }
+      ],
+      [
+        "meta",
+        {
+          "name": "next-size-adjust",
+          "content": ""
+        }
+      ],
+      [
+        "title",
+        "تسجيل الدخول | سُحُب التقنية"
+      ],
+      [
+        "meta",
+        {
+          "name": "description",
+          "content": "نحوّل أفكارك واحتياجات أعمالك إلى مواقع وتطبيقات وأنظمة سهلة الاستخدام، ونؤتمت إجراءاتك. تنفيذ على مراحل واضحة، ونطاق مكتوب، ودعم بعد الإطلاق."
+        }
+      ],
+      [
+        "meta",
+        {
+          "name": "application-name",
+          "content": "سُحُب التقنية | so7ob"
+        }
+      ],
+      [
+        "meta",
+        {
+          "name": "robots",
+          "content": "index, follow"
+        }
+      ],
+      [
+        "meta",
+        {
+          "property": "og:title",
+          "content": "تسجيل الدخول | سُحُب التقنية"
+        }
+      ],
+      [
+        "meta",
+        {
+          "property": "og:description",
+          "content": "نحوّل أفكارك واحتياجات أعمالك إلى مواقع وتطبيقات وأنظمة سهلة الاستخدام، ونؤتمت إجراءاتك. تنفيذ على مراحل واضحة، ونطاق مكتوب، ودعم بعد الإطلاق."
+        }
+      ],
+      [
+        "meta",
+        {
+          "property": "og:site_name",
+          "content": "سُحُب التقنية | so7ob"
+        }
+      ],
+      [
+        "meta",
+        {
+          "property": "og:locale",
+          "content": "ar_SA"
+        }
+      ],
+      [
+        "meta",
+        {
+          "property": "og:locale:alternate",
+          "content": "en_US"
+        }
+      ],
+      [
+        "meta",
+        {
+          "property": "og:type",
+          "content": "website"
+        }
+      ],
+      [
+        "meta",
+        {
+          "name": "twitter:card",
+          "content": "summary"
+        }
+      ],
+      [
+        "meta",
+        {
+          "name": "twitter:title",
+          "content": "تسجيل الدخول | سُحُب التقنية"
+        }
+      ],
+      [
+        "meta",
+        {
+          "name": "twitter:description",
+          "content": "نحوّل أفكارك واحتياجات أعمالك إلى مواقع وتطبيقات وأنظمة سهلة الاستخدام، ونؤتمت إجراءاتك. تنفيذ على مراحل واضحة، ونطاق مكتوب، ودعم بعد الإطلاق."
+        }
+      ],
+      [
+        "link",
+        {
+          "rel": "icon",
+          "href": "/icon.png?icon.7b020345.png",
+          "sizes": "256x256",
+          "type": "image/png"
+        }
+      ],
+      [
+        "link",
+        {
+          "rel": "apple-touch-icon",
+          "href": "/apple-icon.png?apple-icon.aaa46e8c.png",
+          "sizes": "180x180",
+          "type": "image/png"
+        }
+      ]
+    ]
+  },
+  "/en/auth/reset-password?token=synthetic": {
+    "status": 200,
+    "tags": [
+      [
+        "meta",
+        {
+          "name": "viewport",
+          "content": "width=device-width, initial-scale=1"
+        }
+      ],
+      [
+        "meta",
+        {
+          "name": "next-size-adjust",
+          "content": ""
+        }
+      ],
+      [
+        "title",
+        "New password | so7ob"
+      ],
+      [
+        "meta",
+        {
+          "name": "description",
+          "content": "We turn your ideas and business needs into easy-to-use websites, apps and systems, connect your tools and automate routines. Clear scope, staged delivery, post-launch support."
+        }
+      ],
+      [
+        "meta",
+        {
+          "name": "application-name",
+          "content": "so7ob | سُحُب التقنية"
+        }
+      ],
+      [
+        "meta",
+        {
+          "name": "robots",
+          "content": "index, follow"
+        }
+      ],
+      [
+        "meta",
+        {
+          "property": "og:title",
+          "content": "New password | so7ob"
+        }
+      ],
+      [
+        "meta",
+        {
+          "property": "og:description",
+          "content": "We turn your ideas and business needs into easy-to-use websites, apps and systems, connect your tools and automate routines. Clear scope, staged delivery, post-launch support."
+        }
+      ],
+      [
+        "meta",
+        {
+          "property": "og:site_name",
+          "content": "so7ob | سُحُب التقنية"
+        }
+      ],
+      [
+        "meta",
+        {
+          "property": "og:locale",
+          "content": "en_US"
+        }
+      ],
+      [
+        "meta",
+        {
+          "property": "og:locale:alternate",
+          "content": "ar_SA"
+        }
+      ],
+      [
+        "meta",
+        {
+          "property": "og:type",
+          "content": "website"
+        }
+      ],
+      [
+        "meta",
+        {
+          "name": "twitter:card",
+          "content": "summary"
+        }
+      ],
+      [
+        "meta",
+        {
+          "name": "twitter:title",
+          "content": "New password | so7ob"
+        }
+      ],
+      [
+        "meta",
+        {
+          "name": "twitter:description",
+          "content": "We turn your ideas and business needs into easy-to-use websites, apps and systems, connect your tools and automate routines. Clear scope, staged delivery, post-launch support."
+        }
+      ],
+      [
+        "link",
+        {
+          "rel": "icon",
+          "href": "/icon.png?icon.7b020345.png",
+          "sizes": "256x256",
+          "type": "image/png"
+        }
+      ],
+      [
+        "link",
+        {
+          "rel": "apple-touch-icon",
+          "href": "/apple-icon.png?apple-icon.aaa46e8c.png",
+          "sizes": "180x180",
+          "type": "image/png"
+        }
+      ]
+    ]
+  },
+  "/ar/no-such-page": {
+    "status": 404,
+    "tags": [
+      [
+        "meta",
+        {
+          "name": "viewport",
+          "content": "width=device-width, initial-scale=1"
+        }
+      ],
+      [
+        "meta",
+        {
+          "name": "robots",
+          "content": "noindex"
+        }
+      ],
+      [
+        "title",
+        "سُحُب التقنية | تُمطِرُ حلولًا ذكية — تطوير مواقع وتطبيقات وأنظمة"
+      ],
+      [
+        "meta",
+        {
+          "name": "description",
+          "content": "نحوّل أفكارك واحتياجات أعمالك إلى مواقع وتطبيقات وأنظمة سهلة الاستخدام، ونؤتمت إجراءاتك. تنفيذ على مراحل واضحة، ونطاق مكتوب، ودعم بعد الإطلاق."
+        }
+      ],
+      [
+        "meta",
+        {
+          "name": "application-name",
+          "content": "سُحُب التقنية | so7ob"
+        }
+      ],
+      [
+        "meta",
+        {
+          "name": "robots",
+          "content": "index, follow"
+        }
+      ],
+      [
+        "meta",
+        {
+          "property": "og:title",
+          "content": "سُحُب التقنية | تُمطِرُ حلولًا ذكية — تطوير مواقع وتطبيقات وأنظمة"
+        }
+      ],
+      [
+        "meta",
+        {
+          "property": "og:description",
+          "content": "نحوّل أفكارك واحتياجات أعمالك إلى مواقع وتطبيقات وأنظمة سهلة الاستخدام، ونؤتمت إجراءاتك. تنفيذ على مراحل واضحة، ونطاق مكتوب، ودعم بعد الإطلاق."
+        }
+      ],
+      [
+        "meta",
+        {
+          "property": "og:site_name",
+          "content": "سُحُب التقنية | so7ob"
+        }
+      ],
+      [
+        "meta",
+        {
+          "property": "og:locale",
+          "content": "ar_SA"
+        }
+      ],
+      [
+        "meta",
+        {
+          "property": "og:locale:alternate",
+          "content": "en_US"
+        }
+      ],
+      [
+        "meta",
+        {
+          "property": "og:type",
+          "content": "website"
+        }
+      ],
+      [
+        "meta",
+        {
+          "name": "twitter:card",
+          "content": "summary"
+        }
+      ],
+      [
+        "meta",
+        {
+          "name": "twitter:title",
+          "content": "سُحُب التقنية | تُمطِرُ حلولًا ذكية — تطوير مواقع وتطبيقات وأنظمة"
+        }
+      ],
+      [
+        "meta",
+        {
+          "name": "twitter:description",
+          "content": "نحوّل أفكارك واحتياجات أعمالك إلى مواقع وتطبيقات وأنظمة سهلة الاستخدام، ونؤتمت إجراءاتك. تنفيذ على مراحل واضحة، ونطاق مكتوب، ودعم بعد الإطلاق."
+        }
+      ],
+      [
+        "link",
+        {
+          "rel": "icon",
+          "href": "/icon.png?icon.7b020345.png",
+          "sizes": "256x256",
+          "type": "image/png"
+        }
+      ],
+      [
+        "link",
+        {
+          "rel": "apple-touch-icon",
+          "href": "/apple-icon.png?apple-icon.aaa46e8c.png",
+          "sizes": "180x180",
+          "type": "image/png"
+        }
+      ]
+    ]
+  }
+}

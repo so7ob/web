@@ -1,0 +1,22 @@
+> so7ob-web@1.0.0 test:e2e
+> playwright test tests/e2e/account-portal.spec.ts
+
+[WebServer] (node:284696) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:284705) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 6 tests using 1 worker
+
+(node:284718) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 [desktop] › tests/e2e/account-portal.spec.ts:100:3 › ar: client portal preserves drafts, conversations, files, claims, profile and session controls (21.6s)
+  ✓  2 [desktop] › tests/e2e/account-portal.spec.ts:100:3 › en: client portal preserves drafts, conversations, files, claims, profile and session controls (21.2s)
+  ✓  3 [desktop] › tests/e2e/account-portal.spec.ts:390:1 › profile language save navigates and reloads the protected screen in both directions (1.6s)
+(node:285010) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  4 [mobile] › tests/e2e/account-portal.spec.ts:100:3 › ar: client portal preserves drafts, conversations, files, claims, profile and session controls (20.3s)
+  ✓  5 [mobile] › tests/e2e/account-portal.spec.ts:100:3 › en: client portal preserves drafts, conversations, files, claims, profile and session controls (21.2s)
+  ✓  6 [mobile] › tests/e2e/account-portal.spec.ts:390:1 › profile language save navigates and reloads the protected screen in both directions (1.5s)
+
+  6 passed (1.7m)

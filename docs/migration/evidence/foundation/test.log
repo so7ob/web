@@ -1,0 +1,16 @@
+
+> so7ob-web@1.0.0 test
+> vitest run --config vitest.workspaces.config.ts
+
+
+ RUN  v5.0.3 /root/So7ob/web
+
+
+ Test Files  4 passed (4)
+      Tests  18 passed (18)
+   Start at  00:03:30
+   Duration  2.59s (environment 30%, tests 25%, import 17%, setup 15%, transform 11%, worker 2%)
+
+    Isolate  4 workers spawned · ~269ms startup each (spawn + environment, per file)
+             at least ~806ms faster with isolate: false — reuses workers across files instead of one per file
+

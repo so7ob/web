@@ -1,0 +1,567 @@
+{
+  "sourceSHA": "5321b7fd11db421c83290b262f276811e5f04e5f",
+  "browser": "151.0.7922.34",
+  "sessionFixture": "Blank login User-Agent matches the pinned source callback, which stores NULL; browser UA remains unchanged",
+  "height": 900,
+  "reducedMotion": "reduce",
+  "runs": [
+    {
+      "locale": "ar",
+      "width": 375,
+      "name": "dashboard",
+      "route": "/ar/account",
+      "status": 200,
+      "visualSessionFixture": null,
+      "errors": [],
+      "failedRequests": [],
+      "axe": []
+    },
+    {
+      "locale": "ar",
+      "width": 375,
+      "name": "requests",
+      "route": "/ar/account/requests",
+      "status": 200,
+      "visualSessionFixture": null,
+      "errors": [],
+      "failedRequests": [],
+      "axe": [
+        {
+          "id": "aria-valid-attr-value",
+          "impact": "critical",
+          "targets": [
+            [
+              "#radix-_R_v9h_-trigger-all"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "locale": "ar",
+      "width": 375,
+      "name": "requests-new",
+      "route": "/ar/account/requests/new",
+      "status": 200,
+      "visualSessionFixture": null,
+      "errors": [],
+      "failedRequests": [],
+      "axe": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "targets": [
+            [
+              ".mt-1\\.5.ltr-isolate.text-slate-400"
+            ],
+            [
+              "label[for=\"company\"] > .ms-1.font-normal.text-slate-400"
+            ],
+            [
+              "label[for=\"phone\"] > .ms-1.font-normal.text-slate-400"
+            ],
+            [
+              "label[for=\"referenceUrl\"] > .ms-1.font-normal.text-slate-400"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "locale": "ar",
+      "width": 375,
+      "name": "requests-migrationrequest",
+      "route": "/ar/account/requests/migrationrequest",
+      "status": 200,
+      "visualSessionFixture": null,
+      "errors": [],
+      "failedRequests": [],
+      "axe": []
+    },
+    {
+      "locale": "ar",
+      "width": 375,
+      "name": "inquiries",
+      "route": "/ar/account/inquiries",
+      "status": 200,
+      "visualSessionFixture": null,
+      "errors": [],
+      "failedRequests": [],
+      "axe": [
+        {
+          "id": "aria-valid-attr-value",
+          "impact": "critical",
+          "targets": [
+            [
+              "#radix-_R_n9h_-trigger-all"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "locale": "ar",
+      "width": 375,
+      "name": "inquiries-migrationinquiry",
+      "route": "/ar/account/inquiries/migrationinquiry",
+      "status": 200,
+      "visualSessionFixture": null,
+      "errors": [],
+      "failedRequests": [],
+      "axe": []
+    },
+    {
+      "locale": "ar",
+      "width": 375,
+      "name": "profile",
+      "route": "/ar/account/profile",
+      "status": 200,
+      "visualSessionFixture": null,
+      "errors": [],
+      "failedRequests": [],
+      "axe": []
+    },
+    {
+      "locale": "ar",
+      "width": 375,
+      "name": "security",
+      "route": "/ar/account/security",
+      "status": 200,
+      "visualSessionFixture": "account-session-visual.json",
+      "errors": [],
+      "failedRequests": [],
+      "axe": []
+    },
+    {
+      "locale": "ar",
+      "width": 375,
+      "name": "notifications",
+      "route": "/ar/account/notifications",
+      "status": 200,
+      "visualSessionFixture": null,
+      "errors": [],
+      "failedRequests": [],
+      "axe": []
+    },
+    {
+      "locale": "en",
+      "width": 375,
+      "name": "dashboard",
+      "route": "/en/account",
+      "status": 200,
+      "visualSessionFixture": null,
+      "errors": [],
+      "failedRequests": [],
+      "axe": []
+    },
+    {
+      "locale": "en",
+      "width": 375,
+      "name": "requests",
+      "route": "/en/account/requests",
+      "status": 200,
+      "visualSessionFixture": null,
+      "errors": [],
+      "failedRequests": [],
+      "axe": [
+        {
+          "id": "aria-valid-attr-value",
+          "impact": "critical",
+          "targets": [
+            [
+              "#radix-_R_v9h_-trigger-all"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "locale": "en",
+      "width": 375,
+      "name": "requests-new",
+      "route": "/en/account/requests/new",
+      "status": 200,
+      "visualSessionFixture": null,
+      "errors": [],
+      "failedRequests": [],
+      "axe": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "targets": [
+            [
+              ".mt-1\\.5.ltr-isolate.text-slate-400"
+            ],
+            [
+              ".leading-6.mt-1\\.5.text-slate-400"
+            ],
+            [
+              "label[for=\"company\"] > .ms-1.font-normal.text-slate-400"
+            ],
+            [
+              "label[for=\"phone\"] > .ms-1.font-normal.text-slate-400"
+            ],
+            [
+              "label[for=\"referenceUrl\"] > .ms-1.font-normal.text-slate-400"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "locale": "en",
+      "width": 375,
+      "name": "requests-migrationrequest",
+      "route": "/en/account/requests/migrationrequest",
+      "status": 200,
+      "visualSessionFixture": null,
+      "errors": [],
+      "failedRequests": [],
+      "axe": []
+    },
+    {
+      "locale": "en",
+      "width": 375,
+      "name": "inquiries",
+      "route": "/en/account/inquiries",
+      "status": 200,
+      "visualSessionFixture": null,
+      "errors": [],
+      "failedRequests": [],
+      "axe": [
+        {
+          "id": "aria-valid-attr-value",
+          "impact": "critical",
+          "targets": [
+            [
+              "#radix-_R_n9h_-trigger-all"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "locale": "en",
+      "width": 375,
+      "name": "inquiries-migrationinquiry",
+      "route": "/en/account/inquiries/migrationinquiry",
+      "status": 200,
+      "visualSessionFixture": null,
+      "errors": [],
+      "failedRequests": [],
+      "axe": []
+    },
+    {
+      "locale": "en",
+      "width": 375,
+      "name": "profile",
+      "route": "/en/account/profile",
+      "status": 200,
+      "visualSessionFixture": null,
+      "errors": [],
+      "failedRequests": [],
+      "axe": []
+    },
+    {
+      "locale": "en",
+      "width": 375,
+      "name": "security",
+      "route": "/en/account/security",
+      "status": 200,
+      "visualSessionFixture": "account-session-visual.json",
+      "errors": [],
+      "failedRequests": [],
+      "axe": []
+    },
+    {
+      "locale": "en",
+      "width": 375,
+      "name": "notifications",
+      "route": "/en/account/notifications",
+      "status": 200,
+      "visualSessionFixture": null,
+      "errors": [],
+      "failedRequests": [],
+      "axe": []
+    },
+    {
+      "locale": "ar",
+      "width": 1280,
+      "name": "dashboard",
+      "route": "/ar/account",
+      "status": 200,
+      "visualSessionFixture": null,
+      "errors": [],
+      "failedRequests": [],
+      "axe": []
+    },
+    {
+      "locale": "ar",
+      "width": 1280,
+      "name": "requests",
+      "route": "/ar/account/requests",
+      "status": 200,
+      "visualSessionFixture": null,
+      "errors": [],
+      "failedRequests": [],
+      "axe": [
+        {
+          "id": "aria-valid-attr-value",
+          "impact": "critical",
+          "targets": [
+            [
+              "#radix-_R_v9h_-trigger-all"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "locale": "ar",
+      "width": 1280,
+      "name": "requests-new",
+      "route": "/ar/account/requests/new",
+      "status": 200,
+      "visualSessionFixture": null,
+      "errors": [],
+      "failedRequests": [],
+      "axe": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "targets": [
+            [
+              ".mt-1\\.5.ltr-isolate.text-slate-400"
+            ],
+            [
+              "label[for=\"company\"] > .ms-1.font-normal.text-slate-400"
+            ],
+            [
+              "label[for=\"phone\"] > .ms-1.font-normal.text-slate-400"
+            ],
+            [
+              "label[for=\"referenceUrl\"] > .ms-1.font-normal.text-slate-400"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "locale": "ar",
+      "width": 1280,
+      "name": "requests-migrationrequest",
+      "route": "/ar/account/requests/migrationrequest",
+      "status": 200,
+      "visualSessionFixture": null,
+      "errors": [],
+      "failedRequests": [],
+      "axe": []
+    },
+    {
+      "locale": "ar",
+      "width": 1280,
+      "name": "inquiries",
+      "route": "/ar/account/inquiries",
+      "status": 200,
+      "visualSessionFixture": null,
+      "errors": [],
+      "failedRequests": [],
+      "axe": [
+        {
+          "id": "aria-valid-attr-value",
+          "impact": "critical",
+          "targets": [
+            [
+              "#radix-_R_n9h_-trigger-all"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "locale": "ar",
+      "width": 1280,
+      "name": "inquiries-migrationinquiry",
+      "route": "/ar/account/inquiries/migrationinquiry",
+      "status": 200,
+      "visualSessionFixture": null,
+      "errors": [],
+      "failedRequests": [],
+      "axe": []
+    },
+    {
+      "locale": "ar",
+      "width": 1280,
+      "name": "profile",
+      "route": "/ar/account/profile",
+      "status": 200,
+      "visualSessionFixture": null,
+      "errors": [],
+      "failedRequests": [],
+      "axe": []
+    },
+    {
+      "locale": "ar",
+      "width": 1280,
+      "name": "security",
+      "route": "/ar/account/security",
+      "status": 200,
+      "visualSessionFixture": "account-session-visual.json",
+      "errors": [],
+      "failedRequests": [],
+      "axe": []
+    },
+    {
+      "locale": "ar",
+      "width": 1280,
+      "name": "notifications",
+      "route": "/ar/account/notifications",
+      "status": 200,
+      "visualSessionFixture": null,
+      "errors": [],
+      "failedRequests": [],
+      "axe": []
+    },
+    {
+      "locale": "en",
+      "width": 1280,
+      "name": "dashboard",
+      "route": "/en/account",
+      "status": 200,
+      "visualSessionFixture": null,
+      "errors": [],
+      "failedRequests": [],
+      "axe": []
+    },
+    {
+      "locale": "en",
+      "width": 1280,
+      "name": "requests",
+      "route": "/en/account/requests",
+      "status": 200,
+      "visualSessionFixture": null,
+      "errors": [],
+      "failedRequests": [],
+      "axe": [
+        {
+          "id": "aria-valid-attr-value",
+          "impact": "critical",
+          "targets": [
+            [
+              "#radix-_R_v9h_-trigger-all"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "locale": "en",
+      "width": 1280,
+      "name": "requests-new",
+      "route": "/en/account/requests/new",
+      "status": 200,
+      "visualSessionFixture": null,
+      "errors": [],
+      "failedRequests": [],
+      "axe": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "targets": [
+            [
+              ".mt-1\\.5.ltr-isolate.text-slate-400"
+            ],
+            [
+              ".leading-6.mt-1\\.5.text-slate-400"
+            ],
+            [
+              "label[for=\"company\"] > .ms-1.font-normal.text-slate-400"
+            ],
+            [
+              "label[for=\"phone\"] > .ms-1.font-normal.text-slate-400"
+            ],
+            [
+              "label[for=\"referenceUrl\"] > .ms-1.font-normal.text-slate-400"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "locale": "en",
+      "width": 1280,
+      "name": "requests-migrationrequest",
+      "route": "/en/account/requests/migrationrequest",
+      "status": 200,
+      "visualSessionFixture": null,
+      "errors": [],
+      "failedRequests": [],
+      "axe": []
+    },
+    {
+      "locale": "en",
+      "width": 1280,
+      "name": "inquiries",
+      "route": "/en/account/inquiries",
+      "status": 200,
+      "visualSessionFixture": null,
+      "errors": [],
+      "failedRequests": [],
+      "axe": [
+        {
+          "id": "aria-valid-attr-value",
+          "impact": "critical",
+          "targets": [
+            [
+              "#radix-_R_n9h_-trigger-all"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "locale": "en",
+      "width": 1280,
+      "name": "inquiries-migrationinquiry",
+      "route": "/en/account/inquiries/migrationinquiry",
+      "status": 200,
+      "visualSessionFixture": null,
+      "errors": [],
+      "failedRequests": [],
+      "axe": []
+    },
+    {
+      "locale": "en",
+      "width": 1280,
+      "name": "profile",
+      "route": "/en/account/profile",
+      "status": 200,
+      "visualSessionFixture": null,
+      "errors": [],
+      "failedRequests": [],
+      "axe": []
+    },
+    {
+      "locale": "en",
+      "width": 1280,
+      "name": "security",
+      "route": "/en/account/security",
+      "status": 200,
+      "visualSessionFixture": "account-session-visual.json",
+      "errors": [],
+      "failedRequests": [],
+      "axe": []
+    },
+    {
+      "locale": "en",
+      "width": 1280,
+      "name": "notifications",
+      "route": "/en/account/notifications",
+      "status": 200,
+      "visualSessionFixture": null,
+      "errors": [],
+      "failedRequests": [],
+      "axe": []
+    }
+  ]
+}

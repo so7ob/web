@@ -1,0 +1,20 @@
+{
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "name": "@so7ob/contracts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "scripts": {
+    "build": "tsc -b"
+  },
+  "types": "./dist/index.d.ts",
+  "dependencies": {
+    "zod": "4.3.5"
+  },
+  "sideEffects": false
+}

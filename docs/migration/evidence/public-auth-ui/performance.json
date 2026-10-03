@@ -1,0 +1,607 @@
+{
+  "conditions": {
+    "rounds": 5,
+    "requestsPerRound": 50,
+    "concurrency": 1,
+    "viewport": [
+      1280,
+      900
+    ],
+    "compression": "gzip level 6 applied to initial script response bodies for both runtimes",
+    "latencyThreshold": "larger of 10% and 20ms",
+    "javascriptThreshold": 1.05,
+    "scope": "public and login only; isolated synthetic snapshot, same host, warm servers"
+  },
+  "runs": [
+    {
+      "site": "reference",
+      "route": "/ar",
+      "round": 1,
+      "p50": 28.02429200000006,
+      "p95": 38.48875399999997,
+      "initialJavaScriptGzipBytes": 231468
+    },
+    {
+      "site": "target",
+      "route": "/ar",
+      "round": 1,
+      "p50": 12.794197999999597,
+      "p95": 20.14836699999978,
+      "initialJavaScriptGzipBytes": 204713
+    },
+    {
+      "site": "target",
+      "route": "/ar",
+      "round": 2,
+      "p50": 12.166269999999713,
+      "p95": 20.902266000000054,
+      "initialJavaScriptGzipBytes": 204713
+    },
+    {
+      "site": "reference",
+      "route": "/ar",
+      "round": 2,
+      "p50": 28.058552999999847,
+      "p95": 35.29487800000061,
+      "initialJavaScriptGzipBytes": 231468
+    },
+    {
+      "site": "reference",
+      "route": "/ar",
+      "round": 3,
+      "p50": 25.962806999999884,
+      "p95": 34.4494909999994,
+      "initialJavaScriptGzipBytes": 231468
+    },
+    {
+      "site": "target",
+      "route": "/ar",
+      "round": 3,
+      "p50": 11.390448000000106,
+      "p95": 15.355615999998918,
+      "initialJavaScriptGzipBytes": 204713
+    },
+    {
+      "site": "target",
+      "route": "/ar",
+      "round": 4,
+      "p50": 12.226354000000356,
+      "p95": 20.585932999998477,
+      "initialJavaScriptGzipBytes": 204713
+    },
+    {
+      "site": "reference",
+      "route": "/ar",
+      "round": 4,
+      "p50": 27.14549100000113,
+      "p95": 48.54608299999745,
+      "initialJavaScriptGzipBytes": 231468
+    },
+    {
+      "site": "reference",
+      "route": "/ar",
+      "round": 5,
+      "p50": 26.506988000001,
+      "p95": 35.458104000001185,
+      "initialJavaScriptGzipBytes": 231468
+    },
+    {
+      "site": "target",
+      "route": "/ar",
+      "round": 5,
+      "p50": 10.524514999997336,
+      "p95": 24.45361799999955,
+      "initialJavaScriptGzipBytes": 204713
+    },
+    {
+      "site": "reference",
+      "route": "/en",
+      "round": 1,
+      "p50": 25.104925999999978,
+      "p95": 34.743610000001354,
+      "initialJavaScriptGzipBytes": 231468
+    },
+    {
+      "site": "target",
+      "route": "/en",
+      "round": 1,
+      "p50": 10.469455000002199,
+      "p95": 15.650094000000536,
+      "initialJavaScriptGzipBytes": 204713
+    },
+    {
+      "site": "target",
+      "route": "/en",
+      "round": 2,
+      "p50": 10.419674000000668,
+      "p95": 13.591821999998501,
+      "initialJavaScriptGzipBytes": 204713
+    },
+    {
+      "site": "reference",
+      "route": "/en",
+      "round": 2,
+      "p50": 26.20165199999974,
+      "p95": 39.08457699999781,
+      "initialJavaScriptGzipBytes": 231468
+    },
+    {
+      "site": "reference",
+      "route": "/en",
+      "round": 3,
+      "p50": 30.544105999997555,
+      "p95": 50.558296999999584,
+      "initialJavaScriptGzipBytes": 231468
+    },
+    {
+      "site": "target",
+      "route": "/en",
+      "round": 3,
+      "p50": 10.416039999996428,
+      "p95": 18.788070999995398,
+      "initialJavaScriptGzipBytes": 204713
+    },
+    {
+      "site": "target",
+      "route": "/en",
+      "round": 4,
+      "p50": 10.731496000000334,
+      "p95": 15.82029799999873,
+      "initialJavaScriptGzipBytes": 204713
+    },
+    {
+      "site": "reference",
+      "route": "/en",
+      "round": 4,
+      "p50": 26.89364000000205,
+      "p95": 48.18778300000122,
+      "initialJavaScriptGzipBytes": 231468
+    },
+    {
+      "site": "reference",
+      "route": "/en",
+      "round": 5,
+      "p50": 27.387754999996105,
+      "p95": 43.68088699999498,
+      "initialJavaScriptGzipBytes": 231468
+    },
+    {
+      "site": "target",
+      "route": "/en",
+      "round": 5,
+      "p50": 10.518279999996594,
+      "p95": 21.735245000003488,
+      "initialJavaScriptGzipBytes": 204713
+    },
+    {
+      "site": "reference",
+      "route": "/ar/contact",
+      "round": 1,
+      "p50": 22.305954999996175,
+      "p95": 28.90569300000061,
+      "initialJavaScriptGzipBytes": 231468
+    },
+    {
+      "site": "target",
+      "route": "/ar/contact",
+      "round": 1,
+      "p50": 8.748444999997446,
+      "p95": 14.640433000000485,
+      "initialJavaScriptGzipBytes": 204713
+    },
+    {
+      "site": "target",
+      "route": "/ar/contact",
+      "round": 2,
+      "p50": 10.130018000003474,
+      "p95": 15.447453000000678,
+      "initialJavaScriptGzipBytes": 204713
+    },
+    {
+      "site": "reference",
+      "route": "/ar/contact",
+      "round": 2,
+      "p50": 21.23948300000484,
+      "p95": 32.70716000000539,
+      "initialJavaScriptGzipBytes": 231468
+    },
+    {
+      "site": "reference",
+      "route": "/ar/contact",
+      "round": 3,
+      "p50": 20.45502999999735,
+      "p95": 25.687479000000167,
+      "initialJavaScriptGzipBytes": 231468
+    },
+    {
+      "site": "target",
+      "route": "/ar/contact",
+      "round": 3,
+      "p50": 8.201336999998603,
+      "p95": 19.972913999998127,
+      "initialJavaScriptGzipBytes": 204713
+    },
+    {
+      "site": "target",
+      "route": "/ar/contact",
+      "round": 4,
+      "p50": 12.317273000000569,
+      "p95": 14.728585999997449,
+      "initialJavaScriptGzipBytes": 204713
+    },
+    {
+      "site": "reference",
+      "route": "/ar/contact",
+      "round": 4,
+      "p50": 21.104936000003363,
+      "p95": 36.026246000001265,
+      "initialJavaScriptGzipBytes": 231468
+    },
+    {
+      "site": "reference",
+      "route": "/ar/contact",
+      "round": 5,
+      "p50": 24.645775999997568,
+      "p95": 37.49523500000214,
+      "initialJavaScriptGzipBytes": 231468
+    },
+    {
+      "site": "target",
+      "route": "/ar/contact",
+      "round": 5,
+      "p50": 11.339812999998685,
+      "p95": 15.528061000004527,
+      "initialJavaScriptGzipBytes": 204713
+    },
+    {
+      "site": "reference",
+      "route": "/en/works",
+      "round": 1,
+      "p50": 21.110649999995076,
+      "p95": 33.00120400000014,
+      "initialJavaScriptGzipBytes": 231468
+    },
+    {
+      "site": "target",
+      "route": "/en/works",
+      "round": 1,
+      "p50": 8.826081999999587,
+      "p95": 15.170038999996905,
+      "initialJavaScriptGzipBytes": 204713
+    },
+    {
+      "site": "target",
+      "route": "/en/works",
+      "round": 2,
+      "p50": 7.82524199999898,
+      "p95": 11.554745000001276,
+      "initialJavaScriptGzipBytes": 204713
+    },
+    {
+      "site": "reference",
+      "route": "/en/works",
+      "round": 2,
+      "p50": 22.801330000002054,
+      "p95": 43.99104500000249,
+      "initialJavaScriptGzipBytes": 231468
+    },
+    {
+      "site": "reference",
+      "route": "/en/works",
+      "round": 3,
+      "p50": 21.121231999990414,
+      "p95": 33.59037599999283,
+      "initialJavaScriptGzipBytes": 231468
+    },
+    {
+      "site": "target",
+      "route": "/en/works",
+      "round": 3,
+      "p50": 8.862861999994493,
+      "p95": 14.858638000005158,
+      "initialJavaScriptGzipBytes": 204713
+    },
+    {
+      "site": "target",
+      "route": "/en/works",
+      "round": 4,
+      "p50": 8.865385999990394,
+      "p95": 12.06292100000428,
+      "initialJavaScriptGzipBytes": 204713
+    },
+    {
+      "site": "reference",
+      "route": "/en/works",
+      "round": 4,
+      "p50": 22.525923000008333,
+      "p95": 45.24143200000981,
+      "initialJavaScriptGzipBytes": 231468
+    },
+    {
+      "site": "reference",
+      "route": "/en/works",
+      "round": 5,
+      "p50": 21.005199999999604,
+      "p95": 27.456111999999848,
+      "initialJavaScriptGzipBytes": 231468
+    },
+    {
+      "site": "target",
+      "route": "/en/works",
+      "round": 5,
+      "p50": 7.976509999993141,
+      "p95": 10.225797999999486,
+      "initialJavaScriptGzipBytes": 204713
+    },
+    {
+      "site": "reference",
+      "route": "/ar/auth/login",
+      "round": 1,
+      "p50": 21.98328400000173,
+      "p95": 31.530733000006876,
+      "initialJavaScriptGzipBytes": 167697
+    },
+    {
+      "site": "target",
+      "route": "/ar/auth/login",
+      "round": 1,
+      "p50": 7.303516999993008,
+      "p95": 10.54296500000055,
+      "initialJavaScriptGzipBytes": 159997
+    },
+    {
+      "site": "target",
+      "route": "/ar/auth/login",
+      "round": 2,
+      "p50": 7.509088000006159,
+      "p95": 12.280945000005886,
+      "initialJavaScriptGzipBytes": 159997
+    },
+    {
+      "site": "reference",
+      "route": "/ar/auth/login",
+      "round": 2,
+      "p50": 19.973352000000887,
+      "p95": 32.23719400000118,
+      "initialJavaScriptGzipBytes": 167697
+    },
+    {
+      "site": "reference",
+      "route": "/ar/auth/login",
+      "round": 3,
+      "p50": 21.446449000010034,
+      "p95": 28.476496999996016,
+      "initialJavaScriptGzipBytes": 167697
+    },
+    {
+      "site": "target",
+      "route": "/ar/auth/login",
+      "round": 3,
+      "p50": 6.57433800000581,
+      "p95": 8.770945999989635,
+      "initialJavaScriptGzipBytes": 159997
+    },
+    {
+      "site": "target",
+      "route": "/ar/auth/login",
+      "round": 4,
+      "p50": 6.981078999990132,
+      "p95": 11.441803999987314,
+      "initialJavaScriptGzipBytes": 159997
+    },
+    {
+      "site": "reference",
+      "route": "/ar/auth/login",
+      "round": 4,
+      "p50": 22.112939999991795,
+      "p95": 30.474975999997696,
+      "initialJavaScriptGzipBytes": 167697
+    },
+    {
+      "site": "reference",
+      "route": "/ar/auth/login",
+      "round": 5,
+      "p50": 23.45822600000247,
+      "p95": 34.559030000003986,
+      "initialJavaScriptGzipBytes": 167697
+    },
+    {
+      "site": "target",
+      "route": "/ar/auth/login",
+      "round": 5,
+      "p50": 9.25578000000678,
+      "p95": 15.482862000004388,
+      "initialJavaScriptGzipBytes": 159997
+    },
+    {
+      "site": "reference",
+      "route": "/en/auth/login",
+      "round": 1,
+      "p50": 20.892175999993924,
+      "p95": 26.32402000000002,
+      "initialJavaScriptGzipBytes": 167697
+    },
+    {
+      "site": "target",
+      "route": "/en/auth/login",
+      "round": 1,
+      "p50": 6.980534000002081,
+      "p95": 9.454274000003352,
+      "initialJavaScriptGzipBytes": 159997
+    },
+    {
+      "site": "target",
+      "route": "/en/auth/login",
+      "round": 2,
+      "p50": 6.304745000001276,
+      "p95": 9.219106000004103,
+      "initialJavaScriptGzipBytes": 159997
+    },
+    {
+      "site": "reference",
+      "route": "/en/auth/login",
+      "round": 2,
+      "p50": 19.494493999998667,
+      "p95": 29.902071999997133,
+      "initialJavaScriptGzipBytes": 167697
+    },
+    {
+      "site": "reference",
+      "route": "/en/auth/login",
+      "round": 3,
+      "p50": 22.473394000000553,
+      "p95": 41.27776700000686,
+      "initialJavaScriptGzipBytes": 167697
+    },
+    {
+      "site": "target",
+      "route": "/en/auth/login",
+      "round": 3,
+      "p50": 7.288834000006318,
+      "p95": 9.234511000002385,
+      "initialJavaScriptGzipBytes": 159997
+    },
+    {
+      "site": "target",
+      "route": "/en/auth/login",
+      "round": 4,
+      "p50": 6.934741999997641,
+      "p95": 10.564228999995976,
+      "initialJavaScriptGzipBytes": 159997
+    },
+    {
+      "site": "reference",
+      "route": "/en/auth/login",
+      "round": 4,
+      "p50": 20.06117699999595,
+      "p95": 31.921335000006366,
+      "initialJavaScriptGzipBytes": 167697
+    },
+    {
+      "site": "reference",
+      "route": "/en/auth/login",
+      "round": 5,
+      "p50": 19.551076000003377,
+      "p95": 27.23549199999252,
+      "initialJavaScriptGzipBytes": 167697
+    },
+    {
+      "site": "target",
+      "route": "/en/auth/login",
+      "round": 5,
+      "p50": 8.198973999998998,
+      "p95": 9.784749999991618,
+      "initialJavaScriptGzipBytes": 159997
+    }
+  ],
+  "comparison": [
+    {
+      "route": "/ar",
+      "p50": {
+        "reference": 27.139626200000386,
+        "target": 11.820356999999422,
+        "pass": true
+      },
+      "p95": {
+        "reference": 38.447461999999724,
+        "target": 20.289159999999356,
+        "pass": true
+      },
+      "initialJavaScriptGzipBytes": {
+        "reference": 231468,
+        "target": 204713,
+        "pass": true
+      }
+    },
+    {
+      "route": "/en",
+      "p50": {
+        "reference": 27.226415799999085,
+        "target": 10.510988999999245,
+        "pass": true
+      },
+      "p95": {
+        "reference": 43.251030799998986,
+        "target": 17.117105999999332,
+        "pass": true
+      },
+      "initialJavaScriptGzipBytes": {
+        "reference": 231468,
+        "target": 204713,
+        "pass": true
+      }
+    },
+    {
+      "route": "/ar/contact",
+      "p50": {
+        "reference": 21.950235999999858,
+        "target": 10.147377199999756,
+        "pass": true
+      },
+      "p95": {
+        "reference": 32.164362600001915,
+        "target": 16.063489400000254,
+        "pass": true
+      },
+      "initialJavaScriptGzipBytes": {
+        "reference": 231468,
+        "target": 204713,
+        "pass": true
+      }
+    },
+    {
+      "route": "/en/works",
+      "p50": {
+        "reference": 21.712866999999097,
+        "target": 8.471216399995319,
+        "pass": true
+      },
+      "p95": {
+        "reference": 36.656033800001026,
+        "target": 12.77442820000142,
+        "pass": true
+      },
+      "initialJavaScriptGzipBytes": {
+        "reference": 231468,
+        "target": 204713,
+        "pass": true
+      }
+    },
+    {
+      "route": "/ar/auth/login",
+      "p50": {
+        "reference": 21.794850200001385,
+        "target": 7.524760400000377,
+        "pass": true
+      },
+      "p95": {
+        "reference": 31.45568600000115,
+        "target": 11.703904399997555,
+        "pass": true
+      },
+      "initialJavaScriptGzipBytes": {
+        "reference": 167697,
+        "target": 159997,
+        "pass": true
+      }
+    },
+    {
+      "route": "/en/auth/login",
+      "p50": {
+        "reference": 20.494463399998494,
+        "target": 7.1415658000012625,
+        "pass": true
+      },
+      "p95": {
+        "reference": 31.33213720000058,
+        "target": 9.651373999999487,
+        "pass": true
+      },
+      "initialJavaScriptGzipBytes": {
+        "reference": 167697,
+        "target": 159997,
+        "pass": true
+      }
+    }
+  ]
+}

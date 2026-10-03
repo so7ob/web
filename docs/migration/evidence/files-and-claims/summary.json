@@ -1,0 +1,32 @@
+{
+  "date": "2026-10-03",
+  "source": "so7ob/Website@5321b7fd11db421c83290b262f276811e5f04e5f",
+  "parent": "so7ob/web PR #14 @ 0d36f89",
+  "database": "MariaDB 10.11.18; isolated synthetic databases",
+  "node": "24.21.0",
+  "targetTests": 133,
+  "browserTests": 26,
+  "migrations": 8,
+  "checks": {
+    "lint": "passed locally",
+    "typecheck": "passed locally",
+    "test": "passed locally",
+    "build": "passed locally",
+    "test:e2e": "passed locally",
+    "test:infra": "passed locally",
+    "test:auth": "passed locally",
+    "test:worker": "passed locally",
+    "test:webhook": "passed locally",
+    "test:file-worker": "passed locally",
+    "git diff --check": "passed locally"
+  },
+  "productionDataMigrated": false,
+  "completeMigration": false,
+  "limitations": [
+    "Private account/admin UI and full editor pending",
+    "Full operational restore including all new queues not yet rehearsed",
+    "No production data or attachments available",
+    "No merge, release, deploy or production cutover performed"
+  ],
+  "ci": "Pending remote PR run"
+}
