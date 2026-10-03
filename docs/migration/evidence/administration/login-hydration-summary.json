@@ -24,10 +24,17 @@
       "failed": 0,
       "retries": 0
     },
-    "fullBrowser": "pending",
+    "fullBrowser": {
+      "passed": 64,
+      "failed": 0,
+      "retries": 0,
+      "codeSHA": "4625c61",
+      "log": ".migration/source-refresh/login-full-after.log"
+    },
     "unitIntegration": "171 passed before login-only changes on isolated MariaDB",
     "typecheck": "passed",
     "build": "passed",
-    "lint": "passed"
+    "lint": "passed",
+    "infra": "passed"
   }
 }

@@ -8,6 +8,18 @@ const validPageHeader = JSON.stringify([
 ]);
 
 describe("validateBlocks", () => {
+  it.each(["constructor", "hasOwnProperty", "__proto__", "toString"])("rejects inherited schema key %s without throwing", (type) => {
+    expect(validateBlocks(JSON.stringify([{ id: "x", type, props: {} }]))).toEqual({ ok: false, error: "block_type_unknown" });
+  });
+  it("returns the normalized schema result, discarding unknown properties", () => {
+    const result = validateBlocks(JSON.stringify([{ id: "s", type: "spacer", props: { injected: "private" }, unknownTop: true }]));
+    expect(result.ok).toBe(true);
+    if (result.ok) {
+      expect(result.blocks[0]).not.toHaveProperty("unknownTop");
+      expect(result.blocks[0].props).not.toHaveProperty("injected");
+      expect(result.blocks[0].props).toHaveProperty("size", "md");
+    }
+  });
   it("يقبل صفحة صالحة", () => {
     const result = validateBlocks(validPageHeader);
     expect(result.ok).toBe(true);

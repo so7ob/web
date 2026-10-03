@@ -1,0 +1,275 @@
+reference-tests
+
+> so7ob-website@1.0.0 test
+> vitest run && bun test scripts/__tests__
+
+(!) Your Vite config uses features that are unsupported by `configLoader: 'native'`, which is planned to become the default in a future major version of Vite:
+  - ESM syntax in a file loaded as CommonJS (vitest.config.ts:1:1). Use a `.mjs` extension or set `"type": "module"` in the closest package.json
+Set `VITE_CONFIG_NATIVE_IGNORE_WARNING=true` to suppress this warning.
+
+ RUN  v5.0.3 /root/So7ob/web/.migration/reference/Website-d214018
+
+
+ Test Files  23 passed (23)
+      Tests  279 passed (279)
+   Start at  21:03:28
+   Duration  6.97s (tests 39%, setup 23%, import 19%, transform 10%, environment 8%, worker 1%)
+
+    Isolate  23 workers spawned · ~187ms startup each (spawn + environment, per file)
+             at least ~1.25s faster with isolate: false — reuses workers across files instead of one per file
+
+bun test v1.4.2 (744846f84)
+
+scripts/__tests__/backup.test.ts:
+(pass) database and upload snapshots > captures uncheckpointed WAL and restores exact files and rows [50.96ms]
+(pass) database and upload snapshots > rejects copying without paused writers and missing source database [7.32ms]
+(pass) database and upload snapshots > rejects missing uploads, corruption and symlink files [16.10ms]
+(pass) database and upload snapshots > refuses a destination on a read-only filesystem without touching source [6.82ms]
+(pass) database and upload snapshots > handles the legacy schema-relative development URL [13.71ms]
+
+scripts/__tests__/storage.test.ts:
+(pass) an upload survives a fresh process with a different standalone working directory [113.24ms]
+
+ 6 pass
+ 0 fail
+ 20 expect() calls
+Ran 6 tests across 2 files. [1150.00ms]
+
+
+reference-build
+
+> so7ob-website@1.0.0 build
+> next build && cp -r .next/static .next/standalone/.next/ && cp -r public .next/standalone/
+
+⚠ Warning: Next.js inferred your workspace root, but it may not be correct.
+ We detected multiple lockfiles and selected the directory of /root/So7ob/web/package-lock.json as the root directory.
+ To silence this warning, set `turbopack.root` in your Next.js config, or consider removing one of the lockfiles if it's not needed.
+   See https://nextjs.org/docs/app/api-reference/config/next-config-js/turbopack#root-directory for more information.
+ Detected additional lockfiles:
+   * /root/So7ob/web/.migration/reference/Website-d214018/bun.lock
+
+▲ Next.js 16.1.3 (Turbopack)
+
+⚠ The "middleware" file convention is deprecated. Please use "proxy" instead. Learn more: https://nextjs.org/docs/messages/middleware-to-proxy
+  Creating an optimized production build ...
+✓ Compiled successfully in 17.9s
+  Running TypeScript ...
+  Collecting page data using 3 workers ...
+  Generating static pages using 3 workers (0/39) ...
+  Generating static pages using 3 workers (9/39)
+  Generating static pages using 3 workers (19/39)
+  Generating static pages using 3 workers (29/39)
+✓ Generating static pages using 3 workers (39/39) in 149.0ms
+  Finalizing page optimization ...
+
+Route (app)
+┌ ○ /_not-found
+├ ƒ /[locale]/[[...slug]]
+├ ƒ /[locale]/account
+├ ƒ /[locale]/account/inquiries
+├ ƒ /[locale]/account/inquiries/[id]
+├ ƒ /[locale]/account/notifications
+├ ƒ /[locale]/account/profile
+├ ƒ /[locale]/account/requests
+├ ƒ /[locale]/account/requests/[id]
+├ ƒ /[locale]/account/requests/new
+├ ƒ /[locale]/account/security
+├ ƒ /[locale]/admin
+├ ƒ /[locale]/admin/audit
+├ ƒ /[locale]/admin/inquiries
+├ ƒ /[locale]/admin/inquiries/[id]
+├ ƒ /[locale]/admin/media
+├ ƒ /[locale]/admin/menus
+├ ƒ /[locale]/admin/notifications
+├ ƒ /[locale]/admin/outbox
+├ ƒ /[locale]/admin/pages
+├ ƒ /[locale]/admin/pages/[id]/edit
+├ ƒ /[locale]/admin/pages/[id]/preview
+├ ƒ /[locale]/admin/requests
+├ ƒ /[locale]/admin/requests/[id]
+├ ƒ /[locale]/admin/settings
+├ ƒ /[locale]/admin/users
+├ ƒ /[locale]/admin/users/[id]
+├ ƒ /[locale]/auth/forgot-password
+├ ƒ /[locale]/auth/invite
+├ ƒ /[locale]/auth/login
+├ ƒ /[locale]/auth/logout
+├ ƒ /[locale]/auth/register
+├ ƒ /[locale]/auth/reset-password
+├ ƒ /[locale]/auth/verified
+├ ƒ /[locale]/track
+├ ƒ /api/account/claim-verify
+├ ƒ /api/account/drafts
+├ ƒ /api/account/inquiries
+├ ƒ /api/account/inquiries/[id]
+├ ƒ /api/account/inquiries/[id]/messages
+├ ƒ /api/account/notifications
+├ ƒ /api/account/profile
+├ ƒ /api/account/requests
+├ ƒ /api/account/requests/[id]
+├ ƒ /api/account/requests/[id]/messages
+├ ƒ /api/account/requests/claim
+├ ƒ /api/admin/audit
+├ ƒ /api/admin/dashboard
+├ ƒ /api/admin/inquiries
+├ ƒ /api/admin/inquiries/[id]
+├ ƒ /api/admin/inquiries/[id]/messages
+├ ƒ /api/admin/inquiries/bulk
+├ ƒ /api/admin/inquiries/export
+├ ƒ /api/admin/media
+├ ƒ /api/admin/media/[id]
+├ ƒ /api/admin/menus
+├ ƒ /api/admin/outbox
+├ ƒ /api/admin/pages
+├ ƒ /api/admin/pages/[id]
+├ ƒ /api/admin/pages/[id]/discard
+├ ƒ /api/admin/pages/[id]/publish
+├ ƒ /api/admin/pages/[id]/schedule
+├ ƒ /api/admin/pages/[id]/versions
+├ ƒ /api/admin/pages/[id]/versions/[version]/restore
+├ ƒ /api/admin/requests
+├ ƒ /api/admin/requests/[id]
+├ ƒ /api/admin/requests/bulk
+├ ƒ /api/admin/requests/export
+├ ƒ /api/admin/saved-replies
+├ ƒ /api/admin/saved-replies/[id]
+├ ƒ /api/admin/search
+├ ƒ /api/admin/settings
+├ ƒ /api/admin/templates
+├ ƒ /api/admin/templates/[id]
+├ ƒ /api/admin/templates/[id]/apply
+├ ƒ /api/admin/track
+├ ƒ /api/admin/users
+├ ƒ /api/admin/users/[id]
+├ ƒ /api/attachments
+├ ƒ /api/attachments/[id]
+├ ƒ /api/auth/[...nextauth]
+├ ƒ /api/auth/change-password
+├ ƒ /api/auth/forgot-password
+├ ƒ /api/auth/invite
+├ ƒ /api/auth/register
+├ ƒ /api/auth/reset-password
+├ ƒ /api/auth/sessions
+├ ƒ /api/auth/verify-email
+├ ƒ /api/health/ready
+├ ƒ /api/inquiries
+├ ƒ /api/media/[id]
+├ ƒ /api/requests
+├ ƒ /api/track/card
+├ ƒ /api/track/exchange
+├ ƒ /api/track/reply
+├ ○ /apple-icon.png
+├ ○ /icon.png
+├ ○ /robots.txt
+└ ƒ /sitemap.xml
+
+
+ƒ Proxy (Middleware)
+
+○  (Static)   prerendered as static content
+ƒ  (Dynamic)  server-rendered on demand
+
+
+
+reference-migrations
+Prisma schema loaded from prisma/schema.prisma
+Datasource "db": SQLite database "reference.db" at "file:/root/So7ob/web/.migration/baseline-d214018/data/reference.db"
+
+6 migrations found in prisma/migrations
+
+Applying migration `20261001211740_platform_v2`
+Applying migration `20261001212121_auth_lockout`
+Applying migration `20261001215402_status_event_relation`
+Applying migration `20261002000931_saved_replies`
+Applying migration `20261002155956_page_draft_settings_revision`
+Applying migration `20261002182240_bind_claim_tokens`
+
+The following migration(s) have been applied:
+
+migrations/
+  └─ 20261001211740_platform_v2/
+    └─ migration.sql
+  └─ 20261001212121_auth_lockout/
+    └─ migration.sql
+  └─ 20261001215402_status_event_relation/
+    └─ migration.sql
+  └─ 20261002000931_saved_replies/
+    └─ migration.sql
+  └─ 20261002155956_page_draft_settings_revision/
+    └─ migration.sql
+  └─ 20261002182240_bind_claim_tokens/
+    └─ migration.sql
+
+All migrations have been successfully applied.
+
+
+reference-seed
+$ bun run src/db/seed-roles.ts && bun run src/db/seed-content.ts
+✓ الأدوار النظامية جاهزة
+⟐ بذرة المحتوى — سُحُب التقنية
+prisma:error
+Invalid `db.page.findUnique()` invocation in
+/root/So7ob/web/.migration/reference/Website-d214018/src/db/seed-content.ts:214:36
+
+  211 const titleAr = def.key === "home" ? ar.meta.siteName : ar.nav[def.key as keyof typeof ar.nav];
+  212 const titleEn = def.key === "home" ? en.meta.siteName : en.nav[def.key as keyof typeof en.nav];
+  213
+→ 214 const existing = await db.page.findUnique(
+The column `main.Page.scheduledPublishAt` does not exist in the current database.
+116 |
+117 | Example:
+118 |   await prisma.$executeRawUnsafe(\`ALTER USER prisma WITH PASSWORD '\${password}'\`)
+119 |
+120 | More Information: https://pris.ly/d/execute-raw
+121 | `)}var So=({clientMethod:e,activeProvider:r})=>t=>{let n="",i;if(Vn(t))n=t.sql,i={values:Wr(t.values),__prismaRawParameters__:!0};else if(Array.isArray(t)){let[o,...s]=t;n=o,i={values:Wr(s||[]),__prismaRawParameters__:!0}}else switch(r){case"sqlite":case"mysql":{n=t.sql,i={values:Wr(t.values),__prismaRawParameters__:!0};break}case"cockroachdb":case"postgresql":case"postgres":{n=t.text,i={values:Wr(t.values),__prismaRawParameters__:!0};break}case"sqlserver":{n=Vl(t),i={values:Wr(t.values),__prismaRawParameters__:!0};break}default:throw new Error(`The ${r} provider does not support ${e}`)}return i?.values?Ql(`prisma.${e}(${n}, ${i.values})`):Ql(`prisma.${e}(${n})`),{query:n,parameters:i}},Wl={requestArgsToMiddlewareArgs(e){return[e.strings,...e.values]},middlewareArgsToRequestArgs(e){let[r,...t]=e;return new ie(r,t)}},Jl={requestArgsToMiddlewareArgs(e){return[e]},middlewareArgsToRequestArgs(e){return e[0]}};function Ro(e){return function(t,n){let i,o=(s=e)=>{try{return s===void 0||s?.kind==="itx"?i??=Kl(t(s)):K
+
+PrismaClientKnownRequestError:
+Invalid `db.page.findUnique()` invocation in
+/root/So7ob/web/.migration/reference/Website-d214018/src/db/seed-content.ts:214:36
+
+  211 const titleAr = def.key === "home" ? ar.meta.siteName : ar.nav[def.key as keyof typeof ar.nav];
+  212 const titleEn = def.key === "home" ? en.meta.siteName : en.nav[def.key as keyof typeof en.nav];
+  213
+→ 214 const existing = await db.page.findUnique(
+The column `main.Page.scheduledPublishAt` does not exist in the current database.
+       meta: {
+  modelName: "Page",
+  column: "main.Page.scheduledPublishAt",
+},
+ clientVersion: "6.19.2",
+       code: "P2022"
+
+      at handleRequestError (/root/So7ob/web/.migration/reference/Website-d214018/node_modules/@prisma/client/runtime/library.js:121:7268)
+      at handleAndLogRequestError (/root/So7ob/web/.migration/reference/Website-d214018/node_modules/@prisma/client/runtime/library.js:121:6593)
+      at request (/root/So7ob/web/.migration/reference/Website-d214018/node_modules/@prisma/client/runtime/library.js:121:6300)
+
+error: script "db:seed" exited with code 1
+
+
+reference-runtime-seed
+$ bun run src/db/seed-roles.ts && bun run src/db/seed-content.ts
+✓ الأدوار النظامية جاهزة
+⟐ بذرة المحتوى — سُحُب التقنية
+✓ أُنشئت صفحة «home»
+✓ أُنشئت صفحة «about»
+✓ أُنشئت صفحة «services»
+✓ أُنشئت صفحة «works»
+✓ أُنشئت صفحة «process»
+✓ أُنشئت صفحة «faq»
+✓ أُنشئت صفحة «contact»
+✓ قائمة الترويسة (6 روابط)
+✓ قائمة التذييل (6 روابط)
+✓ إعدادات الموقع
+✓ اكتملت البذرة — الصفحات تُدار الآن من قاعدة البيانات
+
+
+reference-lint
+
+> so7ob-website@1.0.0 lint
+> eslint .
+
+
+reference-typecheck
+
+> so7ob-website@1.0.0 typecheck
+> tsc --noEmit && tsc --noEmit -p tsconfig.tools.json

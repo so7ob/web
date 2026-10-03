@@ -1,6 +1,6 @@
 import { beforeAll, afterAll, it, expect } from "vitest";
 import { randomBytes } from "node:crypto";
-import { SYSTEM_ROLES, BLOCK_LIBRARY, type AuthUser } from "@so7ob/contracts";
+import { SYSTEM_ROLES, BLOCK_LIBRARY, validateBlocks, type AuthUser } from "@so7ob/contracts";
 import { createDataSource } from "../database/data-source.js";
 import { PageAdministrationService } from "./pages.js";
 import { defaultProps } from "../../../../apps/web/src/components/admin/editor/prop-fields.js";
@@ -105,7 +105,7 @@ it("enforces every CMS operation permission without leaking drafts to clients", 
     "pageHeader",
   );
 });
-it("preserves all 27 original block schemas and raw bilingual JSON values", async () => {
+it("preserves all 27 block schemas using the refreshed source's normalized bilingual JSON", async () => {
   const id = await create("blocks"),
     tree = BLOCK_LIBRARY.map((entry, i) => ({
       id: "block" + i,
@@ -115,15 +115,41 @@ it("preserves all 27 original block schemas and raw bilingual JSON values", asyn
   const raw = JSON.stringify(tree, null, 2);
   await service.update(editor, id, { draftBlocksAr: raw, draftBlocksEn: raw });
   const detail = await service.detail(editor, id);
-  expect(detail.page.draftBlocksAr).toBe(raw);
+  const validated = validateBlocks(raw);
+  expect(validated.ok).toBe(true);
+  if (validated.ok) expect(JSON.parse(detail.page.draftBlocksAr)).toEqual(validated.blocks);
   expect(JSON.parse(detail.page.draftBlocksEn)).toHaveLength(27);
   expect(detail.page.draftUpdatedById).toBe(editor.id);
+});
+it("normalizes drafts, publication, immutable versions and restored legacy content", async () => {
+  const id = await create("normalized"),
+    raw = JSON.stringify([{ id: "sp", type: "spacer", props: { injected: "not-public" }, unknownTop: "not-public" }]),
+    normalized = [{ id: "sp", type: "spacer", props: { size: "md" } }];
+  await service.update(editor, id, { draftBlocksAr: raw, draftBlocksEn: raw });
+  let [stored] = await db.query("SELECT * FROM Page WHERE id=?", [id]);
+  expect(JSON.parse(stored.draftBlocksAr)).toEqual(normalized);
+  expect(JSON.parse(stored.draftBlocksEn)).toEqual(normalized);
+  // Imported legacy drafts and versions may contain keys the new validator drops.
+  await db.query("UPDATE Page SET draftBlocksAr=? WHERE id=?", [raw, id]);
+  await service.publish(admin, id);
+  [stored] = await db.query("SELECT * FROM Page WHERE id=?", [id]);
+  expect(JSON.parse(stored.publishedBlocksAr)).toEqual(normalized);
+  const versions = await db.query("SELECT blocks FROM PageVersion WHERE pageId=?", [id]);
+  expect(versions).toHaveLength(2);
+  for (const version of versions) expect(JSON.parse(version.blocks)).toEqual(normalized);
+  await db.query("UPDATE PageVersion SET blocks=? WHERE pageId=?", [raw, id]);
+  await service.restore(admin, id, "1");
+  [stored] = await db.query("SELECT * FROM Page WHERE id=?", [id]);
+  expect(JSON.parse(stored.draftBlocksAr)).toEqual(normalized);
+  expect(JSON.parse(stored.publishedBlocksAr)).toEqual(normalized);
 });
 it("rejects invalid block types, duplicate ids and oversized block counts without changing the stored draft", async () => {
   const id = await create("invalid"),
     before = (await service.detail(admin, id)).page;
   for (const value of [
     JSON.stringify([{ id: "x", type: "unknown", props: {} }]),
+    JSON.stringify([{ id: "x", type: "constructor", props: {} }]),
+    JSON.stringify([{ id: "x", type: "__proto__", props: {} }]),
     JSON.stringify([...JSON.parse(blocks()), ...JSON.parse(blocks())]),
     JSON.stringify(
       Array.from({ length: 61 }, (_, i) => ({

@@ -289,6 +289,16 @@ test("administrative screens and APIs preserve server authorization and reject u
     });
     expect(made.status()).toBe(201);
     id = (await made.json()).page.id;
+    for (const prefix of ["/api/admin", "/api/v1/admin"]) {
+      for (const type of ["constructor", "__proto__", "hasOwnProperty"]) {
+        const rejected = await editor.patch(prefix + "/pages/" + id, {
+          headers: editorHeaders,
+          data: { draftBlocksAr: JSON.stringify([{ id: "invalid", type, props: {} }]) },
+        });
+        expect(rejected.status()).toBe(400);
+        expect((await rejected.json()).code).toBe("invalid_blocks");
+      }
+    }
     const large = JSON.stringify(
       Array.from({ length: 3 }, (_, i) => ({
         id: "large" + i,
@@ -346,7 +356,8 @@ test("administrative screens and APIs preserve server authorization and reject u
               {
                 id: "h",
                 type: "heading",
-                props: { text, level: 2, align: "start" },
+                props: { text, level: 2, align: "start", injected: "not-public" },
+                unknownTop: "not-public",
               },
             ]),
           },
@@ -354,6 +365,8 @@ test("administrative screens and APIs preserve server authorization and reject u
       ),
     );
     expect(concurrent.map((r) => r.status()).sort()).toEqual([200, 409]);
+    const normalized = (await (await editor.get("/api/admin/pages/" + id)).json()).page;
+    expect(normalized.draftBlocksAr).not.toContain("not-public");
     expect(
       (
         await admin.post("/api/v1/admin/pages/" + id + "/publish", {
