@@ -1,0 +1,26 @@
+{
+  "sourceSHA": "fc4a959e87e7c3750a0546f9d4fa10e31ac3b63c",
+  "branch": "database/4-source-v2",
+  "syntheticOnly": true,
+  "checks": {
+    "lint": "passed",
+    "typecheck": "passed",
+    "tests": {
+      "passed": 189,
+      "files": 21
+    },
+    "build": "passed",
+    "e2e": {
+      "passed": 64
+    },
+    "infra": "passed"
+  },
+  "initialFailures": [
+    "Two fixture timeouts caused by repeated cost-12 bcrypt calculation; fixture computes once without lowering cost or increasing timeout.",
+    "Initial upgrade harness date conversion rejected NULL datetime; fixed by shared normalize and rerun on a new empty database."
+  ],
+  "limitations": [
+    "Checks cover schema and transfer plus existing app behavior; new editor/schedule/template/tracking services remain pending.",
+    "No production migration or full operational recovery acceptance."
+  ]
+}

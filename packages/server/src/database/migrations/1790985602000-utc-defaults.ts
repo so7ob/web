@@ -1,5 +1,5 @@
 import type { MigrationInterface, QueryRunner } from 'typeorm';
-import { schema, identifier as q } from '../schema.js';
+import { schemaV1 as schema, identifier as q } from '../schema.js';
 export class UtcDefaults1790985602000 implements MigrationInterface {
   name = 'UtcDefaults1790985602000'; transaction = false;
   async up(r: QueryRunner): Promise<void> {

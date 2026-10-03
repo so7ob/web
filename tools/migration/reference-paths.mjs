@@ -1,12 +1,13 @@
 import { resolve } from 'node:path';
-import { readFileSync } from 'node:fs';
+import { readFileSync, existsSync } from 'node:fs';
 
 const root = resolve(import.meta.dirname, '../..');
 const original = '5321b7fd11db421c83290b262f276811e5f04e5f';
 export const sourceSHA = process.env.REFERENCE_SOURCE_SHA ?? original;
 if (!/^[a-f0-9]{40}$/.test(sourceSHA)) throw new Error('Expected a full reference SHA');
 if (sourceSHA !== original) {
-  const manifest = JSON.parse(readFileSync(resolve(root, 'docs/migration/source-refresh-manifest.json'), 'utf8'));
+  const archived = resolve(root, `docs/migration/source-refresh-${sourceSHA.slice(0, 7)}-manifest.json`);
+  const manifest = JSON.parse(readFileSync(existsSync(archived) ? archived : resolve(root, 'docs/migration/source-refresh-manifest.json'), 'utf8'));
   if (manifest.sourceSHA !== sourceSHA) throw new Error('Reference SHA has not been inventoried');
 }
 export const referencePath = resolve(root, '.migration/reference', sourceSHA === original ? 'Website' : `Website-${sourceSHA.slice(0, 7)}`);
