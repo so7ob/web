@@ -43,6 +43,7 @@ export interface PortalContent {
       wrongPassword: string;
       emailTaken: string;
       rateLimited: string;
+      credentials: string;
       locked: string;
       passwordWeak: string;
       passwordMismatch: string;

@@ -26,7 +26,9 @@ async function assertPortalAxe(page: Page, locale: string, name: string) {
     // while axe measures the visible notification, without altering its colors or DOM.
     await expect(toast).toHaveCSS("opacity", "1");
     await toast.hover();
-    await expect(toast).toHaveAttribute("data-expanded", "true");
+    // Sonner resets expanded=false when an exiting sibling is unmounted and
+    // only one toast remains. A single toast is fully readable in either state;
+    // assert the rendered content below instead of that internal stack flag.
     // Hover expands every queued toast; wait for background text transitions too.
     await page.locator("[data-sonner-toaster]").evaluate(async (root) => {
       await Promise.all(
