@@ -1,15 +1,13 @@
 import fs from 'node:fs';
 import { createRequire } from 'node:module';
-import { fileURLToPath } from 'node:url';
 const load = createRequire(import.meta.url);
-const __dirname = fileURLToPath(new URL('.', import.meta.url));
 import path from 'node:path';
+import { baselinePath, sourceSHA } from './reference-paths.mjs';
 const { chromium } = load(process.env.PLAYWRIGHT_MODULE || '/usr/lib/node_modules/playwright');
 const AxeBuilder = load(process.env.AXE_MODULE || '/usr/lib/node_modules/@axe-core/playwright').default;
-const root = path.resolve(__dirname, '../..');
 const origin = 'http://127.0.0.1:3107';
-const out = path.join(root, '.migration/baseline/evidence');
-const fixture = JSON.parse(fs.readFileSync(path.join(root, '.migration/baseline/fixture.json')));
+const out = path.join(baselinePath, 'evidence');
+const fixture = JSON.parse(fs.readFileSync(path.join(baselinePath, 'fixture.json')));
 async function login(context, user) {
   const csrf = await (await context.request.get(`${origin}/api/auth/csrf`)).json();
   const result = await context.request.post(`${origin}/api/auth/callback/credentials`, { form: { email: `${user}@migration.example.invalid`, password: 'Synthetic-Migration-4829', csrfToken: csrf.csrfToken, json: 'true' } });
@@ -45,7 +43,7 @@ async function main() {
       });
       const axe = await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa', 'wcag21aa', 'wcag22aa']).analyze();
       runs.push({ name, route, actor, width, status: response.status(), errors, failedRequests, ...metrics, axe: axe.violations.map(v => ({ id: v.id, impact: v.impact, targets: v.nodes.map(n => n.target) })) });
-      fs.writeFileSync(path.join(out, 'browser.json'), JSON.stringify({ sourceSHA: '5321b7fd11db421c83290b262f276811e5f04e5f', browserVersion: browser.version(), runs }, null, 2));
+      fs.writeFileSync(path.join(out, 'browser.json'), JSON.stringify({ sourceSHA, browserVersion: browser.version(), runs }, null, 2));
       console.log(`${locale} ${name} ${width}: ${response.status()}, errors=${errors.length}, axe=${axe.violations.length}`);
       await context.close();
     }
