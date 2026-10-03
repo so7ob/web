@@ -1,0 +1,28 @@
+{
+  "date": "2026-10-03",
+  "source": "so7ob/Website@5321b7fd11db421c83290b262f276811e5f04e5f",
+  "parent": "so7ob/web PR #16 @ f447a48",
+  "runtime": "Node 24.21.0; MariaDB 10.11.18; independent synthetic databases",
+  "tests": 150,
+  "newRealMariaDbCases": 13,
+  "browserTests": 36,
+  "referenceReadContracts": 21,
+  "checks": {
+    "lint": "passed locally",
+    "typecheck": "passed locally",
+    "test": "passed locally",
+    "build": "passed locally",
+    "test:e2e": "passed locally",
+    "test:infra": "passed locally",
+    "git diff --check": "passed locally"
+  },
+  "ci": "Pending remote PR run",
+  "completeMigration": false,
+  "productionDataMigrated": false,
+  "limitations": [
+    "Admin UI and other administration/CMS/editor operations pending",
+    "Final whole-application performance/visual acceptance pending",
+    "Full operational backup and rollback rehearsal pending",
+    "No merge, release, deployment or production cutover"
+  ]
+}

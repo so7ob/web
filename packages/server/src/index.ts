@@ -22,3 +22,5 @@ export { FileCleanupQueue } from './files/cleanup.js';
 export { MAX_ATTACHMENT_SIZE,MAX_MEDIA_SIZE } from './files/upload-validation.js';
 
 export { PortalService } from './business/portal.js';
+
+export { UserAdministrationService } from './admin/users.js';
