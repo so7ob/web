@@ -231,6 +231,13 @@
       "sourceSHA256": "d639d075f3c15116c026c1da968b12555b3dc576bdd80717391e2c826f213be5",
       "destinationSHA256": "6fab5ca6540f8a56347bf35b53f13f37e003fb4647c37794ffd8fbbac6542921",
       "change": "explicit final visible state for reduced motion; ordinary animation retained"
+    },
+    {
+      "source": "src/components/account/profile-form.tsx",
+      "destination": "apps/web/src/components/account/profile-form.tsx",
+      "sourceSHA256": "7bf2e3d8b329ebb3e277c1905f5597cd179e79b48d5e84e0603dc430fc2b7a48",
+      "destinationSHA256": "7da5a590955f2ef3176c4e33594fcbecbbc332c3b06339af382f2fae7c02062a",
+      "change": "SSR controls become editable only after hydration to preserve the first user edit"
     }
   ]
 }

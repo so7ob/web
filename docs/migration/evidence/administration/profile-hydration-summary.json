@@ -1,0 +1,20 @@
+{
+  "recordedAt": "2026-10-03T17:29:00.279089+00:00",
+  "checks": {
+    "lint": "passed",
+    "independentTypecheck": "passed",
+    "clientAndSsrBuild": "passed",
+    "focusedBrowserCases": {
+      "passed": 8,
+      "failed": 0,
+      "scope": [
+        "all Arabic/English client journeys at 375/1280",
+        "profile language change both directions",
+        "delayed real profile chunk and first-edit persistence at 375/1280"
+      ]
+    }
+  },
+  "unitAndOtherBrowserEvidence": "Original 171 unit/integration and 54 browser cases retained in summary.json; this UI-only follow-up does not change server authentication/data services",
+  "ciFailure": "remote-profile-hydration-failure.json",
+  "fullRerun": "tracked separately on PR #18"
+}
