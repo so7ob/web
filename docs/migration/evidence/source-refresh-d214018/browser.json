@@ -1,0 +1,3638 @@
+{
+  "sourceSHA": "d214018f3337198d8e17e5e7efa535a846ba6be2",
+  "browserVersion": "151.0.7922.34",
+  "runs": [
+    {
+      "name": "home",
+      "route": "/ar",
+      "actor": null,
+      "width": 375,
+      "status": 200,
+      "errors": [],
+      "failedRequests": [
+        {
+          "url": "/ar/contact",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/contact",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/contact",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/contact",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/contact",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar",
+          "error": "net::ERR_ABORTED"
+        }
+      ],
+      "lang": "ar",
+      "dir": "rtl",
+      "scrollWidth": 375,
+      "ttfbMs": 615.1999999992549,
+      "jsEncodedBytes": 328672,
+      "jsDecodedBytes": 1151970,
+      "axe": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "targets": [
+            [
+              ".bg-green-600"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "name": "contact",
+      "route": "/ar/contact",
+      "actor": null,
+      "width": 375,
+      "status": 200,
+      "errors": [],
+      "failedRequests": [],
+      "lang": "ar",
+      "dir": "rtl",
+      "scrollWidth": 375,
+      "ttfbMs": 32.19999999925494,
+      "jsEncodedBytes": 328672,
+      "jsDecodedBytes": 1151970,
+      "axe": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "targets": [
+            [
+              ".mt-1\\.5.ltr-isolate.text-slate-400"
+            ],
+            [
+              "label[for=\"company\"] > .ms-1.font-normal.text-slate-400"
+            ],
+            [
+              "label[for=\"phone\"] > .ms-1.font-normal.text-slate-400"
+            ],
+            [
+              "label[for=\"referenceUrl\"] > .ms-1.font-normal.text-slate-400"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "name": "works",
+      "route": "/ar/works",
+      "actor": null,
+      "width": 375,
+      "status": 200,
+      "errors": [],
+      "failedRequests": [
+        {
+          "url": "/ar",
+          "error": "net::ERR_ABORTED"
+        }
+      ],
+      "lang": "ar",
+      "dir": "rtl",
+      "scrollWidth": 375,
+      "ttfbMs": 21.199999999254942,
+      "jsEncodedBytes": 328672,
+      "jsDecodedBytes": 1151970,
+      "axe": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "targets": [
+            [
+              ".bg-green-600"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "name": "login",
+      "route": "/ar/auth/login",
+      "actor": null,
+      "width": 375,
+      "status": 200,
+      "errors": [],
+      "failedRequests": [
+        {
+          "url": "/ar/works",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/services",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/about",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/auth/forgot-password",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/auth/register",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/works",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/services",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/about",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/auth/forgot-password",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/auth/register",
+          "error": "net::ERR_ABORTED"
+        }
+      ],
+      "lang": "ar",
+      "dir": "rtl",
+      "scrollWidth": 375,
+      "ttfbMs": 46.40000000037253,
+      "jsEncodedBytes": 167121,
+      "jsDecodedBytes": 566069,
+      "axe": []
+    },
+    {
+      "name": "account",
+      "route": "/ar/account",
+      "actor": "owner",
+      "width": 375,
+      "status": 200,
+      "errors": [],
+      "failedRequests": [
+        {
+          "url": "/ar/account/inquiries",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/account/inquiries",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/account/requests",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/account/notifications",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/account/requests",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/account/requests/new",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/account/requests",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/account/inquiries",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/account/inquiries",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/account/notifications",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/account/requests",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/account/requests/new",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar",
+          "error": "net::ERR_ABORTED"
+        }
+      ],
+      "lang": "ar",
+      "dir": "rtl",
+      "scrollWidth": 375,
+      "ttfbMs": 92.59999999962747,
+      "jsEncodedBytes": 171353,
+      "jsDecodedBytes": 573147,
+      "axe": []
+    },
+    {
+      "name": "request",
+      "route": "/ar/account/requests/migrationrequest",
+      "actor": "owner",
+      "width": 375,
+      "status": 200,
+      "errors": [],
+      "failedRequests": [
+        {
+          "url": "/ar/process",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/works",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/services",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/account/notifications",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/process",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/services",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/track",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/about",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/account/notifications",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/account/requests",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/track",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/track",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/account/requests",
+          "error": "net::ERR_ABORTED"
+        }
+      ],
+      "lang": "ar",
+      "dir": "rtl",
+      "scrollWidth": 375,
+      "ttfbMs": 39.5,
+      "jsEncodedBytes": 186801,
+      "jsDecodedBytes": 626676,
+      "axe": []
+    },
+    {
+      "name": "admin",
+      "route": "/ar/admin",
+      "actor": "admin",
+      "width": 375,
+      "status": 200,
+      "errors": [],
+      "failedRequests": [
+        {
+          "url": "/en/admin",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/admin/notifications",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/admin/requests",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/admin/requests",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/admin/requests",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/admin/requests",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/admin/requests",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/admin/requests",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/admin/inquiries",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/admin/requests",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/admin/requests",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/admin/users",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/admin/users",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/admin",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/admin",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/admin",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/admin/requests",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/admin/requests",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/admin/requests",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/admin/requests",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/admin/requests",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/admin/requests",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/admin/users",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/admin/inquiries",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/admin/requests",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/admin/requests",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/admin/users",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/admin",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/admin",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/admin",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/admin",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/admin/inquiries",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/admin/notifications",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/admin",
+          "error": "net::ERR_ABORTED"
+        }
+      ],
+      "lang": "ar",
+      "dir": "rtl",
+      "scrollWidth": 375,
+      "ttfbMs": 145.7999999988824,
+      "jsEncodedBytes": 228407,
+      "jsDecodedBytes": 759780,
+      "axe": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "targets": [
+            [
+              "a[aria-label=\"إجمالي المستخدمين: 8\"] > .mt-0\\.5.text-muted-foreground\\/70.text-\\[11px\\]"
+            ],
+            [
+              "a[aria-label=\"طلبات مفتوحة: 1\"] > .mt-0\\.5.text-muted-foreground\\/70.text-\\[11px\\]"
+            ],
+            [
+              ".hover\\:-translate-y-0\\.5.hover\\:shadow-lg.hover\\:shadow-navy\\/10:nth-child(7) > .mt-0\\.5.text-muted-foreground\\/70.text-\\[11px\\]"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "name": "editor",
+      "route": "/ar/admin/pages/cmuspeugu0000g943dx4yq0hk/edit",
+      "actor": "admin",
+      "width": 375,
+      "status": 200,
+      "errors": [],
+      "failedRequests": [
+        {
+          "url": "/ar/admin/notifications",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/admin/pages/cmuspeugu0000g943dx4yq0hk/edit",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/admin/pages",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/contact",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/contact",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/admin/pages/cmuspeugu0000g943dx4yq0hk/preview",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/contact",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/admin/pages",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/admin/pages/cmuspeugu0000g943dx4yq0hk/preview",
+          "error": "net::ERR_ABORTED"
+        }
+      ],
+      "lang": "ar",
+      "dir": "rtl",
+      "scrollWidth": 375,
+      "ttfbMs": 68.29999999888241,
+      "jsEncodedBytes": 477375,
+      "jsDecodedBytes": 1673160,
+      "axe": [
+        {
+          "id": "aria-valid-attr-value",
+          "impact": "critical",
+          "targets": [
+            [
+              "#radix-_r_0_-trigger-ar"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "name": "support",
+      "route": "/ar/admin/requests",
+      "actor": "support",
+      "width": 375,
+      "status": 200,
+      "errors": [],
+      "failedRequests": [
+        {
+          "url": "/en/admin/requests",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/admin/notifications",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/admin/requests/migrationrequest",
+          "error": "net::ERR_ABORTED"
+        }
+      ],
+      "lang": "ar",
+      "dir": "rtl",
+      "scrollWidth": 375,
+      "ttfbMs": 57.5,
+      "jsEncodedBytes": 278357,
+      "jsDecodedBytes": 924210,
+      "axe": []
+    },
+    {
+      "name": "content-editor",
+      "route": "/ar/admin",
+      "actor": "editor",
+      "width": 375,
+      "status": 200,
+      "errors": [],
+      "failedRequests": [
+        {
+          "url": "/en/admin",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/admin/notifications",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/admin/notifications",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/admin",
+          "error": "net::ERR_ABORTED"
+        }
+      ],
+      "lang": "ar",
+      "dir": "rtl",
+      "scrollWidth": 375,
+      "ttfbMs": 70.5,
+      "jsEncodedBytes": 228407,
+      "jsDecodedBytes": 759780,
+      "axe": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "targets": [
+            [
+              ".mt-0\\.5"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "name": "home",
+      "route": "/en",
+      "actor": null,
+      "width": 375,
+      "status": 200,
+      "errors": [],
+      "failedRequests": [
+        {
+          "url": "/en/contact",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/contact",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/contact",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/contact",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en",
+          "error": "net::ERR_ABORTED"
+        }
+      ],
+      "lang": "en",
+      "dir": "ltr",
+      "scrollWidth": 375,
+      "ttfbMs": 23.59999999962747,
+      "jsEncodedBytes": 328672,
+      "jsDecodedBytes": 1151970,
+      "axe": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "targets": [
+            [
+              ".bg-green-600"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "name": "contact",
+      "route": "/en/contact",
+      "actor": null,
+      "width": 375,
+      "status": 200,
+      "errors": [],
+      "failedRequests": [
+        {
+          "url": "/en",
+          "error": "net::ERR_ABORTED"
+        }
+      ],
+      "lang": "en",
+      "dir": "ltr",
+      "scrollWidth": 375,
+      "ttfbMs": 15.599999999627471,
+      "jsEncodedBytes": 328672,
+      "jsDecodedBytes": 1151970,
+      "axe": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "targets": [
+            [
+              ".mt-1\\.5.ltr-isolate.text-slate-400"
+            ],
+            [
+              ".mt-1\\.5.leading-6.text-slate-400"
+            ],
+            [
+              "label[for=\"company\"] > .ms-1.font-normal.text-slate-400"
+            ],
+            [
+              "label[for=\"phone\"] > .ms-1.font-normal.text-slate-400"
+            ],
+            [
+              "label[for=\"referenceUrl\"] > .ms-1.font-normal.text-slate-400"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "name": "works",
+      "route": "/en/works",
+      "actor": null,
+      "width": 375,
+      "status": 200,
+      "errors": [],
+      "failedRequests": [
+        {
+          "url": "/en",
+          "error": "net::ERR_ABORTED"
+        }
+      ],
+      "lang": "en",
+      "dir": "ltr",
+      "scrollWidth": 375,
+      "ttfbMs": 17.59999999962747,
+      "jsEncodedBytes": 328672,
+      "jsDecodedBytes": 1151970,
+      "axe": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "targets": [
+            [
+              ".bg-green-600"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "name": "login",
+      "route": "/en/auth/login",
+      "actor": null,
+      "width": 375,
+      "status": 200,
+      "errors": [],
+      "failedRequests": [
+        {
+          "url": "/en/services",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/about",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/works",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/services",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/about",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/auth/forgot-password",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/auth/register",
+          "error": "net::ERR_ABORTED"
+        }
+      ],
+      "lang": "en",
+      "dir": "ltr",
+      "scrollWidth": 375,
+      "ttfbMs": 29.59999999962747,
+      "jsEncodedBytes": 167121,
+      "jsDecodedBytes": 566069,
+      "axe": []
+    },
+    {
+      "name": "account",
+      "route": "/en/account",
+      "actor": "owner",
+      "width": 375,
+      "status": 200,
+      "errors": [],
+      "failedRequests": [
+        {
+          "url": "/en/account/inquiries",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/account/requests",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/account/inquiries",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/account/requests",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/account/requests/new",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/account/inquiries",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/account/inquiries",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/account/notifications",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/account/requests",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/account/requests/new",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en",
+          "error": "net::ERR_ABORTED"
+        }
+      ],
+      "lang": "en",
+      "dir": "ltr",
+      "scrollWidth": 375,
+      "ttfbMs": 21.300000000745058,
+      "jsEncodedBytes": 171353,
+      "jsDecodedBytes": 573147,
+      "axe": []
+    },
+    {
+      "name": "request",
+      "route": "/en/account/requests/migrationrequest",
+      "actor": "owner",
+      "width": 375,
+      "status": 200,
+      "errors": [],
+      "failedRequests": [
+        {
+          "url": "/en/process",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/works",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/services",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/about",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/account/notifications",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/services",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/about",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/track",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/track",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/track",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/account/requests",
+          "error": "net::ERR_ABORTED"
+        }
+      ],
+      "lang": "en",
+      "dir": "ltr",
+      "scrollWidth": 375,
+      "ttfbMs": 17.200000001117587,
+      "jsEncodedBytes": 186801,
+      "jsDecodedBytes": 626676,
+      "axe": []
+    },
+    {
+      "name": "admin",
+      "route": "/en/admin",
+      "actor": "admin",
+      "width": 375,
+      "status": 200,
+      "errors": [],
+      "failedRequests": [
+        {
+          "url": "/ar/admin",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/admin/notifications",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/admin/notifications",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/admin",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/admin/requests",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/admin/requests",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/admin/requests",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/admin/inquiries",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/admin/requests",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/admin/requests",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/admin/requests",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/admin/users",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/admin/requests",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/admin/requests",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/admin",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/admin",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/admin",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/admin/requests",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/admin/requests",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/admin/requests",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/admin/requests",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/admin/requests",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/admin/inquiries",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/admin/requests",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/admin/requests",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/admin/requests",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/admin/users",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/admin/requests",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/admin",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/admin/users",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/admin",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/admin/inquiries",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/admin",
+          "error": "net::ERR_ABORTED"
+        }
+      ],
+      "lang": "en",
+      "dir": "ltr",
+      "scrollWidth": 375,
+      "ttfbMs": 25.09999999962747,
+      "jsEncodedBytes": 228407,
+      "jsDecodedBytes": 759780,
+      "axe": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "targets": [
+            [
+              "a[aria-label=\"Total users: 8\"] > .mt-0\\.5.text-muted-foreground\\/70.text-\\[11px\\]"
+            ],
+            [
+              "a[aria-label=\"Open requests: 1\"] > .mt-0\\.5.text-muted-foreground\\/70.text-\\[11px\\]"
+            ],
+            [
+              "a[aria-label=\"Overdue replies: 0\"] > .mt-0\\.5.text-muted-foreground\\/70.text-\\[11px\\]"
+            ],
+            [
+              ".hover\\:-translate-y-0\\.5.hover\\:shadow-lg.hover\\:shadow-navy\\/10:nth-child(7) > .mt-0\\.5.text-muted-foreground\\/70.text-\\[11px\\]"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "name": "editor",
+      "route": "/en/admin/pages/cmuspeugu0000g943dx4yq0hk/edit",
+      "actor": "admin",
+      "width": 375,
+      "status": 200,
+      "errors": [],
+      "failedRequests": [
+        {
+          "url": "/en/admin/notifications",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/admin/pages/cmuspeugu0000g943dx4yq0hk/edit",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/admin/pages/cmuspeugu0000g943dx4yq0hk/preview",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/contact",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/contact",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/admin/pages",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/contact",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/contact",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/contact",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/admin/pages/cmuspeugu0000g943dx4yq0hk/preview",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/admin/pages",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/admin/pages/cmuspeugu0000g943dx4yq0hk/preview",
+          "error": "net::ERR_ABORTED"
+        }
+      ],
+      "lang": "en",
+      "dir": "ltr",
+      "scrollWidth": 375,
+      "ttfbMs": 22.59999999962747,
+      "jsEncodedBytes": 477375,
+      "jsDecodedBytes": 1673160,
+      "axe": [
+        {
+          "id": "aria-valid-attr-value",
+          "impact": "critical",
+          "targets": [
+            [
+              "#radix-_r_0_-trigger-en"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "name": "support",
+      "route": "/en/admin/requests",
+      "actor": "support",
+      "width": 375,
+      "status": 200,
+      "errors": [],
+      "failedRequests": [
+        {
+          "url": "/en/admin/requests/migrationrequest",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/admin/requests/migrationrequest",
+          "error": "net::ERR_ABORTED"
+        }
+      ],
+      "lang": "en",
+      "dir": "ltr",
+      "scrollWidth": 375,
+      "ttfbMs": 36.69999999925494,
+      "jsEncodedBytes": 278357,
+      "jsDecodedBytes": 924210,
+      "axe": []
+    },
+    {
+      "name": "content-editor",
+      "route": "/en/admin",
+      "actor": "editor",
+      "width": 375,
+      "status": 200,
+      "errors": [],
+      "failedRequests": [
+        {
+          "url": "/ar/admin",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/admin/notifications",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/admin",
+          "error": "net::ERR_ABORTED"
+        }
+      ],
+      "lang": "en",
+      "dir": "ltr",
+      "scrollWidth": 375,
+      "ttfbMs": 22.40000000037253,
+      "jsEncodedBytes": 228407,
+      "jsDecodedBytes": 759780,
+      "axe": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "targets": [
+            [
+              ".mt-0\\.5"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "name": "home",
+      "route": "/ar",
+      "actor": null,
+      "width": 1280,
+      "status": 200,
+      "errors": [],
+      "failedRequests": [
+        {
+          "url": "/ar/services",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/contact",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/contact",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/auth/login",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/contact",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/faq",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/process",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/works",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/about",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/contact",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/services",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/contact",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/auth/login",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/faq",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/contact",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/process",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/works",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/about",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar",
+          "error": "net::ERR_ABORTED"
+        }
+      ],
+      "lang": "ar",
+      "dir": "rtl",
+      "scrollWidth": 1280,
+      "ttfbMs": 28.5,
+      "jsEncodedBytes": 328672,
+      "jsDecodedBytes": 1151970,
+      "axe": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "targets": [
+            [
+              ".bg-green-600"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "name": "contact",
+      "route": "/ar/contact",
+      "actor": null,
+      "width": 1280,
+      "status": 200,
+      "errors": [],
+      "failedRequests": [
+        {
+          "url": "/ar/contact",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/works",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/services",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/about",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/contact",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/auth/login",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/contact",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/faq",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/about",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/process",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/works",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/services",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar",
+          "error": "net::ERR_ABORTED"
+        }
+      ],
+      "lang": "ar",
+      "dir": "rtl",
+      "scrollWidth": 1280,
+      "ttfbMs": 13.699999999254942,
+      "jsEncodedBytes": 328672,
+      "jsDecodedBytes": 1151970,
+      "axe": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "targets": [
+            [
+              ".bottom-4"
+            ],
+            [
+              ".mt-1\\.5.ltr-isolate.text-slate-400"
+            ],
+            [
+              "label[for=\"company\"] > .ms-1.font-normal.text-slate-400"
+            ],
+            [
+              "label[for=\"phone\"] > .ms-1.font-normal.text-slate-400"
+            ],
+            [
+              "label[for=\"referenceUrl\"] > .ms-1.font-normal.text-slate-400"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "name": "works",
+      "route": "/ar/works",
+      "actor": null,
+      "width": 1280,
+      "status": 200,
+      "errors": [],
+      "failedRequests": [
+        {
+          "url": "/ar/auth/login",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/contact",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/faq",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/process",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/works",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/services",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/contact",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/auth/login",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/contact",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/faq",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/process",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/works",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/services",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/about",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar",
+          "error": "net::ERR_ABORTED"
+        }
+      ],
+      "lang": "ar",
+      "dir": "rtl",
+      "scrollWidth": 1280,
+      "ttfbMs": 14.900000000372529,
+      "jsEncodedBytes": 328672,
+      "jsDecodedBytes": 1151970,
+      "axe": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "targets": [
+            [
+              ".bottom-4"
+            ],
+            [
+              ".gap-2:nth-child(3) > .sm\\:inline.hidden.text-slate-400"
+            ],
+            [
+              ".bg-green-600"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "name": "login",
+      "route": "/ar/auth/login",
+      "actor": null,
+      "width": 1280,
+      "status": 200,
+      "errors": [],
+      "failedRequests": [
+        {
+          "url": "/ar/services",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/contact",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/faq",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/works",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/about",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/auth/forgot-password",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/auth/register",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/contact",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/auth/login",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/services",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/contact",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/faq",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/process",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/works",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/about",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/auth/register",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/auth/forgot-password",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/contact",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/auth/login",
+          "error": "net::ERR_ABORTED"
+        }
+      ],
+      "lang": "ar",
+      "dir": "rtl",
+      "scrollWidth": 1280,
+      "ttfbMs": 16.100000001490116,
+      "jsEncodedBytes": 167121,
+      "jsDecodedBytes": 566069,
+      "axe": []
+    },
+    {
+      "name": "account",
+      "route": "/ar/account",
+      "actor": "owner",
+      "width": 1280,
+      "status": 200,
+      "errors": [],
+      "failedRequests": [
+        {
+          "url": "/ar/contact",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/services",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/faq",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/works",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/account/requests/migrationrequest",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/about",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/account/inquiries",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/account/inquiries",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/account/notifications",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/auth/logout",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/account/requests/new",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/account/security",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/account/profile",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/account",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/services",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/contact",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/faq",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/process",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/works",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/about",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/account/requests/migrationrequest",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/account/inquiries",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/account/requests",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/account/inquiries",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/account/notifications",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/account/requests",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/account/requests/new",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/auth/logout",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/account/security",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/account/profile",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/account",
+          "error": "net::ERR_ABORTED"
+        }
+      ],
+      "lang": "ar",
+      "dir": "rtl",
+      "scrollWidth": 1280,
+      "ttfbMs": 21.200000001117587,
+      "jsEncodedBytes": 171353,
+      "jsDecodedBytes": 573147,
+      "axe": []
+    },
+    {
+      "name": "request",
+      "route": "/ar/account/requests/migrationrequest",
+      "actor": "owner",
+      "width": 1280,
+      "status": 200,
+      "errors": [],
+      "failedRequests": [
+        {
+          "url": "/ar/contact",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/faq",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/services",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/account/profile",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/account/notifications",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/account/security",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/account/inquiries",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/account/requests",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/account/requests/new",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/track",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/account",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/track",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/account/requests",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/services",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/works",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/auth/logout",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/account/security",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/about",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/account/inquiries",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/account/requests/new",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/account/notifications",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/account/profile",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/process",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/account",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/contact",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/faq",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/track",
+          "error": "net::ERR_ABORTED"
+        }
+      ],
+      "lang": "ar",
+      "dir": "rtl",
+      "scrollWidth": 1280,
+      "ttfbMs": 20.899999998509884,
+      "jsEncodedBytes": 186801,
+      "jsDecodedBytes": 626676,
+      "axe": []
+    },
+    {
+      "name": "admin",
+      "route": "/ar/admin",
+      "actor": "admin",
+      "width": 1280,
+      "status": 200,
+      "errors": [],
+      "failedRequests": [
+        {
+          "url": "/en/admin",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/admin/notifications",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/auth/logout",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/admin/requests/migrationrequest",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/admin/requests",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/admin/audit",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/admin/requests",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/admin/requests",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/admin/requests",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/admin/requests",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/admin/requests",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/admin/requests",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/admin/requests",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/admin/inquiries",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/admin/requests",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/admin",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/admin/users",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/admin/users",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/admin",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/admin/outbox",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/admin/settings",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/admin/menus",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/admin/media",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/admin/pages",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/admin/inquiries",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/admin",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/admin/audit",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/admin/requests/migrationrequest",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/admin/requests",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/admin/requests",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/admin/requests",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/admin/requests",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/admin/requests",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/admin/requests",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/admin/requests",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/admin/requests",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/admin/inquiries",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/admin/requests",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/admin",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/admin",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/admin/users",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/admin/users",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/admin",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/admin/notifications",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/auth/logout",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/admin",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/admin/outbox",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/admin/settings",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/admin/menus",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/admin/media",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/admin/pages",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/admin/inquiries",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/admin",
+          "error": "net::ERR_ABORTED"
+        }
+      ],
+      "lang": "ar",
+      "dir": "rtl",
+      "scrollWidth": 1280,
+      "ttfbMs": 33.09999999962747,
+      "jsEncodedBytes": 228407,
+      "jsDecodedBytes": 759780,
+      "axe": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "targets": [
+            [
+              "a[aria-label=\"إجمالي المستخدمين: 8\"] > .mt-0\\.5.text-muted-foreground\\/70.text-\\[11px\\]"
+            ],
+            [
+              "a[aria-label=\"طلبات مفتوحة: 1\"] > .mt-0\\.5.text-muted-foreground\\/70.text-\\[11px\\]"
+            ],
+            [
+              ".hover\\:-translate-y-0\\.5.hover\\:shadow-lg.hover\\:shadow-navy\\/10:nth-child(7) > .mt-0\\.5.text-muted-foreground\\/70.text-\\[11px\\]"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "name": "editor",
+      "route": "/ar/admin/pages/cmuspeugu0000g943dx4yq0hk/edit",
+      "actor": "admin",
+      "width": 1280,
+      "status": 200,
+      "errors": [],
+      "failedRequests": [
+        {
+          "url": "/ar/admin/outbox",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/admin/audit",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/admin/settings",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/admin/menus",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/admin/media",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/admin/pages",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/admin/inquiries",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/admin/users",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/admin",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/admin/pages/cmuspeugu0000g943dx4yq0hk/edit",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/contact",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/admin/pages/cmuspeugu0000g943dx4yq0hk/preview",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/contact",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/admin/pages",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/admin/notifications",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/admin/pages/cmuspeugu0000g943dx4yq0hk/preview",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/contact",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/admin/audit",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/admin/settings",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/admin/outbox",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/auth/logout",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/admin/menus",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/admin/media",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/admin/inquiries",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/admin/requests",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/contact",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/admin/pages/cmuspeugu0000g943dx4yq0hk/preview",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/admin/users",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/admin",
+          "error": "net::ERR_ABORTED"
+        }
+      ],
+      "lang": "ar",
+      "dir": "rtl",
+      "scrollWidth": 1280,
+      "ttfbMs": 19.800000000745058,
+      "jsEncodedBytes": 477375,
+      "jsDecodedBytes": 1673160,
+      "axe": [
+        {
+          "id": "aria-valid-attr-value",
+          "impact": "critical",
+          "targets": [
+            [
+              "#radix-_r_0_-trigger-ar"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "name": "support",
+      "route": "/ar/admin/requests",
+      "actor": "support",
+      "width": 1280,
+      "status": 200,
+      "errors": [],
+      "failedRequests": [
+        {
+          "url": "/en/admin/requests",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/admin/notifications",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/auth/logout",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/admin/inquiries",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/admin/requests",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/admin",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/admin/notifications",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/auth/logout",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/admin/inquiries",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/admin/requests",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/admin/requests",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/admin/requests/migrationrequest",
+          "error": "net::ERR_ABORTED"
+        }
+      ],
+      "lang": "ar",
+      "dir": "rtl",
+      "scrollWidth": 1280,
+      "ttfbMs": 27.300000000745058,
+      "jsEncodedBytes": 278357,
+      "jsDecodedBytes": 924210,
+      "axe": []
+    },
+    {
+      "name": "content-editor",
+      "route": "/ar/admin",
+      "actor": "editor",
+      "width": 1280,
+      "status": 200,
+      "errors": [],
+      "failedRequests": [
+        {
+          "url": "/en/admin",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/admin/notifications",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/auth/logout",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/admin/menus",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/admin/media",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/admin/pages",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/admin",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/admin",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/admin/menus",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/admin/media",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/admin/pages",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/admin",
+          "error": "net::ERR_ABORTED"
+        }
+      ],
+      "lang": "ar",
+      "dir": "rtl",
+      "scrollWidth": 1280,
+      "ttfbMs": 16.5,
+      "jsEncodedBytes": 228407,
+      "jsDecodedBytes": 759780,
+      "axe": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "targets": [
+            [
+              ".mt-0\\.5"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "name": "home",
+      "route": "/en",
+      "actor": null,
+      "width": 1280,
+      "status": 200,
+      "errors": [],
+      "failedRequests": [
+        {
+          "url": "/en/services",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/contact",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/contact",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/auth/login",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/contact",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/contact",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/services",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/contact",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/works",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/faq",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/process",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/about",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en",
+          "error": "net::ERR_ABORTED"
+        }
+      ],
+      "lang": "en",
+      "dir": "ltr",
+      "scrollWidth": 1280,
+      "ttfbMs": 19.299999998882413,
+      "jsEncodedBytes": 328672,
+      "jsDecodedBytes": 1151970,
+      "axe": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "targets": [
+            [
+              ".bg-green-600"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "name": "contact",
+      "route": "/en/contact",
+      "actor": null,
+      "width": 1280,
+      "status": 200,
+      "errors": [],
+      "failedRequests": [
+        {
+          "url": "/en/contact",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/auth/login",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/contact",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/process",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/works",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/services",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/contact",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/auth/login",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/contact",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/faq",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/process",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/works",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/services",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/about",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en",
+          "error": "net::ERR_ABORTED"
+        }
+      ],
+      "lang": "en",
+      "dir": "ltr",
+      "scrollWidth": 1280,
+      "ttfbMs": 14.199999999254942,
+      "jsEncodedBytes": 328672,
+      "jsDecodedBytes": 1151970,
+      "axe": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "targets": [
+            [
+              ".bottom-4"
+            ],
+            [
+              ".mt-1\\.5.ltr-isolate.text-slate-400"
+            ],
+            [
+              ".mt-1\\.5.leading-6.text-slate-400"
+            ],
+            [
+              "label[for=\"company\"] > .ms-1.font-normal.text-slate-400"
+            ],
+            [
+              "label[for=\"phone\"] > .ms-1.font-normal.text-slate-400"
+            ],
+            [
+              "label[for=\"referenceUrl\"] > .ms-1.font-normal.text-slate-400"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "name": "works",
+      "route": "/en/works",
+      "actor": null,
+      "width": 1280,
+      "status": 200,
+      "errors": [],
+      "failedRequests": [
+        {
+          "url": "/en/auth/login",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/contact",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/contact",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/process",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/works",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/services",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/about",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/contact",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/contact",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/auth/login",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/faq",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/services",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/about",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/works",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en",
+          "error": "net::ERR_ABORTED"
+        }
+      ],
+      "lang": "en",
+      "dir": "ltr",
+      "scrollWidth": 1280,
+      "ttfbMs": 21.09999999962747,
+      "jsEncodedBytes": 328672,
+      "jsDecodedBytes": 1151970,
+      "axe": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "targets": [
+            [
+              ".bottom-4"
+            ],
+            [
+              ".gap-2:nth-child(2) > .sm\\:inline.hidden.text-slate-400"
+            ],
+            [
+              ".gap-2:nth-child(3) > .sm\\:inline.hidden.text-slate-400"
+            ],
+            [
+              ".bg-green-600"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "name": "login",
+      "route": "/en/auth/login",
+      "actor": null,
+      "width": 1280,
+      "status": 200,
+      "errors": [],
+      "failedRequests": [
+        {
+          "url": "/en/contact",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/faq",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/process",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/about",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/auth/forgot-password",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/contact",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/services",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/faq",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/auth/forgot-password",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/about",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/auth/register",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/contact",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/auth/login",
+          "error": "net::ERR_ABORTED"
+        }
+      ],
+      "lang": "en",
+      "dir": "ltr",
+      "scrollWidth": 1280,
+      "ttfbMs": 13.900000000372529,
+      "jsEncodedBytes": 167121,
+      "jsDecodedBytes": 566069,
+      "axe": []
+    },
+    {
+      "name": "account",
+      "route": "/en/account",
+      "actor": "owner",
+      "width": 1280,
+      "status": 200,
+      "errors": [],
+      "failedRequests": [
+        {
+          "url": "/en/services",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/contact",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/faq",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/process",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/works",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/about",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/account/requests/migrationrequest",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/account/requests",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/account/inquiries",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/account/inquiries",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/account/notifications",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/account/requests",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/account/requests/new",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/auth/logout",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/account/security",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/account/profile",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/account",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/services",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/contact",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/faq",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/process",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/works",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/about",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/account/requests/migrationrequest",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/account/requests",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/account/inquiries",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/account/inquiries",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/account/notifications",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/account/requests",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/account/requests/new",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/auth/logout",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/account/security",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/account/profile",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/account",
+          "error": "net::ERR_ABORTED"
+        }
+      ],
+      "lang": "en",
+      "dir": "ltr",
+      "scrollWidth": 1280,
+      "ttfbMs": 25.59999999962747,
+      "jsEncodedBytes": 171353,
+      "jsDecodedBytes": 573147,
+      "axe": []
+    },
+    {
+      "name": "request",
+      "route": "/en/account/requests/migrationrequest",
+      "actor": "owner",
+      "width": 1280,
+      "status": 200,
+      "errors": [],
+      "failedRequests": [
+        {
+          "url": "/en/services",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/contact",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/faq",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/process",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/works",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/account/security",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/account/profile",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/account/notifications",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/account/inquiries",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/account/requests",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/account/requests/new",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/track",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/track",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/account/requests",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/services",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/about",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/auth/logout",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/account/security",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/account/profile",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/account/notifications",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/account/requests/new",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/account/inquiries",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/account",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/contact",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/faq",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/process",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/works",
+          "error": "net::ERR_ABORTED"
+        }
+      ],
+      "lang": "en",
+      "dir": "ltr",
+      "scrollWidth": 1280,
+      "ttfbMs": 19.40000000037253,
+      "jsEncodedBytes": 186801,
+      "jsDecodedBytes": 626676,
+      "axe": []
+    },
+    {
+      "name": "admin",
+      "route": "/en/admin",
+      "actor": "admin",
+      "width": 1280,
+      "status": 200,
+      "errors": [],
+      "failedRequests": [
+        {
+          "url": "/ar/admin",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/admin/notifications",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/auth/logout",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/admin/outbox",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/admin/audit",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/admin/settings",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/admin/menus",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/admin/media",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/admin/pages",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/admin/inquiries",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/admin/requests",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/admin/users",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/admin",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/admin",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/auth/logout",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/admin/notifications",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/admin/outbox",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/admin/audit",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/admin/settings",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/admin/menus",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/admin/requests",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/admin/requests",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/admin/requests",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/admin/requests",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/admin/requests",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/admin/requests",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/admin/requests",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/admin/inquiries",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/admin/requests",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/admin/users",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/admin",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/admin",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/admin",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/admin/requests/migrationrequest",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/admin/requests",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/admin/requests",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/admin/requests",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/admin/requests",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/admin/requests",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/admin/requests",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/admin/requests",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/admin/requests",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/admin/requests",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/admin/inquiries",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/admin/users",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/admin/users",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/admin",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/admin",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/admin",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/admin/media",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/admin/pages",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/admin/inquiries",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/admin",
+          "error": "net::ERR_ABORTED"
+        }
+      ],
+      "lang": "en",
+      "dir": "ltr",
+      "scrollWidth": 1280,
+      "ttfbMs": 24.699999999254942,
+      "jsEncodedBytes": 228407,
+      "jsDecodedBytes": 759780,
+      "axe": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "targets": [
+            [
+              "a[aria-label=\"Total users: 8\"] > .mt-0\\.5.text-muted-foreground\\/70.text-\\[11px\\]"
+            ],
+            [
+              "a[aria-label=\"Open requests: 1\"] > .mt-0\\.5.text-muted-foreground\\/70.text-\\[11px\\]"
+            ],
+            [
+              "a[aria-label=\"Overdue replies: 0\"] > .mt-0\\.5.text-muted-foreground\\/70.text-\\[11px\\]"
+            ],
+            [
+              ".hover\\:-translate-y-0\\.5.hover\\:shadow-lg.hover\\:shadow-navy\\/10:nth-child(7) > .mt-0\\.5.text-muted-foreground\\/70.text-\\[11px\\]"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "name": "editor",
+      "route": "/en/admin/pages/cmuspeugu0000g943dx4yq0hk/edit",
+      "actor": "admin",
+      "width": 1280,
+      "status": 200,
+      "errors": [],
+      "failedRequests": [
+        {
+          "url": "/en/admin/outbox",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/admin/audit",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/admin/settings",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/admin/menus",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/admin/media",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/admin/pages",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/contact",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/contact",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/admin/pages/cmuspeugu0000g943dx4yq0hk/preview",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/contact",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/contact",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/admin/pages/cmuspeugu0000g943dx4yq0hk/preview",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/admin/pages",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/admin/notifications",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/auth/logout",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/admin/outbox",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/admin/pages/cmuspeugu0000g943dx4yq0hk/edit",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/admin/audit",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/admin/settings",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/admin/menus",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/admin/media",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/admin/requests",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/admin/users",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/admin",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/admin/inquiries",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/admin/pages/cmuspeugu0000g943dx4yq0hk/preview",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/contact",
+          "error": "net::ERR_ABORTED"
+        }
+      ],
+      "lang": "en",
+      "dir": "ltr",
+      "scrollWidth": 1280,
+      "ttfbMs": 24.200000001117587,
+      "jsEncodedBytes": 477375,
+      "jsDecodedBytes": 1673160,
+      "axe": [
+        {
+          "id": "aria-valid-attr-value",
+          "impact": "critical",
+          "targets": [
+            [
+              "#radix-_r_0_-trigger-en"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "name": "support",
+      "route": "/en/admin/requests",
+      "actor": "support",
+      "width": 1280,
+      "status": 200,
+      "errors": [],
+      "failedRequests": [
+        {
+          "url": "/ar/admin/requests",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/admin/notifications",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/admin",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/admin/requests",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/admin/notifications",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/auth/logout",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/admin/inquiries",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/admin/requests/migrationrequest",
+          "error": "net::ERR_ABORTED"
+        }
+      ],
+      "lang": "en",
+      "dir": "ltr",
+      "scrollWidth": 1280,
+      "ttfbMs": 18.300000000745058,
+      "jsEncodedBytes": 278357,
+      "jsDecodedBytes": 924210,
+      "axe": []
+    },
+    {
+      "name": "content-editor",
+      "route": "/en/admin",
+      "actor": "editor",
+      "width": 1280,
+      "status": 200,
+      "errors": [],
+      "failedRequests": [
+        {
+          "url": "/en/admin/notifications",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/ar/admin",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/auth/logout",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/admin/pages",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/admin/menus",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/admin/media",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/auth/logout",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/admin/pages",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/admin",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/admin/menus",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "url": "/en/admin/media",
+          "error": "net::ERR_ABORTED"
+        }
+      ],
+      "lang": "en",
+      "dir": "ltr",
+      "scrollWidth": 1280,
+      "ttfbMs": 16.799999998882413,
+      "jsEncodedBytes": 228407,
+      "jsDecodedBytes": 759780,
+      "axe": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "targets": [
+            [
+              ".mt-0\\.5"
+            ]
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,15 +1,13 @@
 // Synthetic baseline only. Never accepts an external database or production path.
 import { createRequire } from 'node:module';
-import { fileURLToPath } from 'node:url';
-const __dirname = fileURLToPath(new URL('.', import.meta.url));
-import { resolve, join } from 'node:path';
+import { join } from 'node:path';
 import { mkdirSync, writeFileSync } from 'node:fs';
-const root = resolve(__dirname, '../..');
-const local = createRequire(join(root, '.migration/reference/Website/package.json'));
+import { referencePath, baselinePath, referenceDatabase } from './reference-paths.mjs';
+const local = createRequire(join(referencePath, 'package.json'));
 const { PrismaClient } = local('@prisma/client');
 const bcrypt = local('bcryptjs');
-const data = join(root, '.migration/baseline/data');
-const db = new PrismaClient({ datasourceUrl: `file:${data}/reference.db` });
+const data = join(baselinePath, 'data');
+const db = new PrismaClient({ datasourceUrl: `file:${referenceDatabase}` });
 const password = 'Synthetic-Migration-4829';
 async function main() {
   const passwordHash = await bcrypt.hash(password, 12);
@@ -27,7 +25,7 @@ async function main() {
   writeFileSync(join(data, 'uploads/synthetic.pdf'), bytes);
   await db.attachment.upsert({ where: { id: 'migrationattachment' }, update: {}, create: { id: 'migrationattachment', filename: 'synthetic.pdf', storedName: 'synthetic.pdf', mimeType: 'application/pdf', size: bytes.length, uploaderId: 'owner', requestId: 'migrationrequest' } });
   const page = await db.page.findFirstOrThrow({ where: { slug: '' } });
-  writeFileSync(join(root, '.migration/baseline/fixture.json'), JSON.stringify({ users: Object.keys(roles), pageId: page.id, requestId: 'migrationrequest', inquiryId: 'migrationinquiry', attachmentId: 'migrationattachment' }, null, 2));
+  writeFileSync(join(baselinePath, 'fixture.json'), JSON.stringify({ users: Object.keys(roles), pageId: page.id, requestId: 'migrationrequest', inquiryId: 'migrationinquiry', attachmentId: 'migrationattachment' }, null, 2));
   console.log('Synthetic fixture ready; no production database read.');
 }
 main().finally(() => db.$disconnect());
