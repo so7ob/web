@@ -1,20 +1,44 @@
 "use client";
-/** Website fc4a959 tree rendering, adapted to shared contracts and existing leaf components. */
+
+/**
+ * عارض شجرة المحتوى — يرسم مغلف v1 (أبناء الجذر) مع دعم الحاويات المتداخلة:
+ * section (قسم بعرض الموقع) → container (صندوق عام) → row (شبكة أعمدة) →
+ * column (كومة رأسية) → كتل ورقية.
+ *
+ * الأنماط المدركة للأجهزة تأتي من nodeStyleClasses (قاعدة + تجاوزات
+ * mobile/tablet/desktop بأصناف md:/lg:) فتتطابق المعاينة مع العرض الفعلي.
+ *
+ * أوضاع العرض (RenderModeContext):
+ * - live: الموقع العام، تفاعل حقيقي.
+ * - edit: لوحة الرسم — الغلاف الشفاف يمنع التفاعل.
+ * - test: اختبار تفاعل صريح — النماذج تُحاكى بلا طلبات حقيقية.
+ *
+ * الكتلة الورقية داخل حاوية تُرسم عاريًا عبر NestedBlockContext — الحاوية
+ * تملك التباعد والخلفية فلا تتضاعف الحشوة.
+ */
+import { useContext, useMemo, type ReactNode } from "react";
 import type { Locale } from "@/lib/i18n";
-import { isContainerType, nodeStyleClasses, nodeAlignClasses, type ContentNode, type ContainerType, type Block } from "@so7ob/contracts";
-import { LeafContent } from "./page-renderer";
-interface TreePageRendererProps {
+import type { ContentNode, ContainerType } from "@so7ob/contracts";
+import { isContainerType } from "@so7ob/contracts";
+import { nodeStyleClasses, nodeAlignClasses } from "@so7ob/contracts";
+import { NestedBlockContext, RenderModeContext, type RenderMode } from "./nested-context";
+import { InlineEditNodeContext, InlineEditSessionContext } from "./inline-edit-context";
+
+import { LeafContent as ExistingLeafContent } from "./page-renderer";
+import type { Block } from "@so7ob/contracts";
+interface PageRendererProps {
   nodes: ContentNode[];
   locale: Locale;
+  mode?: RenderMode;
 }
 
-export function TreePageRenderer({ nodes, locale }: TreePageRendererProps) {
+export function TreePageRenderer({ nodes, locale, mode = "live" }: PageRendererProps) {
   return (
-    <>
+    <RenderModeContext.Provider value={mode}>
       {nodes.map((node) => (
         <NodeView key={node.id} node={node} locale={locale} nested={false} />
       ))}
-    </>
+    </RenderModeContext.Provider>
   );
 }
 
@@ -57,7 +81,7 @@ function NodeView({ node, locale, nested }: { node: ContentNode; locale: Locale;
     );
   }
 
-  const content = <LeafContent block={{ ...node, type: node.type as Block["type"], props: node.props ?? {}, style: undefined }} locale={locale} />;
+  const content = <BlockContent node={node} locale={locale} />;
 
   if (nested) return content;
 
@@ -178,3 +202,23 @@ function ContainerView({ node, id, visClass, locale }: { node: ContentNode; id?:
   );
 }
 
+// ─── عرض الكتل الورقية ───
+
+function BlockContent({ node, locale }: { node: ContentNode; locale: Locale }) {
+  const props = (node.props ?? {}) as Record<string, unknown>;
+  // نطاق التحرير المباشر — قيمة غير null فقط حين تكون هذه العقدة في جلسة تحرير
+  const session = useContext(InlineEditSessionContext);
+  const nodeEdit = useMemo(
+    () =>
+      session && session.nodeId === node.id
+        ? { onChange: session.onChange, onEnd: session.onEnd }
+        : null,
+    [session, node.id]
+  );
+  const body = renderLeaf(node.type, props, locale);
+  return <InlineEditNodeContext.Provider value={nodeEdit}>{body}</InlineEditNodeContext.Provider>;
+}
+
+function renderLeaf(type: string, props: Record<string, unknown>, locale: Locale): ReactNode {
+ return <ExistingLeafContent block={{ id: "editor-leaf", type: type as Block["type"], props }} locale={locale} />;
+}

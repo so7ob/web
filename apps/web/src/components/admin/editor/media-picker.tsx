@@ -7,7 +7,7 @@
  */
 import { useCallback, useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
-import { ImagePlus, Loader2, Upload } from "lucide-react";
+import { ImagePlus, Loader2, Search, Upload } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -22,13 +22,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { getPortalContent } from "@/content/portal";
 import { can } from "@/lib/auth/permissions";
 import type { Locale } from "@/lib/i18n";
-import {
-  apiErrorMessage,
-  apiGet,
-  apiSend,
-  apiUpload,
-  formatBytes,
-} from "@/components/admin/helpers";
+import { apiErrorMessage, apiGet, apiSend, apiUpload, formatBytes } from "@/components/admin/helpers";
 import { ApiError } from "@/components/admin/helpers";
 import { AdminPagination } from "@/components/admin/pagination";
 import type { Me } from "@/components/admin/types";
@@ -44,13 +38,7 @@ interface MediaPickerProps {
 
 const PAGE_SIZE_FALLBACK = 24;
 
-export function MediaPicker({
-  open,
-  onOpenChange,
-  me,
-  locale,
-  onSelect,
-}: MediaPickerProps) {
+export function MediaPicker({ open, onOpenChange, me, locale, onSelect }: MediaPickerProps) {
   const t = getPortalContent(locale);
   const tm = t.admin.media;
   const te = t.admin.editor;
@@ -59,6 +47,8 @@ export function MediaPicker({
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [page, setPage] = useState(1);
+  const [searchInput, setSearchInput] = useState("");
+  const [search, setSearch] = useState("");
   const [uploading, setUploading] = useState(false);
   const fileRef = useRef<HTMLInputElement>(null);
   const [altDraft, setAltDraft] = useState<Record<string, string>>({});
@@ -66,23 +56,31 @@ export function MediaPicker({
   const canUpload = can(me, "media.upload");
   const canManage = can(me, "media.manage");
 
+  // بحث بترسيب — لا طلب لكل ضربة مفتاح
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setSearch(searchInput.trim());
+      setPage(1);
+    }, 300);
+    return () => clearTimeout(timer);
+  }, [searchInput]);
+
   const load = useCallback(
     async (signal: AbortSignal) => {
       setLoading(true);
       setError(null);
       try {
-        const res = await apiGet<MediaListResponse>(
-          `/api/admin/media?page=${page}`,
-        );
+        const qs = new URLSearchParams({ page: String(page) });
+        if (search) qs.set("search", search);
+        const res = await apiGet<MediaListResponse>(`/api/admin/media?${qs.toString()}`);
         if (!signal.aborted) setData(res);
       } catch (err) {
-        if (!signal.aborted && err instanceof ApiError)
-          setError(apiErrorMessage(err, t.auth.errors));
+        if (!signal.aborted && err instanceof ApiError) setError(apiErrorMessage(err, t.auth.errors));
       } finally {
         if (!signal.aborted) setLoading(false);
       }
     },
-    [page, t.auth.errors],
+    [page, search, t.auth.errors]
   );
 
   useEffect(() => {
@@ -92,9 +90,7 @@ export function MediaPicker({
     return () => controller.abort();
   }, [open, load]);
 
-  const totalPages = data
-    ? Math.max(1, Math.ceil(data.total / (data.pageSize || PAGE_SIZE_FALLBACK)))
-    : 1;
+  const totalPages = data ? Math.max(1, Math.ceil(data.total / (data.pageSize || PAGE_SIZE_FALLBACK))) : 1;
 
   const pick = (url: string) => {
     onSelect(url);
@@ -109,29 +105,18 @@ export function MediaPicker({
       const form = new FormData();
       form.set("file", file);
       form.set("altText", "");
-      const res = await apiUpload<MediaUploadResponse>(
-        "/api/admin/media",
-        form,
-      );
+      const res = await apiUpload<MediaUploadResponse>("/api/admin/media", form);
       toast.success(tm.uploadedOk);
       if (fileRef.current) fileRef.current.value = "";
       // حدّث الشبكة ثم اختر الملف المرفوع فورًا
-      const refreshed = await apiGet<MediaListResponse>(
-        "/api/admin/media?page=1",
-      );
+      const refreshed = await apiGet<MediaListResponse>("/api/admin/media?page=1");
       setData(refreshed);
       setPage(1);
       pick(res.media.url);
     } catch (err) {
-      if (
-        err instanceof ApiError &&
-        (err.code === "too_large" || err.code === "file_too_large")
-      ) {
+      if (err instanceof ApiError && (err.code === "too_large" || err.code === "file_too_large")) {
         toast.error(t.account.detail.fileTooLarge);
-      } else if (
-        err instanceof ApiError &&
-        (err.code === "type_not_allowed" || err.code === "extension_mismatch")
-      ) {
+      } else if (err instanceof ApiError && (err.code === "type_not_allowed" || err.code === "extension_mismatch")) {
         toast.error(t.account.detail.fileTypeInvalid);
       } else {
         toast.error(apiErrorMessage(err, t.auth.errors));
@@ -147,14 +132,7 @@ export function MediaPicker({
     try {
       await apiSend(`/api/admin/media/${id}`, "PATCH", { altText: value });
       setData((prev) =>
-        prev
-          ? {
-              ...prev,
-              media: prev.media.map((m) =>
-                m.id === id ? { ...m, altText: value || null } : m,
-              ),
-            }
-          : prev,
+        prev ? { ...prev, media: prev.media.map((m) => (m.id === id ? { ...m, altText: value || null } : m)) } : prev
       );
       toast.success(t.admin.users.saved);
     } catch (err) {
@@ -166,9 +144,7 @@ export function MediaPicker({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-h-[85vh] overflow-y-auto rounded-2xl sm:max-w-3xl">
         <DialogHeader>
-          <DialogTitle className="text-lg font-bold text-navy">
-            {te.mediaLibrary}
-          </DialogTitle>
+          <DialogTitle className="text-lg font-bold text-navy">{te.mediaLibrary}</DialogTitle>
           <DialogDescription>{tm.subtitle}</DialogDescription>
         </DialogHeader>
 
@@ -185,20 +161,24 @@ export function MediaPicker({
                 className="min-h-11 cursor-pointer file:me-2 file:cursor-pointer file:rounded-full file:border-0 file:bg-accent file:px-3 file:py-1.5 file:text-xs file:font-medium file:text-brand-strong"
               />
             </div>
-            <Button
-              onClick={() => void upload()}
-              disabled={uploading}
-              className="min-h-11 rounded-full"
-            >
-              {uploading ? (
-                <Loader2 className="size-4 animate-spin" aria-hidden="true" />
-              ) : (
-                <Upload className="size-4" aria-hidden="true" />
-              )}
+            <Button onClick={() => void upload()} disabled={uploading} className="min-h-11 rounded-full">
+              {uploading ? <Loader2 className="size-4 animate-spin" aria-hidden="true" /> : <Upload className="size-4" aria-hidden="true" />}
               {tm.upload}
             </Button>
           </div>
         )}
+
+        {/* بحث داخل المنتقي — نفس واجهة المكتبة */}
+        <div className="relative">
+          <Search className="pointer-events-none absolute start-3.5 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" aria-hidden="true" />
+          <Input
+            value={searchInput}
+            onChange={(e) => setSearchInput(e.target.value)}
+            placeholder={tm.searchPlaceholder}
+            aria-label={tm.search}
+            className="min-h-10 rounded-full ps-10 text-sm focus-visible:ring-2 focus-visible:ring-ring/40"
+          />
+        </div>
 
         {loading && !data && (
           <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
@@ -213,7 +193,7 @@ export function MediaPicker({
         {data && data.media.length === 0 && !loading && (
           <div className="flex flex-col items-center gap-2 py-10 text-center text-muted-foreground">
             <ImagePlus className="size-8" aria-hidden="true" />
-            <p className="text-sm">{tm.empty}</p>
+            <p className="text-sm">{search ? tm.noResults : tm.empty}</p>
           </div>
         )}
 
@@ -221,10 +201,7 @@ export function MediaPicker({
           <>
             <ul className="grid grid-cols-2 gap-3 sm:grid-cols-3">
               {data.media.map((item) => (
-                <li
-                  key={item.id}
-                  className="overflow-hidden rounded-xl border border-border bg-white transition-all hover:border-brand/40 hover:shadow-sm"
-                >
+                <li key={item.id} className="overflow-hidden rounded-xl border border-border bg-white transition-all hover:border-brand/40 hover:shadow-sm">
                   <button
                     type="button"
                     onClick={() => pick(item.url)}
@@ -250,25 +227,14 @@ export function MediaPicker({
                     />
                   </button>
                   <div className="space-y-1.5 p-2.5">
-                    <p
-                      className="truncate font-mono text-xs font-medium text-navy"
-                      dir="ltr"
-                      title={item.filename}
-                    >
+                    <p className="truncate font-mono text-xs font-medium text-navy" dir="ltr" title={item.filename}>
                       {item.filename}
                     </p>
-                    <p className="text-[11px] tabular-nums text-muted-foreground">
-                      {formatBytes(item.size)}
-                    </p>
+                    <p className="text-[11px] tabular-nums text-muted-foreground">{formatBytes(item.size)}</p>
                     {canManage && (
                       <Input
                         value={altDraft[item.id] ?? item.altText ?? ""}
-                        onChange={(e) =>
-                          setAltDraft((prev) => ({
-                            ...prev,
-                            [item.id]: e.target.value,
-                          }))
-                        }
+                        onChange={(e) => setAltDraft((prev) => ({ ...prev, [item.id]: e.target.value }))}
                         onBlur={() => void saveAlt(item.id)}
                         placeholder={tm.alt}
                         className="min-h-10 text-xs focus-visible:ring-2 focus-visible:ring-ring/40"
@@ -320,14 +286,7 @@ export function MediaField({
         dir="ltr"
         className="font-mono text-xs focus-visible:ring-2 focus-visible:ring-ring/40"
       />
-      <Button
-        type="button"
-        variant="outline"
-        size="icon"
-        className="size-10 shrink-0"
-        onClick={onOpenPicker}
-        aria-label={te.mediaLibrary}
-      >
+      <Button type="button" variant="outline" size="icon" className="size-10 shrink-0" onClick={onOpenPicker} aria-label={te.mediaLibrary}>
         <ImagePlus className="size-4" aria-hidden="true" />
       </Button>
     </div>

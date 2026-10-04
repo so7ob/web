@@ -50,3 +50,5 @@ The source v2 schema and both-generation data transfer implementation are record
 - [خدمات قوالب الصفحات وعقودها واختباراتها](page-templates.md).
 
 - [إعدادات المسودة والنشر والجدولة](cms-publication.md).
+
+- [محرر شجرة المحتوى ورحلاته واستثناءات السلامة](tree-editor.md).

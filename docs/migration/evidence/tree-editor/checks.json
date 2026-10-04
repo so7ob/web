@@ -1,0 +1,66 @@
+{
+  "sourceSHA": "fc4a959e87e7c3750a0546f9d4fa10e31ac3b63c",
+  "stackedOn": {
+    "pr": 26,
+    "sha": "b7010f4ab3b67031729285ef19636583ce377183"
+  },
+  "syntheticOnly": true,
+  "checks": {
+    "lint": "passed",
+    "typecheck": "passed",
+    "unitIntegration": {
+      "passed": 310,
+      "files": 31,
+      "database": "isolated MariaDB loopback:3307",
+      "log": ".migration/editor-refresh/tests-delivery.log"
+    },
+    "build": "passed",
+    "focusedBrowser": {
+      "passed": 12,
+      "retries": 0
+    },
+    "fullBrowser": {
+      "passed": 86,
+      "retries": 0,
+      "log": ".migration/editor-refresh/e2e-recovered.log",
+      "interruptedEarlierRun": "database-interruption.json"
+    },
+    "infra": "passed",
+    "diff": "passed"
+  },
+  "visual": {
+    "threshold": 0.005,
+    "initialPaddingAttempt": {
+      "status": "failed",
+      "evidence": "summary.json",
+      "mobileArabicFraction": 0.015339901477832513,
+      "mobileEnglishFraction": 0.01620361247947455
+    },
+    "final": {
+      "status": "passed automated threshold",
+      "evidence": "final/summary.json",
+      "desktopMaxFraction": 8.938697076612904e-05,
+      "mobileMaxFraction": 0.0005451559934318555,
+      "targetAxeViolations": 0,
+      "pageAndNetworkErrors": 0
+    },
+    "humanReview": "pending"
+  },
+  "initialFailures": [
+    "Mobile inline session lost focus when the properties sheet reopened; product fixed and cancel/persist journeys pass.",
+    "Tab controls referenced nonexistent panels; full axe found defects; linked actual panels.",
+    "Nested section selection target too small on mobile; padding adjusted, resulting visual difference remains above budget.",
+    "Mobile duplicate test clicked an unselected block hidden toolbar; explicit real selection corrected the test. No force clicks/retries.",
+    "First capture tool assumed test fixture users survived teardown; corrected to own and clean its synthetic fixture.",
+    "Delayed PATCH showed publication used first snapshot while newer edits existed, failing both viewports; bounded save drain fixes it; both regressions passed.",
+    "Hit-area journey exposed overlapping ancestor toolbars and Escape clearing selection after closing a dialog. Active toolbar is limited to selected node; Escape respects prevented events and original dialog path. 12 focused cases pass."
+  ],
+  "limits": [
+    "No all-properties acceptance for every block",
+    "No complete tracking feature",
+    "No full performance/operational restore acceptance",
+    "No production data/migration/deployment",
+    "Open stacked PRs not merged"
+  ],
+  "sourceVerifiedAt": "2026-10-04T01:57:20Z"
+}
