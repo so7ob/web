@@ -48,3 +48,5 @@ The source v2 schema and both-generation data transfer implementation are record
 
 - دمج المستخدم #23 و#24 إلى develop عند `68b92209e8fe134451ea0d93d841183d01543239` في 2026-10-04 (Asia/Aden). main ما زال عند إصدار v1.0.0 السابق؛ لا إصدار جديد في هذا الجزء.
 - [خدمات قوالب الصفحات وعقودها واختباراتها](page-templates.md).
+
+- [إعدادات المسودة والنشر والجدولة](cms-publication.md).

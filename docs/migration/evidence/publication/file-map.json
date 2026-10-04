@@ -1,0 +1,41 @@
+{
+  "sourceSHA": "fc4a959e87e7c3750a0546f9d4fa10e31ac3b63c",
+  "files": [
+    {
+      "source": "src/lib/pages/publish-core.ts",
+      "sha256": "ca2a4b1f9226355ab1a1272e4768c14681c5eb713aa767c5921aee3e3b6768a4",
+      "destination": "packages/server/src/admin/publication.ts; apps/api/src/admin/pages.controller.ts; apps/worker/src/main.ts",
+      "status": "adapted; no Prisma or Next runtime; see cms-publication.md for exceptions"
+    },
+    {
+      "source": "src/lib/pages/schedule.ts",
+      "sha256": "3c433cccdce90d5faa33fcf47f976df0f200d06893c01ea413bd1a2c43a3df95",
+      "destination": "packages/server/src/admin/publication.ts; apps/api/src/admin/pages.controller.ts; apps/worker/src/main.ts",
+      "status": "adapted; no Prisma or Next runtime; see cms-publication.md for exceptions"
+    },
+    {
+      "source": "src/app/api/admin/pages/[id]/discard/route.ts",
+      "sha256": "02bb9d140ae39c79c3bc80fcef058d91113a24dd1efaa5d76e8f64244d00af26",
+      "destination": "packages/server/src/admin/publication.ts; apps/api/src/admin/pages.controller.ts; apps/worker/src/main.ts",
+      "status": "adapted; no Prisma or Next runtime; see cms-publication.md for exceptions"
+    },
+    {
+      "source": "src/app/api/admin/pages/[id]/schedule/route.ts",
+      "sha256": "2a0b4e013c6638a67c276fba6abc29d4fe92f5a2b6a2117c96cee4d6ea79aad4",
+      "destination": "packages/server/src/admin/publication.ts; apps/api/src/admin/pages.controller.ts; apps/worker/src/main.ts",
+      "status": "adapted; no Prisma or Next runtime; see cms-publication.md for exceptions"
+    },
+    {
+      "source": "src/app/api/admin/pages/[id]/publish/route.ts",
+      "sha256": "71edd838cef454d24a77861afe2d35f0ef296d030acd707b440c911eaf659ccb",
+      "destination": "packages/server/src/admin/publication.ts; apps/api/src/admin/pages.controller.ts; apps/worker/src/main.ts",
+      "status": "adapted; no Prisma or Next runtime; see cms-publication.md for exceptions"
+    },
+    {
+      "source": "src/app/api/admin/pages/[id]/versions/[version]/restore/route.ts",
+      "sha256": "88dcde231adc9b414101c92556789bae456dae83099b024c52e4c3aa0894875f",
+      "destination": "packages/server/src/admin/publication.ts; apps/api/src/admin/pages.controller.ts; apps/worker/src/main.ts",
+      "status": "adapted; no Prisma or Next runtime; see cms-publication.md for exceptions"
+    }
+  ]
+}

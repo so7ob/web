@@ -1,0 +1,42 @@
+
+ RUN  v5.0.3 /root/So7ob/web
+
+ ❯ packages/contracts/src/page-settings-null.test.ts (1 test | 1 failed) 11ms
+   × an explicit null in a saved snapshot clears SEO rather than resurrecting legacy public text 9ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  packages/contracts/src/page-settings-null.test.ts > an explicit null in a saved snapshot clears SEO rather than resurrecting legacy public text
+AssertionError: expected { slug: 'page', …(9) } to match object { seoTitleAr: null, …(3) }
+(6 matching properties omitted from actual)
+
+- Expected
++ Received
+
+  {
+-   "seoDescAr": null,
+-   "seoDescEn": null,
+-   "seoTitleAr": null,
+-   "seoTitleEn": null,
++   "seoDescAr": "قديم",
++   "seoDescEn": "Old",
++   "seoTitleAr": "قديم",
++   "seoTitleEn": "Old",
+  }
+
+ ❯ packages/contracts/src/page-settings-null.test.ts:6:45
+      4|  const legacy={slug:'page',seoTitleAr:'قديم',seoTitleEn:'Old',seoDescA…
+      5|  const snapshot=serializePageSettings(normalizePageSettings({...legacy…
+      6|  expect(parsePageSettings(snapshot,legacy)).toMatchObject({seoTitleAr:…
+       |                                             ^
+      7|  expect(parsePageSettings('{}',legacy)).toMatchObject({seoTitleAr:'قدي…
+      8| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed (1)
+   Start at  03:43:18
+   Duration  406ms (setup 69%, transform 22%, tests 4%, worker 4%, import 2%)
+
