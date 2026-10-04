@@ -1,0 +1,78 @@
+[WebServer] (node:305084) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:305093) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 2 tests using 1 worker
+
+(node:305397) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  1 [desktop] › tests/e2e/editor-operations.spec.ts:75:1 › publication drains edits made while its save request is in flight (2.7s)
+(node:305474) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  2 [mobile] › tests/e2e/editor-operations.spec.ts:75:1 › publication drains edits made while its save request is in flight (2.4s)
+
+
+  1) [desktop] › tests/e2e/editor-operations.spec.ts:75:1 › publication drains edits made while its save request is in flight
+
+    Error: expect(received).toContain(expected) // indexOf
+
+    Expected substring: "Edited during save"
+    Received string:    "{\"schemaVersion\":1,\"blocks\":[{\"id\":\"heading\",\"type\":\"heading\",\"props\":{\"text\":\"First save\",\"level\":2,\"align\":\"start\"}}]}"
+
+      93 |   await expect.poll(async()=>(await detail()).status).toBe('published');
+      94 |   const row=(await db.query('SELECT publishedBlocksEn,draftBlocksEn,publishedRevision,draftRevision FROM Page WHERE id=?',[id]))[0];
+    > 95 |   expect(row.publishedBlocksEn).toContain('Edited during save');expect(row.publishedBlocksEn).toBe(row.draftBlocksEn);expect(row.publishedRevision).toBe(row.draftRevision);
+         |                                 ^
+      96 |  }finally{release();if(id){await db.query('DELETE FROM PageVersion WHERE pageId=?',[id]);await db.query('DELETE FROM Page WHERE id=?',[id]);await db.query('DELETE FROM AuditLog WHERE entityId=?',[id]);}await db.destroy();}
+      97 | });
+      98 |
+        at /root/So7ob/web/tests/e2e/editor-operations.spec.ts:95:33
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/editor-operations-publicat-e1484-s-save-request-is-in-flight-desktop/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/editor-operations-publicat-e1484-s-save-request-is-in-flight-desktop/error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/editor-operations-publicat-e1484-s-save-request-is-in-flight-desktop/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/editor-operations-publicat-e1484-s-save-request-is-in-flight-desktop/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  2) [mobile] › tests/e2e/editor-operations.spec.ts:75:1 › publication drains edits made while its save request is in flight
+
+    Error: expect(received).toContain(expected) // indexOf
+
+    Expected substring: "Edited during save"
+    Received string:    "{\"schemaVersion\":1,\"blocks\":[{\"id\":\"heading\",\"type\":\"heading\",\"props\":{\"text\":\"First save\",\"level\":2,\"align\":\"start\"}}]}"
+
+      93 |   await expect.poll(async()=>(await detail()).status).toBe('published');
+      94 |   const row=(await db.query('SELECT publishedBlocksEn,draftBlocksEn,publishedRevision,draftRevision FROM Page WHERE id=?',[id]))[0];
+    > 95 |   expect(row.publishedBlocksEn).toContain('Edited during save');expect(row.publishedBlocksEn).toBe(row.draftBlocksEn);expect(row.publishedRevision).toBe(row.draftRevision);
+         |                                 ^
+      96 |  }finally{release();if(id){await db.query('DELETE FROM PageVersion WHERE pageId=?',[id]);await db.query('DELETE FROM Page WHERE id=?',[id]);await db.query('DELETE FROM AuditLog WHERE entityId=?',[id]);}await db.destroy();}
+      97 | });
+      98 |
+        at /root/So7ob/web/tests/e2e/editor-operations.spec.ts:95:33
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/editor-operations-publicat-e1484-s-save-request-is-in-flight-mobile/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/editor-operations-publicat-e1484-s-save-request-is-in-flight-mobile/error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/editor-operations-publicat-e1484-s-save-request-is-in-flight-mobile/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/editor-operations-publicat-e1484-s-save-request-is-in-flight-mobile/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  2 failed
+    [desktop] › tests/e2e/editor-operations.spec.ts:75:1 › publication drains edits made while its save request is in flight
+    [mobile] › tests/e2e/editor-operations.spec.ts:75:1 › publication drains edits made while its save request is in flight

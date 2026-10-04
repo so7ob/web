@@ -1,0 +1,234 @@
+{
+  "sourceSHA": "fc4a959e87e7c3750a0546f9d4fa10e31ac3b63c",
+  "files": [
+    {
+      "source": "src/components/admin/editor/layer-tree.tsx",
+      "sourceSHA256": "1d3217e5987e5e63eff32db05413cdf38eabb10dde8407f5e9231c7e57bba24f",
+      "destination": "apps/web/src/components/admin/editor/layer-tree.tsx",
+      "destinationSHA256": "0477c7315cea79664815ba0f4dae834ac67345048cd06c006e627fd4312a6b6d"
+    },
+    {
+      "source": "src/components/admin/editor/template-preview.tsx",
+      "sourceSHA256": "3db976abeba23d25c03b4cc7fd6622d446f32c3c8cd8d876f951c7a9bdb2c7c3",
+      "destination": "apps/web/src/components/admin/editor/template-preview.tsx",
+      "destinationSHA256": "3db976abeba23d25c03b4cc7fd6622d446f32c3c8cd8d876f951c7a9bdb2c7c3"
+    },
+    {
+      "source": "src/components/admin/editor/properties-panel.tsx",
+      "sourceSHA256": "4867846762e61b7f524b60ac4b93ab81f445157ced0132d82d4b42e7f9480ccc",
+      "destination": "apps/web/src/components/admin/editor/properties-panel.tsx",
+      "destinationSHA256": "862997558e4802d892914ce7e9998a81be88562abebd301a2342e4882cc03058"
+    },
+    {
+      "source": "src/components/admin/editor/versions-dialog.tsx",
+      "sourceSHA256": "3318816b15828e9793cc732da2baa372679e567f923bf19c787b7a135d8ffd7f",
+      "destination": "apps/web/src/components/admin/editor/versions-dialog.tsx",
+      "destinationSHA256": "f7e33fa3d500da48df7ad0c5d92bdc35b3e2350ffbc47919e8fb118be65608d4"
+    },
+    {
+      "source": "src/components/admin/editor/prop-fields.ts",
+      "sourceSHA256": "0b6534b677018ae377abc06b236fb5585f4ea4a7fa0f2f188a7aa8155b1308ab",
+      "destination": "apps/web/src/components/admin/editor/prop-fields.ts",
+      "destinationSHA256": "87c12f4a9be4b2e3b9fd687557fd124ea4d95709499d06aafe19f00131d71e40"
+    },
+    {
+      "source": "src/components/admin/editor/media-picker.tsx",
+      "sourceSHA256": "b240cb61edaa726350683b7f5740e24a752521ad288a11bea3acf73a272cf173",
+      "destination": "apps/web/src/components/admin/editor/media-picker.tsx",
+      "destinationSHA256": "b240cb61edaa726350683b7f5740e24a752521ad288a11bea3acf73a272cf173"
+    },
+    {
+      "source": "src/components/admin/editor/page-editor.tsx",
+      "sourceSHA256": "47c56b3b297dbb6aa05183420bbe38b7aa678adfc212efcbfd42feea8a1fc4c3",
+      "destination": "apps/web/src/components/admin/editor/page-editor.tsx",
+      "destinationSHA256": "1803f03fecc184f8bce69782383bd34f3f1541976f8402f1a8ddec035dbfe44e"
+    },
+    {
+      "source": "src/components/admin/editor/block-palette.tsx",
+      "sourceSHA256": "825412d5b9d08549a12b0c9cf48a4a0091d6969e4ca28a6bc02212f1af81b91f",
+      "destination": "apps/web/src/components/admin/editor/block-palette.tsx",
+      "destinationSHA256": "72f2c19933a474c34c9b7dbf65fa546f71dd537a03d075a248bc5f3d7b22838a"
+    },
+    {
+      "source": "src/components/admin/editor/block-library.tsx",
+      "sourceSHA256": "e485c777b3e01477271db4d3415714153ce7e2bc768a19b7146a2bed02da1882",
+      "destination": "apps/web/src/components/admin/editor/block-library.tsx",
+      "destinationSHA256": "1309ae0ecb975783648c029c8e100495e261427170e607cbc3868b336f530b00"
+    },
+    {
+      "source": "src/components/admin/editor/props-form.tsx",
+      "sourceSHA256": "0ba325160ed509e9050554b978df7508dc4bdb3c1bcf2ece02222afd4b497c41",
+      "destination": "apps/web/src/components/admin/editor/props-form.tsx",
+      "destinationSHA256": "0ba325160ed509e9050554b978df7508dc4bdb3c1bcf2ece02222afd4b497c41"
+    },
+    {
+      "source": "src/components/admin/editor/templates-dialog.tsx",
+      "sourceSHA256": "5d18d8da4b50ab2f3d0a18d25ffa3363b4b3edb335727ea31c2de5832f290e3d",
+      "destination": "apps/web/src/components/admin/editor/templates-dialog.tsx",
+      "destinationSHA256": "33c3dcbdd7968784c6c2c6e5a7d3551960085b6850f1a5e25cf659134518b4ba"
+    },
+    {
+      "source": "src/components/admin/editor/types.ts",
+      "sourceSHA256": "d22bf708a8c9acf80b3bbba9bf818de6111968f82fcff4a352405e84c357be9c",
+      "destination": "apps/web/src/components/admin/editor/types.ts",
+      "destinationSHA256": "a862f850f3e3c7fc0953dab5d8da41bbfc58651bf2de75bd670a9981f12c8c55"
+    },
+    {
+      "source": "src/components/admin/editor/schedule-dialog.tsx",
+      "sourceSHA256": "7457ff879269fe69a6fbb98d24e935c8cbbe4965fe49154ded23246820e6c021",
+      "destination": "apps/web/src/components/admin/editor/schedule-dialog.tsx",
+      "destinationSHA256": "7457ff879269fe69a6fbb98d24e935c8cbbe4965fe49154ded23246820e6c021"
+    },
+    {
+      "source": "src/components/admin/editor/editor-guide.tsx",
+      "sourceSHA256": "ac2acbf01303594f0600b5a8380bc2a1564c458c81ea00038f18602de8f5ce7d",
+      "destination": "apps/web/src/components/admin/editor/editor-guide.tsx",
+      "destinationSHA256": "ac2acbf01303594f0600b5a8380bc2a1564c458c81ea00038f18602de8f5ce7d"
+    },
+    {
+      "source": "src/components/admin/editor/editor-canvas.tsx",
+      "sourceSHA256": "aec078d03fdf8b9698162a0294a7804da67c5fbdf600011de28b94b16a3d5248",
+      "destination": "apps/web/src/components/admin/editor/editor-canvas.tsx",
+      "destinationSHA256": "5d622c6ab1fd17e8dba42f1028ba30a66bddb04ef387c957172f43d1ce48223f"
+    },
+    {
+      "source": "src/components/admin/editor/page-settings-dialog.tsx",
+      "sourceSHA256": "6c79c06f4c836db7b529b60860583702acded38d4cdb78f114c2eab6aceec55c",
+      "destination": "apps/web/src/components/admin/editor/page-settings-dialog.tsx",
+      "destinationSHA256": "9f789c3257e34e0863c54f554cd532e44255dea69d21aea272ddba4129fb73a0"
+    },
+    {
+      "source": "src/components/admin/editor/clipboard-menu.tsx",
+      "sourceSHA256": "b5e0972262dcb9b82a22b33d8647cbfa03ab166ae744f9f93236b2eaccde22bf",
+      "destination": "apps/web/src/components/admin/editor/clipboard-menu.tsx",
+      "destinationSHA256": "2c08cf5ff50218df11cdeeba7866f375ec63ab4cd1fd99b4656710f25614ee88"
+    },
+    {
+      "source": "src/components/site/section.tsx",
+      "sourceSHA256": "c49eaddd5d3a5df7f29a3f3cc6e0bda68045a1ba207539d49e25398ef11f1cf4",
+      "destination": "apps/web/src/components/site/section.tsx",
+      "destinationSHA256": "c49eaddd5d3a5df7f29a3f3cc6e0bda68045a1ba207539d49e25398ef11f1cf4"
+    },
+    {
+      "source": "src/components/blocks/text-block.tsx",
+      "sourceSHA256": "57bff3bdce1e37eb515487edddd3943e235163540871c7603c54f8f098f82f09",
+      "destination": "apps/web/src/components/blocks/text-block.tsx",
+      "destinationSHA256": "57bff3bdce1e37eb515487edddd3943e235163540871c7603c54f8f098f82f09"
+    },
+    {
+      "source": "src/components/blocks/inline-edit-context.tsx",
+      "sourceSHA256": "0e5f3c4fa273b16c1d29de856f3749e45db84e797bc4a4c22cc7ce4ec45a8a61",
+      "destination": "apps/web/src/components/blocks/inline-edit-context.tsx",
+      "destinationSHA256": "0e5f3c4fa273b16c1d29de856f3749e45db84e797bc4a4c22cc7ce4ec45a8a61"
+    },
+    {
+      "source": "src/components/blocks/page-renderer.tsx",
+      "sourceSHA256": "491451022db9d5331688a556b3c5781d0782a1e653bdb0f6def5d6b9cb84a31b",
+      "destination": "apps/web/src/components/blocks/tree-page-renderer.tsx",
+      "destinationSHA256": "44d941f3141ccb5567ef7a1ee3c7cc511fb389e9a6761477defa181e0cbbf8bf"
+    },
+    {
+      "source": "src/components/blocks/nested-context.tsx",
+      "sourceSHA256": "8e3b771933b64e713fc0e3f5ec9a5de54317fce13d702c1ff88f4e1a4bbd9d17",
+      "destination": "apps/web/src/components/blocks/nested-context.tsx",
+      "destinationSHA256": "8e3b771933b64e713fc0e3f5ec9a5de54317fce13d702c1ff88f4e1a4bbd9d17"
+    },
+    {
+      "source": "src/components/blocks/button-link-block.tsx",
+      "sourceSHA256": "4f13ac24c15c87f36f1a827277fc412acf21f732ea83a409f335b67687a6e370",
+      "destination": "apps/web/src/components/blocks/button-link-block.tsx",
+      "destinationSHA256": "4f13ac24c15c87f36f1a827277fc412acf21f732ea83a409f335b67687a6e370"
+    },
+    {
+      "source": "src/components/blocks/heading-block.tsx",
+      "sourceSHA256": "84e34fe4534935e913a2e830e750b05b37c219d12884b38498514b8fa3a8669b",
+      "destination": "apps/web/src/components/blocks/heading-block.tsx",
+      "destinationSHA256": "84e34fe4534935e913a2e830e750b05b37c219d12884b38498514b8fa3a8669b"
+    },
+    {
+      "source": "src/components/blocks/block-container.tsx",
+      "sourceSHA256": "fc8126feaa24edf9d502713f93e377c5defd05cf4d30ab493ef6ea4d723e6e82",
+      "destination": "apps/web/src/components/blocks/block-container.tsx",
+      "destinationSHA256": "fc8126feaa24edf9d502713f93e377c5defd05cf4d30ab493ef6ea4d723e6e82"
+    },
+    {
+      "source": "src/components/blocks/request-form-shell.tsx",
+      "sourceSHA256": "b826042ef2b4f41e2df22de36c5affd4e993a4ee8449f86925ec6fcd64d4fe9a",
+      "destination": "apps/web/src/components/blocks/request-form-shell.tsx",
+      "destinationSHA256": "9b9b645f6f3a85311694b879eb6a96d8f4afe7004f7d86d6f7b7c94e764d8957"
+    },
+    {
+      "source": "src/content/portal/en.ts",
+      "sourceSHA256": "7e9006a58a41e58f35006784b3b45681871600885b5ee59590dc712c61403727",
+      "destination": "apps/web/src/content/portal/en.ts",
+      "destinationSHA256": "7e9006a58a41e58f35006784b3b45681871600885b5ee59590dc712c61403727"
+    },
+    {
+      "source": "src/content/portal/ar.ts",
+      "sourceSHA256": "ca6887e141ecaab2953d05f73fe9589ee5d4f5512840fb87405aea897bc3c05d",
+      "destination": "apps/web/src/content/portal/ar.ts",
+      "destinationSHA256": "ca6887e141ecaab2953d05f73fe9589ee5d4f5512840fb87405aea897bc3c05d"
+    },
+    {
+      "source": "src/content/portal/types.ts",
+      "sourceSHA256": "b3f03885a4bbb7bc722b6c96dd802b9fac4168e2d94e619b3ec80523e9258cdf",
+      "destination": "apps/web/src/content/portal/types.ts",
+      "destinationSHA256": "b3f03885a4bbb7bc722b6c96dd802b9fac4168e2d94e619b3ec80523e9258cdf"
+    },
+    {
+      "source": "src/lib/i18n/ar-plural.ts",
+      "sourceSHA256": "cc1d86d746a024477083e160ab3a5b9f614f92b789ba565e078470c92f717da4",
+      "destination": "apps/web/src/lib/i18n/ar-plural.ts",
+      "destinationSHA256": "cc1d86d746a024477083e160ab3a5b9f614f92b789ba565e078470c92f717da4"
+    },
+    {
+      "source": "src/app/[locale]/admin/pages/pages-client.tsx",
+      "sourceSHA256": "96d9fa404323227afd6ad4397a227804664b443123f9c3b5e83fc1823ee0701f",
+      "destination": "apps/web/src/components/admin/pages-client.tsx",
+      "destinationSHA256": "823febb419ff3bd6cb54b889cce9248d7207abbf0ab3387d4d2acf1c04f23aed"
+    },
+    {
+      "source": "src/components/admin/helpers.ts",
+      "sourceSHA256": "aa73f2eabf93581e2dc26b7d10e96b423a5ddf60debf8de7eb49db31532b8465",
+      "destination": "apps/web/src/components/admin/helpers.ts",
+      "destinationSHA256": "8b166840b0a4263257b64d005c3c6baea5d2288ccea2871f6889c0ffc0f5a051"
+    },
+    {
+      "source": "src/components/form/project-request-form.tsx",
+      "sourceSHA256": "977491b0831e4b524689712caffe60a0ce712f7aaac20d1063a347bd8c9269fc",
+      "destination": "apps/web/src/components/form/project-request-form.tsx",
+      "destinationSHA256": "d539ca1f20a9aaed4151e1a74102fd8a8716b6a475e98705d914dae037a2635e"
+    }
+  ],
+  "notes": [
+    "Scoped source adaptations; existing leaf renderer/security fixes retained.",
+    "Original import manifest unchanged."
+  ],
+  "integrationAdaptations": [
+    {
+      "destination": "apps/api/src/public.service.ts",
+      "destinationSHA256": "2ea3c7ac61abfe797fc455e1372e1cfaf1d2315ad668aef1132a3217cfebed62",
+      "change": "Validate v1 preview document and expose nodes only through existing protected preview"
+    },
+    {
+      "destination": "apps/web/src/components/admin/preview-shell.tsx",
+      "destinationSHA256": "6b6bf618df49512cba5c241caff5066b875b623d33315dc533e372d80bbec259",
+      "change": "Render optional validated nodes with existing preview modes"
+    },
+    {
+      "destination": "apps/web/src/screens/admin/page-preview.tsx",
+      "destinationSHA256": "96e3d3cd096392c4c911d0e60cad497f9a77f3310b57a9f2b70c712e2072b9ad",
+      "change": "Pass protected nodes to preview shell"
+    },
+    {
+      "destination": "packages/contracts/src/admin.ts",
+      "destinationSHA256": "9d6089a220ffa14519471a193a20e3dc855afd0082c940410e921d92ce0d8d72",
+      "change": "Add optional ContentNode array to preview DTO"
+    },
+    {
+      "destination": "packages/server/src/admin/pages.ts",
+      "destinationSHA256": "150815a46dcc9ef87b5a9ec4fe6b379e3a4690335e12e006964355610159f7b4",
+      "change": "Expose draft settings/editor identity and route revision-aware content saves to publication service"
+    }
+  ]
+}

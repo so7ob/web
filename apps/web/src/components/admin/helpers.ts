@@ -11,7 +11,7 @@ import type { Locale } from "@/lib/i18n";
 export class ApiError extends Error {
   status: number;
   code: string;
-  constructor(status: number, code: string) {
+  constructor(status: number, code: string, readonly body: Record<string, unknown> | null = null) {
     super(code);
     this.name = "ApiError";
     this.status = status;
@@ -28,7 +28,7 @@ async function handle<T>(res: Response): Promise<T> {
   }
   if (!res.ok) {
     const code = (data as { code?: string } | null)?.code ?? "generic";
-    throw new ApiError(res.status, code);
+    throw new ApiError(res.status, code, typeof data === "object" && data !== null ? data as Record<string, unknown> : null);
   }
   return data as T;
 }

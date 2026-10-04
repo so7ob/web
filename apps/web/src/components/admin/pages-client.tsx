@@ -12,6 +12,7 @@ import Link from "@/routing/link";
 import { toast } from "sonner";
 import {
   Archive,
+  CalendarClock,
   Copy,
   ExternalLink,
   FileText,
@@ -80,6 +81,7 @@ import {
   ApiError,
   buildQuery,
   fmtRelative,
+  fmtDateTime,
 } from "@/components/admin/helpers";
 import { EmptyState } from "@/components/admin/empty-state";
 import { useDebounced } from "@/components/admin/use-debounced";
@@ -451,11 +453,12 @@ export function PagesClient({ me, locale }: PagesClientProps) {
                         {row.hasUnpublishedChanges && (
                           <span
                             className="size-2 shrink-0 rounded-full bg-amber-500"
-                            title={te.unsaved}
-                            aria-label={te.unsaved}
+                            title={te.unpublishedChanges}
+                            aria-label={te.unpublishedChanges}
                           />
                         )}
-                      </div>
+                      {row.scheduledPublishAt && <span className="inline-flex items-center gap-1 rounded-full bg-violet-100 px-1.5 py-0.5 text-[10px] font-bold text-violet-800" title={tp.scheduledFor.replace("{time}", fmtDateTime(row.scheduledPublishAt, locale))}><CalendarClock className="size-3" aria-hidden="true" />{fmtRelative(row.scheduledPublishAt, locale)}</span>}
+                        </div>
                     </TableCell>
                     <TableCell className="text-center text-sm tabular-nums text-foreground">
                       {row.order}

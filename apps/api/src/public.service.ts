@@ -10,6 +10,7 @@ import {
   authScreens,
   can,
   validateBlocks,
+  validateContent,
   loadContentForRender,
   parsePageSettings,
   canAccessPage,
@@ -141,6 +142,7 @@ export class PublicService {
           rawDevice = url.searchParams.get("device");
         admin.preview = {
           blocks: checked.ok ? checked.blocks : [],
+          nodes: (() => { const tree = validateContent(contentLocale === "ar" ? result.page.draftBlocksAr : result.page.draftBlocksEn); return tree.ok ? tree.tree : undefined; })(),
           locale: contentLocale,
           device:
             rawDevice === "tablet" || rawDevice === "mobile"

@@ -10,7 +10,8 @@
  * قيم تعدادات الخدمات تأتي من خرائط محتوى الموقع (form.services) وتسميات
  * أنواع الأعمال من works.statuses — نفس مصدر العرض العام.
  */
-import { blockSchemas, type BlockType } from "@/lib/blocks/types";
+import { type ContentBlockType as BlockType } from "@so7ob/contracts";
+import { BLOCK_REGISTRY } from "@so7ob/contracts";
 import { SERVICE_TYPES } from "@/lib/validation";
 import { ar as siteAr } from "@/content/ar";
 import { en as siteEn } from "@/content/en";
@@ -46,16 +47,13 @@ const L = (ar: string, en: string): Bi => ({ ar, en });
 // ─── خيارات التعدادات ───
 
 /** خدمات من محتوى الموقع — نفس تسميات النموذج العام */
-export const SERVICE_OPTIONS: { value: string; label: Bi }[] =
-  SERVICE_TYPES.map((s) => ({
-    value: s,
-    label: L(siteAr.form.services[s], siteEn.form.services[s]),
-  }));
+export const SERVICE_OPTIONS: { value: string; label: Bi }[] = SERVICE_TYPES.map((s) => ({
+  value: s,
+  label: L(siteAr.form.services[s], siteEn.form.services[s]),
+}));
 
 /** أنواع حالات الأعمال — من works.statuses في محتوى الموقع */
-export const KIND_OPTIONS: { value: string; label: Bi }[] = (
-  ["design", "interactive", "flow"] as const
-).map((k) => ({
+export const KIND_OPTIONS: { value: string; label: Bi }[] = (["design", "interactive", "flow"] as const).map((k) => ({
   value: k,
   label: L(siteAr.works.statuses[k], siteEn.works.statuses[k]),
 }));
@@ -69,6 +67,27 @@ const VARIANT_OPTIONS = [
 const ALIGN_OPTIONS = [
   { value: "start", label: L("بداية السطر", "Start") },
   { value: "center", label: L("وسط", "Center") },
+];
+
+const GAP_OPTIONS = [
+  { value: "xs", label: L("ضئيل", "Extra small") },
+  { value: "sm", label: L("صغير", "Small") },
+  { value: "md", label: L("متوسط", "Medium") },
+  { value: "lg", label: L("كبير", "Large") },
+];
+
+const ROW_COLUMNS_OPTIONS = [
+  { value: "2", label: L("عمودان", "2 columns") },
+  { value: "3", label: L("ثلاثة أعمدة", "3 columns") },
+  { value: "4", label: L("أربعة أعمدة", "4 columns") },
+];
+
+const COLUMN_SPAN_OPTIONS = [
+  { value: "auto", label: L("تلقائي", "Auto") },
+  { value: "1", label: L("عمود واحد", "1 column") },
+  { value: "2", label: L("عمودان", "2 columns") },
+  { value: "3", label: L("ثلاثة أعمدة", "3 columns") },
+  { value: "4", label: L("أربعة أعمدة", "4 columns") },
 ];
 
 const CHANNEL_KIND_OPTIONS = [
@@ -120,12 +139,7 @@ const LB = {
 };
 
 const SERVICE_ITEM_FIELDS: FieldDef[] = [
-  {
-    key: "service",
-    label: LB.service,
-    type: "select",
-    options: SERVICE_OPTIONS,
-  },
+  { key: "service", label: LB.service, type: "select", options: SERVICE_OPTIONS },
   { key: "name", label: LB.name, type: "text" },
   { key: "definition", label: LB.definition, type: "textarea" },
   { key: "forWhom", label: LB.forWhom, type: "textarea" },
@@ -136,12 +150,7 @@ const SERVICE_ITEM_FIELDS: FieldDef[] = [
 const LINK_ITEM_FIELDS: FieldDef[] = [
   { key: "label", label: LB.label, type: "text" },
   { key: "href", label: LB.href, type: "text" },
-  {
-    key: "variant",
-    label: LB.variant,
-    type: "select",
-    options: VARIANT_OPTIONS,
-  },
+  { key: "variant", label: LB.variant, type: "select", options: VARIANT_OPTIONS },
 ];
 
 const TITLED_BODY_FIELDS: FieldDef[] = [
@@ -155,81 +164,34 @@ export const PROP_FIELDS: Record<BlockType, FieldDef[]> = {
   hero: [
     { key: "kicker", label: LB.kicker, type: "text" },
     { key: "title", label: LB.title, type: "text" },
-    {
-      key: "titleAccent",
-      label: L("جزء العنوان الملون", "Accent part of title"),
-      type: "text",
-    },
+    { key: "titleAccent", label: L("جزء العنوان الملون", "Accent part of title"), type: "text" },
     { key: "description", label: LB.description, type: "textarea" },
-    {
-      key: "support",
-      label: L("أسطر داعمة", "Support lines"),
-      type: "stringlist",
-    },
+    { key: "support", label: L("أسطر داعمة", "Support lines"), type: "stringlist" },
   ],
 
   servicesGrid: [
     { key: "kicker", label: LB.kicker, type: "text" },
     { key: "title", label: LB.title, type: "text" },
-    {
-      key: "description",
-      label: LB.description,
-      type: "textarea",
-      optional: true,
-    },
+    { key: "description", label: LB.description, type: "textarea", optional: true },
     {
       key: "cards",
       label: L("بطاقات الخدمات", "Service cards"),
       type: "array",
       itemFields: [
-        {
-          key: "service",
-          label: LB.service,
-          type: "select",
-          options: SERVICE_OPTIONS,
-        },
-        {
-          key: "blurb",
-          label: L("وصف البطاقة", "Card blurb"),
-          type: "textarea",
-        },
+        { key: "service", label: LB.service, type: "select", options: SERVICE_OPTIONS },
+        { key: "blurb", label: L("وصف البطاقة", "Card blurb"), type: "textarea" },
       ],
     },
-    {
-      key: "items",
-      label: L("تفاصيل الخدمات", "Service details"),
-      type: "array",
-      itemFields: SERVICE_ITEM_FIELDS,
-    },
-    {
-      key: "learnMore",
-      label: L("نص «اعرف أكثر»", "Learn more label"),
-      type: "text",
-      optional: true,
-    },
-    {
-      key: "viewAllLabel",
-      label: L("نص «عرض الكل»", "View all label"),
-      type: "text",
-      optional: true,
-    },
-    {
-      key: "viewAllHref",
-      label: L("رابط «عرض الكل»", "View all link"),
-      type: "text",
-      optional: true,
-    },
+    { key: "items", label: L("تفاصيل الخدمات", "Service details"), type: "array", itemFields: SERVICE_ITEM_FIELDS },
+    { key: "learnMore", label: L("نص «اعرف أكثر»", "Learn more label"), type: "text", optional: true },
+    { key: "viewAllLabel", label: L("نص «عرض الكل»", "View all label"), type: "text", optional: true },
+    { key: "viewAllHref", label: L("رابط «عرض الكل»", "View all link"), type: "text", optional: true },
   ],
 
   featureGrid: [
     { key: "kicker", label: LB.kicker, type: "text" },
     { key: "title", label: LB.title, type: "text" },
-    {
-      key: "items",
-      label: LB.items,
-      type: "array",
-      itemFields: TITLED_BODY_FIELDS,
-    },
+    { key: "items", label: LB.items, type: "array", itemFields: TITLED_BODY_FIELDS },
     {
       key: "columns",
       label: LB.columns,
@@ -244,12 +206,7 @@ export const PROP_FIELDS: Record<BlockType, FieldDef[]> = {
   worksShowcase: [
     { key: "kicker", label: LB.kicker, type: "text" },
     { key: "title", label: LB.title, type: "text" },
-    {
-      key: "description",
-      label: LB.description,
-      type: "textarea",
-      optional: true,
-    },
+    { key: "description", label: LB.description, type: "textarea", optional: true },
     {
       key: "cases",
       label: L("الحالات", "Cases"),
@@ -262,24 +219,9 @@ export const PROP_FIELDS: Record<BlockType, FieldDef[]> = {
         { key: "badge", label: LB.badge, type: "text" },
       ],
     },
-    {
-      key: "disclaimer",
-      label: LB.disclaimer,
-      type: "textarea",
-      optional: true,
-    },
-    {
-      key: "viewAllLabel",
-      label: L("نص «عرض الكل»", "View all label"),
-      type: "text",
-      optional: true,
-    },
-    {
-      key: "viewAllHref",
-      label: L("رابط «عرض الكل»", "View all link"),
-      type: "text",
-      optional: true,
-    },
+    { key: "disclaimer", label: LB.disclaimer, type: "textarea", optional: true },
+    { key: "viewAllLabel", label: L("نص «عرض الكل»", "View all label"), type: "text", optional: true },
+    { key: "viewAllHref", label: L("رابط «عرض الكل»", "View all link"), type: "text", optional: true },
   ],
 
   processSteps: [
@@ -299,12 +241,7 @@ export const PROP_FIELDS: Record<BlockType, FieldDef[]> = {
   faqSection: [
     { key: "kicker", label: LB.kicker, type: "text" },
     { key: "title", label: LB.title, type: "text" },
-    {
-      key: "description",
-      label: LB.description,
-      type: "textarea",
-      optional: true,
-    },
+    { key: "description", label: LB.description, type: "textarea", optional: true },
     {
       key: "items",
       label: L("الأسئلة", "Questions"),
@@ -314,57 +251,23 @@ export const PROP_FIELDS: Record<BlockType, FieldDef[]> = {
         { key: "a", label: L("الجواب", "Answer"), type: "textarea" },
       ],
     },
-    {
-      key: "limit",
-      label: L("حد العرض (اختياري)", "Display limit (optional)"),
-      type: "number",
-      optional: true,
-    },
-    {
-      key: "ctaLabel",
-      label: L("نص دعوة إضافية", "CTA label"),
-      type: "text",
-      optional: true,
-    },
-    {
-      key: "ctaHref",
-      label: L("رابط الدعوة", "CTA link"),
-      type: "text",
-      optional: true,
-    },
+    { key: "limit", label: L("حد العرض (اختياري)", "Display limit (optional)"), type: "number", optional: true },
+    { key: "ctaLabel", label: L("نص دعوة إضافية", "CTA label"), type: "text", optional: true },
+    { key: "ctaHref", label: L("رابط الدعوة", "CTA link"), type: "text", optional: true },
   ],
 
   ctaSection: [
     { key: "title", label: LB.title, type: "text" },
     { key: "body", label: LB.body, type: "textarea" },
-    {
-      key: "discussNote",
-      label: L("ملاحظة المناقشة", "Discussion note"),
-      type: "textarea",
-      optional: true,
-    },
-    {
-      key: "quoteNote",
-      label: L("ملاحظة عرض السعر", "Quote note"),
-      type: "textarea",
-      optional: true,
-    },
-    {
-      key: "links",
-      label: L("الأزرار", "Buttons"),
-      type: "array",
-      itemFields: LINK_ITEM_FIELDS,
-    },
+    { key: "discussNote", label: L("ملاحظة المناقشة", "Discussion note"), type: "textarea", optional: true },
+    { key: "quoteNote", label: L("ملاحظة عرض السعر", "Quote note"), type: "textarea", optional: true },
+    { key: "links", label: L("الأزرار", "Buttons"), type: "array", itemFields: LINK_ITEM_FIELDS },
   ],
 
   pageHeader: [
     { key: "kicker", label: LB.kicker, type: "text" },
     { key: "title", label: LB.title, type: "text" },
-    {
-      key: "intro",
-      label: L("فقرات المقدمة", "Intro paragraphs"),
-      type: "stringlist",
-    },
+    { key: "intro", label: L("فقرات المقدمة", "Intro paragraphs"), type: "stringlist" },
     {
       key: "quickLinks",
       label: L("روابط سريعة", "Quick links"),
@@ -378,81 +281,36 @@ export const PROP_FIELDS: Record<BlockType, FieldDef[]> = {
 
   richText: [
     { key: "heading", label: LB.title, type: "text", optional: true },
-    {
-      key: "lead",
-      label: L("المقدمة", "Lead paragraph"),
-      type: "textarea",
-      optional: true,
-    },
+    { key: "lead", label: L("المقدمة", "Lead paragraph"), type: "textarea", optional: true },
     { key: "paragraphs", label: LB.paragraphs, type: "stringlist" },
     { key: "align", label: LB.align, type: "select", options: ALIGN_OPTIONS },
-    {
-      key: "notice",
-      label: L("تنبيه ختامي", "Notice"),
-      type: "textarea",
-      optional: true,
-    },
+    { key: "notice", label: L("تنبيه ختامي", "Notice"), type: "textarea", optional: true },
   ],
 
   visionMission: [
-    {
-      key: "vision",
-      label: L("الرؤية", "Vision"),
-      type: "group",
-      itemFields: TITLED_BODY_FIELDS,
-    },
-    {
-      key: "mission",
-      label: L("الرسالة", "Mission"),
-      type: "group",
-      itemFields: TITLED_BODY_FIELDS,
-    },
+    { key: "vision", label: L("الرؤية", "Vision"), type: "group", itemFields: TITLED_BODY_FIELDS },
+    { key: "mission", label: L("الرسالة", "Mission"), type: "group", itemFields: TITLED_BODY_FIELDS },
   ],
 
   numberedValues: [
     { key: "title", label: LB.title, type: "text" },
     { key: "intro", label: LB.intro, type: "textarea", optional: true },
-    {
-      key: "items",
-      label: L("القيم", "Values"),
-      type: "array",
-      itemFields: TITLED_BODY_FIELDS,
-    },
-    {
-      key: "closingNote",
-      label: L("ملاحظة ختامية", "Closing note"),
-      type: "textarea",
-      optional: true,
-    },
+    { key: "items", label: L("القيم", "Values"), type: "array", itemFields: TITLED_BODY_FIELDS },
+    { key: "closingNote", label: L("ملاحظة ختامية", "Closing note"), type: "textarea", optional: true },
   ],
 
   numberedList: [
     { key: "title", label: LB.title, type: "text" },
-    {
-      key: "items",
-      label: L("المبادئ", "Principles"),
-      type: "array",
-      itemFields: TITLED_BODY_FIELDS,
-    },
+    { key: "items", label: L("المبادئ", "Principles"), type: "array", itemFields: TITLED_BODY_FIELDS },
   ],
 
   navCtaBanner: [
     { key: "label", label: LB.label, type: "text" },
-    {
-      key: "links",
-      label: L("الروابط", "Links"),
-      type: "array",
-      itemFields: LINK_ITEM_FIELDS,
-    },
+    { key: "links", label: L("الروابط", "Links"), type: "array", itemFields: LINK_ITEM_FIELDS },
   ],
 
   servicesDetail: [
-    {
-      key: "items",
-      label: L("الخدمات", "Services"),
-      type: "array",
-      itemFields: SERVICE_ITEM_FIELDS,
-    },
+    { key: "items", label: L("الخدمات", "Services"), type: "array", itemFields: SERVICE_ITEM_FIELDS },
     {
       key: "labels",
       label: L("تسميات الأقسام", "Section labels"),
@@ -463,12 +321,7 @@ export const PROP_FIELDS: Record<BlockType, FieldDef[]> = {
         { key: "deliverables", label: LB.deliverables, type: "text" },
       ],
     },
-    {
-      key: "requestLabel",
-      label: LB.requestLabel,
-      type: "text",
-      optional: true,
-    },
+    { key: "requestLabel", label: LB.requestLabel, type: "text", optional: true },
   ],
 
   worksFull: [
@@ -499,16 +352,8 @@ export const PROP_FIELDS: Record<BlockType, FieldDef[]> = {
       label: L("تسميات الأنواع", "Kind labels"),
       type: "group",
       itemFields: [
-        {
-          key: "design",
-          label: L("تصور تصميمي", "Design concept"),
-          type: "text",
-        },
-        {
-          key: "interactive",
-          label: L("نموذج تفاعلي", "Interactive prototype"),
-          type: "text",
-        },
+        { key: "design", label: L("تصور تصميمي", "Design concept"), type: "text" },
+        { key: "interactive", label: L("نموذج تفاعلي", "Interactive prototype"), type: "text" },
         { key: "flow", label: L("مخطط سير", "Workflow diagram"), type: "text" },
       ],
     },
@@ -526,18 +371,8 @@ export const PROP_FIELDS: Record<BlockType, FieldDef[]> = {
         { key: "functions", label: LB.functions, type: "stringlist" },
       ],
     },
-    {
-      key: "interactiveNote",
-      label: L("ملاحظة النموذج التفاعلي", "Interactive note"),
-      type: "textarea",
-      optional: true,
-    },
-    {
-      key: "flowNote",
-      label: L("ملاحظة مخطط السير", "Flow note"),
-      type: "textarea",
-      optional: true,
-    },
+    { key: "interactiveNote", label: L("ملاحظة النموذج التفاعلي", "Interactive note"), type: "textarea", optional: true },
+    { key: "flowNote", label: L("ملاحظة مخطط السير", "Flow note"), type: "textarea", optional: true },
   ],
 
   processFull: [
@@ -572,33 +407,15 @@ export const PROP_FIELDS: Record<BlockType, FieldDef[]> = {
         { key: "kicker", label: LB.kicker, type: "text" },
         { key: "title", label: LB.title, type: "text" },
         { key: "body", label: LB.body, type: "textarea" },
-        {
-          key: "items",
-          label: L("بنود التغيير", "Change items"),
-          type: "stringlist",
-        },
+        { key: "items", label: L("بنود التغيير", "Change items"), type: "stringlist" },
       ],
     },
   ],
 
   requestForm: [
-    {
-      key: "preselectService",
-      label: L("خدمة محددة مسبقًا", "Preselected service"),
-      type: "select",
-      options: SERVICE_OPTIONS,
-      optional: true,
-    },
-    {
-      key: "showPrivacy",
-      label: L("بطاقة الخصوصية", "Privacy card"),
-      type: "switch",
-    },
-    {
-      key: "showNextSteps",
-      label: L("بطاقة الخطوات التالية", "Next steps card"),
-      type: "switch",
-    },
+    { key: "preselectService", label: L("خدمة محددة مسبقًا", "Preselected service"), type: "select", options: SERVICE_OPTIONS, optional: true },
+    { key: "showPrivacy", label: L("بطاقة الخصوصية", "Privacy card"), type: "switch" },
+    { key: "showNextSteps", label: L("بطاقة الخطوات التالية", "Next steps card"), type: "switch" },
   ],
 
   contactInfo: [
@@ -608,20 +425,10 @@ export const PROP_FIELDS: Record<BlockType, FieldDef[]> = {
       label: L("قنوات التواصل", "Channels"),
       type: "array",
       itemFields: [
-        {
-          key: "kind",
-          label: L("نوع القناة", "Channel kind"),
-          type: "select",
-          options: CHANNEL_KIND_OPTIONS,
-        },
+        { key: "kind", label: L("نوع القناة", "Channel kind"), type: "select", options: CHANNEL_KIND_OPTIONS },
         { key: "label", label: LB.label, type: "text" },
         { key: "value", label: L("القيمة", "Value"), type: "text" },
-        {
-          key: "href",
-          label: L("رابط (اختياري)", "Link (optional)"),
-          type: "text",
-          optional: true,
-        },
+        { key: "href", label: L("رابط (اختياري)", "Link (optional)"), type: "text", optional: true },
       ],
     },
   ],
@@ -661,11 +468,7 @@ export const PROP_FIELDS: Record<BlockType, FieldDef[]> = {
     { key: "src", label: LB.src, type: "media" },
     { key: "alt", label: LB.alt, type: "text" },
     { key: "caption", label: LB.caption, type: "text", optional: true },
-    {
-      key: "rounded",
-      label: L("حواف دائرية", "Rounded corners"),
-      type: "switch",
-    },
+    { key: "rounded", label: L("حواف دائرية", "Rounded corners"), type: "switch" },
     {
       key: "width",
       label: L("العرض", "Width"),
@@ -716,12 +519,7 @@ export const PROP_FIELDS: Record<BlockType, FieldDef[]> = {
   ],
 
   simpleTable: [
-    {
-      key: "caption",
-      label: L("عنوان الجدول", "Table caption"),
-      type: "text",
-      optional: true,
-    },
+    { key: "caption", label: L("عنوان الجدول", "Table caption"), type: "text", optional: true },
     { key: "headers", label: L("رؤوس الأعمدة", "Headers"), type: "stringlist" },
     { key: "rows", label: L("الصفوف", "Rows"), type: "rows" },
   ],
@@ -740,6 +538,35 @@ export const PROP_FIELDS: Record<BlockType, FieldDef[]> = {
       ],
     },
   ],
+
+  // ——— عقد البنية (الحاويات) — خصائص البنية فقط؛ المظهر من محرر الأنماط ———
+
+  section: [],
+
+  container: [],
+
+  row: [
+    { key: "gap", label: L("التباعد بين الأعمدة", "Column gap"), type: "select", options: GAP_OPTIONS },
+    {
+      key: "columns",
+      label: L("أعمدة الشبكة (حاسوب)", "Grid columns (desktop)"),
+      type: "select",
+      numeric: true,
+      optional: true,
+      options: ROW_COLUMNS_OPTIONS,
+    },
+  ],
+
+  column: [
+    { key: "gap", label: L("التباعد بين العناصر", "Item gap"), type: "select", options: GAP_OPTIONS },
+    {
+      key: "span",
+      label: L("امتداد العمود (حاسوب)", "Column span (desktop)"),
+      type: "select",
+      options: COLUMN_SPAN_OPTIONS,
+    },
+    { key: "align", label: LB.align, type: "select", options: ALIGN_OPTIONS },
+  ],
 };
 
 // ─── قوالب الصفحة الجديدة (تسميات أداة المحرر — inline كما في السجل) ───
@@ -748,102 +575,49 @@ export const PAGE_TEMPLATE_OPTIONS: { value: string; label: Bi; note: Bi }[] = [
   {
     value: "empty",
     label: L("صفحة فارغة", "Empty page"),
-    note: L(
-      "بلا كتل — ابدأ من مكتبة المحرر",
-      "No blocks — start from the library",
-    ),
+    note: L("بلا كتل — ابدأ من مكتبة المحرر", "No blocks — start from the library"),
   },
   {
     value: "blank-section",
     label: L("ترويسة + نص", "Header + text"),
-    note: L(
-      "كتلتا ترويسة الصفحة والنص الغني جاهزتان",
-      "Page header and rich text blocks ready",
-    ),
+    note: L("كتلتا ترويسة الصفحة والنص الغني جاهزتان", "Page header and rich text blocks ready"),
   },
 ];
 
 // ─── الخصائص الافتراضية — قيم دنيا صالحة لكل نوع ───
 
 export const DEFAULT_PROPS: Record<BlockType, Record<string, unknown>> = {
-  hero: {
-    kicker: "",
-    title: "",
-    titleAccent: "",
-    description: "",
-    support: [],
-  },
-  servicesGrid: {
-    kicker: "",
-    title: "",
-    cards: [{ service: "web", blurb: "" }],
-    items: [],
-  },
-  featureGrid: {
-    kicker: "",
-    title: "",
-    items: [{ title: "", body: "" }],
-    columns: "3",
-  },
+  hero: { kicker: "", title: "", titleAccent: "", description: "", support: [] },
+  servicesGrid: { kicker: "", title: "", cards: [{ service: "web", blurb: "" }], items: [] },
+  featureGrid: { kicker: "", title: "", items: [{ title: "", body: "" }], columns: "3" },
   worksShowcase: {
     kicker: "",
     title: "",
-    cases: [
-      { key: "case-1", title: "", kind: "design", summary: "", badge: "" },
-    ],
+    cases: [{ key: "case-1", title: "", kind: "design", summary: "", badge: "" }],
   },
   processSteps: { kicker: "", title: "", steps: [{ title: "", line: "" }] },
   faqSection: { kicker: "", title: "", items: [{ q: "", a: "" }] },
-  ctaSection: {
-    title: "",
-    body: "",
-    links: [{ label: "", href: "", variant: "primary" }],
-  },
+  ctaSection: { title: "", body: "", links: [{ label: "", href: "", variant: "primary" }] },
   pageHeader: { kicker: "", title: "", intro: [], quickLinks: [] },
   richText: { paragraphs: [""], align: "start" },
-  visionMission: {
-    vision: { title: "", body: "" },
-    mission: { title: "", body: "" },
-  },
+  visionMission: { vision: { title: "", body: "" }, mission: { title: "", body: "" } },
   numberedValues: { title: "", items: [{ title: "", body: "" }] },
   numberedList: { title: "", items: [{ title: "", body: "" }] },
-  navCtaBanner: {
-    label: "",
-    links: [{ label: "", href: "", variant: "primary" }],
-  },
+  navCtaBanner: { label: "", links: [{ label: "", href: "", variant: "primary" }] },
   servicesDetail: {
     items: [
-      {
-        service: "web",
-        name: "",
-        definition: "",
-        forWhom: "",
-        problems: [],
-        deliverables: [],
-      },
+      { service: "web", name: "", definition: "", forWhom: "", problems: [], deliverables: [] },
     ],
     labels: { forWhom: "", problems: "", deliverables: "" },
   },
   worksFull: {
     labels: { problem: "", users: "", functions: "", status: "" },
     statuses: { design: "", interactive: "", flow: "" },
-    cases: [
-      {
-        key: "case-1",
-        title: "",
-        kind: "design",
-        summary: "",
-        problem: "",
-        users: "",
-        functions: [],
-      },
-    ],
+    cases: [{ key: "case-1", title: "", kind: "design", summary: "", problem: "", users: "", functions: [] }],
   },
   processFull: {
     labels: { clientRole: "", deliverables: "" },
-    phases: [
-      { title: "", goal: "", weDo: [], clientRole: "", deliverables: [] },
-    ],
+    phases: [{ title: "", goal: "", weDo: [], clientRole: "", deliverables: [] }],
   },
   requestForm: { showPrivacy: true, showNextSteps: true },
   contactInfo: { channels: [] },
@@ -856,28 +630,28 @@ export const DEFAULT_PROPS: Record<BlockType, Record<string, unknown>> = {
   simpleTable: { headers: [""], rows: [[""]] },
   divider: {},
   spacer: { size: "md" },
+  // الحاويات — نفس الشكل الذي تنتجه مخططات zod الافتراضية (tree.ts)
+  section: {},
+  container: {},
+  row: { gap: "md" },
+  column: { gap: "md", span: "auto", align: "start" },
 };
 
 /** نسخة خصائص افتراضية عميقة (كل إضافة كتلة تحصل على نسختها) */
 export function defaultProps(type: BlockType): Record<string, unknown> {
-  return JSON.parse(JSON.stringify(DEFAULT_PROPS[type])) as Record<
-    string,
-    unknown
-  >;
+  return JSON.parse(JSON.stringify(DEFAULT_PROPS[type])) as Record<string, unknown>;
 }
 
-/** تحقق تطوري (dev فقط): كل DEFAULT_PROPS يطابق مخطط zod الخاص به */
+/** تحقق تطوري (dev فقط): كل DEFAULT_PROPS يطابق مخطط zod الخاص به من BLOCK_REGISTRY */
 export function assertDefaultProps(): void {
   if (process.env.NODE_ENV !== "development") return;
   for (const [type, props] of Object.entries(DEFAULT_PROPS)) {
-    const schema = blockSchemas[type as BlockType];
+    const schema = BLOCK_REGISTRY[type as BlockType]?.schema;
+    if (!schema) continue;
     const result = schema.safeParse({ id: `b-${type}-assert`, type, props });
     if (!result.success) {
       const issue = result.error.issues[0];
-      console.assert(
-        false,
-        `DEFAULT_PROPS[${type}] fails its zod schema: ${issue?.path.join(".")} — ${issue?.message}`,
-      );
+      console.assert(false, `DEFAULT_PROPS[${type}] fails its zod schema: ${issue?.path.join(".")} — ${issue?.message}`);
     }
   }
 }

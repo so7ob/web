@@ -1,0 +1,17 @@
+{
+  "at": "2026-10-04T01:53:26Z",
+  "database": "isolated loopback:3307 .migration/mariadb",
+  "log": "Normal shutdown initiated by unknown; orderly InnoDB shutdown completed",
+  "cause": "Unknown requester; no OOM or disk-full evidence observed",
+  "testStats": {
+    "startTime": "2026-10-04T01:50:33.255Z",
+    "duration": 321512.553,
+    "expected": 43,
+    "skipped": 27,
+    "unexpected": 16,
+    "flaky": 0
+  },
+  "action": "Stopped owned browser runner after preserving failures; restarted the same datadir without resetting or seeding; verified port/datadir/256MiB packet/UTC; complete rerun required",
+  "untouched": "Existing system MariaDB on port 3306 and development data",
+  "observedTestError": "connect ECONNREFUSED 127.0.0.1:3307"
+}

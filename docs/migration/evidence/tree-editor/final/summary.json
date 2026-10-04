@@ -1,0 +1,216 @@
+{
+  "sourceSHA": "fc4a959e87e7c3750a0546f9d4fa10e31ac3b63c",
+  "syntheticOnly": true,
+  "threshold": 0.005,
+  "metric": "Exact RGB inequality; full page; no masks",
+  "results": [
+    {
+      "kind": "reference",
+      "locale": "ar",
+      "device": "desktop",
+      "status": 200,
+      "errors": [],
+      "network": [],
+      "axe": [
+        {
+          "id": "aria-valid-attr-value",
+          "nodes": [
+            {
+              "target": [
+                "#radix-_r_0_-trigger-ar"
+              ],
+              "summary": "Fix all of the following:\n  Invalid ARIA attribute value: aria-controls=\"radix-_r_0_-content-ar\""
+            }
+          ]
+        }
+      ],
+      "screenshot": "reference-ar-desktop.png"
+    },
+    {
+      "kind": "reference",
+      "locale": "ar",
+      "device": "mobile",
+      "status": 200,
+      "errors": [],
+      "network": [],
+      "axe": [
+        {
+          "id": "aria-valid-attr-value",
+          "nodes": [
+            {
+              "target": [
+                "#radix-_r_0_-trigger-ar"
+              ],
+              "summary": "Fix all of the following:\n  Invalid ARIA attribute value: aria-controls=\"radix-_r_0_-content-ar\""
+            }
+          ]
+        },
+        {
+          "id": "target-size",
+          "nodes": [
+            {
+              "target": [
+                "button[aria-label=\"العنصر المحدد: قسم\"]"
+              ],
+              "summary": "Fix any of the following:\n  Target has insufficient size because it is partially obscured (smallest space is 16px by 107.3px, should be at least 24px by 24px)\n  Target has insufficient space to its closest neighbors. Safe clickable space has a diameter of 18px instead of at least 24px."
+            }
+          ]
+        }
+      ],
+      "screenshot": "reference-ar-mobile.png"
+    },
+    {
+      "kind": "reference",
+      "locale": "en",
+      "device": "desktop",
+      "status": 200,
+      "errors": [],
+      "network": [],
+      "axe": [
+        {
+          "id": "aria-valid-attr-value",
+          "nodes": [
+            {
+              "target": [
+                "#radix-_r_0_-trigger-en"
+              ],
+              "summary": "Fix all of the following:\n  Invalid ARIA attribute value: aria-controls=\"radix-_r_0_-content-en\""
+            }
+          ]
+        }
+      ],
+      "screenshot": "reference-en-desktop.png"
+    },
+    {
+      "kind": "reference",
+      "locale": "en",
+      "device": "mobile",
+      "status": 200,
+      "errors": [],
+      "network": [],
+      "axe": [
+        {
+          "id": "aria-valid-attr-value",
+          "nodes": [
+            {
+              "target": [
+                "#radix-_r_0_-trigger-en"
+              ],
+              "summary": "Fix all of the following:\n  Invalid ARIA attribute value: aria-controls=\"radix-_r_0_-content-en\""
+            }
+          ]
+        },
+        {
+          "id": "target-size",
+          "nodes": [
+            {
+              "target": [
+                "button[aria-label=\"Selected block: Section\"]"
+              ],
+              "summary": "Fix any of the following:\n  Target has insufficient size because it is partially obscured (smallest space is 16px by 107.3px, should be at least 24px by 24px)\n  Target has insufficient space to its closest neighbors. Safe clickable space has a diameter of 18px instead of at least 24px."
+            }
+          ]
+        }
+      ],
+      "screenshot": "reference-en-mobile.png"
+    },
+    {
+      "kind": "target",
+      "locale": "ar",
+      "device": "desktop",
+      "status": 200,
+      "errors": [],
+      "network": [],
+      "axe": [],
+      "screenshot": "target-ar-desktop.png"
+    },
+    {
+      "kind": "target",
+      "locale": "ar",
+      "device": "mobile",
+      "status": 200,
+      "errors": [],
+      "network": [],
+      "axe": [],
+      "screenshot": "target-ar-mobile.png"
+    },
+    {
+      "kind": "target",
+      "locale": "en",
+      "device": "desktop",
+      "status": 200,
+      "errors": [],
+      "network": [],
+      "axe": [],
+      "screenshot": "target-en-desktop.png"
+    },
+    {
+      "kind": "target",
+      "locale": "en",
+      "device": "mobile",
+      "status": 200,
+      "errors": [],
+      "network": [],
+      "axe": [],
+      "screenshot": "target-en-mobile.png"
+    }
+  ],
+  "comparisons": [
+    {
+      "locale": "ar",
+      "device": "desktop",
+      "referenceSize": [
+        1280,
+        1984
+      ],
+      "targetSize": [
+        1280,
+        1984
+      ],
+      "differentPixelFraction": 0.00008938697076612904,
+      "pass": true
+    },
+    {
+      "locale": "ar",
+      "device": "mobile",
+      "referenceSize": [
+        375,
+        812
+      ],
+      "targetSize": [
+        375,
+        812
+      ],
+      "differentPixelFraction": 0.0005451559934318555,
+      "pass": true
+    },
+    {
+      "locale": "en",
+      "device": "desktop",
+      "referenceSize": [
+        1280,
+        2001
+      ],
+      "targetSize": [
+        1280,
+        2001
+      ],
+      "differentPixelFraction": 0.00008823713143428285,
+      "pass": true
+    },
+    {
+      "locale": "en",
+      "device": "mobile",
+      "referenceSize": [
+        375,
+        812
+      ],
+      "targetSize": [
+        375,
+        812
+      ],
+      "differentPixelFraction": 0.0005451559934318555,
+      "pass": true
+    }
+  ]
+}

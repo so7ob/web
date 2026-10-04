@@ -84,9 +84,10 @@ export class PageAdministrationService {
         | "updatedAt"
         | "editorTouchedAt"
         | "sourceKey"
+        | "draftRevision" | "publishedRevision" | "draftSettings" | "publishedSettings" | "scheduledPublishAt"
       > & { versionCount: string | number }
     > = await this.db.query(
-      `SELECT p.id,p.slug,p.isHome,p.\`order\`,p.status,p.visibility,p.titleAr,p.titleEn,p.draftUpdatedAt,p.publishedAt,p.updatedAt,p.editorTouchedAt,p.sourceKey,(SELECT COUNT(*) FROM PageVersion v WHERE v.pageId=p.id) versionCount FROM Page p WHERE ${where.join(" AND ")} ORDER BY p.\`order\`,p.createdAt`,
+      `SELECT p.id,p.slug,p.isHome,p.\`order\`,p.status,p.visibility,p.titleAr,p.titleEn,p.draftUpdatedAt,p.publishedAt,p.updatedAt,p.editorTouchedAt,p.sourceKey,p.draftRevision,p.publishedRevision,p.draftSettings,p.publishedSettings,p.scheduledPublishAt,(SELECT COUNT(*) FROM PageVersion v WHERE v.pageId=p.id) versionCount FROM Page p WHERE ${where.join(" AND ")} ORDER BY p.\`order\`,p.createdAt`,
       values,
     );
     return {
@@ -95,18 +96,14 @@ export class PageAdministrationService {
         ...p,
         isHome: !!p.isHome,
         versionCount: Number(p.versionCount),
-        hasUnpublishedChanges:
-          p.status === "published" &&
-          p.draftUpdatedAt !== null &&
-          p.publishedAt !== null &&
-          p.draftUpdatedAt > p.publishedAt,
+        hasUnpublishedChanges: hasUnpublishedChanges(p),
       })),
     };
   }
   async detail(actor: AuthUser, id: string) {
     permit(actor, "pages.view");
-    const [p]: StoredPage[] = await this.db.query(
-      "SELECT * FROM Page WHERE id=?",
+    const [p]: Array<StoredPage & {draftUpdatedByName: string | null}> = await this.db.query(
+      "SELECT p.*,u.name draftUpdatedByName FROM Page p LEFT JOIN User u ON u.id=p.draftUpdatedById WHERE p.id=?",
       [id],
     );
     if (!p) throw new AuthFault(404, "not_found");
@@ -136,9 +133,13 @@ export class PageAdministrationService {
         publishedBlocksEn: p.publishedBlocksEn,
         draftUpdatedAt: p.draftUpdatedAt,
         draftUpdatedById: p.draftUpdatedById,
+        draftUpdatedByName: p.draftUpdatedByName,
         draftRevision: p.draftRevision,
         publishedRevision: p.publishedRevision,
         draftSettings: parsePageSettings(p.draftSettings, p),
+        draftSlug: parsePageSettings(p.draftSettings, p).slug,
+        draftTitleAr: parsePageSettings(p.draftSettings, p).titleAr,
+        draftTitleEn: parsePageSettings(p.draftSettings, p).titleEn,
         publishedSettings: p.publishedSettings ? parsePageSettings(p.publishedSettings, p) : null,
         scheduledPublishAt: p.scheduledPublishAt,
         scheduledRevision: p.scheduledRevision,
@@ -235,7 +236,7 @@ export class PageAdministrationService {
   }
   async update(actor: AuthUser, id: string, body: Record<string, unknown>) {
     permit(actor, "pages.edit");
-    if (body.draftSettings !== undefined) return new PagePublicationService(this.db).save(actor, id, body);
+    if (body.draftSettings !== undefined || (typeof body.baseRevision === "number" && [body.draftBlocksAr, body.draftBlocksEn].some(value => typeof value === "string"))) return new PagePublicationService(this.db).save(actor, id, body);
     return transaction(this.db, async (r) => {
       const page = await this.locked(r, id),
         updates: Record<string, unknown> = {};

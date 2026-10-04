@@ -32,6 +32,8 @@ export interface ProjectRequestFormProps {
   onValuesChange?: (values: Partial<ProjectRequestInput>) => void;
   /** تخطي مسودة localStorage (قراءة وكتابة) — للحسابات المسجلة التي تستخدم مسودات الخادم */
   suppressLocalDraft?: boolean;
+  /** Explicit editor test mode: validation runs but submission never reaches the API. */
+  simulate?: boolean;
 }
 
 const EMPTY: FormState = {
@@ -63,6 +65,7 @@ export function ProjectRequestForm({
   onSubmitted,
   onValuesChange,
   suppressLocalDraft = false,
+  simulate = false,
 }: ProjectRequestFormProps) {
   const t = content.form;
   const params = useSearchParams();
@@ -157,6 +160,11 @@ export function ProjectRequestForm({
     }
 
     setStatus("submitting");
+    if (simulate) {
+      const simulatedRef = `TEST-${Date.now().toString(36).toUpperCase()}`;
+      setRefCode(simulatedRef); setStatus("success"); onSubmitted?.(simulatedRef);
+      return;
+    }
     try {
       const res = await fetch("/api/requests", {
         method: "POST",

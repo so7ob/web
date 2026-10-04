@@ -8,6 +8,7 @@ export function Component() {
     <PreviewShell
       pageId={data.admin.id!}
       blocks={preview.blocks}
+      nodes={preview.nodes}
       locale={preview.locale}
       uiLocale={data.locale}
       initialDevice={preview.device}
