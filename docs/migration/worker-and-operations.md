@@ -45,3 +45,7 @@ Business services are not yet connected to enqueue; UI outbox state labels and r
 CI initially found that the isolated Nginx harness inherited `/var/log/nginx/access.log`, unavailable to the unprivileged runner. The harness now disables only its implicit HTTP-context default log, while both destination server blocks explicitly retain sanitized logs in the test directory. This also prevents query-token logging by the HTTP redirect server. No production check was skipped.
 
 The unprivileged CI network environment also rejects binding ports 80/443 during `nginx -t`. The isolated harness validates the expected production listen directives, then substitutes loopback ports 18080/18443 only in its temporary configuration. TLS/proxy/logging directives are still parsed by Nginx; production templates retain ports 80/443.
+
+## Synthetic operational recovery follow-up
+
+The [operational rehearsal](operational-restore.md) now recovers a compiled release/dependencies, all test database tables, files, sessions and queue state with separately recovered synthetic keys. Run `MIGRATION_WRITES_PAUSED=yes npm run data:recovery-check -- --confirm-database NAME` against the confirmed recovered environment before starting workers. The read-only check authenticates mail/webhook payloads without consuming jobs. Host-loss recovery, real key-store recovery, broader worker cases and production acceptance remain open; the earlier pending statements above describe the earlier checkpoint.

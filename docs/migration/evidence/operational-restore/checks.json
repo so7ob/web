@@ -1,0 +1,52 @@
+{
+  "syntheticOnly": true,
+  "codeBaseCommit": "34350da6688b013b8e4beba812c93dedc4813d1b",
+  "checks": [
+    {
+      "name": "ESLint",
+      "result": "passed",
+      "localLog": ".migration/operational-restore/lint-final.log",
+      "sha256": "f53c816cc6f6619121d1bc9841ddb6af506e161209ac8f3479bed133f4eea735"
+    },
+    {
+      "name": "TypeScript",
+      "result": "passed",
+      "localLog": ".migration/operational-restore/typecheck-final.log",
+      "sha256": "515fc5287ba273cdd4b202cc41ae1de65500d3c7625871252a3c953d11cf9edb"
+    },
+    {
+      "name": "real MariaDB unit/integration",
+      "result": "377 passed / 37 files",
+      "localLog": ".migration/operational-restore/unit-final.log",
+      "sha256": "02d07571775af28b5c32ef7081269446134756e1c685539065f4f4cf6c2e1abd"
+    },
+    {
+      "name": "build",
+      "result": "passed",
+      "localLog": ".migration/operational-restore/build-final.log",
+      "sha256": "29c0abd8d3b65c395238c48e149691f4782c0db77ad8c308889a110d5f74902d"
+    },
+    {
+      "name": "browser",
+      "result": "104 passed; zero retries",
+      "localLog": ".migration/operational-restore/e2e-final.log",
+      "sha256": "3bfbae5f781737c376496d435613555a9cd7a6906b50888586660f3c1bde0f7d"
+    },
+    {
+      "name": "infrastructure",
+      "result": "passed",
+      "localLog": ".migration/operational-restore/infra-final.log",
+      "sha256": "ce65bddac2a3039b87040838a0af0a686058b707655e9a17b7aa75e2a705fcc3"
+    },
+    {
+      "name": "operational recovery",
+      "result": "7 phases passed; 102 historical webhooks; separate recovered key handoff",
+      "localLog": ".migration/operational-restore/final-key-handoff.log",
+      "sha256": "8c94e3503db92466dd4fe6791c1a054d673cf25d0675aeb0fe5da84ffa1fbb30"
+    }
+  ],
+  "diffCheck": "passed",
+  "cliChecks": "cli-checks.json",
+  "productionMigration": false,
+  "fullMigrationAcceptance": "pending"
+}

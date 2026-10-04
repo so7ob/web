@@ -1,0 +1,22 @@
+{
+  "repository": "so7ob/web",
+  "target": "develop",
+  "prs": [
+    {
+      "number": 29,
+      "head": "d95a4ab8e0e9e77c06e50fed3ece7a9e2eea56b1",
+      "ci": "https://github.com/so7ob/web/actions/runs/37232069710",
+      "merge": "6313515951bf5a462e6a79bf0d2f6f66890a6628"
+    },
+    {
+      "number": 30,
+      "head": "c49144897da902779af66e60967c421703a86d2a",
+      "ci": "https://github.com/so7ob/web/actions/runs/37235830898",
+      "merge": "34350da6688b013b8e4beba812c93dedc4813d1b"
+    }
+  ],
+  "testedHeadAndFinalMergeTree": "77417e8e8523faa0db3d5dae23dee2e03fb4fc24",
+  "mainUnchanged": "8f69f6fef0982a526ed9f8e3bf7b7919bf4c485a",
+  "branchesDeleted": false,
+  "releaseOrDeployment": false
+}
