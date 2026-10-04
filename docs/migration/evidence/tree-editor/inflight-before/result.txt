@@ -13,7 +13,7 @@ Running 2 tests using 1 worker
   ✘  2 [mobile] › tests/e2e/editor-operations.spec.ts:75:1 › publication drains edits made while its save request is in flight (2.4s)
 
 
-  1) [desktop] › tests/e2e/editor-operations.spec.ts:75:1 › publication drains edits made while its save request is in flight 
+  1) [desktop] › tests/e2e/editor-operations.spec.ts:75:1 › publication drains edits made while its save request is in flight
 
     Error: expect(received).toContain(expected) // indexOf
 
@@ -43,7 +43,7 @@ Running 2 tests using 1 worker
 
     ────────────────────────────────────────────────────────────────────────────────────────────────
 
-  2) [mobile] › tests/e2e/editor-operations.spec.ts:75:1 › publication drains edits made while its save request is in flight 
+  2) [mobile] › tests/e2e/editor-operations.spec.ts:75:1 › publication drains edits made while its save request is in flight
 
     Error: expect(received).toContain(expected) // indexOf
 
@@ -74,5 +74,5 @@ Running 2 tests using 1 worker
     ────────────────────────────────────────────────────────────────────────────────────────────────
 
   2 failed
-    [desktop] › tests/e2e/editor-operations.spec.ts:75:1 › publication drains edits made while its save request is in flight 
-    [mobile] › tests/e2e/editor-operations.spec.ts:75:1 › publication drains edits made while its save request is in flight 
+    [desktop] › tests/e2e/editor-operations.spec.ts:75:1 › publication drains edits made while its save request is in flight
+    [mobile] › tests/e2e/editor-operations.spec.ts:75:1 › publication drains edits made while its save request is in flight
