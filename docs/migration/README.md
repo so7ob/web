@@ -52,3 +52,5 @@ The source v2 schema and both-generation data transfer implementation are record
 - [إعدادات المسودة والنشر والجدولة](cms-publication.md).
 
 - [محرر شجرة المحتوى ورحلاته واستثناءات السلامة](tree-editor.md).
+
+تحديث التتبع: [tracking.md](tracking.md) يوثق نقل الروابط والسياسات والبريد والمرفقات فوق PR #27، مع اختبارات الأمن وحدود القبول. CI لطلب #27 نجح على `8c1868bc1fdb1d83fc57d86cb8a95bf3885861c5` في [التشغيل 37169851643](https://github.com/so7ob/web/actions/runs/37169851643)؛ هذه النتيجة لا تُنسب إلى commits لاحقة.

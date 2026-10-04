@@ -1,0 +1,6 @@
+
+> so7ob-web@1.0.0 typecheck
+> tsc --noEmit -p tsconfig.workspaces.json
+
+packages/server/src/business/submissions.integration.test.ts(404,26): error TS2339: Property 'id' does not exist on type '{ id: string; ok: boolean; ref: string; } | { trackUrl: string | null; ok: boolean; ref: string; }'.
+  Property 'id' does not exist on type '{ trackUrl: string | null; ok: boolean; ref: string; }'.

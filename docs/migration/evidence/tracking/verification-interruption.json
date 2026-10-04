@@ -1,0 +1,16 @@
+{
+  "observedAt": "2026-10-04T19:18:40Z",
+  "failure": "Isolated MariaDB 127.0.0.1:3307 absent when work resumed; ECONNREFUSED in integration setup",
+  "result": {
+    "testFilesFailed": 16,
+    "testFilesPassed": 18,
+    "testsPassed": 192,
+    "testsSkipped": 147
+  },
+  "action": "Restarted the same .migration/mariadb datadir at loopback:3307; no seed/reset and no change to system MariaDB:3306",
+  "subsequentUnitResult": {
+    "filesPassed": 34,
+    "testsPassed": 339
+  },
+  "separateTypeFailure": "Public inquiry response must omit portal-only id; added explicit optional return contract instead of exposing id to satisfy TypeScript"
+}

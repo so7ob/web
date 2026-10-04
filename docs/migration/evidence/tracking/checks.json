@@ -1,0 +1,52 @@
+{
+  "sourceSHA": "fc4a959e87e7c3750a0546f9d4fa10e31ac3b63c",
+  "verifiedAt": "2026-10-04T19:18:40Z",
+  "syntheticOnly": true,
+  "baseCommit": "8c1868bc1fdb1d83fc57d86cb8a95bf3885861c5",
+  "tests": {
+    "fullUnitIntegration": {
+      "passed": 339,
+      "files": 34,
+      "evidence": "delivery-unit.log"
+    },
+    "subsequentTrackingPolicySessionIntegration": {
+      "passed": 28,
+      "files": 3
+    },
+    "fullBrowser": {
+      "passed": 96,
+      "retries": 0,
+      "evidence": "delivery-e2e.log"
+    },
+    "lint": "passed",
+    "typecheck": "passed",
+    "build": "passed",
+    "infra": "passed",
+    "interruptedRun": "verification-interruption.json",
+    "previousInterruptedBrowserAttempt": {
+      "status": "interrupted-failed",
+      "passed": 31,
+      "notRun": 42,
+      "error": "Playwright worker module disappeared during independently started npm ci",
+      "evidence": "e2e-interrupted.log"
+    }
+  },
+  "visual": {
+    "differentPixelFraction": 0,
+    "cases": 4,
+    "languages": [
+      "ar",
+      "en"
+    ],
+    "widths": [
+      375,
+      1280
+    ],
+    "humanReview": "pending",
+    "evidence": "visual/summary.json"
+  },
+  "productionDataMigrated": false,
+  "fullMigrationAccepted": false,
+  "deliveryReady": true,
+  "deliveryCheckedAt": "2026-10-04T19:31:53.229771+00:00"
+}

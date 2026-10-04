@@ -53,3 +53,5 @@ export { formatAdminDashboard } from "./admin/presentation.js";
 export { PageTemplateService } from "./admin/templates.js";
 
 export { PagePublicationService } from "./admin/publication.js";
+export { TrackService } from "./track/service.js";
+export * from "./track/session.js";

@@ -915,7 +915,14 @@
       "siteSetting",
       "trackLink"
     ],
-    "inventoryNote": "File-level guard/entity hints; handler authorization requires reviewed contract tests."
+    "inventoryNote": "File-level guard/entity hints; handler authorization requires reviewed contract tests.",
+    "target": "apps/api/src/track/controller.ts",
+    "targetAliases": [
+      "/api/admin/track",
+      "/api/v1/admin/track"
+    ],
+    "evidence": "docs/migration/tracking.md",
+    "status": "implemented; scoped contract and permission tests passed; full acceptance pending"
   },
   {
     "id": "API-081",
@@ -933,7 +940,14 @@
       "siteSetting",
       "trackLink"
     ],
-    "inventoryNote": "File-level guard/entity hints; handler authorization requires reviewed contract tests."
+    "inventoryNote": "File-level guard/entity hints; handler authorization requires reviewed contract tests.",
+    "target": "apps/api/src/track/controller.ts",
+    "targetAliases": [
+      "/api/admin/track",
+      "/api/v1/admin/track"
+    ],
+    "evidence": "docs/migration/tracking.md",
+    "status": "implemented; scoped contract and permission tests passed; full acceptance pending"
   },
   {
     "id": "API-053",
@@ -1197,7 +1211,14 @@
     "sourceSHA": "fc4a959e87e7c3750a0546f9d4fa10e31ac3b63c",
     "guards": [],
     "entities": [],
-    "inventoryNote": "File-level guard/entity hints; handler authorization requires reviewed contract tests."
+    "inventoryNote": "File-level guard/entity hints; handler authorization requires reviewed contract tests.",
+    "target": "apps/api/src/track/controller.ts",
+    "targetAliases": [
+      "/api/track/card",
+      "/api/v1/track/card"
+    ],
+    "evidence": "docs/migration/tracking.md",
+    "status": "implemented; scoped contract and permission tests passed; full acceptance pending"
   },
   {
     "id": "API-083",
@@ -1209,7 +1230,14 @@
     "entities": [
       "trackLink"
     ],
-    "inventoryNote": "File-level guard/entity hints; handler authorization requires reviewed contract tests."
+    "inventoryNote": "File-level guard/entity hints; handler authorization requires reviewed contract tests.",
+    "target": "apps/api/src/track/controller.ts",
+    "targetAliases": [
+      "/api/track/exchange",
+      "/api/v1/track/exchange"
+    ],
+    "evidence": "docs/migration/tracking.md",
+    "status": "implemented; scoped contract and permission tests passed; full acceptance pending"
   },
   {
     "id": "API-084",
@@ -1219,7 +1247,14 @@
     "sourceSHA": "fc4a959e87e7c3750a0546f9d4fa10e31ac3b63c",
     "guards": [],
     "entities": [],
-    "inventoryNote": "File-level guard/entity hints; handler authorization requires reviewed contract tests."
+    "inventoryNote": "File-level guard/entity hints; handler authorization requires reviewed contract tests.",
+    "target": "apps/api/src/track/controller.ts",
+    "targetAliases": [
+      "/api/track/reply",
+      "/api/v1/track/reply"
+    ],
+    "evidence": "docs/migration/tracking.md",
+    "status": "implemented; scoped contract and permission tests passed; full acceptance pending"
   },
   {
     "id": "API-059",

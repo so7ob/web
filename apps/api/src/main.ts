@@ -1,4 +1,6 @@
 import "reflect-metadata";
+import { TrackController, AdminTrackController, trackAttemptMiddleware } from "./track/controller.js";
+import { TrackService, MailQueue, PayloadCipher } from "@so7ob/server";
 import { PageTemplateController, templateBodyMiddleware } from "./admin/templates.controller.js";
 import { PageTemplateService } from "@so7ob/server";
 import { AdminOperationsController } from "./admin/operations.controller.js";
@@ -69,6 +71,7 @@ class HealthController {
 }
 @Module({
   controllers: [
+    TrackController, AdminTrackController,
     AdminOperationsController,
     PageAdministrationController,
     PageTemplateController,
@@ -84,6 +87,7 @@ class HealthController {
     ClaimController,
   ],
   providers: [
+    { provide: TrackService, useFactory: async () => { const db = await database(); return new TrackService(db, new MailQueue(db, new PayloadCipher()), process.env.SITE_URL!); } },
     { provide: PagePublicationService, useFactory: async () => new PagePublicationService(await database()) },
     { provide: PageTemplateService, useFactory: async () => new PageTemplateService(await database()) },
     {
@@ -189,6 +193,7 @@ async function main() {
     cmsBodyMiddleware(app.get(AuthenticationService), app.get(AuthHttpPolicy)),
   );
   app.use(templateBodyMiddleware(app.get(AuthenticationService), app.get(AuthHttpPolicy)));
+  app.use(trackAttemptMiddleware(await database(), app.get(AuthHttpPolicy)));
   app.use(express.json({ limit: "128kb" }));
   app.use(express.urlencoded({ extended: false, limit: "128kb" }));
   app.use(
@@ -358,6 +363,7 @@ async function main() {
         (char) => `\\u${char.charCodeAt(0).toString(16).padStart(4, "0")}`,
       );
       res.setHeader("Cache-Control", "no-store");
+      if (data.kind === "track") { res.setHeader("Referrer-Policy", "no-referrer"); res.setHeader("X-Robots-Tag", "noindex, nofollow"); }
       res
         .status(status)
         .type("html")

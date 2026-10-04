@@ -53,6 +53,11 @@ class OperationBody {
   @ApiPropertyOptional() @Allow() items?: unknown;
 }
 class SettingsBody {
+  @Allow() "track.forceLogin"?: unknown;
+  @Allow() "track.requestsMode"?: unknown;
+  @Allow() "track.inquiriesMode"?: unknown;
+  @Allow() "track.linkTtlDays"?: unknown;
+  @Allow() "track.allowGuestAttachments"?: unknown;
   @Allow() "contact.email"?: unknown;
   @Allow() "contact.phone"?: unknown;
   @Allow() "contact.address"?: unknown;

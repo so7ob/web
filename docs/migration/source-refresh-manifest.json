@@ -161,16 +161,22 @@
       "change": "added",
       "oldSHA256": null,
       "newSHA256": "4794aaf696eadb7cc0fc211119b4783ae5b272ccf1fa02e4adaa1b1301c34809",
-      "status": "pending-review-and-port",
-      "evidence": []
+      "status": "tracking adapted; scoped tests passed; full acceptance pending",
+      "evidence": [
+        "docs/migration/tracking.md",
+        "docs/migration/evidence/tracking/file-map.json"
+      ]
     },
     {
       "source": "src/app/[locale]/track/track-client.tsx",
       "change": "added",
       "oldSHA256": null,
       "newSHA256": "c2e0464b5e28e1a2210142303bfed463a9756dac457c6e803de89d6094a59960",
-      "status": "pending-review-and-port",
-      "evidence": []
+      "status": "tracking adapted; scoped tests passed; full acceptance pending",
+      "evidence": [
+        "docs/migration/tracking.md",
+        "docs/migration/evidence/tracking/file-map.json"
+      ]
     },
     {
       "source": "src/app/api/account/inquiries/route.ts",
@@ -185,8 +191,11 @@
       "change": "modified",
       "oldSHA256": "737776c0e5ed2d4eef732d586ae987266e04d67827ccd36ef168b4f6eeecd1a5",
       "newSHA256": "190dd3539d808fed63214312803341faf5efd7dc4a855db1f700b4b38f041cc2",
-      "status": "pending-review-and-port",
-      "evidence": []
+      "status": "tracking adapted; scoped tests passed; full acceptance pending",
+      "evidence": [
+        "docs/migration/tracking.md",
+        "docs/migration/evidence/tracking/file-map.json"
+      ]
     },
     {
       "source": "src/app/api/admin/media/[id]/route.ts",
@@ -277,8 +286,11 @@
       "change": "modified",
       "oldSHA256": "0be88bb0b8eac742c3310b7dec3a44abcd4450b27d00e31a847f6694781230e1",
       "newSHA256": "ae9864732002e594205eb619d6dfae391d1db61b84f071db0ed16e4a00a47d84",
-      "status": "pending-review-and-port",
-      "evidence": []
+      "status": "tracking adapted; scoped tests passed; full acceptance pending",
+      "evidence": [
+        "docs/migration/tracking.md",
+        "docs/migration/evidence/tracking/file-map.json"
+      ]
     },
     {
       "source": "src/app/api/admin/templates/[id]/apply/route.ts",
@@ -318,16 +330,22 @@
       "change": "added",
       "oldSHA256": null,
       "newSHA256": "9ecf37e68ea481ac26f2292efb3e35211c958ab78cbcbf4eb02bd5aa61a9bcdb",
-      "status": "pending-review-and-port",
-      "evidence": []
+      "status": "tracking adapted; scoped tests passed; full acceptance pending",
+      "evidence": [
+        "docs/migration/tracking.md",
+        "docs/migration/evidence/tracking/file-map.json"
+      ]
     },
     {
       "source": "src/app/api/attachments/[id]/route.ts",
       "change": "modified",
       "oldSHA256": "17e1d734c9a84146f88c8b0f3827bb40c7eefebbfbf14d542e725f2f37649672",
       "newSHA256": "d17d2b895ff23864fa09b1aac11ee04e429a48e72299c18064a0295faf9dc78d",
-      "status": "pending-review-and-port",
-      "evidence": []
+      "status": "tracking adapted; scoped tests passed; full acceptance pending",
+      "evidence": [
+        "docs/migration/tracking.md",
+        "docs/migration/evidence/tracking/file-map.json"
+      ]
     },
     {
       "source": "src/app/api/attachments/route.ts",
@@ -358,24 +376,33 @@
       "change": "added",
       "oldSHA256": null,
       "newSHA256": "ad9a99207b7e7bab79343d0e2039d1804eaa3b781c0e5f3423800d9571f50e53",
-      "status": "pending-review-and-port",
-      "evidence": []
+      "status": "tracking adapted; scoped tests passed; full acceptance pending",
+      "evidence": [
+        "docs/migration/tracking.md",
+        "docs/migration/evidence/tracking/file-map.json"
+      ]
     },
     {
       "source": "src/app/api/track/exchange/route.ts",
       "change": "added",
       "oldSHA256": null,
       "newSHA256": "32441f46de98ec67c1fd2fb9ff40811c0f4425b56eac7c8319b181e1207f66c0",
-      "status": "pending-review-and-port",
-      "evidence": []
+      "status": "tracking adapted; scoped tests passed; full acceptance pending",
+      "evidence": [
+        "docs/migration/tracking.md",
+        "docs/migration/evidence/tracking/file-map.json"
+      ]
     },
     {
       "source": "src/app/api/track/reply/route.ts",
       "change": "added",
       "oldSHA256": null,
       "newSHA256": "85c7a658df496214e685c05fca84923ae157a7474d86f4a5ecee9889f90f7490",
-      "status": "pending-review-and-port",
-      "evidence": []
+      "status": "tracking adapted; scoped tests passed; full acceptance pending",
+      "evidence": [
+        "docs/migration/tracking.md",
+        "docs/migration/evidence/tracking/file-map.json"
+      ]
     },
     {
       "source": "src/app/sitemap.ts",
@@ -617,8 +644,11 @@
       "change": "modified",
       "oldSHA256": "95468ffeda4429da6565e9f8ef6d999c698bb6f6041cb792aba7a0c931519b2d",
       "newSHA256": "7eea12225f6dda07218017866c3581126026446a76932423d5dd94e07fc6f332",
-      "status": "pending-review-and-port",
-      "evidence": []
+      "status": "tracking adapted; scoped tests passed; full acceptance pending",
+      "evidence": [
+        "docs/migration/tracking.md",
+        "docs/migration/evidence/tracking/file-map.json"
+      ]
     },
     {
       "source": "src/components/admin/media/media-client.tsx",
@@ -641,24 +671,33 @@
       "change": "modified",
       "oldSHA256": "af30ee7e336357887014b319e54aa5ea8f1fdac988c4761c2c9eaea9ca489425",
       "newSHA256": "b8ae8da5d7ae4800ee3333756f0e130eca046b502f54393f03fb6e6c79add8cd",
-      "status": "pending-review-and-port",
-      "evidence": []
+      "status": "tracking adapted; scoped tests passed; full acceptance pending",
+      "evidence": [
+        "docs/migration/tracking.md",
+        "docs/migration/evidence/tracking/file-map.json"
+      ]
     },
     {
       "source": "src/components/admin/settings/settings-client.tsx",
       "change": "modified",
       "oldSHA256": "f21b4cba256bc086c01d701e61f53950aeb697cc6ac78de3000a04e2bee276a4",
       "newSHA256": "d668fc821ed1af439246bb7ec9ad5a967086ba117f8d6291490f2a4129c929ab",
-      "status": "pending-review-and-port",
-      "evidence": []
+      "status": "tracking adapted; scoped tests passed; full acceptance pending",
+      "evidence": [
+        "docs/migration/tracking.md",
+        "docs/migration/evidence/tracking/file-map.json"
+      ]
     },
     {
       "source": "src/components/admin/track/track-panel.tsx",
       "change": "added",
       "oldSHA256": null,
       "newSHA256": "b85ecb039439eb93977a9bd67a97695d2a3fb7650db2e69ff32b1dc86139afd1",
-      "status": "pending-review-and-port",
-      "evidence": []
+      "status": "tracking adapted; scoped tests passed; full acceptance pending",
+      "evidence": [
+        "docs/migration/tracking.md",
+        "docs/migration/evidence/tracking/file-map.json"
+      ]
     },
     {
       "source": "src/components/admin/types.ts",
@@ -761,10 +800,12 @@
       "change": "modified",
       "oldSHA256": "3105564afc16b788deddf9620f24c7b2f5083664e9a0d2e174ed556fa7465b28",
       "newSHA256": "977491b0831e4b524689712caffe60a0ce712f7aaac20d1063a347bd8c9269fc",
-      "status": "ported-editor; scoped journeys passed; full acceptance pending",
+      "status": "tracking adapted; scoped tests passed; full acceptance pending",
       "evidence": [
         "docs/migration/tree-editor.md",
-        "docs/migration/evidence/tree-editor/file-map.json"
+        "docs/migration/evidence/tree-editor/file-map.json",
+        "docs/migration/tracking.md",
+        "docs/migration/evidence/tracking/file-map.json"
       ]
     },
     {
@@ -915,8 +956,11 @@
       "change": "added",
       "oldSHA256": null,
       "newSHA256": "7487f39a3ee6ed2e8af67561dd9a9762ff09e56eaa39e8208e7a2e534002d8b3",
-      "status": "pending-review-and-port",
-      "evidence": []
+      "status": "tracking adapted; scoped tests passed; full acceptance pending",
+      "evidence": [
+        "docs/migration/tracking.md",
+        "docs/migration/evidence/tracking/file-map.json"
+      ]
     },
     {
       "source": "src/lib/auth/audit.ts",
@@ -931,8 +975,11 @@
       "change": "modified",
       "oldSHA256": "24dc95a3b6f47ef770f3065dd0bdedce35e2823aa0a0580d16ce01d594f42867",
       "newSHA256": "7bc9f87fcf4272fd214bc34358da5cae34a9e80ac25e4b80bb4c533ca3406c2d",
-      "status": "pending-review-and-port",
-      "evidence": []
+      "status": "tracking adapted; scoped tests passed; full acceptance pending",
+      "evidence": [
+        "docs/migration/tracking.md",
+        "docs/migration/evidence/tracking/file-map.json"
+      ]
     },
     {
       "source": "src/lib/auth/notifications.ts",
@@ -1102,8 +1149,11 @@
       "change": "modified",
       "oldSHA256": "fb8a8aa2e0ed4cbd1359960bfe5b4a90940690f99697babbd4afe9ff72c37411",
       "newSHA256": "33bde609e7e65ef781fad484259119fd1cea319b15dd39870154b717e566fd47",
-      "status": "pending-review-and-port",
-      "evidence": []
+      "status": "tracking adapted; scoped tests passed; full acceptance pending",
+      "evidence": [
+        "docs/migration/tracking.md",
+        "docs/migration/evidence/tracking/file-map.json"
+      ]
     },
     {
       "source": "src/lib/templates/builtin.ts",
@@ -1132,32 +1182,44 @@
       "change": "added",
       "oldSHA256": null,
       "newSHA256": "1603fb5a21d2da8339a7c569a7755cd4895c153c1c93ba3cca18f92433e9367b",
-      "status": "pending-review-and-port",
-      "evidence": []
+      "status": "tracking adapted; scoped tests passed; full acceptance pending",
+      "evidence": [
+        "docs/migration/tracking.md",
+        "docs/migration/evidence/tracking/file-map.json"
+      ]
     },
     {
       "source": "src/lib/track/policy.ts",
       "change": "added",
       "oldSHA256": null,
       "newSHA256": "d22c7c4066601b3297280aa2535b487bb4ceab8d84d0c297c3a3666f4f816e1b",
-      "status": "pending-review-and-port",
-      "evidence": []
+      "status": "tracking adapted; scoped tests passed; full acceptance pending",
+      "evidence": [
+        "docs/migration/tracking.md",
+        "docs/migration/evidence/tracking/file-map.json"
+      ]
     },
     {
       "source": "src/lib/track/service.ts",
       "change": "added",
       "oldSHA256": null,
       "newSHA256": "0651490d56540f7ebbb181726d20d939a537c8425dbef47a73308e6470ddba74",
-      "status": "pending-review-and-port",
-      "evidence": []
+      "status": "tracking adapted; scoped tests passed; full acceptance pending",
+      "evidence": [
+        "docs/migration/tracking.md",
+        "docs/migration/evidence/tracking/file-map.json"
+      ]
     },
     {
       "source": "src/lib/track/session.ts",
       "change": "added",
       "oldSHA256": null,
       "newSHA256": "27d39fb5fa1a557dbe904641fbd447d3a955873fcd4fd51117fe35a4ceb593ec",
-      "status": "pending-review-and-port",
-      "evidence": []
+      "status": "tracking adapted; scoped tests passed; full acceptance pending",
+      "evidence": [
+        "docs/migration/tracking.md",
+        "docs/migration/evidence/tracking/file-map.json"
+      ]
     },
     {
       "source": "tests/jsdom-preload.ts",

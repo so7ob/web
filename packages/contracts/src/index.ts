@@ -30,3 +30,4 @@ export * from "./content/clipboard.js";
 export * from "./page-settings.js";
 
 export * from "./schedule.js";
+export * from "./track.js";

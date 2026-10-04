@@ -51,4 +51,5 @@ export type PublicView =
       user: AccountIdentity;
     })
   | (SiteViewBase & { kind: "admin"; admin: AdminPayload; user: AdminIdentity })
+  | (SiteViewBase & { kind: "track"; parameters: {token:string;cardParam:string} })
   | (SiteViewBase & { kind: "not-found" });
