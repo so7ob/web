@@ -57,6 +57,7 @@ interface MultipartFile {
 class MediaPatchDto {
   @ApiPropertyOptional() @Allow() altText?: unknown;
   @ApiPropertyOptional() @Allow() title?: unknown;
+  @ApiPropertyOptional() @Allow() folder?: unknown;
 }
 @Catch(HttpException)
 class UploadErrors implements ExceptionFilter {
@@ -199,8 +200,8 @@ export class FileController {
 @RequiresPermission("media.manage")
 export class MediaController {
   constructor(@Inject(FileService) private readonly files: FileService) {}
-  @Get() list(@Req() req: FileRequest, @Query("page") page?: string) {
-    return this.files.listMedia(req.actor, page);
+  @Get() list(@Req() req: FileRequest, @Query("page") page?: string, @Query("search") search?:string,@Query("folder") folder?:string,@Query("usage") usage?:string) {
+    return this.files.listMedia(req.actor, page,{search,folder,usage});
   }
   @Post()
   @RequiresPermission("media.upload")
@@ -221,12 +222,14 @@ export class MediaController {
     @Req() req: FileRequest,
     @UploadedFile() file: MultipartFile | undefined,
     @Body("altText") altText: unknown,
+    @Body("folder") folder: unknown,
   ) {
     if (!file) throw new AuthFault(400, "no_file");
     return this.files.uploadMedia(
       req.actor,
       asFile(file),
       String(altText ?? ""),
+      folder,
     );
   }
   @Patch(":id") update(

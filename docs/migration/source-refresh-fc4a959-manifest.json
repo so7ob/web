@@ -1,9 +1,9 @@
 {
   "source": "https://github.com/so7ob/Website",
-  "sourceSHA": "634e449b33bb5679b62b7cba0b63411be833da70",
+  "sourceSHA": "fc4a959e87e7c3750a0546f9d4fa10e31ac3b63c",
   "previousSourceSHA": "5321b7fd11db421c83290b262f276811e5f04e5f",
-  "verifiedAt": "2026-10-04T19:49:08Z",
-  "commits": 17,
+  "verifiedAt": "2026-10-03T19:09:25Z",
+  "commits": 15,
   "files": [
     {
       "source": ".gitignore",
@@ -202,30 +202,16 @@
       "change": "modified",
       "oldSHA256": "0c44c82e6e8349067b98e18e211cf7cefd67cdd6db4427044435cad0875d9c7f",
       "newSHA256": "fee5b5f68e082db08b96520360e2b26b8916c7a6d7489412751665ee29df5f5a",
-      "status": "ported-media; scoped journeys passed; full acceptance pending",
-      "evidence": [
-        "docs/migration/media-library.md",
-        "docs/migration/evidence/media-library/file-map.json"
-      ],
-      "destination": [
-        "apps/api/src/files/controller.ts",
-        "packages/server/src/files/service.ts"
-      ]
+      "status": "pending-review-and-port",
+      "evidence": []
     },
     {
       "source": "src/app/api/admin/media/route.ts",
       "change": "modified",
       "oldSHA256": "737f202eae0d42d7803b4f94df038b17e940932d4d42d8b7920b4422b1d6cde3",
       "newSHA256": "212fb51bfe569212d7af065e489fbfb44cf7614cfd1275a691c69b3080b7e4aa",
-      "status": "ported-media; scoped journeys passed; full acceptance pending",
-      "evidence": [
-        "docs/migration/media-library.md",
-        "docs/migration/evidence/media-library/file-map.json"
-      ],
-      "destination": [
-        "apps/api/src/files/controller.ts",
-        "packages/server/src/files/service.ts"
-      ]
+      "status": "pending-review-and-port",
+      "evidence": []
     },
     {
       "source": "src/app/api/admin/pages/[id]/discard/route.ts",
@@ -669,14 +655,8 @@
       "change": "modified",
       "oldSHA256": "8278c82da482165069f82b3e691e38a1a1820ce19342c53ed7d359446e5af15e",
       "newSHA256": "49e903964545f0e09565a3f10c403e276c0d6f389d54d11497d431ad36a09954",
-      "status": "ported-media; scoped journeys passed; full acceptance pending",
-      "evidence": [
-        "docs/migration/media-library.md",
-        "docs/migration/evidence/media-library/file-map.json"
-      ],
-      "destination": [
-        "apps/web/src/components/admin/media/media-client.tsx"
-      ]
+      "status": "pending-review-and-port",
+      "evidence": []
     },
     {
       "source": "src/components/admin/notifications/notifications-client.tsx",
@@ -925,14 +905,8 @@
       "change": "added",
       "oldSHA256": null,
       "newSHA256": "b3bfd18ebcbb1ebf342a82ef8e579ff930578d5443374a349213a7e1ebb523fc",
-      "status": "ported-media; scoped journeys passed; full acceptance pending",
-      "evidence": [
-        "docs/migration/media-library.md",
-        "docs/migration/evidence/media-library/file-map.json"
-      ],
-      "destination": [
-        "packages/contracts/src/media.test.ts"
-      ]
+      "status": "pending-review-and-port",
+      "evidence": []
     },
     {
       "source": "src/lib/__tests__/page-settings.test.ts",
@@ -1133,15 +1107,8 @@
       "change": "added",
       "oldSHA256": null,
       "newSHA256": "fbcc0abe70f59b3e930a1fb5cb91a740447dafa3d1d08b787896cc670baa0912",
-      "status": "ported-media; scoped journeys passed; full acceptance pending",
-      "evidence": [
-        "docs/migration/media-library.md",
-        "docs/migration/evidence/media-library/file-map.json"
-      ],
-      "destination": [
-        "packages/contracts/src/media.ts",
-        "packages/server/src/files/media-usage.ts"
-      ]
+      "status": "pending-review-and-port",
+      "evidence": []
     },
     {
       "source": "src/lib/page-settings.ts",
@@ -1266,12 +1233,9 @@
       "source": "worklog.md",
       "change": "modified",
       "oldSHA256": "cfa226dcd064e54ed8c5519b2cbbd729000842043d26fbd9123aeb7c474c44cb",
-      "newSHA256": "863535c9a24b93e388cd9eb68f9a67d2914fe6f8e2f9834afb989431cdd20ba6",
-      "status": "reference-only work log; reviewed; no runtime port",
-      "evidence": [
-        "docs/migration/source-refresh.md",
-        "docs/migration/evidence/media-library/source-comparison.json"
-      ]
+      "newSHA256": "ad50a51f6a65504cac0249c921671e34e30dabfb83b370a280e1ef2b249d2c91",
+      "status": "pending-review-and-port",
+      "evidence": []
     }
   ],
   "inventory": {
@@ -1818,11 +1782,5 @@
     ],
     "explicitHttpHandlers": 82
   },
-  "previousRefreshSHA": "fc4a959e87e7c3750a0546f9d4fa10e31ac3b63c",
-  "deliveryRecheck": {
-    "sourceSHA": "634e449b33bb5679b62b7cba0b63411be833da70",
-    "verifiedAt": "2026-10-04T20:08:34.330563+00:00",
-    "method": "git ls-remote https://github.com/so7ob/Website.git refs/heads/main refs/heads/develop",
-    "advanced": false
-  }
+  "previousRefreshSHA": "d214018f3337198d8e17e5e7efa535a846ba6be2"
 }

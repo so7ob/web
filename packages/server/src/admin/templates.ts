@@ -1,3 +1,4 @@
+import {assertMediaReferences} from "../files/media-usage.js";
 import type { DataSource, QueryRunner } from 'typeorm';
 import { can, validateContent, type AuthUser, type Permission } from '@so7ob/contracts';
 import type { Page, PageTemplate } from '../database/models.js';
@@ -18,6 +19,7 @@ export class PageTemplateService {
     async list(actor: AuthUser) {
         permit(actor, 'pages.view');
         return transaction(this.db, async (r) => {
+            await lockOperation(r, "cms-pages");
             await lockOperation(r, 'cms-templates');
             for (const def of BUILTIN_TEMPLATES) {
                 const ar = validateContent(JSON.stringify({ schemaVersion: 1, blocks: def.blocksAr }));
@@ -40,6 +42,8 @@ export class PageTemplateService {
         if (!parsed.ok)
             throw new AuthFault(400, parsed.error);
         return transaction(this.db, async (r) => {
+            await lockOperation(r, "cms-pages");
+            await assertMediaReferences(r,parsed.data);
             const id = newId();
             await insertRecord(r, 'PageTemplate', { id, ...parsed.data, kind: 'custom', createdById: actor.id });
             const t = await this.template(r, id);
@@ -50,6 +54,7 @@ export class PageTemplateService {
     async update(actor: AuthUser, id: string, body: Record<string, unknown>) {
         permit(actor, 'pages.edit');
         return transaction(this.db, async (r) => {
+            await lockOperation(r, "cms-pages");
             const current = await this.template(r, id);
             if (current.kind === 'builtin')
                 throw new AuthFault(400, 'builtin_readonly');
@@ -65,6 +70,7 @@ export class PageTemplateService {
     async remove(actor: AuthUser, id: string) {
         permit(actor, 'pages.edit');
         return transaction(this.db, async (r) => {
+            await lockOperation(r, "cms-pages");
             const t = await this.template(r, id);
             if (t.kind === 'builtin')
                 throw new AuthFault(400, 'builtin_readonly');
@@ -79,6 +85,7 @@ export class PageTemplateService {
         if (!locale)
             throw new AuthFault(400, 'locale_required');
         return transaction(this.db, async (r) => {
+            await lockOperation(r, "cms-pages");
             // Same lock order as every existing CMS writer; backup, draft, usage and audit commit together.
             await lockOperation(r, 'cms-pages');
             const [page]: Page[] = await r.query('SELECT * FROM Page WHERE id=? FOR UPDATE', [typeof body.pageId === 'string' ? body.pageId : '']);
@@ -96,6 +103,7 @@ export class PageTemplateService {
             const content = validateContent(resolved.blocks);
             if (!content.ok)
                 throw new AuthFault(400, 'invalid_blocks', { error: content.error });
+            await assertMediaReferences(r,{blocks:content.json});
             const field = locale === 'ar' ? 'draftBlocksAr' : 'draftBlocksEn';
             const [last]: Array<{
                 version: number;

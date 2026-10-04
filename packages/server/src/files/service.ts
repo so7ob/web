@@ -1,6 +1,8 @@
 import type { DataSource } from "typeorm";
 import {
   can,
+  normalizeMediaFolder,
+  type MediaLibraryResponse,
   canAccessRequest,
   canAccessInquiry,
   type AuthUser,
@@ -12,12 +14,13 @@ import type {
   Inquiry,
 } from "../database/models.js";
 import { AuthFault, audit, newId, transaction } from "../auth/persistence.js";
-import { insertRecord, notifyStaff } from "../business/persistence.js";
+import { insertRecord, notifyStaff, lockOperation } from "../business/persistence.js";
 import { pageNumber } from "../business/account.js";
 import { FileStore, type StoredUpload } from "./storage.js";
 import { MEDIA_MIME } from "./upload-validation.js";
 import { FileCleanupQueue } from "./cleanup.js";
 import type { TrackService, TrackContext } from "../track/service.js";
+import {mediaUsageIndex} from "./media-usage.js";
 export class FileService {
   constructor(
     private readonly db: DataSource,
@@ -180,31 +183,22 @@ export class FileService {
     if (!file) throw new AuthFault(404, "not_found");
     return { ...file, mimeType: record.mimeType, filename: record.filename };
   }
-  async listMedia(user: AuthUser, rawPage?: string) {
+  async listMedia(user: AuthUser, rawPage?: string, filters: {search?:string;folder?:string;usage?:string} = {}):Promise<MediaLibraryResponse> {
     this.permission(user, "media.manage");
-    const page = pageNumber(rawPage),
-      pageSize = 24;
-    const [[count], rows] = await Promise.all([
-      this.db.query("SELECT COUNT(*) n FROM MediaItem"),
-      this.db.query(
-        "SELECT m.id,m.filename,m.mimeType,m.size,m.altText,m.title,m.createdAt,u.name uploadedBy FROM MediaItem m LEFT JOIN User u ON u.id=m.uploadedById ORDER BY m.createdAt DESC LIMIT ? OFFSET ?",
-        [pageSize, (page - 1) * pageSize],
-      ),
-    ]);
-    return {
-      ok: true,
-      total: Number(count.n),
-      page,
-      pageSize,
-      media: rows.map((m: Record<string, unknown>) => ({
-        ...m,
-        url: "/api/media/" + m.id,
-        uploadedBy: m.uploadedBy ?? "—",
-      })),
-    };
+    const scalar=(value:unknown):string=>typeof value==='string'?value:Array.isArray(value)&&typeof value[0]==='string'?value[0]:'';
+    const page=pageNumber(rawPage),pageSize=24,search=scalar(filters.search).trim().slice(0,100).toLowerCase(),folder=scalar(filters.folder).slice(0,60),usage=scalar(filters.usage);
+    return transaction(this.db,async r=>{
+      await lockOperation(r,'cms-pages');
+      const index=await mediaUsageIndex(r);
+      const all:Array<MediaItem&{uploadedBy:string|null}>=await r.query('SELECT m.id,m.filename,m.mimeType,m.size,m.altText,m.title,m.folder,m.createdAt,u.name uploadedBy FROM MediaItem m LEFT JOIN User u ON u.id=m.uploadedById ORDER BY m.createdAt DESC,m.id DESC');
+      const unusedTotal=all.filter(m=>!index.get(m.id)?.length).length,folders=[...new Set(all.map(m=>m.folder))].sort((a,b)=>a.localeCompare(b));
+      const filtered=all.filter(m=>(!folder||m.folder===folder)&&(!search||[m.filename,m.altText??'',m.title??''].some(v=>v.toLowerCase().includes(search)))&&(usage==='in_use'?!!index.get(m.id)?.length:usage==='unused'?!index.get(m.id)?.length:true));
+      return {ok:true,total:filtered.length,unusedTotal,page,pageSize,folders,media:filtered.slice((page-1)*pageSize,page*pageSize).map(m=>({...m,createdAt:m.createdAt.toISOString(),url:'/api/media/'+m.id,uploadedBy:m.uploadedBy??'—',usageCount:index.get(m.id)?.length??0}))};
+    });
   }
-  async uploadMedia(user: AuthUser, file: File, altText: string) {
+  async uploadMedia(user: AuthUser, file: File, altText: string, rawFolder?:unknown) {
     this.permission(user, "media.upload");
+    const folder=normalizeMediaFolder(rawFolder);if(folder===null)throw new AuthFault(400,"invalid_folder");
     const stored = await this.files.store(file, "media");
     if ("error" in stored) throw new AuthFault(400, stored.error);
     return this.persisted(stored, () =>
@@ -214,19 +208,20 @@ export class FileService {
           id,
           ...stored,
           altText: altText.slice(0, 300) || null,
+          folder,
           uploadedById: user.id,
         });
         await audit(
           r,
           "media.uploaded",
           user,
-          { filename: stored.filename, size: stored.size },
+          { filename: stored.filename, size: stored.size, folder },
           "media",
           id,
         );
         return {
           ok: true,
-          media: { id, url: "/api/media/" + id, filename: stored.filename },
+          media: { id, url: "/api/media/" + id, filename: stored.filename, folder },
         };
       }),
     );
@@ -234,7 +229,7 @@ export class FileService {
   async updateMedia(
     user: AuthUser,
     id: string,
-    body: { altText?: unknown; title?: unknown },
+    body: { altText?: unknown; title?: unknown; folder?:unknown },
   ) {
     this.permission(user, "media.manage");
     const updates: Record<string, string | null> = {};
@@ -242,6 +237,7 @@ export class FileService {
       updates.altText = body.altText.slice(0, 300) || null;
     if (typeof body.title === "string")
       updates.title = body.title.slice(0, 200) || null;
+    if(body.folder!==undefined){const folder=normalizeMediaFolder(body.folder);if(folder===null)throw new AuthFault(400,"invalid_folder");updates.folder=folder;}
     if (!Object.keys(updates).length) throw new AuthFault(400, "invalid");
     return transaction(this.db, async (r) => {
       const [row] = await r.query(
@@ -258,20 +254,24 @@ export class FileService {
         [...Object.values(updates), id],
       );
       const [media] = await r.query(
-        "SELECT id,altText,title FROM MediaItem WHERE id=?",
+        "SELECT id,altText,title,folder FROM MediaItem WHERE id=?",
         [id],
       );
+      await audit(r,"media.updated",user,updates,"media",id);
       return { ok: true, media };
     });
   }
   async deleteMedia(user: AuthUser, id: string) {
     this.permission(user, "media.manage");
-    return transaction(this.db, async (r) => {
+    const result=await transaction(this.db, async (r) => {
+      await lockOperation(r,"cms-pages");
       const [item]: MediaItem[] = await r.query(
         "SELECT * FROM MediaItem WHERE id=? FOR UPDATE",
         [id],
       );
       if (!item) throw new AuthFault(404, "not_found");
+      const usage=(await mediaUsageIndex(r)).get(id)??[];
+      if(usage.length){await audit(r,"media.delete_blocked",user,{filename:item.filename,usageCount:usage.length},"media",id);return {ok:false as const,usage};}
       await r.query("DELETE FROM MediaItem WHERE id=?", [id]);
       await new FileCleanupQueue(this.db, this.files).enqueue(
         r,
@@ -285,7 +285,9 @@ export class FileService {
         "media",
         id,
       );
-      return { ok: true };
+      return { ok: true as const };
     });
+    if(!result.ok)throw new AuthFault(409,"media_in_use",{usage:result.usage});
+    return result;
   }
 }

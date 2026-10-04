@@ -1,0 +1,146 @@
+{
+  "sourceSHA": "634e449b33bb5679b62b7cba0b63411be833da70",
+  "syntheticOnly": true,
+  "threshold": 0.005,
+  "metric": "Exact RGB inequality; full page; no masks",
+  "results": [
+    {
+      "kind": "reference",
+      "locale": "ar",
+      "device": "desktop",
+      "status": 200,
+      "errors": [],
+      "network": [],
+      "axe": [],
+      "screenshot": "reference-ar-desktop.png"
+    },
+    {
+      "kind": "reference",
+      "locale": "ar",
+      "device": "mobile",
+      "status": 200,
+      "errors": [],
+      "network": [],
+      "axe": [],
+      "screenshot": "reference-ar-mobile.png"
+    },
+    {
+      "kind": "reference",
+      "locale": "en",
+      "device": "desktop",
+      "status": 200,
+      "errors": [],
+      "network": [],
+      "axe": [],
+      "screenshot": "reference-en-desktop.png"
+    },
+    {
+      "kind": "reference",
+      "locale": "en",
+      "device": "mobile",
+      "status": 200,
+      "errors": [],
+      "network": [],
+      "axe": [],
+      "screenshot": "reference-en-mobile.png"
+    },
+    {
+      "kind": "target",
+      "locale": "ar",
+      "device": "desktop",
+      "status": 200,
+      "errors": [],
+      "network": [],
+      "axe": [],
+      "screenshot": "target-ar-desktop.png"
+    },
+    {
+      "kind": "target",
+      "locale": "ar",
+      "device": "mobile",
+      "status": 200,
+      "errors": [],
+      "network": [],
+      "axe": [],
+      "screenshot": "target-ar-mobile.png"
+    },
+    {
+      "kind": "target",
+      "locale": "en",
+      "device": "desktop",
+      "status": 200,
+      "errors": [],
+      "network": [],
+      "axe": [],
+      "screenshot": "target-en-desktop.png"
+    },
+    {
+      "kind": "target",
+      "locale": "en",
+      "device": "mobile",
+      "status": 200,
+      "errors": [],
+      "network": [],
+      "axe": [],
+      "screenshot": "target-en-mobile.png"
+    }
+  ],
+  "comparisons": [
+    {
+      "locale": "ar",
+      "device": "desktop",
+      "referenceSize": [
+        1280,
+        900
+      ],
+      "targetSize": [
+        1280,
+        900
+      ],
+      "differentPixelFraction": 0,
+      "pass": true
+    },
+    {
+      "locale": "ar",
+      "device": "mobile",
+      "referenceSize": [
+        375,
+        1214
+      ],
+      "targetSize": [
+        375,
+        1214
+      ],
+      "differentPixelFraction": 0,
+      "pass": true
+    },
+    {
+      "locale": "en",
+      "device": "desktop",
+      "referenceSize": [
+        1280,
+        900
+      ],
+      "targetSize": [
+        1280,
+        900
+      ],
+      "differentPixelFraction": 0,
+      "pass": true
+    },
+    {
+      "locale": "en",
+      "device": "mobile",
+      "referenceSize": [
+        375,
+        1192
+      ],
+      "targetSize": [
+        375,
+        1192
+      ],
+      "differentPixelFraction": 0,
+      "pass": true
+    }
+  ]
+}

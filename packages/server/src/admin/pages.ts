@@ -1,3 +1,4 @@
+import {assertMediaReferences} from "../files/media-usage.js";
 import { PagePublicationService } from "./publication.js";
 import type { DataSource, QueryRunner } from "typeorm";
 import {
@@ -324,6 +325,7 @@ export class PageAdministrationService {
           [newId(), page.slug, updates.slug],
         );
       if (!Object.keys(updates).length) throw new AuthFault(400, "invalid");
+      await assertMediaReferences(r,updates);
       await r.query(
         `UPDATE Page SET ${Object.keys(updates)
           .map((k) => "`" + k + "`=?")
@@ -372,6 +374,7 @@ export class PageAdministrationService {
         ar = checkedDocument(p.draftBlocksAr),
         en = checkedDocument(p.draftBlocksEn);
       if (!ar.count && !en.count) throw new AuthFault(400, "empty_page");
+      await assertMediaReferences(r,{blocksAr:ar.json,blocksEn:en.json});
       const maxima: Array<{ locale: string; n: number }> = await r.query(
         "SELECT locale,MAX(version) n FROM PageVersion WHERE pageId=? GROUP BY locale",
         [id],
@@ -474,6 +477,7 @@ export class PageAdministrationService {
           versions.find((v) => v.locale === "ar")?.blocks ?? page.draftBlocksAr,
         en =
           versions.find((v) => v.locale === "en")?.blocks ?? page.draftBlocksEn;
+      await assertMediaReferences(r,{blocksAr:ar,blocksEn:en});
       // Source restores available locales and keeps a missing locale's current draft, without publishing.
       await r.query(
         "UPDATE Page SET draftBlocksAr=?,draftBlocksEn=?,draftRevision=draftRevision+1,draftUpdatedAt=?,draftUpdatedById=?,editorTouchedAt=UTC_TIMESTAMP(3),updatedAt=UTC_TIMESTAMP(3) WHERE id=?",
