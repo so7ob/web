@@ -40,9 +40,9 @@
     },
     {
       "name": "operational recovery",
-      "result": "7 phases passed; 102 historical webhooks; separate recovered key handoff",
-      "localLog": ".migration/operational-restore/final-key-handoff.log",
-      "sha256": "8c94e3503db92466dd4fe6791c1a054d673cf25d0675aeb0fe5da84ffa1fbb30"
+      "result": "7 phases passed including restored published SSR and client asset; 102 historical webhooks; separate recovered key handoff",
+      "localLog": ".migration/operational-restore/final-ssr.log",
+      "sha256": "b296ac803aad4049c91078b899c8f0e355b23b3a6f46a184ad5cd57685c93252"
     }
   ],
   "diffCheck": "passed",

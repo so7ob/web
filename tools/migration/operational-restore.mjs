@@ -108,6 +108,8 @@ try {
   // Include a referenced public file and an unreferenced durable cleanup job in the same snapshot.
   await source.query("INSERT INTO MediaItem(id,filename,storedName,mimeType,size,folder) VALUES('restoremedia','تجريبي.png',?,'image/png',?,'general')", [filename, bytes.length]);
   writeFileSync(join(sourceData, 'uploads', 'orphan.txt'), 'synthetic orphan', { mode: 0o600 });
+  const blocks = title => JSON.stringify([{ id: 'restorehero', type: 'hero', props: { title, titleAccent: '', description: 'Synthetic recovered CMS' } }]);
+  await source.query('INSERT INTO Page(id,slug,titleAr,titleEn,status,visibility,allowedRoles,publishedBlocksAr,publishedBlocksEn,draftBlocksAr,draftBlocksEn) VALUES(?,?,?,?,?,?,?,?,?,?,?)', ['restorepage', 'recovery-synthetic', 'صفحة مستعادة', 'Recovered page', 'published', 'public', '[]', blocks('محتوى منشور مستعاد'), blocks('Published restore content'), blocks('PRIVATE RESTORE DRAFT'), blocks('PRIVATE RESTORE DRAFT')]);
   const queue = new MailQueue(source, new PayloadCipher(keys.OUTBOX_KEY));
   const enqueue = label => transaction(source, r => queue.enqueue(r, mail, sha256('restore:' + run + ':' + label)));
   const ambiguous = await enqueue('ambiguous');
@@ -183,8 +185,12 @@ try {
   const session = async raw => (await fetch(origin + '/api/auth/session', { headers: { Cookie: '__Host-so7ob.session=' + raw } })).json();
   assert.equal((await session(active.raw)).user.id, 'restore-user'); assert.deepEqual(await session(revoked.raw), {}); assert.deepEqual(await session(expired.raw), {});
   const file = await fetch(origin + '/api/media/restoremedia'); assert.equal(file.status, 200); assert.deepEqual(Buffer.from(await file.arrayBuffer()), bytes);
+  const published = await fetch(origin + '/en/recovery-synthetic'); assert.equal(published.status, 200);
+  const html = await published.text(); assert(html.includes('Published restore content')); assert(!html.includes('PRIVATE RESTORE DRAFT'));
+  const script = html.match(/<script[^>]+src="([^"]+)"/); assert(script && script[1].startsWith('/assets/'));
+  const asset = await fetch(origin + script[1]); assert.equal(asset.status, 200); assert((await asset.arrayBuffer()).byteLength > 0);
   await stop(api);
-  mark('recovered Nest reads files and live session; revoked/expired sessions stay rejected');
+  mark('recovered SSR and client asset served without private draft; recovered Nest reads files and live session; revoked/expired sessions stay rejected');
   smtpMode = 'accept';
   const recoveredWorker = worker({ ...targetEnv, ...recoveredKeys, DATA_DIR: targetData }, release); assert.equal((await once(recoveredWorker, 'exit'))[0], 0);
   assert.equal((await target.query('SELECT status FROM MailJob WHERE id=?', [ambiguous.id]))[0].status, 'uncertain');

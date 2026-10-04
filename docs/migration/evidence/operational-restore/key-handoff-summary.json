@@ -1,14 +1,14 @@
 {
   "syntheticOnly": true,
   "productionMigration": false,
-  "codeBaseCommit": "c5aed05f8d2c84293c6f7e1909b1343a5299e8dc",
+  "codeBaseCommit": "34350da6688b013b8e4beba812c93dedc4813d1b",
   "workingTreeDirty": true,
-  "at": "2026-10-04T22:00:37.560Z",
+  "at": "2026-10-04T21:56:39.062Z",
   "node": "v24.21.0",
   "releaseSha256": "0e58eb2c0cf8f9b9de4f141617f64679c8190e435ad9d217763857d330ae3d33",
   "lockSha256": "1c11f7268fd23a5396e794bac16e15c37023adc77dbcf6075e109b328529fd00",
-  "sourceDatabase": "so7ob_restore_f630f6bd2693_source_test",
-  "targetDatabase": "so7ob_restore_f630f6bd2693_target_test",
+  "sourceDatabase": "so7ob_restore_86f86671eb3c_source_test",
+  "targetDatabase": "so7ob_restore_86f86671eb3c_target_test",
   "tables": {
     "Attachment": {
       "rows": 0,
@@ -16,7 +16,7 @@
     },
     "AuditLog": {
       "rows": 4,
-      "sha256": "3211277a6470f4c346497826baa5f98f2e10c513bd7daef1a3d9f3ebbab686a6"
+      "sha256": "8c148a7ba794e1fd01b42f234c04a49671fbea5748c4b84ca27425fda943f446"
     },
     "AuthorizationLock": {
       "rows": 1,
@@ -24,7 +24,7 @@
     },
     "AuthSession": {
       "rows": 3,
-      "sha256": "087551add1f99bbb932b65431b2c56917057ad6465f5657b63f1c4dad04516bd"
+      "sha256": "951b1de76804dd36878bc91e4d72d9e3475fc293cf4d487f7864aea21ccced41"
     },
     "AuthToken": {
       "rows": 0,
@@ -32,11 +32,11 @@
     },
     "EmailLog": {
       "rows": 2,
-      "sha256": "3d5dc89b365aee2551d7b28b4c28d268f094cc938310551d1dcfc42965a7f0d7"
+      "sha256": "c09704871209375f6bdcb2bd8b77675a5af72243c6cc30d781aef0a9fee2d694"
     },
     "FileCleanupJob": {
       "rows": 1,
-      "sha256": "829c7cb58b51a873c697d6f303a8bdebab544aad43997f465408c4aae874787e"
+      "sha256": "50e0ece1746e54ad3dd7398becbb22e29370c6c69d94149352f1dd76d4937be4"
     },
     "Inquiry": {
       "rows": 0,
@@ -48,11 +48,11 @@
     },
     "MailJob": {
       "rows": 2,
-      "sha256": "78177c0a7221a6583313505f15b0c22445837f9f21c235d2bdc78bbce9ea6f08"
+      "sha256": "2392be477964fa07b8195a2fbc1a92caba65f104d4327d5d6529194b76dbdcdc"
     },
     "MediaItem": {
       "rows": 1,
-      "sha256": "1290c585abe9027b15b319f03c342081d9e8039bb90645aef5b87c760890e4a7"
+      "sha256": "d586428f7231f7080b6728fb3ea58a27bb8d9975a16a7bb1b18791c13a755db6"
     },
     "MenuItem": {
       "rows": 0,
@@ -71,8 +71,8 @@
       "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
     },
     "Page": {
-      "rows": 1,
-      "sha256": "53adf9c1a7b6afa70e614a69330a5e9c3644455a8dd8bdb370725e8b11f99f5e"
+      "rows": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
     },
     "PageRedirect": {
       "rows": 0,
@@ -92,7 +92,7 @@
     },
     "RateLimitBucket": {
       "rows": 1,
-      "sha256": "952faf0f279c44c0bb758a039189a787ccbc4c08cfe6ca3645db8b40acef6376"
+      "sha256": "86d778bbdae064546307ca4084394f67c76c30a6be5f334c4417831841c0b72f"
     },
     "RequestClaim": {
       "rows": 0,
@@ -112,7 +112,7 @@
     },
     "Role": {
       "rows": 1,
-      "sha256": "b86fd5d8991bcf11c7541ff2248af742a1d893ef7622e9c44bd411b838d81653"
+      "sha256": "53007ef86e99e59d191915c7320a4dd05e71a880e08f6c876fe19a6cc029bb65"
     },
     "SavedReply": {
       "rows": 0,
@@ -132,7 +132,7 @@
     },
     "User": {
       "rows": 1,
-      "sha256": "159fae6433451bf21728cc3028a58eb5bff7c1d1590a014080c7c86a0a7c8b01"
+      "sha256": "f9e48566a47f8f9e46fdd71e02148d167e603fc467636b1f88c33d7b7177e54b"
     },
     "UserInvite": {
       "rows": 0,
@@ -140,7 +140,7 @@
     },
     "WebhookJob": {
       "rows": 102,
-      "sha256": "ac70943ee90af65168e862dc27df24700f5dba64bd9409182fa2f7d522506272"
+      "sha256": "5ea934091eadec5916b271994e601805d9bd6e9552d03c4192e1e2a48e30ac32"
     }
   },
   "phases": [
@@ -148,7 +148,7 @@
     "offline release including locked dependencies copied and byte-verified",
     "all MariaDB tables and files restored; occupied target rejected without mutation",
     "separate key recovery; missing/wrong key rejected before worker and without mutation",
-    "recovered SSR and client asset served without private draft; recovered Nest reads files and live session; revoked/expired sessions stay rejected",
+    "recovered Nest reads files and live session; revoked/expired sessions stay rejected",
     "recovered worker marks ambiguous mail uncertain; pending mail sent once; cleanup resumes; repeat sends nothing",
     "post-open writes protected; original snapshot remains unchanged"
   ],
