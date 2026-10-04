@@ -8,10 +8,13 @@ import { resolve } from 'node:path';
 import sharp from 'sharp';
 import { baselinePath, sourceSHA } from './reference-paths.mjs';
 import setup from '../../tests/e2e/setup.ts';
+import {getPortalContent} from '../../apps/web/src/content/portal/index.ts';
+const panel=process.env.EDITOR_PANEL??'library';
+if(!['library','layers'].includes(panel))throw new Error('Unknown editor panel');
 if (!['127.0.0.1','localhost'].includes(process.env.DATABASE_HOST??'')) throw new Error('Loopback MariaDB is required');
 if (!/^so7ob_[a-z0-9_]+_test$/.test(process.env.DATABASE_NAME??'')) throw new Error('An isolated MariaDB test database is required');
 const reference='http://127.0.0.1:3107', target='https://127.0.0.1:3198';
-const out=resolve('.migration/editor-refresh/parity/'+new Date().toISOString().replaceAll(':','-'));
+const out=resolve('.migration/editor-refresh/'+panel+'-parity/'+new Date().toISOString().replaceAll(':','-'));
 mkdirSync(out,{recursive:true});
 const sourceDb=new DatabaseSync(resolve(baselinePath,'data/runtime.db'));
 const db=await createDataSource().initialize();
@@ -41,7 +44,9 @@ try {
    const page=await context.newPage();await page.setViewportSize({width,height});await page.clock.setFixedTime(new Date('2026-10-04T00:10:00Z'));
    const errors=[],network=[];page.on('pageerror',e=>errors.push(e.message));page.on('response',r=>{if(r.status()>=400)network.push({path:new URL(r.url()).pathname,status:r.status()});});
    const response=await page.goto(`/${locale}/admin/pages/${id}/edit`,{waitUntil:'networkidle'});
-   await page.getByRole('heading',{name:'Nested heading',exact:true}).waitFor();await page.evaluate(()=>document.fonts.ready);
+   await page.getByRole('heading',{name:'Nested heading',exact:true}).waitFor();
+   if(panel==='layers'){const labels=getPortalContent(locale).admin.editor;if(device==='mobile')await page.getByRole('button',{name:labels.library,exact:true}).click();await page.getByRole('tab',{name:labels.layers,exact:true}).click();}
+   await page.evaluate(()=>document.fonts.ready);
    const axe=(await new AxeBuilder({page}).withTags(['wcag2a','wcag2aa','wcag21aa','wcag22aa']).analyze()).violations.map(v=>({id:v.id,nodes:v.nodes.map(n=>({target:n.target,summary:n.failureSummary}))}));
    const screenshot=`${kind}-${locale}-${device}.png`;await page.screenshot({path:resolve(out,screenshot),fullPage:true});
    results.push({kind,locale,device,status:response.status(),errors,network,axe,screenshot});await page.close();
@@ -56,7 +61,7 @@ try {
   const fraction=same?different/(ref.info.width*ref.info.height):null;
   comparisons.push({locale,device,referenceSize:[ref.info.width,ref.info.height],targetSize:[next.info.width,next.info.height],differentPixelFraction:fraction,pass:fraction!==null&&fraction<=0.005});
  }
- writeFileSync(resolve(out,'summary.json'),JSON.stringify({sourceSHA,syntheticOnly:true,threshold:0.005,metric:'Exact RGB inequality; full page; no masks',results,comparisons},null,2)+'\n');
+ writeFileSync(resolve(out,'summary.json'),JSON.stringify({sourceSHA,panel,syntheticOnly:true,threshold:0.005,metric:'Exact RGB inequality; full page; no masks',results,comparisons},null,2)+'\n');
  console.log(JSON.stringify({out,comparisons}));if(comparisons.some(c=>!c.pass)||results.some(r=>r.kind==='target'&&(r.errors.length||r.network.length||r.axe.length)))process.exitCode=1;
 }finally{
  for(const {kind,id} of pages){if(kind==='reference'){sourceDb.prepare('DELETE FROM PageVersion WHERE pageId=?').run(id);sourceDb.prepare('DELETE FROM Page WHERE id=?').run(id);}else{await db.query('DELETE FROM PageVersion WHERE pageId=?',[id]);await db.query('DELETE FROM Page WHERE id=?',[id]);}}

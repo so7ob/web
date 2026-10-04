@@ -2,7 +2,7 @@
 
 Tracking: [parent #1](https://github.com/so7ob/web/issues/1). Phase issues are recorded in `issues.json`.
 
-Current source refresh: Website/main `634e449b33bb5679b62b7cba0b63411be833da70`, directly verified on 2026-10-04. [Refresh inventory, isolated reference and inherited migration failure](source-refresh.md). The new source has substantial changes not yet ported; historical counts and evidence below do not establish parity with it.
+Current source refresh: Website/main `dddf8cd00a19cf7d562f503549f4c000109057d1`, directly verified on 2026-10-04. [Refresh inventory, isolated reference and inherited migration failure](source-refresh.md). The new source has substantial changes not yet ported; historical counts and evidence below do not establish parity with it.
 
 Source: Website/main `5321b7fd11db421c83290b262f276811e5f04e5f`. Technical reference: Rakim/main `cae0950bac45d97971bd3766c8c34f9869a856af`; develop `8b50b222185c60d9d06af8417f77765dada1bb8b` was inspected separately, not imported.
 

@@ -1,0 +1,66 @@
+{
+  "sourceSHA": "dddf8cd00a19cf7d562f503549f4c000109057d1",
+  "violations": [
+    {
+      "id": "aria-valid-attr-value",
+      "impact": "critical",
+      "nodes": [
+        {
+          "html": "<button type=\"button\" role=\"tab\" aria-selected=\"true\" aria-controls=\"radix-_r_0_-content-...\" data-state=\"active\" id=\"radix-_r_0_-trigger-...\" data-slot=\"tabs-trigger\" class=\"data-[state=active]:...\" tabindex=\"-1\" data-orientation=\"horizontal\" data-radix-collectio...=\"\">",
+          "target": [
+            "#radix-_r_0_-trigger-en"
+          ],
+          "failureSummary": "Fix all of the following:\n  Invalid ARIA attribute value: aria-controls=\"radix-_r_0_-content-en\""
+        }
+      ]
+    },
+    {
+      "id": "target-size",
+      "impact": "serious",
+      "nodes": [
+        {
+          "html": "<button type=\"button\" role=\"button\" tabindex=\"0\" aria-disabled=\"false\" aria-roledescription=\"sortable\" aria-describedby=\"DndDescribedBy-1\" aria-label=\"Drag handle: Section\" class=\"flex size-4 shrink-0...\">",
+          "target": [
+            "button[aria-label=\"Drag handle: Section\"]"
+          ],
+          "failureSummary": "Fix any of the following:\n  Target has insufficient size (16px by 16px, should be at least 24px by 24px)\n  Target has insufficient space to its closest neighbors. Safe clickable space has a diameter of 20px instead of at least 24px."
+        },
+        {
+          "html": "<button type=\"button\" aria-label=\"Section −\" aria-expanded=\"true\" class=\"flex size-5 shrink-0 cursor-pointer items-center justify-center rounded text-muted-foreground hover:bg-accent hover:text-navy focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand\">",
+          "target": [
+            "button[aria-label=\"Section −\"]"
+          ],
+          "failureSummary": "Fix any of the following:\n  Target has insufficient size (20px by 20px, should be at least 24px by 24px)\n  Target has insufficient space to its closest neighbors. Safe clickable space has a diameter of 20px instead of at least 24px."
+        },
+        {
+          "html": "<button type=\"button\" role=\"button\" tabindex=\"0\" aria-disabled=\"false\" aria-roledescription=\"sortable\" aria-describedby=\"DndDescribedBy-1\" aria-label=\"Drag handle: Row (co...\" class=\"flex size-4 shrink-0...\">",
+          "target": [
+            "button[aria-label=\"Drag handle: Row (columns)\"]"
+          ],
+          "failureSummary": "Fix any of the following:\n  Target has insufficient size (16px by 16px, should be at least 24px by 24px)\n  Target has insufficient space to its closest neighbors. Safe clickable space has a diameter of 20px instead of at least 24px."
+        },
+        {
+          "html": "<button type=\"button\" aria-label=\"Row (columns) −\" aria-expanded=\"true\" class=\"flex size-5 shrink-0 cursor-pointer items-center justify-center rounded text-muted-foreground hover:bg-accent hover:text-navy focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand\">",
+          "target": [
+            "button[aria-label=\"Row (columns) −\"]"
+          ],
+          "failureSummary": "Fix any of the following:\n  Target has insufficient size (20px by 20px, should be at least 24px by 24px)\n  Target has insufficient space to its closest neighbors. Safe clickable space has a diameter of 20px instead of at least 24px."
+        },
+        {
+          "html": "<button type=\"button\" role=\"button\" tabindex=\"0\" aria-disabled=\"false\" aria-roledescription=\"sortable\" aria-describedby=\"DndDescribedBy-1\" aria-label=\"Drag handle: Column\" class=\"flex size-4 shrink-0...\">",
+          "target": [
+            "button[aria-label=\"Drag handle: Column\"]"
+          ],
+          "failureSummary": "Fix any of the following:\n  Target has insufficient size (16px by 16px, should be at least 24px by 24px)\n  Target has insufficient space to its closest neighbors. Safe clickable space has a diameter of 20px instead of at least 24px."
+        },
+        {
+          "html": "<button type=\"button\" aria-label=\"Column −\" aria-expanded=\"true\" class=\"flex size-5 shrink-0 cursor-pointer items-center justify-center rounded text-muted-foreground hover:bg-accent hover:text-navy focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand\">",
+          "target": [
+            "button[aria-label=\"Column −\"]"
+          ],
+          "failureSummary": "Fix any of the following:\n  Target has insufficient size (20px by 20px, should be at least 24px by 24px)\n  Target has insufficient space to its closest neighbors. Safe clickable space has a diameter of 10.4px instead of at least 24px."
+        }
+      ]
+    }
+  ]
+}
