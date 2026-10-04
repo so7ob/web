@@ -80,6 +80,7 @@ class PageCreateDto {
   template?: unknown;
 }
 class PagePatchDto extends PageCreateDto {
+  @ApiPropertyOptional({ type: Number, description: "Required base revision for v1 tree writes" }) @Allow() baseRevision?: unknown;
   @ApiPropertyOptional({
     type: String,
     description:

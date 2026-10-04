@@ -1,4 +1,6 @@
 import "reflect-metadata";
+import { PageTemplateController, templateBodyMiddleware } from "./admin/templates.controller.js";
+import { PageTemplateService } from "@so7ob/server";
 import { AdminOperationsController } from "./admin/operations.controller.js";
 import {
   AdminDashboardService,
@@ -69,6 +71,7 @@ class HealthController {
   controllers: [
     AdminOperationsController,
     PageAdministrationController,
+    PageTemplateController,
     UserAdministrationController,
     HealthController,
     PublicController,
@@ -81,6 +84,7 @@ class HealthController {
     ClaimController,
   ],
   providers: [
+    { provide: PageTemplateService, useFactory: async () => new PageTemplateService(await database()) },
     {
       provide: AdminDashboardService,
       useFactory: async () => new AdminDashboardService(await database()),
@@ -183,6 +187,7 @@ async function main() {
   app.use(
     cmsBodyMiddleware(app.get(AuthenticationService), app.get(AuthHttpPolicy)),
   );
+  app.use(templateBodyMiddleware(app.get(AuthenticationService), app.get(AuthHttpPolicy)));
   app.use(express.json({ limit: "128kb" }));
   app.use(express.urlencoded({ extended: false, limit: "128kb" }));
   app.use(
