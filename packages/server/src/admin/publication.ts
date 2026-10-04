@@ -1,3 +1,4 @@
+import {assertMediaReferences} from "../files/media-usage.js";
 import type { DataSource, QueryRunner } from 'typeorm';
 import { can, isValidSlug, parsePageSettings, serializePageSettings, settingsFromInput, validateContent, parseScheduleInput, decideScheduledPublish, type AuthUser, type Permission, type PageSettings } from '@so7ob/contracts';
 import type { Page } from '../database/models.js';
@@ -25,6 +26,7 @@ export async function lockedPage(r: QueryRunner, id: string): Promise<Page> {
 const editable = (p: Page) => { if (p.status === 'archived')
     throw new AuthFault(409, 'archived'); };
 export async function writePage(r: QueryRunner, id: string, data: Record<string, unknown>) {
+    await assertMediaReferences(r,data);
     await r.query(`UPDATE Page SET ${Object.keys(data).map(k => '`' + k + '`=?').join(',')},updatedAt=UTC_TIMESTAMP(3) WHERE id=?`, [...Object.values(data), id]);
 }
 function document(raw: string) {

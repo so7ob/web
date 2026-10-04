@@ -1,0 +1,62 @@
+{
+  "sourceSHA": "634e449b33bb5679b62b7cba0b63411be833da70",
+  "syntheticOnly": true,
+  "checks": [
+    {
+      "check": "MariaDB unit/integration",
+      "result": "360 tests / 36 files passed",
+      "localLog": ".migration/media-library/unit-final-3.log",
+      "sha256": "1edfd68b7e6e00b47a011e49e3ba08db9db4140cfed78cbb6c75097763461228"
+    },
+    {
+      "check": "focused media browser",
+      "result": "4 passed",
+      "localLog": ".migration/media-library/e2e-1.log",
+      "sha256": "8f120bf377425e1832eb1609f31cc00cf451c90d085ce17ffb38b353ed130f76"
+    },
+    {
+      "check": "ESLint",
+      "result": "passed",
+      "localLog": ".migration/media-library/lint-final-3.log",
+      "sha256": "f53c816cc6f6619121d1bc9841ddb6af506e161209ac8f3479bed133f4eea735"
+    },
+    {
+      "check": "TypeScript",
+      "result": "passed",
+      "localLog": ".migration/media-library/typecheck-final-3.log",
+      "sha256": "515fc5287ba273cdd4b202cc41ae1de65500d3c7625871252a3c953d11cf9edb"
+    },
+    {
+      "check": "build",
+      "result": "passed",
+      "localLog": ".migration/media-library/build-2.log",
+      "sha256": "83db49b9a45a5f167768189bc2cc094e735f5e5e6ef5846389912e04bb330b89"
+    },
+    {
+      "check": "infrastructure",
+      "result": "passed",
+      "localLog": ".migration/media-library/infra-final.log",
+      "sha256": "deabe06e4f81c1c529d517477ab352e06d0a7d02eee14125fafd0687b4586666"
+    },
+    {
+      "check": "new source tests",
+      "result": "288 Vitest + 6 Bun passed",
+      "localLog": ".migration/media-library/reference-tests.log",
+      "sha256": "e6e8d18c5b959ba0de9e3e57c75b960da4adc3a84025550f22d7959a93509968"
+    },
+    {
+      "check": "new source build",
+      "result": "passed",
+      "localLog": ".migration/media-library/reference-build.log",
+      "sha256": "81b9b61323aa0d8cc94821f0041302e75b59b6cc937e4695eacfbe29fafb5da3"
+    },
+    {
+      "check": "full browser",
+      "result": "100 passed; zero retries",
+      "localLog": ".migration/media-library/e2e-final.log",
+      "sha256": "09f10892069ec4b085310953e254695ca82dfa07894b85689f0bc38d7e8c988f"
+    }
+  ],
+  "fullBrowser": "100 passed",
+  "visual": "4/4 comparisons: exact RGB difference 0; no masks; no axe/console/network errors; human review pending"
+}

@@ -31,3 +31,5 @@ export * from "./page-settings.js";
 
 export * from "./schedule.js";
 export * from "./track.js";
+
+export * from "./media.js";
