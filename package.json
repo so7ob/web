@@ -29,7 +29,9 @@
     "test:webhook": "node tools/migration/webhook-smoke.mjs",
     "test:file-worker": "node tools/migration/file-worker-smoke.mjs",
     "site:init": "node --env-file-if-exists=.env --import tsx tools/development/initialize-site.ts",
-    "admin:create": "node --env-file-if-exists=.env --import tsx tools/development/create-admin.ts"
+    "admin:create": "node --env-file-if-exists=.env --import tsx tools/development/create-admin.ts",
+    "test:restore": "node tools/migration/operational-restore.mjs",
+    "data:recovery-check": "node --env-file-if-exists=.env --import tsx packages/server/src/migration/recovery-cli.ts"
   },
   "dependencies": {
     "@dnd-kit/core": "6.3.1",

@@ -70,6 +70,13 @@ jobs:
       - run: npm run test:file-worker
       - run: npm run test:webhook
       - run: npm run test:auth
+      - run: sudo apt-get update && sudo apt-get install -y mariadb-client
+      - run: npm run test:restore
+        env:
+          DATABASE_USER: root
+          DATABASE_PASSWORD: synthetic-ci-root-only
+          RESTORE_REHEARSAL: synthetic-only
+          NODE_ENV: test
       - run: npx playwright install --with-deps chromium
       - run: npm run test:e2e
       - uses: actions/upload-artifact@v4
