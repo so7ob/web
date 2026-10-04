@@ -31,7 +31,9 @@
     "site:init": "node --env-file-if-exists=.env --import tsx tools/development/initialize-site.ts",
     "admin:create": "node --env-file-if-exists=.env --import tsx tools/development/create-admin.ts",
     "test:restore": "node tools/migration/operational-restore.mjs",
-    "data:recovery-check": "node --env-file-if-exists=.env --import tsx packages/server/src/migration/recovery-cli.ts"
+    "data:recovery-check": "node --env-file-if-exists=.env --import tsx packages/server/src/migration/recovery-cli.ts",
+    "test:cms-boundaries": "node --max-old-space-size=3072 tools/migration/cms-boundary-smoke.mjs",
+    "db:check-cms": "node --env-file-if-exists=.env --import tsx packages/server/src/database/cli.ts check-cms"
   },
   "dependencies": {
     "@dnd-kit/core": "6.3.1",

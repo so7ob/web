@@ -71,6 +71,19 @@ jobs:
       - run: npm run test:webhook
       - run: npm run test:auth
       - run: sudo apt-get update && sudo apt-get install -y mariadb-client
+      - name: Configure packet size on the isolated CI MariaDB service
+        run: |
+          mariadb --no-defaults --protocol=TCP --host=127.0.0.1 --port=3306 --user=root -e 'SET GLOBAL max_allowed_packet=16777216'
+          if npm run db:check-cms > /tmp/so7ob-cms-packet-check.log 2>&1; then
+            echo 'Expected CMS preflight to reject the isolated 16MiB configuration'
+            exit 1
+          fi
+          grep -q 'CMS compatibility requires max_allowed_packet' /tmp/so7ob-cms-packet-check.log
+          mariadb --no-defaults --protocol=TCP --host=127.0.0.1 --port=3306 --user=root -e 'SET GLOBAL max_allowed_packet=268435456'
+        env:
+          MYSQL_PWD: synthetic-ci-root-only
+      - run: npm run db:check-cms
+      - run: npm run test:cms-boundaries
       - run: npm run test:restore
         env:
           DATABASE_USER: root
