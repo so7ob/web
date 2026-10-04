@@ -229,6 +229,7 @@ export const routes = (loader: LoaderFunction): RouteObject[] => [
           },
         ],
       },
+      { path: ":locale/track", lazy: () => import("./screens/track") },
       { path: ":locale/auth/:screen", lazy: () => import("./screens/auth") },
       { path: "*", lazy: () => import("./screens/cms") },
     ],

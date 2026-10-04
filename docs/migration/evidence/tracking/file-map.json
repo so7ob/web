@@ -1,0 +1,131 @@
+{
+  "sourceSHA": "fc4a959e87e7c3750a0546f9d4fa10e31ac3b63c",
+  "files": [
+    {
+      "source": "src/lib/track/service.ts",
+      "sourceSHA256": "0651490d56540f7ebbb181726d20d939a537c8425dbef47a73308e6470ddba74",
+      "destination": "packages/server/src/track/service.ts",
+      "destinationSHA256": "d24e59862d7f35b48f56181384ab21c3b16577c4db0d0b0842c0fa505891636c"
+    },
+    {
+      "source": "src/lib/track/session.ts",
+      "sourceSHA256": "27d39fb5fa1a557dbe904641fbd447d3a955873fcd4fd51117fe35a4ceb593ec",
+      "destination": "packages/server/src/track/session.ts",
+      "destinationSHA256": "dd41f14d068d8e6710e03d336429579bf1b7f81d0403eca0d30202b1f9c7493c"
+    },
+    {
+      "source": "src/lib/track/notify.ts",
+      "sourceSHA256": "1603fb5a21d2da8339a7c569a7755cd4895c153c1c93ba3cca18f92433e9367b",
+      "destination": "packages/server/src/track/notify.ts",
+      "destinationSHA256": "aae811a3c163c33cf1fe20c02a85020739c1b724e72c7ee4b6f522f179f8c120"
+    },
+    {
+      "source": "src/lib/track/policy.ts",
+      "sourceSHA256": "d22c7c4066601b3297280aa2535b487bb4ceab8d84d0c297c3a3666f4f816e1b",
+      "destination": "packages/contracts/src/track.ts",
+      "destinationSHA256": "31880b1559e6f4744a44a4705b40159584976f435a59e3c8833100ccb0293321"
+    },
+    {
+      "source": "src/lib/__tests__/track-policy.test.ts",
+      "sourceSHA256": "7487f39a3ee6ed2e8af67561dd9a9762ff09e56eaa39e8208e7a2e534002d8b3",
+      "destination": "packages/server/src/track/policy.test.ts",
+      "destinationSHA256": "2e140ab276a31b353d9f46cb54ccb035bae023c61bc639b3543e7c7ebda16610"
+    },
+    {
+      "source": "src/app/[locale]/track/track-client.tsx",
+      "sourceSHA256": "c2e0464b5e28e1a2210142303bfed463a9756dac457c6e803de89d6094a59960",
+      "destination": "apps/web/src/components/track/track-client.tsx",
+      "destinationSHA256": "0b3260648d5676909313a4e2f0ccf7ac78926555974b9613cc13d688250c3325"
+    },
+    {
+      "source": "src/app/[locale]/track/page.tsx",
+      "sourceSHA256": "4794aaf696eadb7cc0fc211119b4783ae5b272ccf1fa02e4adaa1b1301c34809",
+      "destination": "apps/web/src/screens/track.tsx",
+      "destinationSHA256": "907d25f258983c6c5713ade618fe646be428a72c80b0d98a0a746eb18a0ccbc7"
+    },
+    {
+      "source": "src/components/admin/track/track-panel.tsx",
+      "sourceSHA256": "b85ecb039439eb93977a9bd67a97695d2a3fb7650db2e69ff32b1dc86139afd1",
+      "destination": "apps/web/src/components/admin/track/track-panel.tsx",
+      "destinationSHA256": "af73c3c495a90ee35e4fd05a8f864cf367ca51da89448939b938ecbc96300176"
+    },
+    {
+      "source": "src/components/admin/settings/settings-client.tsx",
+      "sourceSHA256": "d668fc821ed1af439246bb7ec9ad5a967086ba117f8d6291490f2a4129c929ab",
+      "destination": "apps/web/src/components/admin/settings/settings-client.tsx",
+      "destinationSHA256": "56f1f89f2b01c7efcec49ebfb023398c75e18045549047e1157d4b0fa21ff59b"
+    },
+    {
+      "source": "src/components/form/project-request-form.tsx",
+      "sourceSHA256": "977491b0831e4b524689712caffe60a0ce712f7aaac20d1063a347bd8c9269fc",
+      "destination": "apps/web/src/components/form/project-request-form.tsx",
+      "destinationSHA256": "054ca2d0197a495e3f487f50e5ddfeea0d8fa588460162462b8f99572a3f6f11"
+    },
+    {
+      "source": "src/components/admin/requests/request-detail-client.tsx",
+      "sourceSHA256": "b8ae8da5d7ae4800ee3333756f0e130eca046b502f54393f03fb6e6c79add8cd",
+      "destination": "apps/web/src/components/admin/requests/request-detail-client.tsx",
+      "destinationSHA256": "91551d2a6ac00f8d682f16107424572296a385ee5b2c2893c1cdb8ef45e8ac76"
+    },
+    {
+      "source": "src/components/admin/inquiries/inquiry-detail-client.tsx",
+      "sourceSHA256": "7eea12225f6dda07218017866c3581126026446a76932423d5dd94e07fc6f332",
+      "destination": "apps/web/src/components/admin/inquiries/inquiry-detail-client.tsx",
+      "destinationSHA256": "93a272d1445dbba58310c8371f630005e846666e87502e05a2fd6d988e321c5a"
+    },
+    {
+      "source": "src/app/api/track/card/route.ts",
+      "sourceSHA256": "ad9a99207b7e7bab79343d0e2039d1804eaa3b781c0e5f3423800d9571f50e53",
+      "destination": "apps/api/src/track/controller.ts",
+      "destinationSHA256": "9f90e76f03a4e9b5637af69d2c949f8081ad5bacba04a4b3059f638680c1f2c5"
+    },
+    {
+      "source": "src/app/api/track/exchange/route.ts",
+      "sourceSHA256": "32441f46de98ec67c1fd2fb9ff40811c0f4425b56eac7c8319b181e1207f66c0",
+      "destination": "apps/api/src/track/controller.ts",
+      "destinationSHA256": "9f90e76f03a4e9b5637af69d2c949f8081ad5bacba04a4b3059f638680c1f2c5"
+    },
+    {
+      "source": "src/app/api/track/reply/route.ts",
+      "sourceSHA256": "85c7a658df496214e685c05fca84923ae157a7474d86f4a5ecee9889f90f7490",
+      "destination": "apps/api/src/track/controller.ts",
+      "destinationSHA256": "9f90e76f03a4e9b5637af69d2c949f8081ad5bacba04a4b3059f638680c1f2c5"
+    },
+    {
+      "source": "src/app/api/admin/track/route.ts",
+      "sourceSHA256": "9ecf37e68ea481ac26f2292efb3e35211c958ab78cbcbf4eb02bd5aa61a9bcdb",
+      "destination": "apps/api/src/track/controller.ts",
+      "destinationSHA256": "9f90e76f03a4e9b5637af69d2c949f8081ad5bacba04a4b3059f638680c1f2c5"
+    },
+    {
+      "source": "src/app/api/attachments/[id]/route.ts",
+      "sourceSHA256": "d17d2b895ff23864fa09b1aac11ee04e429a48e72299c18064a0295faf9dc78d",
+      "destination": "apps/api/src/files/controller.ts",
+      "destinationSHA256": "8f7279e23d1862520af4d508fe2af87e3cba9244d498f3adb8fe8a89363fc32b"
+    },
+    {
+      "source": "src/app/api/admin/settings/route.ts",
+      "sourceSHA256": "ae9864732002e594205eb619d6dfae391d1db61b84f071db0ed16e4a00a47d84",
+      "destination": "packages/server/src/admin/operations.ts",
+      "destinationSHA256": "7066435245929985a3d28e8abd38a95b374954c957c6d8a49cc6dd9b972b18aa"
+    },
+    {
+      "source": "src/lib/auth/email-templates.ts",
+      "sourceSHA256": "7bc9f87fcf4272fd214bc34358da5cae34a9e80ac25e4b80bb4c533ca3406c2d",
+      "destination": "packages/server/src/auth/email-templates.ts",
+      "destinationSHA256": "a6cffdcaba7470c98171a4bc29de9e6edfe0c3e299e3a78ffea042ce2c36a274"
+    },
+    {
+      "source": "src/lib/requests-service.ts",
+      "sourceSHA256": "33bde609e7e65ef781fad484259119fd1cea319b15dd39870154b717e566fd47",
+      "destination": "packages/server/src/business/submissions.ts",
+      "destinationSHA256": "8606b9190dee1f5f5430c1f374288364e6a7f3f6e9009d205f48ff03e7fac1b4"
+    },
+    {
+      "source": "src/app/api/admin/inquiries/[id]/messages/route.ts",
+      "sourceSHA256": "190dd3539d808fed63214312803341faf5efd7dc4a855db1f700b4b38f041cc2",
+      "destination": "packages/server/src/admin/conversations.ts",
+      "destinationSHA256": "eaac1402a537fa871d48ecd748533f138bc203ef8078ba14753505d0f00afdfe"
+    }
+  ]
+}

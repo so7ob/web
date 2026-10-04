@@ -1,5 +1,7 @@
 import { test, expect } from "@playwright/test";
 import { readFileSync } from "node:fs";
+import { createHash } from "node:crypto";
+import { getPortalContent } from "../../apps/web/src/content/portal";
 import { createDataSource } from "@so7ob/server";
 const fixture = () =>
   JSON.parse(readFileSync(".migration/e2e/run.json", "utf8")) as {
@@ -46,6 +48,8 @@ test("the original public request form validates, preserves its draft and confir
   expect(response.status()).toBe(201);
   const body = await response.json();
   expect(body.ref).toMatch(/^S7-[A-Z0-9]{8}$/);
+  expect(body.trackUrl).toMatch(new RegExp("^/"+locale+"/track\\?t="));
+  await expect(page.getByRole("button",{name:getPortalContent(locale).track.openTracking,exact:true})).toBeVisible();
   await expect(page.getByRole("status")).toContainText(body.ref);
   const db = await createDataSource().initialize();
   try {
@@ -57,6 +61,11 @@ test("the original public request form validates, preserves its draft and confir
     expect(row.clientId).toBeNull();
     expect(row.serviceType).toBe("web");
     expect(row.requestType).toBe("quote");
+    const token=new URL(body.trackUrl,"https://synthetic.invalid").searchParams.get("t")!;
+    const [tracking]=await db.query("SELECT tokenHash,requestId FROM TrackLink WHERE requestId=?",[row.id]);
+    expect(tracking.tokenHash).toBe(createHash("sha256").update(token).digest("hex"));
+    expect(tracking.requestId).toBe(row.id);
+
     expect(
       (
         await db.query(

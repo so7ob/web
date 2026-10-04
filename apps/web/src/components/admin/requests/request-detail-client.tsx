@@ -1,4 +1,5 @@
 "use client";
+import { TrackPanel } from "@/components/admin/track/track-panel";
 
 /**
  * تفاصيل الطلب (طاقم): المحادثة الكاملة بالملاحظات الداخلية + معاينة ما يراه
@@ -849,6 +850,7 @@ export function RequestDetailClient({
             ) : null}
           </section>
 
+          <div className="print:hidden"><TrackPanel scope="request" cardId={detail.id} locale={locale} t={t.admin.track} /></div>
           {/* المرفقات */}
           <section className="rounded-2xl border border-border bg-white p-4">
             <h2 className="text-sm font-semibold text-navy">

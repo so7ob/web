@@ -17,6 +17,7 @@ import { pageNumber } from "../business/account.js";
 import { FileStore, type StoredUpload } from "./storage.js";
 import { MEDIA_MIME } from "./upload-validation.js";
 import { FileCleanupQueue } from "./cleanup.js";
+import type { TrackService, TrackContext } from "../track/service.js";
 export class FileService {
   constructor(
     private readonly db: DataSource,
@@ -156,6 +157,14 @@ export class FileService {
       );
       if (internal.length) throw new AuthFault(403, "forbidden");
     }
+    const file = await this.files.read(record.storedName);
+    if (!file) throw new AuthFault(404, "not_found");
+    return { ...file, mimeType: record.mimeType, filename: record.filename };
+  }
+  async trackedAttachment(tracks: TrackService, context: TrackContext, id: string) {
+    if (!await tracks.guestAttachment(id, context)) throw new AuthFault(403, "forbidden");
+    const [record]: Attachment[] = await this.db.query("SELECT * FROM Attachment WHERE id=?", [id]);
+    if (!record) throw new AuthFault(404, "not_found");
     const file = await this.files.read(record.storedName);
     if (!file) throw new AuthFault(404, "not_found");
     return { ...file, mimeType: record.mimeType, filename: record.filename };

@@ -1,3 +1,4 @@
+import { enqueueTrackStaffReply } from "../track/notify.js";
 import type { DataSource, QueryRunner } from "typeorm";
 import {
   can,
@@ -32,7 +33,7 @@ export function sqliteLike(
   };
 }
 export class RequestService {
-  constructor(private readonly db: DataSource) {}
+  constructor(private readonly db: DataSource, private readonly env: NodeJS.ProcessEnv = process.env) {}
   async list(
     actor: AuthUser,
     query: { q?: string; status?: string; awaiting?: string; page?: string },
@@ -371,6 +372,7 @@ export class RequestService {
             );
         }
       }
+      if (!client && kind === "message") await enqueueTrackStaffReply(this.db,r,"request",request,messageId,text,this.env);
       const [message] = await r.query(
         "SELECT * FROM RequestMessage WHERE id=?",
         [messageId],

@@ -6,38 +6,18 @@
  */
 import { useCallback, useEffect, useState } from "react";
 import { toast } from "sonner";
-import {
-  Save,
-  Loader2,
-  RotateCcw,
-  Settings,
-  Mail,
-  Phone,
-  MapPin,
-  Github,
-  Languages,
-  Megaphone,
-} from "lucide-react";
+import { Save, Loader2, RotateCcw, Settings, Mail, Phone, MapPin, Github, Languages, Megaphone, Link2, ShieldAlert, Eye, EyeOff, MessageSquare, Info } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Skeleton } from "@/components/ui/skeleton";
 import { getPortalContent } from "@/content/portal";
 import type { Locale } from "@/lib/i18n";
-import {
-  apiGet,
-  apiSend,
-  ApiError,
-  apiErrorMessage,
-} from "@/components/admin/helpers";
+import { apiGet, apiSend, ApiError, apiErrorMessage } from "@/components/admin/helpers";
+import { TRACK_MODES, type TrackMode } from "@so7ob/contracts";
+import { cn } from "@/lib/utils";
 import type { Me, SettingsResponse } from "../types";
 
 const FIELDS = [
@@ -56,6 +36,11 @@ const FIELDS = [
   "announcement.variant",
   "announcement.startAt",
   "announcement.endAt",
+  "track.forceLogin",
+  "track.requestsMode",
+  "track.inquiriesMode",
+  "track.linkTtlDays",
+  "track.allowGuestAttachments",
 ] as const;
 type FieldKey = (typeof FIELDS)[number];
 type FormState = Record<FieldKey, string>;
@@ -76,14 +61,14 @@ const EMPTY_FORM: FormState = {
   "announcement.variant": "info",
   "announcement.startAt": "",
   "announcement.endAt": "",
+  "track.forceLogin": "false",
+  "track.requestsMode": "login_required",
+  "track.inquiriesMode": "login_required",
+  "track.linkTtlDays": "90",
+  "track.allowGuestAttachments": "false",
 };
 
-const ANNOUNCEMENT_VARIANT_KEYS = [
-  "info",
-  "warning",
-  "success",
-  "brand",
-] as const;
+const ANNOUNCEMENT_VARIANT_KEYS = ["info", "warning", "success", "brand"] as const;
 
 /** قيمة مدخل التاريخ: يوم صالح فقط — ما عداه يظهر فارغًا (بلا جدولة) */
 function asDateValue(raw: string | undefined): string {
@@ -113,27 +98,28 @@ export function SettingsClient({ me, locale }: SettingsClientProps) {
       const next = { ...EMPTY_FORM };
       for (const key of FIELDS) next[key] = res.settings[key] ?? "";
       // قيم افتراضية للمفاتيح الثنائية والمنتقي — Radix لا يقبل قيمة فارغة
-      next["announcement.enabled"] =
-        res.settings["announcement.enabled"] === "true" ? "true" : "false";
-      if (
-        !(ANNOUNCEMENT_VARIANT_KEYS as readonly string[]).includes(
-          next["announcement.variant"],
-        )
-      ) {
+      next["announcement.enabled"] = res.settings["announcement.enabled"] === "true" ? "true" : "false";
+      if (!(ANNOUNCEMENT_VARIANT_KEYS as readonly string[]).includes(next["announcement.variant"])) {
         next["announcement.variant"] = "info";
       }
       // مدخلات التاريخ تقبل YYYY-MM-DD — قيم ISO الكاملة تُختصر ليومها
-      next["announcement.startAt"] = asDateValue(
-        res.settings["announcement.startAt"],
-      );
-      next["announcement.endAt"] = asDateValue(
-        res.settings["announcement.endAt"],
-      );
+      next["announcement.startAt"] = asDateValue(res.settings["announcement.startAt"]);
+      next["announcement.endAt"] = asDateValue(res.settings["announcement.endAt"]);
+      // سياسة المتابعة — قيم افتراضية مطابقة للخادم عند الغياب أو التلف
+      next["track.forceLogin"] = res.settings["track.forceLogin"] === "true" ? "true" : "false";
+      if (!(TRACK_MODES as readonly string[]).includes(next["track.requestsMode"])) {
+        next["track.requestsMode"] = "login_required";
+      }
+      if (!(TRACK_MODES as readonly string[]).includes(next["track.inquiriesMode"])) {
+        next["track.inquiriesMode"] = "login_required";
+      }
+      const ttlRaw = Number.parseInt(res.settings["track.linkTtlDays"] ?? "", 10);
+      next["track.linkTtlDays"] = Number.isFinite(ttlRaw) && ttlRaw >= 1 && ttlRaw <= 3650 ? String(ttlRaw) : "90";
+      next["track.allowGuestAttachments"] = res.settings["track.allowGuestAttachments"] === "true" ? "true" : "false";
       setForm(next);
       setInitial(next);
     } catch (err) {
-      if (err instanceof ApiError)
-        setError(apiErrorMessage(err, t.auth.errors));
+      if (err instanceof ApiError) setError(apiErrorMessage(err, t.auth.errors));
     } finally {
       setLoading(false);
     }
@@ -157,26 +143,25 @@ export function SettingsClient({ me, locale }: SettingsClientProps) {
     if (Object.keys(updates).length === 0) return;
 
     // تحقق محلي من الصيغ الأساسية — الخادم يتحقق نهائيًا
-    if (
-      updates["contact.email"] &&
-      !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(updates["contact.email"])
-    ) {
+    if (updates["contact.email"] && !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(updates["contact.email"])) {
       toast.error(t.auth.errors.emailInvalid);
       return;
     }
-    if (
-      updates["social.github"] &&
-      !/^https?:\/\//.test(updates["social.github"])
-    ) {
+    if (updates["social.github"] && !/^https?:\/\//.test(updates["social.github"])) {
       toast.error(t.auth.errors.generic);
       return;
     }
-    if (
-      updates["announcement.ctaUrl"] &&
-      !/^(\/|https?:\/\/)/.test(updates["announcement.ctaUrl"])
-    ) {
+    if (updates["announcement.ctaUrl"] && !/^(\/|https?:\/\/)/.test(updates["announcement.ctaUrl"])) {
       toast.error(t.auth.errors.generic);
       return;
+    }
+    // سياسة المتابعة — تحقق محلي للصلاحية قبل الإرسال
+    if (updates["track.linkTtlDays"] !== undefined) {
+      const ttl = Number.parseInt(updates["track.linkTtlDays"], 10);
+      if (!Number.isFinite(ttl) || String(ttl) !== updates["track.linkTtlDays"].trim() || ttl < 1 || ttl > 3650) {
+        toast.error(ts.track.invalidTtl);
+        return;
+      }
     }
 
     setSaving(true);
@@ -212,21 +197,11 @@ export function SettingsClient({ me, locale }: SettingsClientProps) {
           </span>
           <div>
             <h1 className="text-2xl font-bold text-navy">{ts.title}</h1>
-            <p className="mt-1 max-w-2xl text-sm text-muted-foreground">
-              {ts.subtitle}
-            </p>
+            <p className="mt-1 max-w-2xl text-sm text-muted-foreground">{ts.subtitle}</p>
           </div>
         </div>
-        <Button
-          onClick={save}
-          disabled={saving || !dirty}
-          className="min-h-11 rounded-full font-semibold shadow-md shadow-brand/20 hover:bg-brand-strong"
-        >
-          {saving ? (
-            <Loader2 className="size-4 animate-spin" aria-hidden="true" />
-          ) : (
-            <Save className="size-4" aria-hidden="true" />
-          )}
+        <Button onClick={save} disabled={saving || !dirty} className="min-h-11 rounded-full font-semibold shadow-md shadow-brand/20 hover:bg-brand-strong">
+          {saving ? <Loader2 className="size-4 animate-spin" aria-hidden="true" /> : <Save className="size-4" aria-hidden="true" />}
           {ts.save}
         </Button>
       </div>
@@ -234,13 +209,7 @@ export function SettingsClient({ me, locale }: SettingsClientProps) {
       {error ? (
         <div className="flex items-center justify-between gap-3 rounded-2xl border border-destructive/30 bg-destructive/5 px-4 py-3">
           <p className="text-sm text-destructive">{error}</p>
-          <Button
-            variant="outline"
-            size="icon"
-            onClick={load}
-            className="size-10 shrink-0"
-            aria-label={ts.title}
-          >
+          <Button variant="outline" size="icon" onClick={load} className="size-10 shrink-0" aria-label={ts.title}>
             <RotateCcw className="size-4" aria-hidden="true" />
           </Button>
         </div>
@@ -254,10 +223,7 @@ export function SettingsClient({ me, locale }: SettingsClientProps) {
         </h2>
         <div className="mt-4 grid gap-4 sm:grid-cols-2">
           <div className="space-y-2">
-            <Label
-              htmlFor="contact-email"
-              className="flex items-center gap-1.5 text-muted-foreground"
-            >
+            <Label htmlFor="contact-email" className="flex items-center gap-1.5 text-muted-foreground">
               <Mail className="size-3.5" aria-hidden="true" />
               {ts.email}
             </Label>
@@ -273,10 +239,7 @@ export function SettingsClient({ me, locale }: SettingsClientProps) {
             />
           </div>
           <div className="space-y-2">
-            <Label
-              htmlFor="contact-phone"
-              className="flex items-center gap-1.5 text-muted-foreground"
-            >
+            <Label htmlFor="contact-phone" className="flex items-center gap-1.5 text-muted-foreground">
               <Phone className="size-3.5" aria-hidden="true" />
               {ts.phone}
             </Label>
@@ -291,10 +254,7 @@ export function SettingsClient({ me, locale }: SettingsClientProps) {
             />
           </div>
           <div className="space-y-2 sm:col-span-2">
-            <Label
-              htmlFor="contact-address"
-              className="flex items-center gap-1.5 text-muted-foreground"
-            >
+            <Label htmlFor="contact-address" className="flex items-center gap-1.5 text-muted-foreground">
               <MapPin className="size-3.5" aria-hidden="true" />
               {ts.address}
             </Label>
@@ -316,9 +276,7 @@ export function SettingsClient({ me, locale }: SettingsClientProps) {
           {ts.social}
         </h2>
         <div className="mt-4 max-w-md space-y-2">
-          <Label htmlFor="social-github" className="text-muted-foreground">
-            {ts.github}
-          </Label>
+          <Label htmlFor="social-github" className="text-muted-foreground">{ts.github}</Label>
           <Input
             id="social-github"
             dir="ltr"
@@ -339,9 +297,7 @@ export function SettingsClient({ me, locale }: SettingsClientProps) {
         </h2>
         <div className="mt-4 grid gap-4 sm:grid-cols-2">
           <div className="space-y-2">
-            <Label htmlFor="site-name-ar" className="text-muted-foreground">
-              {t.admin.editor.ar}
-            </Label>
+            <Label htmlFor="site-name-ar" className="text-muted-foreground">{t.admin.editor.ar}</Label>
             <Input
               id="site-name-ar"
               value={form["site.nameAr"]}
@@ -352,9 +308,7 @@ export function SettingsClient({ me, locale }: SettingsClientProps) {
             />
           </div>
           <div className="space-y-2">
-            <Label htmlFor="site-name-en" className="text-muted-foreground">
-              {t.admin.editor.en}
-            </Label>
+            <Label htmlFor="site-name-en" className="text-muted-foreground">{t.admin.editor.en}</Label>
             <Input
               id="site-name-en"
               value={form["site.nameEn"]}
@@ -372,112 +326,80 @@ export function SettingsClient({ me, locale }: SettingsClientProps) {
           <Megaphone className="size-4 text-brand" aria-hidden="true" />
           {ts.announcement}
         </h2>
-        <p className="mt-1 max-w-2xl text-sm text-muted-foreground">
-          {ts.announcementSubtitle}
-        </p>
+        <p className="mt-1 max-w-2xl text-sm text-muted-foreground">{ts.announcementSubtitle}</p>
         <div className="mt-4 space-y-4">
           <div className="flex items-center gap-3">
             <Switch
               id="announcement-enabled"
               checked={form["announcement.enabled"] === "true"}
-              onCheckedChange={(v) =>
-                setField("announcement.enabled", v ? "true" : "false")
-              }
+              onCheckedChange={(v) => setField("announcement.enabled", v ? "true" : "false")}
               className="focus-visible:ring-2 focus-visible:ring-ring/40"
             />
-            <Label
-              htmlFor="announcement-enabled"
-              className="cursor-pointer text-sm text-muted-foreground"
-            >
+            <Label htmlFor="announcement-enabled" className="cursor-pointer text-sm text-muted-foreground">
               {ts.announcementEnabled}
             </Label>
           </div>
           <div className="grid gap-4 sm:grid-cols-2">
             <div className="space-y-2">
-              <Label
-                htmlFor="announcement-message-ar"
-                className="text-muted-foreground"
-              >
+              <Label htmlFor="announcement-message-ar" className="text-muted-foreground">
                 {ts.announcementMessageAr}
               </Label>
               <Input
                 id="announcement-message-ar"
                 value={form["announcement.messageAr"]}
-                onChange={(e) =>
-                  setField("announcement.messageAr", e.target.value)
-                }
+                onChange={(e) => setField("announcement.messageAr", e.target.value)}
                 maxLength={280}
                 dir="rtl"
                 className="min-h-11 focus-visible:ring-2 focus-visible:ring-ring/40"
               />
             </div>
             <div className="space-y-2">
-              <Label
-                htmlFor="announcement-message-en"
-                className="text-muted-foreground"
-              >
+              <Label htmlFor="announcement-message-en" className="text-muted-foreground">
                 {ts.announcementMessageEn}
               </Label>
               <Input
                 id="announcement-message-en"
                 value={form["announcement.messageEn"]}
-                onChange={(e) =>
-                  setField("announcement.messageEn", e.target.value)
-                }
+                onChange={(e) => setField("announcement.messageEn", e.target.value)}
                 maxLength={280}
                 dir="ltr"
                 className="min-h-11 ltr-isolate focus-visible:ring-2 focus-visible:ring-ring/40"
               />
             </div>
             <div className="space-y-2">
-              <Label
-                htmlFor="announcement-cta-label-ar"
-                className="text-muted-foreground"
-              >
+              <Label htmlFor="announcement-cta-label-ar" className="text-muted-foreground">
                 {ts.announcementCtaLabelAr}
               </Label>
               <Input
                 id="announcement-cta-label-ar"
                 value={form["announcement.ctaLabelAr"]}
-                onChange={(e) =>
-                  setField("announcement.ctaLabelAr", e.target.value)
-                }
+                onChange={(e) => setField("announcement.ctaLabelAr", e.target.value)}
                 maxLength={60}
                 dir="rtl"
                 className="min-h-11 focus-visible:ring-2 focus-visible:ring-ring/40"
               />
             </div>
             <div className="space-y-2">
-              <Label
-                htmlFor="announcement-cta-label-en"
-                className="text-muted-foreground"
-              >
+              <Label htmlFor="announcement-cta-label-en" className="text-muted-foreground">
                 {ts.announcementCtaLabelEn}
               </Label>
               <Input
                 id="announcement-cta-label-en"
                 value={form["announcement.ctaLabelEn"]}
-                onChange={(e) =>
-                  setField("announcement.ctaLabelEn", e.target.value)
-                }
+                onChange={(e) => setField("announcement.ctaLabelEn", e.target.value)}
                 maxLength={60}
                 dir="ltr"
                 className="min-h-11 ltr-isolate focus-visible:ring-2 focus-visible:ring-ring/40"
               />
             </div>
             <div className="space-y-2">
-              <Label
-                htmlFor="announcement-cta-url"
-                className="text-muted-foreground"
-              >
+              <Label htmlFor="announcement-cta-url" className="text-muted-foreground">
                 {ts.announcementCtaUrl}
               </Label>
               <Input
                 id="announcement-cta-url"
                 value={form["announcement.ctaUrl"]}
-                onChange={(e) =>
-                  setField("announcement.ctaUrl", e.target.value)
-                }
+                onChange={(e) => setField("announcement.ctaUrl", e.target.value)}
                 maxLength={200}
                 dir="ltr"
                 className="min-h-11 ltr-isolate focus-visible:ring-2 focus-visible:ring-ring/40"
@@ -485,36 +407,25 @@ export function SettingsClient({ me, locale }: SettingsClientProps) {
               />
             </div>
             <div className="space-y-2">
-              <Label
-                htmlFor="announcement-variant"
-                className="text-muted-foreground"
-              >
+              <Label htmlFor="announcement-variant" className="text-muted-foreground">
                 {ts.announcementVariant}
               </Label>
               <Select
                 value={form["announcement.variant"] || "info"}
                 onValueChange={(v) => setField("announcement.variant", v)}
               >
-                <SelectTrigger
-                  id="announcement-variant"
-                  className="min-h-11 w-full focus-visible:ring-2 focus-visible:ring-ring/40"
-                >
+                <SelectTrigger id="announcement-variant" className="min-h-11 w-full focus-visible:ring-2 focus-visible:ring-ring/40">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
                   {ANNOUNCEMENT_VARIANT_KEYS.map((v) => (
-                    <SelectItem key={v} value={v}>
-                      {ts.announcementVariants[v]}
-                    </SelectItem>
+                    <SelectItem key={v} value={v}>{ts.announcementVariants[v]}</SelectItem>
                   ))}
                 </SelectContent>
               </Select>
             </div>
             <div className="space-y-2">
-              <Label
-                htmlFor="announcement-start"
-                className="text-muted-foreground"
-              >
+              <Label htmlFor="announcement-start" className="text-muted-foreground">
                 {ts.announcementStart}
               </Label>
               <Input
@@ -522,17 +433,12 @@ export function SettingsClient({ me, locale }: SettingsClientProps) {
                 type="date"
                 dir="ltr"
                 value={form["announcement.startAt"]}
-                onChange={(e) =>
-                  setField("announcement.startAt", e.target.value)
-                }
+                onChange={(e) => setField("announcement.startAt", e.target.value)}
                 className="min-h-11 ltr-isolate focus-visible:ring-2 focus-visible:ring-ring/40"
               />
             </div>
             <div className="space-y-2">
-              <Label
-                htmlFor="announcement-end"
-                className="text-muted-foreground"
-              >
+              <Label htmlFor="announcement-end" className="text-muted-foreground">
                 {ts.announcementEnd}
               </Label>
               <Input
@@ -544,6 +450,153 @@ export function SettingsClient({ me, locale }: SettingsClientProps) {
                 className="min-h-11 ltr-isolate focus-visible:ring-2 focus-visible:ring-ring/40"
               />
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* سياسة روابط المتابعة */}
+      <section className="rounded-2xl border border-border bg-white p-5">
+        <h2 className="flex items-center gap-2 text-sm font-semibold text-navy">
+          <Link2 className="size-4 text-brand" aria-hidden="true" />
+          {ts.track.title}
+        </h2>
+        <p className="mt-1 max-w-2xl text-sm text-muted-foreground">{ts.track.subtitle}</p>
+
+        <div className="mt-4 space-y-5">
+          {/* فرض الدخول — مفتاح مستقل بأولوية قصوى */}
+          <div
+            className={cn(
+              "rounded-2xl border p-4 transition-colors",
+              form["track.forceLogin"] === "true"
+                ? "border-amber-300 bg-amber-50/70"
+                : "border-border bg-muted/20"
+            )}
+          >
+            <div className="flex items-start gap-3">
+              <Switch
+                id="track-force-login"
+                checked={form["track.forceLogin"] === "true"}
+                onCheckedChange={(v) => setField("track.forceLogin", v ? "true" : "false")}
+                className="mt-0.5 focus-visible:ring-2 focus-visible:ring-ring/40"
+              />
+              <div className="min-w-0 flex-1">
+                <Label htmlFor="track-force-login" className="flex cursor-pointer items-center gap-2 text-sm font-semibold text-navy">
+                  <ShieldAlert className={cn("size-4", form["track.forceLogin"] === "true" ? "text-amber-600" : "text-muted-foreground")} aria-hidden="true" />
+                  {ts.track.forceLogin}
+                </Label>
+                <p className="mt-1 text-xs leading-6 text-muted-foreground">{ts.track.forceLoginHint}</p>
+              </div>
+            </div>
+          </div>
+
+          {/* أوضاع النوعين + الصلاحية */}
+          <div className="grid gap-4 sm:grid-cols-2">
+            <div className="space-y-2">
+              <Label htmlFor="track-requests-mode" className="text-muted-foreground">{ts.track.requestsMode}</Label>
+              <Select
+                value={form["track.requestsMode"]}
+                onValueChange={(v) => setField("track.requestsMode", v)}
+                disabled={form["track.forceLogin"] === "true"}
+              >
+                <SelectTrigger id="track-requests-mode" className="min-h-11 w-full focus-visible:ring-2 focus-visible:ring-ring/40">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  {TRACK_MODES.map((m) => (
+                    <SelectItem key={m} value={m}>{ts.track.modes[m]}</SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="track-inquiries-mode" className="text-muted-foreground">{ts.track.inquiriesMode}</Label>
+              <Select
+                value={form["track.inquiriesMode"]}
+                onValueChange={(v) => setField("track.inquiriesMode", v)}
+                disabled={form["track.forceLogin"] === "true"}
+              >
+                <SelectTrigger id="track-inquiries-mode" className="min-h-11 w-full focus-visible:ring-2 focus-visible:ring-ring/40">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  {TRACK_MODES.map((m) => (
+                    <SelectItem key={m} value={m}>{ts.track.modes[m]}</SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="track-ttl" className="text-muted-foreground">{ts.track.ttl}</Label>
+              <Input
+                id="track-ttl"
+                type="number"
+                inputMode="numeric"
+                min={1}
+                max={3650}
+                dir="ltr"
+                value={form["track.linkTtlDays"]}
+                onChange={(e) => setField("track.linkTtlDays", e.target.value)}
+                className="min-h-11 ltr-isolate focus-visible:ring-2 focus-visible:ring-ring/40"
+              />
+              <p className="text-xs text-muted-foreground">{ts.track.ttlHint}</p>
+            </div>
+            <div className="flex items-start gap-3 rounded-2xl border border-border bg-muted/20 p-4">
+              <Switch
+                id="track-guest-attachments"
+                checked={form["track.allowGuestAttachments"] === "true"}
+                onCheckedChange={(v) => setField("track.allowGuestAttachments", v ? "true" : "false")}
+                className="mt-0.5 focus-visible:ring-2 focus-visible:ring-ring/40"
+              />
+              <div className="min-w-0 flex-1">
+                <Label htmlFor="track-guest-attachments" className="cursor-pointer text-sm font-semibold text-navy">
+                  {ts.track.allowGuestAttachments}
+                </Label>
+                <p className="mt-1 text-xs leading-6 text-muted-foreground">{ts.track.allowGuestAttachmentsHint}</p>
+              </div>
+            </div>
+          </div>
+
+          {/* السلوك الفعلي الآن — يزيل غموض الوراثة قبل الحفظ */}
+          <div className="rounded-2xl border border-border bg-muted/10 p-4">
+            <p className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-muted-foreground">
+              <Info className="size-3.5" aria-hidden="true" />
+              {ts.track.preview}
+            </p>
+            <div className="mt-3 grid gap-3 sm:grid-cols-2">
+              {(
+                [
+                  { key: "track.requestsMode" as const },
+                  { key: "track.inquiriesMode" as const },
+                ]
+              ).map(({ key }) => {
+                const mode = (form[key] as TrackMode) ?? "login_required";
+                const forced = form["track.forceLogin"] === "true";
+                const canView = !forced && mode !== "login_required";
+                const canReply = !forced && mode === "link_reply";
+                return (
+                  <div key={key} className="rounded-xl border border-border bg-white p-3">
+                    <p className="truncate text-xs font-semibold text-navy">{ts.track.modes[mode]}</p>
+                    <ul className="mt-2 space-y-1.5 text-xs">
+                      <li className="flex items-center gap-1.5">
+                        {canView ? <Eye className="size-3.5 text-emerald-600" aria-hidden="true" /> : <EyeOff className="size-3.5 text-muted-foreground" aria-hidden="true" />}
+                        <span className="text-muted-foreground">{ts.track.previewView}:</span>
+                        <span className={cn("font-semibold", canView ? "text-emerald-700" : "text-muted-foreground")}>
+                          {canView ? ts.track.yes : ts.track.no}
+                        </span>
+                      </li>
+                      <li className="flex items-center gap-1.5">
+                        <MessageSquare className={cn("size-3.5", canReply ? "text-emerald-600" : "text-muted-foreground")} aria-hidden="true" />
+                        <span className="text-muted-foreground">{ts.track.previewReply}:</span>
+                        <span className={cn("font-semibold", canReply ? "text-emerald-700" : "text-muted-foreground")}>
+                          {canReply ? ts.track.yes : ts.track.no}
+                        </span>
+                      </li>
+                    </ul>
+                  </div>
+                );
+              })}
+            </div>
+            <p className="mt-3 text-xs leading-6 text-muted-foreground">{ts.track.priorityNote}</p>
           </div>
         </div>
       </section>

@@ -1,4 +1,5 @@
 "use client";
+import { TrackPanel } from "@/components/admin/track/track-panel";
 
 /**
  * تفاصيل الاستفسار: محادثة (رد/ملاحظة داخلية) + تعيين + تغيير حالة +
@@ -538,6 +539,7 @@ export function InquiryDetailClient({
               </Button>
             ) : null}
           </section>
+          <div className="print:hidden"><TrackPanel scope="inquiry" cardId={detail.id} locale={locale} t={t.admin.track} /></div>
         </aside>
       </div>
     </div>
