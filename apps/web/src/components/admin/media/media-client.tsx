@@ -48,6 +48,8 @@ interface MediaClientProps {
 }
 
 export function MediaClient({ me, locale }: MediaClientProps) {
+  const [interactive, setInteractive] = useState(false);
+  useEffect(() => { setInteractive(true); }, []);
   const t = getPortalContent(locale);
   const tmed = t.admin.media;
 
@@ -254,6 +256,7 @@ export function MediaClient({ me, locale }: MediaClientProps) {
               <Label htmlFor="media-file">{tmed.filename}</Label>
               <Input
                 id="media-file"
+                disabled={!interactive}
                 ref={fileRef}
                 type="file"
                 accept="image/*"
@@ -264,6 +267,7 @@ export function MediaClient({ me, locale }: MediaClientProps) {
               <Label htmlFor="media-alt">{tmed.alt}</Label>
               <Input
                 id="media-alt"
+                disabled={!interactive}
                 value={altDraft}
                 onChange={(e) => setAltDraft(e.target.value)}
                 maxLength={300}
@@ -274,6 +278,7 @@ export function MediaClient({ me, locale }: MediaClientProps) {
               <Label htmlFor="media-folder">{tmed.folderUpload}</Label>
               <Input
                 id="media-folder"
+                disabled={!interactive}
                 value={folderDraft}
                 onChange={(e) => setFolderDraft(e.target.value)}
                 maxLength={60}
@@ -282,7 +287,7 @@ export function MediaClient({ me, locale }: MediaClientProps) {
                 className="min-h-11 focus-visible:ring-2 focus-visible:ring-ring/40"
               />
             </div>
-            <Button onClick={upload} disabled={uploading} className="min-h-11 rounded-full">
+            <Button onClick={upload} disabled={!interactive || uploading} className="min-h-11 rounded-full">
               {uploading ? <Loader2 className="size-4 animate-spin" aria-hidden="true" /> : <Upload className="size-4" aria-hidden="true" />}
               {tmed.upload}
             </Button>
@@ -295,6 +300,7 @@ export function MediaClient({ me, locale }: MediaClientProps) {
         <div className="relative max-w-md">
           <Search className="pointer-events-none absolute start-3.5 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" aria-hidden="true" />
           <Input
+            disabled={!interactive}
             value={searchInput}
             onChange={(e) => setSearchInput(e.target.value)}
             placeholder={tmed.searchPlaceholder}

@@ -35,7 +35,7 @@
       "destinations": [
         {
           "path": "apps/web/src/components/admin/media/media-client.tsx",
-          "sha256": "49e903964545f0e09565a3f10c403e276c0d6f389d54d11497d431ad36a09954"
+          "sha256": "275f6e0efc39ff066fcb4b4c49d92486939fa1bb170aa396bc85328c9d7482c2"
         }
       ]
     },
