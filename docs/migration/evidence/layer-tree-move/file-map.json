@@ -1,0 +1,115 @@
+{
+  "sourceSHA": "dddf8cd00a19cf7d562f503549f4c000109057d1",
+  "items": [
+    {
+      "source": "src/app/[locale]/layout.tsx",
+      "sourceSHA256": "d1f8192030bfecb7bb534ad42fbc3e673d06a1d8077d4ecb46e11cbcc8742bd2",
+      "destinations": [
+        {
+          "path": "apps/web/src/app.tsx",
+          "sha256": "678af592b98872273aa3628a6e560c1176d5344d9454276d6f0cabd0fe11dedf"
+        }
+      ]
+    },
+    {
+      "source": "src/components/admin/editor/clipboard-menu.tsx",
+      "sourceSHA256": "3a45f587b3a14e8374b6748b784ef9b7705ad7ff39246ce01cea74d9c9ade9fc",
+      "destinations": [
+        {
+          "path": "apps/web/src/components/admin/editor/clipboard-menu.tsx",
+          "sha256": "d5e151da4e70a406a5ce395ba4f4191ad9c618c2e7241422f00e9dedd2e0d1ca"
+        }
+      ]
+    },
+    {
+      "source": "src/components/admin/editor/layer-tree.tsx",
+      "sourceSHA256": "83d7e39ec622f635aa4558411d78a359522f82a07c58e38367eff10c04855fd3",
+      "destinations": [
+        {
+          "path": "apps/web/src/components/admin/editor/layer-tree.tsx",
+          "sha256": "38d8129d3bb716c0492360c2441de512bc023aac5194ec25bc2bd7e75fcf0dd0"
+        }
+      ]
+    },
+    {
+      "source": "src/components/admin/editor/page-editor.tsx",
+      "sourceSHA256": "67f60cdb9d0d8eeab45228080b1b227b888188a97d4c2d7bf1603dc5bd104883",
+      "destinations": [
+        {
+          "path": "apps/web/src/components/admin/editor/page-editor.tsx",
+          "sha256": "8b00d0f36dc5c35127ca0b5c033e920cbb0be5e59b24bf500930f7406a09fd57"
+        }
+      ]
+    },
+    {
+      "source": "src/components/ui/app-direction-provider.tsx",
+      "sourceSHA256": "7dc98b801516e3daf2275102fb7972387d9464c61d4e600c72aeeda704c81453",
+      "destinations": [
+        {
+          "path": "apps/web/src/components/ui/app-direction-provider.tsx",
+          "sha256": "7dc98b801516e3daf2275102fb7972387d9464c61d4e600c72aeeda704c81453"
+        }
+      ]
+    },
+    {
+      "source": "src/content/portal/ar.ts",
+      "sourceSHA256": "605d4a5b1a0802797eef5ee9a3e44a2a7087c785c87057da8c20dfcf5a0f6a3d",
+      "destinations": [
+        {
+          "path": "apps/web/src/content/portal/ar.ts",
+          "sha256": "605d4a5b1a0802797eef5ee9a3e44a2a7087c785c87057da8c20dfcf5a0f6a3d"
+        }
+      ]
+    },
+    {
+      "source": "src/content/portal/en.ts",
+      "sourceSHA256": "55e24e83048cf660798b55eaa57f7635ffbdc0d6ca1ceebc0d14c7459351d6fb",
+      "destinations": [
+        {
+          "path": "apps/web/src/content/portal/en.ts",
+          "sha256": "55e24e83048cf660798b55eaa57f7635ffbdc0d6ca1ceebc0d14c7459351d6fb"
+        }
+      ]
+    },
+    {
+      "source": "src/content/portal/types.ts",
+      "sourceSHA256": "6b724f8f7bc5478b58c18d4d89cde3d16c38fc3b50ddfc8eb969653e32967820",
+      "destinations": [
+        {
+          "path": "apps/web/src/content/portal/types.ts",
+          "sha256": "6b724f8f7bc5478b58c18d4d89cde3d16c38fc3b50ddfc8eb969653e32967820"
+        }
+      ]
+    },
+    {
+      "source": "src/lib/blocks/tree-move.ts",
+      "sourceSHA256": "0422fdb8e09d09f5fb37ed7df5422f66d5c95ef9d0f353ecbf959b98d968bbac",
+      "destinations": [
+        {
+          "path": "packages/contracts/src/content/tree-move.ts",
+          "sha256": "6a58212e03c680933249eb989cb906b1f3abcdaf4de68f5c0362c7ebdd1a5d5a"
+        }
+      ]
+    },
+    {
+      "source": "src/lib/__tests__/tree-move.test.ts",
+      "sourceSHA256": "cf1909489eba8bf6a81b264ebd16cdc47f91c966c2dff43c18bf90339bfe9c00",
+      "destinations": [
+        {
+          "path": "packages/contracts/src/content/tree-move.test.ts",
+          "sha256": "b6a995bdb676464a7c5e0d1ff6f8f5454cfff667e4858af15421c8ec986034d5"
+        }
+      ]
+    }
+  ],
+  "accessibilityCorrections": [
+    {
+      "path": "apps/web/src/components/ui/sheet.tsx",
+      "sha256": "e1896c669f8cf85aeeafca107aabb23d642c8d1c95458f04027341e206cfc9c5"
+    },
+    {
+      "path": "apps/web/src/components/admin/admin-shell.tsx",
+      "sha256": "49294282a14e6711a596b19213a4b2b50a21a240d57f5f9f1ee94a56cc43fb3c"
+    }
+  ]
+}

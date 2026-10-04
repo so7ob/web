@@ -416,7 +416,7 @@ export function AdminShell({
         </main>
       </div>
 
-      <Toaster position="top-center" closeButton />
+      <Toaster position="top-center" closeButton toastOptions={{ classNames: { closeButton: "!size-6" } }} />
     </div>
   );
 }

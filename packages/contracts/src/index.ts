@@ -33,3 +33,4 @@ export * from "./schedule.js";
 export * from "./track.js";
 
 export * from "./media.js";
+export * from "./content/tree-move.js";

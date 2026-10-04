@@ -1,9 +1,9 @@
 {
   "source": "https://github.com/so7ob/Website",
-  "sourceSHA": "634e449b33bb5679b62b7cba0b63411be833da70",
+  "sourceSHA": "dddf8cd00a19cf7d562f503549f4c000109057d1",
   "previousSourceSHA": "5321b7fd11db421c83290b262f276811e5f04e5f",
-  "verifiedAt": "2026-10-04T19:49:08Z",
-  "commits": 17,
+  "verifiedAt": "2026-10-04T20:36:52.887553+00:00",
+  "commits": 20,
   "files": [
     {
       "source": ".gitignore",
@@ -155,6 +155,20 @@
         "evidence/administration/login-hydration-summary.json"
       ],
       "destination": "apps/web/src/components/auth/login-form.tsx"
+    },
+    {
+      "source": "src/app/[locale]/layout.tsx",
+      "change": "modified",
+      "oldSHA256": "c1ca81f01fd972c15582176b00bf59d4031c51a353070aea7c3963d12084983b",
+      "newSHA256": "d1f8192030bfecb7bb534ad42fbc3e673d06a1d8077d4ecb46e11cbcc8742bd2",
+      "status": "ported-layer-move; scoped journeys and visual checks passed; human/full acceptance pending",
+      "evidence": [
+        "docs/migration/layer-tree-move.md",
+        "docs/migration/evidence/layer-tree-move/file-map.json"
+      ],
+      "destination": [
+        "apps/web/src/app.tsx"
+      ]
     },
     {
       "source": "src/app/[locale]/track/page.tsx",
@@ -492,11 +506,14 @@
       "source": "src/components/admin/editor/clipboard-menu.tsx",
       "change": "added",
       "oldSHA256": null,
-      "newSHA256": "b5e0972262dcb9b82a22b33d8647cbfa03ab166ae744f9f93236b2eaccde22bf",
-      "status": "ported-editor; scoped journeys passed; full acceptance pending",
+      "newSHA256": "3a45f587b3a14e8374b6748b784ef9b7705ad7ff39246ce01cea74d9c9ade9fc",
+      "status": "ported-layer-move; scoped journeys and visual checks passed; human/full acceptance pending",
       "evidence": [
-        "docs/migration/tree-editor.md",
-        "docs/migration/evidence/tree-editor/file-map.json"
+        "docs/migration/layer-tree-move.md",
+        "docs/migration/evidence/layer-tree-move/file-map.json"
+      ],
+      "destination": [
+        "apps/web/src/components/admin/editor/clipboard-menu.tsx"
       ]
     },
     {
@@ -525,11 +542,14 @@
       "source": "src/components/admin/editor/layer-tree.tsx",
       "change": "added",
       "oldSHA256": null,
-      "newSHA256": "1d3217e5987e5e63eff32db05413cdf38eabb10dde8407f5e9231c7e57bba24f",
-      "status": "ported-editor; scoped journeys passed; full acceptance pending",
+      "newSHA256": "83d7e39ec622f635aa4558411d78a359522f82a07c58e38367eff10c04855fd3",
+      "status": "ported-layer-move; scoped journeys and visual checks passed; human/full acceptance pending",
       "evidence": [
-        "docs/migration/tree-editor.md",
-        "docs/migration/evidence/tree-editor/file-map.json"
+        "docs/migration/layer-tree-move.md",
+        "docs/migration/evidence/layer-tree-move/file-map.json"
+      ],
+      "destination": [
+        "apps/web/src/components/admin/editor/layer-tree.tsx"
       ]
     },
     {
@@ -547,11 +567,14 @@
       "source": "src/components/admin/editor/page-editor.tsx",
       "change": "modified",
       "oldSHA256": "76d3b998a2b4beca21e5cbfa8a9128c0fc5e372643ae5b66d670d52bb481a10c",
-      "newSHA256": "47c56b3b297dbb6aa05183420bbe38b7aa678adfc212efcbfd42feea8a1fc4c3",
-      "status": "ported-editor; scoped journeys passed; full acceptance pending",
+      "newSHA256": "67f60cdb9d0d8eeab45228080b1b227b888188a97d4c2d7bf1603dc5bd104883",
+      "status": "ported-layer-move; scoped journeys and visual checks passed; human/full acceptance pending",
       "evidence": [
-        "docs/migration/tree-editor.md",
-        "docs/migration/evidence/tree-editor/file-map.json"
+        "docs/migration/layer-tree-move.md",
+        "docs/migration/evidence/layer-tree-move/file-map.json"
+      ],
+      "destination": [
+        "apps/web/src/components/admin/editor/page-editor.tsx"
       ]
     },
     {
@@ -840,36 +863,59 @@
       ]
     },
     {
+      "source": "src/components/ui/app-direction-provider.tsx",
+      "change": "added",
+      "oldSHA256": null,
+      "newSHA256": "7dc98b801516e3daf2275102fb7972387d9464c61d4e600c72aeeda704c81453",
+      "status": "ported-layer-move; scoped journeys and visual checks passed; human/full acceptance pending",
+      "evidence": [
+        "docs/migration/layer-tree-move.md",
+        "docs/migration/evidence/layer-tree-move/file-map.json"
+      ],
+      "destination": [
+        "apps/web/src/components/ui/app-direction-provider.tsx"
+      ]
+    },
+    {
       "source": "src/content/portal/ar.ts",
       "change": "modified",
       "oldSHA256": "b6313d2b4b3f1e6e1c9e10ce6902ace16cc0c6e22145b19c5961ee7b3f36e6c6",
-      "newSHA256": "ca6887e141ecaab2953d05f73fe9589ee5d4f5512840fb87405aea897bc3c05d",
-      "status": "ported-editor; scoped journeys passed; full acceptance pending",
+      "newSHA256": "605d4a5b1a0802797eef5ee9a3e44a2a7087c785c87057da8c20dfcf5a0f6a3d",
+      "status": "ported-layer-move; scoped journeys and visual checks passed; human/full acceptance pending",
       "evidence": [
-        "docs/migration/tree-editor.md",
-        "docs/migration/evidence/tree-editor/file-map.json"
+        "docs/migration/layer-tree-move.md",
+        "docs/migration/evidence/layer-tree-move/file-map.json"
+      ],
+      "destination": [
+        "apps/web/src/content/portal/ar.ts"
       ]
     },
     {
       "source": "src/content/portal/en.ts",
       "change": "modified",
       "oldSHA256": "b3ce99fd4918c1e1c50fe89a2c9ab4d84d4fbd28a9df9d92f0b8ea6d0f21fb33",
-      "newSHA256": "7e9006a58a41e58f35006784b3b45681871600885b5ee59590dc712c61403727",
-      "status": "ported-editor; scoped journeys passed; full acceptance pending",
+      "newSHA256": "55e24e83048cf660798b55eaa57f7635ffbdc0d6ca1ceebc0d14c7459351d6fb",
+      "status": "ported-layer-move; scoped journeys and visual checks passed; human/full acceptance pending",
       "evidence": [
-        "docs/migration/tree-editor.md",
-        "docs/migration/evidence/tree-editor/file-map.json"
+        "docs/migration/layer-tree-move.md",
+        "docs/migration/evidence/layer-tree-move/file-map.json"
+      ],
+      "destination": [
+        "apps/web/src/content/portal/en.ts"
       ]
     },
     {
       "source": "src/content/portal/types.ts",
       "change": "modified",
       "oldSHA256": "8ba0d2af759ea47c0190502abc2621b94aa3761aa406585fa5dcef3c9eceb4d1",
-      "newSHA256": "b3f03885a4bbb7bc722b6c96dd802b9fac4168e2d94e619b3ec80523e9258cdf",
-      "status": "ported-editor; scoped journeys passed; full acceptance pending",
+      "newSHA256": "6b724f8f7bc5478b58c18d4d89cde3d16c38fc3b50ddfc8eb969653e32967820",
+      "status": "ported-layer-move; scoped journeys and visual checks passed; human/full acceptance pending",
       "evidence": [
-        "docs/migration/tree-editor.md",
-        "docs/migration/evidence/tree-editor/file-map.json"
+        "docs/migration/layer-tree-move.md",
+        "docs/migration/evidence/layer-tree-move/file-map.json"
+      ],
+      "destination": [
+        "apps/web/src/content/portal/types.ts"
       ]
     },
     {
@@ -989,6 +1035,20 @@
       ]
     },
     {
+      "source": "src/lib/__tests__/tree-move.test.ts",
+      "change": "added",
+      "oldSHA256": null,
+      "newSHA256": "cf1909489eba8bf6a81b264ebd16cdc47f91c966c2dff43c18bf90339bfe9c00",
+      "status": "ported-layer-move; scoped journeys and visual checks passed; human/full acceptance pending",
+      "evidence": [
+        "docs/migration/layer-tree-move.md",
+        "docs/migration/evidence/layer-tree-move/file-map.json"
+      ],
+      "destination": [
+        "packages/contracts/src/content/tree-move.test.ts"
+      ]
+    },
+    {
       "source": "src/lib/auth/audit.ts",
       "change": "modified",
       "oldSHA256": "661a149c0701e2b42fd3d5571f04b3a64113f18920c66d922bdc84b85b5b67c1",
@@ -1070,6 +1130,20 @@
         "docs/migration/evidence/content-tree/"
       ],
       "destination": "packages/contracts/src/content/style.ts"
+    },
+    {
+      "source": "src/lib/blocks/tree-move.ts",
+      "change": "added",
+      "oldSHA256": null,
+      "newSHA256": "0422fdb8e09d09f5fb37ed7df5422f66d5c95ef9d0f353ecbf959b98d968bbac",
+      "status": "ported-layer-move; scoped journeys and visual checks passed; human/full acceptance pending",
+      "evidence": [
+        "docs/migration/layer-tree-move.md",
+        "docs/migration/evidence/layer-tree-move/file-map.json"
+      ],
+      "destination": [
+        "packages/contracts/src/content/tree-move.ts"
+      ]
     },
     {
       "source": "src/lib/blocks/tree.ts",
@@ -1818,11 +1892,11 @@
     ],
     "explicitHttpHandlers": 82
   },
-  "previousRefreshSHA": "fc4a959e87e7c3750a0546f9d4fa10e31ac3b63c",
+  "previousRefreshSHA": "634e449b33bb5679b62b7cba0b63411be833da70",
   "deliveryRecheck": {
-    "sourceSHA": "634e449b33bb5679b62b7cba0b63411be833da70",
-    "verifiedAt": "2026-10-04T20:08:34.330563+00:00",
-    "method": "git ls-remote https://github.com/so7ob/Website.git refs/heads/main refs/heads/develop",
+    "sourceSHA": "dddf8cd00a19cf7d562f503549f4c000109057d1",
+    "verifiedAt": "2026-10-04T21:17:55.104553+00:00",
+    "method": "git ls-remote Website main/develop",
     "advanced": false
   }
 }
