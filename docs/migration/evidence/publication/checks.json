@@ -1,0 +1,47 @@
+{
+  "sourceSHA": "fc4a959e87e7c3750a0546f9d4fa10e31ac3b63c",
+  "sourceVerifiedAt": "2026-10-04T00:49:17Z",
+  "branch": "feat/4-cms-publication",
+  "stackedOn": {
+    "pr": 25,
+    "sha": "20820e6a7eb65055c84af5c371e4ed65a1a3c020"
+  },
+  "syntheticOnly": true,
+  "checks": {
+    "lint": "passed",
+    "typecheck": "passed",
+    "unitIntegration": {
+      "passed": 310,
+      "files": 31,
+      "database": "isolated MariaDB loopback:3307"
+    },
+    "build": "passed",
+    "e2e": {
+      "passed": 74,
+      "retries": 0
+    },
+    "infra": "passed",
+    "diff": "passed"
+  },
+  "initialFailures": [
+    {
+      "scope": "first browser run",
+      "passed": 64,
+      "failed": 10,
+      "causes": [
+        "Optional class DTO properties were enumerable even when undefined; empty-body adapter now checks supplied values.",
+        "New test incorrectly expected 308; frozen source uses redirect (307)."
+      ]
+    },
+    {
+      "scope": "page-settings-null regression",
+      "result": "Proved legacy SEO resurrected on explicit null; fixed without changing missing-value fallback."
+    }
+  ],
+  "limits": [
+    "New editor UI integration pending",
+    "Legacy empty-body publish/restore adapters retained",
+    "No full performance/visual/operational recovery acceptance",
+    "No production data/deployment/release"
+  ]
+}

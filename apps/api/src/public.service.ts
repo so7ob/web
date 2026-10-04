@@ -11,6 +11,7 @@ import {
   can,
   validateBlocks,
   loadContentForRender,
+  parsePageSettings,
   canAccessPage,
   type AdminPayload,
   type AdminScreen,
@@ -229,9 +230,10 @@ export class PublicService {
       Omit<PublicPage, "restricted"> & {
         visibility: string;
         allowedRoles: string;
+        publishedSettings: string | null;
       }
     > = await db.query(
-      "SELECT id,slug,titleAr,titleEn,seoTitleAr,seoTitleEn,seoDescAr,seoDescEn,publishedBlocksAr,publishedBlocksEn,visibility,allowedRoles FROM Page WHERE slug=? AND status=? LIMIT 1",
+      "SELECT id,slug,titleAr,titleEn,seoTitleAr,seoTitleEn,seoDescAr,seoDescEn,publishedBlocksAr,publishedBlocksEn,visibility,allowedRoles,publishedSettings FROM Page WHERE slug=? AND status=? LIMIT 1",
       [slug, "published"],
     );
     const stored = pages[0];
@@ -251,10 +253,14 @@ export class PublicService {
         redirect: `/${locale}/auth/login?next=/${locale}${slug ? "/" + slug : ""}`,
       };
     if (!canAccessPage(viewer, stored)) throw new NotFoundException();
-    const { visibility, allowedRoles, ...published } = stored;
+    const { visibility, allowedRoles, publishedSettings, ...published } = stored;
+    const settings = parsePageSettings(publishedSettings, stored);
     void allowedRoles; // Authorization-only metadata is deliberately omitted from the DTO.
     const page: PublicPage = {
       ...published,
+      titleAr: settings.titleAr, titleEn: settings.titleEn,
+      seoTitleAr: settings.seoTitleAr, seoTitleEn: settings.seoTitleEn,
+      seoDescAr: settings.seoDescAr, seoDescEn: settings.seoDescEn,
       restricted: visibility !== "public",
     };
     const blocks =

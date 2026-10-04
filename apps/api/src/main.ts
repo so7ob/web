@@ -11,7 +11,7 @@ import {
   PageAdministrationController,
   cmsBodyMiddleware,
 } from "./admin/pages.controller.js";
-import { PageAdministrationService } from "@so7ob/server";
+import { PagePublicationService, PageAdministrationService } from "@so7ob/server";
 import {
   UserAdministrationController,
   invitationAttemptMiddleware,
@@ -84,6 +84,7 @@ class HealthController {
     ClaimController,
   ],
   providers: [
+    { provide: PagePublicationService, useFactory: async () => new PagePublicationService(await database()) },
     { provide: PageTemplateService, useFactory: async () => new PageTemplateService(await database()) },
     {
       provide: AdminDashboardService,

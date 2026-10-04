@@ -1,3 +1,4 @@
+import { PagePublicationService } from "./publication.js";
 import type { DataSource, QueryRunner } from "typeorm";
 import {
   can,
@@ -5,6 +6,8 @@ import {
   validateBlocks,
   validateContent,
   countNodes,
+  parsePageSettings,
+  hasUnpublishedChanges,
   type AuthUser,
   type Permission,
 } from "@so7ob/contracts";
@@ -134,6 +137,12 @@ export class PageAdministrationService {
         draftUpdatedAt: p.draftUpdatedAt,
         draftUpdatedById: p.draftUpdatedById,
         draftRevision: p.draftRevision,
+        publishedRevision: p.publishedRevision,
+        draftSettings: parsePageSettings(p.draftSettings, p),
+        publishedSettings: p.publishedSettings ? parsePageSettings(p.publishedSettings, p) : null,
+        scheduledPublishAt: p.scheduledPublishAt,
+        scheduledRevision: p.scheduledRevision,
+        hasUnpublishedChanges: hasUnpublishedChanges(p),
         publishedAt: p.publishedAt,
         sourceKey: p.sourceKey,
         editorTouchedAt: p.editorTouchedAt,
@@ -226,6 +235,7 @@ export class PageAdministrationService {
   }
   async update(actor: AuthUser, id: string, body: Record<string, unknown>) {
     permit(actor, "pages.edit");
+    if (body.draftSettings !== undefined) return new PagePublicationService(this.db).save(actor, id, body);
     return transaction(this.db, async (r) => {
       const page = await this.locked(r, id),
         updates: Record<string, unknown> = {};
