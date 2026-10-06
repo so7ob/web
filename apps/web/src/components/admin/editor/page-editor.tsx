@@ -1241,7 +1241,7 @@ export function PageEditor({ me, locale, pageId }: PageEditorProps) {
             className="flex min-h-10 max-w-56 cursor-pointer items-center gap-2 rounded-xl px-3 text-start transition-colors hover:bg-muted/60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
             title={te.pageSettings}
           >
-            <span className="truncate text-sm font-bold text-navy">{pageTitle}</span>
+            <h1 className="truncate text-sm font-bold text-navy">{pageTitle}</h1>
             <Pencil className="size-3.5 shrink-0 text-muted-foreground" aria-hidden="true" />
             <ChevronDown className="size-3.5 shrink-0 text-muted-foreground" aria-hidden="true" />
           </button>
@@ -1562,7 +1562,7 @@ export function PageEditor({ me, locale, pageId }: PageEditorProps) {
         {/* ——— اللوحات الثلاث ——— */}
         <div className="grid min-h-0 gap-3 lg:grid-cols-[14rem_1fr] xl:grid-cols-[14rem_1fr_20rem]">
           {/* المكتبة */}
-          <aside className="hidden min-h-0 flex-col overflow-hidden rounded-2xl border border-border bg-white shadow-sm lg:flex">
+          <aside aria-label={te.library} className="hidden min-h-0 flex-col overflow-hidden rounded-2xl border border-border bg-white shadow-sm lg:flex">
             <header className="flex items-start justify-between gap-2 border-b border-border px-3 py-2.5">
               <div className="min-w-0">
                 <h2 className="text-sm font-bold text-navy">{te.library}</h2>
@@ -1664,7 +1664,7 @@ export function PageEditor({ me, locale, pageId }: PageEditorProps) {
           </section>
 
           {/* الخصائص — ثابتة على xl+ */}
-          <aside className="hidden min-h-0 flex-col overflow-hidden rounded-2xl border border-border bg-white shadow-sm xl:flex">
+          <aside aria-label={te.properties} className="hidden min-h-0 flex-col overflow-hidden rounded-2xl border border-border bg-white shadow-sm xl:flex">
             {selectedNode ? (
               <PropertiesPanel
                 node={selectedNode}

@@ -1,0 +1,32 @@
+{
+  "unitCases": 447,
+  "focusedPropertyCases": 64,
+  "checks": {
+    "unit": {
+      "result": "passed",
+      "log": ".migration/editor-properties-unit.log",
+      "sha256": "58a248561db3b0a48088df3413363b2c63c7fa407f471df491ac393da4c441c3"
+    },
+    "lint": {
+      "result": "passed",
+      "log": ".migration/editor-properties-lint.log",
+      "sha256": "f53c816cc6f6619121d1bc9841ddb6af506e161209ac8f3479bed133f4eea735"
+    },
+    "typecheck": {
+      "result": "passed",
+      "log": ".migration/editor-properties-typecheck.log",
+      "sha256": "515fc5287ba273cdd4b202cc41ae1de65500d3c7625871252a3c953d11cf9edb"
+    },
+    "build": {
+      "result": "passed",
+      "log": ".migration/editor-properties-build.log",
+      "sha256": "73c92b08564e8045851dac2e05b76d91ddb7f4a2a1764c9ee2a6c4d119bd36fa"
+    },
+    "infra": {
+      "result": "passed",
+      "log": ".migration/editor-properties-infra.log",
+      "sha256": "5639ae151a37c0b0398d47e886fa455ef3834abcf6dcc55eb93289637389efe8"
+    }
+  },
+  "finalBrowserAndCI": "Run after final semantic accessibility fix; exact committed head results recorded in PR, not inferred from earlier attempt."
+}

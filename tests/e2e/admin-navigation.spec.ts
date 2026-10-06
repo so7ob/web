@@ -128,7 +128,7 @@ for (const locale of ["ar", "en"] as const) {
               exact: true,
             })
           : page;
-      await properties.locator("#pf-text").fill(title);
+      await properties.getByRole("textbox", { name: locale === "ar" ? "النص" : "Text", exact: true }).fill(title);
       if (info.project.name === "mobile") await page.keyboard.press("Escape");
       await page
         .getByRole("button", { name: t.admin.editor.undo, exact: true })
