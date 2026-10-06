@@ -1,0 +1,115 @@
+{
+  "sourceSHA": "dddf8cd00a19cf7d562f503549f4c000109057d1",
+  "bytes": 63759001,
+  "valid": true,
+  "ranking": [
+    {
+      "type": "servicesGrid",
+      "bytes": 1062649
+    },
+    {
+      "type": "servicesDetail",
+      "bytes": 1009146
+    },
+    {
+      "type": "columns",
+      "bytes": 965635
+    },
+    {
+      "type": "processFull",
+      "bytes": 843299
+    },
+    {
+      "type": "worksFull",
+      "bytes": 772721
+    },
+    {
+      "type": "simpleTable",
+      "bytes": 729505
+    },
+    {
+      "type": "faqSection",
+      "bytes": 661629
+    },
+    {
+      "type": "richText",
+      "bytes": 623511
+    },
+    {
+      "type": "text",
+      "bytes": 600686
+    },
+    {
+      "type": "numberedValues",
+      "bytes": 248115
+    },
+    {
+      "type": "numberedList",
+      "bytes": 233085
+    },
+    {
+      "type": "featureGrid",
+      "bytes": 176401
+    },
+    {
+      "type": "worksShowcase",
+      "bytes": 116488
+    },
+    {
+      "type": "pageHeader",
+      "bytes": 94842
+    },
+    {
+      "type": "gallery",
+      "bytes": 80202
+    },
+    {
+      "type": "processSteps",
+      "bytes": 61165
+    },
+    {
+      "type": "visionMission",
+      "bytes": 39054
+    },
+    {
+      "type": "contactInfo",
+      "bytes": 28007
+    },
+    {
+      "type": "ctaSection",
+      "bytes": 26323
+    },
+    {
+      "type": "hero",
+      "bytes": 21433
+    },
+    {
+      "type": "navCtaBanner",
+      "bytes": 12641
+    },
+    {
+      "type": "image",
+      "bytes": 9046
+    },
+    {
+      "type": "heading",
+      "bytes": 3152
+    },
+    {
+      "type": "buttonLink",
+      "bytes": 3142
+    },
+    {
+      "type": "requestForm",
+      "bytes": 662
+    },
+    {
+      "type": "spacer",
+      "bytes": 594
+    },
+    {
+      "type": "divider",
+      "bytes": 584
+    }
+  ]
+}

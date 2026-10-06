@@ -1,0 +1,2644 @@
+{
+  "sourceSHA": "dddf8cd00a19cf7d562f503549f4c000109057d1",
+  "scope": "Code and functional migration only, no real operations/deployment/data cutover",
+  "features": [
+    {
+      "featureId": "API-001",
+      "route": "GET /api/account/claim-verify",
+      "implementation": [
+        "packages/server/src/auth/claims.ts",
+        "apps/api/src/auth/claim-controller.ts"
+      ],
+      "tests": [
+        "packages/server/src/auth/claims.integration.test.ts",
+        "tests/e2e/files-claims.spec.ts",
+        "tests/e2e/account-portal.spec.ts"
+      ],
+      "previousStatus": "implemented; scoped claim API tests passed; private UI pending"
+    },
+    {
+      "featureId": "API-002",
+      "route": "GET /api/account/drafts",
+      "implementation": [
+        "apps/api/src/business/controller.ts",
+        "packages/server/src/business/account.ts",
+        "packages/server/src/business/requests.ts",
+        "packages/server/src/business/inquiries.ts"
+      ],
+      "tests": [
+        "packages/server/src/business/portal.integration.test.ts",
+        "tests/e2e/account-portal.spec.ts",
+        "tests/e2e/profile-hydration.spec.ts",
+        "tests/e2e/role-contracts.spec.ts"
+      ],
+      "previousStatus": "implemented; scoped API tests passed; private UI pending"
+    },
+    {
+      "featureId": "API-003",
+      "route": "PUT /api/account/drafts",
+      "implementation": [
+        "apps/api/src/business/controller.ts",
+        "packages/server/src/business/account.ts",
+        "packages/server/src/business/requests.ts",
+        "packages/server/src/business/inquiries.ts"
+      ],
+      "tests": [
+        "packages/server/src/business/portal.integration.test.ts",
+        "tests/e2e/account-portal.spec.ts",
+        "tests/e2e/profile-hydration.spec.ts",
+        "tests/e2e/role-contracts.spec.ts"
+      ],
+      "previousStatus": "implemented; scoped API tests passed; private UI pending"
+    },
+    {
+      "featureId": "API-004",
+      "route": "DELETE /api/account/drafts",
+      "implementation": [
+        "apps/api/src/business/controller.ts",
+        "packages/server/src/business/account.ts",
+        "packages/server/src/business/requests.ts",
+        "packages/server/src/business/inquiries.ts"
+      ],
+      "tests": [
+        "packages/server/src/business/portal.integration.test.ts",
+        "tests/e2e/account-portal.spec.ts",
+        "tests/e2e/profile-hydration.spec.ts",
+        "tests/e2e/role-contracts.spec.ts"
+      ],
+      "previousStatus": "implemented; scoped API tests passed; private UI pending"
+    },
+    {
+      "featureId": "API-005",
+      "route": "POST /api/account/inquiries/[id]/messages",
+      "implementation": [
+        "apps/api/src/business/controller.ts",
+        "packages/server/src/business/account.ts",
+        "packages/server/src/business/requests.ts",
+        "packages/server/src/business/inquiries.ts"
+      ],
+      "tests": [
+        "packages/server/src/business/portal.integration.test.ts",
+        "tests/e2e/account-portal.spec.ts",
+        "tests/e2e/profile-hydration.spec.ts",
+        "tests/e2e/role-contracts.spec.ts"
+      ],
+      "previousStatus": "implemented; scoped API tests passed; private UI pending"
+    },
+    {
+      "featureId": "API-006",
+      "route": "GET /api/account/inquiries/[id]",
+      "implementation": [
+        "apps/api/src/business/controller.ts",
+        "packages/server/src/business/account.ts",
+        "packages/server/src/business/requests.ts",
+        "packages/server/src/business/inquiries.ts"
+      ],
+      "tests": [
+        "packages/server/src/business/portal.integration.test.ts",
+        "tests/e2e/account-portal.spec.ts",
+        "tests/e2e/profile-hydration.spec.ts",
+        "tests/e2e/role-contracts.spec.ts"
+      ],
+      "previousStatus": "implemented; scoped API tests passed; private UI pending"
+    },
+    {
+      "featureId": "API-007",
+      "route": "GET /api/account/inquiries",
+      "implementation": [
+        "apps/api/src/business/controller.ts",
+        "packages/server/src/business/account.ts",
+        "packages/server/src/business/requests.ts",
+        "packages/server/src/business/inquiries.ts"
+      ],
+      "tests": [
+        "packages/server/src/business/portal.integration.test.ts",
+        "tests/e2e/account-portal.spec.ts",
+        "tests/e2e/profile-hydration.spec.ts",
+        "tests/e2e/role-contracts.spec.ts"
+      ],
+      "previousStatus": "implemented; scoped API tests passed; private UI pending; original contract only; refreshed source handler changes pending"
+    },
+    {
+      "featureId": "API-008",
+      "route": "POST /api/account/inquiries",
+      "implementation": [
+        "apps/api/src/business/controller.ts",
+        "packages/server/src/business/account.ts",
+        "packages/server/src/business/requests.ts",
+        "packages/server/src/business/inquiries.ts"
+      ],
+      "tests": [
+        "packages/server/src/business/portal.integration.test.ts",
+        "tests/e2e/account-portal.spec.ts",
+        "tests/e2e/profile-hydration.spec.ts",
+        "tests/e2e/role-contracts.spec.ts"
+      ],
+      "previousStatus": "implemented; scoped API tests passed; private UI pending; original contract only; refreshed source handler changes pending"
+    },
+    {
+      "featureId": "API-009",
+      "route": "GET /api/account/notifications",
+      "implementation": [
+        "apps/api/src/business/controller.ts",
+        "packages/server/src/business/account.ts",
+        "packages/server/src/business/requests.ts",
+        "packages/server/src/business/inquiries.ts"
+      ],
+      "tests": [
+        "packages/server/src/business/portal.integration.test.ts",
+        "tests/e2e/account-portal.spec.ts",
+        "tests/e2e/profile-hydration.spec.ts",
+        "tests/e2e/role-contracts.spec.ts"
+      ],
+      "previousStatus": "implemented; scoped API tests passed; private UI pending"
+    },
+    {
+      "featureId": "API-010",
+      "route": "POST /api/account/notifications",
+      "implementation": [
+        "apps/api/src/business/controller.ts",
+        "packages/server/src/business/account.ts",
+        "packages/server/src/business/requests.ts",
+        "packages/server/src/business/inquiries.ts"
+      ],
+      "tests": [
+        "packages/server/src/business/portal.integration.test.ts",
+        "tests/e2e/account-portal.spec.ts",
+        "tests/e2e/profile-hydration.spec.ts",
+        "tests/e2e/role-contracts.spec.ts"
+      ],
+      "previousStatus": "implemented; scoped API tests passed; private UI pending"
+    },
+    {
+      "featureId": "API-011",
+      "route": "GET /api/account/profile",
+      "implementation": [
+        "apps/api/src/business/controller.ts",
+        "packages/server/src/business/account.ts",
+        "packages/server/src/business/requests.ts",
+        "packages/server/src/business/inquiries.ts"
+      ],
+      "tests": [
+        "packages/server/src/business/portal.integration.test.ts",
+        "tests/e2e/account-portal.spec.ts",
+        "tests/e2e/profile-hydration.spec.ts",
+        "tests/e2e/role-contracts.spec.ts"
+      ],
+      "previousStatus": "implemented; scoped API tests passed; private UI pending"
+    },
+    {
+      "featureId": "API-012",
+      "route": "PATCH /api/account/profile",
+      "implementation": [
+        "apps/api/src/business/controller.ts",
+        "packages/server/src/business/account.ts",
+        "packages/server/src/business/requests.ts",
+        "packages/server/src/business/inquiries.ts"
+      ],
+      "tests": [
+        "packages/server/src/business/portal.integration.test.ts",
+        "tests/e2e/account-portal.spec.ts",
+        "tests/e2e/profile-hydration.spec.ts",
+        "tests/e2e/role-contracts.spec.ts"
+      ],
+      "previousStatus": "implemented; scoped API tests passed; private UI pending"
+    },
+    {
+      "featureId": "API-013",
+      "route": "POST /api/account/requests/[id]/messages",
+      "implementation": [
+        "apps/api/src/business/controller.ts",
+        "packages/server/src/business/account.ts",
+        "packages/server/src/business/requests.ts",
+        "packages/server/src/business/inquiries.ts"
+      ],
+      "tests": [
+        "packages/server/src/business/portal.integration.test.ts",
+        "tests/e2e/account-portal.spec.ts",
+        "tests/e2e/profile-hydration.spec.ts",
+        "tests/e2e/role-contracts.spec.ts"
+      ],
+      "previousStatus": "implemented; scoped API tests passed; private UI pending"
+    },
+    {
+      "featureId": "API-014",
+      "route": "GET /api/account/requests/[id]",
+      "implementation": [
+        "apps/api/src/business/controller.ts",
+        "packages/server/src/business/account.ts",
+        "packages/server/src/business/requests.ts",
+        "packages/server/src/business/inquiries.ts"
+      ],
+      "tests": [
+        "packages/server/src/business/portal.integration.test.ts",
+        "tests/e2e/account-portal.spec.ts",
+        "tests/e2e/profile-hydration.spec.ts",
+        "tests/e2e/role-contracts.spec.ts"
+      ],
+      "previousStatus": "implemented; scoped API tests passed; private UI pending"
+    },
+    {
+      "featureId": "API-015",
+      "route": "PATCH /api/account/requests/[id]",
+      "implementation": [
+        "apps/api/src/business/controller.ts",
+        "packages/server/src/business/account.ts",
+        "packages/server/src/business/requests.ts",
+        "packages/server/src/business/inquiries.ts"
+      ],
+      "tests": [
+        "packages/server/src/business/portal.integration.test.ts",
+        "tests/e2e/account-portal.spec.ts",
+        "tests/e2e/profile-hydration.spec.ts",
+        "tests/e2e/role-contracts.spec.ts"
+      ],
+      "previousStatus": "implemented; scoped API tests passed; private UI pending"
+    },
+    {
+      "featureId": "API-016",
+      "route": "POST /api/account/requests/claim",
+      "implementation": [
+        "packages/server/src/auth/claims.ts",
+        "apps/api/src/auth/claim-controller.ts"
+      ],
+      "tests": [
+        "packages/server/src/auth/claims.integration.test.ts",
+        "tests/e2e/files-claims.spec.ts",
+        "tests/e2e/account-portal.spec.ts"
+      ],
+      "previousStatus": "implemented; scoped claim API tests passed; private UI pending"
+    },
+    {
+      "featureId": "API-017",
+      "route": "GET /api/account/requests",
+      "implementation": [
+        "apps/api/src/business/controller.ts",
+        "packages/server/src/business/account.ts",
+        "packages/server/src/business/requests.ts",
+        "packages/server/src/business/inquiries.ts"
+      ],
+      "tests": [
+        "packages/server/src/business/portal.integration.test.ts",
+        "tests/e2e/account-portal.spec.ts",
+        "tests/e2e/profile-hydration.spec.ts",
+        "tests/e2e/role-contracts.spec.ts"
+      ],
+      "previousStatus": "implemented; scoped API tests passed; private UI pending"
+    },
+    {
+      "featureId": "API-018",
+      "route": "GET /api/admin/audit",
+      "implementation": [
+        "packages/server/src/admin/operations.ts",
+        "packages/server/src/admin/conversations.ts",
+        "packages/server/src/admin/dashboard.ts",
+        "apps/api/src/admin/operations.controller.ts"
+      ],
+      "tests": [
+        "packages/server/src/admin/operations.integration.test.ts",
+        "tests/e2e/admin-configuration.spec.ts",
+        "tests/e2e/role-contracts.spec.ts",
+        "tests/e2e/support-operations.spec.ts",
+        "tests/e2e/admin-navigation.spec.ts"
+      ],
+      "previousStatus": "implemented; scoped database/browser tests; complete source HTTP comparison pending"
+    },
+    {
+      "featureId": "API-019",
+      "route": "GET /api/admin/dashboard",
+      "implementation": [
+        "packages/server/src/admin/operations.ts",
+        "packages/server/src/admin/conversations.ts",
+        "packages/server/src/admin/dashboard.ts",
+        "apps/api/src/admin/operations.controller.ts"
+      ],
+      "tests": [
+        "packages/server/src/admin/operations.integration.test.ts",
+        "tests/e2e/admin-configuration.spec.ts",
+        "tests/e2e/role-contracts.spec.ts",
+        "tests/e2e/support-operations.spec.ts",
+        "tests/e2e/admin-navigation.spec.ts"
+      ],
+      "previousStatus": "implemented; scoped database/browser tests; complete source HTTP comparison pending"
+    },
+    {
+      "featureId": "API-020",
+      "route": "POST /api/admin/inquiries/[id]/messages",
+      "implementation": [
+        "packages/server/src/admin/operations.ts",
+        "packages/server/src/admin/conversations.ts",
+        "packages/server/src/admin/dashboard.ts",
+        "apps/api/src/admin/operations.controller.ts"
+      ],
+      "tests": [
+        "packages/server/src/admin/operations.integration.test.ts",
+        "tests/e2e/admin-configuration.spec.ts",
+        "tests/e2e/role-contracts.spec.ts",
+        "tests/e2e/support-operations.spec.ts",
+        "tests/e2e/admin-navigation.spec.ts"
+      ],
+      "previousStatus": "implemented; scoped database/browser tests; complete source HTTP comparison pending; original contract only; refreshed source handler changes pending"
+    },
+    {
+      "featureId": "API-021",
+      "route": "GET /api/admin/inquiries/[id]",
+      "implementation": [
+        "packages/server/src/admin/operations.ts",
+        "packages/server/src/admin/conversations.ts",
+        "packages/server/src/admin/dashboard.ts",
+        "apps/api/src/admin/operations.controller.ts"
+      ],
+      "tests": [
+        "packages/server/src/admin/operations.integration.test.ts",
+        "tests/e2e/admin-configuration.spec.ts",
+        "tests/e2e/role-contracts.spec.ts",
+        "tests/e2e/support-operations.spec.ts",
+        "tests/e2e/admin-navigation.spec.ts"
+      ],
+      "previousStatus": "implemented; scoped database/browser tests; complete source HTTP comparison pending"
+    },
+    {
+      "featureId": "API-022",
+      "route": "PATCH /api/admin/inquiries/[id]",
+      "implementation": [
+        "packages/server/src/admin/operations.ts",
+        "packages/server/src/admin/conversations.ts",
+        "packages/server/src/admin/dashboard.ts",
+        "apps/api/src/admin/operations.controller.ts"
+      ],
+      "tests": [
+        "packages/server/src/admin/operations.integration.test.ts",
+        "tests/e2e/admin-configuration.spec.ts",
+        "tests/e2e/role-contracts.spec.ts",
+        "tests/e2e/support-operations.spec.ts",
+        "tests/e2e/admin-navigation.spec.ts"
+      ],
+      "previousStatus": "implemented; scoped database/browser tests; complete source HTTP comparison pending"
+    },
+    {
+      "featureId": "API-023",
+      "route": "POST /api/admin/inquiries/bulk",
+      "implementation": [
+        "packages/server/src/admin/operations.ts",
+        "packages/server/src/admin/conversations.ts",
+        "packages/server/src/admin/dashboard.ts",
+        "apps/api/src/admin/operations.controller.ts"
+      ],
+      "tests": [
+        "packages/server/src/admin/operations.integration.test.ts",
+        "tests/e2e/admin-configuration.spec.ts",
+        "tests/e2e/role-contracts.spec.ts",
+        "tests/e2e/support-operations.spec.ts",
+        "tests/e2e/admin-navigation.spec.ts"
+      ],
+      "previousStatus": "implemented; scoped database/browser tests; complete source HTTP comparison pending"
+    },
+    {
+      "featureId": "API-024",
+      "route": "GET /api/admin/inquiries/export",
+      "implementation": [
+        "packages/server/src/admin/operations.ts",
+        "packages/server/src/admin/conversations.ts",
+        "packages/server/src/admin/dashboard.ts",
+        "apps/api/src/admin/operations.controller.ts"
+      ],
+      "tests": [
+        "packages/server/src/admin/operations.integration.test.ts",
+        "tests/e2e/admin-configuration.spec.ts",
+        "tests/e2e/role-contracts.spec.ts",
+        "tests/e2e/support-operations.spec.ts",
+        "tests/e2e/admin-navigation.spec.ts"
+      ],
+      "previousStatus": "implemented; scoped database/browser tests; complete source HTTP comparison pending"
+    },
+    {
+      "featureId": "API-025",
+      "route": "GET /api/admin/inquiries",
+      "implementation": [
+        "packages/server/src/admin/operations.ts",
+        "packages/server/src/admin/conversations.ts",
+        "packages/server/src/admin/dashboard.ts",
+        "apps/api/src/admin/operations.controller.ts"
+      ],
+      "tests": [
+        "packages/server/src/admin/operations.integration.test.ts",
+        "tests/e2e/admin-configuration.spec.ts",
+        "tests/e2e/role-contracts.spec.ts",
+        "tests/e2e/support-operations.spec.ts",
+        "tests/e2e/admin-navigation.spec.ts"
+      ],
+      "previousStatus": "implemented; scoped database/browser tests; complete source HTTP comparison pending"
+    },
+    {
+      "featureId": "API-026",
+      "route": "PATCH /api/admin/media/[id]",
+      "implementation": [
+        "packages/server/src/files/service.ts",
+        "packages/server/src/files/media-usage.ts"
+      ],
+      "tests": [
+        "packages/server/src/files/files.integration.test.ts",
+        "packages/server/src/files/media-library.integration.test.ts",
+        "tests/e2e/files-claims.spec.ts",
+        "tests/e2e/media-library.spec.ts"
+      ],
+      "previousStatus": "implemented; 4 browser journeys and 4 exact visual comparisons passed; human review/full acceptance pending"
+    },
+    {
+      "featureId": "API-027",
+      "route": "DELETE /api/admin/media/[id]",
+      "implementation": [
+        "packages/server/src/files/service.ts",
+        "packages/server/src/files/media-usage.ts"
+      ],
+      "tests": [
+        "packages/server/src/files/files.integration.test.ts",
+        "packages/server/src/files/media-library.integration.test.ts",
+        "tests/e2e/files-claims.spec.ts",
+        "tests/e2e/media-library.spec.ts"
+      ],
+      "previousStatus": "implemented; 4 browser journeys and 4 exact visual comparisons passed; human review/full acceptance pending"
+    },
+    {
+      "featureId": "API-028",
+      "route": "GET /api/admin/media",
+      "implementation": [
+        "packages/server/src/files/service.ts",
+        "packages/server/src/files/media-usage.ts"
+      ],
+      "tests": [
+        "packages/server/src/files/files.integration.test.ts",
+        "packages/server/src/files/media-library.integration.test.ts",
+        "tests/e2e/files-claims.spec.ts",
+        "tests/e2e/media-library.spec.ts"
+      ],
+      "previousStatus": "implemented; 4 browser journeys and 4 exact visual comparisons passed; human review/full acceptance pending"
+    },
+    {
+      "featureId": "API-029",
+      "route": "POST /api/admin/media",
+      "implementation": [
+        "packages/server/src/files/service.ts",
+        "packages/server/src/files/media-usage.ts"
+      ],
+      "tests": [
+        "packages/server/src/files/files.integration.test.ts",
+        "packages/server/src/files/media-library.integration.test.ts",
+        "tests/e2e/files-claims.spec.ts",
+        "tests/e2e/media-library.spec.ts"
+      ],
+      "previousStatus": "implemented; 4 browser journeys and 4 exact visual comparisons passed; human review/full acceptance pending"
+    },
+    {
+      "featureId": "API-030",
+      "route": "GET /api/admin/menus",
+      "implementation": [
+        "packages/server/src/admin/operations.ts",
+        "packages/server/src/admin/conversations.ts",
+        "packages/server/src/admin/dashboard.ts",
+        "apps/api/src/admin/operations.controller.ts"
+      ],
+      "tests": [
+        "packages/server/src/admin/operations.integration.test.ts",
+        "tests/e2e/admin-configuration.spec.ts",
+        "tests/e2e/role-contracts.spec.ts",
+        "tests/e2e/support-operations.spec.ts",
+        "tests/e2e/admin-navigation.spec.ts"
+      ],
+      "previousStatus": "implemented; scoped database/browser tests; complete source HTTP comparison pending"
+    },
+    {
+      "featureId": "API-031",
+      "route": "PUT /api/admin/menus",
+      "implementation": [
+        "packages/server/src/admin/operations.ts",
+        "packages/server/src/admin/conversations.ts",
+        "packages/server/src/admin/dashboard.ts",
+        "apps/api/src/admin/operations.controller.ts"
+      ],
+      "tests": [
+        "packages/server/src/admin/operations.integration.test.ts",
+        "tests/e2e/admin-configuration.spec.ts",
+        "tests/e2e/role-contracts.spec.ts",
+        "tests/e2e/support-operations.spec.ts",
+        "tests/e2e/admin-navigation.spec.ts"
+      ],
+      "previousStatus": "implemented; scoped database/browser tests; complete source HTTP comparison pending"
+    },
+    {
+      "featureId": "API-032",
+      "route": "GET /api/admin/outbox",
+      "implementation": [
+        "packages/server/src/admin/operations.ts",
+        "packages/server/src/admin/conversations.ts",
+        "packages/server/src/admin/dashboard.ts",
+        "apps/api/src/admin/operations.controller.ts"
+      ],
+      "tests": [
+        "packages/server/src/admin/operations.integration.test.ts",
+        "tests/e2e/admin-configuration.spec.ts",
+        "tests/e2e/role-contracts.spec.ts",
+        "tests/e2e/support-operations.spec.ts",
+        "tests/e2e/admin-navigation.spec.ts"
+      ],
+      "previousStatus": "implemented; metadata-only behavior matches pinned dddf8cd source; MariaDB private-content exclusion passed"
+    },
+    {
+      "featureId": "API-033",
+      "route": "POST /api/admin/pages/[id]/publish",
+      "implementation": [
+        "packages/server/src/admin/pages.ts",
+        "packages/server/src/admin/publication.ts",
+        "apps/api/src/admin/pages.controller.ts"
+      ],
+      "tests": [
+        "packages/server/src/admin/pages.integration.test.ts",
+        "packages/server/src/admin/publication.integration.test.ts",
+        "tests/e2e/cms-publication.spec.ts",
+        "tests/e2e/editor-operations.spec.ts",
+        "tests/e2e/admin-navigation.spec.ts"
+      ],
+      "previousStatus": "implemented; scoped database/browser tests; complete source HTTP comparison pending; original contract only; refreshed source handler changes pending"
+    },
+    {
+      "featureId": "API-034",
+      "route": "GET /api/admin/pages/[id]",
+      "implementation": [
+        "packages/server/src/admin/pages.ts",
+        "packages/server/src/admin/publication.ts",
+        "apps/api/src/admin/pages.controller.ts"
+      ],
+      "tests": [
+        "packages/server/src/admin/pages.integration.test.ts",
+        "packages/server/src/admin/publication.integration.test.ts",
+        "tests/e2e/cms-publication.spec.ts",
+        "tests/e2e/editor-operations.spec.ts",
+        "tests/e2e/admin-navigation.spec.ts"
+      ],
+      "previousStatus": "implemented; scoped database/browser tests; complete source HTTP comparison pending; original contract only; refreshed source handler changes pending"
+    },
+    {
+      "featureId": "API-035",
+      "route": "PATCH /api/admin/pages/[id]",
+      "implementation": [
+        "packages/server/src/admin/pages.ts",
+        "packages/server/src/admin/publication.ts",
+        "apps/api/src/admin/pages.controller.ts"
+      ],
+      "tests": [
+        "packages/server/src/admin/pages.integration.test.ts",
+        "packages/server/src/admin/publication.integration.test.ts",
+        "tests/e2e/cms-publication.spec.ts",
+        "tests/e2e/editor-operations.spec.ts",
+        "tests/e2e/admin-navigation.spec.ts"
+      ],
+      "previousStatus": "implemented; scoped database/browser tests; complete source HTTP comparison pending; original contract only; refreshed source handler changes pending"
+    },
+    {
+      "featureId": "API-036",
+      "route": "DELETE /api/admin/pages/[id]",
+      "implementation": [
+        "packages/server/src/admin/pages.ts",
+        "packages/server/src/admin/publication.ts",
+        "apps/api/src/admin/pages.controller.ts"
+      ],
+      "tests": [
+        "packages/server/src/admin/pages.integration.test.ts",
+        "packages/server/src/admin/publication.integration.test.ts",
+        "tests/e2e/cms-publication.spec.ts",
+        "tests/e2e/editor-operations.spec.ts",
+        "tests/e2e/admin-navigation.spec.ts"
+      ],
+      "previousStatus": "implemented; scoped database/browser tests; complete source HTTP comparison pending; original contract only; refreshed source handler changes pending"
+    },
+    {
+      "featureId": "API-037",
+      "route": "POST /api/admin/pages/[id]/versions/[version]/restore",
+      "implementation": [
+        "packages/server/src/admin/pages.ts",
+        "packages/server/src/admin/publication.ts",
+        "apps/api/src/admin/pages.controller.ts"
+      ],
+      "tests": [
+        "packages/server/src/admin/pages.integration.test.ts",
+        "packages/server/src/admin/publication.integration.test.ts",
+        "tests/e2e/cms-publication.spec.ts",
+        "tests/e2e/editor-operations.spec.ts",
+        "tests/e2e/admin-navigation.spec.ts"
+      ],
+      "previousStatus": "implemented; scoped database/browser tests; complete source HTTP comparison pending; original contract only; refreshed source handler changes pending"
+    },
+    {
+      "featureId": "API-038",
+      "route": "GET /api/admin/pages/[id]/versions",
+      "implementation": [
+        "packages/server/src/admin/pages.ts",
+        "packages/server/src/admin/publication.ts",
+        "apps/api/src/admin/pages.controller.ts"
+      ],
+      "tests": [
+        "packages/server/src/admin/pages.integration.test.ts",
+        "packages/server/src/admin/publication.integration.test.ts",
+        "tests/e2e/cms-publication.spec.ts",
+        "tests/e2e/editor-operations.spec.ts",
+        "tests/e2e/admin-navigation.spec.ts"
+      ],
+      "previousStatus": "implemented; scoped database/browser tests; complete source HTTP comparison pending; original contract only; refreshed source handler changes pending"
+    },
+    {
+      "featureId": "API-039",
+      "route": "GET /api/admin/pages",
+      "implementation": [
+        "packages/server/src/admin/pages.ts",
+        "packages/server/src/admin/publication.ts",
+        "apps/api/src/admin/pages.controller.ts"
+      ],
+      "tests": [
+        "packages/server/src/admin/pages.integration.test.ts",
+        "packages/server/src/admin/publication.integration.test.ts",
+        "tests/e2e/cms-publication.spec.ts",
+        "tests/e2e/editor-operations.spec.ts",
+        "tests/e2e/admin-navigation.spec.ts"
+      ],
+      "previousStatus": "implemented; scoped database/browser tests; complete source HTTP comparison pending; original contract only; refreshed source handler changes pending"
+    },
+    {
+      "featureId": "API-040",
+      "route": "POST /api/admin/pages",
+      "implementation": [
+        "packages/server/src/admin/pages.ts",
+        "packages/server/src/admin/publication.ts",
+        "apps/api/src/admin/pages.controller.ts"
+      ],
+      "tests": [
+        "packages/server/src/admin/pages.integration.test.ts",
+        "packages/server/src/admin/publication.integration.test.ts",
+        "tests/e2e/cms-publication.spec.ts",
+        "tests/e2e/editor-operations.spec.ts",
+        "tests/e2e/admin-navigation.spec.ts"
+      ],
+      "previousStatus": "implemented; scoped database/browser tests; complete source HTTP comparison pending; original contract only; refreshed source handler changes pending"
+    },
+    {
+      "featureId": "API-041",
+      "route": "GET /api/admin/requests/[id]",
+      "implementation": [
+        "packages/server/src/admin/operations.ts",
+        "packages/server/src/admin/conversations.ts",
+        "packages/server/src/admin/dashboard.ts",
+        "apps/api/src/admin/operations.controller.ts"
+      ],
+      "tests": [
+        "packages/server/src/admin/operations.integration.test.ts",
+        "tests/e2e/admin-configuration.spec.ts",
+        "tests/e2e/role-contracts.spec.ts",
+        "tests/e2e/support-operations.spec.ts",
+        "tests/e2e/admin-navigation.spec.ts"
+      ],
+      "previousStatus": "implemented; scoped database/browser tests; complete source HTTP comparison pending"
+    },
+    {
+      "featureId": "API-042",
+      "route": "PATCH /api/admin/requests/[id]",
+      "implementation": [
+        "packages/server/src/admin/operations.ts",
+        "packages/server/src/admin/conversations.ts",
+        "packages/server/src/admin/dashboard.ts",
+        "apps/api/src/admin/operations.controller.ts"
+      ],
+      "tests": [
+        "packages/server/src/admin/operations.integration.test.ts",
+        "tests/e2e/admin-configuration.spec.ts",
+        "tests/e2e/role-contracts.spec.ts",
+        "tests/e2e/support-operations.spec.ts",
+        "tests/e2e/admin-navigation.spec.ts"
+      ],
+      "previousStatus": "implemented; scoped database/browser tests; complete source HTTP comparison pending"
+    },
+    {
+      "featureId": "API-043",
+      "route": "POST /api/admin/requests/bulk",
+      "implementation": [
+        "packages/server/src/admin/operations.ts",
+        "packages/server/src/admin/conversations.ts",
+        "packages/server/src/admin/dashboard.ts",
+        "apps/api/src/admin/operations.controller.ts"
+      ],
+      "tests": [
+        "packages/server/src/admin/operations.integration.test.ts",
+        "tests/e2e/admin-configuration.spec.ts",
+        "tests/e2e/role-contracts.spec.ts",
+        "tests/e2e/support-operations.spec.ts",
+        "tests/e2e/admin-navigation.spec.ts"
+      ],
+      "previousStatus": "implemented; scoped database/browser tests; complete source HTTP comparison pending"
+    },
+    {
+      "featureId": "API-044",
+      "route": "GET /api/admin/requests/export",
+      "implementation": [
+        "packages/server/src/admin/operations.ts",
+        "packages/server/src/admin/conversations.ts",
+        "packages/server/src/admin/dashboard.ts",
+        "apps/api/src/admin/operations.controller.ts"
+      ],
+      "tests": [
+        "packages/server/src/admin/operations.integration.test.ts",
+        "tests/e2e/admin-configuration.spec.ts",
+        "tests/e2e/role-contracts.spec.ts",
+        "tests/e2e/support-operations.spec.ts",
+        "tests/e2e/admin-navigation.spec.ts"
+      ],
+      "previousStatus": "implemented; scoped database/browser tests; complete source HTTP comparison pending"
+    },
+    {
+      "featureId": "API-045",
+      "route": "GET /api/admin/requests",
+      "implementation": [
+        "packages/server/src/admin/operations.ts",
+        "packages/server/src/admin/conversations.ts",
+        "packages/server/src/admin/dashboard.ts",
+        "apps/api/src/admin/operations.controller.ts"
+      ],
+      "tests": [
+        "packages/server/src/admin/operations.integration.test.ts",
+        "tests/e2e/admin-configuration.spec.ts",
+        "tests/e2e/role-contracts.spec.ts",
+        "tests/e2e/support-operations.spec.ts",
+        "tests/e2e/admin-navigation.spec.ts"
+      ],
+      "previousStatus": "implemented; scoped database/browser tests; complete source HTTP comparison pending"
+    },
+    {
+      "featureId": "API-046",
+      "route": "PATCH /api/admin/saved-replies/[id]",
+      "implementation": [
+        "packages/server/src/admin/operations.ts",
+        "packages/server/src/admin/conversations.ts",
+        "packages/server/src/admin/dashboard.ts",
+        "apps/api/src/admin/operations.controller.ts"
+      ],
+      "tests": [
+        "packages/server/src/admin/operations.integration.test.ts",
+        "tests/e2e/admin-configuration.spec.ts",
+        "tests/e2e/role-contracts.spec.ts",
+        "tests/e2e/support-operations.spec.ts",
+        "tests/e2e/admin-navigation.spec.ts"
+      ],
+      "previousStatus": "implemented; scoped database/browser tests; complete source HTTP comparison pending"
+    },
+    {
+      "featureId": "API-047",
+      "route": "DELETE /api/admin/saved-replies/[id]",
+      "implementation": [
+        "packages/server/src/admin/operations.ts",
+        "packages/server/src/admin/conversations.ts",
+        "packages/server/src/admin/dashboard.ts",
+        "apps/api/src/admin/operations.controller.ts"
+      ],
+      "tests": [
+        "packages/server/src/admin/operations.integration.test.ts",
+        "tests/e2e/admin-configuration.spec.ts",
+        "tests/e2e/role-contracts.spec.ts",
+        "tests/e2e/support-operations.spec.ts",
+        "tests/e2e/admin-navigation.spec.ts"
+      ],
+      "previousStatus": "implemented; scoped database/browser tests; complete source HTTP comparison pending"
+    },
+    {
+      "featureId": "API-048",
+      "route": "GET /api/admin/saved-replies",
+      "implementation": [
+        "packages/server/src/admin/operations.ts",
+        "packages/server/src/admin/conversations.ts",
+        "packages/server/src/admin/dashboard.ts",
+        "apps/api/src/admin/operations.controller.ts"
+      ],
+      "tests": [
+        "packages/server/src/admin/operations.integration.test.ts",
+        "tests/e2e/admin-configuration.spec.ts",
+        "tests/e2e/role-contracts.spec.ts",
+        "tests/e2e/support-operations.spec.ts",
+        "tests/e2e/admin-navigation.spec.ts"
+      ],
+      "previousStatus": "implemented; scoped database/browser tests; complete source HTTP comparison pending"
+    },
+    {
+      "featureId": "API-049",
+      "route": "POST /api/admin/saved-replies",
+      "implementation": [
+        "packages/server/src/admin/operations.ts",
+        "packages/server/src/admin/conversations.ts",
+        "packages/server/src/admin/dashboard.ts",
+        "apps/api/src/admin/operations.controller.ts"
+      ],
+      "tests": [
+        "packages/server/src/admin/operations.integration.test.ts",
+        "tests/e2e/admin-configuration.spec.ts",
+        "tests/e2e/role-contracts.spec.ts",
+        "tests/e2e/support-operations.spec.ts",
+        "tests/e2e/admin-navigation.spec.ts"
+      ],
+      "previousStatus": "implemented; scoped database/browser tests; complete source HTTP comparison pending"
+    },
+    {
+      "featureId": "API-050",
+      "route": "GET /api/admin/search",
+      "implementation": [
+        "packages/server/src/admin/operations.ts",
+        "packages/server/src/admin/conversations.ts",
+        "packages/server/src/admin/dashboard.ts",
+        "apps/api/src/admin/operations.controller.ts"
+      ],
+      "tests": [
+        "packages/server/src/admin/operations.integration.test.ts",
+        "tests/e2e/admin-configuration.spec.ts",
+        "tests/e2e/role-contracts.spec.ts",
+        "tests/e2e/support-operations.spec.ts",
+        "tests/e2e/admin-navigation.spec.ts"
+      ],
+      "previousStatus": "implemented; scoped database/browser tests; complete source HTTP comparison pending"
+    },
+    {
+      "featureId": "API-051",
+      "route": "GET /api/admin/settings",
+      "implementation": [
+        "packages/server/src/admin/operations.ts",
+        "packages/server/src/admin/conversations.ts",
+        "packages/server/src/admin/dashboard.ts",
+        "apps/api/src/admin/operations.controller.ts"
+      ],
+      "tests": [
+        "packages/server/src/admin/operations.integration.test.ts",
+        "tests/e2e/admin-configuration.spec.ts",
+        "tests/e2e/role-contracts.spec.ts",
+        "tests/e2e/support-operations.spec.ts",
+        "tests/e2e/admin-navigation.spec.ts"
+      ],
+      "previousStatus": "implemented; scoped database/browser tests; complete source HTTP comparison pending; original contract only; refreshed source handler changes pending"
+    },
+    {
+      "featureId": "API-052",
+      "route": "PATCH /api/admin/settings",
+      "implementation": [
+        "packages/server/src/admin/operations.ts",
+        "packages/server/src/admin/conversations.ts",
+        "packages/server/src/admin/dashboard.ts",
+        "apps/api/src/admin/operations.controller.ts"
+      ],
+      "tests": [
+        "packages/server/src/admin/operations.integration.test.ts",
+        "tests/e2e/admin-configuration.spec.ts",
+        "tests/e2e/role-contracts.spec.ts",
+        "tests/e2e/support-operations.spec.ts",
+        "tests/e2e/admin-navigation.spec.ts"
+      ],
+      "previousStatus": "implemented; scoped database/browser tests; complete source HTTP comparison pending; original contract only; refreshed source handler changes pending"
+    },
+    {
+      "featureId": "API-053",
+      "route": "GET /api/admin/users/[id]",
+      "implementation": [
+        "packages/server/src/admin/users.ts",
+        "apps/api/src/admin/users.controller.ts"
+      ],
+      "tests": [
+        "packages/server/src/admin/users.integration.test.ts",
+        "tests/e2e/admin-users.spec.ts",
+        "tests/e2e/admin-navigation.spec.ts"
+      ],
+      "previousStatus": "implemented; 13 database cases and HTTPS contracts passed; admin UI pending"
+    },
+    {
+      "featureId": "API-054",
+      "route": "PATCH /api/admin/users/[id]",
+      "implementation": [
+        "packages/server/src/admin/users.ts",
+        "apps/api/src/admin/users.controller.ts"
+      ],
+      "tests": [
+        "packages/server/src/admin/users.integration.test.ts",
+        "tests/e2e/admin-users.spec.ts",
+        "tests/e2e/admin-navigation.spec.ts"
+      ],
+      "previousStatus": "implemented; 13 database cases and HTTPS contracts passed; admin UI pending"
+    },
+    {
+      "featureId": "API-055",
+      "route": "GET /api/admin/users",
+      "implementation": [
+        "packages/server/src/admin/users.ts",
+        "apps/api/src/admin/users.controller.ts"
+      ],
+      "tests": [
+        "packages/server/src/admin/users.integration.test.ts",
+        "tests/e2e/admin-users.spec.ts",
+        "tests/e2e/admin-navigation.spec.ts"
+      ],
+      "previousStatus": "implemented; 13 database cases and HTTPS contracts passed; admin UI pending"
+    },
+    {
+      "featureId": "API-056",
+      "route": "POST /api/admin/users",
+      "implementation": [
+        "packages/server/src/admin/users.ts",
+        "apps/api/src/admin/users.controller.ts"
+      ],
+      "tests": [
+        "packages/server/src/admin/users.integration.test.ts",
+        "tests/e2e/admin-users.spec.ts",
+        "tests/e2e/admin-navigation.spec.ts"
+      ],
+      "previousStatus": "implemented; 13 database cases and HTTPS contracts passed; admin UI pending"
+    },
+    {
+      "featureId": "API-057",
+      "route": "GET /api/attachments/[id]",
+      "implementation": [
+        "packages/server/src/files/service.ts",
+        "packages/server/src/files/media-usage.ts"
+      ],
+      "tests": [
+        "packages/server/src/files/files.integration.test.ts",
+        "packages/server/src/files/media-library.integration.test.ts",
+        "tests/e2e/files-claims.spec.ts",
+        "tests/e2e/media-library.spec.ts"
+      ],
+      "previousStatus": "implemented; scoped file API/worker tests passed; private UI pending; original contract only; refreshed source handler changes pending"
+    },
+    {
+      "featureId": "API-058",
+      "route": "POST /api/attachments",
+      "implementation": [
+        "packages/server/src/files/service.ts",
+        "packages/server/src/files/media-usage.ts"
+      ],
+      "tests": [
+        "packages/server/src/files/files.integration.test.ts",
+        "packages/server/src/files/media-library.integration.test.ts",
+        "tests/e2e/files-claims.spec.ts",
+        "tests/e2e/media-library.spec.ts"
+      ],
+      "previousStatus": "implemented; scoped file API/worker tests passed; private UI pending; original contract only; refreshed source handler changes pending"
+    },
+    {
+      "featureId": "API-059",
+      "route": "GET /api/auth/[...nextauth]",
+      "implementation": [
+        "packages/server/src/auth/service.ts",
+        "apps/api/src/auth/controller.ts",
+        "apps/web/src/screens/auth.tsx"
+      ],
+      "tests": [
+        "packages/server/src/auth/auth.integration.test.ts",
+        "tests/e2e/auth-public.spec.ts",
+        "tests/e2e/auth-compatibility.spec.ts",
+        "tests/e2e/login-hydration.spec.ts",
+        "tests/e2e/admin-users.spec.ts",
+        "tests/e2e/invite-ui.spec.ts"
+      ],
+      "previousStatus": "partial; credentials/session/csrf/providers/signout aliases implemented; framework interstitial pages pending"
+    },
+    {
+      "featureId": "API-060",
+      "route": "POST /api/auth/[...nextauth]",
+      "implementation": [
+        "packages/server/src/auth/service.ts",
+        "apps/api/src/auth/controller.ts",
+        "apps/web/src/screens/auth.tsx"
+      ],
+      "tests": [
+        "packages/server/src/auth/auth.integration.test.ts",
+        "tests/e2e/auth-public.spec.ts",
+        "tests/e2e/auth-compatibility.spec.ts",
+        "tests/e2e/login-hydration.spec.ts",
+        "tests/e2e/admin-users.spec.ts",
+        "tests/e2e/invite-ui.spec.ts"
+      ],
+      "previousStatus": "partial; credentials/session/csrf/providers/signout aliases implemented; framework interstitial pages pending"
+    },
+    {
+      "featureId": "API-061",
+      "route": "POST /api/auth/change-password",
+      "implementation": [
+        "packages/server/src/auth/service.ts",
+        "apps/api/src/auth/controller.ts",
+        "apps/web/src/screens/auth.tsx"
+      ],
+      "tests": [
+        "packages/server/src/auth/auth.integration.test.ts",
+        "tests/e2e/auth-public.spec.ts",
+        "tests/e2e/auth-compatibility.spec.ts",
+        "tests/e2e/login-hydration.spec.ts",
+        "tests/e2e/admin-users.spec.ts",
+        "tests/e2e/invite-ui.spec.ts"
+      ],
+      "previousStatus": "implemented; scoped authentication/API/UI tests passed; full migration pending"
+    },
+    {
+      "featureId": "API-062",
+      "route": "POST /api/auth/forgot-password",
+      "implementation": [
+        "packages/server/src/auth/service.ts",
+        "apps/api/src/auth/controller.ts",
+        "apps/web/src/screens/auth.tsx"
+      ],
+      "tests": [
+        "packages/server/src/auth/auth.integration.test.ts",
+        "tests/e2e/auth-public.spec.ts",
+        "tests/e2e/auth-compatibility.spec.ts",
+        "tests/e2e/login-hydration.spec.ts",
+        "tests/e2e/admin-users.spec.ts",
+        "tests/e2e/invite-ui.spec.ts"
+      ],
+      "previousStatus": "implemented; scoped authentication/API/UI tests passed; full migration pending"
+    },
+    {
+      "featureId": "API-063",
+      "route": "POST /api/auth/invite",
+      "implementation": [
+        "packages/server/src/auth/service.ts",
+        "apps/api/src/auth/controller.ts",
+        "apps/web/src/screens/auth.tsx"
+      ],
+      "tests": [
+        "packages/server/src/auth/auth.integration.test.ts",
+        "tests/e2e/auth-public.spec.ts",
+        "tests/e2e/auth-compatibility.spec.ts",
+        "tests/e2e/login-hydration.spec.ts",
+        "tests/e2e/admin-users.spec.ts",
+        "tests/e2e/invite-ui.spec.ts"
+      ],
+      "previousStatus": "implemented; scoped authentication/API/UI tests passed; full migration pending"
+    },
+    {
+      "featureId": "API-064",
+      "route": "POST /api/auth/register",
+      "implementation": [
+        "packages/server/src/auth/service.ts",
+        "apps/api/src/auth/controller.ts",
+        "apps/web/src/screens/auth.tsx"
+      ],
+      "tests": [
+        "packages/server/src/auth/auth.integration.test.ts",
+        "tests/e2e/auth-public.spec.ts",
+        "tests/e2e/auth-compatibility.spec.ts",
+        "tests/e2e/login-hydration.spec.ts",
+        "tests/e2e/admin-users.spec.ts",
+        "tests/e2e/invite-ui.spec.ts"
+      ],
+      "previousStatus": "implemented; scoped authentication/API/UI tests passed; full migration pending"
+    },
+    {
+      "featureId": "API-065",
+      "route": "POST /api/auth/reset-password",
+      "implementation": [
+        "packages/server/src/auth/service.ts",
+        "apps/api/src/auth/controller.ts",
+        "apps/web/src/screens/auth.tsx"
+      ],
+      "tests": [
+        "packages/server/src/auth/auth.integration.test.ts",
+        "tests/e2e/auth-public.spec.ts",
+        "tests/e2e/auth-compatibility.spec.ts",
+        "tests/e2e/login-hydration.spec.ts",
+        "tests/e2e/admin-users.spec.ts",
+        "tests/e2e/invite-ui.spec.ts"
+      ],
+      "previousStatus": "implemented; scoped authentication/API/UI tests passed; full migration pending"
+    },
+    {
+      "featureId": "API-066",
+      "route": "GET /api/auth/sessions",
+      "implementation": [
+        "packages/server/src/auth/service.ts",
+        "apps/api/src/auth/controller.ts",
+        "apps/web/src/screens/auth.tsx"
+      ],
+      "tests": [
+        "packages/server/src/auth/auth.integration.test.ts",
+        "tests/e2e/auth-public.spec.ts",
+        "tests/e2e/auth-compatibility.spec.ts",
+        "tests/e2e/login-hydration.spec.ts",
+        "tests/e2e/admin-users.spec.ts",
+        "tests/e2e/invite-ui.spec.ts"
+      ],
+      "previousStatus": "implemented; scoped authentication/API/UI tests passed; full migration pending"
+    },
+    {
+      "featureId": "API-067",
+      "route": "POST /api/auth/sessions",
+      "implementation": [
+        "packages/server/src/auth/service.ts",
+        "apps/api/src/auth/controller.ts",
+        "apps/web/src/screens/auth.tsx"
+      ],
+      "tests": [
+        "packages/server/src/auth/auth.integration.test.ts",
+        "tests/e2e/auth-public.spec.ts",
+        "tests/e2e/auth-compatibility.spec.ts",
+        "tests/e2e/login-hydration.spec.ts",
+        "tests/e2e/admin-users.spec.ts",
+        "tests/e2e/invite-ui.spec.ts"
+      ],
+      "previousStatus": "implemented; scoped authentication/API/UI tests passed; full migration pending"
+    },
+    {
+      "featureId": "API-068",
+      "route": "GET /api/auth/verify-email",
+      "implementation": [
+        "packages/server/src/auth/service.ts",
+        "apps/api/src/auth/controller.ts",
+        "apps/web/src/screens/auth.tsx"
+      ],
+      "tests": [
+        "packages/server/src/auth/auth.integration.test.ts",
+        "tests/e2e/auth-public.spec.ts",
+        "tests/e2e/auth-compatibility.spec.ts",
+        "tests/e2e/login-hydration.spec.ts",
+        "tests/e2e/admin-users.spec.ts",
+        "tests/e2e/invite-ui.spec.ts"
+      ],
+      "previousStatus": "implemented; scoped authentication/API/UI tests passed; full migration pending"
+    },
+    {
+      "featureId": "API-069",
+      "route": "GET /api/health/ready",
+      "implementation": [
+        "apps/api/src/main.ts"
+      ],
+      "tests": [
+        "tests/e2e/api-inventory.spec.ts"
+      ],
+      "previousStatus": "pending"
+    },
+    {
+      "featureId": "API-070",
+      "route": "POST /api/inquiries",
+      "implementation": [
+        "packages/server/src/business/submissions.ts",
+        "apps/api/src/business/controller.ts"
+      ],
+      "tests": [
+        "packages/server/src/business/submissions.integration.test.ts",
+        "tests/e2e/submissions.spec.ts"
+      ],
+      "previousStatus": "implemented; scoped API tests passed; private UI pending; original contract only; refreshed source handler changes pending"
+    },
+    {
+      "featureId": "API-071",
+      "route": "GET /api/media/[id]",
+      "implementation": [
+        "packages/server/src/files/service.ts",
+        "packages/server/src/files/media-usage.ts"
+      ],
+      "tests": [
+        "packages/server/src/files/files.integration.test.ts",
+        "packages/server/src/files/media-library.integration.test.ts",
+        "tests/e2e/files-claims.spec.ts",
+        "tests/e2e/media-library.spec.ts"
+      ],
+      "previousStatus": "implemented; scoped file API/worker tests passed; private UI pending"
+    },
+    {
+      "featureId": "API-072",
+      "route": "POST /api/requests",
+      "implementation": [
+        "packages/server/src/business/submissions.ts",
+        "apps/api/src/business/controller.ts"
+      ],
+      "tests": [
+        "packages/server/src/business/submissions.integration.test.ts",
+        "tests/e2e/submissions.spec.ts"
+      ],
+      "previousStatus": "implemented; scoped API tests passed; private UI pending; original contract only; refreshed source handler changes pending"
+    },
+    {
+      "featureId": "UI-073",
+      "route": "/[locale]/[[...slug]]",
+      "implementation": [
+        "apps/api/src/public.service.ts",
+        "apps/web/src/screens/cms.tsx"
+      ],
+      "tests": [
+        "tests/e2e/publication.spec.ts",
+        "tests/e2e/cms-publication.spec.ts",
+        "tests/e2e/auth-public.spec.ts",
+        "tests/e2e/submissions.spec.ts",
+        "tests/e2e/public-visibility.spec.ts"
+      ],
+      "previousStatus": "published presentation tested; business forms pending"
+    },
+    {
+      "featureId": "UI-074",
+      "route": "/[locale]/account/inquiries/[id]",
+      "implementation": [
+        "apps/api/src/business/controller.ts",
+        "packages/server/src/business/account.ts",
+        "packages/server/src/business/requests.ts",
+        "packages/server/src/business/inquiries.ts"
+      ],
+      "tests": [
+        "packages/server/src/business/portal.integration.test.ts",
+        "tests/e2e/account-portal.spec.ts",
+        "tests/e2e/profile-hydration.spec.ts",
+        "tests/e2e/role-contracts.spec.ts"
+      ],
+      "previousStatus": "implemented; scoped portal acceptance; full migration pending"
+    },
+    {
+      "featureId": "UI-075",
+      "route": "/[locale]/account/inquiries",
+      "implementation": [
+        "apps/api/src/business/controller.ts",
+        "packages/server/src/business/account.ts",
+        "packages/server/src/business/requests.ts",
+        "packages/server/src/business/inquiries.ts"
+      ],
+      "tests": [
+        "packages/server/src/business/portal.integration.test.ts",
+        "tests/e2e/account-portal.spec.ts",
+        "tests/e2e/profile-hydration.spec.ts",
+        "tests/e2e/role-contracts.spec.ts"
+      ],
+      "previousStatus": "implemented; scoped portal acceptance; full migration pending"
+    },
+    {
+      "featureId": "UI-076",
+      "route": "/[locale]/account/notifications",
+      "implementation": [
+        "apps/api/src/business/controller.ts",
+        "packages/server/src/business/account.ts",
+        "packages/server/src/business/requests.ts",
+        "packages/server/src/business/inquiries.ts"
+      ],
+      "tests": [
+        "packages/server/src/business/portal.integration.test.ts",
+        "tests/e2e/account-portal.spec.ts",
+        "tests/e2e/profile-hydration.spec.ts",
+        "tests/e2e/role-contracts.spec.ts"
+      ],
+      "previousStatus": "implemented; scoped portal acceptance; full migration pending"
+    },
+    {
+      "featureId": "UI-077",
+      "route": "/[locale]/account",
+      "implementation": [
+        "apps/api/src/business/controller.ts",
+        "packages/server/src/business/account.ts",
+        "packages/server/src/business/requests.ts",
+        "packages/server/src/business/inquiries.ts"
+      ],
+      "tests": [
+        "packages/server/src/business/portal.integration.test.ts",
+        "tests/e2e/account-portal.spec.ts",
+        "tests/e2e/profile-hydration.spec.ts",
+        "tests/e2e/role-contracts.spec.ts"
+      ],
+      "previousStatus": "implemented; scoped portal acceptance; full migration pending"
+    },
+    {
+      "featureId": "UI-078",
+      "route": "/[locale]/account/profile",
+      "implementation": [
+        "apps/api/src/business/controller.ts",
+        "packages/server/src/business/account.ts",
+        "packages/server/src/business/requests.ts",
+        "packages/server/src/business/inquiries.ts"
+      ],
+      "tests": [
+        "packages/server/src/business/portal.integration.test.ts",
+        "tests/e2e/account-portal.spec.ts",
+        "tests/e2e/profile-hydration.spec.ts",
+        "tests/e2e/role-contracts.spec.ts"
+      ],
+      "previousStatus": "implemented; scoped portal acceptance; full migration pending"
+    },
+    {
+      "featureId": "UI-079",
+      "route": "/[locale]/account/requests/[id]",
+      "implementation": [
+        "apps/api/src/business/controller.ts",
+        "packages/server/src/business/account.ts",
+        "packages/server/src/business/requests.ts",
+        "packages/server/src/business/inquiries.ts"
+      ],
+      "tests": [
+        "packages/server/src/business/portal.integration.test.ts",
+        "tests/e2e/account-portal.spec.ts",
+        "tests/e2e/profile-hydration.spec.ts",
+        "tests/e2e/role-contracts.spec.ts"
+      ],
+      "previousStatus": "implemented; scoped portal acceptance; full migration pending"
+    },
+    {
+      "featureId": "UI-080",
+      "route": "/[locale]/account/requests/new",
+      "implementation": [
+        "apps/api/src/business/controller.ts",
+        "packages/server/src/business/account.ts",
+        "packages/server/src/business/requests.ts",
+        "packages/server/src/business/inquiries.ts"
+      ],
+      "tests": [
+        "packages/server/src/business/portal.integration.test.ts",
+        "tests/e2e/account-portal.spec.ts",
+        "tests/e2e/profile-hydration.spec.ts",
+        "tests/e2e/role-contracts.spec.ts"
+      ],
+      "previousStatus": "implemented; scoped portal acceptance; full migration pending"
+    },
+    {
+      "featureId": "UI-081",
+      "route": "/[locale]/account/requests",
+      "implementation": [
+        "apps/api/src/business/controller.ts",
+        "packages/server/src/business/account.ts",
+        "packages/server/src/business/requests.ts",
+        "packages/server/src/business/inquiries.ts"
+      ],
+      "tests": [
+        "packages/server/src/business/portal.integration.test.ts",
+        "tests/e2e/account-portal.spec.ts",
+        "tests/e2e/profile-hydration.spec.ts",
+        "tests/e2e/role-contracts.spec.ts"
+      ],
+      "previousStatus": "implemented; scoped portal acceptance; full migration pending"
+    },
+    {
+      "featureId": "UI-082",
+      "route": "/[locale]/account/security",
+      "implementation": [
+        "apps/api/src/business/controller.ts",
+        "packages/server/src/business/account.ts",
+        "packages/server/src/business/requests.ts",
+        "packages/server/src/business/inquiries.ts"
+      ],
+      "tests": [
+        "packages/server/src/business/portal.integration.test.ts",
+        "tests/e2e/account-portal.spec.ts",
+        "tests/e2e/profile-hydration.spec.ts",
+        "tests/e2e/role-contracts.spec.ts"
+      ],
+      "previousStatus": "implemented; scoped portal acceptance; full migration pending"
+    },
+    {
+      "featureId": "UI-083",
+      "route": "/[locale]/admin/audit",
+      "implementation": [
+        "packages/server/src/admin/operations.ts",
+        "packages/server/src/admin/conversations.ts",
+        "packages/server/src/admin/dashboard.ts",
+        "apps/api/src/admin/operations.controller.ts"
+      ],
+      "tests": [
+        "packages/server/src/admin/operations.integration.test.ts",
+        "tests/e2e/admin-configuration.spec.ts",
+        "tests/e2e/role-contracts.spec.ts",
+        "tests/e2e/support-operations.spec.ts",
+        "tests/e2e/admin-navigation.spec.ts"
+      ],
+      "previousStatus": "implemented; scoped journeys; full parity acceptance pending"
+    },
+    {
+      "featureId": "UI-084",
+      "route": "/[locale]/admin/inquiries/[id]",
+      "implementation": [
+        "packages/server/src/admin/operations.ts",
+        "packages/server/src/admin/conversations.ts",
+        "packages/server/src/admin/dashboard.ts",
+        "apps/api/src/admin/operations.controller.ts"
+      ],
+      "tests": [
+        "packages/server/src/admin/operations.integration.test.ts",
+        "tests/e2e/admin-configuration.spec.ts",
+        "tests/e2e/role-contracts.spec.ts",
+        "tests/e2e/support-operations.spec.ts",
+        "tests/e2e/admin-navigation.spec.ts"
+      ],
+      "previousStatus": "implemented; scoped journeys; full parity acceptance pending"
+    },
+    {
+      "featureId": "UI-085",
+      "route": "/[locale]/admin/inquiries",
+      "implementation": [
+        "packages/server/src/admin/operations.ts",
+        "packages/server/src/admin/conversations.ts",
+        "packages/server/src/admin/dashboard.ts",
+        "apps/api/src/admin/operations.controller.ts"
+      ],
+      "tests": [
+        "packages/server/src/admin/operations.integration.test.ts",
+        "tests/e2e/admin-configuration.spec.ts",
+        "tests/e2e/role-contracts.spec.ts",
+        "tests/e2e/support-operations.spec.ts",
+        "tests/e2e/admin-navigation.spec.ts"
+      ],
+      "previousStatus": "implemented; scoped journeys; full parity acceptance pending"
+    },
+    {
+      "featureId": "UI-086",
+      "route": "/[locale]/admin/media",
+      "implementation": [
+        "packages/server/src/files/service.ts",
+        "packages/server/src/files/media-usage.ts"
+      ],
+      "tests": [
+        "packages/server/src/files/files.integration.test.ts",
+        "packages/server/src/files/media-library.integration.test.ts",
+        "tests/e2e/files-claims.spec.ts",
+        "tests/e2e/media-library.spec.ts"
+      ],
+      "previousStatus": "implemented; 4 browser journeys and 4 exact visual comparisons passed; human review/full acceptance pending"
+    },
+    {
+      "featureId": "UI-087",
+      "route": "/[locale]/admin/menus",
+      "implementation": [
+        "packages/server/src/admin/operations.ts",
+        "packages/server/src/admin/conversations.ts",
+        "packages/server/src/admin/dashboard.ts",
+        "apps/api/src/admin/operations.controller.ts"
+      ],
+      "tests": [
+        "packages/server/src/admin/operations.integration.test.ts",
+        "tests/e2e/admin-configuration.spec.ts",
+        "tests/e2e/role-contracts.spec.ts",
+        "tests/e2e/support-operations.spec.ts",
+        "tests/e2e/admin-navigation.spec.ts"
+      ],
+      "previousStatus": "implemented; scoped journeys; full parity acceptance pending"
+    },
+    {
+      "featureId": "UI-088",
+      "route": "/[locale]/admin/notifications",
+      "implementation": [
+        "packages/server/src/admin/operations.ts",
+        "packages/server/src/admin/conversations.ts",
+        "packages/server/src/admin/dashboard.ts",
+        "apps/api/src/admin/operations.controller.ts"
+      ],
+      "tests": [
+        "packages/server/src/admin/operations.integration.test.ts",
+        "tests/e2e/admin-configuration.spec.ts",
+        "tests/e2e/role-contracts.spec.ts",
+        "tests/e2e/support-operations.spec.ts",
+        "tests/e2e/admin-navigation.spec.ts"
+      ],
+      "previousStatus": "implemented; scoped journeys; full parity acceptance pending"
+    },
+    {
+      "featureId": "UI-089",
+      "route": "/[locale]/admin/outbox",
+      "implementation": [
+        "packages/server/src/admin/operations.ts",
+        "packages/server/src/admin/conversations.ts",
+        "packages/server/src/admin/dashboard.ts",
+        "apps/api/src/admin/operations.controller.ts"
+      ],
+      "tests": [
+        "packages/server/src/admin/operations.integration.test.ts",
+        "tests/e2e/admin-configuration.spec.ts",
+        "tests/e2e/role-contracts.spec.ts",
+        "tests/e2e/support-operations.spec.ts",
+        "tests/e2e/admin-navigation.spec.ts"
+      ],
+      "previousStatus": "implemented; no mail body preview in pinned source; user visual/performance acceptance 2026-10-06"
+    },
+    {
+      "featureId": "UI-090",
+      "route": "/[locale]/admin",
+      "implementation": [
+        "packages/server/src/admin/operations.ts",
+        "packages/server/src/admin/conversations.ts",
+        "packages/server/src/admin/dashboard.ts",
+        "apps/api/src/admin/operations.controller.ts"
+      ],
+      "tests": [
+        "packages/server/src/admin/operations.integration.test.ts",
+        "tests/e2e/admin-configuration.spec.ts",
+        "tests/e2e/role-contracts.spec.ts",
+        "tests/e2e/support-operations.spec.ts",
+        "tests/e2e/admin-navigation.spec.ts"
+      ],
+      "previousStatus": "implemented; scoped journeys; full parity acceptance pending"
+    },
+    {
+      "featureId": "UI-091",
+      "route": "/[locale]/admin/pages/[id]/edit",
+      "implementation": [
+        "packages/server/src/admin/pages.ts",
+        "packages/server/src/admin/publication.ts",
+        "apps/api/src/admin/pages.controller.ts"
+      ],
+      "tests": [
+        "packages/server/src/admin/pages.integration.test.ts",
+        "packages/server/src/admin/publication.integration.test.ts",
+        "tests/e2e/cms-publication.spec.ts",
+        "tests/e2e/editor-operations.spec.ts",
+        "tests/e2e/admin-navigation.spec.ts"
+      ],
+      "previousStatus": "implemented; scoped journeys; full parity acceptance pending"
+    },
+    {
+      "featureId": "UI-092",
+      "route": "/[locale]/admin/pages/[id]/preview",
+      "implementation": [
+        "packages/server/src/admin/pages.ts",
+        "packages/server/src/admin/publication.ts",
+        "apps/api/src/admin/pages.controller.ts"
+      ],
+      "tests": [
+        "packages/server/src/admin/pages.integration.test.ts",
+        "packages/server/src/admin/publication.integration.test.ts",
+        "tests/e2e/cms-publication.spec.ts",
+        "tests/e2e/editor-operations.spec.ts",
+        "tests/e2e/admin-navigation.spec.ts"
+      ],
+      "previousStatus": "implemented; scoped journeys; full parity acceptance pending"
+    },
+    {
+      "featureId": "UI-093",
+      "route": "/[locale]/admin/pages",
+      "implementation": [
+        "packages/server/src/admin/pages.ts",
+        "packages/server/src/admin/publication.ts",
+        "apps/api/src/admin/pages.controller.ts"
+      ],
+      "tests": [
+        "packages/server/src/admin/pages.integration.test.ts",
+        "packages/server/src/admin/publication.integration.test.ts",
+        "tests/e2e/cms-publication.spec.ts",
+        "tests/e2e/editor-operations.spec.ts",
+        "tests/e2e/admin-navigation.spec.ts"
+      ],
+      "previousStatus": "implemented; scoped journeys; full parity acceptance pending"
+    },
+    {
+      "featureId": "UI-094",
+      "route": "/[locale]/admin/requests/[id]",
+      "implementation": [
+        "packages/server/src/admin/operations.ts",
+        "packages/server/src/admin/conversations.ts",
+        "packages/server/src/admin/dashboard.ts",
+        "apps/api/src/admin/operations.controller.ts"
+      ],
+      "tests": [
+        "packages/server/src/admin/operations.integration.test.ts",
+        "tests/e2e/admin-configuration.spec.ts",
+        "tests/e2e/role-contracts.spec.ts",
+        "tests/e2e/support-operations.spec.ts",
+        "tests/e2e/admin-navigation.spec.ts"
+      ],
+      "previousStatus": "implemented; scoped journeys; full parity acceptance pending"
+    },
+    {
+      "featureId": "UI-095",
+      "route": "/[locale]/admin/requests",
+      "implementation": [
+        "packages/server/src/admin/operations.ts",
+        "packages/server/src/admin/conversations.ts",
+        "packages/server/src/admin/dashboard.ts",
+        "apps/api/src/admin/operations.controller.ts"
+      ],
+      "tests": [
+        "packages/server/src/admin/operations.integration.test.ts",
+        "tests/e2e/admin-configuration.spec.ts",
+        "tests/e2e/role-contracts.spec.ts",
+        "tests/e2e/support-operations.spec.ts",
+        "tests/e2e/admin-navigation.spec.ts"
+      ],
+      "previousStatus": "implemented; scoped journeys; full parity acceptance pending"
+    },
+    {
+      "featureId": "UI-096",
+      "route": "/[locale]/admin/settings",
+      "implementation": [
+        "packages/server/src/admin/operations.ts",
+        "packages/server/src/admin/conversations.ts",
+        "packages/server/src/admin/dashboard.ts",
+        "apps/api/src/admin/operations.controller.ts"
+      ],
+      "tests": [
+        "packages/server/src/admin/operations.integration.test.ts",
+        "tests/e2e/admin-configuration.spec.ts",
+        "tests/e2e/role-contracts.spec.ts",
+        "tests/e2e/support-operations.spec.ts",
+        "tests/e2e/admin-navigation.spec.ts"
+      ],
+      "previousStatus": "implemented; scoped journeys; full parity acceptance pending"
+    },
+    {
+      "featureId": "UI-097",
+      "route": "/[locale]/admin/users/[id]",
+      "implementation": [
+        "packages/server/src/admin/users.ts",
+        "apps/api/src/admin/users.controller.ts"
+      ],
+      "tests": [
+        "packages/server/src/admin/users.integration.test.ts",
+        "tests/e2e/admin-users.spec.ts",
+        "tests/e2e/admin-navigation.spec.ts"
+      ],
+      "previousStatus": "implemented; scoped journeys; full parity acceptance pending"
+    },
+    {
+      "featureId": "UI-098",
+      "route": "/[locale]/admin/users",
+      "implementation": [
+        "packages/server/src/admin/users.ts",
+        "apps/api/src/admin/users.controller.ts"
+      ],
+      "tests": [
+        "packages/server/src/admin/users.integration.test.ts",
+        "tests/e2e/admin-users.spec.ts",
+        "tests/e2e/admin-navigation.spec.ts"
+      ],
+      "previousStatus": "implemented; scoped journeys; full parity acceptance pending"
+    },
+    {
+      "featureId": "UI-099",
+      "route": "/[locale]/auth/forgot-password",
+      "implementation": [
+        "packages/server/src/auth/service.ts",
+        "apps/api/src/auth/controller.ts",
+        "apps/web/src/screens/auth.tsx"
+      ],
+      "tests": [
+        "packages/server/src/auth/auth.integration.test.ts",
+        "tests/e2e/auth-public.spec.ts",
+        "tests/e2e/auth-compatibility.spec.ts",
+        "tests/e2e/login-hydration.spec.ts",
+        "tests/e2e/admin-users.spec.ts",
+        "tests/e2e/invite-ui.spec.ts"
+      ],
+      "previousStatus": "implemented; scoped browser checks passed"
+    },
+    {
+      "featureId": "UI-100",
+      "route": "/[locale]/auth/invite",
+      "implementation": [
+        "packages/server/src/auth/service.ts",
+        "apps/api/src/auth/controller.ts",
+        "apps/web/src/screens/auth.tsx"
+      ],
+      "tests": [
+        "packages/server/src/auth/auth.integration.test.ts",
+        "tests/e2e/auth-public.spec.ts",
+        "tests/e2e/auth-compatibility.spec.ts",
+        "tests/e2e/login-hydration.spec.ts",
+        "tests/e2e/admin-users.spec.ts",
+        "tests/e2e/invite-ui.spec.ts"
+      ],
+      "previousStatus": "implemented; browser evidence partial"
+    },
+    {
+      "featureId": "UI-101",
+      "route": "/[locale]/auth/login",
+      "implementation": [
+        "packages/server/src/auth/service.ts",
+        "apps/api/src/auth/controller.ts",
+        "apps/web/src/screens/auth.tsx"
+      ],
+      "tests": [
+        "packages/server/src/auth/auth.integration.test.ts",
+        "tests/e2e/auth-public.spec.ts",
+        "tests/e2e/auth-compatibility.spec.ts",
+        "tests/e2e/login-hydration.spec.ts",
+        "tests/e2e/admin-users.spec.ts",
+        "tests/e2e/invite-ui.spec.ts"
+      ],
+      "previousStatus": "implemented; scoped browser checks passed"
+    },
+    {
+      "featureId": "UI-102",
+      "route": "/[locale]/auth/logout",
+      "implementation": [
+        "packages/server/src/auth/service.ts",
+        "apps/api/src/auth/controller.ts",
+        "apps/web/src/screens/auth.tsx"
+      ],
+      "tests": [
+        "packages/server/src/auth/auth.integration.test.ts",
+        "tests/e2e/auth-public.spec.ts",
+        "tests/e2e/auth-compatibility.spec.ts",
+        "tests/e2e/login-hydration.spec.ts",
+        "tests/e2e/admin-users.spec.ts",
+        "tests/e2e/invite-ui.spec.ts"
+      ],
+      "previousStatus": "implemented; scoped browser checks passed"
+    },
+    {
+      "featureId": "UI-103",
+      "route": "/[locale]/auth/register",
+      "implementation": [
+        "packages/server/src/auth/service.ts",
+        "apps/api/src/auth/controller.ts",
+        "apps/web/src/screens/auth.tsx"
+      ],
+      "tests": [
+        "packages/server/src/auth/auth.integration.test.ts",
+        "tests/e2e/auth-public.spec.ts",
+        "tests/e2e/auth-compatibility.spec.ts",
+        "tests/e2e/login-hydration.spec.ts",
+        "tests/e2e/admin-users.spec.ts",
+        "tests/e2e/invite-ui.spec.ts"
+      ],
+      "previousStatus": "implemented; scoped browser checks passed"
+    },
+    {
+      "featureId": "UI-104",
+      "route": "/[locale]/auth/reset-password",
+      "implementation": [
+        "packages/server/src/auth/service.ts",
+        "apps/api/src/auth/controller.ts",
+        "apps/web/src/screens/auth.tsx"
+      ],
+      "tests": [
+        "packages/server/src/auth/auth.integration.test.ts",
+        "tests/e2e/auth-public.spec.ts",
+        "tests/e2e/auth-compatibility.spec.ts",
+        "tests/e2e/login-hydration.spec.ts",
+        "tests/e2e/admin-users.spec.ts",
+        "tests/e2e/invite-ui.spec.ts"
+      ],
+      "previousStatus": "implemented; scoped browser checks passed"
+    },
+    {
+      "featureId": "UI-105",
+      "route": "/[locale]/auth/verified",
+      "implementation": [
+        "packages/server/src/auth/service.ts",
+        "apps/api/src/auth/controller.ts",
+        "apps/web/src/screens/auth.tsx"
+      ],
+      "tests": [
+        "packages/server/src/auth/auth.integration.test.ts",
+        "tests/e2e/auth-public.spec.ts",
+        "tests/e2e/auth-compatibility.spec.ts",
+        "tests/e2e/login-hydration.spec.ts",
+        "tests/e2e/admin-users.spec.ts",
+        "tests/e2e/invite-ui.spec.ts"
+      ],
+      "previousStatus": "implemented; scoped browser checks passed"
+    },
+    {
+      "featureId": "BLOCK-hero",
+      "route": "CMS editor and public renderer",
+      "implementation": [
+        "apps/web/src/components/admin/editor/props-form.tsx",
+        "packages/contracts/src/blocks.ts",
+        "packages/server/src/admin/pages.ts"
+      ],
+      "tests": [
+        "apps/web/src/components/admin/editor/props-interactions.test.tsx",
+        "packages/contracts/src/source-block-parity.test.ts",
+        "packages/server/src/admin/pages.integration.test.ts",
+        "tests/e2e/editor-properties.spec.ts",
+        "tests/e2e/editor-operations.spec.ts",
+        "tests/e2e/tree-editor.spec.ts"
+      ],
+      "previousStatus": "pending"
+    },
+    {
+      "featureId": "BLOCK-servicesGrid",
+      "route": "CMS editor and public renderer",
+      "implementation": [
+        "apps/web/src/components/admin/editor/props-form.tsx",
+        "packages/contracts/src/blocks.ts",
+        "packages/server/src/admin/pages.ts"
+      ],
+      "tests": [
+        "apps/web/src/components/admin/editor/props-interactions.test.tsx",
+        "packages/contracts/src/source-block-parity.test.ts",
+        "packages/server/src/admin/pages.integration.test.ts",
+        "tests/e2e/editor-properties.spec.ts",
+        "tests/e2e/editor-operations.spec.ts",
+        "tests/e2e/tree-editor.spec.ts"
+      ],
+      "previousStatus": "pending"
+    },
+    {
+      "featureId": "BLOCK-featureGrid",
+      "route": "CMS editor and public renderer",
+      "implementation": [
+        "apps/web/src/components/admin/editor/props-form.tsx",
+        "packages/contracts/src/blocks.ts",
+        "packages/server/src/admin/pages.ts"
+      ],
+      "tests": [
+        "apps/web/src/components/admin/editor/props-interactions.test.tsx",
+        "packages/contracts/src/source-block-parity.test.ts",
+        "packages/server/src/admin/pages.integration.test.ts",
+        "tests/e2e/editor-properties.spec.ts",
+        "tests/e2e/editor-operations.spec.ts",
+        "tests/e2e/tree-editor.spec.ts"
+      ],
+      "previousStatus": "pending"
+    },
+    {
+      "featureId": "BLOCK-worksShowcase",
+      "route": "CMS editor and public renderer",
+      "implementation": [
+        "apps/web/src/components/admin/editor/props-form.tsx",
+        "packages/contracts/src/blocks.ts",
+        "packages/server/src/admin/pages.ts"
+      ],
+      "tests": [
+        "apps/web/src/components/admin/editor/props-interactions.test.tsx",
+        "packages/contracts/src/source-block-parity.test.ts",
+        "packages/server/src/admin/pages.integration.test.ts",
+        "tests/e2e/editor-properties.spec.ts",
+        "tests/e2e/editor-operations.spec.ts",
+        "tests/e2e/tree-editor.spec.ts"
+      ],
+      "previousStatus": "pending"
+    },
+    {
+      "featureId": "BLOCK-processSteps",
+      "route": "CMS editor and public renderer",
+      "implementation": [
+        "apps/web/src/components/admin/editor/props-form.tsx",
+        "packages/contracts/src/blocks.ts",
+        "packages/server/src/admin/pages.ts"
+      ],
+      "tests": [
+        "apps/web/src/components/admin/editor/props-interactions.test.tsx",
+        "packages/contracts/src/source-block-parity.test.ts",
+        "packages/server/src/admin/pages.integration.test.ts",
+        "tests/e2e/editor-properties.spec.ts",
+        "tests/e2e/editor-operations.spec.ts",
+        "tests/e2e/tree-editor.spec.ts"
+      ],
+      "previousStatus": "pending"
+    },
+    {
+      "featureId": "BLOCK-faqSection",
+      "route": "CMS editor and public renderer",
+      "implementation": [
+        "apps/web/src/components/admin/editor/props-form.tsx",
+        "packages/contracts/src/blocks.ts",
+        "packages/server/src/admin/pages.ts"
+      ],
+      "tests": [
+        "apps/web/src/components/admin/editor/props-interactions.test.tsx",
+        "packages/contracts/src/source-block-parity.test.ts",
+        "packages/server/src/admin/pages.integration.test.ts",
+        "tests/e2e/editor-properties.spec.ts",
+        "tests/e2e/editor-operations.spec.ts",
+        "tests/e2e/tree-editor.spec.ts"
+      ],
+      "previousStatus": "pending"
+    },
+    {
+      "featureId": "BLOCK-ctaSection",
+      "route": "CMS editor and public renderer",
+      "implementation": [
+        "apps/web/src/components/admin/editor/props-form.tsx",
+        "packages/contracts/src/blocks.ts",
+        "packages/server/src/admin/pages.ts"
+      ],
+      "tests": [
+        "apps/web/src/components/admin/editor/props-interactions.test.tsx",
+        "packages/contracts/src/source-block-parity.test.ts",
+        "packages/server/src/admin/pages.integration.test.ts",
+        "tests/e2e/editor-properties.spec.ts",
+        "tests/e2e/editor-operations.spec.ts",
+        "tests/e2e/tree-editor.spec.ts"
+      ],
+      "previousStatus": "pending"
+    },
+    {
+      "featureId": "BLOCK-pageHeader",
+      "route": "CMS editor and public renderer",
+      "implementation": [
+        "apps/web/src/components/admin/editor/props-form.tsx",
+        "packages/contracts/src/blocks.ts",
+        "packages/server/src/admin/pages.ts"
+      ],
+      "tests": [
+        "apps/web/src/components/admin/editor/props-interactions.test.tsx",
+        "packages/contracts/src/source-block-parity.test.ts",
+        "packages/server/src/admin/pages.integration.test.ts",
+        "tests/e2e/editor-properties.spec.ts",
+        "tests/e2e/editor-operations.spec.ts",
+        "tests/e2e/tree-editor.spec.ts"
+      ],
+      "previousStatus": "pending"
+    },
+    {
+      "featureId": "BLOCK-richText",
+      "route": "CMS editor and public renderer",
+      "implementation": [
+        "apps/web/src/components/admin/editor/props-form.tsx",
+        "packages/contracts/src/blocks.ts",
+        "packages/server/src/admin/pages.ts"
+      ],
+      "tests": [
+        "apps/web/src/components/admin/editor/props-interactions.test.tsx",
+        "packages/contracts/src/source-block-parity.test.ts",
+        "packages/server/src/admin/pages.integration.test.ts",
+        "tests/e2e/editor-properties.spec.ts",
+        "tests/e2e/editor-operations.spec.ts",
+        "tests/e2e/tree-editor.spec.ts"
+      ],
+      "previousStatus": "pending"
+    },
+    {
+      "featureId": "BLOCK-visionMission",
+      "route": "CMS editor and public renderer",
+      "implementation": [
+        "apps/web/src/components/admin/editor/props-form.tsx",
+        "packages/contracts/src/blocks.ts",
+        "packages/server/src/admin/pages.ts"
+      ],
+      "tests": [
+        "apps/web/src/components/admin/editor/props-interactions.test.tsx",
+        "packages/contracts/src/source-block-parity.test.ts",
+        "packages/server/src/admin/pages.integration.test.ts",
+        "tests/e2e/editor-properties.spec.ts",
+        "tests/e2e/editor-operations.spec.ts",
+        "tests/e2e/tree-editor.spec.ts"
+      ],
+      "previousStatus": "pending"
+    },
+    {
+      "featureId": "BLOCK-numberedValues",
+      "route": "CMS editor and public renderer",
+      "implementation": [
+        "apps/web/src/components/admin/editor/props-form.tsx",
+        "packages/contracts/src/blocks.ts",
+        "packages/server/src/admin/pages.ts"
+      ],
+      "tests": [
+        "apps/web/src/components/admin/editor/props-interactions.test.tsx",
+        "packages/contracts/src/source-block-parity.test.ts",
+        "packages/server/src/admin/pages.integration.test.ts",
+        "tests/e2e/editor-properties.spec.ts",
+        "tests/e2e/editor-operations.spec.ts",
+        "tests/e2e/tree-editor.spec.ts"
+      ],
+      "previousStatus": "pending"
+    },
+    {
+      "featureId": "BLOCK-numberedList",
+      "route": "CMS editor and public renderer",
+      "implementation": [
+        "apps/web/src/components/admin/editor/props-form.tsx",
+        "packages/contracts/src/blocks.ts",
+        "packages/server/src/admin/pages.ts"
+      ],
+      "tests": [
+        "apps/web/src/components/admin/editor/props-interactions.test.tsx",
+        "packages/contracts/src/source-block-parity.test.ts",
+        "packages/server/src/admin/pages.integration.test.ts",
+        "tests/e2e/editor-properties.spec.ts",
+        "tests/e2e/editor-operations.spec.ts",
+        "tests/e2e/tree-editor.spec.ts"
+      ],
+      "previousStatus": "pending"
+    },
+    {
+      "featureId": "BLOCK-navCtaBanner",
+      "route": "CMS editor and public renderer",
+      "implementation": [
+        "apps/web/src/components/admin/editor/props-form.tsx",
+        "packages/contracts/src/blocks.ts",
+        "packages/server/src/admin/pages.ts"
+      ],
+      "tests": [
+        "apps/web/src/components/admin/editor/props-interactions.test.tsx",
+        "packages/contracts/src/source-block-parity.test.ts",
+        "packages/server/src/admin/pages.integration.test.ts",
+        "tests/e2e/editor-properties.spec.ts",
+        "tests/e2e/editor-operations.spec.ts",
+        "tests/e2e/tree-editor.spec.ts"
+      ],
+      "previousStatus": "pending"
+    },
+    {
+      "featureId": "BLOCK-servicesDetail",
+      "route": "CMS editor and public renderer",
+      "implementation": [
+        "apps/web/src/components/admin/editor/props-form.tsx",
+        "packages/contracts/src/blocks.ts",
+        "packages/server/src/admin/pages.ts"
+      ],
+      "tests": [
+        "apps/web/src/components/admin/editor/props-interactions.test.tsx",
+        "packages/contracts/src/source-block-parity.test.ts",
+        "packages/server/src/admin/pages.integration.test.ts",
+        "tests/e2e/editor-properties.spec.ts",
+        "tests/e2e/editor-operations.spec.ts",
+        "tests/e2e/tree-editor.spec.ts"
+      ],
+      "previousStatus": "pending"
+    },
+    {
+      "featureId": "BLOCK-worksFull",
+      "route": "CMS editor and public renderer",
+      "implementation": [
+        "apps/web/src/components/admin/editor/props-form.tsx",
+        "packages/contracts/src/blocks.ts",
+        "packages/server/src/admin/pages.ts"
+      ],
+      "tests": [
+        "apps/web/src/components/admin/editor/props-interactions.test.tsx",
+        "packages/contracts/src/source-block-parity.test.ts",
+        "packages/server/src/admin/pages.integration.test.ts",
+        "tests/e2e/editor-properties.spec.ts",
+        "tests/e2e/editor-operations.spec.ts",
+        "tests/e2e/tree-editor.spec.ts"
+      ],
+      "previousStatus": "pending"
+    },
+    {
+      "featureId": "BLOCK-processFull",
+      "route": "CMS editor and public renderer",
+      "implementation": [
+        "apps/web/src/components/admin/editor/props-form.tsx",
+        "packages/contracts/src/blocks.ts",
+        "packages/server/src/admin/pages.ts"
+      ],
+      "tests": [
+        "apps/web/src/components/admin/editor/props-interactions.test.tsx",
+        "packages/contracts/src/source-block-parity.test.ts",
+        "packages/server/src/admin/pages.integration.test.ts",
+        "tests/e2e/editor-properties.spec.ts",
+        "tests/e2e/editor-operations.spec.ts",
+        "tests/e2e/tree-editor.spec.ts"
+      ],
+      "previousStatus": "pending"
+    },
+    {
+      "featureId": "BLOCK-requestForm",
+      "route": "CMS editor and public renderer",
+      "implementation": [
+        "apps/web/src/components/admin/editor/props-form.tsx",
+        "packages/contracts/src/blocks.ts",
+        "packages/server/src/admin/pages.ts"
+      ],
+      "tests": [
+        "apps/web/src/components/admin/editor/props-interactions.test.tsx",
+        "packages/contracts/src/source-block-parity.test.ts",
+        "packages/server/src/admin/pages.integration.test.ts",
+        "tests/e2e/editor-properties.spec.ts",
+        "tests/e2e/editor-operations.spec.ts",
+        "tests/e2e/tree-editor.spec.ts"
+      ],
+      "previousStatus": "pending"
+    },
+    {
+      "featureId": "BLOCK-contactInfo",
+      "route": "CMS editor and public renderer",
+      "implementation": [
+        "apps/web/src/components/admin/editor/props-form.tsx",
+        "packages/contracts/src/blocks.ts",
+        "packages/server/src/admin/pages.ts"
+      ],
+      "tests": [
+        "apps/web/src/components/admin/editor/props-interactions.test.tsx",
+        "packages/contracts/src/source-block-parity.test.ts",
+        "packages/server/src/admin/pages.integration.test.ts",
+        "tests/e2e/editor-properties.spec.ts",
+        "tests/e2e/editor-operations.spec.ts",
+        "tests/e2e/tree-editor.spec.ts"
+      ],
+      "previousStatus": "pending"
+    },
+    {
+      "featureId": "BLOCK-heading",
+      "route": "CMS editor and public renderer",
+      "implementation": [
+        "apps/web/src/components/admin/editor/props-form.tsx",
+        "packages/contracts/src/blocks.ts",
+        "packages/server/src/admin/pages.ts"
+      ],
+      "tests": [
+        "apps/web/src/components/admin/editor/props-interactions.test.tsx",
+        "packages/contracts/src/source-block-parity.test.ts",
+        "packages/server/src/admin/pages.integration.test.ts",
+        "tests/e2e/editor-properties.spec.ts",
+        "tests/e2e/editor-operations.spec.ts",
+        "tests/e2e/tree-editor.spec.ts"
+      ],
+      "previousStatus": "pending"
+    },
+    {
+      "featureId": "BLOCK-text",
+      "route": "CMS editor and public renderer",
+      "implementation": [
+        "apps/web/src/components/admin/editor/props-form.tsx",
+        "packages/contracts/src/blocks.ts",
+        "packages/server/src/admin/pages.ts"
+      ],
+      "tests": [
+        "apps/web/src/components/admin/editor/props-interactions.test.tsx",
+        "packages/contracts/src/source-block-parity.test.ts",
+        "packages/server/src/admin/pages.integration.test.ts",
+        "tests/e2e/editor-properties.spec.ts",
+        "tests/e2e/editor-operations.spec.ts",
+        "tests/e2e/tree-editor.spec.ts"
+      ],
+      "previousStatus": "pending"
+    },
+    {
+      "featureId": "BLOCK-image",
+      "route": "CMS editor and public renderer",
+      "implementation": [
+        "apps/web/src/components/admin/editor/props-form.tsx",
+        "packages/contracts/src/blocks.ts",
+        "packages/server/src/admin/pages.ts"
+      ],
+      "tests": [
+        "apps/web/src/components/admin/editor/props-interactions.test.tsx",
+        "packages/contracts/src/source-block-parity.test.ts",
+        "packages/server/src/admin/pages.integration.test.ts",
+        "tests/e2e/editor-properties.spec.ts",
+        "tests/e2e/editor-operations.spec.ts",
+        "tests/e2e/tree-editor.spec.ts"
+      ],
+      "previousStatus": "pending"
+    },
+    {
+      "featureId": "BLOCK-gallery",
+      "route": "CMS editor and public renderer",
+      "implementation": [
+        "apps/web/src/components/admin/editor/props-form.tsx",
+        "packages/contracts/src/blocks.ts",
+        "packages/server/src/admin/pages.ts"
+      ],
+      "tests": [
+        "apps/web/src/components/admin/editor/props-interactions.test.tsx",
+        "packages/contracts/src/source-block-parity.test.ts",
+        "packages/server/src/admin/pages.integration.test.ts",
+        "tests/e2e/editor-properties.spec.ts",
+        "tests/e2e/editor-operations.spec.ts",
+        "tests/e2e/tree-editor.spec.ts"
+      ],
+      "previousStatus": "pending"
+    },
+    {
+      "featureId": "BLOCK-buttonLink",
+      "route": "CMS editor and public renderer",
+      "implementation": [
+        "apps/web/src/components/admin/editor/props-form.tsx",
+        "packages/contracts/src/blocks.ts",
+        "packages/server/src/admin/pages.ts"
+      ],
+      "tests": [
+        "apps/web/src/components/admin/editor/props-interactions.test.tsx",
+        "packages/contracts/src/source-block-parity.test.ts",
+        "packages/server/src/admin/pages.integration.test.ts",
+        "tests/e2e/editor-properties.spec.ts",
+        "tests/e2e/editor-operations.spec.ts",
+        "tests/e2e/tree-editor.spec.ts"
+      ],
+      "previousStatus": "pending"
+    },
+    {
+      "featureId": "BLOCK-columns",
+      "route": "CMS editor and public renderer",
+      "implementation": [
+        "apps/web/src/components/admin/editor/props-form.tsx",
+        "packages/contracts/src/blocks.ts",
+        "packages/server/src/admin/pages.ts"
+      ],
+      "tests": [
+        "apps/web/src/components/admin/editor/props-interactions.test.tsx",
+        "packages/contracts/src/source-block-parity.test.ts",
+        "packages/server/src/admin/pages.integration.test.ts",
+        "tests/e2e/editor-properties.spec.ts",
+        "tests/e2e/editor-operations.spec.ts",
+        "tests/e2e/tree-editor.spec.ts"
+      ],
+      "previousStatus": "pending"
+    },
+    {
+      "featureId": "BLOCK-simpleTable",
+      "route": "CMS editor and public renderer",
+      "implementation": [
+        "apps/web/src/components/admin/editor/props-form.tsx",
+        "packages/contracts/src/blocks.ts",
+        "packages/server/src/admin/pages.ts"
+      ],
+      "tests": [
+        "apps/web/src/components/admin/editor/props-interactions.test.tsx",
+        "packages/contracts/src/source-block-parity.test.ts",
+        "packages/server/src/admin/pages.integration.test.ts",
+        "tests/e2e/editor-properties.spec.ts",
+        "tests/e2e/editor-operations.spec.ts",
+        "tests/e2e/tree-editor.spec.ts"
+      ],
+      "previousStatus": "pending"
+    },
+    {
+      "featureId": "BLOCK-divider",
+      "route": "CMS editor and public renderer",
+      "implementation": [
+        "apps/web/src/components/admin/editor/props-form.tsx",
+        "packages/contracts/src/blocks.ts",
+        "packages/server/src/admin/pages.ts"
+      ],
+      "tests": [
+        "apps/web/src/components/admin/editor/props-interactions.test.tsx",
+        "packages/contracts/src/source-block-parity.test.ts",
+        "packages/server/src/admin/pages.integration.test.ts",
+        "tests/e2e/editor-properties.spec.ts",
+        "tests/e2e/editor-operations.spec.ts",
+        "tests/e2e/tree-editor.spec.ts"
+      ],
+      "previousStatus": "pending"
+    },
+    {
+      "featureId": "BLOCK-spacer",
+      "route": "CMS editor and public renderer",
+      "implementation": [
+        "apps/web/src/components/admin/editor/props-form.tsx",
+        "packages/contracts/src/blocks.ts",
+        "packages/server/src/admin/pages.ts"
+      ],
+      "tests": [
+        "apps/web/src/components/admin/editor/props-interactions.test.tsx",
+        "packages/contracts/src/source-block-parity.test.ts",
+        "packages/server/src/admin/pages.integration.test.ts",
+        "tests/e2e/editor-properties.spec.ts",
+        "tests/e2e/editor-operations.spec.ts",
+        "tests/e2e/tree-editor.spec.ts"
+      ],
+      "previousStatus": "pending"
+    },
+    {
+      "featureId": "EDITOR",
+      "route": "Cross-cutting",
+      "implementation": [
+        "apps/web/src/components/admin/editor/props-form.tsx",
+        "packages/contracts/src/blocks.ts",
+        "packages/server/src/admin/pages.ts"
+      ],
+      "tests": [
+        "apps/web/src/components/admin/editor/props-interactions.test.tsx",
+        "packages/contracts/src/source-block-parity.test.ts",
+        "packages/server/src/admin/pages.integration.test.ts",
+        "tests/e2e/editor-properties.spec.ts",
+        "tests/e2e/editor-operations.spec.ts",
+        "tests/e2e/tree-editor.spec.ts"
+      ],
+      "previousStatus": "implemented tree editor; scoped journeys passed; all-properties/visual/performance acceptance pending"
+    },
+    {
+      "featureId": "PUBLIC",
+      "route": "Cross-cutting",
+      "implementation": [
+        "apps/api/src/public.service.ts",
+        "apps/web/src/screens/cms.tsx"
+      ],
+      "tests": [
+        "tests/e2e/publication.spec.ts",
+        "tests/e2e/cms-publication.spec.ts",
+        "tests/e2e/auth-public.spec.ts",
+        "tests/e2e/submissions.spec.ts",
+        "tests/e2e/public-visibility.spec.ts"
+      ],
+      "previousStatus": "pending"
+    },
+    {
+      "featureId": "AUTH",
+      "route": "Cross-cutting",
+      "implementation": [
+        "packages/server/src/auth/service.ts",
+        "apps/api/src/auth/controller.ts",
+        "apps/web/src/screens/auth.tsx"
+      ],
+      "tests": [
+        "packages/server/src/auth/auth.integration.test.ts",
+        "tests/e2e/auth-public.spec.ts",
+        "tests/e2e/auth-compatibility.spec.ts",
+        "tests/e2e/login-hydration.spec.ts",
+        "tests/e2e/admin-users.spec.ts",
+        "tests/e2e/invite-ui.spec.ts"
+      ],
+      "previousStatus": "pending"
+    },
+    {
+      "featureId": "FILES",
+      "route": "Cross-cutting",
+      "implementation": [
+        "packages/server/src/files/service.ts",
+        "packages/server/src/files/media-usage.ts"
+      ],
+      "tests": [
+        "packages/server/src/files/files.integration.test.ts",
+        "packages/server/src/files/media-library.integration.test.ts",
+        "tests/e2e/files-claims.spec.ts",
+        "tests/e2e/media-library.spec.ts"
+      ],
+      "previousStatus": "pending"
+    },
+    {
+      "featureId": "ADMIN",
+      "route": "Cross-cutting",
+      "implementation": [
+        "packages/server/src/admin/operations.ts",
+        "packages/server/src/admin/conversations.ts",
+        "packages/server/src/admin/dashboard.ts",
+        "apps/api/src/admin/operations.controller.ts"
+      ],
+      "tests": [
+        "packages/server/src/admin/operations.integration.test.ts",
+        "tests/e2e/admin-configuration.spec.ts",
+        "tests/e2e/role-contracts.spec.ts",
+        "tests/e2e/support-operations.spec.ts",
+        "tests/e2e/admin-navigation.spec.ts"
+      ],
+      "previousStatus": "pending"
+    },
+    {
+      "featureId": "REFRESH-CMS-VALIDATION",
+      "route": "/api/admin/pages/* and /api/v1/admin/pages/*",
+      "implementation": [
+        "packages/contracts/src/content/validate.ts",
+        "apps/web/src/components/admin/editor/page-editor.tsx"
+      ],
+      "tests": [
+        "packages/contracts/src/content/content-tree.test.ts",
+        "packages/contracts/src/content/tree-move.test.ts",
+        "tests/e2e/layer-move.spec.ts",
+        "tests/e2e/content-tree.spec.ts",
+        "tests/e2e/tree-editor.spec.ts"
+      ],
+      "previousStatus": "implemented delta; full refreshed CMS parity pending"
+    },
+    {
+      "featureId": "DATA-V2",
+      "route": "SQLite v1/v2 -> MariaDB v2",
+      "implementation": [
+        "packages/server/src/migration/transfer.ts"
+      ],
+      "tests": [
+        "packages/server/src/migration/transfer.integration.test.ts",
+        "packages/server/src/database/schema.integration.test.ts"
+      ],
+      "previousStatus": "schema and synthetic data transfer passed; dependent application functions pending"
+    },
+    {
+      "featureId": "API-073",
+      "route": "POST /api/admin/pages/[id]/discard",
+      "implementation": [
+        "packages/server/src/admin/pages.ts",
+        "packages/server/src/admin/publication.ts",
+        "apps/api/src/admin/pages.controller.ts"
+      ],
+      "tests": [
+        "packages/server/src/admin/pages.integration.test.ts",
+        "packages/server/src/admin/publication.integration.test.ts",
+        "tests/e2e/cms-publication.spec.ts",
+        "tests/e2e/editor-operations.spec.ts",
+        "tests/e2e/admin-navigation.spec.ts"
+      ],
+      "previousStatus": "implemented; scoped MariaDB and HTTP tests passed; UI pending"
+    },
+    {
+      "featureId": "API-074",
+      "route": "POST /api/admin/pages/[id]/schedule",
+      "implementation": [
+        "packages/server/src/admin/pages.ts",
+        "packages/server/src/admin/publication.ts",
+        "apps/api/src/admin/pages.controller.ts"
+      ],
+      "tests": [
+        "packages/server/src/admin/pages.integration.test.ts",
+        "packages/server/src/admin/publication.integration.test.ts",
+        "tests/e2e/cms-publication.spec.ts",
+        "tests/e2e/editor-operations.spec.ts",
+        "tests/e2e/admin-navigation.spec.ts"
+      ],
+      "previousStatus": "implemented; scoped MariaDB and HTTP tests passed; UI pending"
+    },
+    {
+      "featureId": "API-075",
+      "route": "POST /api/admin/templates/[id]/apply",
+      "implementation": [
+        "packages/server/src/admin/templates.ts",
+        "apps/api/src/admin/templates.controller.ts"
+      ],
+      "tests": [
+        "packages/server/src/admin/templates.integration.test.ts",
+        "tests/e2e/templates.spec.ts",
+        "tests/e2e/tree-editor.spec.ts"
+      ],
+      "previousStatus": "services implemented; contract, MariaDB concurrency/rollback and HTTP tests passed; template dialog pending"
+    },
+    {
+      "featureId": "API-076",
+      "route": "PATCH /api/admin/templates/[id]",
+      "implementation": [
+        "packages/server/src/admin/templates.ts",
+        "apps/api/src/admin/templates.controller.ts"
+      ],
+      "tests": [
+        "packages/server/src/admin/templates.integration.test.ts",
+        "tests/e2e/templates.spec.ts",
+        "tests/e2e/tree-editor.spec.ts"
+      ],
+      "previousStatus": "services implemented; contract, MariaDB concurrency/rollback and HTTP tests passed; template dialog pending"
+    },
+    {
+      "featureId": "API-077",
+      "route": "DELETE /api/admin/templates/[id]",
+      "implementation": [
+        "packages/server/src/admin/templates.ts",
+        "apps/api/src/admin/templates.controller.ts"
+      ],
+      "tests": [
+        "packages/server/src/admin/templates.integration.test.ts",
+        "tests/e2e/templates.spec.ts",
+        "tests/e2e/tree-editor.spec.ts"
+      ],
+      "previousStatus": "services implemented; contract, MariaDB concurrency/rollback and HTTP tests passed; template dialog pending"
+    },
+    {
+      "featureId": "API-078",
+      "route": "GET /api/admin/templates",
+      "implementation": [
+        "packages/server/src/admin/templates.ts",
+        "apps/api/src/admin/templates.controller.ts"
+      ],
+      "tests": [
+        "packages/server/src/admin/templates.integration.test.ts",
+        "tests/e2e/templates.spec.ts",
+        "tests/e2e/tree-editor.spec.ts"
+      ],
+      "previousStatus": "services implemented; contract, MariaDB concurrency/rollback and HTTP tests passed; template dialog pending"
+    },
+    {
+      "featureId": "API-079",
+      "route": "POST /api/admin/templates",
+      "implementation": [
+        "packages/server/src/admin/templates.ts",
+        "apps/api/src/admin/templates.controller.ts"
+      ],
+      "tests": [
+        "packages/server/src/admin/templates.integration.test.ts",
+        "tests/e2e/templates.spec.ts",
+        "tests/e2e/tree-editor.spec.ts"
+      ],
+      "previousStatus": "services implemented; contract, MariaDB concurrency/rollback and HTTP tests passed; template dialog pending"
+    },
+    {
+      "featureId": "API-080",
+      "route": "GET /api/admin/track",
+      "implementation": [
+        "packages/server/src/track/service.ts",
+        "apps/web/src/screens/track.tsx"
+      ],
+      "tests": [
+        "packages/server/src/track/service.integration.test.ts",
+        "tests/e2e/tracking.spec.ts"
+      ],
+      "previousStatus": "implemented; scoped tests passed; full performance and human visual acceptance pending"
+    },
+    {
+      "featureId": "API-081",
+      "route": "POST /api/admin/track",
+      "implementation": [
+        "packages/server/src/track/service.ts",
+        "apps/web/src/screens/track.tsx"
+      ],
+      "tests": [
+        "packages/server/src/track/service.integration.test.ts",
+        "tests/e2e/tracking.spec.ts"
+      ],
+      "previousStatus": "implemented; scoped tests passed; full performance and human visual acceptance pending"
+    },
+    {
+      "featureId": "API-082",
+      "route": "GET /api/track/card",
+      "implementation": [
+        "packages/server/src/track/service.ts",
+        "apps/web/src/screens/track.tsx"
+      ],
+      "tests": [
+        "packages/server/src/track/service.integration.test.ts",
+        "tests/e2e/tracking.spec.ts"
+      ],
+      "previousStatus": "implemented; scoped tests passed; full performance and human visual acceptance pending"
+    },
+    {
+      "featureId": "API-083",
+      "route": "POST /api/track/exchange",
+      "implementation": [
+        "packages/server/src/track/service.ts",
+        "apps/web/src/screens/track.tsx"
+      ],
+      "tests": [
+        "packages/server/src/track/service.integration.test.ts",
+        "tests/e2e/tracking.spec.ts"
+      ],
+      "previousStatus": "implemented; scoped tests passed; full performance and human visual acceptance pending"
+    },
+    {
+      "featureId": "API-084",
+      "route": "POST /api/track/reply",
+      "implementation": [
+        "packages/server/src/track/service.ts",
+        "apps/web/src/screens/track.tsx"
+      ],
+      "tests": [
+        "packages/server/src/track/service.integration.test.ts",
+        "tests/e2e/tracking.spec.ts"
+      ],
+      "previousStatus": "implemented; scoped tests passed; full performance and human visual acceptance pending"
+    },
+    {
+      "featureId": "CMS-TREE-V1",
+      "route": "GET /:locale/:slug published v1 envelope",
+      "implementation": [
+        "packages/contracts/src/content/validate.ts",
+        "apps/web/src/components/admin/editor/page-editor.tsx"
+      ],
+      "tests": [
+        "packages/contracts/src/content/content-tree.test.ts",
+        "packages/contracts/src/content/tree-move.test.ts",
+        "tests/e2e/layer-move.spec.ts",
+        "tests/e2e/content-tree.spec.ts",
+        "tests/e2e/tree-editor.spec.ts"
+      ],
+      "previousStatus": "published and editor rendering implemented; full visual and human acceptance pending"
+    },
+    {
+      "featureId": "UI-TRACK",
+      "route": "/{locale}/track; admin request/inquiry tracking panel",
+      "implementation": [
+        "packages/server/src/track/service.ts",
+        "apps/web/src/screens/track.tsx"
+      ],
+      "tests": [
+        "packages/server/src/track/service.integration.test.ts",
+        "tests/e2e/tracking.spec.ts"
+      ],
+      "previousStatus": "implemented; scoped functional and visual checks passed; human review/performance pending"
+    },
+    {
+      "featureId": "REFRESH-LAYER-MOVE",
+      "route": "/[locale]/admin/pages/[id]/edit Layers",
+      "implementation": [
+        "packages/contracts/src/content/validate.ts",
+        "apps/web/src/components/admin/editor/page-editor.tsx"
+      ],
+      "tests": [
+        "packages/contracts/src/content/content-tree.test.ts",
+        "packages/contracts/src/content/tree-move.test.ts",
+        "tests/e2e/layer-move.spec.ts",
+        "tests/e2e/content-tree.spec.ts",
+        "tests/e2e/tree-editor.spec.ts"
+      ],
+      "previousStatus": "implemented; 377 unit/integration and 104 full browser cases passed; scoped visual passed; human and full acceptance pending"
+    },
+    {
+      "featureId": "OPS-RECOVERY",
+      "route": "npm run test:restore; npm run data:recovery-check",
+      "implementation": [
+        "tools/migration/operational-restore.mjs",
+        "packages/server/src/migration/recovery.ts"
+      ],
+      "tests": [
+        "tools/migration/operational-restore.mjs",
+        "packages/server/src/queue/mail-queue.integration.test.ts",
+        "packages/server/src/queue/webhook.integration.test.ts"
+      ],
+      "previousStatus": "scoped synthetic restore passed; off-host and full production cutover acceptance pending"
+    },
+    {
+      "featureId": "CMS-BYTE-BOUNDARY",
+      "route": "PATCH /api/admin/pages/:id and /api/v1/admin/pages/:id; publish; db:check-cms",
+      "implementation": [
+        "packages/contracts/src/content/validate.ts",
+        "tools/migration/max-legacy-document.mjs"
+      ],
+      "tests": [
+        "tools/migration/cms-boundary-smoke.mjs",
+        "packages/contracts/src/content/byte-boundary.test.ts"
+      ],
+      "previousStatus": "scoped boundary evidence passed; full legacy maximum across all block combinations and global acceptance pending"
+    },
+    {
+      "featureId": "EDITOR-PROPERTY-LABELS",
+      "route": "/:locale/admin/pages/:id/edit properties",
+      "implementation": [
+        "apps/web/src/components/admin/editor/props-form.tsx",
+        "packages/contracts/src/blocks.ts",
+        "packages/server/src/admin/pages.ts"
+      ],
+      "tests": [
+        "apps/web/src/components/admin/editor/props-interactions.test.tsx",
+        "packages/contracts/src/source-block-parity.test.ts",
+        "packages/server/src/admin/pages.integration.test.ts",
+        "tests/e2e/editor-properties.spec.ts",
+        "tests/e2e/editor-operations.spec.ts",
+        "tests/e2e/tree-editor.spec.ts"
+      ],
+      "previousStatus": "component regression passed; browser acceptance running"
+    }
+  ]
+}

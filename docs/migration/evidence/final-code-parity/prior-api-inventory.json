@@ -6,7 +6,7 @@
     "source": "src/app/api/account/claim-verify/route.ts",
     "guards": [],
     "entities": [],
-    "sourceSHA": "dddf8cd00a19cf7d562f503549f4c000109057d1",
+    "sourceSHA": "fc4a959e87e7c3750a0546f9d4fa10e31ac3b63c",
     "inventoryNote": "File-level guard/entity hints; handler authorization requires reviewed contract tests."
   },
   {
@@ -22,7 +22,7 @@
     "entities": [
       "requestDraft"
     ],
-    "sourceSHA": "dddf8cd00a19cf7d562f503549f4c000109057d1",
+    "sourceSHA": "fc4a959e87e7c3750a0546f9d4fa10e31ac3b63c",
     "inventoryNote": "File-level guard/entity hints; handler authorization requires reviewed contract tests."
   },
   {
@@ -38,7 +38,7 @@
     "entities": [
       "requestDraft"
     ],
-    "sourceSHA": "dddf8cd00a19cf7d562f503549f4c000109057d1",
+    "sourceSHA": "fc4a959e87e7c3750a0546f9d4fa10e31ac3b63c",
     "inventoryNote": "File-level guard/entity hints; handler authorization requires reviewed contract tests."
   },
   {
@@ -54,7 +54,7 @@
     "entities": [
       "requestDraft"
     ],
-    "sourceSHA": "dddf8cd00a19cf7d562f503549f4c000109057d1",
+    "sourceSHA": "fc4a959e87e7c3750a0546f9d4fa10e31ac3b63c",
     "inventoryNote": "File-level guard/entity hints; handler authorization requires reviewed contract tests."
   },
   {
@@ -69,7 +69,7 @@
       "inquiry",
       "inquiryMessage"
     ],
-    "sourceSHA": "dddf8cd00a19cf7d562f503549f4c000109057d1",
+    "sourceSHA": "fc4a959e87e7c3750a0546f9d4fa10e31ac3b63c",
     "inventoryNote": "File-level guard/entity hints; handler authorization requires reviewed contract tests."
   },
   {
@@ -83,7 +83,7 @@
     "entities": [
       "inquiry"
     ],
-    "sourceSHA": "dddf8cd00a19cf7d562f503549f4c000109057d1",
+    "sourceSHA": "fc4a959e87e7c3750a0546f9d4fa10e31ac3b63c",
     "inventoryNote": "File-level guard/entity hints; handler authorization requires reviewed contract tests."
   },
   {
@@ -98,7 +98,7 @@
     "entities": [
       "inquiry"
     ],
-    "sourceSHA": "dddf8cd00a19cf7d562f503549f4c000109057d1",
+    "sourceSHA": "fc4a959e87e7c3750a0546f9d4fa10e31ac3b63c",
     "inventoryNote": "File-level guard/entity hints; handler authorization requires reviewed contract tests."
   },
   {
@@ -113,7 +113,7 @@
     "entities": [
       "inquiry"
     ],
-    "sourceSHA": "dddf8cd00a19cf7d562f503549f4c000109057d1",
+    "sourceSHA": "fc4a959e87e7c3750a0546f9d4fa10e31ac3b63c",
     "inventoryNote": "File-level guard/entity hints; handler authorization requires reviewed contract tests."
   },
   {
@@ -128,7 +128,7 @@
     "entities": [
       "notification"
     ],
-    "sourceSHA": "dddf8cd00a19cf7d562f503549f4c000109057d1",
+    "sourceSHA": "fc4a959e87e7c3750a0546f9d4fa10e31ac3b63c",
     "inventoryNote": "File-level guard/entity hints; handler authorization requires reviewed contract tests."
   },
   {
@@ -143,7 +143,7 @@
     "entities": [
       "notification"
     ],
-    "sourceSHA": "dddf8cd00a19cf7d562f503549f4c000109057d1",
+    "sourceSHA": "fc4a959e87e7c3750a0546f9d4fa10e31ac3b63c",
     "inventoryNote": "File-level guard/entity hints; handler authorization requires reviewed contract tests."
   },
   {
@@ -158,7 +158,7 @@
     "entities": [
       "user"
     ],
-    "sourceSHA": "dddf8cd00a19cf7d562f503549f4c000109057d1",
+    "sourceSHA": "fc4a959e87e7c3750a0546f9d4fa10e31ac3b63c",
     "inventoryNote": "File-level guard/entity hints; handler authorization requires reviewed contract tests."
   },
   {
@@ -173,7 +173,7 @@
     "entities": [
       "user"
     ],
-    "sourceSHA": "dddf8cd00a19cf7d562f503549f4c000109057d1",
+    "sourceSHA": "fc4a959e87e7c3750a0546f9d4fa10e31ac3b63c",
     "inventoryNote": "File-level guard/entity hints; handler authorization requires reviewed contract tests."
   },
   {
@@ -185,7 +185,7 @@
       "guardApi(req)"
     ],
     "entities": [],
-    "sourceSHA": "dddf8cd00a19cf7d562f503549f4c000109057d1",
+    "sourceSHA": "fc4a959e87e7c3750a0546f9d4fa10e31ac3b63c",
     "inventoryNote": "File-level guard/entity hints; handler authorization requires reviewed contract tests."
   },
   {
@@ -202,7 +202,7 @@
       "requestMessage",
       "requestStatusEvent"
     ],
-    "sourceSHA": "dddf8cd00a19cf7d562f503549f4c000109057d1",
+    "sourceSHA": "fc4a959e87e7c3750a0546f9d4fa10e31ac3b63c",
     "inventoryNote": "File-level guard/entity hints; handler authorization requires reviewed contract tests."
   },
   {
@@ -219,7 +219,7 @@
       "requestMessage",
       "requestStatusEvent"
     ],
-    "sourceSHA": "dddf8cd00a19cf7d562f503549f4c000109057d1",
+    "sourceSHA": "fc4a959e87e7c3750a0546f9d4fa10e31ac3b63c",
     "inventoryNote": "File-level guard/entity hints; handler authorization requires reviewed contract tests."
   },
   {
@@ -231,7 +231,7 @@
       "guardApi(req)"
     ],
     "entities": [],
-    "sourceSHA": "dddf8cd00a19cf7d562f503549f4c000109057d1",
+    "sourceSHA": "fc4a959e87e7c3750a0546f9d4fa10e31ac3b63c",
     "inventoryNote": "File-level guard/entity hints; handler authorization requires reviewed contract tests."
   },
   {
@@ -245,7 +245,7 @@
     "entities": [
       "projectRequest"
     ],
-    "sourceSHA": "dddf8cd00a19cf7d562f503549f4c000109057d1",
+    "sourceSHA": "fc4a959e87e7c3750a0546f9d4fa10e31ac3b63c",
     "inventoryNote": "File-level guard/entity hints; handler authorization requires reviewed contract tests."
   },
   {
@@ -259,7 +259,7 @@
     "entities": [
       "auditLog"
     ],
-    "sourceSHA": "dddf8cd00a19cf7d562f503549f4c000109057d1",
+    "sourceSHA": "fc4a959e87e7c3750a0546f9d4fa10e31ac3b63c",
     "inventoryNote": "File-level guard/entity hints; handler authorization requires reviewed contract tests."
   },
   {
@@ -277,7 +277,7 @@
       "projectRequest",
       "user"
     ],
-    "sourceSHA": "dddf8cd00a19cf7d562f503549f4c000109057d1",
+    "sourceSHA": "fc4a959e87e7c3750a0546f9d4fa10e31ac3b63c",
     "inventoryNote": "File-level guard/entity hints; handler authorization requires reviewed contract tests."
   },
   {
@@ -292,7 +292,7 @@
       "inquiry",
       "inquiryMessage"
     ],
-    "sourceSHA": "dddf8cd00a19cf7d562f503549f4c000109057d1",
+    "sourceSHA": "fc4a959e87e7c3750a0546f9d4fa10e31ac3b63c",
     "inventoryNote": "File-level guard/entity hints; handler authorization requires reviewed contract tests."
   },
   {
@@ -309,7 +309,7 @@
       "inquiryMessage",
       "user"
     ],
-    "sourceSHA": "dddf8cd00a19cf7d562f503549f4c000109057d1",
+    "sourceSHA": "fc4a959e87e7c3750a0546f9d4fa10e31ac3b63c",
     "inventoryNote": "File-level guard/entity hints; handler authorization requires reviewed contract tests."
   },
   {
@@ -326,7 +326,7 @@
       "inquiryMessage",
       "user"
     ],
-    "sourceSHA": "dddf8cd00a19cf7d562f503549f4c000109057d1",
+    "sourceSHA": "fc4a959e87e7c3750a0546f9d4fa10e31ac3b63c",
     "inventoryNote": "File-level guard/entity hints; handler authorization requires reviewed contract tests."
   },
   {
@@ -340,7 +340,7 @@
     "entities": [
       "inquiry"
     ],
-    "sourceSHA": "dddf8cd00a19cf7d562f503549f4c000109057d1",
+    "sourceSHA": "fc4a959e87e7c3750a0546f9d4fa10e31ac3b63c",
     "inventoryNote": "File-level guard/entity hints; handler authorization requires reviewed contract tests."
   },
   {
@@ -354,7 +354,7 @@
     "entities": [
       "inquiry"
     ],
-    "sourceSHA": "dddf8cd00a19cf7d562f503549f4c000109057d1",
+    "sourceSHA": "fc4a959e87e7c3750a0546f9d4fa10e31ac3b63c",
     "inventoryNote": "File-level guard/entity hints; handler authorization requires reviewed contract tests."
   },
   {
@@ -369,7 +369,7 @@
       "inquiry",
       "inquiryMessage"
     ],
-    "sourceSHA": "dddf8cd00a19cf7d562f503549f4c000109057d1",
+    "sourceSHA": "fc4a959e87e7c3750a0546f9d4fa10e31ac3b63c",
     "inventoryNote": "File-level guard/entity hints; handler authorization requires reviewed contract tests."
   },
   {
@@ -384,7 +384,7 @@
     "entities": [
       "mediaItem"
     ],
-    "sourceSHA": "dddf8cd00a19cf7d562f503549f4c000109057d1",
+    "sourceSHA": "fc4a959e87e7c3750a0546f9d4fa10e31ac3b63c",
     "inventoryNote": "File-level guard/entity hints; handler authorization requires reviewed contract tests."
   },
   {
@@ -399,7 +399,7 @@
     "entities": [
       "mediaItem"
     ],
-    "sourceSHA": "dddf8cd00a19cf7d562f503549f4c000109057d1",
+    "sourceSHA": "fc4a959e87e7c3750a0546f9d4fa10e31ac3b63c",
     "inventoryNote": "File-level guard/entity hints; handler authorization requires reviewed contract tests."
   },
   {
@@ -414,7 +414,7 @@
     "entities": [
       "mediaItem"
     ],
-    "sourceSHA": "dddf8cd00a19cf7d562f503549f4c000109057d1",
+    "sourceSHA": "fc4a959e87e7c3750a0546f9d4fa10e31ac3b63c",
     "inventoryNote": "File-level guard/entity hints; handler authorization requires reviewed contract tests."
   },
   {
@@ -429,7 +429,7 @@
     "entities": [
       "mediaItem"
     ],
-    "sourceSHA": "dddf8cd00a19cf7d562f503549f4c000109057d1",
+    "sourceSHA": "fc4a959e87e7c3750a0546f9d4fa10e31ac3b63c",
     "inventoryNote": "File-level guard/entity hints; handler authorization requires reviewed contract tests."
   },
   {
@@ -445,7 +445,7 @@
       "menuItem",
       "page"
     ],
-    "sourceSHA": "dddf8cd00a19cf7d562f503549f4c000109057d1",
+    "sourceSHA": "fc4a959e87e7c3750a0546f9d4fa10e31ac3b63c",
     "inventoryNote": "File-level guard/entity hints; handler authorization requires reviewed contract tests."
   },
   {
@@ -461,7 +461,7 @@
       "menuItem",
       "page"
     ],
-    "sourceSHA": "dddf8cd00a19cf7d562f503549f4c000109057d1",
+    "sourceSHA": "fc4a959e87e7c3750a0546f9d4fa10e31ac3b63c",
     "inventoryNote": "File-level guard/entity hints; handler authorization requires reviewed contract tests."
   },
   {
@@ -475,7 +475,7 @@
     "entities": [
       "emailLog"
     ],
-    "sourceSHA": "dddf8cd00a19cf7d562f503549f4c000109057d1",
+    "sourceSHA": "fc4a959e87e7c3750a0546f9d4fa10e31ac3b63c",
     "inventoryNote": "File-level guard/entity hints; handler authorization requires reviewed contract tests."
   },
   {
@@ -483,7 +483,7 @@
     "method": "POST",
     "path": "/api/admin/pages/[id]/discard",
     "source": "src/app/api/admin/pages/[id]/discard/route.ts",
-    "sourceSHA": "dddf8cd00a19cf7d562f503549f4c000109057d1",
+    "sourceSHA": "fc4a959e87e7c3750a0546f9d4fa10e31ac3b63c",
     "guards": [
       "guardApi(req, \"pages.edit\")"
     ],
@@ -503,7 +503,7 @@
     "entities": [
       "page"
     ],
-    "sourceSHA": "dddf8cd00a19cf7d562f503549f4c000109057d1",
+    "sourceSHA": "fc4a959e87e7c3750a0546f9d4fa10e31ac3b63c",
     "inventoryNote": "File-level guard/entity hints; handler authorization requires reviewed contract tests."
   },
   {
@@ -522,7 +522,7 @@
       "pageRedirect",
       "user"
     ],
-    "sourceSHA": "dddf8cd00a19cf7d562f503549f4c000109057d1",
+    "sourceSHA": "fc4a959e87e7c3750a0546f9d4fa10e31ac3b63c",
     "inventoryNote": "File-level guard/entity hints; handler authorization requires reviewed contract tests."
   },
   {
@@ -541,7 +541,7 @@
       "pageRedirect",
       "user"
     ],
-    "sourceSHA": "dddf8cd00a19cf7d562f503549f4c000109057d1",
+    "sourceSHA": "fc4a959e87e7c3750a0546f9d4fa10e31ac3b63c",
     "inventoryNote": "File-level guard/entity hints; handler authorization requires reviewed contract tests."
   },
   {
@@ -560,7 +560,7 @@
       "pageRedirect",
       "user"
     ],
-    "sourceSHA": "dddf8cd00a19cf7d562f503549f4c000109057d1",
+    "sourceSHA": "fc4a959e87e7c3750a0546f9d4fa10e31ac3b63c",
     "inventoryNote": "File-level guard/entity hints; handler authorization requires reviewed contract tests."
   },
   {
@@ -568,7 +568,7 @@
     "method": "POST",
     "path": "/api/admin/pages/[id]/schedule",
     "source": "src/app/api/admin/pages/[id]/schedule/route.ts",
-    "sourceSHA": "dddf8cd00a19cf7d562f503549f4c000109057d1",
+    "sourceSHA": "fc4a959e87e7c3750a0546f9d4fa10e31ac3b63c",
     "guards": [
       "guardApi(req, \"pages.publish\")"
     ],
@@ -589,7 +589,7 @@
       "page",
       "pageVersion"
     ],
-    "sourceSHA": "dddf8cd00a19cf7d562f503549f4c000109057d1",
+    "sourceSHA": "fc4a959e87e7c3750a0546f9d4fa10e31ac3b63c",
     "inventoryNote": "File-level guard/entity hints; handler authorization requires reviewed contract tests."
   },
   {
@@ -603,7 +603,7 @@
     "entities": [
       "pageVersion"
     ],
-    "sourceSHA": "dddf8cd00a19cf7d562f503549f4c000109057d1",
+    "sourceSHA": "fc4a959e87e7c3750a0546f9d4fa10e31ac3b63c",
     "inventoryNote": "File-level guard/entity hints; handler authorization requires reviewed contract tests."
   },
   {
@@ -618,7 +618,7 @@
     "entities": [
       "page"
     ],
-    "sourceSHA": "dddf8cd00a19cf7d562f503549f4c000109057d1",
+    "sourceSHA": "fc4a959e87e7c3750a0546f9d4fa10e31ac3b63c",
     "inventoryNote": "File-level guard/entity hints; handler authorization requires reviewed contract tests."
   },
   {
@@ -633,7 +633,7 @@
     "entities": [
       "page"
     ],
-    "sourceSHA": "dddf8cd00a19cf7d562f503549f4c000109057d1",
+    "sourceSHA": "fc4a959e87e7c3750a0546f9d4fa10e31ac3b63c",
     "inventoryNote": "File-level guard/entity hints; handler authorization requires reviewed contract tests."
   },
   {
@@ -651,7 +651,7 @@
       "requestStatusEvent",
       "user"
     ],
-    "sourceSHA": "dddf8cd00a19cf7d562f503549f4c000109057d1",
+    "sourceSHA": "fc4a959e87e7c3750a0546f9d4fa10e31ac3b63c",
     "inventoryNote": "File-level guard/entity hints; handler authorization requires reviewed contract tests."
   },
   {
@@ -669,7 +669,7 @@
       "requestStatusEvent",
       "user"
     ],
-    "sourceSHA": "dddf8cd00a19cf7d562f503549f4c000109057d1",
+    "sourceSHA": "fc4a959e87e7c3750a0546f9d4fa10e31ac3b63c",
     "inventoryNote": "File-level guard/entity hints; handler authorization requires reviewed contract tests."
   },
   {
@@ -683,7 +683,7 @@
     "entities": [
       "projectRequest"
     ],
-    "sourceSHA": "dddf8cd00a19cf7d562f503549f4c000109057d1",
+    "sourceSHA": "fc4a959e87e7c3750a0546f9d4fa10e31ac3b63c",
     "inventoryNote": "File-level guard/entity hints; handler authorization requires reviewed contract tests."
   },
   {
@@ -697,7 +697,7 @@
     "entities": [
       "projectRequest"
     ],
-    "sourceSHA": "dddf8cd00a19cf7d562f503549f4c000109057d1",
+    "sourceSHA": "fc4a959e87e7c3750a0546f9d4fa10e31ac3b63c",
     "inventoryNote": "File-level guard/entity hints; handler authorization requires reviewed contract tests."
   },
   {
@@ -713,7 +713,7 @@
       "requestMessage",
       "user"
     ],
-    "sourceSHA": "dddf8cd00a19cf7d562f503549f4c000109057d1",
+    "sourceSHA": "fc4a959e87e7c3750a0546f9d4fa10e31ac3b63c",
     "inventoryNote": "File-level guard/entity hints; handler authorization requires reviewed contract tests."
   },
   {
@@ -728,7 +728,7 @@
     "entities": [
       "savedReply"
     ],
-    "sourceSHA": "dddf8cd00a19cf7d562f503549f4c000109057d1",
+    "sourceSHA": "fc4a959e87e7c3750a0546f9d4fa10e31ac3b63c",
     "inventoryNote": "File-level guard/entity hints; handler authorization requires reviewed contract tests."
   },
   {
@@ -743,7 +743,7 @@
     "entities": [
       "savedReply"
     ],
-    "sourceSHA": "dddf8cd00a19cf7d562f503549f4c000109057d1",
+    "sourceSHA": "fc4a959e87e7c3750a0546f9d4fa10e31ac3b63c",
     "inventoryNote": "File-level guard/entity hints; handler authorization requires reviewed contract tests."
   },
   {
@@ -758,7 +758,7 @@
     "entities": [
       "savedReply"
     ],
-    "sourceSHA": "dddf8cd00a19cf7d562f503549f4c000109057d1",
+    "sourceSHA": "fc4a959e87e7c3750a0546f9d4fa10e31ac3b63c",
     "inventoryNote": "File-level guard/entity hints; handler authorization requires reviewed contract tests."
   },
   {
@@ -773,7 +773,7 @@
     "entities": [
       "savedReply"
     ],
-    "sourceSHA": "dddf8cd00a19cf7d562f503549f4c000109057d1",
+    "sourceSHA": "fc4a959e87e7c3750a0546f9d4fa10e31ac3b63c",
     "inventoryNote": "File-level guard/entity hints; handler authorization requires reviewed contract tests."
   },
   {
@@ -790,7 +790,7 @@
       "projectRequest",
       "user"
     ],
-    "sourceSHA": "dddf8cd00a19cf7d562f503549f4c000109057d1",
+    "sourceSHA": "fc4a959e87e7c3750a0546f9d4fa10e31ac3b63c",
     "inventoryNote": "File-level guard/entity hints; handler authorization requires reviewed contract tests."
   },
   {
@@ -805,7 +805,7 @@
     "entities": [
       "siteSetting"
     ],
-    "sourceSHA": "dddf8cd00a19cf7d562f503549f4c000109057d1",
+    "sourceSHA": "fc4a959e87e7c3750a0546f9d4fa10e31ac3b63c",
     "inventoryNote": "File-level guard/entity hints; handler authorization requires reviewed contract tests."
   },
   {
@@ -820,7 +820,7 @@
     "entities": [
       "siteSetting"
     ],
-    "sourceSHA": "dddf8cd00a19cf7d562f503549f4c000109057d1",
+    "sourceSHA": "fc4a959e87e7c3750a0546f9d4fa10e31ac3b63c",
     "inventoryNote": "File-level guard/entity hints; handler authorization requires reviewed contract tests."
   },
   {
@@ -828,7 +828,7 @@
     "method": "POST",
     "path": "/api/admin/templates/[id]/apply",
     "source": "src/app/api/admin/templates/[id]/apply/route.ts",
-    "sourceSHA": "dddf8cd00a19cf7d562f503549f4c000109057d1",
+    "sourceSHA": "fc4a959e87e7c3750a0546f9d4fa10e31ac3b63c",
     "guards": [
       "guardApi(req, \"pages.edit\")"
     ],
@@ -844,7 +844,7 @@
     "method": "PATCH",
     "path": "/api/admin/templates/[id]",
     "source": "src/app/api/admin/templates/[id]/route.ts",
-    "sourceSHA": "dddf8cd00a19cf7d562f503549f4c000109057d1",
+    "sourceSHA": "fc4a959e87e7c3750a0546f9d4fa10e31ac3b63c",
     "guards": [
       "guardApi(req, \"pages.edit\")",
       "guardApi(req, \"pages.edit\")"
@@ -859,7 +859,7 @@
     "method": "DELETE",
     "path": "/api/admin/templates/[id]",
     "source": "src/app/api/admin/templates/[id]/route.ts",
-    "sourceSHA": "dddf8cd00a19cf7d562f503549f4c000109057d1",
+    "sourceSHA": "fc4a959e87e7c3750a0546f9d4fa10e31ac3b63c",
     "guards": [
       "guardApi(req, \"pages.edit\")",
       "guardApi(req, \"pages.edit\")"
@@ -874,7 +874,7 @@
     "method": "GET",
     "path": "/api/admin/templates",
     "source": "src/app/api/admin/templates/route.ts",
-    "sourceSHA": "dddf8cd00a19cf7d562f503549f4c000109057d1",
+    "sourceSHA": "fc4a959e87e7c3750a0546f9d4fa10e31ac3b63c",
     "guards": [
       "guardApi(req, \"pages.view\")",
       "guardApi(req, \"pages.edit\")"
@@ -889,7 +889,7 @@
     "method": "POST",
     "path": "/api/admin/templates",
     "source": "src/app/api/admin/templates/route.ts",
-    "sourceSHA": "dddf8cd00a19cf7d562f503549f4c000109057d1",
+    "sourceSHA": "fc4a959e87e7c3750a0546f9d4fa10e31ac3b63c",
     "guards": [
       "guardApi(req, \"pages.view\")",
       "guardApi(req, \"pages.edit\")"
@@ -904,7 +904,7 @@
     "method": "GET",
     "path": "/api/admin/track",
     "source": "src/app/api/admin/track/route.ts",
-    "sourceSHA": "dddf8cd00a19cf7d562f503549f4c000109057d1",
+    "sourceSHA": "fc4a959e87e7c3750a0546f9d4fa10e31ac3b63c",
     "guards": [
       "guardApi(req)",
       "guardApi(req)"
@@ -929,7 +929,7 @@
     "method": "POST",
     "path": "/api/admin/track",
     "source": "src/app/api/admin/track/route.ts",
-    "sourceSHA": "dddf8cd00a19cf7d562f503549f4c000109057d1",
+    "sourceSHA": "fc4a959e87e7c3750a0546f9d4fa10e31ac3b63c",
     "guards": [
       "guardApi(req)",
       "guardApi(req)"
@@ -965,7 +965,7 @@
       "role",
       "user"
     ],
-    "sourceSHA": "dddf8cd00a19cf7d562f503549f4c000109057d1",
+    "sourceSHA": "fc4a959e87e7c3750a0546f9d4fa10e31ac3b63c",
     "inventoryNote": "File-level guard/entity hints; handler authorization requires reviewed contract tests."
   },
   {
@@ -984,7 +984,7 @@
       "role",
       "user"
     ],
-    "sourceSHA": "dddf8cd00a19cf7d562f503549f4c000109057d1",
+    "sourceSHA": "fc4a959e87e7c3750a0546f9d4fa10e31ac3b63c",
     "inventoryNote": "File-level guard/entity hints; handler authorization requires reviewed contract tests."
   },
   {
@@ -1000,7 +1000,7 @@
       "user",
       "userInvite"
     ],
-    "sourceSHA": "dddf8cd00a19cf7d562f503549f4c000109057d1",
+    "sourceSHA": "fc4a959e87e7c3750a0546f9d4fa10e31ac3b63c",
     "inventoryNote": "File-level guard/entity hints; handler authorization requires reviewed contract tests."
   },
   {
@@ -1016,7 +1016,7 @@
       "user",
       "userInvite"
     ],
-    "sourceSHA": "dddf8cd00a19cf7d562f503549f4c000109057d1",
+    "sourceSHA": "fc4a959e87e7c3750a0546f9d4fa10e31ac3b63c",
     "inventoryNote": "File-level guard/entity hints; handler authorization requires reviewed contract tests."
   },
   {
@@ -1033,7 +1033,7 @@
       "siteSetting",
       "trackLink"
     ],
-    "sourceSHA": "dddf8cd00a19cf7d562f503549f4c000109057d1",
+    "sourceSHA": "fc4a959e87e7c3750a0546f9d4fa10e31ac3b63c",
     "inventoryNote": "File-level guard/entity hints; handler authorization requires reviewed contract tests."
   },
   {
@@ -1051,7 +1051,7 @@
       "projectRequest",
       "requestMessage"
     ],
-    "sourceSHA": "dddf8cd00a19cf7d562f503549f4c000109057d1",
+    "sourceSHA": "fc4a959e87e7c3750a0546f9d4fa10e31ac3b63c",
     "inventoryNote": "File-level guard/entity hints; handler authorization requires reviewed contract tests."
   },
   {
@@ -1066,7 +1066,7 @@
       "authSession",
       "user"
     ],
-    "sourceSHA": "dddf8cd00a19cf7d562f503549f4c000109057d1",
+    "sourceSHA": "fc4a959e87e7c3750a0546f9d4fa10e31ac3b63c",
     "inventoryNote": "File-level guard/entity hints; handler authorization requires reviewed contract tests."
   },
   {
@@ -1078,7 +1078,7 @@
     "entities": [
       "user"
     ],
-    "sourceSHA": "dddf8cd00a19cf7d562f503549f4c000109057d1",
+    "sourceSHA": "fc4a959e87e7c3750a0546f9d4fa10e31ac3b63c",
     "inventoryNote": "File-level guard/entity hints; handler authorization requires reviewed contract tests."
   },
   {
@@ -1090,7 +1090,7 @@
     "entities": [
       "userInvite"
     ],
-    "sourceSHA": "dddf8cd00a19cf7d562f503549f4c000109057d1",
+    "sourceSHA": "fc4a959e87e7c3750a0546f9d4fa10e31ac3b63c",
     "inventoryNote": "File-level guard/entity hints; handler authorization requires reviewed contract tests."
   },
   {
@@ -1102,7 +1102,7 @@
     "entities": [
       "user"
     ],
-    "sourceSHA": "dddf8cd00a19cf7d562f503549f4c000109057d1",
+    "sourceSHA": "fc4a959e87e7c3750a0546f9d4fa10e31ac3b63c",
     "inventoryNote": "File-level guard/entity hints; handler authorization requires reviewed contract tests."
   },
   {
@@ -1114,7 +1114,7 @@
     "entities": [
       "authToken"
     ],
-    "sourceSHA": "dddf8cd00a19cf7d562f503549f4c000109057d1",
+    "sourceSHA": "fc4a959e87e7c3750a0546f9d4fa10e31ac3b63c",
     "inventoryNote": "File-level guard/entity hints; handler authorization requires reviewed contract tests."
   },
   {
@@ -1129,7 +1129,7 @@
       "authSession",
       "user"
     ],
-    "sourceSHA": "dddf8cd00a19cf7d562f503549f4c000109057d1",
+    "sourceSHA": "fc4a959e87e7c3750a0546f9d4fa10e31ac3b63c",
     "inventoryNote": "File-level guard/entity hints; handler authorization requires reviewed contract tests."
   },
   {
@@ -1144,7 +1144,7 @@
       "authSession",
       "user"
     ],
-    "sourceSHA": "dddf8cd00a19cf7d562f503549f4c000109057d1",
+    "sourceSHA": "fc4a959e87e7c3750a0546f9d4fa10e31ac3b63c",
     "inventoryNote": "File-level guard/entity hints; handler authorization requires reviewed contract tests."
   },
   {
@@ -1154,7 +1154,7 @@
     "source": "src/app/api/auth/verify-email/route.ts",
     "guards": [],
     "entities": [],
-    "sourceSHA": "dddf8cd00a19cf7d562f503549f4c000109057d1",
+    "sourceSHA": "fc4a959e87e7c3750a0546f9d4fa10e31ac3b63c",
     "inventoryNote": "File-level guard/entity hints; handler authorization requires reviewed contract tests."
   },
   {
@@ -1164,7 +1164,7 @@
     "source": "src/app/api/health/ready/route.ts",
     "guards": [],
     "entities": [],
-    "sourceSHA": "dddf8cd00a19cf7d562f503549f4c000109057d1",
+    "sourceSHA": "fc4a959e87e7c3750a0546f9d4fa10e31ac3b63c",
     "inventoryNote": "File-level guard/entity hints; handler authorization requires reviewed contract tests."
   },
   {
@@ -1176,7 +1176,7 @@
     "entities": [
       "inquiry"
     ],
-    "sourceSHA": "dddf8cd00a19cf7d562f503549f4c000109057d1",
+    "sourceSHA": "fc4a959e87e7c3750a0546f9d4fa10e31ac3b63c",
     "inventoryNote": "File-level guard/entity hints; handler authorization requires reviewed contract tests."
   },
   {
@@ -1188,7 +1188,7 @@
     "entities": [
       "mediaItem"
     ],
-    "sourceSHA": "dddf8cd00a19cf7d562f503549f4c000109057d1",
+    "sourceSHA": "fc4a959e87e7c3750a0546f9d4fa10e31ac3b63c",
     "inventoryNote": "File-level guard/entity hints; handler authorization requires reviewed contract tests."
   },
   {
@@ -1200,7 +1200,7 @@
     "entities": [
       "projectRequest"
     ],
-    "sourceSHA": "dddf8cd00a19cf7d562f503549f4c000109057d1",
+    "sourceSHA": "fc4a959e87e7c3750a0546f9d4fa10e31ac3b63c",
     "inventoryNote": "File-level guard/entity hints; handler authorization requires reviewed contract tests."
   },
   {
@@ -1208,7 +1208,7 @@
     "method": "GET",
     "path": "/api/track/card",
     "source": "src/app/api/track/card/route.ts",
-    "sourceSHA": "dddf8cd00a19cf7d562f503549f4c000109057d1",
+    "sourceSHA": "fc4a959e87e7c3750a0546f9d4fa10e31ac3b63c",
     "guards": [],
     "entities": [],
     "inventoryNote": "File-level guard/entity hints; handler authorization requires reviewed contract tests.",
@@ -1225,7 +1225,7 @@
     "method": "POST",
     "path": "/api/track/exchange",
     "source": "src/app/api/track/exchange/route.ts",
-    "sourceSHA": "dddf8cd00a19cf7d562f503549f4c000109057d1",
+    "sourceSHA": "fc4a959e87e7c3750a0546f9d4fa10e31ac3b63c",
     "guards": [],
     "entities": [
       "trackLink"
@@ -1244,7 +1244,7 @@
     "method": "POST",
     "path": "/api/track/reply",
     "source": "src/app/api/track/reply/route.ts",
-    "sourceSHA": "dddf8cd00a19cf7d562f503549f4c000109057d1",
+    "sourceSHA": "fc4a959e87e7c3750a0546f9d4fa10e31ac3b63c",
     "guards": [],
     "entities": [],
     "inventoryNote": "File-level guard/entity hints; handler authorization requires reviewed contract tests.",
@@ -1263,7 +1263,7 @@
     "source": "src/app/api/auth/[...nextauth]/route.ts",
     "guards": [],
     "entities": [],
-    "sourceSHA": "dddf8cd00a19cf7d562f503549f4c000109057d1",
+    "sourceSHA": "fc4a959e87e7c3750a0546f9d4fa10e31ac3b63c",
     "handlerKind": "auth-adapter-export",
     "inventoryNote": "Separate from the 82 explicitly declared HTTP handlers; preserve legacy authentication adapter contract."
   },
@@ -1274,7 +1274,7 @@
     "source": "src/app/api/auth/[...nextauth]/route.ts",
     "guards": [],
     "entities": [],
-    "sourceSHA": "dddf8cd00a19cf7d562f503549f4c000109057d1",
+    "sourceSHA": "fc4a959e87e7c3750a0546f9d4fa10e31ac3b63c",
     "handlerKind": "auth-adapter-export",
     "inventoryNote": "Separate from the 82 explicitly declared HTTP handlers; preserve legacy authentication adapter contract."
   }

@@ -13,7 +13,7 @@ test('OpenAPI declares every inventoried legacy handler and its versioned mappin
     expected.push({method:row.method.toLowerCase(),path:path==='/api/health/ready'?'/api/v1/health':path.replace('/api/','/api/v1/')});
   }
   for(const prefix of ['/api/auth','/api/v1/auth']){
-    for(const path of ['providers','csrf','session'])expected.push({method:'get',path:`${prefix}/${path}`});
+    for(const path of ['providers','csrf','session','signin','signin/credentials','signout','error','verify-request'])expected.push({method:'get',path:`${prefix}/${path}`});
     for(const path of ['callback/credentials','signout'])expected.push({method:'post',path:`${prefix}/${path}`});
   }
   for(const {method,path} of expected)expect(document.paths[path]?.[method],`${method.toUpperCase()} ${path}`).toBeTruthy();
