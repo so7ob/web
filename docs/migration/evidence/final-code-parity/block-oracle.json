@@ -1,0 +1,14 @@
+{
+  "sourceSHA": "dddf8cd00a19cf7d562f503549f4c000109057d1",
+  "inputs": {
+    "lib/blocks/types.ts": "a06b4e3cfa419414b13989725f9e07a6ae847318457f404718e8c0f649133a25",
+    "lib/validation.ts": "10c2cf2db19a906d6818019d6a869f2c9c3c1c58ba4b63831b94d5588fdcca92",
+    "components/admin/editor/prop-fields.ts": "0b6534b677018ae377abc06b236fb5585f4ea4a7fa0f2f188a7aa8155b1308ab"
+  },
+  "fixture": "tests/fixtures/source-block-contracts.json",
+  "cases": 1550,
+  "generator": "tools/migration/generate-block-contracts.mjs",
+  "targetTest": "packages/contracts/src/source-block-parity.test.ts",
+  "fixtureSHA256": "11a9e7cb8bc67f89229d9a674679e276420d835230f5b736f3c21e06397ac3f7",
+  "maximumDocumentOracle": "docs/migration/evidence/final-code-parity/legacy-size-ranking.json"
+}

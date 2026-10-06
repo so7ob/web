@@ -1,14 +1,20 @@
 # Independent Website migration
 
+## الحالة الحالية — قبول نقل الكود
+
+[سجل القبول الحالي](final-code-parity.md) و[مصفوفة الوظائف](feature-parity.csv) هما مرجع الحالة بعد مراحل التنفيذ أدناه. حصر المستخدم المهمة في نقل الكود والوظائف، واستبعد التشغيل الفعلي صراحةً؛ النشر وبيانات الإنتاج ليسا شرطًا لإغلاق هذا النطاق. تاريخ كل تشغيل ونتيجته في evidence/final-code-parity/checks.json وطلب السحب.
+
+## السجل التاريخي للمراحل
+
 Tracking: [parent #1](https://github.com/so7ob/web/issues/1). Phase issues are recorded in `issues.json`.
 
-Current source refresh: Website/main `dddf8cd00a19cf7d562f503549f4c000109057d1`, directly verified on 2026-10-04. [Refresh inventory, isolated reference and inherited migration failure](source-refresh.md). The new source has substantial changes not yet ported; historical counts and evidence below do not establish parity with it.
+Current source refresh: Website/main `dddf8cd00a19cf7d562f503549f4c000109057d1`, directly reverified on 2026-10-06. [Refresh inventory, isolated reference and inherited migration failure](source-refresh.md). The refresh introduced substantial changes subsequently implemented; current acceptance is recorded in final-code-parity.md. Historical counts and pending notes below belong to their original checkpoints.
 
 Source: Website/main `5321b7fd11db421c83290b262f276811e5f04e5f`. Technical reference: Rakim/main `cae0950bac45d97971bd3766c8c34f9869a856af`; develop `8b50b222185c60d9d06af8417f77765dada1bb8b` was inspected separately, not imported.
 
 `import-manifest.json` records source paths, SHA-256, destination mappings and exclusions. Imported source instructions, README, original ignore rules and CI/deployment configuration are retained under `source/`; destination instructions take precedence. Old audit reports concern earlier SHAs and are historical, not evidence for this migration.
 
-## Gates and status
+## Historical gates and status (original checkpoints)
 
 - A: source imported; isolated build, 133 tests, 40 browser captures and repeated read-performance baseline passed. Full behavior/SQL profiling remains required for final parity.
 - B: target workspaces/Node/Nest/Vite SSR/MariaDB foundation implemented; [PR #9](https://github.com/so7ob/web/pull/9).

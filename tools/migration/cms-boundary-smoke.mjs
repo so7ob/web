@@ -1,5 +1,6 @@
 // Real HTTP/MariaDB byte-boundary acceptance. Only owned synthetic rows and loopback are used.
 import assert from 'node:assert/strict';
+import { readFileSync } from 'node:fs';
 import { randomBytes, createHash } from 'node:crypto';
 import { spawn } from 'node:child_process';
 import { once } from 'node:events';
@@ -8,7 +9,8 @@ import http from 'node:http';
 import { setTimeout as delay } from 'node:timers/promises';
 import bcrypt from 'bcryptjs';
 import { database, assertSchema, AuthenticationService, PageAdministrationService, sha256 } from '@so7ob/server';
-import { validateContent, validateBlocks } from '@so7ob/contracts';
+import { validateContent, validateBlocks, blockSchemas } from '@so7ob/contracts';
+import { largestLegacyDocument } from './max-legacy-document.mjs';
 import { contentAtBytes } from './cms-boundary-fixture.mjs';
 assert(/^so7ob_[a-z0-9_]+_test$/.test(process.env.DATABASE_NAME ?? ''));
 assert(['127.0.0.1','::1'].includes(process.env.DATABASE_HOST));
@@ -58,9 +60,11 @@ try{
  const before=await state(id);const tooLarge=await send(route,{draftBlocksAr:'[]'},{totalBytes:limit+1});assert.equal(tooLarge.status,413);assert.deepEqual(await state(id),before);
  const anonymous=await send(route,{draftBlocksAr:'[]'},{totalBytes:limit+1,authenticated:false});assert.equal(anonymous.status,401);assert.deepEqual(await state(id),before);
  measurements.push({transportBytes:limit,accepted:full.status,overByOne:tooLarge.status,anonymous:anonymous.status,storedBytes:Number(before.bytes),paddingIsNotStorageEvidence:true});
- // Max columns/paragraph counts and lengths in 60 legacy blocks. Escaped control text
- // exercises SQL escaping/packet overhead; unlike padding it persists tens of MiB.
- let raw=JSON.stringify(Array.from({length:60},(_,i)=>({id:'legacy'+i,type:'columns',props:{columns:Array.from({length:4},()=>({heading:'ع'.repeat(200),paragraphs:Array(10).fill('\u0001'.repeat(4000))}))}})));
+ // Exhaust all 27 finite schema shapes, then fill the 60-block document with the largest.
+ const maximum=largestLegacyDocument(blockSchemas);
+ const reference=JSON.parse(readFileSync('docs/migration/evidence/final-code-parity/legacy-size-ranking.json','utf8'));
+ assert.deepEqual(maximum.ranking,reference.ranking);
+ let raw=JSON.stringify(maximum.blocks);maximum.blocks=null;assert.equal(Buffer.byteLength(raw),reference.bytes);
  let normalized=validateBlocks(raw);assert(normalized.ok);const canonical=JSON.stringify(normalized.blocks),bytes=Buffer.byteLength(canonical),hash=createHash('sha256').update(canonical).digest('hex');normalized=null;
  const big=await send(route,{draftBlocksAr:raw,draftBlocksEn:raw});assert.equal(big.status,200);raw=null;
  const saved=await state(id);assert.equal(Number(saved.bytes),bytes);assert.equal(saved.hash,hash);
@@ -68,7 +72,7 @@ try{
  const [live]=await db.query('SELECT OCTET_LENGTH(publishedBlocksAr) bytes,SHA2(publishedBlocksAr,256) hash,SHA2(publishedBlocksEn,256) enHash,OCTET_LENGTH(publishedBlocksEn) enBytes FROM Page WHERE id=?',[id]);assert.equal(Number(live.bytes),bytes);assert.equal(live.hash,hash);assert.equal(Number(live.enBytes),bytes);assert.equal(live.enHash,hash);
  const [version]=await db.query("SELECT OCTET_LENGTH(blocks) bytes,SHA2(blocks,256) hash FROM PageVersion WHERE pageId=? AND locale='ar' ORDER BY version DESC LIMIT 1",[id]);assert.equal(Number(version.bytes),bytes);assert.equal(version.hash,hash);
  const [enVersion]=await db.query("SELECT SHA2(blocks,256) hash FROM PageVersion WHERE pageId=? AND locale='en' ORDER BY version DESC LIMIT 1",[id]);assert.equal(enVersion.hash,hash);
- measurements.push({legacyStoredBytes:bytes,localeCount:2,totalDocumentBytes:bytes*2,hash,publishAndVersionMatch:true,allBlockKindsMaximized:false});
+ measurements.push({legacyStoredBytes:bytes,localeCount:2,totalDocumentBytes:bytes*2,hash,publishAndVersionMatch:true,allBlockKindsMaximized:true,largestType:maximum.largestType,schemaRanking:maximum.ranking});
  console.log(JSON.stringify({passed:true,sourceSHA:'dddf8cd00a19cf7d562f503549f4c000109057d1',packetBytes:Number(packet.bytes),measurements}));
 }finally{
  if(child&&child.exitCode===null){const exited=once(child,'exit');child.kill('SIGTERM');const timer=setTimeout(()=>child.kill('SIGKILL'),5000);await exited;clearTimeout(timer);}
