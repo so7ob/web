@@ -1,0 +1,54 @@
+{
+  "recordedAt": "2026-10-06T16:54:27.240501+00:00",
+  "unitCases": 383,
+  "fullBrowserCases": 104,
+  "additionalInventoryCases": 2,
+  "checks": {
+    "lint": {
+      "result": "passed",
+      "log": ".migration/independence-lint.log",
+      "sha256": "f53c816cc6f6619121d1bc9841ddb6af506e161209ac8f3479bed133f4eea735"
+    },
+    "typecheck": {
+      "result": "passed",
+      "log": ".migration/independence-typecheck.log",
+      "sha256": "515fc5287ba273cdd4b202cc41ae1de65500d3c7625871252a3c953d11cf9edb"
+    },
+    "build": {
+      "result": "passed",
+      "log": ".migration/independence-build.log",
+      "sha256": "37ef56e8b7641f8315bf323c94f913ce8bbcc533dc75077fad933c492e92f0c5"
+    },
+    "unit": {
+      "result": "passed",
+      "log": ".migration/independence-unit.log",
+      "sha256": "fdcf3006c7a8769789e8bc7111a6a291b943a8e8aebc7004d0c78a405f2f9518"
+    },
+    "e2e": {
+      "result": "passed",
+      "log": ".migration/independence-e2e.log",
+      "sha256": "24f2b44e8cf36008cf68c9f171e1e630fd46aef54bf58b9017397cfe8ba0c0ea"
+    },
+    "api-inventory": {
+      "result": "passed",
+      "log": ".migration/independence-api-inventory.log",
+      "sha256": "9c7fa7b6318890c0954ced6191b8100f90039b4fbd0ceef0ed13349b28a8b9c9"
+    },
+    "infra": {
+      "result": "passed",
+      "log": ".migration/independence-infra.log",
+      "sha256": "671edfb4932c93bb758272bf89ae7840f1cb89724389a8d2bced2e6a42c8d548"
+    },
+    "restore": {
+      "result": "passed",
+      "log": ".migration/independence-restore.log",
+      "sha256": "dba9cdcffe0f02f0dfa3b55e621b69287da8f1fe3d97106fe29a5dc0e586e774"
+    },
+    "boundary": {
+      "result": "passed",
+      "log": ".migration/independence-boundary.log",
+      "sha256": "b82de9815a9f330e65eaac868614285a6f9aa29509994a838c0d71dc1e8a25d0"
+    }
+  },
+  "ci": "Pending exact committed head; see PR"
+}

@@ -4,6 +4,8 @@ import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { DatabaseSync } from 'node:sqlite';
 import { compareSync } from 'bcryptjs';
+import type { AuthUser } from '@so7ob/contracts';
+import { AccountService } from '../business/account.js';
 import { createDataSource } from '../database/data-source.js';
 import { schema, identifier as q } from '../database/schema.js';
 import { syntheticSnapshot, fixtureInstant } from './fixture.js';
@@ -115,6 +117,17 @@ describe('SQLite + files to real MariaDB', { concurrent: false }, () => {
     expect(readFileSync(join(targetUploads, 'attachment.pdf'))).toEqual(readFileSync(join(fixture.sourceUploads, 'attachment.pdf')));
     const source = readSnapshot(fixture.sqlite, fixture.sourceUploads);
     for (const table of Object.keys(schema)) expect(Number((await db.query(`SELECT COUNT(*) AS n FROM ${q(table)}`))[0].n)).toBe(source.rows[table].length);
+  });
+  it('reads transferred UTF-8, NULL and JSON through product services without exposing credentials or another account draft', async () => {
+    const actor: AuthUser = { id: 'User_synthetic', email: 'synthetic@example.invalid', name: 'Synthetic', roleKey: 'Role_synthetic', status: 'active', locale: 'ar', emailVerified: true, permissions: [] };
+    const account = new AccountService(db);
+    const profile = await account.profile(actor);
+    expect(profile.user).toMatchObject({ id: actor.id, email: actor.email, phone: null, locale: 'ar' });
+    expect(profile.user).not.toHaveProperty('passwordHash');
+    expect(profile.user).not.toHaveProperty('sessionsRevokedAt');
+    expect(await account.draft(actor)).toMatchObject({ ok: true, draft: { description: 'نص 😀', extra: null } });
+    expect(await account.draft({ ...actor, id: 'not-the-imported-owner' })).toEqual({ ok: true, draft: null });
+    await expect(account.profile({ ...actor, id: 'not-the-imported-owner' })).rejects.toMatchObject({ status: 401 });
   });
   it('re-applies idempotently and detects changed destination fields and corrupt files', async () => {
     const twice = await transfer(db, { ...options, mode: 'apply' }); expect(twice.status).toBe('verified');
