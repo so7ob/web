@@ -14,6 +14,8 @@ for(const locale of ['ar','en'] as const)test(`${locale}: repeated property labe
   const tree=JSON.stringify({schemaVersion:1,blocks:[{id:'features',type:'featureGrid',props:{kicker:'',title:'Outer',columns:'3',items:[{title:'First',body:'One'},{title:'Second',body:'Two'}]}}]});
   expect((await page.request.patch('/api/admin/pages/'+id,{headers,data:{baseRevision:0,draftBlocksAr:tree,draftBlocksEn:tree}})).status()).toBe(200);
   await page.goto(`/${locale}/admin/pages/${id}/edit`,{waitUntil:'networkidle'});
+  await expect(page.getByRole('heading',{level:1,name:locale==='ar'?'خصائص':'Properties',exact:true})).toBeAttached();
+  expect(await page.locator('button h1').count()).toBe(0);
   await page.locator('[data-editor-node="features"]').locator('button[aria-label^="'+te.selectedBlock+':"]').click();
   const sheet=page.getByRole('dialog',{name:te.properties,exact:true});
   const panel=info.project.name==='mobile'?sheet:page;

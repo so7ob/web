@@ -23,3 +23,5 @@
 ## تداخل طبقة السحب
 
 التشغيل الكامل اللاحق نجح في113 حالة وفشل في رحلة النسخ الإنجليزية بعد الإفلات. أظهر trace أن طبقة DragOverlay المرئية أثناء حركة الإفلات اعترضت المؤشر، وكانت قائمة الحافظة فارغة بعد النقر. أضيف pointer-events:none إلى طبقتي السحب في اللوحة وشجرة الطبقات لأنهما تمثيل بصري لا عناصر تفاعلية. يثبت الاختبار الآن الخاصية المحسوبة أثناء السحب، ثم يواصل النسخ واللصق المعتادين دون sleep أو retries. مقتطف trace محفوظ دون بيانات خاصة. لا يُلغى الفشل المحلي بنتيجة CI على الرأس السابق.
+
+Review follow-up: the page heading is now a separate visually hidden sibling of the settings button. Button content retains its original styled span. Browser journeys assert a named level-one heading outside all buttons before keyboard/property and full-page axe checks, in both languages and widths. This avoids native-button accessibility-tree flattening.

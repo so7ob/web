@@ -1220,6 +1220,7 @@ export function PageEditor({ me, locale, pageId }: PageEditorProps) {
   return (
     <TooltipProvider delayDuration={300}>
       <div className="flex flex-col gap-3">
+        <h1 className="sr-only">{pageTitle}</h1>
         {/* ——— الشريط العلوي ——— */}
         <div className="flex flex-wrap items-center gap-2 rounded-2xl border border-border bg-white p-2 shadow-sm">
           <Button
@@ -1241,7 +1242,7 @@ export function PageEditor({ me, locale, pageId }: PageEditorProps) {
             className="flex min-h-10 max-w-56 cursor-pointer items-center gap-2 rounded-xl px-3 text-start transition-colors hover:bg-muted/60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
             title={te.pageSettings}
           >
-            <h1 className="truncate text-sm font-bold text-navy">{pageTitle}</h1>
+            <span className="truncate text-sm font-bold text-navy">{pageTitle}</span>
             <Pencil className="size-3.5 shrink-0 text-muted-foreground" aria-hidden="true" />
             <ChevronDown className="size-3.5 shrink-0 text-muted-foreground" aria-hidden="true" />
           </button>
