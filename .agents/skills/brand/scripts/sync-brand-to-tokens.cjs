@@ -17,7 +17,7 @@ const { execFileSync } = require('child_process');
 const BRAND_GUIDELINES = 'docs/brand-guidelines.md';
 const DESIGN_TOKENS_JSON = 'assets/design-tokens.json';
 const DESIGN_TOKENS_CSS = 'assets/design-tokens.css';
-const GENERATE_TOKENS_SCRIPT = '.claude/skills/design-system/scripts/generate-tokens.cjs';
+const GENERATE_TOKENS_SCRIPT = path.resolve(__dirname, '../../design-system/scripts/generate-tokens.cjs');
 
 /**
  * Extract color info from brand guidelines markdown
@@ -238,8 +238,16 @@ function main() {
       });
       console.log(`✅ Regenerated: ${DESIGN_TOKENS_CSS}`);
     } catch (e) {
-      console.error('⚠️  Failed to regenerate CSS:', e.message);
+      console.error('Failed to regenerate CSS:', e.message);
+      process.exitCode = 1;
+      return;
     }
+  }
+
+  if (!fs.existsSync(generateScript)) {
+    console.error('Missing design-system token generator:', generateScript);
+    process.exitCode = 1;
+    return;
   }
 
   console.log('\n✨ Brand sync complete!');

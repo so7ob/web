@@ -50,3 +50,6 @@ def test_sync_parses_bundled_starter_template(tmp_path):
     assert primitive["primary"]["500"]["$value"] == "#2563EB"
     assert primitive["secondary"]["500"]["$value"] == "#8B5CF6"
     assert primitive["accent"]["500"]["$value"] == "#10B981"
+
+    css = (tmp_path / "assets" / "design-tokens.css").read_text()
+    assert "--primitive-color-primary-500: #2563EB" in css
