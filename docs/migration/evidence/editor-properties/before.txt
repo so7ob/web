@@ -1,0 +1,206 @@
+
+ RUN  v5.0.3 /root/So7ob/web
+
+ ❯ apps/web/src/components/admin/editor/props-form.test.tsx (64 tests | 22 failed) 974ms
+   ❯ property controls ar (32)
+     × featureGrid: every rendered control has a unique DOM identity 29ms
+     × worksShowcase: every rendered control has a unique DOM identity 27ms
+     × processSteps: every rendered control has a unique DOM identity 8ms
+     × visionMission: every rendered control has a unique DOM identity 7ms
+     × numberedValues: every rendered control has a unique DOM identity 7ms
+     × numberedList: every rendered control has a unique DOM identity 6ms
+     × navCtaBanner: every rendered control has a unique DOM identity 15ms
+     × servicesDetail: every rendered control has a unique DOM identity 24ms
+     × worksFull: every rendered control has a unique DOM identity 23ms
+     × processFull: every rendered control has a unique DOM identity 9ms
+     × clicking the second nested label focuses and edits only its own item 147ms
+   ❯ property controls en (32)
+     × featureGrid: every rendered control has a unique DOM identity 13ms
+     × worksShowcase: every rendered control has a unique DOM identity 16ms
+     × processSteps: every rendered control has a unique DOM identity 5ms
+     × visionMission: every rendered control has a unique DOM identity 4ms
+     × numberedValues: every rendered control has a unique DOM identity 5ms
+     × numberedList: every rendered control has a unique DOM identity 3ms
+     × navCtaBanner: every rendered control has a unique DOM identity 10ms
+     × servicesDetail: every rendered control has a unique DOM identity 13ms
+     × worksFull: every rendered control has a unique DOM identity 13ms
+     × processFull: every rendered control has a unique DOM identity 5ms
+     × clicking the second nested label focuses and edits only its own item 39ms
+
+⎯⎯⎯⎯⎯⎯ Failed Tests 22 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  apps/web/src/components/admin/editor/props-form.test.tsx > property controls ar > featureGrid: every rendered control has a unique DOM identity
+ FAIL  apps/web/src/components/admin/editor/props-form.test.tsx > property controls ar > worksShowcase: every rendered control has a unique DOM identity
+ FAIL  apps/web/src/components/admin/editor/props-form.test.tsx > property controls ar > processSteps: every rendered control has a unique DOM identity
+ FAIL  apps/web/src/components/admin/editor/props-form.test.tsx > property controls ar > numberedValues: every rendered control has a unique DOM identity
+ FAIL  apps/web/src/components/admin/editor/props-form.test.tsx > property controls ar > numberedList: every rendered control has a unique DOM identity
+ FAIL  apps/web/src/components/admin/editor/props-form.test.tsx > property controls en > featureGrid: every rendered control has a unique DOM identity
+ FAIL  apps/web/src/components/admin/editor/props-form.test.tsx > property controls en > worksShowcase: every rendered control has a unique DOM identity
+ FAIL  apps/web/src/components/admin/editor/props-form.test.tsx > property controls en > processSteps: every rendered control has a unique DOM identity
+ FAIL  apps/web/src/components/admin/editor/props-form.test.tsx > property controls en > numberedValues: every rendered control has a unique DOM identity
+ FAIL  apps/web/src/components/admin/editor/props-form.test.tsx > property controls en > numberedList: every rendered control has a unique DOM identity
+AssertionError: expected [ 'pf-title' ] to deeply equal []
+
+- Expected
++ Received
+
+- []
++ [
++   "pf-title",
++ ]
+
+ ❯ apps/web/src/components/admin/editor/props-form.test.tsx:14:51
+     12|   const {container}=render(<PropFieldsForm fields={PROP_FIELDS[type]} …
+     13|   const ids=Array.from(container.querySelectorAll('[id]')).map(e=>e.id…
+     14|   expect(ids.filter((id,i)=>ids.indexOf(id)!==i)).toEqual([]);
+       |                                                   ^
+     15|  });
+     16|  it('clicking the second nested label focuses and edits only its own i…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/22]⎯
+
+ FAIL  apps/web/src/components/admin/editor/props-form.test.tsx > property controls ar > visionMission: every rendered control has a unique DOM identity
+ FAIL  apps/web/src/components/admin/editor/props-form.test.tsx > property controls en > visionMission: every rendered control has a unique DOM identity
+AssertionError: expected [ 'pf-title', 'pf-body' ] to deeply equal []
+
+- Expected
++ Received
+
+- []
++ [
++   "pf-title",
++   "pf-body",
++ ]
+
+ ❯ apps/web/src/components/admin/editor/props-form.test.tsx:14:51
+     12|   const {container}=render(<PropFieldsForm fields={PROP_FIELDS[type]} …
+     13|   const ids=Array.from(container.querySelectorAll('[id]')).map(e=>e.id…
+     14|   expect(ids.filter((id,i)=>ids.indexOf(id)!==i)).toEqual([]);
+       |                                                   ^
+     15|  });
+     16|  it('clicking the second nested label focuses and edits only its own i…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/22]⎯
+
+ FAIL  apps/web/src/components/admin/editor/props-form.test.tsx > property controls ar > navCtaBanner: every rendered control has a unique DOM identity
+ FAIL  apps/web/src/components/admin/editor/props-form.test.tsx > property controls en > navCtaBanner: every rendered control has a unique DOM identity
+AssertionError: expected [ 'pf-label' ] to deeply equal []
+
+- Expected
++ Received
+
+- []
++ [
++   "pf-label",
++ ]
+
+ ❯ apps/web/src/components/admin/editor/props-form.test.tsx:14:51
+     12|   const {container}=render(<PropFieldsForm fields={PROP_FIELDS[type]} …
+     13|   const ids=Array.from(container.querySelectorAll('[id]')).map(e=>e.id…
+     14|   expect(ids.filter((id,i)=>ids.indexOf(id)!==i)).toEqual([]);
+       |                                                   ^
+     15|  });
+     16|  it('clicking the second nested label focuses and edits only its own i…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/22]⎯
+
+ FAIL  apps/web/src/components/admin/editor/props-form.test.tsx > property controls ar > servicesDetail: every rendered control has a unique DOM identity
+ FAIL  apps/web/src/components/admin/editor/props-form.test.tsx > property controls en > servicesDetail: every rendered control has a unique DOM identity
+AssertionError: expected [ 'pf-forWhom' ] to deeply equal []
+
+- Expected
++ Received
+
+- []
++ [
++   "pf-forWhom",
++ ]
+
+ ❯ apps/web/src/components/admin/editor/props-form.test.tsx:14:51
+     12|   const {container}=render(<PropFieldsForm fields={PROP_FIELDS[type]} …
+     13|   const ids=Array.from(container.querySelectorAll('[id]')).map(e=>e.id…
+     14|   expect(ids.filter((id,i)=>ids.indexOf(id)!==i)).toEqual([]);
+       |                                                   ^
+     15|  });
+     16|  it('clicking the second nested label focuses and edits only its own i…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/22]⎯
+
+ FAIL  apps/web/src/components/admin/editor/props-form.test.tsx > property controls ar > worksFull: every rendered control has a unique DOM identity
+ FAIL  apps/web/src/components/admin/editor/props-form.test.tsx > property controls en > worksFull: every rendered control has a unique DOM identity
+AssertionError: expected [ 'pf-problem', 'pf-users' ] to deeply equal []
+
+- Expected
++ Received
+
+- []
++ [
++   "pf-problem",
++   "pf-users",
++ ]
+
+ ❯ apps/web/src/components/admin/editor/props-form.test.tsx:14:51
+     12|   const {container}=render(<PropFieldsForm fields={PROP_FIELDS[type]} …
+     13|   const ids=Array.from(container.querySelectorAll('[id]')).map(e=>e.id…
+     14|   expect(ids.filter((id,i)=>ids.indexOf(id)!==i)).toEqual([]);
+       |                                                   ^
+     15|  });
+     16|  it('clicking the second nested label focuses and edits only its own i…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/22]⎯
+
+ FAIL  apps/web/src/components/admin/editor/props-form.test.tsx > property controls ar > processFull: every rendered control has a unique DOM identity
+ FAIL  apps/web/src/components/admin/editor/props-form.test.tsx > property controls en > processFull: every rendered control has a unique DOM identity
+AssertionError: expected [ 'pf-clientRole' ] to deeply equal []
+
+- Expected
++ Received
+
+- []
++ [
++   "pf-clientRole",
++ ]
+
+ ❯ apps/web/src/components/admin/editor/props-form.test.tsx:14:51
+     12|   const {container}=render(<PropFieldsForm fields={PROP_FIELDS[type]} …
+     13|   const ids=Array.from(container.querySelectorAll('[id]')).map(e=>e.id…
+     14|   expect(ids.filter((id,i)=>ids.indexOf(id)!==i)).toEqual([]);
+       |                                                   ^
+     15|  });
+     16|  it('clicking the second nested label focuses and edits only its own i…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/22]⎯
+
+ FAIL  apps/web/src/components/admin/editor/props-form.test.tsx > property controls ar > clicking the second nested label focuses and edits only its own item
+ FAIL  apps/web/src/components/admin/editor/props-form.test.tsx > property controls en > clicking the second nested label focuses and edits only its own item
+Error: expect(element).toHaveFocus()
+
+Expected element with focus:
+  <input
+  class="file:text-foreground placeholder:text-muted-foreground selection:bg-primary selection:text-primary-foreground dark:bg-input/30 border-input flex h-9 w-full min-w-0 rounded-md border bg-transparent px-3 py-1 text-base shadow-xs transition-[color,box-shadow] outline-none file:inline-flex file:h-7 file:border-0 file:bg-transparent file:text-sm file:font-medium disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 md:text-sm focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive min-h-9"
+  data-slot="input"
+  id="pf-title"
+  value="Second"
+/>
+Received element with focus:
+  <input
+  class="file:text-foreground placeholder:text-muted-foreground selection:bg-primary selection:text-primary-foreground dark:bg-input/30 border-input flex h-9 w-full min-w-0 rounded-md border bg-transparent px-3 py-1 text-base shadow-xs transition-[color,box-shadow] outline-none file:inline-flex file:h-7 file:border-0 file:bg-transparent file:text-sm file:font-medium disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 md:text-sm focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive min-h-9"
+  data-slot="input"
+  id="pf-title"
+  value="Outer"
+/>
+ ❯ apps/web/src/components/admin/editor/props-form.test.tsx:22:42
+     20|   const target=screen.getByDisplayValue('Second');
+     21|   const label=target.parentElement!.querySelector('label')!;
+     22|   await user.click(label);expect(target).toHaveFocus();
+       |                                          ^
+     23|   await user.keyboard('{Control>}a{/Control}Changed');
+     24|   const result=JSON.parse(screen.getByTestId('values').textContent!);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/22]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  22 failed | 42 passed (64)
+   Start at  20:21:21
+   Duration  4.96s (import 54%, tests 20%, transform 12%, environment 12%, setup 1%)

@@ -1,0 +1,32 @@
+{
+  "unitCases": 447,
+  "focusedPropertyCases": 64,
+  "checks": {
+    "unit": {
+      "result": "passed",
+      "log": ".migration/editor-properties-unit.log",
+      "sha256": "d3474a59edeb236a505152cdf16bcf78d7172ffa4378ab183ac084bfcf3112c1"
+    },
+    "lint": {
+      "result": "passed",
+      "log": ".migration/editor-properties-lint.log",
+      "sha256": "f53c816cc6f6619121d1bc9841ddb6af506e161209ac8f3479bed133f4eea735"
+    },
+    "typecheck": {
+      "result": "passed",
+      "log": ".migration/editor-properties-typecheck.log",
+      "sha256": "515fc5287ba273cdd4b202cc41ae1de65500d3c7625871252a3c953d11cf9edb"
+    },
+    "build": {
+      "result": "passed",
+      "log": ".migration/editor-properties-build.log",
+      "sha256": "3467b6636af10804e83cf03762fb33540d63b653460c850672ca4227a2154981"
+    },
+    "infra": {
+      "result": "passed",
+      "log": ".migration/editor-properties-infra.log",
+      "sha256": "d51e2246fcb48cde4824f9a5df7c21a49a81c70ce8567ff0facdddd2b34e9df8"
+    }
+  },
+  "finalBrowserAndCI": "Final pointer-overlay fix is undergoing the full browser suite and exact-head CI; final result is recorded on the PR."
+}

@@ -1,0 +1,18 @@
+{
+  "attempts": [
+    {
+      "log": ".migration/editor-properties-e2e-fixture-failure.log",
+      "sha256": "29c07180f8ea92fc38ed317aa74bb0065d9dcab691105d7f116c91c9c7028249"
+    },
+    {
+      "log": ".migration/editor-properties-e2e-axe-before.log",
+      "sha256": "bde1ca6293dc093faa5b65d6124b646def16b0034beed8fbcea23ef153c587f0"
+    }
+  ],
+  "fixtureFailure": "400 from missing required kicker; corrected fixture only",
+  "axeFailure": [
+    "landmark-unique",
+    "page-has-heading-one"
+  ],
+  "axeFix": "Distinct localized complementary labels and h1 page title; no exclusions or rule suppression"
+}

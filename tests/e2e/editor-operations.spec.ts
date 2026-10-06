@@ -31,6 +31,7 @@ for(const locale of ['ar','en'] as const)test(`${locale}: inline editing, keyboa
   // Sort using dnd-kit's actual keyboard sensor and verify stored sibling order.
   const handle=alpha.getByRole('button',{name:te.blocks,exact:true});await handle.focus();await page.keyboard.press('Space');
   await expect(handle).toHaveAttribute('aria-pressed','true');
+  await expect(page.locator('[data-editor-drag-overlay="canvas"]')).toHaveCSS('pointer-events','none');
   await expect(page.locator('[id^=DndLiveRegion]')).toContainText('over droppable area alpha');
   await page.keyboard.press('ArrowDown');
   await expect(page.locator('[id^=DndLiveRegion]')).toContainText('over droppable area beta');

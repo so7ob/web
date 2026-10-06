@@ -264,9 +264,10 @@ export function LayerTree({
             </ul>
           </div>
 
-          <DragOverlay>
+          <DragOverlay style={{ pointerEvents: "none" }}>
             {draggingNode ? (
               <div
+                data-editor-drag-overlay="layers"
                 dir={uiLocale === "ar" ? "rtl" : "ltr"}
                 className="flex items-center gap-2 rounded-xl border border-brand bg-white px-3 py-1.5 shadow-lg"
               >

@@ -6,7 +6,7 @@
  * قابلة للإضافة/الحذف/الترتيب، مجموعات مضمنة، وصفوف جدول.
  * كل تغيير يبني كائن props جديدًا كاملًا (تحديث غير قابل للتغيير) ويرفعه للأعلى.
  */
-import { useState } from "react";
+import { useId, useState } from "react";
 import { ArrowDown, ArrowUp, Plus, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -109,26 +109,27 @@ interface FieldRowProps {
 }
 
 function FieldRow({ field, raw, onSet, locale, me, te }: FieldRowProps) {
+  const inputId = useId();
   const label = bi(field.label, locale);
   const optionalLabel = locale === "en" ? siteEn.form.optional : siteAr.form.optional;
 
   return (
     <div className="space-y-1.5">
-      <Label htmlFor={`pf-${field.key}`} className="text-xs font-semibold text-navy">
+      <Label htmlFor={inputId} className="text-xs font-semibold text-navy">
         {label}
         {field.optional && <span className="ms-1 font-normal text-muted-foreground">({optionalLabel})</span>}
       </Label>
-      <FieldControl field={field} raw={raw} onSet={onSet} locale={locale} me={me} te={te} />
+      <FieldControl inputId={inputId} field={field} raw={raw} onSet={onSet} locale={locale} me={me} te={te} />
     </div>
   );
 }
 
-function FieldControl({ field, raw, onSet, locale, me, te }: FieldRowProps) {
+function FieldControl({ field, raw, onSet, locale, me, te, inputId }: FieldRowProps & { inputId: string }) {
   switch (field.type) {
     case "text":
       return (
         <Input
-          id={`pf-${field.key}`}
+          id={inputId}
           value={asString(raw)}
           onChange={(e) => onSet(e.target.value)}
           placeholder={field.placeholder}
@@ -138,7 +139,7 @@ function FieldControl({ field, raw, onSet, locale, me, te }: FieldRowProps) {
     case "textarea":
       return (
         <Textarea
-          id={`pf-${field.key}`}
+          id={inputId}
           value={asString(raw)}
           onChange={(e) => onSet(e.target.value)}
           rows={3}
@@ -147,17 +148,17 @@ function FieldControl({ field, raw, onSet, locale, me, te }: FieldRowProps) {
         />
       );
     case "number":
-      return <NumberInput raw={raw} onSet={onSet} id={`pf-${field.key}`} />;
+      return <NumberInput raw={raw} onSet={onSet} id={inputId} />;
     case "select":
-      return <SelectField field={field} raw={raw} onSet={onSet} locale={locale} />;
+      return <SelectField inputId={inputId} field={field} raw={raw} onSet={onSet} locale={locale} />;
     case "switch":
       return (
         <div className="flex items-center gap-2 pt-1">
-          <Switch id={`pf-${field.key}`} checked={asBool(raw)} onCheckedChange={(v) => onSet(v)} />
+          <Switch id={inputId} checked={asBool(raw)} onCheckedChange={(v) => onSet(v)} />
         </div>
       );
     case "media":
-      return <MediaInput raw={asString(raw)} onSet={onSet} locale={locale} me={me} id={`pf-${field.key}`} />;
+      return <MediaInput raw={asString(raw)} onSet={onSet} locale={locale} me={me} id={inputId} />;
     case "stringlist":
       return <StringListField raw={asArray(raw)} onSet={onSet} te={te} locale={locale} />;
     case "array":
@@ -189,12 +190,12 @@ function NumberInput({ raw, onSet, id }: { raw: unknown; onSet: (v: unknown) => 
 
 // ——— اختيار ———
 
-function SelectField({ field, raw, onSet, locale }: { field: FieldDef; raw: unknown; onSet: (v: unknown) => void; locale: Locale }) {
+function SelectField({ field, raw, onSet, locale, inputId }: { inputId: string; field: FieldDef; raw: unknown; onSet: (v: unknown) => void; locale: Locale }) {
   const rawValue = field.numeric ? String(raw ?? "") : asString(raw);
   const current = rawValue || (field.optional ? "" : field.options?.[0]?.value ?? "");
   return (
     <Select value={current || "__empty__"} onValueChange={(v) => onSet(v === "__empty__" ? undefined : field.numeric ? Number(v) : v)}>
-      <SelectTrigger id={`pf-${field.key}`} className="min-h-9 w-full">
+      <SelectTrigger id={inputId} className="min-h-9 w-full">
         <SelectValue placeholder="—" />
       </SelectTrigger>
       <SelectContent>
