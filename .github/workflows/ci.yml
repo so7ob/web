@@ -59,6 +59,8 @@ jobs:
         with:
           node-version: '24.21.0'
           cache: npm
+      - name: Validate bundled skill contracts offline
+        run: python3 -B -m unittest discover -s .agents/skills/ui-ux-pro-max/scripts/tests
       - run: npm install --global npm@10.8.2
       - run: npm ci
       - run: npm run test:independence
