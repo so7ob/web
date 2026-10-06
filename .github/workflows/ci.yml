@@ -61,6 +61,7 @@ jobs:
           cache: npm
       - run: npm install --global npm@10.8.2
       - run: npm ci
+      - run: npm run test:independence
       - run: npm run lint
       - run: npm run typecheck
       - run: npm run db:migrate
