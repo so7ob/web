@@ -137,10 +137,10 @@ it('a committed force-login change wins over a reply waiting behind the policy l
  try{
   await r.query('SELECT lockKey FROM OperationLock WHERE lockKey=SHA2(?,256) FOR UPDATE',['track-policy']);
   await r.query("UPDATE SiteSetting SET value='true' WHERE `key`='track.forceLogin'");
-  let settled=false;pending=svc.reply('request',id,ctx,'Reply behind changed policy').then(v=>{settled=true;return v;},e=>{settled=true;throw e;});
+  let settled=false;pending=svc.reply('request',id,ctx,'Reply behind changed policy').then(value=>{settled=true;return {status:'fulfilled',value};},reason=>{settled=true;return {status:'rejected',reason};});
   // Hold a real uncommitted policy writer. Readers may not bypass its lock.
   await new Promise(resolve=>setTimeout(resolve,30));expect(settled).toBe(false);
-  await r.commitTransaction();await expect(pending).rejects.toMatchObject({code:'policy_denied'});
+  await r.commitTransaction();await expect(pending).resolves.toMatchObject({status:'rejected',reason:{code:'policy_denied'}});
   expect(await db.query('SELECT id FROM RequestMessage WHERE requestId=?',[id])).toHaveLength(0);
  }finally{if(r.isTransactionActive)await r.rollbackTransaction();await pending?.catch(()=>{});await r.release();}
 });
