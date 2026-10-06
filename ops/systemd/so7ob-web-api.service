@@ -12,6 +12,7 @@ Environment=NODE_ENV=production
 Environment=TZ=Asia/Aden
 EnvironmentFile=/etc/so7ob-web/api.env
 ExecStartPre=/opt/node-v24.21.0/bin/node /opt/so7ob-web/current/ops/check-runtime.mjs
+ExecStartPre=/opt/node-v24.21.0/bin/node /opt/so7ob-web/current/packages/server/dist/database/cli.js check-cms
 ExecStart=/opt/node-v24.21.0/bin/node apps/api/dist/main.js
 Restart=on-failure
 RestartSec=5s

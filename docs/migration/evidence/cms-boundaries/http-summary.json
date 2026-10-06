@@ -1,0 +1,45 @@
+{
+  "passed": true,
+  "sourceSHA": "dddf8cd00a19cf7d562f503549f4c000109057d1",
+  "packetBytes": 268435456,
+  "measurements": [
+    {
+      "route": "/api/admin/pages/",
+      "canonicalBytes": 300000,
+      "overBoundary": 400,
+      "normalizationOverflow": 400,
+      "concurrentStatuses": [
+        200,
+        409
+      ],
+      "publishedAndRendered": true
+    },
+    {
+      "route": "/api/v1/admin/pages/",
+      "canonicalBytes": 300000,
+      "overBoundary": 400,
+      "normalizationOverflow": 400,
+      "concurrentStatuses": [
+        200,
+        409
+      ],
+      "publishedAndRendered": true
+    },
+    {
+      "transportBytes": 167772160,
+      "accepted": 200,
+      "overByOne": 413,
+      "anonymous": 401,
+      "storedBytes": 2,
+      "paddingIsNotStorageEvidence": true
+    },
+    {
+      "legacyStoredBytes": 57713811,
+      "localeCount": 2,
+      "totalDocumentBytes": 115427622,
+      "hash": "751497cc371c6d28b729d72a5af87a7356820a7a48e9d36207bf93bb3fb08462",
+      "publishAndVersionMatch": true,
+      "allBlockKindsMaximized": false
+    }
+  ]
+}

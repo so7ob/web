@@ -175,10 +175,15 @@ export function validateContent(input: unknown): ValidateContentResult {
   }
 
   const envelope: ContentEnvelope = { schemaVersion: 1, blocks: normalized };
+  const json = JSON.stringify(envelope);
+  // Defaults may expand a valid input beyond the reader limit; never persist unreadable content.
+  if (new TextEncoder().encode(json).byteLength > MAX_CONTENT_BYTES) {
+    return { ok: false, error: "content_too_large" };
+  }
   return {
     ok: true,
     envelope,
-    json: JSON.stringify(envelope),
+    json,
     tree: normalized,
     migrated,
   };

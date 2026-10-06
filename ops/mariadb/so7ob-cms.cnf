@@ -1,0 +1,5 @@
+# Apply only to an independently approved destination MariaDB instance, never Website/Rakim.
+# Required for the retained legacy CMS adapter, including SQL escaping and two locales.
+# This is an operator configuration template; repository tooling does not install/restart it.
+[mysqld]
+max_allowed_packet=256M
