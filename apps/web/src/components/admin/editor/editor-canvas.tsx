@@ -333,9 +333,10 @@ export function EditorCanvas({
           </div>
         </div>
 
-        <DragOverlay>
+        <DragOverlay style={{ pointerEvents: "none" }}>
           {draggingNode ? (
             <div
+              data-editor-drag-overlay="canvas"
               dir={uiLocale === "ar" ? "rtl" : "ltr"}
               className="flex items-center gap-2 rounded-xl border border-brand bg-white px-4 py-2.5 shadow-lg"
             >

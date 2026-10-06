@@ -1,0 +1,279 @@
+{
+  "scope": "Synthetic local failure; visual drag overlay intercepted pointer input after keyboard drop",
+  "events": [
+    {
+      "type": "before",
+      "callId": "call@2633",
+      "startTime": 114399.467,
+      "method": "click",
+      "params": {
+        "selector": "[data-editor-node=\"alpha\"] >> internal:role=button[name=\"Copy to clipboard\"s]",
+        "strict": true,
+        "timeout": 15000
+      }
+    },
+    {
+      "type": "log",
+      "callId": "call@2633",
+      "time": 114416.75,
+      "message": "waiting for locator('[data-editor-node=\"alpha\"]').getByRole('button', { name: 'Copy to clipboard', exact: true })"
+    },
+    {
+      "type": "log",
+      "callId": "call@2633",
+      "time": 114425.27,
+      "message": "  locator resolved to <button type=\"button\" title=\"Copy to clipboard\" aria-label=\"Copy to clipboard\" class=\"cursor-pointer flex size-8 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:bg-accent hover:text-brand-strong focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand\">\u2026</button>"
+    },
+    {
+      "type": "log",
+      "callId": "call@2633",
+      "time": 114426.929,
+      "message": "attempting click action"
+    },
+    {
+      "type": "log",
+      "callId": "call@2633",
+      "time": 114426.997,
+      "message": "  waiting for element to be visible, enabled and stable"
+    },
+    {
+      "type": "log",
+      "callId": "call@2633",
+      "time": 114460.903,
+      "message": "  element is visible, enabled and stable"
+    },
+    {
+      "type": "log",
+      "callId": "call@2633",
+      "time": 114460.917,
+      "message": "  scrolling into view if needed"
+    },
+    {
+      "type": "log",
+      "callId": "call@2633",
+      "time": 114461.738,
+      "message": "  done scrolling"
+    },
+    {
+      "type": "input",
+      "callId": "call@2633",
+      "point": {
+        "x": 767,
+        "y": 186.5
+      }
+    },
+    {
+      "type": "log",
+      "callId": "call@2633",
+      "time": 114466.807,
+      "message": "  performing click action"
+    },
+    {
+      "type": "log",
+      "callId": "call@2633",
+      "time": 114475.679,
+      "message": "  click action done"
+    },
+    {
+      "type": "log",
+      "callId": "call@2633",
+      "time": 114475.688,
+      "message": "  waiting for scheduled navigations to finish"
+    },
+    {
+      "type": "log",
+      "callId": "call@2633",
+      "time": 114476.248,
+      "message": "  navigations have finished"
+    },
+    {
+      "type": "after",
+      "callId": "call@2633",
+      "endTime": 114476.389
+    },
+    {
+      "type": "before",
+      "callId": "call@2635",
+      "startTime": 114480.701,
+      "method": "click",
+      "params": {
+        "selector": "internal:role=button[name=\"Paste from clipboard\"s]",
+        "strict": true,
+        "timeout": 15000
+      }
+    },
+    {
+      "type": "log",
+      "callId": "call@2635",
+      "time": 114483.85,
+      "message": "waiting for getByRole('button', { name: 'Paste from clipboard', exact: true })"
+    },
+    {
+      "type": "log",
+      "callId": "call@2635",
+      "time": 114492.672,
+      "message": "  locator resolved to <button type=\"button\" id=\"radix-_r_3_\" data-state=\"closed\" aria-haspopup=\"menu\" aria-expanded=\"false\" data-slot=\"tooltip-trigger\" title=\"Paste from clipboard\" aria-label=\"Paste from clipboard\" class=\"inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-all disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none focus-visible:border-ring focus-visible:rin\u2026>\u2026</button>"
+    },
+    {
+      "type": "log",
+      "callId": "call@2635",
+      "time": 114494.665,
+      "message": "attempting click action"
+    },
+    {
+      "type": "log",
+      "callId": "call@2635",
+      "time": 114494.715,
+      "message": "  waiting for element to be visible, enabled and stable"
+    },
+    {
+      "type": "log",
+      "callId": "call@2635",
+      "time": 114523.173,
+      "message": "  element is visible, enabled and stable"
+    },
+    {
+      "type": "log",
+      "callId": "call@2635",
+      "time": 114523.189,
+      "message": "  scrolling into view if needed"
+    },
+    {
+      "type": "log",
+      "callId": "call@2635",
+      "time": 114523.679,
+      "message": "  done scrolling"
+    },
+    {
+      "type": "input",
+      "callId": "call@2635",
+      "point": {
+        "x": 693,
+        "y": 167
+      }
+    },
+    {
+      "type": "log",
+      "callId": "call@2635",
+      "time": 114529.257,
+      "message": "  <div dir=\"ltr\" class=\"flex items-center gap-2 rounded-xl border border-brand bg-white px-4 py-2.5 shadow-lg\">\u2026</div> from <div class=\"grid min-h-0 gap-3 lg:grid-cols-[14rem_1fr] xl:grid-cols-[14rem_1fr_20rem]\">\u2026</div> subtree intercepts pointer events"
+    },
+    {
+      "type": "log",
+      "callId": "call@2635",
+      "time": 114529.276,
+      "message": "retrying click action"
+    },
+    {
+      "type": "log",
+      "callId": "call@2635",
+      "time": 114529.297,
+      "message": "  waiting for element to be visible, enabled and stable"
+    },
+    {
+      "type": "log",
+      "callId": "call@2635",
+      "time": 114552.886,
+      "message": "  element is visible, enabled and stable"
+    },
+    {
+      "type": "log",
+      "callId": "call@2635",
+      "time": 114552.901,
+      "message": "  scrolling into view if needed"
+    },
+    {
+      "type": "log",
+      "callId": "call@2635",
+      "time": 114554.105,
+      "message": "  done scrolling"
+    },
+    {
+      "type": "input",
+      "callId": "call@2635",
+      "point": {
+        "x": 693,
+        "y": 167
+      }
+    },
+    {
+      "type": "log",
+      "callId": "call@2635",
+      "time": 114558.257,
+      "message": "  <div dir=\"ltr\" class=\"flex items-center gap-2 rounded-xl border border-brand bg-white px-4 py-2.5 shadow-lg\">\u2026</div> from <div class=\"grid min-h-0 gap-3 lg:grid-cols-[14rem_1fr] xl:grid-cols-[14rem_1fr_20rem]\">\u2026</div> subtree intercepts pointer events"
+    },
+    {
+      "type": "log",
+      "callId": "call@2635",
+      "time": 114558.268,
+      "message": "retrying click action"
+    },
+    {
+      "type": "log",
+      "callId": "call@2635",
+      "time": 114558.27,
+      "message": "  waiting 20ms"
+    },
+    {
+      "type": "log",
+      "callId": "call@2635",
+      "time": 114579.45,
+      "message": "  waiting for element to be visible, enabled and stable"
+    },
+    {
+      "type": "log",
+      "callId": "call@2635",
+      "time": 114603.527,
+      "message": "  element is visible, enabled and stable"
+    },
+    {
+      "type": "log",
+      "callId": "call@2635",
+      "time": 114603.542,
+      "message": "  scrolling into view if needed"
+    },
+    {
+      "type": "log",
+      "callId": "call@2635",
+      "time": 114604.541,
+      "message": "  done scrolling"
+    },
+    {
+      "type": "input",
+      "callId": "call@2635",
+      "point": {
+        "x": 693,
+        "y": 167
+      }
+    },
+    {
+      "type": "log",
+      "callId": "call@2635",
+      "time": 114611.156,
+      "message": "  performing click action"
+    },
+    {
+      "type": "log",
+      "callId": "call@2635",
+      "time": 114676.969,
+      "message": "  click action done"
+    },
+    {
+      "type": "log",
+      "callId": "call@2635",
+      "time": 114676.984,
+      "message": "  waiting for scheduled navigations to finish"
+    },
+    {
+      "type": "log",
+      "callId": "call@2635",
+      "time": 114677.687,
+      "message": "  navigations have finished"
+    },
+    {
+      "type": "after",
+      "callId": "call@2635",
+      "endTime": 114677.845
+    }
+  ]
+}

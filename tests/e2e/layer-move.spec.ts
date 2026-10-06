@@ -31,6 +31,7 @@ for(const locale of ['ar','en']as const)test(`${locale}: layer drag preserves ID
   await page.reload({waitUntil:'networkidle'});await openLayers();await expect(handle('heading')).toBeVisible();
   // Exercise the actual keyboard sensor after the pointer-specific correction.
   const sectionHandle=handle('section');await sectionHandle.focus();await page.keyboard.press('Space');await expect(sectionHandle).toHaveAttribute('aria-pressed','true');
+  await expect(page.locator('[data-editor-drag-overlay="layers"]')).toHaveCSS('pointer-events','none');
   for(let step=0;step<8;step++){await page.keyboard.press('ArrowDown');if((await page.locator('[id^=DndLiveRegion]').allTextContents()).some(text=>text.includes('over droppable area row.')))break;}
   await expect(page.locator('[id^=DndLiveRegion]').filter({hasText:'over droppable area row.'})).toHaveCount(1);await page.keyboard.press('Space');await page.keyboard.press('Control+s');await expect.poll(async()=>(await stored()).map(n=>n.id)).toEqual(['row','section']);
   await handle('heading').focus();await expect(handle('heading')).toBeFocused();
