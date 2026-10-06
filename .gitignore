@@ -14,3 +14,7 @@ data/
 db/*.db*
 db/uploads/
 db/backups/
+
+# Skill catalogs are source data, not runtime/private database directories.
+!.agents/skills/**/data/
+!.agents/skills/**/data/**
