@@ -48,7 +48,18 @@
       "result": "passed",
       "log": ".migration/independence-boundary.log",
       "sha256": "b82de9815a9f330e65eaac868614285a6f9aa29509994a838c0d71dc1e8a25d0"
+    },
+    "roles": {
+      "result": "passed",
+      "log": ".migration/independence-roles.log",
+      "sha256": "0bf6128cbd1beff40c03bfc96abe5883c6cf20148a2a5b147a50dea82287a8bc"
+    },
+    "roles-before": {
+      "result": "failed test expectation; source returns 201; retained",
+      "log": ".migration/independence-roles-before.log",
+      "sha256": "be5dee4ee87fe628bf53f5e19fcbc4bb66b01962246e0b4ba066df0e6656b572"
     }
   },
-  "ci": "Pending exact committed head; see PR"
+  "ci": "Pending exact committed head; see PR",
+  "additionalRoleCases": 4
 }
