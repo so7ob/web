@@ -1,0 +1,12 @@
+[
+  {
+    "from": "docs/operations/data-backup.ar.md",
+    "to": "reference/website-import/docs/operations/data-backup.ar.md",
+    "sha256": "836d4b3c642b4277e2da4ffd2af97c8928bb2d3215d362515350d423bd74a884"
+  },
+  {
+    "from": "docs/operations/email-log-privacy.ar.md",
+    "to": "reference/website-import/docs/operations/email-log-privacy.ar.md",
+    "sha256": "f00592914c595b82485bbbff62d935f7e3b74535cbfbf4b3b3ea4b88eefb84cb"
+  }
+]
