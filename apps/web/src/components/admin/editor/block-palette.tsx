@@ -24,9 +24,9 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { getPortalContent } from "@/content/portal";
-import { BLOCK_LIBRARY, type BlockType } from "@/lib/blocks/types";
+import { type ContentBlockType as BlockType } from "@so7ob/contracts";
 import type { Locale } from "@/lib/i18n";
-import { TYPE_ICONS } from "./block-library";
+import { LIBRARY_ENTRIES, TYPE_ICONS } from "./block-library";
 
 interface BlockPaletteProps {
   locale: Locale;
@@ -36,24 +36,17 @@ interface BlockPaletteProps {
   onAdd: (type: BlockType) => void;
 }
 
-export function BlockPalette({
-  locale,
-  open,
-  onOpenChange,
-  onAdd,
-}: BlockPaletteProps) {
+export function BlockPalette({ locale, open, onOpenChange, onAdd }: BlockPaletteProps) {
   const te = getPortalContent(locale).admin.editor;
   const [query, setQuery] = useState("");
 
-  // بحث ثنائي اللغة: يقارن الاسمين معًا ويحفظ ترتيب BLOCK_LIBRARY
+  // بحث ثنائي اللغة: يقارن الاسمين معًا ويحفظ ترتيب المكتبة (من BLOCK_REGISTRY)
   const q = query.trim().toLowerCase();
   const results =
     q === ""
-      ? BLOCK_LIBRARY
-      : BLOCK_LIBRARY.filter(
-          (entry) =>
-            entry.ar.toLowerCase().includes(q) ||
-            entry.en.toLowerCase().includes(q),
+      ? LIBRARY_ENTRIES
+      : LIBRARY_ENTRIES.filter(
+          (entry) => entry.ar.toLowerCase().includes(q) || entry.en.toLowerCase().includes(q)
         );
 
   const handleOpenChange = (next: boolean) => {
@@ -101,11 +94,7 @@ export function BlockPalette({
                   className="min-h-11 cursor-pointer gap-3 rounded-xl px-2.5 py-2 transition-colors hover:bg-muted/50 data-[selected=true]:bg-accent/60 data-[selected=true]:hover:bg-accent/60"
                 >
                   <span className="flex size-9 shrink-0 items-center justify-center rounded-xl bg-accent text-brand-strong">
-                    <Icon
-                      className="size-4"
-                      aria-hidden="true"
-                      strokeWidth={1.8}
-                    />
+                    <Icon className="size-4" aria-hidden="true" strokeWidth={1.8} />
                   </span>
                   <span className="min-w-0 truncate text-sm font-medium text-navy">
                     {locale === "en" ? entry.en : entry.ar}
@@ -120,9 +109,7 @@ export function BlockPalette({
               <span className="mx-auto flex size-10 items-center justify-center rounded-xl bg-muted text-muted-foreground">
                 <SearchX className="size-5" aria-hidden="true" />
               </span>
-              <p className="mt-2 text-sm text-muted-foreground">
-                {te.noBlocks}
-              </p>
+              <p className="mt-2 text-sm text-muted-foreground">{te.noBlocks}</p>
             </CommandEmpty>
           </CommandList>
         </Command>

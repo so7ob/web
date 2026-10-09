@@ -1,0 +1,67 @@
+{
+  "sourceSHA": "634e449b33bb5679b62b7cba0b63411be833da70",
+  "items": [
+    {
+      "source": "src/app/api/admin/media/[id]/route.ts",
+      "sourceSHA256": "fee5b5f68e082db08b96520360e2b26b8916c7a6d7489412751665ee29df5f5a",
+      "destinations": [
+        {
+          "path": "apps/api/src/files/controller.ts",
+          "sha256": "4f96c64d50b6ae8177465fd77f8b0761d13d6b35dd448173165d565033c57c4c"
+        },
+        {
+          "path": "packages/server/src/files/service.ts",
+          "sha256": "7f62d599fb83d43eb410f506e8a07f2cb47dfcecca8d6bbd8e328e7a737fd54b"
+        }
+      ]
+    },
+    {
+      "source": "src/app/api/admin/media/route.ts",
+      "sourceSHA256": "212fb51bfe569212d7af065e489fbfb44cf7614cfd1275a691c69b3080b7e4aa",
+      "destinations": [
+        {
+          "path": "apps/api/src/files/controller.ts",
+          "sha256": "4f96c64d50b6ae8177465fd77f8b0761d13d6b35dd448173165d565033c57c4c"
+        },
+        {
+          "path": "packages/server/src/files/service.ts",
+          "sha256": "7f62d599fb83d43eb410f506e8a07f2cb47dfcecca8d6bbd8e328e7a737fd54b"
+        }
+      ]
+    },
+    {
+      "source": "src/components/admin/media/media-client.tsx",
+      "sourceSHA256": "49e903964545f0e09565a3f10c403e276c0d6f389d54d11497d431ad36a09954",
+      "destinations": [
+        {
+          "path": "apps/web/src/components/admin/media/media-client.tsx",
+          "sha256": "275f6e0efc39ff066fcb4b4c49d92486939fa1bb170aa396bc85328c9d7482c2"
+        }
+      ]
+    },
+    {
+      "source": "src/lib/__tests__/media-usage.test.ts",
+      "sourceSHA256": "b3bfd18ebcbb1ebf342a82ef8e579ff930578d5443374a349213a7e1ebb523fc",
+      "destinations": [
+        {
+          "path": "packages/contracts/src/media.test.ts",
+          "sha256": "1b25ff8147b3c8b1db0353993f9c61b528971f7b38670b4d860c7b992834f11e"
+        }
+      ]
+    },
+    {
+      "source": "src/lib/media-usage.ts",
+      "sourceSHA256": "fbcc0abe70f59b3e930a1fb5cb91a740447dafa3d1d08b787896cc670baa0912",
+      "destinations": [
+        {
+          "path": "packages/contracts/src/media.ts",
+          "sha256": "70d461bb513874b9829c0de14b01e4246dce22364a4f66ef83fb62aba326d46c"
+        },
+        {
+          "path": "packages/server/src/files/media-usage.ts",
+          "sha256": "415b148d2ac9fb88997ed8afced8aeb99d4d8d427bd1488f270086023c27170c"
+        }
+      ]
+    }
+  ]
+}

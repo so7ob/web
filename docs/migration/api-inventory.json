@@ -5,7 +5,9 @@
     "path": "/api/account/claim-verify",
     "source": "src/app/api/account/claim-verify/route.ts",
     "guards": [],
-    "entities": []
+    "entities": [],
+    "sourceSHA": "dddf8cd00a19cf7d562f503549f4c000109057d1",
+    "inventoryNote": "File-level guard/entity hints; handler authorization requires reviewed contract tests."
   },
   {
     "id": "API-002",
@@ -13,13 +15,15 @@
     "path": "/api/account/drafts",
     "source": "src/app/api/account/drafts/route.ts",
     "guards": [
-      "guardApi(req);",
-      "guardApi(req);",
-      "guardApi(req);"
+      "guardApi(req)",
+      "guardApi(req)",
+      "guardApi(req)"
     ],
     "entities": [
       "requestDraft"
-    ]
+    ],
+    "sourceSHA": "dddf8cd00a19cf7d562f503549f4c000109057d1",
+    "inventoryNote": "File-level guard/entity hints; handler authorization requires reviewed contract tests."
   },
   {
     "id": "API-003",
@@ -27,13 +31,15 @@
     "path": "/api/account/drafts",
     "source": "src/app/api/account/drafts/route.ts",
     "guards": [
-      "guardApi(req);",
-      "guardApi(req);",
-      "guardApi(req);"
+      "guardApi(req)",
+      "guardApi(req)",
+      "guardApi(req)"
     ],
     "entities": [
       "requestDraft"
-    ]
+    ],
+    "sourceSHA": "dddf8cd00a19cf7d562f503549f4c000109057d1",
+    "inventoryNote": "File-level guard/entity hints; handler authorization requires reviewed contract tests."
   },
   {
     "id": "API-004",
@@ -41,13 +47,15 @@
     "path": "/api/account/drafts",
     "source": "src/app/api/account/drafts/route.ts",
     "guards": [
-      "guardApi(req);",
-      "guardApi(req);",
-      "guardApi(req);"
+      "guardApi(req)",
+      "guardApi(req)",
+      "guardApi(req)"
     ],
     "entities": [
       "requestDraft"
-    ]
+    ],
+    "sourceSHA": "dddf8cd00a19cf7d562f503549f4c000109057d1",
+    "inventoryNote": "File-level guard/entity hints; handler authorization requires reviewed contract tests."
   },
   {
     "id": "API-005",
@@ -55,12 +63,14 @@
     "path": "/api/account/inquiries/[id]/messages",
     "source": "src/app/api/account/inquiries/[id]/messages/route.ts",
     "guards": [
-      "guardApi(req);"
+      "guardApi(req)"
     ],
     "entities": [
       "inquiry",
       "inquiryMessage"
-    ]
+    ],
+    "sourceSHA": "dddf8cd00a19cf7d562f503549f4c000109057d1",
+    "inventoryNote": "File-level guard/entity hints; handler authorization requires reviewed contract tests."
   },
   {
     "id": "API-006",
@@ -68,11 +78,13 @@
     "path": "/api/account/inquiries/[id]",
     "source": "src/app/api/account/inquiries/[id]/route.ts",
     "guards": [
-      "guardApi(req);"
+      "guardApi(req)"
     ],
     "entities": [
       "inquiry"
-    ]
+    ],
+    "sourceSHA": "dddf8cd00a19cf7d562f503549f4c000109057d1",
+    "inventoryNote": "File-level guard/entity hints; handler authorization requires reviewed contract tests."
   },
   {
     "id": "API-007",
@@ -80,12 +92,14 @@
     "path": "/api/account/inquiries",
     "source": "src/app/api/account/inquiries/route.ts",
     "guards": [
-      "guardApi(req);",
-      "guardApi(req);"
+      "guardApi(req)",
+      "guardApi(req)"
     ],
     "entities": [
       "inquiry"
-    ]
+    ],
+    "sourceSHA": "dddf8cd00a19cf7d562f503549f4c000109057d1",
+    "inventoryNote": "File-level guard/entity hints; handler authorization requires reviewed contract tests."
   },
   {
     "id": "API-008",
@@ -93,12 +107,14 @@
     "path": "/api/account/inquiries",
     "source": "src/app/api/account/inquiries/route.ts",
     "guards": [
-      "guardApi(req);",
-      "guardApi(req);"
+      "guardApi(req)",
+      "guardApi(req)"
     ],
     "entities": [
       "inquiry"
-    ]
+    ],
+    "sourceSHA": "dddf8cd00a19cf7d562f503549f4c000109057d1",
+    "inventoryNote": "File-level guard/entity hints; handler authorization requires reviewed contract tests."
   },
   {
     "id": "API-009",
@@ -106,12 +122,14 @@
     "path": "/api/account/notifications",
     "source": "src/app/api/account/notifications/route.ts",
     "guards": [
-      "guardApi(req);",
-      "guardApi(req);"
+      "guardApi(req)",
+      "guardApi(req)"
     ],
     "entities": [
       "notification"
-    ]
+    ],
+    "sourceSHA": "dddf8cd00a19cf7d562f503549f4c000109057d1",
+    "inventoryNote": "File-level guard/entity hints; handler authorization requires reviewed contract tests."
   },
   {
     "id": "API-010",
@@ -119,12 +137,14 @@
     "path": "/api/account/notifications",
     "source": "src/app/api/account/notifications/route.ts",
     "guards": [
-      "guardApi(req);",
-      "guardApi(req);"
+      "guardApi(req)",
+      "guardApi(req)"
     ],
     "entities": [
       "notification"
-    ]
+    ],
+    "sourceSHA": "dddf8cd00a19cf7d562f503549f4c000109057d1",
+    "inventoryNote": "File-level guard/entity hints; handler authorization requires reviewed contract tests."
   },
   {
     "id": "API-011",
@@ -132,12 +152,14 @@
     "path": "/api/account/profile",
     "source": "src/app/api/account/profile/route.ts",
     "guards": [
-      "guardApi(req);",
-      "guardApi(req);"
+      "guardApi(req)",
+      "guardApi(req)"
     ],
     "entities": [
       "user"
-    ]
+    ],
+    "sourceSHA": "dddf8cd00a19cf7d562f503549f4c000109057d1",
+    "inventoryNote": "File-level guard/entity hints; handler authorization requires reviewed contract tests."
   },
   {
     "id": "API-012",
@@ -145,12 +167,14 @@
     "path": "/api/account/profile",
     "source": "src/app/api/account/profile/route.ts",
     "guards": [
-      "guardApi(req);",
-      "guardApi(req);"
+      "guardApi(req)",
+      "guardApi(req)"
     ],
     "entities": [
       "user"
-    ]
+    ],
+    "sourceSHA": "dddf8cd00a19cf7d562f503549f4c000109057d1",
+    "inventoryNote": "File-level guard/entity hints; handler authorization requires reviewed contract tests."
   },
   {
     "id": "API-013",
@@ -158,9 +182,11 @@
     "path": "/api/account/requests/[id]/messages",
     "source": "src/app/api/account/requests/[id]/messages/route.ts",
     "guards": [
-      "guardApi(req);"
+      "guardApi(req)"
     ],
-    "entities": []
+    "entities": [],
+    "sourceSHA": "dddf8cd00a19cf7d562f503549f4c000109057d1",
+    "inventoryNote": "File-level guard/entity hints; handler authorization requires reviewed contract tests."
   },
   {
     "id": "API-014",
@@ -168,14 +194,16 @@
     "path": "/api/account/requests/[id]",
     "source": "src/app/api/account/requests/[id]/route.ts",
     "guards": [
-      "guardApi(req);",
-      "guardApi(req);"
+      "guardApi(req)",
+      "guardApi(req)"
     ],
     "entities": [
       "projectRequest",
       "requestMessage",
       "requestStatusEvent"
-    ]
+    ],
+    "sourceSHA": "dddf8cd00a19cf7d562f503549f4c000109057d1",
+    "inventoryNote": "File-level guard/entity hints; handler authorization requires reviewed contract tests."
   },
   {
     "id": "API-015",
@@ -183,14 +211,16 @@
     "path": "/api/account/requests/[id]",
     "source": "src/app/api/account/requests/[id]/route.ts",
     "guards": [
-      "guardApi(req);",
-      "guardApi(req);"
+      "guardApi(req)",
+      "guardApi(req)"
     ],
     "entities": [
       "projectRequest",
       "requestMessage",
       "requestStatusEvent"
-    ]
+    ],
+    "sourceSHA": "dddf8cd00a19cf7d562f503549f4c000109057d1",
+    "inventoryNote": "File-level guard/entity hints; handler authorization requires reviewed contract tests."
   },
   {
     "id": "API-016",
@@ -198,9 +228,11 @@
     "path": "/api/account/requests/claim",
     "source": "src/app/api/account/requests/claim/route.ts",
     "guards": [
-      "guardApi(req);"
+      "guardApi(req)"
     ],
-    "entities": []
+    "entities": [],
+    "sourceSHA": "dddf8cd00a19cf7d562f503549f4c000109057d1",
+    "inventoryNote": "File-level guard/entity hints; handler authorization requires reviewed contract tests."
   },
   {
     "id": "API-017",
@@ -208,11 +240,13 @@
     "path": "/api/account/requests",
     "source": "src/app/api/account/requests/route.ts",
     "guards": [
-      "guardApi(req);"
+      "guardApi(req)"
     ],
     "entities": [
       "projectRequest"
-    ]
+    ],
+    "sourceSHA": "dddf8cd00a19cf7d562f503549f4c000109057d1",
+    "inventoryNote": "File-level guard/entity hints; handler authorization requires reviewed contract tests."
   },
   {
     "id": "API-018",
@@ -220,11 +254,13 @@
     "path": "/api/admin/audit",
     "source": "src/app/api/admin/audit/route.ts",
     "guards": [
-      "guardApi(req, \"audit.view\");"
+      "guardApi(req, \"audit.view\")"
     ],
     "entities": [
       "auditLog"
-    ]
+    ],
+    "sourceSHA": "dddf8cd00a19cf7d562f503549f4c000109057d1",
+    "inventoryNote": "File-level guard/entity hints; handler authorization requires reviewed contract tests."
   },
   {
     "id": "API-019",
@@ -232,7 +268,7 @@
     "path": "/api/admin/dashboard",
     "source": "src/app/api/admin/dashboard/route.ts",
     "guards": [
-      "guardApi(req, \"admin.dashboard\");"
+      "guardApi(req, \"admin.dashboard\")"
     ],
     "entities": [
       "auditLog",
@@ -240,7 +276,9 @@
       "page",
       "projectRequest",
       "user"
-    ]
+    ],
+    "sourceSHA": "dddf8cd00a19cf7d562f503549f4c000109057d1",
+    "inventoryNote": "File-level guard/entity hints; handler authorization requires reviewed contract tests."
   },
   {
     "id": "API-020",
@@ -248,12 +286,14 @@
     "path": "/api/admin/inquiries/[id]/messages",
     "source": "src/app/api/admin/inquiries/[id]/messages/route.ts",
     "guards": [
-      "guardApi(req);"
+      "guardApi(req)"
     ],
     "entities": [
       "inquiry",
       "inquiryMessage"
-    ]
+    ],
+    "sourceSHA": "dddf8cd00a19cf7d562f503549f4c000109057d1",
+    "inventoryNote": "File-level guard/entity hints; handler authorization requires reviewed contract tests."
   },
   {
     "id": "API-021",
@@ -261,14 +301,16 @@
     "path": "/api/admin/inquiries/[id]",
     "source": "src/app/api/admin/inquiries/[id]/route.ts",
     "guards": [
-      "guardApi(req, \"inquiries.view.all\");",
-      "guardApi(req);"
+      "guardApi(req, \"inquiries.view.all\")",
+      "guardApi(req)"
     ],
     "entities": [
       "inquiry",
       "inquiryMessage",
       "user"
-    ]
+    ],
+    "sourceSHA": "dddf8cd00a19cf7d562f503549f4c000109057d1",
+    "inventoryNote": "File-level guard/entity hints; handler authorization requires reviewed contract tests."
   },
   {
     "id": "API-022",
@@ -276,14 +318,16 @@
     "path": "/api/admin/inquiries/[id]",
     "source": "src/app/api/admin/inquiries/[id]/route.ts",
     "guards": [
-      "guardApi(req, \"inquiries.view.all\");",
-      "guardApi(req);"
+      "guardApi(req, \"inquiries.view.all\")",
+      "guardApi(req)"
     ],
     "entities": [
       "inquiry",
       "inquiryMessage",
       "user"
-    ]
+    ],
+    "sourceSHA": "dddf8cd00a19cf7d562f503549f4c000109057d1",
+    "inventoryNote": "File-level guard/entity hints; handler authorization requires reviewed contract tests."
   },
   {
     "id": "API-023",
@@ -291,11 +335,13 @@
     "path": "/api/admin/inquiries/bulk",
     "source": "src/app/api/admin/inquiries/bulk/route.ts",
     "guards": [
-      "guardApi(req);"
+      "guardApi(req)"
     ],
     "entities": [
       "inquiry"
-    ]
+    ],
+    "sourceSHA": "dddf8cd00a19cf7d562f503549f4c000109057d1",
+    "inventoryNote": "File-level guard/entity hints; handler authorization requires reviewed contract tests."
   },
   {
     "id": "API-024",
@@ -303,11 +349,13 @@
     "path": "/api/admin/inquiries/export",
     "source": "src/app/api/admin/inquiries/export/route.ts",
     "guards": [
-      "guardApi(req, \"inquiries.export\");"
+      "guardApi(req, \"inquiries.export\")"
     ],
     "entities": [
       "inquiry"
-    ]
+    ],
+    "sourceSHA": "dddf8cd00a19cf7d562f503549f4c000109057d1",
+    "inventoryNote": "File-level guard/entity hints; handler authorization requires reviewed contract tests."
   },
   {
     "id": "API-025",
@@ -315,12 +363,14 @@
     "path": "/api/admin/inquiries",
     "source": "src/app/api/admin/inquiries/route.ts",
     "guards": [
-      "guardApi(req, \"inquiries.view.all\");"
+      "guardApi(req, \"inquiries.view.all\")"
     ],
     "entities": [
       "inquiry",
       "inquiryMessage"
-    ]
+    ],
+    "sourceSHA": "dddf8cd00a19cf7d562f503549f4c000109057d1",
+    "inventoryNote": "File-level guard/entity hints; handler authorization requires reviewed contract tests."
   },
   {
     "id": "API-026",
@@ -328,12 +378,14 @@
     "path": "/api/admin/media/[id]",
     "source": "src/app/api/admin/media/[id]/route.ts",
     "guards": [
-      "guardApi(req, \"media.manage\");",
-      "guardApi(req, \"media.manage\");"
+      "guardApi(req, \"media.manage\")",
+      "guardApi(req, \"media.manage\")"
     ],
     "entities": [
       "mediaItem"
-    ]
+    ],
+    "sourceSHA": "dddf8cd00a19cf7d562f503549f4c000109057d1",
+    "inventoryNote": "File-level guard/entity hints; handler authorization requires reviewed contract tests."
   },
   {
     "id": "API-027",
@@ -341,12 +393,14 @@
     "path": "/api/admin/media/[id]",
     "source": "src/app/api/admin/media/[id]/route.ts",
     "guards": [
-      "guardApi(req, \"media.manage\");",
-      "guardApi(req, \"media.manage\");"
+      "guardApi(req, \"media.manage\")",
+      "guardApi(req, \"media.manage\")"
     ],
     "entities": [
       "mediaItem"
-    ]
+    ],
+    "sourceSHA": "dddf8cd00a19cf7d562f503549f4c000109057d1",
+    "inventoryNote": "File-level guard/entity hints; handler authorization requires reviewed contract tests."
   },
   {
     "id": "API-028",
@@ -354,12 +408,14 @@
     "path": "/api/admin/media",
     "source": "src/app/api/admin/media/route.ts",
     "guards": [
-      "guardApi(req, \"media.manage\");",
-      "guardApi(req, \"media.upload\");"
+      "guardApi(req, \"media.manage\")",
+      "guardApi(req, \"media.upload\")"
     ],
     "entities": [
       "mediaItem"
-    ]
+    ],
+    "sourceSHA": "dddf8cd00a19cf7d562f503549f4c000109057d1",
+    "inventoryNote": "File-level guard/entity hints; handler authorization requires reviewed contract tests."
   },
   {
     "id": "API-029",
@@ -367,12 +423,14 @@
     "path": "/api/admin/media",
     "source": "src/app/api/admin/media/route.ts",
     "guards": [
-      "guardApi(req, \"media.manage\");",
-      "guardApi(req, \"media.upload\");"
+      "guardApi(req, \"media.manage\")",
+      "guardApi(req, \"media.upload\")"
     ],
     "entities": [
       "mediaItem"
-    ]
+    ],
+    "sourceSHA": "dddf8cd00a19cf7d562f503549f4c000109057d1",
+    "inventoryNote": "File-level guard/entity hints; handler authorization requires reviewed contract tests."
   },
   {
     "id": "API-030",
@@ -380,13 +438,15 @@
     "path": "/api/admin/menus",
     "source": "src/app/api/admin/menus/route.ts",
     "guards": [
-      "guardApi(req, \"menus.manage\");",
-      "guardApi(req, \"menus.manage\");"
+      "guardApi(req, \"menus.manage\")",
+      "guardApi(req, \"menus.manage\")"
     ],
     "entities": [
       "menuItem",
       "page"
-    ]
+    ],
+    "sourceSHA": "dddf8cd00a19cf7d562f503549f4c000109057d1",
+    "inventoryNote": "File-level guard/entity hints; handler authorization requires reviewed contract tests."
   },
   {
     "id": "API-031",
@@ -394,13 +454,15 @@
     "path": "/api/admin/menus",
     "source": "src/app/api/admin/menus/route.ts",
     "guards": [
-      "guardApi(req, \"menus.manage\");",
-      "guardApi(req, \"menus.manage\");"
+      "guardApi(req, \"menus.manage\")",
+      "guardApi(req, \"menus.manage\")"
     ],
     "entities": [
       "menuItem",
       "page"
-    ]
+    ],
+    "sourceSHA": "dddf8cd00a19cf7d562f503549f4c000109057d1",
+    "inventoryNote": "File-level guard/entity hints; handler authorization requires reviewed contract tests."
   },
   {
     "id": "API-032",
@@ -408,11 +470,27 @@
     "path": "/api/admin/outbox",
     "source": "src/app/api/admin/outbox/route.ts",
     "guards": [
-      "guardApi(req, \"email.outbox\");"
+      "guardApi(req, \"email.outbox\")"
     ],
     "entities": [
       "emailLog"
-    ]
+    ],
+    "sourceSHA": "dddf8cd00a19cf7d562f503549f4c000109057d1",
+    "inventoryNote": "File-level guard/entity hints; handler authorization requires reviewed contract tests."
+  },
+  {
+    "id": "API-073",
+    "method": "POST",
+    "path": "/api/admin/pages/[id]/discard",
+    "source": "src/app/api/admin/pages/[id]/discard/route.ts",
+    "sourceSHA": "dddf8cd00a19cf7d562f503549f4c000109057d1",
+    "guards": [
+      "guardApi(req, \"pages.edit\")"
+    ],
+    "entities": [
+      "page"
+    ],
+    "inventoryNote": "File-level guard/entity hints; handler authorization requires reviewed contract tests."
   },
   {
     "id": "API-033",
@@ -420,13 +498,13 @@
     "path": "/api/admin/pages/[id]/publish",
     "source": "src/app/api/admin/pages/[id]/publish/route.ts",
     "guards": [
-      "guardApi(req, \"pages.publish\");"
+      "guardApi(req, \"pages.publish\")"
     ],
     "entities": [
-      "page",
-      "pageVersion",
-      "user"
-    ]
+      "page"
+    ],
+    "sourceSHA": "dddf8cd00a19cf7d562f503549f4c000109057d1",
+    "inventoryNote": "File-level guard/entity hints; handler authorization requires reviewed contract tests."
   },
   {
     "id": "API-034",
@@ -434,14 +512,18 @@
     "path": "/api/admin/pages/[id]",
     "source": "src/app/api/admin/pages/[id]/route.ts",
     "guards": [
-      "guardApi(req, \"pages.view\");",
-      "guardApi(req, \"pages.edit\");",
-      "guardApi(req, \"pages.delete\");"
+      "guardApi(req, \"pages.view\")",
+      "guardApi(req, \"pages.edit\")",
+      "guardApi(req, \"pages.delete\")",
+      "guardApi(req, \"pages.delete\")"
     ],
     "entities": [
       "page",
-      "pageRedirect"
-    ]
+      "pageRedirect",
+      "user"
+    ],
+    "sourceSHA": "dddf8cd00a19cf7d562f503549f4c000109057d1",
+    "inventoryNote": "File-level guard/entity hints; handler authorization requires reviewed contract tests."
   },
   {
     "id": "API-035",
@@ -449,14 +531,18 @@
     "path": "/api/admin/pages/[id]",
     "source": "src/app/api/admin/pages/[id]/route.ts",
     "guards": [
-      "guardApi(req, \"pages.view\");",
-      "guardApi(req, \"pages.edit\");",
-      "guardApi(req, \"pages.delete\");"
+      "guardApi(req, \"pages.view\")",
+      "guardApi(req, \"pages.edit\")",
+      "guardApi(req, \"pages.delete\")",
+      "guardApi(req, \"pages.delete\")"
     ],
     "entities": [
       "page",
-      "pageRedirect"
-    ]
+      "pageRedirect",
+      "user"
+    ],
+    "sourceSHA": "dddf8cd00a19cf7d562f503549f4c000109057d1",
+    "inventoryNote": "File-level guard/entity hints; handler authorization requires reviewed contract tests."
   },
   {
     "id": "API-036",
@@ -464,14 +550,32 @@
     "path": "/api/admin/pages/[id]",
     "source": "src/app/api/admin/pages/[id]/route.ts",
     "guards": [
-      "guardApi(req, \"pages.view\");",
-      "guardApi(req, \"pages.edit\");",
-      "guardApi(req, \"pages.delete\");"
+      "guardApi(req, \"pages.view\")",
+      "guardApi(req, \"pages.edit\")",
+      "guardApi(req, \"pages.delete\")",
+      "guardApi(req, \"pages.delete\")"
     ],
     "entities": [
       "page",
-      "pageRedirect"
-    ]
+      "pageRedirect",
+      "user"
+    ],
+    "sourceSHA": "dddf8cd00a19cf7d562f503549f4c000109057d1",
+    "inventoryNote": "File-level guard/entity hints; handler authorization requires reviewed contract tests."
+  },
+  {
+    "id": "API-074",
+    "method": "POST",
+    "path": "/api/admin/pages/[id]/schedule",
+    "source": "src/app/api/admin/pages/[id]/schedule/route.ts",
+    "sourceSHA": "dddf8cd00a19cf7d562f503549f4c000109057d1",
+    "guards": [
+      "guardApi(req, \"pages.publish\")"
+    ],
+    "entities": [
+      "page"
+    ],
+    "inventoryNote": "File-level guard/entity hints; handler authorization requires reviewed contract tests."
   },
   {
     "id": "API-037",
@@ -479,12 +583,14 @@
     "path": "/api/admin/pages/[id]/versions/[version]/restore",
     "source": "src/app/api/admin/pages/[id]/versions/[version]/restore/route.ts",
     "guards": [
-      "guardApi(req, \"pages.restore\");"
+      "guardApi(req, \"pages.restore\")"
     ],
     "entities": [
       "page",
       "pageVersion"
-    ]
+    ],
+    "sourceSHA": "dddf8cd00a19cf7d562f503549f4c000109057d1",
+    "inventoryNote": "File-level guard/entity hints; handler authorization requires reviewed contract tests."
   },
   {
     "id": "API-038",
@@ -492,11 +598,13 @@
     "path": "/api/admin/pages/[id]/versions",
     "source": "src/app/api/admin/pages/[id]/versions/route.ts",
     "guards": [
-      "guardApi(req, \"pages.view\");"
+      "guardApi(req, \"pages.view\")"
     ],
     "entities": [
       "pageVersion"
-    ]
+    ],
+    "sourceSHA": "dddf8cd00a19cf7d562f503549f4c000109057d1",
+    "inventoryNote": "File-level guard/entity hints; handler authorization requires reviewed contract tests."
   },
   {
     "id": "API-039",
@@ -504,12 +612,14 @@
     "path": "/api/admin/pages",
     "source": "src/app/api/admin/pages/route.ts",
     "guards": [
-      "guardApi(req, \"pages.view\");",
-      "guardApi(req, \"pages.edit\");"
+      "guardApi(req, \"pages.view\")",
+      "guardApi(req, \"pages.edit\")"
     ],
     "entities": [
       "page"
-    ]
+    ],
+    "sourceSHA": "dddf8cd00a19cf7d562f503549f4c000109057d1",
+    "inventoryNote": "File-level guard/entity hints; handler authorization requires reviewed contract tests."
   },
   {
     "id": "API-040",
@@ -517,12 +627,14 @@
     "path": "/api/admin/pages",
     "source": "src/app/api/admin/pages/route.ts",
     "guards": [
-      "guardApi(req, \"pages.view\");",
-      "guardApi(req, \"pages.edit\");"
+      "guardApi(req, \"pages.view\")",
+      "guardApi(req, \"pages.edit\")"
     ],
     "entities": [
       "page"
-    ]
+    ],
+    "sourceSHA": "dddf8cd00a19cf7d562f503549f4c000109057d1",
+    "inventoryNote": "File-level guard/entity hints; handler authorization requires reviewed contract tests."
   },
   {
     "id": "API-041",
@@ -530,15 +642,17 @@
     "path": "/api/admin/requests/[id]",
     "source": "src/app/api/admin/requests/[id]/route.ts",
     "guards": [
-      "guardApi(req, \"requests.view.all\");",
-      "guardApi(req);"
+      "guardApi(req, \"requests.view.all\")",
+      "guardApi(req)"
     ],
     "entities": [
       "projectRequest",
       "requestMessage",
       "requestStatusEvent",
       "user"
-    ]
+    ],
+    "sourceSHA": "dddf8cd00a19cf7d562f503549f4c000109057d1",
+    "inventoryNote": "File-level guard/entity hints; handler authorization requires reviewed contract tests."
   },
   {
     "id": "API-042",
@@ -546,15 +660,17 @@
     "path": "/api/admin/requests/[id]",
     "source": "src/app/api/admin/requests/[id]/route.ts",
     "guards": [
-      "guardApi(req, \"requests.view.all\");",
-      "guardApi(req);"
+      "guardApi(req, \"requests.view.all\")",
+      "guardApi(req)"
     ],
     "entities": [
       "projectRequest",
       "requestMessage",
       "requestStatusEvent",
       "user"
-    ]
+    ],
+    "sourceSHA": "dddf8cd00a19cf7d562f503549f4c000109057d1",
+    "inventoryNote": "File-level guard/entity hints; handler authorization requires reviewed contract tests."
   },
   {
     "id": "API-043",
@@ -562,11 +678,13 @@
     "path": "/api/admin/requests/bulk",
     "source": "src/app/api/admin/requests/bulk/route.ts",
     "guards": [
-      "guardApi(req);"
+      "guardApi(req)"
     ],
     "entities": [
       "projectRequest"
-    ]
+    ],
+    "sourceSHA": "dddf8cd00a19cf7d562f503549f4c000109057d1",
+    "inventoryNote": "File-level guard/entity hints; handler authorization requires reviewed contract tests."
   },
   {
     "id": "API-044",
@@ -574,11 +692,13 @@
     "path": "/api/admin/requests/export",
     "source": "src/app/api/admin/requests/export/route.ts",
     "guards": [
-      "guardApi(req, \"requests.export\");"
+      "guardApi(req, \"requests.export\")"
     ],
     "entities": [
       "projectRequest"
-    ]
+    ],
+    "sourceSHA": "dddf8cd00a19cf7d562f503549f4c000109057d1",
+    "inventoryNote": "File-level guard/entity hints; handler authorization requires reviewed contract tests."
   },
   {
     "id": "API-045",
@@ -586,13 +706,15 @@
     "path": "/api/admin/requests",
     "source": "src/app/api/admin/requests/route.ts",
     "guards": [
-      "guardApi(req, \"requests.view.all\");"
+      "guardApi(req, \"requests.view.all\")"
     ],
     "entities": [
       "projectRequest",
       "requestMessage",
       "user"
-    ]
+    ],
+    "sourceSHA": "dddf8cd00a19cf7d562f503549f4c000109057d1",
+    "inventoryNote": "File-level guard/entity hints; handler authorization requires reviewed contract tests."
   },
   {
     "id": "API-046",
@@ -600,12 +722,14 @@
     "path": "/api/admin/saved-replies/[id]",
     "source": "src/app/api/admin/saved-replies/[id]/route.ts",
     "guards": [
-      "guardApi(req, \"requests.reply\");",
-      "guardApi(req, \"requests.reply\");"
+      "guardApi(req, \"requests.reply\")",
+      "guardApi(req, \"requests.reply\")"
     ],
     "entities": [
       "savedReply"
-    ]
+    ],
+    "sourceSHA": "dddf8cd00a19cf7d562f503549f4c000109057d1",
+    "inventoryNote": "File-level guard/entity hints; handler authorization requires reviewed contract tests."
   },
   {
     "id": "API-047",
@@ -613,12 +737,14 @@
     "path": "/api/admin/saved-replies/[id]",
     "source": "src/app/api/admin/saved-replies/[id]/route.ts",
     "guards": [
-      "guardApi(req, \"requests.reply\");",
-      "guardApi(req, \"requests.reply\");"
+      "guardApi(req, \"requests.reply\")",
+      "guardApi(req, \"requests.reply\")"
     ],
     "entities": [
       "savedReply"
-    ]
+    ],
+    "sourceSHA": "dddf8cd00a19cf7d562f503549f4c000109057d1",
+    "inventoryNote": "File-level guard/entity hints; handler authorization requires reviewed contract tests."
   },
   {
     "id": "API-048",
@@ -626,12 +752,14 @@
     "path": "/api/admin/saved-replies",
     "source": "src/app/api/admin/saved-replies/route.ts",
     "guards": [
-      "guardApi(req, \"requests.view.all\");",
-      "guardApi(req, \"requests.reply\");"
+      "guardApi(req, \"requests.view.all\")",
+      "guardApi(req, \"requests.reply\")"
     ],
     "entities": [
       "savedReply"
-    ]
+    ],
+    "sourceSHA": "dddf8cd00a19cf7d562f503549f4c000109057d1",
+    "inventoryNote": "File-level guard/entity hints; handler authorization requires reviewed contract tests."
   },
   {
     "id": "API-049",
@@ -639,12 +767,14 @@
     "path": "/api/admin/saved-replies",
     "source": "src/app/api/admin/saved-replies/route.ts",
     "guards": [
-      "guardApi(req, \"requests.view.all\");",
-      "guardApi(req, \"requests.reply\");"
+      "guardApi(req, \"requests.view.all\")",
+      "guardApi(req, \"requests.reply\")"
     ],
     "entities": [
       "savedReply"
-    ]
+    ],
+    "sourceSHA": "dddf8cd00a19cf7d562f503549f4c000109057d1",
+    "inventoryNote": "File-level guard/entity hints; handler authorization requires reviewed contract tests."
   },
   {
     "id": "API-050",
@@ -652,14 +782,16 @@
     "path": "/api/admin/search",
     "source": "src/app/api/admin/search/route.ts",
     "guards": [
-      "guardApi(req, \"admin.dashboard\");"
+      "guardApi(req, \"admin.dashboard\")"
     ],
     "entities": [
       "inquiry",
       "page",
       "projectRequest",
       "user"
-    ]
+    ],
+    "sourceSHA": "dddf8cd00a19cf7d562f503549f4c000109057d1",
+    "inventoryNote": "File-level guard/entity hints; handler authorization requires reviewed contract tests."
   },
   {
     "id": "API-051",
@@ -667,12 +799,14 @@
     "path": "/api/admin/settings",
     "source": "src/app/api/admin/settings/route.ts",
     "guards": [
-      "guardApi(req, \"settings.manage\");",
-      "guardApi(req, \"settings.manage\");"
+      "guardApi(req, \"settings.manage\")",
+      "guardApi(req, \"settings.manage\")"
     ],
     "entities": [
       "siteSetting"
-    ]
+    ],
+    "sourceSHA": "dddf8cd00a19cf7d562f503549f4c000109057d1",
+    "inventoryNote": "File-level guard/entity hints; handler authorization requires reviewed contract tests."
   },
   {
     "id": "API-052",
@@ -680,12 +814,140 @@
     "path": "/api/admin/settings",
     "source": "src/app/api/admin/settings/route.ts",
     "guards": [
-      "guardApi(req, \"settings.manage\");",
-      "guardApi(req, \"settings.manage\");"
+      "guardApi(req, \"settings.manage\")",
+      "guardApi(req, \"settings.manage\")"
     ],
     "entities": [
       "siteSetting"
-    ]
+    ],
+    "sourceSHA": "dddf8cd00a19cf7d562f503549f4c000109057d1",
+    "inventoryNote": "File-level guard/entity hints; handler authorization requires reviewed contract tests."
+  },
+  {
+    "id": "API-075",
+    "method": "POST",
+    "path": "/api/admin/templates/[id]/apply",
+    "source": "src/app/api/admin/templates/[id]/apply/route.ts",
+    "sourceSHA": "dddf8cd00a19cf7d562f503549f4c000109057d1",
+    "guards": [
+      "guardApi(req, \"pages.edit\")"
+    ],
+    "entities": [
+      "page",
+      "pageTemplate",
+      "pageVersion"
+    ],
+    "inventoryNote": "File-level guard/entity hints; handler authorization requires reviewed contract tests."
+  },
+  {
+    "id": "API-076",
+    "method": "PATCH",
+    "path": "/api/admin/templates/[id]",
+    "source": "src/app/api/admin/templates/[id]/route.ts",
+    "sourceSHA": "dddf8cd00a19cf7d562f503549f4c000109057d1",
+    "guards": [
+      "guardApi(req, \"pages.edit\")",
+      "guardApi(req, \"pages.edit\")"
+    ],
+    "entities": [
+      "pageTemplate"
+    ],
+    "inventoryNote": "File-level guard/entity hints; handler authorization requires reviewed contract tests."
+  },
+  {
+    "id": "API-077",
+    "method": "DELETE",
+    "path": "/api/admin/templates/[id]",
+    "source": "src/app/api/admin/templates/[id]/route.ts",
+    "sourceSHA": "dddf8cd00a19cf7d562f503549f4c000109057d1",
+    "guards": [
+      "guardApi(req, \"pages.edit\")",
+      "guardApi(req, \"pages.edit\")"
+    ],
+    "entities": [
+      "pageTemplate"
+    ],
+    "inventoryNote": "File-level guard/entity hints; handler authorization requires reviewed contract tests."
+  },
+  {
+    "id": "API-078",
+    "method": "GET",
+    "path": "/api/admin/templates",
+    "source": "src/app/api/admin/templates/route.ts",
+    "sourceSHA": "dddf8cd00a19cf7d562f503549f4c000109057d1",
+    "guards": [
+      "guardApi(req, \"pages.view\")",
+      "guardApi(req, \"pages.edit\")"
+    ],
+    "entities": [
+      "pageTemplate"
+    ],
+    "inventoryNote": "File-level guard/entity hints; handler authorization requires reviewed contract tests."
+  },
+  {
+    "id": "API-079",
+    "method": "POST",
+    "path": "/api/admin/templates",
+    "source": "src/app/api/admin/templates/route.ts",
+    "sourceSHA": "dddf8cd00a19cf7d562f503549f4c000109057d1",
+    "guards": [
+      "guardApi(req, \"pages.view\")",
+      "guardApi(req, \"pages.edit\")"
+    ],
+    "entities": [
+      "pageTemplate"
+    ],
+    "inventoryNote": "File-level guard/entity hints; handler authorization requires reviewed contract tests."
+  },
+  {
+    "id": "API-080",
+    "method": "GET",
+    "path": "/api/admin/track",
+    "source": "src/app/api/admin/track/route.ts",
+    "sourceSHA": "dddf8cd00a19cf7d562f503549f4c000109057d1",
+    "guards": [
+      "guardApi(req)",
+      "guardApi(req)"
+    ],
+    "entities": [
+      "inquiry",
+      "projectRequest",
+      "siteSetting",
+      "trackLink"
+    ],
+    "inventoryNote": "File-level guard/entity hints; handler authorization requires reviewed contract tests.",
+    "target": "apps/api/src/track/controller.ts",
+    "targetAliases": [
+      "/api/admin/track",
+      "/api/v1/admin/track"
+    ],
+    "evidence": "docs/migration/tracking.md",
+    "status": "implemented; scoped contract and permission tests passed; full acceptance pending"
+  },
+  {
+    "id": "API-081",
+    "method": "POST",
+    "path": "/api/admin/track",
+    "source": "src/app/api/admin/track/route.ts",
+    "sourceSHA": "dddf8cd00a19cf7d562f503549f4c000109057d1",
+    "guards": [
+      "guardApi(req)",
+      "guardApi(req)"
+    ],
+    "entities": [
+      "inquiry",
+      "projectRequest",
+      "siteSetting",
+      "trackLink"
+    ],
+    "inventoryNote": "File-level guard/entity hints; handler authorization requires reviewed contract tests.",
+    "target": "apps/api/src/track/controller.ts",
+    "targetAliases": [
+      "/api/admin/track",
+      "/api/v1/admin/track"
+    ],
+    "evidence": "docs/migration/tracking.md",
+    "status": "implemented; scoped contract and permission tests passed; full acceptance pending"
   },
   {
     "id": "API-053",
@@ -693,8 +955,8 @@
     "path": "/api/admin/users/[id]",
     "source": "src/app/api/admin/users/[id]/route.ts",
     "guards": [
-      "guardApi(req, \"users.view\");",
-      "guardApi(req, \"users.update\");"
+      "guardApi(req, \"users.view\")",
+      "guardApi(req, \"users.update\")"
     ],
     "entities": [
       "auditLog",
@@ -702,7 +964,9 @@
       "projectRequest",
       "role",
       "user"
-    ]
+    ],
+    "sourceSHA": "dddf8cd00a19cf7d562f503549f4c000109057d1",
+    "inventoryNote": "File-level guard/entity hints; handler authorization requires reviewed contract tests."
   },
   {
     "id": "API-054",
@@ -710,8 +974,8 @@
     "path": "/api/admin/users/[id]",
     "source": "src/app/api/admin/users/[id]/route.ts",
     "guards": [
-      "guardApi(req, \"users.view\");",
-      "guardApi(req, \"users.update\");"
+      "guardApi(req, \"users.view\")",
+      "guardApi(req, \"users.update\")"
     ],
     "entities": [
       "auditLog",
@@ -719,7 +983,9 @@
       "projectRequest",
       "role",
       "user"
-    ]
+    ],
+    "sourceSHA": "dddf8cd00a19cf7d562f503549f4c000109057d1",
+    "inventoryNote": "File-level guard/entity hints; handler authorization requires reviewed contract tests."
   },
   {
     "id": "API-055",
@@ -727,13 +993,15 @@
     "path": "/api/admin/users",
     "source": "src/app/api/admin/users/route.ts",
     "guards": [
-      "guardApi(req, \"users.view\");",
-      "guardApi(req, \"users.create\");"
+      "guardApi(req, \"users.view\")",
+      "guardApi(req, \"users.create\")"
     ],
     "entities": [
       "user",
       "userInvite"
-    ]
+    ],
+    "sourceSHA": "dddf8cd00a19cf7d562f503549f4c000109057d1",
+    "inventoryNote": "File-level guard/entity hints; handler authorization requires reviewed contract tests."
   },
   {
     "id": "API-056",
@@ -741,13 +1009,15 @@
     "path": "/api/admin/users",
     "source": "src/app/api/admin/users/route.ts",
     "guards": [
-      "guardApi(req, \"users.view\");",
-      "guardApi(req, \"users.create\");"
+      "guardApi(req, \"users.view\")",
+      "guardApi(req, \"users.create\")"
     ],
     "entities": [
       "user",
       "userInvite"
-    ]
+    ],
+    "sourceSHA": "dddf8cd00a19cf7d562f503549f4c000109057d1",
+    "inventoryNote": "File-level guard/entity hints; handler authorization requires reviewed contract tests."
   },
   {
     "id": "API-057",
@@ -756,8 +1026,15 @@
     "source": "src/app/api/attachments/[id]/route.ts",
     "guards": [],
     "entities": [
-      "attachment"
-    ]
+      "attachment",
+      "inquiryMessage",
+      "projectRequest",
+      "requestMessage",
+      "siteSetting",
+      "trackLink"
+    ],
+    "sourceSHA": "dddf8cd00a19cf7d562f503549f4c000109057d1",
+    "inventoryNote": "File-level guard/entity hints; handler authorization requires reviewed contract tests."
   },
   {
     "id": "API-058",
@@ -765,28 +1042,17 @@
     "path": "/api/attachments",
     "source": "src/app/api/attachments/route.ts",
     "guards": [
-      "guardApi(req);"
+      "guardApi(req)"
     ],
     "entities": [
       "attachment",
-      "projectRequest"
-    ]
-  },
-  {
-    "id": "API-059",
-    "method": "GET",
-    "path": "/api/auth/[...nextauth]",
-    "source": "src/app/api/auth/[...nextauth]/route.ts",
-    "guards": [],
-    "entities": []
-  },
-  {
-    "id": "API-060",
-    "method": "POST",
-    "path": "/api/auth/[...nextauth]",
-    "source": "src/app/api/auth/[...nextauth]/route.ts",
-    "guards": [],
-    "entities": []
+      "inquiry",
+      "inquiryMessage",
+      "projectRequest",
+      "requestMessage"
+    ],
+    "sourceSHA": "dddf8cd00a19cf7d562f503549f4c000109057d1",
+    "inventoryNote": "File-level guard/entity hints; handler authorization requires reviewed contract tests."
   },
   {
     "id": "API-061",
@@ -794,12 +1060,14 @@
     "path": "/api/auth/change-password",
     "source": "src/app/api/auth/change-password/route.ts",
     "guards": [
-      "guardApi(req);"
+      "guardApi(req)"
     ],
     "entities": [
       "authSession",
       "user"
-    ]
+    ],
+    "sourceSHA": "dddf8cd00a19cf7d562f503549f4c000109057d1",
+    "inventoryNote": "File-level guard/entity hints; handler authorization requires reviewed contract tests."
   },
   {
     "id": "API-062",
@@ -809,7 +1077,9 @@
     "guards": [],
     "entities": [
       "user"
-    ]
+    ],
+    "sourceSHA": "dddf8cd00a19cf7d562f503549f4c000109057d1",
+    "inventoryNote": "File-level guard/entity hints; handler authorization requires reviewed contract tests."
   },
   {
     "id": "API-063",
@@ -818,9 +1088,10 @@
     "source": "src/app/api/auth/invite/route.ts",
     "guards": [],
     "entities": [
-      "user",
       "userInvite"
-    ]
+    ],
+    "sourceSHA": "dddf8cd00a19cf7d562f503549f4c000109057d1",
+    "inventoryNote": "File-level guard/entity hints; handler authorization requires reviewed contract tests."
   },
   {
     "id": "API-064",
@@ -830,7 +1101,9 @@
     "guards": [],
     "entities": [
       "user"
-    ]
+    ],
+    "sourceSHA": "dddf8cd00a19cf7d562f503549f4c000109057d1",
+    "inventoryNote": "File-level guard/entity hints; handler authorization requires reviewed contract tests."
   },
   {
     "id": "API-065",
@@ -839,10 +1112,10 @@
     "source": "src/app/api/auth/reset-password/route.ts",
     "guards": [],
     "entities": [
-      "authSession",
-      "authToken",
-      "user"
-    ]
+      "authToken"
+    ],
+    "sourceSHA": "dddf8cd00a19cf7d562f503549f4c000109057d1",
+    "inventoryNote": "File-level guard/entity hints; handler authorization requires reviewed contract tests."
   },
   {
     "id": "API-066",
@@ -850,12 +1123,14 @@
     "path": "/api/auth/sessions",
     "source": "src/app/api/auth/sessions/route.ts",
     "guards": [
-      "guardApi(req);"
+      "guardApi(req)"
     ],
     "entities": [
       "authSession",
       "user"
-    ]
+    ],
+    "sourceSHA": "dddf8cd00a19cf7d562f503549f4c000109057d1",
+    "inventoryNote": "File-level guard/entity hints; handler authorization requires reviewed contract tests."
   },
   {
     "id": "API-067",
@@ -863,12 +1138,14 @@
     "path": "/api/auth/sessions",
     "source": "src/app/api/auth/sessions/route.ts",
     "guards": [
-      "guardApi(req);"
+      "guardApi(req)"
     ],
     "entities": [
       "authSession",
       "user"
-    ]
+    ],
+    "sourceSHA": "dddf8cd00a19cf7d562f503549f4c000109057d1",
+    "inventoryNote": "File-level guard/entity hints; handler authorization requires reviewed contract tests."
   },
   {
     "id": "API-068",
@@ -876,9 +1153,9 @@
     "path": "/api/auth/verify-email",
     "source": "src/app/api/auth/verify-email/route.ts",
     "guards": [],
-    "entities": [
-      "user"
-    ]
+    "entities": [],
+    "sourceSHA": "dddf8cd00a19cf7d562f503549f4c000109057d1",
+    "inventoryNote": "File-level guard/entity hints; handler authorization requires reviewed contract tests."
   },
   {
     "id": "API-069",
@@ -886,7 +1163,9 @@
     "path": "/api/health/ready",
     "source": "src/app/api/health/ready/route.ts",
     "guards": [],
-    "entities": []
+    "entities": [],
+    "sourceSHA": "dddf8cd00a19cf7d562f503549f4c000109057d1",
+    "inventoryNote": "File-level guard/entity hints; handler authorization requires reviewed contract tests."
   },
   {
     "id": "API-070",
@@ -896,7 +1175,9 @@
     "guards": [],
     "entities": [
       "inquiry"
-    ]
+    ],
+    "sourceSHA": "dddf8cd00a19cf7d562f503549f4c000109057d1",
+    "inventoryNote": "File-level guard/entity hints; handler authorization requires reviewed contract tests."
   },
   {
     "id": "API-071",
@@ -906,7 +1187,9 @@
     "guards": [],
     "entities": [
       "mediaItem"
-    ]
+    ],
+    "sourceSHA": "dddf8cd00a19cf7d562f503549f4c000109057d1",
+    "inventoryNote": "File-level guard/entity hints; handler authorization requires reviewed contract tests."
   },
   {
     "id": "API-072",
@@ -916,6 +1199,83 @@
     "guards": [],
     "entities": [
       "projectRequest"
-    ]
+    ],
+    "sourceSHA": "dddf8cd00a19cf7d562f503549f4c000109057d1",
+    "inventoryNote": "File-level guard/entity hints; handler authorization requires reviewed contract tests."
+  },
+  {
+    "id": "API-082",
+    "method": "GET",
+    "path": "/api/track/card",
+    "source": "src/app/api/track/card/route.ts",
+    "sourceSHA": "dddf8cd00a19cf7d562f503549f4c000109057d1",
+    "guards": [],
+    "entities": [],
+    "inventoryNote": "File-level guard/entity hints; handler authorization requires reviewed contract tests.",
+    "target": "apps/api/src/track/controller.ts",
+    "targetAliases": [
+      "/api/track/card",
+      "/api/v1/track/card"
+    ],
+    "evidence": "docs/migration/tracking.md",
+    "status": "implemented; scoped contract and permission tests passed; full acceptance pending"
+  },
+  {
+    "id": "API-083",
+    "method": "POST",
+    "path": "/api/track/exchange",
+    "source": "src/app/api/track/exchange/route.ts",
+    "sourceSHA": "dddf8cd00a19cf7d562f503549f4c000109057d1",
+    "guards": [],
+    "entities": [
+      "trackLink"
+    ],
+    "inventoryNote": "File-level guard/entity hints; handler authorization requires reviewed contract tests.",
+    "target": "apps/api/src/track/controller.ts",
+    "targetAliases": [
+      "/api/track/exchange",
+      "/api/v1/track/exchange"
+    ],
+    "evidence": "docs/migration/tracking.md",
+    "status": "implemented; scoped contract and permission tests passed; full acceptance pending"
+  },
+  {
+    "id": "API-084",
+    "method": "POST",
+    "path": "/api/track/reply",
+    "source": "src/app/api/track/reply/route.ts",
+    "sourceSHA": "dddf8cd00a19cf7d562f503549f4c000109057d1",
+    "guards": [],
+    "entities": [],
+    "inventoryNote": "File-level guard/entity hints; handler authorization requires reviewed contract tests.",
+    "target": "apps/api/src/track/controller.ts",
+    "targetAliases": [
+      "/api/track/reply",
+      "/api/v1/track/reply"
+    ],
+    "evidence": "docs/migration/tracking.md",
+    "status": "implemented; scoped contract and permission tests passed; full acceptance pending"
+  },
+  {
+    "id": "API-059",
+    "method": "GET",
+    "path": "/api/auth/[...nextauth]",
+    "source": "src/app/api/auth/[...nextauth]/route.ts",
+    "guards": [],
+    "entities": [],
+    "sourceSHA": "dddf8cd00a19cf7d562f503549f4c000109057d1",
+    "handlerKind": "auth-adapter-export",
+    "inventoryNote": "Separate from the 82 explicitly declared HTTP handlers; preserve legacy authentication adapter contract."
+  },
+  {
+    "id": "API-060",
+    "method": "POST",
+    "path": "/api/auth/[...nextauth]",
+    "source": "src/app/api/auth/[...nextauth]/route.ts",
+    "guards": [],
+    "entities": [],
+    "sourceSHA": "dddf8cd00a19cf7d562f503549f4c000109057d1",
+    "handlerKind": "auth-adapter-export",
+    "inventoryNote": "Separate from the 82 explicitly declared HTTP handlers; preserve legacy authentication adapter contract."
   }
 ]

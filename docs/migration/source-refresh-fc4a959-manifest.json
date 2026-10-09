@@ -1,0 +1,1786 @@
+{
+  "source": "https://github.com/so7ob/Website",
+  "sourceSHA": "fc4a959e87e7c3750a0546f9d4fa10e31ac3b63c",
+  "previousSourceSHA": "5321b7fd11db421c83290b262f276811e5f04e5f",
+  "verifiedAt": "2026-10-03T19:09:25Z",
+  "commits": 15,
+  "files": [
+    {
+      "source": ".gitignore",
+      "change": "modified",
+      "oldSHA256": "43c85586319d01dde9b8921dbd7bd307ad95ae896eb7d8564ca7a058abab2ce6",
+      "newSHA256": "0e436ee7e1da5e128851e653cbf29ce9c47933f9e1d57747a50042a3177ba65e",
+      "status": "pending-review-and-port",
+      "evidence": []
+    },
+    {
+      "source": "Caddyfile",
+      "change": "modified",
+      "oldSHA256": "89b7a9c04929989fb5014e1b5032ecd58df9491a3e3d09d69d62d740f29b0a7b",
+      "newSHA256": "89b971d90dea10516dff89d42ccdf18a5517a1a9577fe98eae706b68dadb1494",
+      "status": "pending-review-and-port",
+      "evidence": []
+    },
+    {
+      "source": "README.md",
+      "change": "modified",
+      "oldSHA256": "103f0feef100f516b2f52e1ec9e32b38eb4758728573d681983dd19f19f03779",
+      "newSHA256": "0139a487368127e9a194c916016c54fc2166cb2c06aa4c3e7eb5ff1761cf52bf",
+      "status": "pending-review-and-port",
+      "evidence": []
+    },
+    {
+      "source": "bunfig.toml",
+      "change": "added",
+      "oldSHA256": null,
+      "newSHA256": "fab211753f30dc7ec60156ec90cd9e5852666ab28fe7f8a6cb0f61600dfc957c",
+      "status": "pending-review-and-port",
+      "evidence": []
+    },
+    {
+      "source": "db-snapshots/latest/manifest.json",
+      "change": "added",
+      "oldSHA256": null,
+      "newSHA256": "44382c35eb9c6663add7f14b0a95718619927bc92cb683790f6bd5e4c7fc2a28",
+      "status": "pending-review-and-port",
+      "evidence": []
+    },
+    {
+      "source": "docs/reports/2026-10-03/ROADMAP.ar.md",
+      "change": "added",
+      "oldSHA256": null,
+      "newSHA256": "26e5041c89ebd51623813e5bf968c72e4a98d8713d5d7a53d5a5f1a71a9d0fd8",
+      "status": "pending-review-and-port",
+      "evidence": []
+    },
+    {
+      "source": "package.json",
+      "change": "modified",
+      "oldSHA256": "ac57e65f643ef44bc33aba3bdc619707a5ce8834d06ea89dd22272fb42683386",
+      "newSHA256": "7eb0f3d22e0f75924dee58253be906db476333db1173d52d4b9fd8e95791e71c",
+      "status": "pending-review-and-port",
+      "evidence": []
+    },
+    {
+      "source": "prisma/migrations/20261002155956_page_draft_settings_revision/migration.sql",
+      "change": "added",
+      "oldSHA256": null,
+      "newSHA256": "84f0a73e92204a5f1440692803533193886a8ef014b470faefea61f59c87f2cc",
+      "status": "pending-review-and-port",
+      "evidence": []
+    },
+    {
+      "source": "prisma/schema.prisma",
+      "change": "modified",
+      "oldSHA256": "cf677ab3201268dbf776d16e4b866e66f6113d792f7847693c723253ecdb77a5",
+      "newSHA256": "3eb0e864bc2aaa9dddd8624988af1c1e70ce143187a12d49594932caf4541a99",
+      "status": "pending-review-and-port",
+      "evidence": []
+    },
+    {
+      "source": "scripts/restore-demo-users.ts",
+      "change": "modified",
+      "oldSHA256": "8821320421db974556375ac8bb70203153153cf1bae7fdbdd6193c3185774780",
+      "newSHA256": "6e4b1090257bbb2e72a9dff1d741b5477f3dc4dd7002bd1e98fa6e6ed63afd24",
+      "status": "pending-review-and-port",
+      "evidence": []
+    },
+    {
+      "source": "scripts/sandbox-recovery.sh",
+      "change": "added",
+      "oldSHA256": null,
+      "newSHA256": "24d969efc96686c9c7a33b86774b651f29f52ad9917026068c28d3ce0603429d",
+      "status": "pending-review-and-port",
+      "evidence": []
+    },
+    {
+      "source": "scripts/smoke-home-swap.ts",
+      "change": "added",
+      "oldSHA256": null,
+      "newSHA256": "de3aa7c214a3bf43d5620989917f7e8cdce30e17272776edef1e188cb8b7f107",
+      "status": "pending-review-and-port",
+      "evidence": []
+    },
+    {
+      "source": "scripts/smoke-page-flow.ts",
+      "change": "added",
+      "oldSHA256": null,
+      "newSHA256": "741965a02a9edade7e348576c7736c922ada791d4388b7bc7553083b29d11bac",
+      "status": "pending-review-and-port",
+      "evidence": []
+    },
+    {
+      "source": "src/app/[locale]/[[...slug]]/page.tsx",
+      "change": "modified",
+      "oldSHA256": "6ac93bd4c0df40b4f65fded1ef7239d1e66b240f16846a114f5c7c7e77b87bd8",
+      "newSHA256": "b14cf5d9e28ccbad79c155e8ab865128ba00d7e2490d9d05c11e948529923852",
+      "status": "pending-review-and-port",
+      "evidence": []
+    },
+    {
+      "source": "src/app/[locale]/admin/pages/[id]/preview/page.tsx",
+      "change": "modified",
+      "oldSHA256": "c9d22c322461dd4fea9d74d0719e47133c8e44d0f7d9f1c15f0552f6071a24d8",
+      "newSHA256": "0ec7738555c880b5e66370f5a5495e69b2a7fbaac278ace45533c248f60948d6",
+      "status": "pending-review-and-port",
+      "evidence": []
+    },
+    {
+      "source": "src/app/[locale]/admin/pages/[id]/preview/preview-shell.tsx",
+      "change": "modified",
+      "oldSHA256": "50e400184ddf01fbd1771aaef1eaab65bc6a5a08a4f5fc7efe46751c19a0bf85",
+      "newSHA256": "80ae5d4916bdb6904916c19740b4fdf01b56b0487a94fdc40f47c4fd67d9e783",
+      "status": "pending-review-and-port",
+      "evidence": []
+    },
+    {
+      "source": "src/app/[locale]/admin/pages/pages-client.tsx",
+      "change": "modified",
+      "oldSHA256": "a6721c710fb004706b69413780ac8b8d669b4b582ce4b502bcaea6228428bd72",
+      "newSHA256": "96d9fa404323227afd6ad4397a227804664b443123f9c3b5e83fc1823ee0701f",
+      "status": "ported-editor; scoped journeys passed; full acceptance pending",
+      "evidence": [
+        "docs/migration/tree-editor.md",
+        "docs/migration/evidence/tree-editor/file-map.json"
+      ]
+    },
+    {
+      "source": "src/app/[locale]/auth/_components/login-form.tsx",
+      "change": "modified",
+      "oldSHA256": "5248932e81f7964bb1a82d7c3be6f7ddc1e8765f4de3fa782d18636719018a04",
+      "newSHA256": "335489645d12ca8644580835b7b38fcbd27158ba9dd20560154bb5aa817acd51",
+      "status": "ported-source-delta; hydration correction added; focused tests passed",
+      "evidence": [
+        "tests/e2e/login-hydration.spec.ts",
+        "evidence/administration/login-hydration-summary.json"
+      ],
+      "destination": "apps/web/src/components/auth/login-form.tsx"
+    },
+    {
+      "source": "src/app/[locale]/track/page.tsx",
+      "change": "added",
+      "oldSHA256": null,
+      "newSHA256": "4794aaf696eadb7cc0fc211119b4783ae5b272ccf1fa02e4adaa1b1301c34809",
+      "status": "tracking adapted; scoped tests passed; full acceptance pending",
+      "evidence": [
+        "docs/migration/tracking.md",
+        "docs/migration/evidence/tracking/file-map.json"
+      ]
+    },
+    {
+      "source": "src/app/[locale]/track/track-client.tsx",
+      "change": "added",
+      "oldSHA256": null,
+      "newSHA256": "c2e0464b5e28e1a2210142303bfed463a9756dac457c6e803de89d6094a59960",
+      "status": "tracking adapted; scoped tests passed; full acceptance pending",
+      "evidence": [
+        "docs/migration/tracking.md",
+        "docs/migration/evidence/tracking/file-map.json"
+      ]
+    },
+    {
+      "source": "src/app/api/account/inquiries/route.ts",
+      "change": "modified",
+      "oldSHA256": "2803f302e6d8f15e0c7becea4a38592aa9033a3b13b1272aae8e544fc42bb2a6",
+      "newSHA256": "bede70ad6b9f8a2339819aabc82f56778965caa4218cd2d1dcd9ad9d829e0d6b",
+      "status": "pending-review-and-port",
+      "evidence": []
+    },
+    {
+      "source": "src/app/api/admin/inquiries/[id]/messages/route.ts",
+      "change": "modified",
+      "oldSHA256": "737776c0e5ed2d4eef732d586ae987266e04d67827ccd36ef168b4f6eeecd1a5",
+      "newSHA256": "190dd3539d808fed63214312803341faf5efd7dc4a855db1f700b4b38f041cc2",
+      "status": "tracking adapted; scoped tests passed; full acceptance pending",
+      "evidence": [
+        "docs/migration/tracking.md",
+        "docs/migration/evidence/tracking/file-map.json"
+      ]
+    },
+    {
+      "source": "src/app/api/admin/media/[id]/route.ts",
+      "change": "modified",
+      "oldSHA256": "0c44c82e6e8349067b98e18e211cf7cefd67cdd6db4427044435cad0875d9c7f",
+      "newSHA256": "fee5b5f68e082db08b96520360e2b26b8916c7a6d7489412751665ee29df5f5a",
+      "status": "pending-review-and-port",
+      "evidence": []
+    },
+    {
+      "source": "src/app/api/admin/media/route.ts",
+      "change": "modified",
+      "oldSHA256": "737f202eae0d42d7803b4f94df038b17e940932d4d42d8b7920b4422b1d6cde3",
+      "newSHA256": "212fb51bfe569212d7af065e489fbfb44cf7614cfd1275a691c69b3080b7e4aa",
+      "status": "pending-review-and-port",
+      "evidence": []
+    },
+    {
+      "source": "src/app/api/admin/pages/[id]/discard/route.ts",
+      "change": "added",
+      "oldSHA256": null,
+      "newSHA256": "02bb9d140ae39c79c3bc80fcef058d91113a24dd1efaa5d76e8f64244d00af26",
+      "status": "adapted-scoped-tests-passed; UI-pending",
+      "evidence": [
+        "docs/migration/cms-publication.md",
+        "docs/migration/evidence/publication/"
+      ]
+    },
+    {
+      "source": "src/app/api/admin/pages/[id]/publish/route.ts",
+      "change": "modified",
+      "oldSHA256": "9d667479330f7d2637eaa6c1a3c779283f664656d99337f981a40416ecead9d2",
+      "newSHA256": "71edd838cef454d24a77861afe2d35f0ef296d030acd707b440c911eaf659ccb",
+      "status": "adapted-scoped-tests-passed; UI-pending",
+      "evidence": [
+        "docs/migration/cms-publication.md",
+        "docs/migration/evidence/publication/"
+      ]
+    },
+    {
+      "source": "src/app/api/admin/pages/[id]/route.ts",
+      "change": "modified",
+      "oldSHA256": "78f86c9f09f8c5e758b3cf086eba280795929a73e31dca3bbf0e6bffb7b8dcd1",
+      "newSHA256": "d32050b7f0bb79c8611cc4b09ce5c743bf0fb74ec7dd1d384c4976e486dcf592",
+      "status": "pending-review-and-port",
+      "evidence": []
+    },
+    {
+      "source": "src/app/api/admin/pages/[id]/schedule/route.ts",
+      "change": "added",
+      "oldSHA256": null,
+      "newSHA256": "2a0b4e013c6638a67c276fba6abc29d4fe92f5a2b6a2117c96cee4d6ea79aad4",
+      "status": "adapted-scoped-tests-passed; UI-pending",
+      "evidence": [
+        "docs/migration/cms-publication.md",
+        "docs/migration/evidence/publication/"
+      ]
+    },
+    {
+      "source": "src/app/api/admin/pages/[id]/versions/[version]/restore/route.ts",
+      "change": "modified",
+      "oldSHA256": "81ae49ea7f184e4027cc22a3f83f4fbe48966614b32fff1aa81d101d7c522c4c",
+      "newSHA256": "88dcde231adc9b414101c92556789bae456dae83099b024c52e4c3aa0894875f",
+      "status": "adapted-scoped-tests-passed; UI-pending",
+      "evidence": [
+        "docs/migration/cms-publication.md",
+        "docs/migration/evidence/publication/"
+      ]
+    },
+    {
+      "source": "src/app/api/admin/pages/[id]/versions/route.ts",
+      "change": "modified",
+      "oldSHA256": "c467f5c9ef7f8aa44191f626726d7995a0aa0816c719b6d32b350ccde1ef5538",
+      "newSHA256": "d368e6f20b72ea3b0e3ca00cc040f06f5f7b720b10e55c12c7915dbe5c9ddae8",
+      "status": "pending-review-and-port",
+      "evidence": []
+    },
+    {
+      "source": "src/app/api/admin/pages/route.ts",
+      "change": "modified",
+      "oldSHA256": "30787b570f99b092bbc6dc8549415b08d8738aea3e66ee0b5bb27cac6cea4397",
+      "newSHA256": "244c831094266ab8551ea1426add8514172572f1813e23c3058f9dabe8cc9364",
+      "status": "pending-review-and-port",
+      "evidence": []
+    },
+    {
+      "source": "src/app/api/admin/settings/route.ts",
+      "change": "modified",
+      "oldSHA256": "0be88bb0b8eac742c3310b7dec3a44abcd4450b27d00e31a847f6694781230e1",
+      "newSHA256": "ae9864732002e594205eb619d6dfae391d1db61b84f071db0ed16e4a00a47d84",
+      "status": "tracking adapted; scoped tests passed; full acceptance pending",
+      "evidence": [
+        "docs/migration/tracking.md",
+        "docs/migration/evidence/tracking/file-map.json"
+      ]
+    },
+    {
+      "source": "src/app/api/admin/templates/[id]/apply/route.ts",
+      "change": "added",
+      "oldSHA256": null,
+      "newSHA256": "874707944ba6bb0b129baad18ce95d53f9a906be03ae41be8bc940261caa4d60",
+      "status": "template services implemented; UI integration pending",
+      "evidence": [
+        "docs/migration/page-templates.md"
+      ],
+      "destination": "packages/server/src/admin/templates.ts"
+    },
+    {
+      "source": "src/app/api/admin/templates/[id]/route.ts",
+      "change": "added",
+      "oldSHA256": null,
+      "newSHA256": "2d1531521d0bd011b9b7f500373cf73d04868e2f878185c0dd08ad13402619b4",
+      "status": "template services implemented; UI integration pending",
+      "evidence": [
+        "docs/migration/page-templates.md"
+      ],
+      "destination": "packages/server/src/admin/templates.ts"
+    },
+    {
+      "source": "src/app/api/admin/templates/route.ts",
+      "change": "added",
+      "oldSHA256": null,
+      "newSHA256": "c8d48d4abadc08f4dce3e123597e923002bad35b7e0d2456e84ab29598ef1390",
+      "status": "template services implemented; UI integration pending",
+      "evidence": [
+        "docs/migration/page-templates.md"
+      ],
+      "destination": "apps/api/src/admin/templates.controller.ts"
+    },
+    {
+      "source": "src/app/api/admin/track/route.ts",
+      "change": "added",
+      "oldSHA256": null,
+      "newSHA256": "9ecf37e68ea481ac26f2292efb3e35211c958ab78cbcbf4eb02bd5aa61a9bcdb",
+      "status": "tracking adapted; scoped tests passed; full acceptance pending",
+      "evidence": [
+        "docs/migration/tracking.md",
+        "docs/migration/evidence/tracking/file-map.json"
+      ]
+    },
+    {
+      "source": "src/app/api/attachments/[id]/route.ts",
+      "change": "modified",
+      "oldSHA256": "17e1d734c9a84146f88c8b0f3827bb40c7eefebbfbf14d542e725f2f37649672",
+      "newSHA256": "d17d2b895ff23864fa09b1aac11ee04e429a48e72299c18064a0295faf9dc78d",
+      "status": "tracking adapted; scoped tests passed; full acceptance pending",
+      "evidence": [
+        "docs/migration/tracking.md",
+        "docs/migration/evidence/tracking/file-map.json"
+      ]
+    },
+    {
+      "source": "src/app/api/attachments/route.ts",
+      "change": "modified",
+      "oldSHA256": "eb34e07d75bbb7f8c387c3256da6b154c1a0b5efe9f29d00ec017b5019511a2c",
+      "newSHA256": "9d263002a0c5b954c3873307960fa5a664c0e653641cedf3f308d81699548590",
+      "status": "pending-review-and-port",
+      "evidence": []
+    },
+    {
+      "source": "src/app/api/inquiries/route.ts",
+      "change": "modified",
+      "oldSHA256": "1f917862c6c71b14a3bc673c2cdcf4c0cd95765fed7947d51a87d057d9317499",
+      "newSHA256": "0a0044ad7c5156b13982afb3f4773a553789ad43decbbd68a54d4760d37c4dd8",
+      "status": "pending-review-and-port",
+      "evidence": []
+    },
+    {
+      "source": "src/app/api/requests/route.ts",
+      "change": "modified",
+      "oldSHA256": "8982cf1b2744eb3238d954fffae42053f35fddd3a2b9e734cb7ae6e1b6e61571",
+      "newSHA256": "cf20a3b7c93d314f3c42f80a9ac888f0a7780565220457103dec1c2a48d8bf28",
+      "status": "pending-review-and-port",
+      "evidence": []
+    },
+    {
+      "source": "src/app/api/track/card/route.ts",
+      "change": "added",
+      "oldSHA256": null,
+      "newSHA256": "ad9a99207b7e7bab79343d0e2039d1804eaa3b781c0e5f3423800d9571f50e53",
+      "status": "tracking adapted; scoped tests passed; full acceptance pending",
+      "evidence": [
+        "docs/migration/tracking.md",
+        "docs/migration/evidence/tracking/file-map.json"
+      ]
+    },
+    {
+      "source": "src/app/api/track/exchange/route.ts",
+      "change": "added",
+      "oldSHA256": null,
+      "newSHA256": "32441f46de98ec67c1fd2fb9ff40811c0f4425b56eac7c8319b181e1207f66c0",
+      "status": "tracking adapted; scoped tests passed; full acceptance pending",
+      "evidence": [
+        "docs/migration/tracking.md",
+        "docs/migration/evidence/tracking/file-map.json"
+      ]
+    },
+    {
+      "source": "src/app/api/track/reply/route.ts",
+      "change": "added",
+      "oldSHA256": null,
+      "newSHA256": "85c7a658df496214e685c05fca84923ae157a7474d86f4a5ecee9889f90f7490",
+      "status": "tracking adapted; scoped tests passed; full acceptance pending",
+      "evidence": [
+        "docs/migration/tracking.md",
+        "docs/migration/evidence/tracking/file-map.json"
+      ]
+    },
+    {
+      "source": "src/app/sitemap.ts",
+      "change": "modified",
+      "oldSHA256": "6e5ff53674e02ba192b8e4f3f6ae38686db1390e1862c4591df9dc2020fec0f7",
+      "newSHA256": "8100e8253fdc586408c058996abc1f27c26b44423ee83e5cd5502022d8dd9cde",
+      "status": "pending-review-and-port",
+      "evidence": []
+    },
+    {
+      "source": "src/components/account/inquiry-detail-view.tsx",
+      "change": "modified",
+      "oldSHA256": "12666a5bd358ce463b5aecc157259274b3d30c5139e0886ade89a6a24ef89c5f",
+      "newSHA256": "df24fdf5f8ac6915571d0c60879822987cc17f6d9c134a776189021754a11155",
+      "status": "pending-review-and-port",
+      "evidence": []
+    },
+    {
+      "source": "src/components/account/new-inquiry-dialog.tsx",
+      "change": "modified",
+      "oldSHA256": "069ec54bbfd8b99b7ab7b6a5a1a9874672d067030f840320311cd869387df7cb",
+      "newSHA256": "0fcdf0a2b481911135926edf874843f25bfc100303d4c37427be69fb13fce19f",
+      "status": "pending-review-and-port",
+      "evidence": []
+    },
+    {
+      "source": "src/components/account/notifications-view.tsx",
+      "change": "modified",
+      "oldSHA256": "dbb43c1d54b172b025b04739fde7d1235c62dca8dfd58e85c53d8af0970781b3",
+      "newSHA256": "f3bd4765bae189231f7a649e905a45118ba7a3c22af26a7b7a1e793443d5aa6a",
+      "status": "pending-review-and-port",
+      "evidence": []
+    },
+    {
+      "source": "src/components/account/request-detail-view.tsx",
+      "change": "modified",
+      "oldSHA256": "96e6bd8d8ccde18de1a77d5985718b3709c77b5e480cd5af8a1333d2eaf66283",
+      "newSHA256": "e9724c440abe55647593050fcbe49de6a3f19586883a6d980db07b9aa5e4abc8",
+      "status": "pending-review-and-port",
+      "evidence": []
+    },
+    {
+      "source": "src/components/account/types.ts",
+      "change": "modified",
+      "oldSHA256": "67202869478b07bd72aea0f1d5d9cfd1d241b382e8d8107b2ff964f605884b00",
+      "newSHA256": "9c976f75f69274776a1959a37e14fd3b11ece2558d2097ae480f4378aa362533",
+      "status": "pending-review-and-port",
+      "evidence": []
+    },
+    {
+      "source": "src/components/admin/editor/block-library.tsx",
+      "change": "modified",
+      "oldSHA256": "7541109fd23160102635d3a1aade88dc0111a5e06c467d6af73a3467ca9cec91",
+      "newSHA256": "e485c777b3e01477271db4d3415714153ce7e2bc768a19b7146a2bed02da1882",
+      "status": "ported-editor; scoped journeys passed; full acceptance pending",
+      "evidence": [
+        "docs/migration/tree-editor.md",
+        "docs/migration/evidence/tree-editor/file-map.json"
+      ]
+    },
+    {
+      "source": "src/components/admin/editor/block-palette.tsx",
+      "change": "modified",
+      "oldSHA256": "ade54cb01f794373eec1aed26460c7f87776611c6b6ccbe23e06f509e7663ff5",
+      "newSHA256": "825412d5b9d08549a12b0c9cf48a4a0091d6969e4ca28a6bc02212f1af81b91f",
+      "status": "ported-editor; scoped journeys passed; full acceptance pending",
+      "evidence": [
+        "docs/migration/tree-editor.md",
+        "docs/migration/evidence/tree-editor/file-map.json"
+      ]
+    },
+    {
+      "source": "src/components/admin/editor/clipboard-menu.tsx",
+      "change": "added",
+      "oldSHA256": null,
+      "newSHA256": "b5e0972262dcb9b82a22b33d8647cbfa03ab166ae744f9f93236b2eaccde22bf",
+      "status": "ported-editor; scoped journeys passed; full acceptance pending",
+      "evidence": [
+        "docs/migration/tree-editor.md",
+        "docs/migration/evidence/tree-editor/file-map.json"
+      ]
+    },
+    {
+      "source": "src/components/admin/editor/editor-canvas.tsx",
+      "change": "modified",
+      "oldSHA256": "0fb120c5d85e52fdf58e7c74dfbee82d257dc21ad5b1704d70c496587871273e",
+      "newSHA256": "aec078d03fdf8b9698162a0294a7804da67c5fbdf600011de28b94b16a3d5248",
+      "status": "ported-editor; scoped journeys passed; full acceptance pending",
+      "evidence": [
+        "docs/migration/tree-editor.md",
+        "docs/migration/evidence/tree-editor/file-map.json"
+      ]
+    },
+    {
+      "source": "src/components/admin/editor/editor-guide.tsx",
+      "change": "added",
+      "oldSHA256": null,
+      "newSHA256": "ac2acbf01303594f0600b5a8380bc2a1564c458c81ea00038f18602de8f5ce7d",
+      "status": "ported-editor; scoped journeys passed; full acceptance pending",
+      "evidence": [
+        "docs/migration/tree-editor.md",
+        "docs/migration/evidence/tree-editor/file-map.json"
+      ]
+    },
+    {
+      "source": "src/components/admin/editor/layer-tree.tsx",
+      "change": "added",
+      "oldSHA256": null,
+      "newSHA256": "1d3217e5987e5e63eff32db05413cdf38eabb10dde8407f5e9231c7e57bba24f",
+      "status": "ported-editor; scoped journeys passed; full acceptance pending",
+      "evidence": [
+        "docs/migration/tree-editor.md",
+        "docs/migration/evidence/tree-editor/file-map.json"
+      ]
+    },
+    {
+      "source": "src/components/admin/editor/media-picker.tsx",
+      "change": "modified",
+      "oldSHA256": "56f71c4de9aaaef599a2d4b9fa8520b0ec34b1ed3d9903a306762291073fef5a",
+      "newSHA256": "b240cb61edaa726350683b7f5740e24a752521ad288a11bea3acf73a272cf173",
+      "status": "ported-editor; scoped journeys passed; full acceptance pending",
+      "evidence": [
+        "docs/migration/tree-editor.md",
+        "docs/migration/evidence/tree-editor/file-map.json"
+      ]
+    },
+    {
+      "source": "src/components/admin/editor/page-editor.tsx",
+      "change": "modified",
+      "oldSHA256": "76d3b998a2b4beca21e5cbfa8a9128c0fc5e372643ae5b66d670d52bb481a10c",
+      "newSHA256": "47c56b3b297dbb6aa05183420bbe38b7aa678adfc212efcbfd42feea8a1fc4c3",
+      "status": "ported-editor; scoped journeys passed; full acceptance pending",
+      "evidence": [
+        "docs/migration/tree-editor.md",
+        "docs/migration/evidence/tree-editor/file-map.json"
+      ]
+    },
+    {
+      "source": "src/components/admin/editor/page-settings-dialog.tsx",
+      "change": "modified",
+      "oldSHA256": "1d25099408442c4527a63d594b87e9a325c7f52fa9a93c2f227e46b682d65898",
+      "newSHA256": "6c79c06f4c836db7b529b60860583702acded38d4cdb78f114c2eab6aceec55c",
+      "status": "ported-editor; scoped journeys passed; full acceptance pending",
+      "evidence": [
+        "docs/migration/tree-editor.md",
+        "docs/migration/evidence/tree-editor/file-map.json"
+      ]
+    },
+    {
+      "source": "src/components/admin/editor/prop-fields.ts",
+      "change": "modified",
+      "oldSHA256": "bea3a06cda2c07fdb6957f0082eb24a7912a424440ecb5d87dd671975066b474",
+      "newSHA256": "0b6534b677018ae377abc06b236fb5585f4ea4a7fa0f2f188a7aa8155b1308ab",
+      "status": "ported-editor; scoped journeys passed; full acceptance pending",
+      "evidence": [
+        "docs/migration/tree-editor.md",
+        "docs/migration/evidence/tree-editor/file-map.json"
+      ]
+    },
+    {
+      "source": "src/components/admin/editor/properties-panel.tsx",
+      "change": "modified",
+      "oldSHA256": "a22656bb024e135bc3dce3afb64252d327970fccd0714e8c9acf75eabd0edc5f",
+      "newSHA256": "4867846762e61b7f524b60ac4b93ab81f445157ced0132d82d4b42e7f9480ccc",
+      "status": "ported-editor; scoped journeys passed; full acceptance pending",
+      "evidence": [
+        "docs/migration/tree-editor.md",
+        "docs/migration/evidence/tree-editor/file-map.json"
+      ]
+    },
+    {
+      "source": "src/components/admin/editor/schedule-dialog.tsx",
+      "change": "added",
+      "oldSHA256": null,
+      "newSHA256": "7457ff879269fe69a6fbb98d24e935c8cbbe4965fe49154ded23246820e6c021",
+      "status": "ported-editor; scoped journeys passed; full acceptance pending",
+      "evidence": [
+        "docs/migration/tree-editor.md",
+        "docs/migration/evidence/tree-editor/file-map.json"
+      ]
+    },
+    {
+      "source": "src/components/admin/editor/template-preview.tsx",
+      "change": "added",
+      "oldSHA256": null,
+      "newSHA256": "3db976abeba23d25c03b4cc7fd6622d446f32c3c8cd8d876f951c7a9bdb2c7c3",
+      "status": "ported-editor; scoped journeys passed; full acceptance pending",
+      "evidence": [
+        "docs/migration/tree-editor.md",
+        "docs/migration/evidence/tree-editor/file-map.json"
+      ]
+    },
+    {
+      "source": "src/components/admin/editor/templates-dialog.tsx",
+      "change": "added",
+      "oldSHA256": null,
+      "newSHA256": "5d18d8da4b50ab2f3d0a18d25ffa3363b4b3edb335727ea31c2de5832f290e3d",
+      "status": "ported-editor; scoped journeys passed; full acceptance pending",
+      "evidence": [
+        "docs/migration/tree-editor.md",
+        "docs/migration/evidence/tree-editor/file-map.json"
+      ]
+    },
+    {
+      "source": "src/components/admin/editor/types.ts",
+      "change": "modified",
+      "oldSHA256": "3695dc6d49be99d0bd2797087a4f23bc48a3f9a8b7fddbba7d570c957e85409e",
+      "newSHA256": "d22bf708a8c9acf80b3bbba9bf818de6111968f82fcff4a352405e84c357be9c",
+      "status": "ported-editor; scoped journeys passed; full acceptance pending",
+      "evidence": [
+        "docs/migration/tree-editor.md",
+        "docs/migration/evidence/tree-editor/file-map.json"
+      ]
+    },
+    {
+      "source": "src/components/admin/editor/versions-dialog.tsx",
+      "change": "modified",
+      "oldSHA256": "833d2f37add9110987c463f9f45fa4c026538360d58e663e28c91b5d5912946e",
+      "newSHA256": "3318816b15828e9793cc732da2baa372679e567f923bf19c787b7a135d8ffd7f",
+      "status": "ported-editor; scoped journeys passed; full acceptance pending",
+      "evidence": [
+        "docs/migration/tree-editor.md",
+        "docs/migration/evidence/tree-editor/file-map.json"
+      ]
+    },
+    {
+      "source": "src/components/admin/helpers.ts",
+      "change": "modified",
+      "oldSHA256": "b85dd059de706e9554811c6608191168bef9ed038983f8088c0e7bae3cda1eb7",
+      "newSHA256": "aa73f2eabf93581e2dc26b7d10e96b423a5ddf60debf8de7eb49db31532b8465",
+      "status": "ported-editor; scoped journeys passed; full acceptance pending",
+      "evidence": [
+        "docs/migration/tree-editor.md",
+        "docs/migration/evidence/tree-editor/file-map.json"
+      ]
+    },
+    {
+      "source": "src/components/admin/inquiries/inquiry-detail-client.tsx",
+      "change": "modified",
+      "oldSHA256": "95468ffeda4429da6565e9f8ef6d999c698bb6f6041cb792aba7a0c931519b2d",
+      "newSHA256": "7eea12225f6dda07218017866c3581126026446a76932423d5dd94e07fc6f332",
+      "status": "tracking adapted; scoped tests passed; full acceptance pending",
+      "evidence": [
+        "docs/migration/tracking.md",
+        "docs/migration/evidence/tracking/file-map.json"
+      ]
+    },
+    {
+      "source": "src/components/admin/media/media-client.tsx",
+      "change": "modified",
+      "oldSHA256": "8278c82da482165069f82b3e691e38a1a1820ce19342c53ed7d359446e5af15e",
+      "newSHA256": "49e903964545f0e09565a3f10c403e276c0d6f389d54d11497d431ad36a09954",
+      "status": "pending-review-and-port",
+      "evidence": []
+    },
+    {
+      "source": "src/components/admin/notifications/notifications-client.tsx",
+      "change": "modified",
+      "oldSHA256": "1c6ce8346061796c03e0847949b74a623889dbbaee34fd8edca6f5f8ce8dee7c",
+      "newSHA256": "d3d2a88d197ad04e4ca04ca588c193c5e1d1a0a113a511802b7be16566bdf96d",
+      "status": "pending-review-and-port",
+      "evidence": []
+    },
+    {
+      "source": "src/components/admin/requests/request-detail-client.tsx",
+      "change": "modified",
+      "oldSHA256": "af30ee7e336357887014b319e54aa5ea8f1fdac988c4761c2c9eaea9ca489425",
+      "newSHA256": "b8ae8da5d7ae4800ee3333756f0e130eca046b502f54393f03fb6e6c79add8cd",
+      "status": "tracking adapted; scoped tests passed; full acceptance pending",
+      "evidence": [
+        "docs/migration/tracking.md",
+        "docs/migration/evidence/tracking/file-map.json"
+      ]
+    },
+    {
+      "source": "src/components/admin/settings/settings-client.tsx",
+      "change": "modified",
+      "oldSHA256": "f21b4cba256bc086c01d701e61f53950aeb697cc6ac78de3000a04e2bee276a4",
+      "newSHA256": "d668fc821ed1af439246bb7ec9ad5a967086ba117f8d6291490f2a4129c929ab",
+      "status": "tracking adapted; scoped tests passed; full acceptance pending",
+      "evidence": [
+        "docs/migration/tracking.md",
+        "docs/migration/evidence/tracking/file-map.json"
+      ]
+    },
+    {
+      "source": "src/components/admin/track/track-panel.tsx",
+      "change": "added",
+      "oldSHA256": null,
+      "newSHA256": "b85ecb039439eb93977a9bd67a97695d2a3fb7650db2e69ff32b1dc86139afd1",
+      "status": "tracking adapted; scoped tests passed; full acceptance pending",
+      "evidence": [
+        "docs/migration/tracking.md",
+        "docs/migration/evidence/tracking/file-map.json"
+      ]
+    },
+    {
+      "source": "src/components/admin/types.ts",
+      "change": "modified",
+      "oldSHA256": "81f272b345d5e405768cba6ea8eb7dae566e4a736624307a3ae0a7d7a0fe4a36",
+      "newSHA256": "d7565d3f8509c2313dae56dfff422d43711d3ee4d5099dfb38ddf6cc350de4c3",
+      "status": "pending-review-and-port",
+      "evidence": []
+    },
+    {
+      "source": "src/components/blocks/block-container.tsx",
+      "change": "modified",
+      "oldSHA256": "514ea6bc1465c8bb88d3aa5cb793b8bd6a68a89ca3a4d2d1d79f104051451833",
+      "newSHA256": "fc8126feaa24edf9d502713f93e377c5defd05cf4d30ab493ef6ea4d723e6e82",
+      "status": "ported-editor; scoped journeys passed; full acceptance pending",
+      "evidence": [
+        "docs/migration/tree-editor.md",
+        "docs/migration/evidence/tree-editor/file-map.json"
+      ]
+    },
+    {
+      "source": "src/components/blocks/button-link-block.tsx",
+      "change": "modified",
+      "oldSHA256": "8c72def96088998bfe4e529e3ceebc6709a8c02b8624d3aaa6057ba51ac4c45b",
+      "newSHA256": "4f13ac24c15c87f36f1a827277fc412acf21f732ea83a409f335b67687a6e370",
+      "status": "ported-editor; scoped journeys passed; full acceptance pending",
+      "evidence": [
+        "docs/migration/tree-editor.md",
+        "docs/migration/evidence/tree-editor/file-map.json"
+      ]
+    },
+    {
+      "source": "src/components/blocks/heading-block.tsx",
+      "change": "modified",
+      "oldSHA256": "9a8231ffc82b810b3f941eb42a541b91992a5970c084c1ad0c22136d0f3006c6",
+      "newSHA256": "84e34fe4534935e913a2e830e750b05b37c219d12884b38498514b8fa3a8669b",
+      "status": "ported-editor; scoped journeys passed; full acceptance pending",
+      "evidence": [
+        "docs/migration/tree-editor.md",
+        "docs/migration/evidence/tree-editor/file-map.json"
+      ]
+    },
+    {
+      "source": "src/components/blocks/inline-edit-context.tsx",
+      "change": "added",
+      "oldSHA256": null,
+      "newSHA256": "0e5f3c4fa273b16c1d29de856f3749e45db84e797bc4a4c22cc7ce4ec45a8a61",
+      "status": "ported-editor; scoped journeys passed; full acceptance pending",
+      "evidence": [
+        "docs/migration/tree-editor.md",
+        "docs/migration/evidence/tree-editor/file-map.json"
+      ]
+    },
+    {
+      "source": "src/components/blocks/nested-context.tsx",
+      "change": "added",
+      "oldSHA256": null,
+      "newSHA256": "8e3b771933b64e713fc0e3f5ec9a5de54317fce13d702c1ff88f4e1a4bbd9d17",
+      "status": "ported-editor; scoped journeys passed; full acceptance pending",
+      "evidence": [
+        "docs/migration/tree-editor.md",
+        "docs/migration/evidence/tree-editor/file-map.json"
+      ]
+    },
+    {
+      "source": "src/components/blocks/page-renderer.tsx",
+      "change": "modified",
+      "oldSHA256": "6639b0001ee575f145da7e6ce1e61b6c21f2326e6a5d63529395ebd6ad4a3d13",
+      "newSHA256": "491451022db9d5331688a556b3c5781d0782a1e653bdb0f6def5d6b9cb84a31b",
+      "status": "ported-editor; scoped journeys passed; full acceptance pending",
+      "evidence": [
+        "docs/migration/tree-editor.md",
+        "docs/migration/evidence/tree-editor/file-map.json"
+      ]
+    },
+    {
+      "source": "src/components/blocks/request-form-shell.tsx",
+      "change": "modified",
+      "oldSHA256": "230eed13c0f93d92612652e9f5a5904a8e3f7f16d163eba0c9c331f1c94fd11d",
+      "newSHA256": "b826042ef2b4f41e2df22de36c5affd4e993a4ee8449f86925ec6fcd64d4fe9a",
+      "status": "ported-editor; scoped journeys passed; full acceptance pending",
+      "evidence": [
+        "docs/migration/tree-editor.md",
+        "docs/migration/evidence/tree-editor/file-map.json"
+      ]
+    },
+    {
+      "source": "src/components/blocks/text-block.tsx",
+      "change": "modified",
+      "oldSHA256": "ea7b2369119fb8ed85ba1d6a126f20ef0f2769e9a7cfd93cf4240cafcf08a7ed",
+      "newSHA256": "57bff3bdce1e37eb515487edddd3943e235163540871c7603c54f8f098f82f09",
+      "status": "ported-editor; scoped journeys passed; full acceptance pending",
+      "evidence": [
+        "docs/migration/tree-editor.md",
+        "docs/migration/evidence/tree-editor/file-map.json"
+      ]
+    },
+    {
+      "source": "src/components/form/project-request-form.tsx",
+      "change": "modified",
+      "oldSHA256": "3105564afc16b788deddf9620f24c7b2f5083664e9a0d2e174ed556fa7465b28",
+      "newSHA256": "977491b0831e4b524689712caffe60a0ce712f7aaac20d1063a347bd8c9269fc",
+      "status": "tracking adapted; scoped tests passed; full acceptance pending",
+      "evidence": [
+        "docs/migration/tree-editor.md",
+        "docs/migration/evidence/tree-editor/file-map.json",
+        "docs/migration/tracking.md",
+        "docs/migration/evidence/tracking/file-map.json"
+      ]
+    },
+    {
+      "source": "src/components/site/section.tsx",
+      "change": "modified",
+      "oldSHA256": "e526edaf127a08f812e514058b895c7a3fa09c79905d2709f7c62f881e71a609",
+      "newSHA256": "c49eaddd5d3a5df7f29a3f3cc6e0bda68045a1ba207539d49e25398ef11f1cf4",
+      "status": "ported-editor; scoped journeys passed; full acceptance pending",
+      "evidence": [
+        "docs/migration/tree-editor.md",
+        "docs/migration/evidence/tree-editor/file-map.json"
+      ]
+    },
+    {
+      "source": "src/content/portal/ar.ts",
+      "change": "modified",
+      "oldSHA256": "b6313d2b4b3f1e6e1c9e10ce6902ace16cc0c6e22145b19c5961ee7b3f36e6c6",
+      "newSHA256": "ca6887e141ecaab2953d05f73fe9589ee5d4f5512840fb87405aea897bc3c05d",
+      "status": "ported-editor; scoped journeys passed; full acceptance pending",
+      "evidence": [
+        "docs/migration/tree-editor.md",
+        "docs/migration/evidence/tree-editor/file-map.json"
+      ]
+    },
+    {
+      "source": "src/content/portal/en.ts",
+      "change": "modified",
+      "oldSHA256": "b3ce99fd4918c1e1c50fe89a2c9ab4d84d4fbd28a9df9d92f0b8ea6d0f21fb33",
+      "newSHA256": "7e9006a58a41e58f35006784b3b45681871600885b5ee59590dc712c61403727",
+      "status": "ported-editor; scoped journeys passed; full acceptance pending",
+      "evidence": [
+        "docs/migration/tree-editor.md",
+        "docs/migration/evidence/tree-editor/file-map.json"
+      ]
+    },
+    {
+      "source": "src/content/portal/types.ts",
+      "change": "modified",
+      "oldSHA256": "8ba0d2af759ea47c0190502abc2621b94aa3761aa406585fa5dcef3c9eceb4d1",
+      "newSHA256": "b3f03885a4bbb7bc722b6c96dd802b9fac4168e2d94e619b3ec80523e9258cdf",
+      "status": "ported-editor; scoped journeys passed; full acceptance pending",
+      "evidence": [
+        "docs/migration/tree-editor.md",
+        "docs/migration/evidence/tree-editor/file-map.json"
+      ]
+    },
+    {
+      "source": "src/instrumentation.ts",
+      "change": "added",
+      "oldSHA256": null,
+      "newSHA256": "73d78ea9cace0ca19992684c713b0510204a97920677f50bed260f494738bcd9",
+      "status": "pending-review-and-port",
+      "evidence": []
+    },
+    {
+      "source": "src/lib/__tests__/ar-plural.test.ts",
+      "change": "added",
+      "oldSHA256": null,
+      "newSHA256": "4ca8d3562d0dfda5cdbd2064416ddfa17a7a2f26808a76a59643b2d1b5211a64",
+      "status": "pending-review-and-port",
+      "evidence": []
+    },
+    {
+      "source": "src/lib/__tests__/blocks.test.ts",
+      "change": "modified",
+      "oldSHA256": "561a7f4745a66c188a8becb4f6276c730df860c3543a89d54fc79c5374fe156c",
+      "newSHA256": "f12edceda2536a31fb40c30d32090d76a15bcb002b93fd8960c1e319d0e28d44",
+      "status": "pending-review-and-port",
+      "evidence": []
+    },
+    {
+      "source": "src/lib/__tests__/clipboard.test.ts",
+      "change": "added",
+      "oldSHA256": null,
+      "newSHA256": "207e6f9b45de70f866f7e23b5ec1bc16036130d679ccd8a706661355f10ca8ca",
+      "status": "pending-review-and-port",
+      "evidence": []
+    },
+    {
+      "source": "src/lib/__tests__/content-tree.test.ts",
+      "change": "added",
+      "oldSHA256": null,
+      "newSHA256": "a3fd54a8b28216fb04e852e1b0c234a7293a7038fd6b1bc953f536a6ab377ec9",
+      "status": "pending-review-and-port",
+      "evidence": []
+    },
+    {
+      "source": "src/lib/__tests__/inline-fields.test.ts",
+      "change": "added",
+      "oldSHA256": null,
+      "newSHA256": "7cc563d4bfb70abfa3f698013d5e8aa0c41be40a76e98492ea035be967ee475a",
+      "status": "pending-review-and-port",
+      "evidence": []
+    },
+    {
+      "source": "src/lib/__tests__/media-usage.test.ts",
+      "change": "added",
+      "oldSHA256": null,
+      "newSHA256": "b3bfd18ebcbb1ebf342a82ef8e579ff930578d5443374a349213a7e1ebb523fc",
+      "status": "pending-review-and-port",
+      "evidence": []
+    },
+    {
+      "source": "src/lib/__tests__/page-settings.test.ts",
+      "change": "added",
+      "oldSHA256": null,
+      "newSHA256": "43256d9458d9391416e87d47d47cd87c1abb371ed9522bef0e7f5bb602906dad",
+      "status": "pending-review-and-port",
+      "evidence": []
+    },
+    {
+      "source": "src/lib/__tests__/permissions.test.ts",
+      "change": "modified",
+      "oldSHA256": "2635faa32292370da484a672607f2e50d8d56a515eeb436d312994c5ab73a0ac",
+      "newSHA256": "52fd05574f35ba1eb300648e29977ada8fc6dbd8cabd803345c3b9371065f072",
+      "status": "pending-review-and-port",
+      "evidence": []
+    },
+    {
+      "source": "src/lib/__tests__/schedule.test.ts",
+      "change": "added",
+      "oldSHA256": null,
+      "newSHA256": "2f310f1092d1617d91c465c13b459c22d02fde80cc56af94c7aa67ce5478922d",
+      "status": "pending-review-and-port",
+      "evidence": []
+    },
+    {
+      "source": "src/lib/__tests__/session-origin.test.ts",
+      "change": "added",
+      "oldSHA256": null,
+      "newSHA256": "d365d933e6e936c5bbc54dab29c71a844a89880f6276fbb3e994dae0c6e9feaa",
+      "status": "pending-review-and-port",
+      "evidence": []
+    },
+    {
+      "source": "src/lib/__tests__/templates.test.ts",
+      "change": "added",
+      "oldSHA256": null,
+      "newSHA256": "cc9a1affbe11d2c30004c63808c4b0fb7498aaa87b2a2ce28add5b704975e298",
+      "status": "template services implemented; UI integration pending",
+      "evidence": [
+        "docs/migration/page-templates.md"
+      ],
+      "destination": "packages/server/src/admin/templates/contracts.test.ts"
+    },
+    {
+      "source": "src/lib/__tests__/track-policy.test.ts",
+      "change": "added",
+      "oldSHA256": null,
+      "newSHA256": "7487f39a3ee6ed2e8af67561dd9a9762ff09e56eaa39e8208e7a2e534002d8b3",
+      "status": "tracking adapted; scoped tests passed; full acceptance pending",
+      "evidence": [
+        "docs/migration/tracking.md",
+        "docs/migration/evidence/tracking/file-map.json"
+      ]
+    },
+    {
+      "source": "src/lib/auth/audit.ts",
+      "change": "modified",
+      "oldSHA256": "661a149c0701e2b42fd3d5571f04b3a64113f18920c66d922bdc84b85b5b67c1",
+      "newSHA256": "0234be217b5c6c1c8d0a99bd13d9f310b1eaca4ccc33956d905e26e146dd6fd6",
+      "status": "pending-review-and-port",
+      "evidence": []
+    },
+    {
+      "source": "src/lib/auth/email-templates.ts",
+      "change": "modified",
+      "oldSHA256": "24dc95a3b6f47ef770f3065dd0bdedce35e2823aa0a0580d16ce01d594f42867",
+      "newSHA256": "7bc9f87fcf4272fd214bc34358da5cae34a9e80ac25e4b80bb4c533ca3406c2d",
+      "status": "tracking adapted; scoped tests passed; full acceptance pending",
+      "evidence": [
+        "docs/migration/tracking.md",
+        "docs/migration/evidence/tracking/file-map.json"
+      ]
+    },
+    {
+      "source": "src/lib/auth/notifications.ts",
+      "change": "modified",
+      "oldSHA256": "559aad04dcbd2f934bd94ddbaf60c37d342b601a539dab85bf9fd97815035994",
+      "newSHA256": "359d143e3da9d55cdd570f4dc856042d28a3d56c0d473406a903ac0ad39eb7c2",
+      "status": "pending-review-and-port",
+      "evidence": []
+    },
+    {
+      "source": "src/lib/auth/session.ts",
+      "change": "modified",
+      "oldSHA256": "b9c8c6077e3d9b1f868db5981ca13502fce4aa28e7ec886a4f3dee125a91a3dd",
+      "newSHA256": "866f1f9a855c937c1cdafc27e5a8716aceede30f2524f9da6a680fe195d3e532",
+      "status": "pending-review-and-port",
+      "evidence": []
+    },
+    {
+      "source": "src/lib/blocks/clipboard.ts",
+      "change": "added",
+      "oldSHA256": null,
+      "newSHA256": "b36825982180fc8fb5e40782ecef927eec3bd06d867b398a9f06033a4a4aad07",
+      "status": "shared-contracts-ported; editor integration pending",
+      "evidence": [
+        "docs/migration/content-tree.md",
+        "docs/migration/evidence/content-tree/"
+      ],
+      "destination": "packages/contracts/src/content/clipboard.ts"
+    },
+    {
+      "source": "src/lib/blocks/inline-fields.ts",
+      "change": "added",
+      "oldSHA256": null,
+      "newSHA256": "34fb1548cdb7b13e48739db4e28a98255fbb0b1486ba4957de8fee7dd1bc1b8c",
+      "status": "shared-contracts-ported; editor integration pending",
+      "evidence": [
+        "docs/migration/content-tree.md",
+        "docs/migration/evidence/content-tree/"
+      ],
+      "destination": "packages/contracts/src/content/inline-fields.ts"
+    },
+    {
+      "source": "src/lib/blocks/migrate.ts",
+      "change": "added",
+      "oldSHA256": null,
+      "newSHA256": "c92555ddd49f10fd844b1460695fd272a66652b660d85c686b65e8514e24dc1a",
+      "status": "shared-contracts-ported; editor integration pending",
+      "evidence": [
+        "docs/migration/content-tree.md",
+        "docs/migration/evidence/content-tree/"
+      ],
+      "destination": "packages/contracts/src/content/migrate.ts"
+    },
+    {
+      "source": "src/lib/blocks/style.ts",
+      "change": "added",
+      "oldSHA256": null,
+      "newSHA256": "ad8d7257e931583bea815ae02a18cbbecc7b2c411730ee80c36ab412872e3da8",
+      "status": "shared-contracts-ported; editor integration pending",
+      "evidence": [
+        "docs/migration/content-tree.md",
+        "docs/migration/evidence/content-tree/"
+      ],
+      "destination": "packages/contracts/src/content/style.ts"
+    },
+    {
+      "source": "src/lib/blocks/tree.ts",
+      "change": "added",
+      "oldSHA256": null,
+      "newSHA256": "78d2ec40cda741e418f8e5e664bd45e5366626e8e8e5de4dbc4d9a98b5d2dac4",
+      "status": "shared-contracts-ported; editor integration pending",
+      "evidence": [
+        "docs/migration/content-tree.md",
+        "docs/migration/evidence/content-tree/"
+      ],
+      "destination": "packages/contracts/src/content/tree.ts"
+    },
+    {
+      "source": "src/lib/blocks/types.ts",
+      "change": "modified",
+      "oldSHA256": "32ff1886606d49729e969a3b1eb350bf89311b2aa6b1e8c26b2d8ed8688b9e65",
+      "newSHA256": "a06b4e3cfa419414b13989725f9e07a6ae847318457f404718e8c0f649133a25",
+      "status": "partially-ported: own-key validation and normalized legacy blocks; container tree types pending",
+      "evidence": [
+        "packages/contracts/src/blocks.test.ts",
+        "packages/server/src/admin/pages.integration.test.ts",
+        "tests/e2e/admin-navigation.spec.ts",
+        "cms-block-normalization.md"
+      ],
+      "destination": "packages/contracts/src/blocks.ts"
+    },
+    {
+      "source": "src/lib/blocks/validate.ts",
+      "change": "added",
+      "oldSHA256": null,
+      "newSHA256": "dbc7c6a4e0ad1325306222faa051bc95dfb655065a8492b85e5be96ca7fb69ea",
+      "status": "shared-contracts-ported; editor integration pending",
+      "evidence": [
+        "docs/migration/content-tree.md",
+        "docs/migration/evidence/content-tree/"
+      ],
+      "destination": "packages/contracts/src/content/validate.ts"
+    },
+    {
+      "source": "src/lib/file-storage.ts",
+      "change": "modified",
+      "oldSHA256": "593ff5219b46c3ddef2ae37ee606ca64a81b2da62e63963bebc632c7001dd9ba",
+      "newSHA256": "8b897944c6232a421b374f374aa7ceeb25fd456068b4c1dbcbb3d6dd921faa87",
+      "status": "pending-review-and-port",
+      "evidence": []
+    },
+    {
+      "source": "src/lib/i18n/ar-plural.ts",
+      "change": "added",
+      "oldSHA256": null,
+      "newSHA256": "cc1d86d746a024477083e160ab3a5b9f614f92b789ba565e078470c92f717da4",
+      "status": "ported-editor; scoped journeys passed; full acceptance pending",
+      "evidence": [
+        "docs/migration/tree-editor.md",
+        "docs/migration/evidence/tree-editor/file-map.json"
+      ]
+    },
+    {
+      "source": "src/lib/media-usage.ts",
+      "change": "added",
+      "oldSHA256": null,
+      "newSHA256": "fbcc0abe70f59b3e930a1fb5cb91a740447dafa3d1d08b787896cc670baa0912",
+      "status": "pending-review-and-port",
+      "evidence": []
+    },
+    {
+      "source": "src/lib/page-settings.ts",
+      "change": "added",
+      "oldSHA256": null,
+      "newSHA256": "070400d828f2d32c56bcff88502be57df3b554cbba93fdc213c6446402399dd6",
+      "status": "shared-contracts-ported; editor integration pending",
+      "evidence": [
+        "docs/migration/content-tree.md",
+        "docs/migration/evidence/content-tree/"
+      ],
+      "destination": "packages/contracts/src/page-settings.ts"
+    },
+    {
+      "source": "src/lib/pages/publish-core.ts",
+      "change": "added",
+      "oldSHA256": null,
+      "newSHA256": "ca2a4b1f9226355ab1a1272e4768c14681c5eb713aa767c5921aee3e3b6768a4",
+      "status": "adapted-scoped-tests-passed; UI-pending",
+      "evidence": [
+        "docs/migration/cms-publication.md",
+        "docs/migration/evidence/publication/"
+      ]
+    },
+    {
+      "source": "src/lib/pages/schedule.ts",
+      "change": "added",
+      "oldSHA256": null,
+      "newSHA256": "3c433cccdce90d5faa33fcf47f976df0f200d06893c01ea413bd1a2c43a3df95",
+      "status": "adapted-scoped-tests-passed; UI-pending",
+      "evidence": [
+        "docs/migration/cms-publication.md",
+        "docs/migration/evidence/publication/"
+      ]
+    },
+    {
+      "source": "src/lib/requests-service.ts",
+      "change": "modified",
+      "oldSHA256": "fb8a8aa2e0ed4cbd1359960bfe5b4a90940690f99697babbd4afe9ff72c37411",
+      "newSHA256": "33bde609e7e65ef781fad484259119fd1cea319b15dd39870154b717e566fd47",
+      "status": "tracking adapted; scoped tests passed; full acceptance pending",
+      "evidence": [
+        "docs/migration/tracking.md",
+        "docs/migration/evidence/tracking/file-map.json"
+      ]
+    },
+    {
+      "source": "src/lib/templates/builtin.ts",
+      "change": "added",
+      "oldSHA256": null,
+      "newSHA256": "feb19a9ff9398ace957dfb6335848f0b8d2aeba9870541e3f288b73f85c0bea9",
+      "status": "template services implemented; UI integration pending",
+      "evidence": [
+        "docs/migration/page-templates.md"
+      ],
+      "destination": "packages/server/src/admin/templates/builtin.ts"
+    },
+    {
+      "source": "src/lib/templates/service.ts",
+      "change": "added",
+      "oldSHA256": null,
+      "newSHA256": "3dafab4b842bb2c7b3f55c88907edae4d424de3dfa6176ce71bc57801047d8e3",
+      "status": "template services implemented; UI integration pending",
+      "evidence": [
+        "docs/migration/page-templates.md"
+      ],
+      "destination": "packages/server/src/admin/templates/contracts.ts"
+    },
+    {
+      "source": "src/lib/track/notify.ts",
+      "change": "added",
+      "oldSHA256": null,
+      "newSHA256": "1603fb5a21d2da8339a7c569a7755cd4895c153c1c93ba3cca18f92433e9367b",
+      "status": "tracking adapted; scoped tests passed; full acceptance pending",
+      "evidence": [
+        "docs/migration/tracking.md",
+        "docs/migration/evidence/tracking/file-map.json"
+      ]
+    },
+    {
+      "source": "src/lib/track/policy.ts",
+      "change": "added",
+      "oldSHA256": null,
+      "newSHA256": "d22c7c4066601b3297280aa2535b487bb4ceab8d84d0c297c3a3666f4f816e1b",
+      "status": "tracking adapted; scoped tests passed; full acceptance pending",
+      "evidence": [
+        "docs/migration/tracking.md",
+        "docs/migration/evidence/tracking/file-map.json"
+      ]
+    },
+    {
+      "source": "src/lib/track/service.ts",
+      "change": "added",
+      "oldSHA256": null,
+      "newSHA256": "0651490d56540f7ebbb181726d20d939a537c8425dbef47a73308e6470ddba74",
+      "status": "tracking adapted; scoped tests passed; full acceptance pending",
+      "evidence": [
+        "docs/migration/tracking.md",
+        "docs/migration/evidence/tracking/file-map.json"
+      ]
+    },
+    {
+      "source": "src/lib/track/session.ts",
+      "change": "added",
+      "oldSHA256": null,
+      "newSHA256": "27d39fb5fa1a557dbe904641fbd447d3a955873fcd4fd51117fe35a4ceb593ec",
+      "status": "tracking adapted; scoped tests passed; full acceptance pending",
+      "evidence": [
+        "docs/migration/tracking.md",
+        "docs/migration/evidence/tracking/file-map.json"
+      ]
+    },
+    {
+      "source": "tests/jsdom-preload.ts",
+      "change": "added",
+      "oldSHA256": null,
+      "newSHA256": "8832b2c45734fc64053637ee8e3f577566e53438f9af3d0b17bb410e5b243d77",
+      "status": "pending-review-and-port",
+      "evidence": []
+    },
+    {
+      "source": "worklog.md",
+      "change": "modified",
+      "oldSHA256": "cfa226dcd064e54ed8c5519b2cbbd729000842043d26fbd9123aeb7c474c44cb",
+      "newSHA256": "ad50a51f6a65504cac0249c921671e34e30dabfb83b370a280e1ef2b249d2c91",
+      "status": "pending-review-and-port",
+      "evidence": []
+    }
+  ],
+  "inventory": {
+    "blocks": [
+      "hero",
+      "servicesGrid",
+      "featureGrid",
+      "worksShowcase",
+      "processSteps",
+      "faqSection",
+      "ctaSection",
+      "pageHeader",
+      "richText",
+      "visionMission",
+      "numberedValues",
+      "numberedList",
+      "navCtaBanner",
+      "servicesDetail",
+      "worksFull",
+      "processFull",
+      "requestForm",
+      "contactInfo",
+      "heading",
+      "text",
+      "image",
+      "gallery",
+      "buttonLink",
+      "columns",
+      "simpleTable",
+      "divider",
+      "spacer"
+    ],
+    "containers": [
+      "section",
+      "container",
+      "row",
+      "column"
+    ],
+    "models": [
+      "Role",
+      "User",
+      "AuthSession",
+      "AuthToken",
+      "UserInvite",
+      "EmailLog",
+      "ProjectRequest",
+      "RequestMessage",
+      "RequestStatusEvent",
+      "RequestClaim",
+      "SavedReply",
+      "RequestDraft",
+      "Inquiry",
+      "InquiryMessage",
+      "Attachment",
+      "MediaItem",
+      "Notification",
+      "AuditLog",
+      "Page",
+      "PageVersion",
+      "PageTemplate",
+      "PageRedirect",
+      "MenuItem",
+      "SiteSetting",
+      "TrackLink"
+    ],
+    "pages": [
+      "src/app/[locale]/[[...slug]]/page.tsx",
+      "src/app/[locale]/account/inquiries/[id]/page.tsx",
+      "src/app/[locale]/account/inquiries/page.tsx",
+      "src/app/[locale]/account/notifications/page.tsx",
+      "src/app/[locale]/account/page.tsx",
+      "src/app/[locale]/account/profile/page.tsx",
+      "src/app/[locale]/account/requests/[id]/page.tsx",
+      "src/app/[locale]/account/requests/new/page.tsx",
+      "src/app/[locale]/account/requests/page.tsx",
+      "src/app/[locale]/account/security/page.tsx",
+      "src/app/[locale]/admin/audit/page.tsx",
+      "src/app/[locale]/admin/inquiries/[id]/page.tsx",
+      "src/app/[locale]/admin/inquiries/page.tsx",
+      "src/app/[locale]/admin/media/page.tsx",
+      "src/app/[locale]/admin/menus/page.tsx",
+      "src/app/[locale]/admin/notifications/page.tsx",
+      "src/app/[locale]/admin/outbox/page.tsx",
+      "src/app/[locale]/admin/page.tsx",
+      "src/app/[locale]/admin/pages/[id]/edit/page.tsx",
+      "src/app/[locale]/admin/pages/[id]/preview/page.tsx",
+      "src/app/[locale]/admin/pages/page.tsx",
+      "src/app/[locale]/admin/requests/[id]/page.tsx",
+      "src/app/[locale]/admin/requests/page.tsx",
+      "src/app/[locale]/admin/settings/page.tsx",
+      "src/app/[locale]/admin/users/[id]/page.tsx",
+      "src/app/[locale]/admin/users/page.tsx",
+      "src/app/[locale]/auth/forgot-password/page.tsx",
+      "src/app/[locale]/auth/invite/page.tsx",
+      "src/app/[locale]/auth/login/page.tsx",
+      "src/app/[locale]/auth/logout/page.tsx",
+      "src/app/[locale]/auth/register/page.tsx",
+      "src/app/[locale]/auth/reset-password/page.tsx",
+      "src/app/[locale]/auth/verified/page.tsx",
+      "src/app/[locale]/track/page.tsx"
+    ],
+    "apiFiles": [
+      {
+        "source": "src/app/api/account/claim-verify/route.ts",
+        "path": "/api/account/claim-verify",
+        "methods": [
+          "GET"
+        ]
+      },
+      {
+        "source": "src/app/api/account/drafts/route.ts",
+        "path": "/api/account/drafts",
+        "methods": [
+          "GET",
+          "PUT",
+          "DELETE"
+        ]
+      },
+      {
+        "source": "src/app/api/account/inquiries/[id]/messages/route.ts",
+        "path": "/api/account/inquiries/[id]/messages",
+        "methods": [
+          "POST"
+        ]
+      },
+      {
+        "source": "src/app/api/account/inquiries/[id]/route.ts",
+        "path": "/api/account/inquiries/[id]",
+        "methods": [
+          "GET"
+        ]
+      },
+      {
+        "source": "src/app/api/account/inquiries/route.ts",
+        "path": "/api/account/inquiries",
+        "methods": [
+          "GET",
+          "POST"
+        ]
+      },
+      {
+        "source": "src/app/api/account/notifications/route.ts",
+        "path": "/api/account/notifications",
+        "methods": [
+          "GET",
+          "POST"
+        ]
+      },
+      {
+        "source": "src/app/api/account/profile/route.ts",
+        "path": "/api/account/profile",
+        "methods": [
+          "GET",
+          "PATCH"
+        ]
+      },
+      {
+        "source": "src/app/api/account/requests/[id]/messages/route.ts",
+        "path": "/api/account/requests/[id]/messages",
+        "methods": [
+          "POST"
+        ]
+      },
+      {
+        "source": "src/app/api/account/requests/[id]/route.ts",
+        "path": "/api/account/requests/[id]",
+        "methods": [
+          "GET",
+          "PATCH"
+        ]
+      },
+      {
+        "source": "src/app/api/account/requests/claim/route.ts",
+        "path": "/api/account/requests/claim",
+        "methods": [
+          "POST"
+        ]
+      },
+      {
+        "source": "src/app/api/account/requests/route.ts",
+        "path": "/api/account/requests",
+        "methods": [
+          "GET"
+        ]
+      },
+      {
+        "source": "src/app/api/admin/audit/route.ts",
+        "path": "/api/admin/audit",
+        "methods": [
+          "GET"
+        ]
+      },
+      {
+        "source": "src/app/api/admin/dashboard/route.ts",
+        "path": "/api/admin/dashboard",
+        "methods": [
+          "GET"
+        ]
+      },
+      {
+        "source": "src/app/api/admin/inquiries/[id]/messages/route.ts",
+        "path": "/api/admin/inquiries/[id]/messages",
+        "methods": [
+          "POST"
+        ]
+      },
+      {
+        "source": "src/app/api/admin/inquiries/[id]/route.ts",
+        "path": "/api/admin/inquiries/[id]",
+        "methods": [
+          "GET",
+          "PATCH"
+        ]
+      },
+      {
+        "source": "src/app/api/admin/inquiries/bulk/route.ts",
+        "path": "/api/admin/inquiries/bulk",
+        "methods": [
+          "POST"
+        ]
+      },
+      {
+        "source": "src/app/api/admin/inquiries/export/route.ts",
+        "path": "/api/admin/inquiries/export",
+        "methods": [
+          "GET"
+        ]
+      },
+      {
+        "source": "src/app/api/admin/inquiries/route.ts",
+        "path": "/api/admin/inquiries",
+        "methods": [
+          "GET"
+        ]
+      },
+      {
+        "source": "src/app/api/admin/media/[id]/route.ts",
+        "path": "/api/admin/media/[id]",
+        "methods": [
+          "PATCH",
+          "DELETE"
+        ]
+      },
+      {
+        "source": "src/app/api/admin/media/route.ts",
+        "path": "/api/admin/media",
+        "methods": [
+          "GET",
+          "POST"
+        ]
+      },
+      {
+        "source": "src/app/api/admin/menus/route.ts",
+        "path": "/api/admin/menus",
+        "methods": [
+          "GET",
+          "PUT"
+        ]
+      },
+      {
+        "source": "src/app/api/admin/outbox/route.ts",
+        "path": "/api/admin/outbox",
+        "methods": [
+          "GET"
+        ]
+      },
+      {
+        "source": "src/app/api/admin/pages/[id]/discard/route.ts",
+        "path": "/api/admin/pages/[id]/discard",
+        "methods": [
+          "POST"
+        ]
+      },
+      {
+        "source": "src/app/api/admin/pages/[id]/publish/route.ts",
+        "path": "/api/admin/pages/[id]/publish",
+        "methods": [
+          "POST"
+        ]
+      },
+      {
+        "source": "src/app/api/admin/pages/[id]/route.ts",
+        "path": "/api/admin/pages/[id]",
+        "methods": [
+          "GET",
+          "PATCH",
+          "DELETE"
+        ]
+      },
+      {
+        "source": "src/app/api/admin/pages/[id]/schedule/route.ts",
+        "path": "/api/admin/pages/[id]/schedule",
+        "methods": [
+          "POST"
+        ]
+      },
+      {
+        "source": "src/app/api/admin/pages/[id]/versions/[version]/restore/route.ts",
+        "path": "/api/admin/pages/[id]/versions/[version]/restore",
+        "methods": [
+          "POST"
+        ]
+      },
+      {
+        "source": "src/app/api/admin/pages/[id]/versions/route.ts",
+        "path": "/api/admin/pages/[id]/versions",
+        "methods": [
+          "GET"
+        ]
+      },
+      {
+        "source": "src/app/api/admin/pages/route.ts",
+        "path": "/api/admin/pages",
+        "methods": [
+          "GET",
+          "POST"
+        ]
+      },
+      {
+        "source": "src/app/api/admin/requests/[id]/route.ts",
+        "path": "/api/admin/requests/[id]",
+        "methods": [
+          "GET",
+          "PATCH"
+        ]
+      },
+      {
+        "source": "src/app/api/admin/requests/bulk/route.ts",
+        "path": "/api/admin/requests/bulk",
+        "methods": [
+          "POST"
+        ]
+      },
+      {
+        "source": "src/app/api/admin/requests/export/route.ts",
+        "path": "/api/admin/requests/export",
+        "methods": [
+          "GET"
+        ]
+      },
+      {
+        "source": "src/app/api/admin/requests/route.ts",
+        "path": "/api/admin/requests",
+        "methods": [
+          "GET"
+        ]
+      },
+      {
+        "source": "src/app/api/admin/saved-replies/[id]/route.ts",
+        "path": "/api/admin/saved-replies/[id]",
+        "methods": [
+          "PATCH",
+          "DELETE"
+        ]
+      },
+      {
+        "source": "src/app/api/admin/saved-replies/route.ts",
+        "path": "/api/admin/saved-replies",
+        "methods": [
+          "GET",
+          "POST"
+        ]
+      },
+      {
+        "source": "src/app/api/admin/search/route.ts",
+        "path": "/api/admin/search",
+        "methods": [
+          "GET"
+        ]
+      },
+      {
+        "source": "src/app/api/admin/settings/route.ts",
+        "path": "/api/admin/settings",
+        "methods": [
+          "GET",
+          "PATCH"
+        ]
+      },
+      {
+        "source": "src/app/api/admin/templates/[id]/apply/route.ts",
+        "path": "/api/admin/templates/[id]/apply",
+        "methods": [
+          "POST"
+        ]
+      },
+      {
+        "source": "src/app/api/admin/templates/[id]/route.ts",
+        "path": "/api/admin/templates/[id]",
+        "methods": [
+          "PATCH",
+          "DELETE"
+        ]
+      },
+      {
+        "source": "src/app/api/admin/templates/route.ts",
+        "path": "/api/admin/templates",
+        "methods": [
+          "GET",
+          "POST"
+        ]
+      },
+      {
+        "source": "src/app/api/admin/track/route.ts",
+        "path": "/api/admin/track",
+        "methods": [
+          "GET",
+          "POST"
+        ]
+      },
+      {
+        "source": "src/app/api/admin/users/[id]/route.ts",
+        "path": "/api/admin/users/[id]",
+        "methods": [
+          "GET",
+          "PATCH"
+        ]
+      },
+      {
+        "source": "src/app/api/admin/users/route.ts",
+        "path": "/api/admin/users",
+        "methods": [
+          "GET",
+          "POST"
+        ]
+      },
+      {
+        "source": "src/app/api/attachments/[id]/route.ts",
+        "path": "/api/attachments/[id]",
+        "methods": [
+          "GET"
+        ]
+      },
+      {
+        "source": "src/app/api/attachments/route.ts",
+        "path": "/api/attachments",
+        "methods": [
+          "POST"
+        ]
+      },
+      {
+        "source": "src/app/api/auth/[...nextauth]/route.ts",
+        "path": "/api/auth/[...nextauth]",
+        "methods": []
+      },
+      {
+        "source": "src/app/api/auth/change-password/route.ts",
+        "path": "/api/auth/change-password",
+        "methods": [
+          "POST"
+        ]
+      },
+      {
+        "source": "src/app/api/auth/forgot-password/route.ts",
+        "path": "/api/auth/forgot-password",
+        "methods": [
+          "POST"
+        ]
+      },
+      {
+        "source": "src/app/api/auth/invite/route.ts",
+        "path": "/api/auth/invite",
+        "methods": [
+          "POST"
+        ]
+      },
+      {
+        "source": "src/app/api/auth/register/route.ts",
+        "path": "/api/auth/register",
+        "methods": [
+          "POST"
+        ]
+      },
+      {
+        "source": "src/app/api/auth/reset-password/route.ts",
+        "path": "/api/auth/reset-password",
+        "methods": [
+          "POST"
+        ]
+      },
+      {
+        "source": "src/app/api/auth/sessions/route.ts",
+        "path": "/api/auth/sessions",
+        "methods": [
+          "GET",
+          "POST"
+        ]
+      },
+      {
+        "source": "src/app/api/auth/verify-email/route.ts",
+        "path": "/api/auth/verify-email",
+        "methods": [
+          "GET"
+        ]
+      },
+      {
+        "source": "src/app/api/health/ready/route.ts",
+        "path": "/api/health/ready",
+        "methods": [
+          "GET"
+        ]
+      },
+      {
+        "source": "src/app/api/inquiries/route.ts",
+        "path": "/api/inquiries",
+        "methods": [
+          "POST"
+        ]
+      },
+      {
+        "source": "src/app/api/media/[id]/route.ts",
+        "path": "/api/media/[id]",
+        "methods": [
+          "GET"
+        ]
+      },
+      {
+        "source": "src/app/api/requests/route.ts",
+        "path": "/api/requests",
+        "methods": [
+          "POST"
+        ]
+      },
+      {
+        "source": "src/app/api/track/card/route.ts",
+        "path": "/api/track/card",
+        "methods": [
+          "GET"
+        ]
+      },
+      {
+        "source": "src/app/api/track/exchange/route.ts",
+        "path": "/api/track/exchange",
+        "methods": [
+          "POST"
+        ]
+      },
+      {
+        "source": "src/app/api/track/reply/route.ts",
+        "path": "/api/track/reply",
+        "methods": [
+          "POST"
+        ]
+      }
+    ],
+    "explicitHttpHandlers": 82
+  },
+  "previousRefreshSHA": "d214018f3337198d8e17e5e7efa535a846ba6be2"
+}

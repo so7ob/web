@@ -31,13 +31,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { getPortalContent } from "@/content/portal";
 import { can } from "@/lib/auth/permissions";
 import type { Locale } from "@/lib/i18n";
-import {
-  apiErrorMessage,
-  apiGet,
-  apiSend,
-  ApiError,
-  fmtDateTime,
-} from "@/components/admin/helpers";
+import { apiErrorMessage, apiGet, apiSend, ApiError, fmtDateTime } from "@/components/admin/helpers";
 import type { Me } from "@/components/admin/types";
 import { cn } from "@/lib/utils";
 import type { RestoreResponse, VersionsResponse } from "./types";
@@ -48,17 +42,11 @@ interface VersionsDialogProps {
   pageId: string;
   locale: Locale;
   me: Me;
+  baseRevision: number; // مراجعة المسودة الحالية
   onRestored: () => void; // يعيد المحرر تحميل المسودة بعد الاستعادة
 }
 
-export function VersionsDialog({
-  open,
-  onOpenChange,
-  pageId,
-  locale,
-  me,
-  onRestored,
-}: VersionsDialogProps) {
+export function VersionsDialog({ open, onOpenChange, pageId, locale, me, baseRevision, onRestored }: VersionsDialogProps) {
   const t = getPortalContent(locale);
   const tp = t.admin.pages;
   const te = t.admin.editor;
@@ -77,18 +65,15 @@ export function VersionsDialog({
       setLoading(true);
       setError(null);
       try {
-        const res = await apiGet<VersionsResponse>(
-          `/api/admin/pages/${pageId}/versions`,
-        );
+        const res = await apiGet<VersionsResponse>(`/api/admin/pages/${pageId}/versions`);
         if (!signal.aborted) setData(res);
       } catch (err) {
-        if (!signal.aborted && err instanceof ApiError)
-          setError(apiErrorMessage(err, t.auth.errors));
+        if (!signal.aborted && err instanceof ApiError) setError(apiErrorMessage(err, t.auth.errors));
       } finally {
         if (!signal.aborted) setLoading(false);
       }
     },
-    [pageId, t.auth.errors],
+    [pageId, t.auth.errors]
   );
 
   useEffect(() => {
@@ -100,19 +85,26 @@ export function VersionsDialog({
 
   const versions = (data?.versions ?? []).filter((v) => v.locale === tab);
 
-  const restore = async (version: number) => {
+  /** الاستعادة للغة المختارة من التبويب فقط — استعادة اللغتين تحتاج اختيارًا صريحًا */
+  const restore = async (version: number, both: boolean) => {
     setRestoring(true);
     try {
-      await apiSend<RestoreResponse>(
-        `/api/admin/pages/${pageId}/versions/${version}/restore`,
-        "POST",
-      );
-      toast.success(tp.restore);
+      await apiSend<RestoreResponse>(`/api/admin/pages/${pageId}/versions/${version}/restore`, "POST", {
+        locales: both ? ["ar", "en"] : [tab],
+        baseRevision: baseRevision,
+      });
+      toast.success(both ? tp.restoreBoth : tp.restore);
       setConfirmVersion(null);
       onRestored(); // يعيد المحرر جلب المسودة المستعادة ويصفّر التاريخ
       onOpenChange(false);
     } catch (err) {
-      toast.error(apiErrorMessage(err, t.auth.errors));
+      if (err instanceof ApiError && err.code === "version_not_found") {
+        toast.error(tp.versionNotFound);
+      } else if (err instanceof ApiError && (err.code === "conflict" || err.code === "revision_required")) {
+        toast.error(te.conflictTitle);
+      } else {
+        toast.error(apiErrorMessage(err, t.auth.errors));
+      }
     } finally {
       setRestoring(false);
     }
@@ -132,16 +124,16 @@ export function VersionsDialog({
 
           <Tabs value={tab} onValueChange={(v) => setTab(v as "ar" | "en")}>
             <TabsList className="grid h-9 w-full grid-cols-2">
-              <TabsTrigger value="ar" className="text-xs">
+              <TabsTrigger value="ar" id="version-locale-ar" aria-controls="version-results" className="text-xs">
                 {te.ar}
               </TabsTrigger>
-              <TabsTrigger value="en" className="text-xs">
+              <TabsTrigger value="en" id="version-locale-en" aria-controls="version-results" className="text-xs">
                 {te.en}
               </TabsTrigger>
             </TabsList>
           </Tabs>
 
-          <div className="min-h-40 space-y-2">
+          <div id="version-results" role="tabpanel" aria-labelledby={`version-locale-${tab}`} tabIndex={0} className="min-h-40 space-y-2">
             {loading && !data && (
               <div className="space-y-2">
                 {Array.from({ length: 4 }).map((_, i) => (
@@ -164,25 +156,18 @@ export function VersionsDialog({
                   key={version.id}
                   className={cn(
                     "flex items-center gap-3 rounded-xl border border-border/70 bg-white p-3 transition-colors hover:bg-muted/50",
-                    version.version ===
-                      Math.max(...versions.map((v) => v.version)) &&
-                      "border-brand/40",
+                    version.version === Math.max(...versions.map((v) => v.version)) && "border-brand/40"
                   )}
                 >
-                  <span
-                    className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-accent text-sm font-bold text-brand-strong tabular-nums"
-                    aria-hidden="true"
-                  >
+                  <span className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-accent text-sm font-bold text-brand-strong tabular-nums" aria-hidden="true">
                     {version.version}
                   </span>
                   <div className="min-w-0 flex-1">
                     <p className="truncate text-sm font-semibold text-navy">
-                      {tp.currentVersion} #{version.version} ·{" "}
-                      {version.blockCount} {te.blocks}
+                      {tp.currentVersion} #{version.version} · {version.blockCount} {te.blocks}
                     </p>
                     <p className="truncate text-xs tabular-nums text-muted-foreground">
-                      {version.author} ·{" "}
-                      {fmtDateTime(version.createdAt, locale)}
+                      {version.author} · {fmtDateTime(version.createdAt, locale)}
                     </p>
                   </div>
                   {canRestore && (
@@ -203,35 +188,42 @@ export function VersionsDialog({
         </DialogContent>
       </Dialog>
 
-      <AlertDialog
-        open={confirmVersion !== null}
-        onOpenChange={(o) => !o && setConfirmVersion(null)}
-      >
+      <AlertDialog open={confirmVersion !== null} onOpenChange={(o) => !o && setConfirmVersion(null)}>
         <AlertDialogContent className="rounded-2xl">
           <AlertDialogHeader>
-            <AlertDialogTitle className="text-lg font-bold text-navy">
-              {tp.restoreVersion}
-            </AlertDialogTitle>
+            <AlertDialogTitle className="text-lg font-bold text-navy">{tp.restoreVersion}</AlertDialogTitle>
             <AlertDialogDescription>
-              #{confirmVersion} — {te.leaveWarning}
+              #{confirmVersion} — {te.restoreScopeHint}
             </AlertDialogDescription>
           </AlertDialogHeader>
-          <AlertDialogFooter>
-            <AlertDialogCancel disabled={restoring}>
-              {t.admin.users.cancel}
-            </AlertDialogCancel>
-            <AlertDialogAction
-              disabled={restoring}
-              onClick={(e) => {
-                e.preventDefault();
-                if (confirmVersion !== null) void restore(confirmVersion);
-              }}
-            >
-              {restoring && (
-                <Loader2 className="size-4 animate-spin" aria-hidden="true" />
-              )}
-              {tp.restore}
-            </AlertDialogAction>
+          <AlertDialogFooter className="flex flex-col gap-2 sm:flex-row sm:justify-end">
+            <AlertDialogCancel disabled={restoring}>{t.admin.users.cancel}</AlertDialogCancel>
+            {canRestore && (
+              <>
+                <Button
+                  type="button"
+                  variant="outline"
+                  disabled={restoring}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    if (confirmVersion !== null) void restore(confirmVersion, true);
+                  }}
+                >
+                  {restoring && <Loader2 className="size-4 animate-spin" aria-hidden="true" />}
+                  {tp.restoreBoth}
+                </Button>
+                <AlertDialogAction
+                  disabled={restoring}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    if (confirmVersion !== null) void restore(confirmVersion, false);
+                  }}
+                >
+                  {restoring && <Loader2 className="size-4 animate-spin" aria-hidden="true" />}
+                  {tp.restoreThisLocale} ({tab === "ar" ? te.ar : te.en})
+                </AlertDialogAction>
+              </>
+            )}
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>

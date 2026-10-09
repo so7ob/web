@@ -1,0 +1,32 @@
+[
+  {
+    "artifact": ".archify/architecture-so7ob-20261009-230021/so7ob.html",
+    "exitCode": 0,
+    "output": "pass"
+  },
+  {
+    "artifact": ".archify/sequence-so7ob-request-20261009-230021/creation/creation.html",
+    "exitCode": 0,
+    "output": "pass"
+  },
+  {
+    "artifact": ".archify/sequence-so7ob-request-20261009-230021/processing/processing.html",
+    "exitCode": 0,
+    "output": "pass"
+  },
+  {
+    "artifact": ".archify/sequence-so7ob-request-20261009-230021/followup/followup.html",
+    "exitCode": 0,
+    "output": "pass"
+  },
+  {
+    "artifact": ".archify/workflow-agent-tool-loop-20261009-231121/agent-tool-loop.html",
+    "exitCode": 0,
+    "output": "pass"
+  },
+  {
+    "artifact": ".archify/lifecycle-agent-run-20261009-231544/agent-run.html",
+    "exitCode": 0,
+    "output": "pass"
+  }
+]

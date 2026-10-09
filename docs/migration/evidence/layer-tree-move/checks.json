@@ -1,0 +1,75 @@
+{
+  "sourceSHA": "dddf8cd00a19cf7d562f503549f4c000109057d1",
+  "parentSHA": "d95a4ab8e0e9e77c06e50fed3ece7a9e2eea56b1",
+  "syntheticOnly": true,
+  "checks": [
+    {
+      "check": "pinned source tests",
+      "result": "305 Vitest + 6 Bun passed",
+      "localLog": ".migration/source-refresh-dddf8cd/reference-tests.log",
+      "sha256": "6e5530da2b2134ad2eb609172a203ceca369279503e541f8af27d1ac3edb2ea3"
+    },
+    {
+      "check": "pinned source build",
+      "result": "passed",
+      "localLog": ".migration/source-refresh-dddf8cd/reference-build.log",
+      "sha256": "d3702990600bdf65d128c473c0c7484c342854938df4dc2f9be395fd11e92ba8"
+    },
+    {
+      "check": "real MariaDB unit/integration",
+      "result": "377 passed / 37 files",
+      "localLog": ".migration/source-refresh-dddf8cd/unit-final.log",
+      "sha256": "87fe03928993f91fce304b3094673eb8357b2774e151a6e8fa41b643fb5c28ad"
+    },
+    {
+      "check": "focused layer journeys",
+      "result": "4 passed",
+      "localLog": ".migration/source-refresh-dddf8cd/layer-e2e-8.log",
+      "sha256": "3d5bb5af4050fe1c72b041ff1915bb9642d5e63d28c9423e88f5019961c82930"
+    },
+    {
+      "check": "full browser",
+      "result": "104 passed; zero retries",
+      "localLog": ".migration/source-refresh-dddf8cd/e2e-final-2.log",
+      "sha256": "f9c93ae581d444d2d6b48746e77959dbf8d9e375ad29ab78d7980c14bad8d3d3"
+    },
+    {
+      "check": "ESLint",
+      "result": "passed",
+      "localLog": ".migration/source-refresh-dddf8cd/lint-final-4.log",
+      "sha256": "f53c816cc6f6619121d1bc9841ddb6af506e161209ac8f3479bed133f4eea735"
+    },
+    {
+      "check": "TypeScript",
+      "result": "passed",
+      "localLog": ".migration/source-refresh-dddf8cd/typecheck-final-4.log",
+      "sha256": "515fc5287ba273cdd4b202cc41ae1de65500d3c7625871252a3c953d11cf9edb"
+    },
+    {
+      "check": "target build",
+      "result": "passed",
+      "localLog": ".migration/source-refresh-dddf8cd/build-7.log",
+      "sha256": "c660d4a4471ac5a34a26286679651c311d0ae28403018cfbc968fab185e795ef"
+    },
+    {
+      "check": "infrastructure",
+      "result": "passed",
+      "localLog": ".migration/source-refresh-dddf8cd/infra-final-2.log",
+      "sha256": "e42a9934a99e0602d04185ddf8ee878b7374c791204f150318fc19dc32023c43"
+    }
+  ],
+  "interruptedBrowser": {
+    "log": ".migration/source-refresh-dddf8cd/e2e-final.log",
+    "reason": "isolated MariaDB port 3307 stopped normally by unknown initiator; connection refused; stopped invalid run, restarted same datadir and reran complete suite"
+  },
+  "humanReview": "pending",
+  "productionMigration": false,
+  "visual": {
+    "library": "library-after/summary.json",
+    "layers": "layers-rtl-final/summary.json",
+    "comparisonsPassed": 8,
+    "threshold": 0.005,
+    "maximumFinalLayerDifference": 0.00122495894909688,
+    "humanReview": "pending"
+  }
+}

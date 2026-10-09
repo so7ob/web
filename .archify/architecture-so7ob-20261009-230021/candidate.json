@@ -1,0 +1,422 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "سُحُب التقنية — من الواجهة إلى البيانات",
+    "output": ".archify/architecture-so7ob-20261009-230021/so7ob.html",
+    "quality_profile": "showcase",
+    "repository": {
+      "url": "https://github.com/so7ob/web.git",
+      "revision": "e84fe1b3c3f6b2fd9bf2c79c0a08e53458e5dae3",
+      "provider": "github"
+    },
+    "legend": {
+      "entries": {
+        "external": {
+          "label": "مستخدم أو مزوّد خارجي"
+        },
+        "frontend": {
+          "label": "واجهة المتصفح"
+        },
+        "security": {
+          "label": "حدود الدخول والتحقق"
+        },
+        "backend": {
+          "label": "منطق الخادم والعامل"
+        },
+        "database": {
+          "label": "تخزين دائم"
+        }
+      }
+    }
+  },
+  "components": [
+    {
+      "id": "people",
+      "type": "external",
+      "label": "الزائر · العميل · المدير",
+      "sublabel": "عام / حساب / إدارة — ar و en",
+      "pos": [
+        40,
+        50
+      ],
+      "size": [
+        290,
+        85
+      ],
+      "sources": [
+        {
+          "path": "apps/api/src/public.service.ts",
+          "line": 75,
+          "end_line": 99
+        },
+        {
+          "path": "apps/api/src/public.service.ts",
+          "line": 176,
+          "end_line": 193
+        }
+      ]
+    },
+    {
+      "id": "browser",
+      "type": "frontend",
+      "label": "المتصفح — React / Vite",
+      "sublabel": "apps/web · React Router · Hydration",
+      "pos": [
+        40,
+        260
+      ],
+      "size": [
+        290,
+        85
+      ],
+      "sources": [
+        {
+          "path": "apps/web/src/entry-client.tsx",
+          "line": 15,
+          "end_line": 32
+        },
+        {
+          "path": "apps/web/src/components/form/project-request-form.tsx",
+          "line": 174,
+          "end_line": 205
+        }
+      ]
+    },
+    {
+      "id": "http",
+      "type": "security",
+      "label": "HTTP · SSR · REST API",
+      "sublabel": "apps/api · NestJS / Express · Node 24",
+      "pos": [
+        450,
+        260
+      ],
+      "size": [
+        290,
+        85
+      ],
+      "sources": [
+        {
+          "path": "apps/api/src/main.ts",
+          "line": 182,
+          "end_line": 208
+        },
+        {
+          "path": "apps/api/src/main.ts",
+          "line": 315,
+          "end_line": 381
+        },
+        {
+          "path": "apps/api/src/business/controller.ts",
+          "line": 46,
+          "end_line": 85
+        }
+      ]
+    },
+    {
+      "id": "services",
+      "type": "backend",
+      "label": "خدمات التطبيق والصلاحيات",
+      "sublabel": "packages/server + PublicService",
+      "pos": [
+        450,
+        550
+      ],
+      "size": [
+        290,
+        85
+      ],
+      "sources": [
+        {
+          "path": "packages/server/src/business/requests.ts",
+          "line": 274,
+          "end_line": 380
+        },
+        {
+          "path": "packages/server/src/business/submissions.ts",
+          "line": 44,
+          "end_line": 168
+        },
+        {
+          "path": "apps/api/src/public.service.ts",
+          "line": 231,
+          "end_line": 280
+        }
+      ]
+    },
+    {
+      "id": "db",
+      "type": "database",
+      "label": "MariaDB عبر TypeORM",
+      "sublabel": "سجلات + جلسات + إشعارات + مهام",
+      "pos": [
+        880,
+        550
+      ],
+      "size": [
+        290,
+        85
+      ],
+      "sources": [
+        {
+          "path": "packages/server/src/database/data-source.ts",
+          "line": 13,
+          "end_line": 44
+        },
+        {
+          "path": "packages/server/src/queue/mail-queue.ts",
+          "line": 10,
+          "end_line": 42
+        },
+        {
+          "path": "packages/server/src/business/persistence.ts",
+          "line": 6,
+          "end_line": 17
+        }
+      ]
+    },
+    {
+      "id": "files",
+      "type": "database",
+      "label": "ملفات DATA_DIR/uploads",
+      "sublabel": "FileStore · بيانات الملف في MariaDB",
+      "pos": [
+        40,
+        830
+      ],
+      "size": [
+        290,
+        85
+      ],
+      "sources": [
+        {
+          "path": "packages/server/src/files/storage.ts",
+          "line": 12,
+          "end_line": 35
+        },
+        {
+          "path": "packages/server/src/files/service.ts",
+          "line": 135,
+          "end_line": 173
+        },
+        {
+          "path": "packages/server/src/files/cleanup.ts",
+          "line": 35,
+          "end_line": 74
+        }
+      ]
+    },
+    {
+      "id": "worker",
+      "type": "backend",
+      "label": "عامل مستقل — Node Worker",
+      "sublabel": "apps/worker · Polling + leases",
+      "pos": [
+        880,
+        830
+      ],
+      "size": [
+        290,
+        85
+      ],
+      "sources": [
+        {
+          "path": "apps/worker/src/main.ts",
+          "line": 1,
+          "end_line": 28
+        },
+        {
+          "path": "packages/server/src/queue/mail-queue.ts",
+          "line": 29,
+          "end_line": 62
+        },
+        {
+          "path": "packages/server/src/admin/publication.ts",
+          "line": 211,
+          "end_line": 242
+        }
+      ]
+    },
+    {
+      "id": "providers",
+      "type": "external",
+      "label": "SMTP · Webhook اختياري",
+      "sublabel": "مزودان قابلان للتهيئة؛ التشغيل غير متحقق",
+      "pos": [
+        450,
+        1090
+      ],
+      "size": [
+        290,
+        85
+      ],
+      "sources": [
+        {
+          "path": "packages/server/src/queue/worker.ts",
+          "line": 5,
+          "end_line": 14
+        },
+        {
+          "path": "packages/server/src/queue/worker.ts",
+          "line": 25,
+          "end_line": 49
+        },
+        {
+          "path": "packages/server/src/queue/webhook.ts",
+          "line": 219,
+          "end_line": 249
+        }
+      ]
+    }
+  ],
+  "boundaries": [
+    {
+      "kind": "region",
+      "label": "المتصفح — كود العميل",
+      "wraps": [
+        "browser"
+      ],
+      "pad": 20
+    },
+    {
+      "kind": "security-group",
+      "label": "خادم التطبيق — عملية واحدة",
+      "wraps": [
+        "http",
+        "services"
+      ],
+      "pad": 25
+    },
+    {
+      "kind": "region",
+      "label": "قاعدة البيانات",
+      "wraps": [
+        "db"
+      ],
+      "pad": 22
+    },
+    {
+      "kind": "region",
+      "label": "عملية خلفية مستقلة",
+      "wraps": [
+        "worker"
+      ],
+      "pad": 22
+    },
+    {
+      "kind": "region",
+      "label": "خدمات خارجية مهيأة",
+      "wraps": [
+        "providers"
+      ],
+      "pad": 20
+    }
+  ],
+  "connections": [
+    {
+      "id": "enter",
+      "from": "people",
+      "to": "browser",
+      "label": "فتح الواجهة",
+      "variant": "default"
+    },
+    {
+      "id": "request",
+      "from": "browser",
+      "to": "http",
+      "label": "طلب HTML / API",
+      "variant": "emphasis"
+    },
+    {
+      "id": "dispatch",
+      "from": "http",
+      "to": "services",
+      "label": "جلسة + DTO + تفويض",
+      "variant": "security"
+    },
+    {
+      "id": "persistence",
+      "from": "services",
+      "to": "db",
+      "label": "قراءة/كتابة + إسناد مهمة",
+      "variant": "default"
+    },
+    {
+      "id": "file-io",
+      "from": "services",
+      "to": "files",
+      "label": "ملف بعد تحقق الوصول",
+      "variant": "security"
+    },
+    {
+      "id": "poll",
+      "from": "worker",
+      "to": "db",
+      "label": "سحب مهمة / تحديث النتيجة",
+      "variant": "dashed"
+    },
+    {
+      "id": "cleanup",
+      "from": "worker",
+      "to": "files",
+      "label": "حذف غير المرجعي فقط",
+      "variant": "dashed"
+    },
+    {
+      "id": "deliver",
+      "from": "worker",
+      "to": "providers",
+      "label": "إرسال بريد / HTTP POST",
+      "variant": "dashed"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "الدخول والنتيجة",
+      "items": [
+        "الزائر: /ar أو /en؛ العميل: /{locale}/account؛ المدير: /{locale}/admin.",
+        "SSR يطلب PublicView من PublicService داخل العملية ثم يعيد HTML وبيانات التهيئة؛ React ينفذ Hydration.",
+        "التنقل اللاحق يقرأ /api/v1/public/view؛ عمليات الحساب والإدارة تستعمل REST وتعيد JSON عبر نفس اتصال الطلب."
+      ]
+    },
+    {
+      "dot": "rose",
+      "title": "حماية حسب المسار",
+      "items": [
+        "جلسة خادم عبر Cookie؛ AccountGuard يرفض غيابها. Origin/CSRF يحمي الكتابة وفق السياسة؛ التفويض داخل الخدمات وPermissionGuard حسب المسار.",
+        "العميل يصل إلى طلبه؛ الموظف يحتاج صلاحيات العرض والرد. الملاحظات الداخلية ومرفقاتها محجوبة عن العميل.",
+        "المرفقات الخاصة: جلسة مستخدم أو Track capability صالحة وفق السياسة؛ media مسار عام مستقل. SSR العام يقرأ المنشور فقط."
+      ]
+    },
+    {
+      "dot": "emerald",
+      "title": "العقود ليست قاعدة بيانات",
+      "items": [
+        "packages/contracts: أنواع الاستجابات والتحقق وقواعد الصلاحيات المشتركة؛ يستخدمها المتصفح والخادم كمكتبة.",
+        "packages/server: كيانات التخزين وTypeORM DataSource/QueryRunner وSQL بمعاملات. لا اتصال من المتصفح إلى MariaDB.",
+        "الخدمات تشمل المصادقة والعملاء والطلبات والاستفسارات والمحادثات والمستخدمين وCMS والملفات والإشعارات."
+      ]
+    },
+    {
+      "dot": "amber",
+      "title": "غير متزامن بعد الحفظ",
+      "items": [
+        "MailJob وWebhookJob وFileCleanupJob جداول في MariaDB، وليست خدمة Queue منفصلة.",
+        "العامل يسحب مع FOR UPDATE SKIP LOCKED وlease؛ البريد مشفر في الطابور؛ retry للأخطاء الآمنة وuncertain عند غموض الإرسال.",
+        "العامل يفحص النشر المجدول أيضًا؛ لا يرسله الخادم كـMailJob. الإشعارات الداخلية سجلات Notification تُقرأ عبر API."
+      ]
+    },
+    {
+      "dot": "slate",
+      "title": "مفتاح الأدلة والحدود",
+      "items": [
+        "الرمادي والأخضر المتصلان: طلب متزامن؛ الوردي المتقطع: تحقق متزامن؛ البنفسجي المتقطع: عمل خلفي؛ البنفسجي للصناديق: تخزين.",
+        "كل مكوّن هنا منفذ في الكود؛ تفعيل SMTP/Webhook والنشر في الإنتاج غير متحقق. المصدر develop @ e84fe1b3.",
+        "README يوثق ترحيلاً جزئيًا وقبولًا تشغيليًا غير مكتمل؛ Website وRakim مراجع فقط، والأرشيف reference ليس Runtime.",
+        "التسميات عربية؛ أدوات عارض Archify الثابتة تستخدم واجهة إنجليزية. فصل العقود لا يثبت تنقية جميع API responses؛ انظر تقرير الأدلة."
+      ]
+    }
+  ]
+}

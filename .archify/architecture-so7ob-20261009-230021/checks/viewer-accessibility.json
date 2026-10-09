@@ -1,0 +1,1186 @@
+[
+  {
+    "name": "architecture",
+    "file": ".archify/architecture-so7ob-20261009-230021/so7ob.html",
+    "sha256": "4241f5c4e13882b15fc7019629da1b9c07f3f0534802036bf8173ba622317da6",
+    "width": 375,
+    "dir": "ltr",
+    "rtlMode": "authored fallback",
+    "metrics": {
+      "width": 375,
+      "scrollWidth": 375,
+      "lang": "en",
+      "dir": ""
+    },
+    "keyboard": [
+      {
+        "tag": "BUTTON",
+        "label": "Toggle color theme"
+      },
+      {
+        "tag": "BUTTON",
+        "label": "Visual style: Classic. Choose visual style"
+      },
+      {
+        "tag": "BUTTON",
+        "label": "Enter presentation stage"
+      },
+      {
+        "tag": "BUTTON",
+        "label": "Export diagram"
+      },
+      {
+        "tag": "svg",
+        "label": "سُحُب التقنية — من الواجهة إلى البيانات\n        An architecture diagra"
+      },
+      {
+        "tag": "g",
+        "label": "Direct relationship explorer"
+      },
+      {
+        "tag": "g",
+        "label": "Inspect relationship 1 of 8: الزائر · العميل · المدير to المتصفح — React / Vite, فتح الواجهة. Press Enter for details."
+      },
+      {
+        "tag": "g",
+        "label": "Focus الزائر · العميل · المدير, عام / حساب / إدارة — ar و en, Architecture component, 2 verified source references"
+      }
+    ],
+    "violations": [
+      {
+        "id": "heading-order",
+        "impact": "moderate",
+        "nodes": 1,
+        "description": "Ensure the order of headings is semantically correct"
+      },
+      {
+        "id": "landmark-one-main",
+        "impact": "moderate",
+        "nodes": 1,
+        "description": "Ensure the document has a main landmark"
+      },
+      {
+        "id": "nested-interactive",
+        "impact": "serious",
+        "nodes": 1,
+        "description": "Ensure interactive controls are not nested as they are not always announced by screen readers or can cause focus problems for assistive technologies"
+      },
+      {
+        "id": "region",
+        "impact": "moderate",
+        "nodes": 3,
+        "description": "Ensure all page content is contained by landmarks"
+      }
+    ]
+  },
+  {
+    "name": "architecture",
+    "file": ".archify/architecture-so7ob-20261009-230021/so7ob.html",
+    "sha256": "4241f5c4e13882b15fc7019629da1b9c07f3f0534802036bf8173ba622317da6",
+    "width": 375,
+    "dir": "rtl",
+    "rtlMode": "DOM emulation; not authored default",
+    "metrics": {
+      "width": 375,
+      "scrollWidth": 375,
+      "lang": "ar",
+      "dir": "rtl"
+    },
+    "keyboard": [
+      {
+        "tag": "BUTTON",
+        "label": "Toggle color theme"
+      },
+      {
+        "tag": "BUTTON",
+        "label": "Visual style: Classic. Choose visual style"
+      },
+      {
+        "tag": "BUTTON",
+        "label": "Enter presentation stage"
+      },
+      {
+        "tag": "BUTTON",
+        "label": "Export diagram"
+      },
+      {
+        "tag": "svg",
+        "label": "سُحُب التقنية — من الواجهة إلى البيانات\n        An architecture diagra"
+      },
+      {
+        "tag": "g",
+        "label": "Direct relationship explorer"
+      },
+      {
+        "tag": "g",
+        "label": "Inspect relationship 1 of 8: الزائر · العميل · المدير to المتصفح — React / Vite, فتح الواجهة. Press Enter for details."
+      },
+      {
+        "tag": "g",
+        "label": "Focus الزائر · العميل · المدير, عام / حساب / إدارة — ar و en, Architecture component, 2 verified source references"
+      }
+    ],
+    "violations": [
+      {
+        "id": "heading-order",
+        "impact": "moderate",
+        "nodes": 1,
+        "description": "Ensure the order of headings is semantically correct"
+      },
+      {
+        "id": "landmark-one-main",
+        "impact": "moderate",
+        "nodes": 1,
+        "description": "Ensure the document has a main landmark"
+      },
+      {
+        "id": "nested-interactive",
+        "impact": "serious",
+        "nodes": 1,
+        "description": "Ensure interactive controls are not nested as they are not always announced by screen readers or can cause focus problems for assistive technologies"
+      },
+      {
+        "id": "region",
+        "impact": "moderate",
+        "nodes": 3,
+        "description": "Ensure all page content is contained by landmarks"
+      }
+    ]
+  },
+  {
+    "name": "architecture",
+    "file": ".archify/architecture-so7ob-20261009-230021/so7ob.html",
+    "sha256": "4241f5c4e13882b15fc7019629da1b9c07f3f0534802036bf8173ba622317da6",
+    "width": 1280,
+    "dir": "ltr",
+    "rtlMode": "authored fallback",
+    "metrics": {
+      "width": 1280,
+      "scrollWidth": 1280,
+      "lang": "en",
+      "dir": ""
+    },
+    "keyboard": [
+      {
+        "tag": "BUTTON",
+        "label": "Toggle color theme"
+      },
+      {
+        "tag": "BUTTON",
+        "label": "Visual style: Classic. Choose visual style"
+      },
+      {
+        "tag": "BUTTON",
+        "label": "Enter presentation stage"
+      },
+      {
+        "tag": "BUTTON",
+        "label": "Export diagram"
+      },
+      {
+        "tag": "svg",
+        "label": "سُحُب التقنية — من الواجهة إلى البيانات\n        An architecture diagra"
+      },
+      {
+        "tag": "g",
+        "label": "Direct relationship explorer"
+      },
+      {
+        "tag": "g",
+        "label": "Inspect relationship 1 of 8: الزائر · العميل · المدير to المتصفح — React / Vite, فتح الواجهة. Press Enter for details."
+      },
+      {
+        "tag": "g",
+        "label": "Focus الزائر · العميل · المدير, عام / حساب / إدارة — ar و en, Architecture component, 2 verified source references"
+      }
+    ],
+    "violations": [
+      {
+        "id": "heading-order",
+        "impact": "moderate",
+        "nodes": 1,
+        "description": "Ensure the order of headings is semantically correct"
+      },
+      {
+        "id": "landmark-one-main",
+        "impact": "moderate",
+        "nodes": 1,
+        "description": "Ensure the document has a main landmark"
+      },
+      {
+        "id": "nested-interactive",
+        "impact": "serious",
+        "nodes": 1,
+        "description": "Ensure interactive controls are not nested as they are not always announced by screen readers or can cause focus problems for assistive technologies"
+      },
+      {
+        "id": "region",
+        "impact": "moderate",
+        "nodes": 3,
+        "description": "Ensure all page content is contained by landmarks"
+      }
+    ]
+  },
+  {
+    "name": "architecture",
+    "file": ".archify/architecture-so7ob-20261009-230021/so7ob.html",
+    "sha256": "4241f5c4e13882b15fc7019629da1b9c07f3f0534802036bf8173ba622317da6",
+    "width": 1280,
+    "dir": "rtl",
+    "rtlMode": "DOM emulation; not authored default",
+    "metrics": {
+      "width": 1280,
+      "scrollWidth": 1280,
+      "lang": "ar",
+      "dir": "rtl"
+    },
+    "keyboard": [
+      {
+        "tag": "BUTTON",
+        "label": "Toggle color theme"
+      },
+      {
+        "tag": "BUTTON",
+        "label": "Visual style: Classic. Choose visual style"
+      },
+      {
+        "tag": "BUTTON",
+        "label": "Enter presentation stage"
+      },
+      {
+        "tag": "BUTTON",
+        "label": "Export diagram"
+      },
+      {
+        "tag": "svg",
+        "label": "سُحُب التقنية — من الواجهة إلى البيانات\n        An architecture diagra"
+      },
+      {
+        "tag": "g",
+        "label": "Direct relationship explorer"
+      },
+      {
+        "tag": "g",
+        "label": "Inspect relationship 1 of 8: الزائر · العميل · المدير to المتصفح — React / Vite, فتح الواجهة. Press Enter for details."
+      },
+      {
+        "tag": "g",
+        "label": "Focus الزائر · العميل · المدير, عام / حساب / إدارة — ar و en, Architecture component, 2 verified source references"
+      }
+    ],
+    "violations": [
+      {
+        "id": "heading-order",
+        "impact": "moderate",
+        "nodes": 1,
+        "description": "Ensure the order of headings is semantically correct"
+      },
+      {
+        "id": "landmark-one-main",
+        "impact": "moderate",
+        "nodes": 1,
+        "description": "Ensure the document has a main landmark"
+      },
+      {
+        "id": "nested-interactive",
+        "impact": "serious",
+        "nodes": 1,
+        "description": "Ensure interactive controls are not nested as they are not always announced by screen readers or can cause focus problems for assistive technologies"
+      },
+      {
+        "id": "region",
+        "impact": "moderate",
+        "nodes": 3,
+        "description": "Ensure all page content is contained by landmarks"
+      }
+    ]
+  },
+  {
+    "name": "creation",
+    "file": ".archify/sequence-so7ob-request-20261009-230021/creation/creation.html",
+    "sha256": "57acd635dcd43c728fe25124a49d97b6121952e8dfa004f52f6b9d71fe6abafe",
+    "width": 375,
+    "dir": "ltr",
+    "rtlMode": "authored fallback",
+    "metrics": {
+      "width": 375,
+      "scrollWidth": 375,
+      "lang": "en",
+      "dir": ""
+    },
+    "keyboard": [
+      {
+        "tag": "BUTTON",
+        "label": "Toggle color theme"
+      },
+      {
+        "tag": "BUTTON",
+        "label": "Visual style: Classic. Choose visual style"
+      },
+      {
+        "tag": "BUTTON",
+        "label": "Enter presentation stage"
+      },
+      {
+        "tag": "BUTTON",
+        "label": "Export diagram"
+      },
+      {
+        "tag": "svg",
+        "label": "١ — إنشاء طلب الخدمة\n        A sequence diagram generated by Archify.\n"
+      },
+      {
+        "tag": "g",
+        "label": "Direct relationship explorer"
+      },
+      {
+        "tag": "g",
+        "label": "Inspect relationship 1 of 9: العميل to API, POST /api/requests. Press Enter for details."
+      },
+      {
+        "tag": "g",
+        "label": "Focus العميل, واجهة الحساب, Sequence participant, 2 verified source references"
+      }
+    ],
+    "violations": [
+      {
+        "id": "heading-order",
+        "impact": "moderate",
+        "nodes": 1,
+        "description": "Ensure the order of headings is semantically correct"
+      },
+      {
+        "id": "landmark-one-main",
+        "impact": "moderate",
+        "nodes": 1,
+        "description": "Ensure the document has a main landmark"
+      },
+      {
+        "id": "nested-interactive",
+        "impact": "serious",
+        "nodes": 1,
+        "description": "Ensure interactive controls are not nested as they are not always announced by screen readers or can cause focus problems for assistive technologies"
+      },
+      {
+        "id": "region",
+        "impact": "moderate",
+        "nodes": 3,
+        "description": "Ensure all page content is contained by landmarks"
+      }
+    ]
+  },
+  {
+    "name": "creation",
+    "file": ".archify/sequence-so7ob-request-20261009-230021/creation/creation.html",
+    "sha256": "57acd635dcd43c728fe25124a49d97b6121952e8dfa004f52f6b9d71fe6abafe",
+    "width": 375,
+    "dir": "rtl",
+    "rtlMode": "DOM emulation; not authored default",
+    "metrics": {
+      "width": 375,
+      "scrollWidth": 375,
+      "lang": "ar",
+      "dir": "rtl"
+    },
+    "keyboard": [
+      {
+        "tag": "BUTTON",
+        "label": "Toggle color theme"
+      },
+      {
+        "tag": "BUTTON",
+        "label": "Visual style: Classic. Choose visual style"
+      },
+      {
+        "tag": "BUTTON",
+        "label": "Enter presentation stage"
+      },
+      {
+        "tag": "BUTTON",
+        "label": "Export diagram"
+      },
+      {
+        "tag": "svg",
+        "label": "١ — إنشاء طلب الخدمة\n        A sequence diagram generated by Archify.\n"
+      },
+      {
+        "tag": "g",
+        "label": "Direct relationship explorer"
+      },
+      {
+        "tag": "g",
+        "label": "Inspect relationship 1 of 9: العميل to API, POST /api/requests. Press Enter for details."
+      },
+      {
+        "tag": "g",
+        "label": "Focus العميل, واجهة الحساب, Sequence participant, 2 verified source references"
+      }
+    ],
+    "violations": [
+      {
+        "id": "heading-order",
+        "impact": "moderate",
+        "nodes": 1,
+        "description": "Ensure the order of headings is semantically correct"
+      },
+      {
+        "id": "landmark-one-main",
+        "impact": "moderate",
+        "nodes": 1,
+        "description": "Ensure the document has a main landmark"
+      },
+      {
+        "id": "nested-interactive",
+        "impact": "serious",
+        "nodes": 1,
+        "description": "Ensure interactive controls are not nested as they are not always announced by screen readers or can cause focus problems for assistive technologies"
+      },
+      {
+        "id": "region",
+        "impact": "moderate",
+        "nodes": 3,
+        "description": "Ensure all page content is contained by landmarks"
+      }
+    ]
+  },
+  {
+    "name": "creation",
+    "file": ".archify/sequence-so7ob-request-20261009-230021/creation/creation.html",
+    "sha256": "57acd635dcd43c728fe25124a49d97b6121952e8dfa004f52f6b9d71fe6abafe",
+    "width": 1280,
+    "dir": "ltr",
+    "rtlMode": "authored fallback",
+    "metrics": {
+      "width": 1280,
+      "scrollWidth": 1280,
+      "lang": "en",
+      "dir": ""
+    },
+    "keyboard": [
+      {
+        "tag": "BUTTON",
+        "label": "Toggle color theme"
+      },
+      {
+        "tag": "BUTTON",
+        "label": "Visual style: Classic. Choose visual style"
+      },
+      {
+        "tag": "BUTTON",
+        "label": "Enter presentation stage"
+      },
+      {
+        "tag": "BUTTON",
+        "label": "Export diagram"
+      },
+      {
+        "tag": "svg",
+        "label": "١ — إنشاء طلب الخدمة\n        A sequence diagram generated by Archify.\n"
+      },
+      {
+        "tag": "g",
+        "label": "Direct relationship explorer"
+      },
+      {
+        "tag": "g",
+        "label": "Inspect relationship 1 of 9: العميل to API, POST /api/requests. Press Enter for details."
+      },
+      {
+        "tag": "g",
+        "label": "Focus العميل, واجهة الحساب, Sequence participant, 2 verified source references"
+      }
+    ],
+    "violations": [
+      {
+        "id": "heading-order",
+        "impact": "moderate",
+        "nodes": 1,
+        "description": "Ensure the order of headings is semantically correct"
+      },
+      {
+        "id": "landmark-one-main",
+        "impact": "moderate",
+        "nodes": 1,
+        "description": "Ensure the document has a main landmark"
+      },
+      {
+        "id": "nested-interactive",
+        "impact": "serious",
+        "nodes": 1,
+        "description": "Ensure interactive controls are not nested as they are not always announced by screen readers or can cause focus problems for assistive technologies"
+      },
+      {
+        "id": "region",
+        "impact": "moderate",
+        "nodes": 3,
+        "description": "Ensure all page content is contained by landmarks"
+      }
+    ]
+  },
+  {
+    "name": "creation",
+    "file": ".archify/sequence-so7ob-request-20261009-230021/creation/creation.html",
+    "sha256": "57acd635dcd43c728fe25124a49d97b6121952e8dfa004f52f6b9d71fe6abafe",
+    "width": 1280,
+    "dir": "rtl",
+    "rtlMode": "DOM emulation; not authored default",
+    "metrics": {
+      "width": 1280,
+      "scrollWidth": 1280,
+      "lang": "ar",
+      "dir": "rtl"
+    },
+    "keyboard": [
+      {
+        "tag": "BUTTON",
+        "label": "Toggle color theme"
+      },
+      {
+        "tag": "BUTTON",
+        "label": "Visual style: Classic. Choose visual style"
+      },
+      {
+        "tag": "BUTTON",
+        "label": "Enter presentation stage"
+      },
+      {
+        "tag": "BUTTON",
+        "label": "Export diagram"
+      },
+      {
+        "tag": "svg",
+        "label": "١ — إنشاء طلب الخدمة\n        A sequence diagram generated by Archify.\n"
+      },
+      {
+        "tag": "g",
+        "label": "Direct relationship explorer"
+      },
+      {
+        "tag": "g",
+        "label": "Inspect relationship 1 of 9: العميل to API, POST /api/requests. Press Enter for details."
+      },
+      {
+        "tag": "g",
+        "label": "Focus العميل, واجهة الحساب, Sequence participant, 2 verified source references"
+      }
+    ],
+    "violations": [
+      {
+        "id": "heading-order",
+        "impact": "moderate",
+        "nodes": 1,
+        "description": "Ensure the order of headings is semantically correct"
+      },
+      {
+        "id": "landmark-one-main",
+        "impact": "moderate",
+        "nodes": 1,
+        "description": "Ensure the document has a main landmark"
+      },
+      {
+        "id": "nested-interactive",
+        "impact": "serious",
+        "nodes": 1,
+        "description": "Ensure interactive controls are not nested as they are not always announced by screen readers or can cause focus problems for assistive technologies"
+      },
+      {
+        "id": "region",
+        "impact": "moderate",
+        "nodes": 3,
+        "description": "Ensure all page content is contained by landmarks"
+      }
+    ]
+  },
+  {
+    "name": "processing",
+    "file": ".archify/sequence-so7ob-request-20261009-230021/processing/processing.html",
+    "sha256": "d730327674472aae46894d143cf9e4b139e869592ecf08b3e2fae1df775d406a",
+    "width": 375,
+    "dir": "ltr",
+    "rtlMode": "authored fallback",
+    "metrics": {
+      "width": 375,
+      "scrollWidth": 375,
+      "lang": "en",
+      "dir": ""
+    },
+    "keyboard": [
+      {
+        "tag": "BUTTON",
+        "label": "Toggle color theme"
+      },
+      {
+        "tag": "BUTTON",
+        "label": "Visual style: Classic. Choose visual style"
+      },
+      {
+        "tag": "BUTTON",
+        "label": "Enter presentation stage"
+      },
+      {
+        "tag": "BUTTON",
+        "label": "Export diagram"
+      },
+      {
+        "tag": "svg",
+        "label": "٢ — معالجة الطلب والرد\n        A sequence diagram generated by Archify"
+      },
+      {
+        "tag": "g",
+        "label": "Direct relationship explorer"
+      },
+      {
+        "tag": "g",
+        "label": "Inspect relationship 1 of 14: الموظف to API, GET /api/admin/requests/:id. Press Enter for details."
+      },
+      {
+        "tag": "g",
+        "label": "Focus الموظف, لوحة الإدارة, Sequence participant, 1 verified source reference"
+      }
+    ],
+    "violations": [
+      {
+        "id": "heading-order",
+        "impact": "moderate",
+        "nodes": 1,
+        "description": "Ensure the order of headings is semantically correct"
+      },
+      {
+        "id": "landmark-one-main",
+        "impact": "moderate",
+        "nodes": 1,
+        "description": "Ensure the document has a main landmark"
+      },
+      {
+        "id": "nested-interactive",
+        "impact": "serious",
+        "nodes": 1,
+        "description": "Ensure interactive controls are not nested as they are not always announced by screen readers or can cause focus problems for assistive technologies"
+      },
+      {
+        "id": "region",
+        "impact": "moderate",
+        "nodes": 3,
+        "description": "Ensure all page content is contained by landmarks"
+      }
+    ]
+  },
+  {
+    "name": "processing",
+    "file": ".archify/sequence-so7ob-request-20261009-230021/processing/processing.html",
+    "sha256": "d730327674472aae46894d143cf9e4b139e869592ecf08b3e2fae1df775d406a",
+    "width": 375,
+    "dir": "rtl",
+    "rtlMode": "DOM emulation; not authored default",
+    "metrics": {
+      "width": 375,
+      "scrollWidth": 375,
+      "lang": "ar",
+      "dir": "rtl"
+    },
+    "keyboard": [
+      {
+        "tag": "BUTTON",
+        "label": "Toggle color theme"
+      },
+      {
+        "tag": "BUTTON",
+        "label": "Visual style: Classic. Choose visual style"
+      },
+      {
+        "tag": "BUTTON",
+        "label": "Enter presentation stage"
+      },
+      {
+        "tag": "BUTTON",
+        "label": "Export diagram"
+      },
+      {
+        "tag": "svg",
+        "label": "٢ — معالجة الطلب والرد\n        A sequence diagram generated by Archify"
+      },
+      {
+        "tag": "g",
+        "label": "Direct relationship explorer"
+      },
+      {
+        "tag": "g",
+        "label": "Inspect relationship 1 of 14: الموظف to API, GET /api/admin/requests/:id. Press Enter for details."
+      },
+      {
+        "tag": "g",
+        "label": "Focus الموظف, لوحة الإدارة, Sequence participant, 1 verified source reference"
+      }
+    ],
+    "violations": [
+      {
+        "id": "heading-order",
+        "impact": "moderate",
+        "nodes": 1,
+        "description": "Ensure the order of headings is semantically correct"
+      },
+      {
+        "id": "landmark-one-main",
+        "impact": "moderate",
+        "nodes": 1,
+        "description": "Ensure the document has a main landmark"
+      },
+      {
+        "id": "nested-interactive",
+        "impact": "serious",
+        "nodes": 1,
+        "description": "Ensure interactive controls are not nested as they are not always announced by screen readers or can cause focus problems for assistive technologies"
+      },
+      {
+        "id": "region",
+        "impact": "moderate",
+        "nodes": 3,
+        "description": "Ensure all page content is contained by landmarks"
+      }
+    ]
+  },
+  {
+    "name": "processing",
+    "file": ".archify/sequence-so7ob-request-20261009-230021/processing/processing.html",
+    "sha256": "d730327674472aae46894d143cf9e4b139e869592ecf08b3e2fae1df775d406a",
+    "width": 1280,
+    "dir": "ltr",
+    "rtlMode": "authored fallback",
+    "metrics": {
+      "width": 1280,
+      "scrollWidth": 1280,
+      "lang": "en",
+      "dir": ""
+    },
+    "keyboard": [
+      {
+        "tag": "BUTTON",
+        "label": "Toggle color theme"
+      },
+      {
+        "tag": "BUTTON",
+        "label": "Visual style: Classic. Choose visual style"
+      },
+      {
+        "tag": "BUTTON",
+        "label": "Enter presentation stage"
+      },
+      {
+        "tag": "BUTTON",
+        "label": "Export diagram"
+      },
+      {
+        "tag": "svg",
+        "label": "٢ — معالجة الطلب والرد\n        A sequence diagram generated by Archify"
+      },
+      {
+        "tag": "g",
+        "label": "Direct relationship explorer"
+      },
+      {
+        "tag": "g",
+        "label": "Inspect relationship 1 of 14: الموظف to API, GET /api/admin/requests/:id. Press Enter for details."
+      },
+      {
+        "tag": "g",
+        "label": "Focus الموظف, لوحة الإدارة, Sequence participant, 1 verified source reference"
+      }
+    ],
+    "violations": [
+      {
+        "id": "heading-order",
+        "impact": "moderate",
+        "nodes": 1,
+        "description": "Ensure the order of headings is semantically correct"
+      },
+      {
+        "id": "landmark-one-main",
+        "impact": "moderate",
+        "nodes": 1,
+        "description": "Ensure the document has a main landmark"
+      },
+      {
+        "id": "nested-interactive",
+        "impact": "serious",
+        "nodes": 1,
+        "description": "Ensure interactive controls are not nested as they are not always announced by screen readers or can cause focus problems for assistive technologies"
+      },
+      {
+        "id": "region",
+        "impact": "moderate",
+        "nodes": 3,
+        "description": "Ensure all page content is contained by landmarks"
+      }
+    ]
+  },
+  {
+    "name": "processing",
+    "file": ".archify/sequence-so7ob-request-20261009-230021/processing/processing.html",
+    "sha256": "d730327674472aae46894d143cf9e4b139e869592ecf08b3e2fae1df775d406a",
+    "width": 1280,
+    "dir": "rtl",
+    "rtlMode": "DOM emulation; not authored default",
+    "metrics": {
+      "width": 1280,
+      "scrollWidth": 1280,
+      "lang": "ar",
+      "dir": "rtl"
+    },
+    "keyboard": [
+      {
+        "tag": "BUTTON",
+        "label": "Toggle color theme"
+      },
+      {
+        "tag": "BUTTON",
+        "label": "Visual style: Classic. Choose visual style"
+      },
+      {
+        "tag": "BUTTON",
+        "label": "Enter presentation stage"
+      },
+      {
+        "tag": "BUTTON",
+        "label": "Export diagram"
+      },
+      {
+        "tag": "svg",
+        "label": "٢ — معالجة الطلب والرد\n        A sequence diagram generated by Archify"
+      },
+      {
+        "tag": "g",
+        "label": "Direct relationship explorer"
+      },
+      {
+        "tag": "g",
+        "label": "Inspect relationship 1 of 14: الموظف to API, GET /api/admin/requests/:id. Press Enter for details."
+      },
+      {
+        "tag": "g",
+        "label": "Focus الموظف, لوحة الإدارة, Sequence participant, 1 verified source reference"
+      }
+    ],
+    "violations": [
+      {
+        "id": "heading-order",
+        "impact": "moderate",
+        "nodes": 1,
+        "description": "Ensure the order of headings is semantically correct"
+      },
+      {
+        "id": "landmark-one-main",
+        "impact": "moderate",
+        "nodes": 1,
+        "description": "Ensure the document has a main landmark"
+      },
+      {
+        "id": "nested-interactive",
+        "impact": "serious",
+        "nodes": 1,
+        "description": "Ensure interactive controls are not nested as they are not always announced by screen readers or can cause focus problems for assistive technologies"
+      },
+      {
+        "id": "region",
+        "impact": "moderate",
+        "nodes": 3,
+        "description": "Ensure all page content is contained by landmarks"
+      }
+    ]
+  },
+  {
+    "name": "followup",
+    "file": ".archify/sequence-so7ob-request-20261009-230021/followup/followup.html",
+    "sha256": "8ef88214a2146a0ad36f098e39af3b2861c0f07f552ecd0db742344777810058",
+    "width": 375,
+    "dir": "ltr",
+    "rtlMode": "authored fallback",
+    "metrics": {
+      "width": 375,
+      "scrollWidth": 375,
+      "lang": "en",
+      "dir": ""
+    },
+    "keyboard": [
+      {
+        "tag": "BUTTON",
+        "label": "Toggle color theme"
+      },
+      {
+        "tag": "BUTTON",
+        "label": "Visual style: Classic. Choose visual style"
+      },
+      {
+        "tag": "BUTTON",
+        "label": "Enter presentation stage"
+      },
+      {
+        "tag": "BUTTON",
+        "label": "Export diagram"
+      },
+      {
+        "tag": "svg",
+        "label": "٣ — البريد ومتابعة العميل\n        A sequence diagram generated by Arch"
+      },
+      {
+        "tag": "g",
+        "label": "Direct relationship explorer"
+      },
+      {
+        "tag": "g",
+        "label": "Inspect relationship 1 of 11: العامل to MariaDB, Polling: claim MailJob + lease. Press Enter for details."
+      },
+      {
+        "tag": "g",
+        "label": "Focus العميل, واجهة الحساب, Sequence participant, 2 verified source references"
+      }
+    ],
+    "violations": [
+      {
+        "id": "heading-order",
+        "impact": "moderate",
+        "nodes": 1,
+        "description": "Ensure the order of headings is semantically correct"
+      },
+      {
+        "id": "landmark-one-main",
+        "impact": "moderate",
+        "nodes": 1,
+        "description": "Ensure the document has a main landmark"
+      },
+      {
+        "id": "nested-interactive",
+        "impact": "serious",
+        "nodes": 1,
+        "description": "Ensure interactive controls are not nested as they are not always announced by screen readers or can cause focus problems for assistive technologies"
+      },
+      {
+        "id": "region",
+        "impact": "moderate",
+        "nodes": 3,
+        "description": "Ensure all page content is contained by landmarks"
+      }
+    ]
+  },
+  {
+    "name": "followup",
+    "file": ".archify/sequence-so7ob-request-20261009-230021/followup/followup.html",
+    "sha256": "8ef88214a2146a0ad36f098e39af3b2861c0f07f552ecd0db742344777810058",
+    "width": 375,
+    "dir": "rtl",
+    "rtlMode": "DOM emulation; not authored default",
+    "metrics": {
+      "width": 375,
+      "scrollWidth": 375,
+      "lang": "ar",
+      "dir": "rtl"
+    },
+    "keyboard": [
+      {
+        "tag": "BUTTON",
+        "label": "Toggle color theme"
+      },
+      {
+        "tag": "BUTTON",
+        "label": "Visual style: Classic. Choose visual style"
+      },
+      {
+        "tag": "BUTTON",
+        "label": "Enter presentation stage"
+      },
+      {
+        "tag": "BUTTON",
+        "label": "Export diagram"
+      },
+      {
+        "tag": "svg",
+        "label": "٣ — البريد ومتابعة العميل\n        A sequence diagram generated by Arch"
+      },
+      {
+        "tag": "g",
+        "label": "Direct relationship explorer"
+      },
+      {
+        "tag": "g",
+        "label": "Inspect relationship 1 of 11: العامل to MariaDB, Polling: claim MailJob + lease. Press Enter for details."
+      },
+      {
+        "tag": "g",
+        "label": "Focus العميل, واجهة الحساب, Sequence participant, 2 verified source references"
+      }
+    ],
+    "violations": [
+      {
+        "id": "heading-order",
+        "impact": "moderate",
+        "nodes": 1,
+        "description": "Ensure the order of headings is semantically correct"
+      },
+      {
+        "id": "landmark-one-main",
+        "impact": "moderate",
+        "nodes": 1,
+        "description": "Ensure the document has a main landmark"
+      },
+      {
+        "id": "nested-interactive",
+        "impact": "serious",
+        "nodes": 1,
+        "description": "Ensure interactive controls are not nested as they are not always announced by screen readers or can cause focus problems for assistive technologies"
+      },
+      {
+        "id": "region",
+        "impact": "moderate",
+        "nodes": 3,
+        "description": "Ensure all page content is contained by landmarks"
+      }
+    ]
+  },
+  {
+    "name": "followup",
+    "file": ".archify/sequence-so7ob-request-20261009-230021/followup/followup.html",
+    "sha256": "8ef88214a2146a0ad36f098e39af3b2861c0f07f552ecd0db742344777810058",
+    "width": 1280,
+    "dir": "ltr",
+    "rtlMode": "authored fallback",
+    "metrics": {
+      "width": 1280,
+      "scrollWidth": 1280,
+      "lang": "en",
+      "dir": ""
+    },
+    "keyboard": [
+      {
+        "tag": "BUTTON",
+        "label": "Toggle color theme"
+      },
+      {
+        "tag": "BUTTON",
+        "label": "Visual style: Classic. Choose visual style"
+      },
+      {
+        "tag": "BUTTON",
+        "label": "Enter presentation stage"
+      },
+      {
+        "tag": "BUTTON",
+        "label": "Export diagram"
+      },
+      {
+        "tag": "svg",
+        "label": "٣ — البريد ومتابعة العميل\n        A sequence diagram generated by Arch"
+      },
+      {
+        "tag": "g",
+        "label": "Direct relationship explorer"
+      },
+      {
+        "tag": "g",
+        "label": "Inspect relationship 1 of 11: العامل to MariaDB, Polling: claim MailJob + lease. Press Enter for details."
+      },
+      {
+        "tag": "g",
+        "label": "Focus العميل, واجهة الحساب, Sequence participant, 2 verified source references"
+      }
+    ],
+    "violations": [
+      {
+        "id": "heading-order",
+        "impact": "moderate",
+        "nodes": 1,
+        "description": "Ensure the order of headings is semantically correct"
+      },
+      {
+        "id": "landmark-one-main",
+        "impact": "moderate",
+        "nodes": 1,
+        "description": "Ensure the document has a main landmark"
+      },
+      {
+        "id": "nested-interactive",
+        "impact": "serious",
+        "nodes": 1,
+        "description": "Ensure interactive controls are not nested as they are not always announced by screen readers or can cause focus problems for assistive technologies"
+      },
+      {
+        "id": "region",
+        "impact": "moderate",
+        "nodes": 3,
+        "description": "Ensure all page content is contained by landmarks"
+      }
+    ]
+  },
+  {
+    "name": "followup",
+    "file": ".archify/sequence-so7ob-request-20261009-230021/followup/followup.html",
+    "sha256": "8ef88214a2146a0ad36f098e39af3b2861c0f07f552ecd0db742344777810058",
+    "width": 1280,
+    "dir": "rtl",
+    "rtlMode": "DOM emulation; not authored default",
+    "metrics": {
+      "width": 1280,
+      "scrollWidth": 1280,
+      "lang": "ar",
+      "dir": "rtl"
+    },
+    "keyboard": [
+      {
+        "tag": "BUTTON",
+        "label": "Toggle color theme"
+      },
+      {
+        "tag": "BUTTON",
+        "label": "Visual style: Classic. Choose visual style"
+      },
+      {
+        "tag": "BUTTON",
+        "label": "Enter presentation stage"
+      },
+      {
+        "tag": "BUTTON",
+        "label": "Export diagram"
+      },
+      {
+        "tag": "svg",
+        "label": "٣ — البريد ومتابعة العميل\n        A sequence diagram generated by Arch"
+      },
+      {
+        "tag": "g",
+        "label": "Direct relationship explorer"
+      },
+      {
+        "tag": "g",
+        "label": "Inspect relationship 1 of 11: العامل to MariaDB, Polling: claim MailJob + lease. Press Enter for details."
+      },
+      {
+        "tag": "g",
+        "label": "Focus العميل, واجهة الحساب, Sequence participant, 2 verified source references"
+      }
+    ],
+    "violations": [
+      {
+        "id": "heading-order",
+        "impact": "moderate",
+        "nodes": 1,
+        "description": "Ensure the order of headings is semantically correct"
+      },
+      {
+        "id": "landmark-one-main",
+        "impact": "moderate",
+        "nodes": 1,
+        "description": "Ensure the document has a main landmark"
+      },
+      {
+        "id": "nested-interactive",
+        "impact": "serious",
+        "nodes": 1,
+        "description": "Ensure interactive controls are not nested as they are not always announced by screen readers or can cause focus problems for assistive technologies"
+      },
+      {
+        "id": "region",
+        "impact": "moderate",
+        "nodes": 3,
+        "description": "Ensure all page content is contained by landmarks"
+      }
+    ]
+  }
+]

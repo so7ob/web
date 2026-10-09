@@ -14,6 +14,8 @@ export interface TransferReport {
   format: 1; snapshot: string; sqliteHash: string; mode: TransferOptions['mode']; startedAt: string; finishedAt?: string;
   status: 'preflight' | 'ready' | 'verified'; tables: Record<string, TableResult>; files: Snapshot['files'];
   unreferencedFiles: string[]; productionData: false | 'operator-supplied';
+  sourceSchemaVersion: 1 | 2;
+  mappingVersion: 2;
 }
 function stableRows(table: string, rows: Row[]): Row[] {
   const pk = primaryKey(table);
@@ -73,7 +75,7 @@ export async function transfer(db: DataSource, options: TransferOptions): Promis
   // Even a missing destination directory may not have symlinked parents.
   let ancestor = target; while (!existsSync(ancestor)) ancestor = resolve(ancestor, '..'); safeDirectory(ancestor);
   const snapshot = readSnapshot(options.sqlite, source);
-  const report: TransferReport = { format: 1, snapshot: snapshot.id, sqliteHash: snapshot.sqliteHash, mode: options.mode,
+  const report: TransferReport = { format: 1, snapshot: snapshot.id, sqliteHash: snapshot.sqliteHash, sourceSchemaVersion: snapshot.sourceSchemaVersion, mappingVersion: 2, mode: options.mode,
     startedAt: new Date().toISOString(), status: 'preflight', tables: {}, files: snapshot.files,
     unreferencedFiles: snapshot.files.filter(f => !f.references.length).map(f => f.name), productionData: 'operator-supplied' };
   await assertSchema(db);

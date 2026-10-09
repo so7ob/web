@@ -1,0 +1,3872 @@
+{
+  "Role": {
+    "table": "Role",
+    "columns": {
+      "key": {
+        "type": "String",
+        "nullable": false,
+        "primary": true,
+        "unique": false,
+        "updated": false,
+        "default": null,
+        "indexed": true
+      },
+      "nameAr": {
+        "type": "String",
+        "nullable": false,
+        "primary": false,
+        "unique": false,
+        "updated": false,
+        "default": null,
+        "indexed": false
+      },
+      "nameEn": {
+        "type": "String",
+        "nullable": false,
+        "primary": false,
+        "unique": false,
+        "updated": false,
+        "default": null,
+        "indexed": false
+      },
+      "descriptionAr": {
+        "type": "String",
+        "nullable": true,
+        "primary": false,
+        "unique": false,
+        "updated": false,
+        "default": null,
+        "indexed": false
+      },
+      "descriptionEn": {
+        "type": "String",
+        "nullable": true,
+        "primary": false,
+        "unique": false,
+        "updated": false,
+        "default": null,
+        "indexed": false
+      },
+      "permissions": {
+        "type": "String",
+        "nullable": false,
+        "primary": false,
+        "unique": false,
+        "updated": false,
+        "default": {
+          "kind": "literal",
+          "value": "[]"
+        },
+        "indexed": false
+      },
+      "isSystem": {
+        "type": "Boolean",
+        "nullable": false,
+        "primary": false,
+        "unique": false,
+        "updated": false,
+        "default": {
+          "kind": "literal",
+          "value": true
+        },
+        "indexed": false
+      },
+      "createdAt": {
+        "type": "DateTime",
+        "nullable": false,
+        "primary": false,
+        "unique": false,
+        "updated": false,
+        "default": {
+          "kind": "now"
+        },
+        "indexed": false
+      },
+      "updatedAt": {
+        "type": "DateTime",
+        "nullable": false,
+        "primary": false,
+        "unique": false,
+        "updated": true,
+        "default": null,
+        "indexed": false
+      }
+    },
+    "relations": {
+      "users": {
+        "model": "User",
+        "many": true,
+        "nullable": false,
+        "tag": null,
+        "fields": [],
+        "references": [],
+        "onDelete": "RESTRICT",
+        "inverseFields": [
+          "roleKey"
+        ],
+        "localReferences": [
+          "key"
+        ]
+      }
+    },
+    "indexes": [],
+    "uniques": []
+  },
+  "User": {
+    "table": "User",
+    "columns": {
+      "id": {
+        "type": "String",
+        "nullable": false,
+        "primary": true,
+        "unique": false,
+        "updated": false,
+        "default": {
+          "kind": "id"
+        },
+        "indexed": true
+      },
+      "email": {
+        "type": "String",
+        "nullable": false,
+        "primary": false,
+        "unique": true,
+        "updated": false,
+        "default": null,
+        "indexed": true
+      },
+      "passwordHash": {
+        "type": "String",
+        "nullable": false,
+        "primary": false,
+        "unique": false,
+        "updated": false,
+        "default": null,
+        "indexed": false
+      },
+      "name": {
+        "type": "String",
+        "nullable": false,
+        "primary": false,
+        "unique": false,
+        "updated": false,
+        "default": null,
+        "indexed": false
+      },
+      "phone": {
+        "type": "String",
+        "nullable": true,
+        "primary": false,
+        "unique": false,
+        "updated": false,
+        "default": null,
+        "indexed": false
+      },
+      "company": {
+        "type": "String",
+        "nullable": true,
+        "primary": false,
+        "unique": false,
+        "updated": false,
+        "default": null,
+        "indexed": false
+      },
+      "locale": {
+        "type": "String",
+        "nullable": false,
+        "primary": false,
+        "unique": false,
+        "updated": false,
+        "default": {
+          "kind": "literal",
+          "value": "ar"
+        },
+        "indexed": false
+      },
+      "roleKey": {
+        "type": "String",
+        "nullable": false,
+        "primary": false,
+        "unique": false,
+        "updated": false,
+        "default": {
+          "kind": "literal",
+          "value": "client"
+        },
+        "indexed": true
+      },
+      "status": {
+        "type": "String",
+        "nullable": false,
+        "primary": false,
+        "unique": false,
+        "updated": false,
+        "default": {
+          "kind": "literal",
+          "value": "pending_verification"
+        },
+        "indexed": true
+      },
+      "emailVerifiedAt": {
+        "type": "DateTime",
+        "nullable": true,
+        "primary": false,
+        "unique": false,
+        "updated": false,
+        "default": null,
+        "indexed": false
+      },
+      "sessionsRevokedAt": {
+        "type": "DateTime",
+        "nullable": true,
+        "primary": false,
+        "unique": false,
+        "updated": false,
+        "default": null,
+        "indexed": false
+      },
+      "lastLoginAt": {
+        "type": "DateTime",
+        "nullable": true,
+        "primary": false,
+        "unique": false,
+        "updated": false,
+        "default": null,
+        "indexed": false
+      },
+      "failedLoginCount": {
+        "type": "Int",
+        "nullable": false,
+        "primary": false,
+        "unique": false,
+        "updated": false,
+        "default": {
+          "kind": "literal",
+          "value": 0
+        },
+        "indexed": false
+      },
+      "lockedUntil": {
+        "type": "DateTime",
+        "nullable": true,
+        "primary": false,
+        "unique": false,
+        "updated": false,
+        "default": null,
+        "indexed": false
+      },
+      "createdAt": {
+        "type": "DateTime",
+        "nullable": false,
+        "primary": false,
+        "unique": false,
+        "updated": false,
+        "default": {
+          "kind": "now"
+        },
+        "indexed": true
+      },
+      "updatedAt": {
+        "type": "DateTime",
+        "nullable": false,
+        "primary": false,
+        "unique": false,
+        "updated": true,
+        "default": null,
+        "indexed": false
+      }
+    },
+    "relations": {
+      "role": {
+        "model": "Role",
+        "many": false,
+        "nullable": false,
+        "tag": null,
+        "fields": [
+          "roleKey"
+        ],
+        "references": [
+          "key"
+        ],
+        "onDelete": "RESTRICT"
+      },
+      "authSessions": {
+        "model": "AuthSession",
+        "many": true,
+        "nullable": false,
+        "tag": null,
+        "fields": [],
+        "references": [],
+        "onDelete": "RESTRICT",
+        "inverseFields": [
+          "userId"
+        ],
+        "localReferences": [
+          "id"
+        ]
+      },
+      "authTokens": {
+        "model": "AuthToken",
+        "many": true,
+        "nullable": false,
+        "tag": null,
+        "fields": [],
+        "references": [],
+        "onDelete": "RESTRICT",
+        "inverseFields": [
+          "userId"
+        ],
+        "localReferences": [
+          "id"
+        ]
+      },
+      "notifications": {
+        "model": "Notification",
+        "many": true,
+        "nullable": false,
+        "tag": null,
+        "fields": [],
+        "references": [],
+        "onDelete": "RESTRICT",
+        "inverseFields": [
+          "userId"
+        ],
+        "localReferences": [
+          "id"
+        ]
+      },
+      "auditLogs": {
+        "model": "AuditLog",
+        "many": true,
+        "nullable": false,
+        "tag": null,
+        "fields": [],
+        "references": [],
+        "onDelete": "RESTRICT",
+        "inverseFields": [
+          "actorId"
+        ],
+        "localReferences": [
+          "id"
+        ]
+      },
+      "invitesSent": {
+        "model": "UserInvite",
+        "many": true,
+        "nullable": false,
+        "tag": "Inviter",
+        "fields": [],
+        "references": [],
+        "onDelete": "RESTRICT",
+        "inverseFields": [
+          "invitedById"
+        ],
+        "localReferences": [
+          "id"
+        ]
+      },
+      "inviteAccepted": {
+        "model": "UserInvite",
+        "many": false,
+        "nullable": true,
+        "tag": "Invitee",
+        "fields": [],
+        "references": [],
+        "onDelete": "SET NULL",
+        "inverseFields": [
+          "acceptedUserId"
+        ],
+        "localReferences": [
+          "id"
+        ]
+      },
+      "clientRequests": {
+        "model": "ProjectRequest",
+        "many": true,
+        "nullable": false,
+        "tag": "ClientRequests",
+        "fields": [],
+        "references": [],
+        "onDelete": "RESTRICT",
+        "inverseFields": [
+          "clientId"
+        ],
+        "localReferences": [
+          "id"
+        ]
+      },
+      "assignedRequests": {
+        "model": "ProjectRequest",
+        "many": true,
+        "nullable": false,
+        "tag": "AssignedRequests",
+        "fields": [],
+        "references": [],
+        "onDelete": "RESTRICT",
+        "inverseFields": [
+          "assigneeId"
+        ],
+        "localReferences": [
+          "id"
+        ]
+      },
+      "requestMessages": {
+        "model": "RequestMessage",
+        "many": true,
+        "nullable": false,
+        "tag": null,
+        "fields": [],
+        "references": [],
+        "onDelete": "RESTRICT",
+        "inverseFields": [
+          "authorId"
+        ],
+        "localReferences": [
+          "id"
+        ]
+      },
+      "requestClaims": {
+        "model": "RequestClaim",
+        "many": true,
+        "nullable": false,
+        "tag": null,
+        "fields": [],
+        "references": [],
+        "onDelete": "RESTRICT",
+        "inverseFields": [
+          "userId"
+        ],
+        "localReferences": [
+          "id"
+        ]
+      },
+      "statusEvents": {
+        "model": "RequestStatusEvent",
+        "many": true,
+        "nullable": false,
+        "tag": null,
+        "fields": [],
+        "references": [],
+        "onDelete": "RESTRICT",
+        "inverseFields": [
+          "changedById"
+        ],
+        "localReferences": [
+          "id"
+        ]
+      },
+      "inquiries": {
+        "model": "Inquiry",
+        "many": true,
+        "nullable": false,
+        "tag": "InquiryClients",
+        "fields": [],
+        "references": [],
+        "onDelete": "RESTRICT",
+        "inverseFields": [
+          "clientId"
+        ],
+        "localReferences": [
+          "id"
+        ]
+      },
+      "assignedInquiries": {
+        "model": "Inquiry",
+        "many": true,
+        "nullable": false,
+        "tag": "InquiryAssignees",
+        "fields": [],
+        "references": [],
+        "onDelete": "RESTRICT",
+        "inverseFields": [
+          "assigneeId"
+        ],
+        "localReferences": [
+          "id"
+        ]
+      },
+      "inquiryMessages": {
+        "model": "InquiryMessage",
+        "many": true,
+        "nullable": false,
+        "tag": null,
+        "fields": [],
+        "references": [],
+        "onDelete": "RESTRICT",
+        "inverseFields": [
+          "authorId"
+        ],
+        "localReferences": [
+          "id"
+        ]
+      },
+      "attachments": {
+        "model": "Attachment",
+        "many": true,
+        "nullable": false,
+        "tag": null,
+        "fields": [],
+        "references": [],
+        "onDelete": "RESTRICT",
+        "inverseFields": [
+          "uploaderId"
+        ],
+        "localReferences": [
+          "id"
+        ]
+      },
+      "mediaItems": {
+        "model": "MediaItem",
+        "many": true,
+        "nullable": false,
+        "tag": null,
+        "fields": [],
+        "references": [],
+        "onDelete": "RESTRICT",
+        "inverseFields": [
+          "uploadedById"
+        ],
+        "localReferences": [
+          "id"
+        ]
+      },
+      "pageVersions": {
+        "model": "PageVersion",
+        "many": true,
+        "nullable": false,
+        "tag": null,
+        "fields": [],
+        "references": [],
+        "onDelete": "RESTRICT",
+        "inverseFields": [
+          "authorId"
+        ],
+        "localReferences": [
+          "id"
+        ]
+      },
+      "requestDrafts": {
+        "model": "RequestDraft",
+        "many": true,
+        "nullable": false,
+        "tag": null,
+        "fields": [],
+        "references": [],
+        "onDelete": "RESTRICT",
+        "inverseFields": [
+          "userId"
+        ],
+        "localReferences": [
+          "id"
+        ]
+      },
+      "savedReplies": {
+        "model": "SavedReply",
+        "many": true,
+        "nullable": false,
+        "tag": null,
+        "fields": [],
+        "references": [],
+        "onDelete": "RESTRICT",
+        "inverseFields": [
+          "createdBy"
+        ],
+        "localReferences": [
+          "id"
+        ]
+      },
+      "settingsUpdated": {
+        "model": "SiteSetting",
+        "many": true,
+        "nullable": false,
+        "tag": null,
+        "fields": [],
+        "references": [],
+        "onDelete": "RESTRICT",
+        "inverseFields": [
+          "updatedById"
+        ],
+        "localReferences": [
+          "id"
+        ]
+      },
+      "pageTemplates": {
+        "model": "PageTemplate",
+        "many": true,
+        "nullable": false,
+        "tag": null,
+        "fields": [],
+        "references": [],
+        "onDelete": "RESTRICT",
+        "inverseFields": [
+          "createdById"
+        ],
+        "localReferences": [
+          "id"
+        ]
+      }
+    },
+    "indexes": [
+      [
+        "roleKey",
+        "status"
+      ],
+      [
+        "status",
+        "createdAt"
+      ]
+    ],
+    "uniques": []
+  },
+  "AuthSession": {
+    "table": "AuthSession",
+    "columns": {
+      "id": {
+        "type": "String",
+        "nullable": false,
+        "primary": true,
+        "unique": false,
+        "updated": false,
+        "default": {
+          "kind": "id"
+        },
+        "indexed": true
+      },
+      "userId": {
+        "type": "String",
+        "nullable": false,
+        "primary": false,
+        "unique": false,
+        "updated": false,
+        "default": null,
+        "indexed": true
+      },
+      "fingerprint": {
+        "type": "String",
+        "nullable": false,
+        "primary": false,
+        "unique": true,
+        "updated": false,
+        "default": null,
+        "indexed": true
+      },
+      "userAgent": {
+        "type": "String",
+        "nullable": true,
+        "primary": false,
+        "unique": false,
+        "updated": false,
+        "default": null,
+        "indexed": false
+      },
+      "ipHash": {
+        "type": "String",
+        "nullable": true,
+        "primary": false,
+        "unique": false,
+        "updated": false,
+        "default": null,
+        "indexed": false
+      },
+      "createdAt": {
+        "type": "DateTime",
+        "nullable": false,
+        "primary": false,
+        "unique": false,
+        "updated": false,
+        "default": {
+          "kind": "now"
+        },
+        "indexed": false
+      },
+      "lastSeenAt": {
+        "type": "DateTime",
+        "nullable": false,
+        "primary": false,
+        "unique": false,
+        "updated": false,
+        "default": {
+          "kind": "now"
+        },
+        "indexed": false
+      },
+      "expiresAt": {
+        "type": "DateTime",
+        "nullable": false,
+        "primary": false,
+        "unique": false,
+        "updated": false,
+        "default": null,
+        "indexed": true
+      },
+      "revokedAt": {
+        "type": "DateTime",
+        "nullable": true,
+        "primary": false,
+        "unique": false,
+        "updated": false,
+        "default": null,
+        "indexed": false
+      },
+      "revokedReason": {
+        "type": "String",
+        "nullable": true,
+        "primary": false,
+        "unique": false,
+        "updated": false,
+        "default": null,
+        "indexed": false
+      }
+    },
+    "relations": {
+      "user": {
+        "model": "User",
+        "many": false,
+        "nullable": false,
+        "tag": null,
+        "fields": [
+          "userId"
+        ],
+        "references": [
+          "id"
+        ],
+        "onDelete": "CASCADE"
+      }
+    },
+    "indexes": [
+      [
+        "userId",
+        "expiresAt"
+      ]
+    ],
+    "uniques": []
+  },
+  "AuthToken": {
+    "table": "AuthToken",
+    "columns": {
+      "id": {
+        "type": "String",
+        "nullable": false,
+        "primary": true,
+        "unique": false,
+        "updated": false,
+        "default": {
+          "kind": "id"
+        },
+        "indexed": true
+      },
+      "userId": {
+        "type": "String",
+        "nullable": false,
+        "primary": false,
+        "unique": false,
+        "updated": false,
+        "default": null,
+        "indexed": true
+      },
+      "tokenHash": {
+        "type": "String",
+        "nullable": false,
+        "primary": false,
+        "unique": true,
+        "updated": false,
+        "default": null,
+        "indexed": true
+      },
+      "type": {
+        "type": "String",
+        "nullable": false,
+        "primary": false,
+        "unique": false,
+        "updated": false,
+        "default": null,
+        "indexed": true
+      },
+      "resourceId": {
+        "type": "String",
+        "nullable": true,
+        "primary": false,
+        "unique": false,
+        "updated": false,
+        "default": null,
+        "indexed": false
+      },
+      "expiresAt": {
+        "type": "DateTime",
+        "nullable": false,
+        "primary": false,
+        "unique": false,
+        "updated": false,
+        "default": null,
+        "indexed": false
+      },
+      "usedAt": {
+        "type": "DateTime",
+        "nullable": true,
+        "primary": false,
+        "unique": false,
+        "updated": false,
+        "default": null,
+        "indexed": false
+      },
+      "createdAt": {
+        "type": "DateTime",
+        "nullable": false,
+        "primary": false,
+        "unique": false,
+        "updated": false,
+        "default": {
+          "kind": "now"
+        },
+        "indexed": false
+      }
+    },
+    "relations": {
+      "user": {
+        "model": "User",
+        "many": false,
+        "nullable": false,
+        "tag": null,
+        "fields": [
+          "userId"
+        ],
+        "references": [
+          "id"
+        ],
+        "onDelete": "CASCADE"
+      }
+    },
+    "indexes": [
+      [
+        "userId",
+        "type"
+      ]
+    ],
+    "uniques": []
+  },
+  "UserInvite": {
+    "table": "UserInvite",
+    "columns": {
+      "id": {
+        "type": "String",
+        "nullable": false,
+        "primary": true,
+        "unique": false,
+        "updated": false,
+        "default": {
+          "kind": "id"
+        },
+        "indexed": true
+      },
+      "email": {
+        "type": "String",
+        "nullable": false,
+        "primary": false,
+        "unique": false,
+        "updated": false,
+        "default": null,
+        "indexed": true
+      },
+      "roleKey": {
+        "type": "String",
+        "nullable": false,
+        "primary": false,
+        "unique": false,
+        "updated": false,
+        "default": {
+          "kind": "literal",
+          "value": "client"
+        },
+        "indexed": false
+      },
+      "tokenHash": {
+        "type": "String",
+        "nullable": false,
+        "primary": false,
+        "unique": true,
+        "updated": false,
+        "default": null,
+        "indexed": true
+      },
+      "invitedById": {
+        "type": "String",
+        "nullable": true,
+        "primary": false,
+        "unique": false,
+        "updated": false,
+        "default": null,
+        "indexed": true
+      },
+      "acceptedUserId": {
+        "type": "String",
+        "nullable": true,
+        "primary": false,
+        "unique": true,
+        "updated": false,
+        "default": null,
+        "indexed": true
+      },
+      "expiresAt": {
+        "type": "DateTime",
+        "nullable": false,
+        "primary": false,
+        "unique": false,
+        "updated": false,
+        "default": null,
+        "indexed": false
+      },
+      "acceptedAt": {
+        "type": "DateTime",
+        "nullable": true,
+        "primary": false,
+        "unique": false,
+        "updated": false,
+        "default": null,
+        "indexed": false
+      },
+      "createdAt": {
+        "type": "DateTime",
+        "nullable": false,
+        "primary": false,
+        "unique": false,
+        "updated": false,
+        "default": {
+          "kind": "now"
+        },
+        "indexed": false
+      }
+    },
+    "relations": {
+      "invitedBy": {
+        "model": "User",
+        "many": false,
+        "nullable": true,
+        "tag": "Inviter",
+        "fields": [
+          "invitedById"
+        ],
+        "references": [
+          "id"
+        ],
+        "onDelete": "SET NULL"
+      },
+      "invitee": {
+        "model": "User",
+        "many": false,
+        "nullable": true,
+        "tag": "Invitee",
+        "fields": [
+          "acceptedUserId"
+        ],
+        "references": [
+          "id"
+        ],
+        "onDelete": "SET NULL"
+      }
+    },
+    "indexes": [
+      [
+        "email"
+      ]
+    ],
+    "uniques": []
+  },
+  "EmailLog": {
+    "table": "EmailLog",
+    "columns": {
+      "id": {
+        "type": "String",
+        "nullable": false,
+        "primary": true,
+        "unique": false,
+        "updated": false,
+        "default": {
+          "kind": "id"
+        },
+        "indexed": true
+      },
+      "to": {
+        "type": "String",
+        "nullable": false,
+        "primary": false,
+        "unique": false,
+        "updated": false,
+        "default": null,
+        "indexed": true
+      },
+      "subject": {
+        "type": "String",
+        "nullable": false,
+        "primary": false,
+        "unique": false,
+        "updated": false,
+        "default": null,
+        "indexed": false
+      },
+      "bodyText": {
+        "type": "String",
+        "nullable": false,
+        "primary": false,
+        "unique": false,
+        "updated": false,
+        "default": null,
+        "indexed": false
+      },
+      "bodyHtml": {
+        "type": "String",
+        "nullable": true,
+        "primary": false,
+        "unique": false,
+        "updated": false,
+        "default": null,
+        "indexed": false
+      },
+      "status": {
+        "type": "String",
+        "nullable": false,
+        "primary": false,
+        "unique": false,
+        "updated": false,
+        "default": {
+          "kind": "literal",
+          "value": "dev_logged"
+        },
+        "indexed": true
+      },
+      "error": {
+        "type": "String",
+        "nullable": true,
+        "primary": false,
+        "unique": false,
+        "updated": false,
+        "default": null,
+        "indexed": false
+      },
+      "createdAt": {
+        "type": "DateTime",
+        "nullable": false,
+        "primary": false,
+        "unique": false,
+        "updated": false,
+        "default": {
+          "kind": "now"
+        },
+        "indexed": true
+      }
+    },
+    "relations": {},
+    "indexes": [
+      [
+        "to",
+        "createdAt"
+      ],
+      [
+        "status",
+        "createdAt"
+      ]
+    ],
+    "uniques": []
+  },
+  "ProjectRequest": {
+    "table": "ProjectRequest",
+    "columns": {
+      "id": {
+        "type": "String",
+        "nullable": false,
+        "primary": true,
+        "unique": false,
+        "updated": false,
+        "default": {
+          "kind": "id"
+        },
+        "indexed": true
+      },
+      "refCode": {
+        "type": "String",
+        "nullable": false,
+        "primary": false,
+        "unique": true,
+        "updated": false,
+        "default": null,
+        "indexed": true
+      },
+      "requestType": {
+        "type": "String",
+        "nullable": false,
+        "primary": false,
+        "unique": false,
+        "updated": false,
+        "default": null,
+        "indexed": false
+      },
+      "serviceType": {
+        "type": "String",
+        "nullable": false,
+        "primary": false,
+        "unique": false,
+        "updated": false,
+        "default": null,
+        "indexed": false
+      },
+      "description": {
+        "type": "String",
+        "nullable": false,
+        "primary": false,
+        "unique": false,
+        "updated": false,
+        "default": null,
+        "indexed": false
+      },
+      "budget": {
+        "type": "String",
+        "nullable": false,
+        "primary": false,
+        "unique": false,
+        "updated": false,
+        "default": null,
+        "indexed": false
+      },
+      "currency": {
+        "type": "String",
+        "nullable": true,
+        "primary": false,
+        "unique": false,
+        "updated": false,
+        "default": null,
+        "indexed": false
+      },
+      "timeline": {
+        "type": "String",
+        "nullable": false,
+        "primary": false,
+        "unique": false,
+        "updated": false,
+        "default": null,
+        "indexed": false
+      },
+      "name": {
+        "type": "String",
+        "nullable": false,
+        "primary": false,
+        "unique": false,
+        "updated": false,
+        "default": null,
+        "indexed": false
+      },
+      "company": {
+        "type": "String",
+        "nullable": true,
+        "primary": false,
+        "unique": false,
+        "updated": false,
+        "default": null,
+        "indexed": false
+      },
+      "email": {
+        "type": "String",
+        "nullable": false,
+        "primary": false,
+        "unique": false,
+        "updated": false,
+        "default": null,
+        "indexed": true
+      },
+      "phone": {
+        "type": "String",
+        "nullable": true,
+        "primary": false,
+        "unique": false,
+        "updated": false,
+        "default": null,
+        "indexed": false
+      },
+      "preferredContact": {
+        "type": "String",
+        "nullable": false,
+        "primary": false,
+        "unique": false,
+        "updated": false,
+        "default": null,
+        "indexed": false
+      },
+      "referenceUrl": {
+        "type": "String",
+        "nullable": true,
+        "primary": false,
+        "unique": false,
+        "updated": false,
+        "default": null,
+        "indexed": false
+      },
+      "locale": {
+        "type": "String",
+        "nullable": false,
+        "primary": false,
+        "unique": false,
+        "updated": false,
+        "default": {
+          "kind": "literal",
+          "value": "ar"
+        },
+        "indexed": false
+      },
+      "descriptionHash": {
+        "type": "String",
+        "nullable": false,
+        "primary": false,
+        "unique": false,
+        "updated": false,
+        "default": null,
+        "indexed": false
+      },
+      "clientIpHash": {
+        "type": "String",
+        "nullable": true,
+        "primary": false,
+        "unique": false,
+        "updated": false,
+        "default": null,
+        "indexed": true
+      },
+      "userAgent": {
+        "type": "String",
+        "nullable": true,
+        "primary": false,
+        "unique": false,
+        "updated": false,
+        "default": null,
+        "indexed": false
+      },
+      "status": {
+        "type": "String",
+        "nullable": false,
+        "primary": false,
+        "unique": false,
+        "updated": false,
+        "default": {
+          "kind": "literal",
+          "value": "new"
+        },
+        "indexed": true
+      },
+      "notifiedAt": {
+        "type": "DateTime",
+        "nullable": true,
+        "primary": false,
+        "unique": false,
+        "updated": false,
+        "default": null,
+        "indexed": false
+      },
+      "createdAt": {
+        "type": "DateTime",
+        "nullable": false,
+        "primary": false,
+        "unique": false,
+        "updated": false,
+        "default": {
+          "kind": "now"
+        },
+        "indexed": true
+      },
+      "clientId": {
+        "type": "String",
+        "nullable": true,
+        "primary": false,
+        "unique": false,
+        "updated": false,
+        "default": null,
+        "indexed": true
+      },
+      "assigneeId": {
+        "type": "String",
+        "nullable": true,
+        "primary": false,
+        "unique": false,
+        "updated": false,
+        "default": null,
+        "indexed": true
+      },
+      "priority": {
+        "type": "String",
+        "nullable": false,
+        "primary": false,
+        "unique": false,
+        "updated": false,
+        "default": {
+          "kind": "literal",
+          "value": "normal"
+        },
+        "indexed": false
+      },
+      "resolutionNote": {
+        "type": "String",
+        "nullable": true,
+        "primary": false,
+        "unique": false,
+        "updated": false,
+        "default": null,
+        "indexed": false
+      },
+      "closedAt": {
+        "type": "DateTime",
+        "nullable": true,
+        "primary": false,
+        "unique": false,
+        "updated": false,
+        "default": null,
+        "indexed": false
+      },
+      "archivedAt": {
+        "type": "DateTime",
+        "nullable": true,
+        "primary": false,
+        "unique": false,
+        "updated": false,
+        "default": null,
+        "indexed": true
+      },
+      "lastActivityAt": {
+        "type": "DateTime",
+        "nullable": false,
+        "primary": false,
+        "unique": false,
+        "updated": false,
+        "default": {
+          "kind": "now"
+        },
+        "indexed": false
+      },
+      "lastClientReplyAt": {
+        "type": "DateTime",
+        "nullable": true,
+        "primary": false,
+        "unique": false,
+        "updated": false,
+        "default": null,
+        "indexed": false
+      },
+      "lastStaffReplyAt": {
+        "type": "DateTime",
+        "nullable": true,
+        "primary": false,
+        "unique": false,
+        "updated": false,
+        "default": null,
+        "indexed": false
+      },
+      "clientReadAt": {
+        "type": "DateTime",
+        "nullable": true,
+        "primary": false,
+        "unique": false,
+        "updated": false,
+        "default": null,
+        "indexed": false
+      },
+      "staffReadAt": {
+        "type": "DateTime",
+        "nullable": true,
+        "primary": false,
+        "unique": false,
+        "updated": false,
+        "default": null,
+        "indexed": false
+      },
+      "updatedAt": {
+        "type": "DateTime",
+        "nullable": false,
+        "primary": false,
+        "unique": false,
+        "updated": true,
+        "default": null,
+        "indexed": false
+      }
+    },
+    "relations": {
+      "client": {
+        "model": "User",
+        "many": false,
+        "nullable": true,
+        "tag": "ClientRequests",
+        "fields": [
+          "clientId"
+        ],
+        "references": [
+          "id"
+        ],
+        "onDelete": "SET NULL"
+      },
+      "assignee": {
+        "model": "User",
+        "many": false,
+        "nullable": true,
+        "tag": "AssignedRequests",
+        "fields": [
+          "assigneeId"
+        ],
+        "references": [
+          "id"
+        ],
+        "onDelete": "SET NULL"
+      },
+      "messages": {
+        "model": "RequestMessage",
+        "many": true,
+        "nullable": false,
+        "tag": null,
+        "fields": [],
+        "references": [],
+        "onDelete": "RESTRICT",
+        "inverseFields": [
+          "requestId"
+        ],
+        "localReferences": [
+          "id"
+        ]
+      },
+      "attachments": {
+        "model": "Attachment",
+        "many": true,
+        "nullable": false,
+        "tag": null,
+        "fields": [],
+        "references": [],
+        "onDelete": "RESTRICT",
+        "inverseFields": [
+          "requestId"
+        ],
+        "localReferences": [
+          "id"
+        ]
+      },
+      "statusHistory": {
+        "model": "RequestStatusEvent",
+        "many": true,
+        "nullable": false,
+        "tag": null,
+        "fields": [],
+        "references": [],
+        "onDelete": "RESTRICT",
+        "inverseFields": [
+          "requestId"
+        ],
+        "localReferences": [
+          "id"
+        ]
+      },
+      "claim": {
+        "model": "RequestClaim",
+        "many": false,
+        "nullable": true,
+        "tag": null,
+        "fields": [],
+        "references": [],
+        "onDelete": "SET NULL",
+        "inverseFields": [
+          "requestId"
+        ],
+        "localReferences": [
+          "id"
+        ]
+      },
+      "trackLinks": {
+        "model": "TrackLink",
+        "many": true,
+        "nullable": false,
+        "tag": "TrackLinks",
+        "fields": [],
+        "references": [],
+        "onDelete": "RESTRICT",
+        "inverseFields": [
+          "requestId"
+        ],
+        "localReferences": [
+          "id"
+        ]
+      }
+    },
+    "indexes": [
+      [
+        "email",
+        "createdAt"
+      ],
+      [
+        "clientIpHash",
+        "createdAt"
+      ],
+      [
+        "status",
+        "createdAt"
+      ],
+      [
+        "clientId",
+        "createdAt"
+      ],
+      [
+        "assigneeId",
+        "status"
+      ],
+      [
+        "archivedAt"
+      ]
+    ],
+    "uniques": []
+  },
+  "RequestMessage": {
+    "table": "RequestMessage",
+    "columns": {
+      "id": {
+        "type": "String",
+        "nullable": false,
+        "primary": true,
+        "unique": false,
+        "updated": false,
+        "default": {
+          "kind": "id"
+        },
+        "indexed": true
+      },
+      "requestId": {
+        "type": "String",
+        "nullable": false,
+        "primary": false,
+        "unique": false,
+        "updated": false,
+        "default": null,
+        "indexed": true
+      },
+      "authorId": {
+        "type": "String",
+        "nullable": true,
+        "primary": false,
+        "unique": false,
+        "updated": false,
+        "default": null,
+        "indexed": true
+      },
+      "authorType": {
+        "type": "String",
+        "nullable": false,
+        "primary": false,
+        "unique": false,
+        "updated": false,
+        "default": {
+          "kind": "literal",
+          "value": "client"
+        },
+        "indexed": false
+      },
+      "kind": {
+        "type": "String",
+        "nullable": false,
+        "primary": false,
+        "unique": false,
+        "updated": false,
+        "default": {
+          "kind": "literal",
+          "value": "message"
+        },
+        "indexed": false
+      },
+      "body": {
+        "type": "String",
+        "nullable": false,
+        "primary": false,
+        "unique": false,
+        "updated": false,
+        "default": null,
+        "indexed": false
+      },
+      "editedAt": {
+        "type": "DateTime",
+        "nullable": true,
+        "primary": false,
+        "unique": false,
+        "updated": false,
+        "default": null,
+        "indexed": false
+      },
+      "createdAt": {
+        "type": "DateTime",
+        "nullable": false,
+        "primary": false,
+        "unique": false,
+        "updated": false,
+        "default": {
+          "kind": "now"
+        },
+        "indexed": true
+      }
+    },
+    "relations": {
+      "request": {
+        "model": "ProjectRequest",
+        "many": false,
+        "nullable": false,
+        "tag": null,
+        "fields": [
+          "requestId"
+        ],
+        "references": [
+          "id"
+        ],
+        "onDelete": "CASCADE"
+      },
+      "author": {
+        "model": "User",
+        "many": false,
+        "nullable": true,
+        "tag": null,
+        "fields": [
+          "authorId"
+        ],
+        "references": [
+          "id"
+        ],
+        "onDelete": "SET NULL"
+      }
+    },
+    "indexes": [
+      [
+        "requestId",
+        "createdAt"
+      ]
+    ],
+    "uniques": []
+  },
+  "RequestStatusEvent": {
+    "table": "RequestStatusEvent",
+    "columns": {
+      "id": {
+        "type": "String",
+        "nullable": false,
+        "primary": true,
+        "unique": false,
+        "updated": false,
+        "default": {
+          "kind": "id"
+        },
+        "indexed": true
+      },
+      "requestId": {
+        "type": "String",
+        "nullable": false,
+        "primary": false,
+        "unique": false,
+        "updated": false,
+        "default": null,
+        "indexed": true
+      },
+      "fromStatus": {
+        "type": "String",
+        "nullable": true,
+        "primary": false,
+        "unique": false,
+        "updated": false,
+        "default": null,
+        "indexed": false
+      },
+      "toStatus": {
+        "type": "String",
+        "nullable": false,
+        "primary": false,
+        "unique": false,
+        "updated": false,
+        "default": null,
+        "indexed": false
+      },
+      "changedById": {
+        "type": "String",
+        "nullable": true,
+        "primary": false,
+        "unique": false,
+        "updated": false,
+        "default": null,
+        "indexed": true
+      },
+      "note": {
+        "type": "String",
+        "nullable": true,
+        "primary": false,
+        "unique": false,
+        "updated": false,
+        "default": null,
+        "indexed": false
+      },
+      "createdAt": {
+        "type": "DateTime",
+        "nullable": false,
+        "primary": false,
+        "unique": false,
+        "updated": false,
+        "default": {
+          "kind": "now"
+        },
+        "indexed": true
+      }
+    },
+    "relations": {
+      "request": {
+        "model": "ProjectRequest",
+        "many": false,
+        "nullable": false,
+        "tag": null,
+        "fields": [
+          "requestId"
+        ],
+        "references": [
+          "id"
+        ],
+        "onDelete": "CASCADE"
+      },
+      "changedBy": {
+        "model": "User",
+        "many": false,
+        "nullable": true,
+        "tag": null,
+        "fields": [
+          "changedById"
+        ],
+        "references": [
+          "id"
+        ],
+        "onDelete": "SET NULL"
+      }
+    },
+    "indexes": [
+      [
+        "requestId",
+        "createdAt"
+      ]
+    ],
+    "uniques": []
+  },
+  "RequestClaim": {
+    "table": "RequestClaim",
+    "columns": {
+      "id": {
+        "type": "String",
+        "nullable": false,
+        "primary": true,
+        "unique": false,
+        "updated": false,
+        "default": {
+          "kind": "id"
+        },
+        "indexed": true
+      },
+      "requestId": {
+        "type": "String",
+        "nullable": false,
+        "primary": false,
+        "unique": true,
+        "updated": false,
+        "default": null,
+        "indexed": true
+      },
+      "userId": {
+        "type": "String",
+        "nullable": false,
+        "primary": false,
+        "unique": false,
+        "updated": false,
+        "default": null,
+        "indexed": true
+      },
+      "status": {
+        "type": "String",
+        "nullable": false,
+        "primary": false,
+        "unique": false,
+        "updated": false,
+        "default": {
+          "kind": "literal",
+          "value": "pending"
+        },
+        "indexed": false
+      },
+      "createdAt": {
+        "type": "DateTime",
+        "nullable": false,
+        "primary": false,
+        "unique": false,
+        "updated": false,
+        "default": {
+          "kind": "now"
+        },
+        "indexed": false
+      },
+      "verifiedAt": {
+        "type": "DateTime",
+        "nullable": true,
+        "primary": false,
+        "unique": false,
+        "updated": false,
+        "default": null,
+        "indexed": false
+      }
+    },
+    "relations": {
+      "request": {
+        "model": "ProjectRequest",
+        "many": false,
+        "nullable": false,
+        "tag": null,
+        "fields": [
+          "requestId"
+        ],
+        "references": [
+          "id"
+        ],
+        "onDelete": "RESTRICT"
+      },
+      "user": {
+        "model": "User",
+        "many": false,
+        "nullable": false,
+        "tag": null,
+        "fields": [
+          "userId"
+        ],
+        "references": [
+          "id"
+        ],
+        "onDelete": "RESTRICT"
+      }
+    },
+    "indexes": [
+      [
+        "userId"
+      ]
+    ],
+    "uniques": []
+  },
+  "SavedReply": {
+    "table": "SavedReply",
+    "columns": {
+      "id": {
+        "type": "String",
+        "nullable": false,
+        "primary": true,
+        "unique": false,
+        "updated": false,
+        "default": {
+          "kind": "id"
+        },
+        "indexed": true
+      },
+      "name": {
+        "type": "String",
+        "nullable": false,
+        "primary": false,
+        "unique": false,
+        "updated": false,
+        "default": null,
+        "indexed": false
+      },
+      "content": {
+        "type": "String",
+        "nullable": false,
+        "primary": false,
+        "unique": false,
+        "updated": false,
+        "default": null,
+        "indexed": false
+      },
+      "createdBy": {
+        "type": "String",
+        "nullable": false,
+        "primary": false,
+        "unique": false,
+        "updated": false,
+        "default": null,
+        "indexed": true
+      },
+      "createdAt": {
+        "type": "DateTime",
+        "nullable": false,
+        "primary": false,
+        "unique": false,
+        "updated": false,
+        "default": {
+          "kind": "now"
+        },
+        "indexed": false
+      },
+      "updatedAt": {
+        "type": "DateTime",
+        "nullable": false,
+        "primary": false,
+        "unique": false,
+        "updated": true,
+        "default": null,
+        "indexed": true
+      }
+    },
+    "relations": {
+      "creator": {
+        "model": "User",
+        "many": false,
+        "nullable": false,
+        "tag": null,
+        "fields": [
+          "createdBy"
+        ],
+        "references": [
+          "id"
+        ],
+        "onDelete": "CASCADE"
+      }
+    },
+    "indexes": [
+      [
+        "updatedAt"
+      ]
+    ],
+    "uniques": []
+  },
+  "RequestDraft": {
+    "table": "RequestDraft",
+    "columns": {
+      "id": {
+        "type": "String",
+        "nullable": false,
+        "primary": true,
+        "unique": false,
+        "updated": false,
+        "default": {
+          "kind": "id"
+        },
+        "indexed": true
+      },
+      "userId": {
+        "type": "String",
+        "nullable": false,
+        "primary": false,
+        "unique": true,
+        "updated": false,
+        "default": null,
+        "indexed": true
+      },
+      "data": {
+        "type": "String",
+        "nullable": false,
+        "primary": false,
+        "unique": false,
+        "updated": false,
+        "default": {
+          "kind": "literal",
+          "value": "{}"
+        },
+        "indexed": false
+      },
+      "updatedAt": {
+        "type": "DateTime",
+        "nullable": false,
+        "primary": false,
+        "unique": false,
+        "updated": true,
+        "default": null,
+        "indexed": false
+      }
+    },
+    "relations": {
+      "user": {
+        "model": "User",
+        "many": false,
+        "nullable": false,
+        "tag": null,
+        "fields": [
+          "userId"
+        ],
+        "references": [
+          "id"
+        ],
+        "onDelete": "CASCADE"
+      }
+    },
+    "indexes": [],
+    "uniques": []
+  },
+  "Inquiry": {
+    "table": "Inquiry",
+    "columns": {
+      "id": {
+        "type": "String",
+        "nullable": false,
+        "primary": true,
+        "unique": false,
+        "updated": false,
+        "default": {
+          "kind": "id"
+        },
+        "indexed": true
+      },
+      "refCode": {
+        "type": "String",
+        "nullable": false,
+        "primary": false,
+        "unique": true,
+        "updated": false,
+        "default": null,
+        "indexed": true
+      },
+      "subject": {
+        "type": "String",
+        "nullable": false,
+        "primary": false,
+        "unique": false,
+        "updated": false,
+        "default": null,
+        "indexed": false
+      },
+      "name": {
+        "type": "String",
+        "nullable": false,
+        "primary": false,
+        "unique": false,
+        "updated": false,
+        "default": null,
+        "indexed": false
+      },
+      "email": {
+        "type": "String",
+        "nullable": false,
+        "primary": false,
+        "unique": false,
+        "updated": false,
+        "default": null,
+        "indexed": true
+      },
+      "category": {
+        "type": "String",
+        "nullable": false,
+        "primary": false,
+        "unique": false,
+        "updated": false,
+        "default": {
+          "kind": "literal",
+          "value": "general"
+        },
+        "indexed": false
+      },
+      "status": {
+        "type": "String",
+        "nullable": false,
+        "primary": false,
+        "unique": false,
+        "updated": false,
+        "default": {
+          "kind": "literal",
+          "value": "new"
+        },
+        "indexed": true
+      },
+      "priority": {
+        "type": "String",
+        "nullable": false,
+        "primary": false,
+        "unique": false,
+        "updated": false,
+        "default": {
+          "kind": "literal",
+          "value": "normal"
+        },
+        "indexed": false
+      },
+      "locale": {
+        "type": "String",
+        "nullable": false,
+        "primary": false,
+        "unique": false,
+        "updated": false,
+        "default": {
+          "kind": "literal",
+          "value": "ar"
+        },
+        "indexed": false
+      },
+      "clientId": {
+        "type": "String",
+        "nullable": true,
+        "primary": false,
+        "unique": false,
+        "updated": false,
+        "default": null,
+        "indexed": true
+      },
+      "assigneeId": {
+        "type": "String",
+        "nullable": true,
+        "primary": false,
+        "unique": false,
+        "updated": false,
+        "default": null,
+        "indexed": true
+      },
+      "closedAt": {
+        "type": "DateTime",
+        "nullable": true,
+        "primary": false,
+        "unique": false,
+        "updated": false,
+        "default": null,
+        "indexed": false
+      },
+      "archivedAt": {
+        "type": "DateTime",
+        "nullable": true,
+        "primary": false,
+        "unique": false,
+        "updated": false,
+        "default": null,
+        "indexed": false
+      },
+      "lastActivityAt": {
+        "type": "DateTime",
+        "nullable": false,
+        "primary": false,
+        "unique": false,
+        "updated": false,
+        "default": {
+          "kind": "now"
+        },
+        "indexed": false
+      },
+      "createdAt": {
+        "type": "DateTime",
+        "nullable": false,
+        "primary": false,
+        "unique": false,
+        "updated": false,
+        "default": {
+          "kind": "now"
+        },
+        "indexed": true
+      },
+      "updatedAt": {
+        "type": "DateTime",
+        "nullable": false,
+        "primary": false,
+        "unique": false,
+        "updated": true,
+        "default": null,
+        "indexed": false
+      }
+    },
+    "relations": {
+      "client": {
+        "model": "User",
+        "many": false,
+        "nullable": true,
+        "tag": "InquiryClients",
+        "fields": [
+          "clientId"
+        ],
+        "references": [
+          "id"
+        ],
+        "onDelete": "SET NULL"
+      },
+      "assignee": {
+        "model": "User",
+        "many": false,
+        "nullable": true,
+        "tag": "InquiryAssignees",
+        "fields": [
+          "assigneeId"
+        ],
+        "references": [
+          "id"
+        ],
+        "onDelete": "SET NULL"
+      },
+      "messages": {
+        "model": "InquiryMessage",
+        "many": true,
+        "nullable": false,
+        "tag": null,
+        "fields": [],
+        "references": [],
+        "onDelete": "RESTRICT",
+        "inverseFields": [
+          "inquiryId"
+        ],
+        "localReferences": [
+          "id"
+        ]
+      },
+      "attachments": {
+        "model": "Attachment",
+        "many": true,
+        "nullable": false,
+        "tag": null,
+        "fields": [],
+        "references": [],
+        "onDelete": "RESTRICT",
+        "inverseFields": [
+          "inquiryId"
+        ],
+        "localReferences": [
+          "id"
+        ]
+      },
+      "trackLinks": {
+        "model": "TrackLink",
+        "many": true,
+        "nullable": false,
+        "tag": "TrackLinks",
+        "fields": [],
+        "references": [],
+        "onDelete": "RESTRICT",
+        "inverseFields": [
+          "inquiryId"
+        ],
+        "localReferences": [
+          "id"
+        ]
+      }
+    },
+    "indexes": [
+      [
+        "email",
+        "createdAt"
+      ],
+      [
+        "status",
+        "createdAt"
+      ],
+      [
+        "clientId"
+      ]
+    ],
+    "uniques": []
+  },
+  "InquiryMessage": {
+    "table": "InquiryMessage",
+    "columns": {
+      "id": {
+        "type": "String",
+        "nullable": false,
+        "primary": true,
+        "unique": false,
+        "updated": false,
+        "default": {
+          "kind": "id"
+        },
+        "indexed": true
+      },
+      "inquiryId": {
+        "type": "String",
+        "nullable": false,
+        "primary": false,
+        "unique": false,
+        "updated": false,
+        "default": null,
+        "indexed": true
+      },
+      "authorId": {
+        "type": "String",
+        "nullable": true,
+        "primary": false,
+        "unique": false,
+        "updated": false,
+        "default": null,
+        "indexed": true
+      },
+      "authorType": {
+        "type": "String",
+        "nullable": false,
+        "primary": false,
+        "unique": false,
+        "updated": false,
+        "default": {
+          "kind": "literal",
+          "value": "client"
+        },
+        "indexed": false
+      },
+      "kind": {
+        "type": "String",
+        "nullable": false,
+        "primary": false,
+        "unique": false,
+        "updated": false,
+        "default": {
+          "kind": "literal",
+          "value": "message"
+        },
+        "indexed": false
+      },
+      "body": {
+        "type": "String",
+        "nullable": false,
+        "primary": false,
+        "unique": false,
+        "updated": false,
+        "default": null,
+        "indexed": false
+      },
+      "editedAt": {
+        "type": "DateTime",
+        "nullable": true,
+        "primary": false,
+        "unique": false,
+        "updated": false,
+        "default": null,
+        "indexed": false
+      },
+      "createdAt": {
+        "type": "DateTime",
+        "nullable": false,
+        "primary": false,
+        "unique": false,
+        "updated": false,
+        "default": {
+          "kind": "now"
+        },
+        "indexed": true
+      }
+    },
+    "relations": {
+      "inquiry": {
+        "model": "Inquiry",
+        "many": false,
+        "nullable": false,
+        "tag": null,
+        "fields": [
+          "inquiryId"
+        ],
+        "references": [
+          "id"
+        ],
+        "onDelete": "CASCADE"
+      },
+      "author": {
+        "model": "User",
+        "many": false,
+        "nullable": true,
+        "tag": null,
+        "fields": [
+          "authorId"
+        ],
+        "references": [
+          "id"
+        ],
+        "onDelete": "SET NULL"
+      }
+    },
+    "indexes": [
+      [
+        "inquiryId",
+        "createdAt"
+      ]
+    ],
+    "uniques": []
+  },
+  "Attachment": {
+    "table": "Attachment",
+    "columns": {
+      "id": {
+        "type": "String",
+        "nullable": false,
+        "primary": true,
+        "unique": false,
+        "updated": false,
+        "default": {
+          "kind": "id"
+        },
+        "indexed": true
+      },
+      "filename": {
+        "type": "String",
+        "nullable": false,
+        "primary": false,
+        "unique": false,
+        "updated": false,
+        "default": null,
+        "indexed": false
+      },
+      "storedName": {
+        "type": "String",
+        "nullable": false,
+        "primary": false,
+        "unique": true,
+        "updated": false,
+        "default": null,
+        "indexed": true
+      },
+      "mimeType": {
+        "type": "String",
+        "nullable": false,
+        "primary": false,
+        "unique": false,
+        "updated": false,
+        "default": null,
+        "indexed": false
+      },
+      "size": {
+        "type": "Int",
+        "nullable": false,
+        "primary": false,
+        "unique": false,
+        "updated": false,
+        "default": null,
+        "indexed": false
+      },
+      "kind": {
+        "type": "String",
+        "nullable": false,
+        "primary": false,
+        "unique": false,
+        "updated": false,
+        "default": {
+          "kind": "literal",
+          "value": "request_attachment"
+        },
+        "indexed": false
+      },
+      "uploaderId": {
+        "type": "String",
+        "nullable": true,
+        "primary": false,
+        "unique": false,
+        "updated": false,
+        "default": null,
+        "indexed": true
+      },
+      "requestId": {
+        "type": "String",
+        "nullable": true,
+        "primary": false,
+        "unique": false,
+        "updated": false,
+        "default": null,
+        "indexed": true
+      },
+      "inquiryId": {
+        "type": "String",
+        "nullable": true,
+        "primary": false,
+        "unique": false,
+        "updated": false,
+        "default": null,
+        "indexed": true
+      },
+      "messageId": {
+        "type": "String",
+        "nullable": true,
+        "primary": false,
+        "unique": false,
+        "updated": false,
+        "default": null,
+        "indexed": false
+      },
+      "createdAt": {
+        "type": "DateTime",
+        "nullable": false,
+        "primary": false,
+        "unique": false,
+        "updated": false,
+        "default": {
+          "kind": "now"
+        },
+        "indexed": false
+      }
+    },
+    "relations": {
+      "uploader": {
+        "model": "User",
+        "many": false,
+        "nullable": true,
+        "tag": null,
+        "fields": [
+          "uploaderId"
+        ],
+        "references": [
+          "id"
+        ],
+        "onDelete": "SET NULL"
+      },
+      "request": {
+        "model": "ProjectRequest",
+        "many": false,
+        "nullable": true,
+        "tag": null,
+        "fields": [
+          "requestId"
+        ],
+        "references": [
+          "id"
+        ],
+        "onDelete": "CASCADE"
+      },
+      "inquiry": {
+        "model": "Inquiry",
+        "many": false,
+        "nullable": true,
+        "tag": null,
+        "fields": [
+          "inquiryId"
+        ],
+        "references": [
+          "id"
+        ],
+        "onDelete": "CASCADE"
+      }
+    },
+    "indexes": [
+      [
+        "requestId"
+      ],
+      [
+        "inquiryId"
+      ]
+    ],
+    "uniques": []
+  },
+  "MediaItem": {
+    "table": "MediaItem",
+    "columns": {
+      "id": {
+        "type": "String",
+        "nullable": false,
+        "primary": true,
+        "unique": false,
+        "updated": false,
+        "default": {
+          "kind": "id"
+        },
+        "indexed": true
+      },
+      "filename": {
+        "type": "String",
+        "nullable": false,
+        "primary": false,
+        "unique": false,
+        "updated": false,
+        "default": null,
+        "indexed": false
+      },
+      "storedName": {
+        "type": "String",
+        "nullable": false,
+        "primary": false,
+        "unique": true,
+        "updated": false,
+        "default": null,
+        "indexed": true
+      },
+      "mimeType": {
+        "type": "String",
+        "nullable": false,
+        "primary": false,
+        "unique": false,
+        "updated": false,
+        "default": null,
+        "indexed": false
+      },
+      "size": {
+        "type": "Int",
+        "nullable": false,
+        "primary": false,
+        "unique": false,
+        "updated": false,
+        "default": null,
+        "indexed": false
+      },
+      "altText": {
+        "type": "String",
+        "nullable": true,
+        "primary": false,
+        "unique": false,
+        "updated": false,
+        "default": null,
+        "indexed": false
+      },
+      "title": {
+        "type": "String",
+        "nullable": true,
+        "primary": false,
+        "unique": false,
+        "updated": false,
+        "default": null,
+        "indexed": false
+      },
+      "folder": {
+        "type": "String",
+        "nullable": false,
+        "primary": false,
+        "unique": false,
+        "updated": false,
+        "default": {
+          "kind": "literal",
+          "value": "general"
+        },
+        "indexed": true
+      },
+      "uploadedById": {
+        "type": "String",
+        "nullable": true,
+        "primary": false,
+        "unique": false,
+        "updated": false,
+        "default": null,
+        "indexed": true
+      },
+      "createdAt": {
+        "type": "DateTime",
+        "nullable": false,
+        "primary": false,
+        "unique": false,
+        "updated": false,
+        "default": {
+          "kind": "now"
+        },
+        "indexed": true
+      }
+    },
+    "relations": {
+      "uploadedBy": {
+        "model": "User",
+        "many": false,
+        "nullable": true,
+        "tag": null,
+        "fields": [
+          "uploadedById"
+        ],
+        "references": [
+          "id"
+        ],
+        "onDelete": "SET NULL"
+      }
+    },
+    "indexes": [
+      [
+        "folder",
+        "createdAt"
+      ]
+    ],
+    "uniques": []
+  },
+  "Notification": {
+    "table": "Notification",
+    "columns": {
+      "id": {
+        "type": "String",
+        "nullable": false,
+        "primary": true,
+        "unique": false,
+        "updated": false,
+        "default": {
+          "kind": "id"
+        },
+        "indexed": true
+      },
+      "userId": {
+        "type": "String",
+        "nullable": false,
+        "primary": false,
+        "unique": false,
+        "updated": false,
+        "default": null,
+        "indexed": true
+      },
+      "type": {
+        "type": "String",
+        "nullable": false,
+        "primary": false,
+        "unique": false,
+        "updated": false,
+        "default": null,
+        "indexed": false
+      },
+      "payload": {
+        "type": "String",
+        "nullable": false,
+        "primary": false,
+        "unique": false,
+        "updated": false,
+        "default": {
+          "kind": "literal",
+          "value": "{}"
+        },
+        "indexed": false
+      },
+      "link": {
+        "type": "String",
+        "nullable": true,
+        "primary": false,
+        "unique": false,
+        "updated": false,
+        "default": null,
+        "indexed": false
+      },
+      "readAt": {
+        "type": "DateTime",
+        "nullable": true,
+        "primary": false,
+        "unique": false,
+        "updated": false,
+        "default": null,
+        "indexed": true
+      },
+      "createdAt": {
+        "type": "DateTime",
+        "nullable": false,
+        "primary": false,
+        "unique": false,
+        "updated": false,
+        "default": {
+          "kind": "now"
+        },
+        "indexed": true
+      }
+    },
+    "relations": {
+      "user": {
+        "model": "User",
+        "many": false,
+        "nullable": false,
+        "tag": null,
+        "fields": [
+          "userId"
+        ],
+        "references": [
+          "id"
+        ],
+        "onDelete": "CASCADE"
+      }
+    },
+    "indexes": [
+      [
+        "userId",
+        "readAt",
+        "createdAt"
+      ]
+    ],
+    "uniques": []
+  },
+  "AuditLog": {
+    "table": "AuditLog",
+    "columns": {
+      "id": {
+        "type": "String",
+        "nullable": false,
+        "primary": true,
+        "unique": false,
+        "updated": false,
+        "default": {
+          "kind": "id"
+        },
+        "indexed": true
+      },
+      "actorId": {
+        "type": "String",
+        "nullable": true,
+        "primary": false,
+        "unique": false,
+        "updated": false,
+        "default": null,
+        "indexed": true
+      },
+      "actorEmail": {
+        "type": "String",
+        "nullable": true,
+        "primary": false,
+        "unique": false,
+        "updated": false,
+        "default": null,
+        "indexed": false
+      },
+      "action": {
+        "type": "String",
+        "nullable": false,
+        "primary": false,
+        "unique": false,
+        "updated": false,
+        "default": null,
+        "indexed": false
+      },
+      "entityType": {
+        "type": "String",
+        "nullable": false,
+        "primary": false,
+        "unique": false,
+        "updated": false,
+        "default": null,
+        "indexed": true
+      },
+      "entityId": {
+        "type": "String",
+        "nullable": true,
+        "primary": false,
+        "unique": false,
+        "updated": false,
+        "default": null,
+        "indexed": true
+      },
+      "details": {
+        "type": "String",
+        "nullable": true,
+        "primary": false,
+        "unique": false,
+        "updated": false,
+        "default": null,
+        "indexed": false
+      },
+      "ipHash": {
+        "type": "String",
+        "nullable": true,
+        "primary": false,
+        "unique": false,
+        "updated": false,
+        "default": null,
+        "indexed": false
+      },
+      "createdAt": {
+        "type": "DateTime",
+        "nullable": false,
+        "primary": false,
+        "unique": false,
+        "updated": false,
+        "default": {
+          "kind": "now"
+        },
+        "indexed": true
+      }
+    },
+    "relations": {
+      "actor": {
+        "model": "User",
+        "many": false,
+        "nullable": true,
+        "tag": null,
+        "fields": [
+          "actorId"
+        ],
+        "references": [
+          "id"
+        ],
+        "onDelete": "SET NULL"
+      }
+    },
+    "indexes": [
+      [
+        "entityType",
+        "entityId"
+      ],
+      [
+        "actorId",
+        "createdAt"
+      ],
+      [
+        "createdAt"
+      ]
+    ],
+    "uniques": []
+  },
+  "Page": {
+    "table": "Page",
+    "columns": {
+      "id": {
+        "type": "String",
+        "nullable": false,
+        "primary": true,
+        "unique": false,
+        "updated": false,
+        "default": {
+          "kind": "id"
+        },
+        "indexed": true
+      },
+      "slug": {
+        "type": "String",
+        "nullable": false,
+        "primary": false,
+        "unique": true,
+        "updated": false,
+        "default": null,
+        "indexed": true
+      },
+      "isHome": {
+        "type": "Boolean",
+        "nullable": false,
+        "primary": false,
+        "unique": false,
+        "updated": false,
+        "default": {
+          "kind": "literal",
+          "value": false
+        },
+        "indexed": false
+      },
+      "order": {
+        "type": "Int",
+        "nullable": false,
+        "primary": false,
+        "unique": false,
+        "updated": false,
+        "default": {
+          "kind": "literal",
+          "value": 0
+        },
+        "indexed": true
+      },
+      "visibility": {
+        "type": "String",
+        "nullable": false,
+        "primary": false,
+        "unique": false,
+        "updated": false,
+        "default": {
+          "kind": "literal",
+          "value": "public"
+        },
+        "indexed": false
+      },
+      "allowedRoles": {
+        "type": "String",
+        "nullable": false,
+        "primary": false,
+        "unique": false,
+        "updated": false,
+        "default": {
+          "kind": "literal",
+          "value": "[]"
+        },
+        "indexed": false
+      },
+      "status": {
+        "type": "String",
+        "nullable": false,
+        "primary": false,
+        "unique": false,
+        "updated": false,
+        "default": {
+          "kind": "literal",
+          "value": "draft"
+        },
+        "indexed": true
+      },
+      "titleAr": {
+        "type": "String",
+        "nullable": false,
+        "primary": false,
+        "unique": false,
+        "updated": false,
+        "default": null,
+        "indexed": false
+      },
+      "titleEn": {
+        "type": "String",
+        "nullable": false,
+        "primary": false,
+        "unique": false,
+        "updated": false,
+        "default": null,
+        "indexed": false
+      },
+      "seoTitleAr": {
+        "type": "String",
+        "nullable": true,
+        "primary": false,
+        "unique": false,
+        "updated": false,
+        "default": null,
+        "indexed": false
+      },
+      "seoTitleEn": {
+        "type": "String",
+        "nullable": true,
+        "primary": false,
+        "unique": false,
+        "updated": false,
+        "default": null,
+        "indexed": false
+      },
+      "seoDescAr": {
+        "type": "String",
+        "nullable": true,
+        "primary": false,
+        "unique": false,
+        "updated": false,
+        "default": null,
+        "indexed": false
+      },
+      "seoDescEn": {
+        "type": "String",
+        "nullable": true,
+        "primary": false,
+        "unique": false,
+        "updated": false,
+        "default": null,
+        "indexed": false
+      },
+      "ogMediaId": {
+        "type": "String",
+        "nullable": true,
+        "primary": false,
+        "unique": false,
+        "updated": false,
+        "default": null,
+        "indexed": false
+      },
+      "draftBlocksAr": {
+        "type": "String",
+        "nullable": false,
+        "primary": false,
+        "unique": false,
+        "updated": false,
+        "default": {
+          "kind": "literal",
+          "value": "[]"
+        },
+        "indexed": false
+      },
+      "draftBlocksEn": {
+        "type": "String",
+        "nullable": false,
+        "primary": false,
+        "unique": false,
+        "updated": false,
+        "default": {
+          "kind": "literal",
+          "value": "[]"
+        },
+        "indexed": false
+      },
+      "draftUpdatedAt": {
+        "type": "DateTime",
+        "nullable": true,
+        "primary": false,
+        "unique": false,
+        "updated": false,
+        "default": null,
+        "indexed": false
+      },
+      "draftUpdatedById": {
+        "type": "String",
+        "nullable": true,
+        "primary": false,
+        "unique": false,
+        "updated": false,
+        "default": null,
+        "indexed": false
+      },
+      "publishedBlocksAr": {
+        "type": "String",
+        "nullable": true,
+        "primary": false,
+        "unique": false,
+        "updated": false,
+        "default": null,
+        "indexed": false
+      },
+      "publishedBlocksEn": {
+        "type": "String",
+        "nullable": true,
+        "primary": false,
+        "unique": false,
+        "updated": false,
+        "default": null,
+        "indexed": false
+      },
+      "publishedAt": {
+        "type": "DateTime",
+        "nullable": true,
+        "primary": false,
+        "unique": false,
+        "updated": false,
+        "default": null,
+        "indexed": false
+      },
+      "publishedById": {
+        "type": "String",
+        "nullable": true,
+        "primary": false,
+        "unique": false,
+        "updated": false,
+        "default": null,
+        "indexed": false
+      },
+      "sourceKey": {
+        "type": "String",
+        "nullable": true,
+        "primary": false,
+        "unique": false,
+        "updated": false,
+        "default": null,
+        "indexed": false
+      },
+      "seedVersion": {
+        "type": "Int",
+        "nullable": false,
+        "primary": false,
+        "unique": false,
+        "updated": false,
+        "default": {
+          "kind": "literal",
+          "value": 0
+        },
+        "indexed": false
+      },
+      "editorTouchedAt": {
+        "type": "DateTime",
+        "nullable": true,
+        "primary": false,
+        "unique": false,
+        "updated": false,
+        "default": null,
+        "indexed": false
+      },
+      "createdAt": {
+        "type": "DateTime",
+        "nullable": false,
+        "primary": false,
+        "unique": false,
+        "updated": false,
+        "default": {
+          "kind": "now"
+        },
+        "indexed": false
+      },
+      "updatedAt": {
+        "type": "DateTime",
+        "nullable": false,
+        "primary": false,
+        "unique": false,
+        "updated": true,
+        "default": null,
+        "indexed": false
+      },
+      "draftSettings": {
+        "type": "String",
+        "nullable": false,
+        "primary": false,
+        "unique": false,
+        "updated": false,
+        "default": {
+          "kind": "literal",
+          "value": "{}"
+        },
+        "indexed": false
+      },
+      "draftRevision": {
+        "type": "Int",
+        "nullable": false,
+        "primary": false,
+        "unique": false,
+        "updated": false,
+        "default": {
+          "kind": "literal",
+          "value": 0
+        },
+        "indexed": false
+      },
+      "publishedRevision": {
+        "type": "Int",
+        "nullable": true,
+        "primary": false,
+        "unique": false,
+        "updated": false,
+        "default": null,
+        "indexed": false
+      },
+      "publishedSettings": {
+        "type": "String",
+        "nullable": true,
+        "primary": false,
+        "unique": false,
+        "updated": false,
+        "default": null,
+        "indexed": false
+      },
+      "scheduledPublishAt": {
+        "type": "DateTime",
+        "nullable": true,
+        "primary": false,
+        "unique": false,
+        "updated": false,
+        "default": null,
+        "indexed": true
+      },
+      "scheduledRevision": {
+        "type": "Int",
+        "nullable": true,
+        "primary": false,
+        "unique": false,
+        "updated": false,
+        "default": null,
+        "indexed": false
+      },
+      "scheduledPublishById": {
+        "type": "String",
+        "nullable": true,
+        "primary": false,
+        "unique": false,
+        "updated": false,
+        "default": null,
+        "indexed": false
+      }
+    },
+    "relations": {
+      "versions": {
+        "model": "PageVersion",
+        "many": true,
+        "nullable": false,
+        "tag": null,
+        "fields": [],
+        "references": [],
+        "onDelete": "RESTRICT",
+        "inverseFields": [
+          "pageId"
+        ],
+        "localReferences": [
+          "id"
+        ]
+      }
+    },
+    "indexes": [
+      [
+        "status",
+        "order"
+      ],
+      [
+        "scheduledPublishAt"
+      ]
+    ],
+    "uniques": []
+  },
+  "PageVersion": {
+    "table": "PageVersion",
+    "columns": {
+      "id": {
+        "type": "String",
+        "nullable": false,
+        "primary": true,
+        "unique": false,
+        "updated": false,
+        "default": {
+          "kind": "id"
+        },
+        "indexed": true
+      },
+      "pageId": {
+        "type": "String",
+        "nullable": false,
+        "primary": false,
+        "unique": false,
+        "updated": false,
+        "default": null,
+        "indexed": true
+      },
+      "locale": {
+        "type": "String",
+        "nullable": false,
+        "primary": false,
+        "unique": false,
+        "updated": false,
+        "default": null,
+        "indexed": true
+      },
+      "version": {
+        "type": "Int",
+        "nullable": false,
+        "primary": false,
+        "unique": false,
+        "updated": false,
+        "default": null,
+        "indexed": true
+      },
+      "blocks": {
+        "type": "String",
+        "nullable": false,
+        "primary": false,
+        "unique": false,
+        "updated": false,
+        "default": null,
+        "indexed": false
+      },
+      "authorId": {
+        "type": "String",
+        "nullable": true,
+        "primary": false,
+        "unique": false,
+        "updated": false,
+        "default": null,
+        "indexed": true
+      },
+      "note": {
+        "type": "String",
+        "nullable": true,
+        "primary": false,
+        "unique": false,
+        "updated": false,
+        "default": null,
+        "indexed": false
+      },
+      "createdAt": {
+        "type": "DateTime",
+        "nullable": false,
+        "primary": false,
+        "unique": false,
+        "updated": false,
+        "default": {
+          "kind": "now"
+        },
+        "indexed": false
+      }
+    },
+    "relations": {
+      "page": {
+        "model": "Page",
+        "many": false,
+        "nullable": false,
+        "tag": null,
+        "fields": [
+          "pageId"
+        ],
+        "references": [
+          "id"
+        ],
+        "onDelete": "CASCADE"
+      },
+      "author": {
+        "model": "User",
+        "many": false,
+        "nullable": true,
+        "tag": null,
+        "fields": [
+          "authorId"
+        ],
+        "references": [
+          "id"
+        ],
+        "onDelete": "SET NULL"
+      }
+    },
+    "indexes": [],
+    "uniques": [
+      [
+        "pageId",
+        "locale",
+        "version"
+      ]
+    ]
+  },
+  "PageRedirect": {
+    "table": "PageRedirect",
+    "columns": {
+      "id": {
+        "type": "String",
+        "nullable": false,
+        "primary": true,
+        "unique": false,
+        "updated": false,
+        "default": {
+          "kind": "id"
+        },
+        "indexed": true
+      },
+      "fromSlug": {
+        "type": "String",
+        "nullable": false,
+        "primary": false,
+        "unique": true,
+        "updated": false,
+        "default": null,
+        "indexed": true
+      },
+      "toSlug": {
+        "type": "String",
+        "nullable": false,
+        "primary": false,
+        "unique": false,
+        "updated": false,
+        "default": null,
+        "indexed": false
+      },
+      "createdAt": {
+        "type": "DateTime",
+        "nullable": false,
+        "primary": false,
+        "unique": false,
+        "updated": false,
+        "default": {
+          "kind": "now"
+        },
+        "indexed": false
+      }
+    },
+    "relations": {},
+    "indexes": [],
+    "uniques": []
+  },
+  "MenuItem": {
+    "table": "MenuItem",
+    "columns": {
+      "id": {
+        "type": "String",
+        "nullable": false,
+        "primary": true,
+        "unique": false,
+        "updated": false,
+        "default": {
+          "kind": "id"
+        },
+        "indexed": true
+      },
+      "location": {
+        "type": "String",
+        "nullable": false,
+        "primary": false,
+        "unique": false,
+        "updated": false,
+        "default": null,
+        "indexed": true
+      },
+      "labelAr": {
+        "type": "String",
+        "nullable": false,
+        "primary": false,
+        "unique": false,
+        "updated": false,
+        "default": null,
+        "indexed": false
+      },
+      "labelEn": {
+        "type": "String",
+        "nullable": false,
+        "primary": false,
+        "unique": false,
+        "updated": false,
+        "default": null,
+        "indexed": false
+      },
+      "url": {
+        "type": "String",
+        "nullable": true,
+        "primary": false,
+        "unique": false,
+        "updated": false,
+        "default": null,
+        "indexed": false
+      },
+      "pageSlug": {
+        "type": "String",
+        "nullable": true,
+        "primary": false,
+        "unique": false,
+        "updated": false,
+        "default": null,
+        "indexed": false
+      },
+      "order": {
+        "type": "Int",
+        "nullable": false,
+        "primary": false,
+        "unique": false,
+        "updated": false,
+        "default": {
+          "kind": "literal",
+          "value": 0
+        },
+        "indexed": true
+      },
+      "enabled": {
+        "type": "Boolean",
+        "nullable": false,
+        "primary": false,
+        "unique": false,
+        "updated": false,
+        "default": {
+          "kind": "literal",
+          "value": true
+        },
+        "indexed": false
+      },
+      "createdAt": {
+        "type": "DateTime",
+        "nullable": false,
+        "primary": false,
+        "unique": false,
+        "updated": false,
+        "default": {
+          "kind": "now"
+        },
+        "indexed": false
+      }
+    },
+    "relations": {},
+    "indexes": [
+      [
+        "location",
+        "order"
+      ]
+    ],
+    "uniques": []
+  },
+  "SiteSetting": {
+    "table": "SiteSetting",
+    "columns": {
+      "key": {
+        "type": "String",
+        "nullable": false,
+        "primary": true,
+        "unique": false,
+        "updated": false,
+        "default": null,
+        "indexed": true
+      },
+      "value": {
+        "type": "String",
+        "nullable": false,
+        "primary": false,
+        "unique": false,
+        "updated": false,
+        "default": null,
+        "indexed": false
+      },
+      "updatedById": {
+        "type": "String",
+        "nullable": true,
+        "primary": false,
+        "unique": false,
+        "updated": false,
+        "default": null,
+        "indexed": true
+      },
+      "updatedAt": {
+        "type": "DateTime",
+        "nullable": false,
+        "primary": false,
+        "unique": false,
+        "updated": true,
+        "default": null,
+        "indexed": false
+      }
+    },
+    "relations": {
+      "updatedBy": {
+        "model": "User",
+        "many": false,
+        "nullable": true,
+        "tag": null,
+        "fields": [
+          "updatedById"
+        ],
+        "references": [
+          "id"
+        ],
+        "onDelete": "SET NULL"
+      }
+    },
+    "indexes": [],
+    "uniques": []
+  },
+  "PageTemplate": {
+    "table": "PageTemplate",
+    "columns": {
+      "id": {
+        "type": "String",
+        "nullable": false,
+        "primary": true,
+        "unique": false,
+        "updated": false,
+        "default": {
+          "kind": "cuid"
+        },
+        "indexed": true
+      },
+      "key": {
+        "type": "String",
+        "nullable": true,
+        "primary": false,
+        "unique": true,
+        "updated": false,
+        "default": null,
+        "indexed": true
+      },
+      "nameAr": {
+        "type": "String",
+        "nullable": false,
+        "primary": false,
+        "unique": false,
+        "updated": false,
+        "default": null,
+        "indexed": false
+      },
+      "nameEn": {
+        "type": "String",
+        "nullable": false,
+        "primary": false,
+        "unique": false,
+        "updated": false,
+        "default": null,
+        "indexed": false
+      },
+      "descAr": {
+        "type": "String",
+        "nullable": true,
+        "primary": false,
+        "unique": false,
+        "updated": false,
+        "default": null,
+        "indexed": false
+      },
+      "descEn": {
+        "type": "String",
+        "nullable": true,
+        "primary": false,
+        "unique": false,
+        "updated": false,
+        "default": null,
+        "indexed": false
+      },
+      "kind": {
+        "type": "String",
+        "nullable": false,
+        "primary": false,
+        "unique": false,
+        "updated": false,
+        "default": {
+          "kind": "literal",
+          "value": "custom"
+        },
+        "indexed": true
+      },
+      "blocksAr": {
+        "type": "String",
+        "nullable": true,
+        "primary": false,
+        "unique": false,
+        "updated": false,
+        "default": null,
+        "indexed": false
+      },
+      "blocksEn": {
+        "type": "String",
+        "nullable": true,
+        "primary": false,
+        "unique": false,
+        "updated": false,
+        "default": null,
+        "indexed": false
+      },
+      "usageCount": {
+        "type": "Int",
+        "nullable": false,
+        "primary": false,
+        "unique": false,
+        "updated": false,
+        "default": {
+          "kind": "literal",
+          "value": 0
+        },
+        "indexed": false
+      },
+      "createdById": {
+        "type": "String",
+        "nullable": true,
+        "primary": false,
+        "unique": false,
+        "updated": false,
+        "default": null,
+        "indexed": true
+      },
+      "createdAt": {
+        "type": "DateTime",
+        "nullable": false,
+        "primary": false,
+        "unique": false,
+        "updated": false,
+        "default": {
+          "kind": "now"
+        },
+        "indexed": false
+      },
+      "updatedAt": {
+        "type": "DateTime",
+        "nullable": false,
+        "primary": false,
+        "unique": false,
+        "updated": true,
+        "default": null,
+        "indexed": true
+      }
+    },
+    "relations": {
+      "createdBy": {
+        "model": "User",
+        "many": false,
+        "nullable": true,
+        "tag": null,
+        "fields": [
+          "createdById"
+        ],
+        "references": [
+          "id"
+        ],
+        "onDelete": "SET NULL"
+      }
+    },
+    "indexes": [
+      [
+        "kind",
+        "updatedAt"
+      ]
+    ],
+    "uniques": []
+  },
+  "TrackLink": {
+    "table": "TrackLink",
+    "columns": {
+      "id": {
+        "type": "String",
+        "nullable": false,
+        "primary": true,
+        "unique": false,
+        "updated": false,
+        "default": {
+          "kind": "cuid"
+        },
+        "indexed": true
+      },
+      "tokenHash": {
+        "type": "String",
+        "nullable": false,
+        "primary": false,
+        "unique": true,
+        "updated": false,
+        "default": null,
+        "indexed": true
+      },
+      "scope": {
+        "type": "String",
+        "nullable": false,
+        "primary": false,
+        "unique": false,
+        "updated": false,
+        "default": null,
+        "indexed": true
+      },
+      "requestId": {
+        "type": "String",
+        "nullable": true,
+        "primary": false,
+        "unique": false,
+        "updated": false,
+        "default": null,
+        "indexed": true
+      },
+      "inquiryId": {
+        "type": "String",
+        "nullable": true,
+        "primary": false,
+        "unique": false,
+        "updated": false,
+        "default": null,
+        "indexed": true
+      },
+      "expiresAt": {
+        "type": "DateTime",
+        "nullable": false,
+        "primary": false,
+        "unique": false,
+        "updated": false,
+        "default": null,
+        "indexed": true
+      },
+      "revokedAt": {
+        "type": "DateTime",
+        "nullable": true,
+        "primary": false,
+        "unique": false,
+        "updated": false,
+        "default": null,
+        "indexed": false
+      },
+      "revokedReason": {
+        "type": "String",
+        "nullable": true,
+        "primary": false,
+        "unique": false,
+        "updated": false,
+        "default": null,
+        "indexed": false
+      },
+      "createdById": {
+        "type": "String",
+        "nullable": true,
+        "primary": false,
+        "unique": false,
+        "updated": false,
+        "default": null,
+        "indexed": false
+      },
+      "createdAt": {
+        "type": "DateTime",
+        "nullable": false,
+        "primary": false,
+        "unique": false,
+        "updated": false,
+        "default": {
+          "kind": "now"
+        },
+        "indexed": false
+      },
+      "updatedAt": {
+        "type": "DateTime",
+        "nullable": false,
+        "primary": false,
+        "unique": false,
+        "updated": true,
+        "default": null,
+        "indexed": false
+      }
+    },
+    "relations": {
+      "request": {
+        "model": "ProjectRequest",
+        "many": false,
+        "nullable": true,
+        "tag": "TrackLinks",
+        "fields": [
+          "requestId"
+        ],
+        "references": [
+          "id"
+        ],
+        "onDelete": "CASCADE"
+      },
+      "inquiry": {
+        "model": "Inquiry",
+        "many": false,
+        "nullable": true,
+        "tag": "TrackLinks",
+        "fields": [
+          "inquiryId"
+        ],
+        "references": [
+          "id"
+        ],
+        "onDelete": "CASCADE"
+      }
+    },
+    "indexes": [
+      [
+        "requestId"
+      ],
+      [
+        "inquiryId"
+      ],
+      [
+        "scope",
+        "expiresAt"
+      ]
+    ],
+    "uniques": []
+  }
+}

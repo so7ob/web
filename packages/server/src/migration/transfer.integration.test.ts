@@ -4,6 +4,8 @@ import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { DatabaseSync } from 'node:sqlite';
 import { compareSync } from 'bcryptjs';
+import type { AuthUser } from '@so7ob/contracts';
+import { AccountService } from '../business/account.js';
 import { createDataSource } from '../database/data-source.js';
 import { schema, identifier as q } from '../database/schema.js';
 import { syntheticSnapshot, fixtureInstant } from './fixture.js';
@@ -11,9 +13,11 @@ import { readSnapshot, orderedTables, primaryKey } from './snapshot.js';
 import { transfer, type TransferOptions } from './transfer.js';
 const env = { ...process.env, DATABASE_NAME: process.env.TEST_DATABASE_NAME };
 if (!env.DATABASE_NAME || !/^so7ob_[a-z0-9_]+_test$/.test(env.DATABASE_NAME)) throw new Error('An isolated test MariaDB is required');
+const expectedDatabase = env.DATABASE_NAME;
+describe.each([1, 2] as const)('source schema version %i', (version) => {
 const db = createDataSource(env); const root = mkdtempSync(join(tmpdir(), 'so7ob-transfer-'));
-const fixture = syntheticSnapshot(join(root, 'source')); const targetUploads = join(root, 'target','uploads');
-const options: TransferOptions = { ...fixture, targetUploads, expectedDatabase: env.DATABASE_NAME, mode: 'dry-run', writesPaused: true };
+const fixture = syntheticSnapshot(join(root, 'source'), version); const targetUploads = join(root, 'target','uploads');
+const options: TransferOptions = { ...fixture, targetUploads, expectedDatabase, mode: 'dry-run', writesPaused: true };
 let snapshotId = '';
 beforeAll(async () => { await db.initialize(); await db.runMigrations(); });
 afterAll(async () => {
@@ -27,10 +31,12 @@ afterAll(async () => {
   rmSync(root, { recursive: true, force: true }); // Only this test's own mkdtemp directory.
 });
 describe('SQLite + files to real MariaDB', { concurrent: false }, () => {
-  it('dry-run inventories all 23 entities and files without writing target data', async () => {
+  it('dry-run inventories both source generations into all 25 destination entities without writing data', async () => {
     const report = await transfer(db, options); snapshotId = report.snapshot;
-    expect(Object.keys(report.tables)).toHaveLength(23);
-    expect(Object.values(report.tables).every(t => t.sourceCount > 0 && t.destinationCount === 0)).toBe(true);
+    expect(Object.keys(report.tables)).toHaveLength(25);
+    expect(report.sourceSchemaVersion).toBe(version);
+    expect(report.mappingVersion).toBe(2);
+    expect(Object.entries(report.tables).every(([name,t]) => t.sourceCount === (version === 1 && ['PageTemplate','TrackLink'].includes(name) ? 0 : name === 'Role' ? 4 : 1) && t.destinationCount === 0)).toBe(true);
     expect(report.unreferencedFiles).toEqual(['unreferenced.txt']); expect(report.files).toHaveLength(3);
     expect(existsSync(targetUploads)).toBe(false);
     expect(await db.query('SELECT id FROM MigrationTransfer')).toEqual([]);
@@ -38,6 +44,16 @@ describe('SQLite + files to real MariaDB', { concurrent: false }, () => {
   it('refuses writes without an offline acknowledgement and refuses a wrong destination', async () => {
     await expect(transfer(db, { ...options, mode: 'apply', writesPaused: false })).rejects.toThrow('writes-paused');
     await expect(transfer(db, { ...options, expectedDatabase: 'wrong' })).rejects.toThrow('confirmation');
+  });
+  it('refuses incomplete refreshed schemas and ambiguous tracking ownership before destination writes', async () => {
+    const broken = syntheticSnapshot(join(root, 'incomplete'), 2);
+    const source = new DatabaseSync(broken.sqlite);
+    source.exec('UPDATE TrackLink SET inquiryId=\'Inquiry_synthetic\''); source.close();
+    await expect(transfer(db, { ...options, ...broken })).rejects.toThrow('tracking scope');
+    const incomplete = new DatabaseSync(broken.sqlite);
+    incomplete.exec('DROP TABLE TrackLink'); incomplete.close();
+    await expect(transfer(db, { ...options, ...broken })).rejects.toThrow('Source schema mismatch in TrackLink');
+    expect(await db.query('SELECT id FROM MigrationTransfer')).toEqual([]);
   });
   it('rejects missing files, symlinks and orphan message ownership before writing', async () => {
     const path = join(fixture.sourceUploads, 'attachment.pdf'); renameSync(path, path + '.missing');
@@ -82,9 +98,36 @@ describe('SQLite + files to real MariaDB', { concurrent: false }, () => {
     const [token] = await db.query("SELECT * FROM AuthToken WHERE id='AuthToken_synthetic'"); expect(token.usedAt.valueOf()).toBe(fixtureInstant - 300); expect(token.expiresAt.valueOf()).toBe(fixtureInstant - 200);
     const [invite] = await db.query("SELECT * FROM UserInvite WHERE id='UserInvite_synthetic'"); expect(invite.expiresAt.valueOf()).toBe(fixtureInstant - 1);
     const [draft] = await db.query('SELECT data FROM RequestDraft'); expect(draft.data).toBe('{ "description": "نص 😀", "extra": null }');
+    if (version === 2) {
+      const [link] = await db.query('SELECT * FROM TrackLink');
+      expect(link.tokenHash).toBe('expired-revoked-track-hash');
+      expect(link.expiresAt.valueOf()).toBe(fixtureInstant-100);
+      expect(link.revokedAt.valueOf()).toBe(fixtureInstant-200);
+      expect(link.inquiryId).toBeNull();
+      const [template] = await db.query('SELECT * FROM PageTemplate');
+      expect(template.nameAr).toBe('قالب اصطناعي 😀');
+      expect(template.blocksAr).toBe('{"schemaVersion":1,"blocks":[]}');
+      expect(template.blocksEn).toBeNull();
+    } else {
+      const [page] = await db.query('SELECT * FROM Page');
+      expect(JSON.parse(page.draftSettings)).toMatchObject({ slug:'synthetic',visibility:'role',allowedRoles:'["Role_synthetic"]' });
+      expect(page.scheduledPublishAt).toBeNull();
+      expect(await db.query('SELECT id FROM TrackLink')).toEqual([]);
+    }
     expect(readFileSync(join(targetUploads, 'attachment.pdf'))).toEqual(readFileSync(join(fixture.sourceUploads, 'attachment.pdf')));
     const source = readSnapshot(fixture.sqlite, fixture.sourceUploads);
     for (const table of Object.keys(schema)) expect(Number((await db.query(`SELECT COUNT(*) AS n FROM ${q(table)}`))[0].n)).toBe(source.rows[table].length);
+  });
+  it('reads transferred UTF-8, NULL and JSON through product services without exposing credentials or another account draft', async () => {
+    const actor: AuthUser = { id: 'User_synthetic', email: 'synthetic@example.invalid', name: 'Synthetic', roleKey: 'Role_synthetic', status: 'active', locale: 'ar', emailVerified: true, permissions: [] };
+    const account = new AccountService(db);
+    const profile = await account.profile(actor);
+    expect(profile.user).toMatchObject({ id: actor.id, email: actor.email, phone: null, locale: 'ar' });
+    expect(profile.user).not.toHaveProperty('passwordHash');
+    expect(profile.user).not.toHaveProperty('sessionsRevokedAt');
+    expect(await account.draft(actor)).toMatchObject({ ok: true, draft: { description: 'نص 😀', extra: null } });
+    expect(await account.draft({ ...actor, id: 'not-the-imported-owner' })).toEqual({ ok: true, draft: null });
+    await expect(account.profile({ ...actor, id: 'not-the-imported-owner' })).rejects.toMatchObject({ status: 401 });
   });
   it('re-applies idempotently and detects changed destination fields and corrupt files', async () => {
     const twice = await transfer(db, { ...options, mode: 'apply' }); expect(twice.status).toBe('verified');
@@ -96,4 +139,6 @@ describe('SQLite + files to real MariaDB', { concurrent: false }, () => {
     writeFileSync(join(targetUploads,'attachment.pdf'), readFileSync(join(fixture.sourceUploads,'attachment.pdf')));
     const verified = await transfer(db, { ...options, mode: 'verify' }); expect(verified.status).toBe('verified');
   });
+});
+
 });

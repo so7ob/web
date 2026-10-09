@@ -1,3 +1,4 @@
+import { enqueueTrackStaffReply } from "../track/notify.js";
 import type { DataSource, QueryRunner } from "typeorm";
 import {
   canTransition,
@@ -40,7 +41,7 @@ const inquiryStatuses = [
   "closed",
 ];
 export class AdminConversationService {
-  constructor(private readonly db: DataSource) {}
+  constructor(private readonly db: DataSource, private readonly env: NodeJS.ProcessEnv = process.env) {}
   private filters(kind: Kind, query: Query, exporting = false) {
     const request = kind === "requests",
       conditions = [
@@ -526,6 +527,7 @@ export class AdminConversationService {
           { ref: inquiry.refCode },
           `/${inquiry.locale}/account/inquiries/${id}`,
         );
+      if (kind === "message") await enqueueTrackStaffReply(this.db,r,"inquiry",inquiry,messageId,text,this.env);
       const [message] = await r.query(
         "SELECT * FROM InquiryMessage WHERE id=?",
         [messageId],

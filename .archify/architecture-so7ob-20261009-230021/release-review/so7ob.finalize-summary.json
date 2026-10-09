@@ -1,0 +1,90 @@
+{
+  "schemaVersion": 1,
+  "ok": true,
+  "command": "finalize",
+  "status": "pass",
+  "type": "architecture",
+  "quality": "showcase",
+  "specification": {
+    "path": "/root/So7ob/web/.archify/architecture-so7ob-20261009-230021/candidate.json",
+    "sha256": "076a9897c6f1c81cd9f1a3c5d51e368d72f14028f347e33080c7f478ed1433c5",
+    "bytes": 11747
+  },
+  "artifact": {
+    "path": "/root/So7ob/web/.archify/architecture-so7ob-20261009-230021/so7ob.html",
+    "sha256": "951c17150b2077c2ca8ce70c2620badb3faaba59aceb9bf37529c0793cafcb5d",
+    "bytes": 774148
+  },
+  "gates": {
+    "validate": "pass",
+    "deliver": "pass",
+    "check": "pass",
+    "browser-check": "pass"
+  },
+  "diagnostics": [],
+  "diagnosticSummary": {
+    "total": 0,
+    "shown": 0,
+    "truncated": false
+  },
+  "evidence": {
+    "receipt": "/root/So7ob/web/.archify/architecture-so7ob-20261009-230021/release-review/so7ob.finalize.json",
+    "summaryReceipt": "/root/So7ob/web/.archify/architecture-so7ob-20261009-230021/release-review/so7ob.finalize-summary.json",
+    "browserCheckReceipt": "/root/So7ob/web/.archify/architecture-so7ob-20261009-230021/release-review/so7ob.browser-check.json"
+  },
+  "update": {
+    "status": "unavailable",
+    "installedVersion": null,
+    "availableVersion": null,
+    "releaseNotes": null,
+    "checkedAt": null,
+    "source": null,
+    "noticeRequired": false,
+    "noticeText": null,
+    "reason": "cache-valid"
+  },
+  "visualReview": "not-requested",
+  "durationMs": 2925,
+  "visualReviewRecommendation": {
+    "action": "inspect-route-readability",
+    "signals": {
+      "routesOverSuggestedBends": 2
+    },
+    "reason": "Automated gates passed, but crossings or detours still need perceptual review before claiming visual quality.",
+    "affectedRoutes": {
+      "crossings": [],
+      "detours": [
+        {
+          "relationship": {
+            "id": "cleanup",
+            "from": "worker",
+            "to": "files",
+            "label": "حذف غير المرجعي فقط",
+            "collectionIndex": 6,
+            "artifactIndex": 7
+          },
+          "bends": 4,
+          "stretch": 1.057
+        },
+        {
+          "relationship": {
+            "id": "deliver",
+            "from": "worker",
+            "to": "providers",
+            "label": "إرسال بريد / HTTP POST",
+            "collectionIndex": 7,
+            "artifactIndex": 8
+          },
+          "bends": 3,
+          "stretch": 1
+        }
+      ],
+      "truncated": false
+    },
+    "hints": [
+      "worker → files needs 4 bends: move node worker or files so they share a row or column with matching centers, or sit diagonally with a clear corner.",
+      "worker → providers needs 3 bends: move node worker or providers so they share a row or column with matching centers, or sit diagonally with a clear corner."
+    ],
+    "repair": "Trace these relationships at the desktop viewport. For Architecture, use references/architecture-layout-repair.md: reflow a blocked main path or tangled connected scene, and repair an isolated defect locally only when the surrounding composition is accepted. Preserve all semantic content and user-fixed geometry. Rerun finalize once after the edit."
+  }
+}

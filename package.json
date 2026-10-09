@@ -1,15 +1,8 @@
 {
   "name": "so7ob-web",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "private": true,
   "scripts": {
-    "reference:dev": "next dev -p 3000 2>&1 | tee dev.log",
-    "reference:build": "next build && cp -r .next/static .next/standalone/.next/ && cp -r public .next/standalone/",
-    "reference:start": "bun run scripts/start-production.ts",
-    "reference:lint": "eslint src scripts tools *.ts *.mjs",
-    "reference:typecheck": "tsc --noEmit && tsc --noEmit -p tsconfig.tools.json",
-    "reference:test": "vitest run && bun test scripts/__tests__",
-    "reference:db:seed": "bun run src/db/seed-roles.ts && bun run src/db/seed-content.ts",
     "dev": "npm run build:server && node --env-file-if-exists=.env apps/api/dist/main.js",
     "build": "tsc -b packages/contracts packages/server apps/api apps/worker && npm run build -w @so7ob/web",
     "typecheck": "tsc --noEmit -p tsconfig.workspaces.json",
@@ -29,7 +22,12 @@
     "test:webhook": "node tools/migration/webhook-smoke.mjs",
     "test:file-worker": "node tools/migration/file-worker-smoke.mjs",
     "site:init": "node --env-file-if-exists=.env --import tsx tools/development/initialize-site.ts",
-    "admin:create": "node --env-file-if-exists=.env --import tsx tools/development/create-admin.ts"
+    "admin:create": "node --env-file-if-exists=.env --import tsx tools/development/create-admin.ts",
+    "test:restore": "node tools/migration/operational-restore.mjs",
+    "data:recovery-check": "node --env-file-if-exists=.env --import tsx packages/server/src/migration/recovery-cli.ts",
+    "test:cms-boundaries": "node --max-old-space-size=3072 tools/migration/cms-boundary-smoke.mjs",
+    "db:check-cms": "node --env-file-if-exists=.env --import tsx packages/server/src/database/cli.ts check-cms",
+    "test:independence": "node tools/test/runtime-independence.mjs"
   },
   "dependencies": {
     "@dnd-kit/core": "6.3.1",

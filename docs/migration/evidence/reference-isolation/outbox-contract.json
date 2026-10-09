@@ -1,0 +1,18 @@
+{
+  "sourceSHA": "dddf8cd00a19cf7d562f503549f4c000109057d1",
+  "finding": "Pinned source intentionally selects metadata only and returns empty bodyText/null bodyHtml/null error; target matches. No mail-content preview is missing relative to this source.",
+  "files": [
+    {
+      "path": ".migration/reference/Website-dddf8cd/src/app/api/admin/outbox/route.ts",
+      "sha256": "eac09e413a3bcfa8a17104c456a67e74d8c640bdfb4503e92ff8984f2953c531"
+    },
+    {
+      "path": "packages/server/src/admin/operations.ts",
+      "sha256": "7066435245929985a3d28e8abd38a95b374954c957c6d8a49cc6dd9b972b18aa"
+    },
+    {
+      "path": "apps/web/src/components/admin/outbox/outbox-client.tsx",
+      "sha256": "ebe4073a9f21a3c0cfd3f43019e44007c2007cd44ea9cbb71386f44b43b580c2"
+    }
+  ]
+}

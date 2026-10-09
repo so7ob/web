@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "receiptId": "8a70074d-4458-455d-8a3f-f7becde80fab",
+  "status": "current",
+  "command": "deliver",
+  "type": "architecture",
+  "input": "/root/So7ob/web/.archify/architecture-so7ob-20261009-230021/candidate.json",
+  "output": "/root/So7ob/web/.archify/architecture-so7ob-20261009-230021/so7ob.html",
+  "specification": {
+    "sha256": "076a9897c6f1c81cd9f1a3c5d51e368d72f14028f347e33080c7f478ed1433c5",
+    "bytes": 11747
+  },
+  "artifact": {
+    "sha256": "951c17150b2077c2ca8ce70c2620badb3faaba59aceb9bf37529c0793cafcb5d",
+    "bytes": 774148
+  }
+}

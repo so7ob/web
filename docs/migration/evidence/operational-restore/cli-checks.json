@@ -1,0 +1,25 @@
+{
+  "passed": true,
+  "checks": [
+    {
+      "name": "correct",
+      "exitCode": 0
+    },
+    {
+      "name": "wrong key",
+      "exitCode": 1
+    },
+    {
+      "name": "missing key",
+      "exitCode": 1
+    },
+    {
+      "name": "writes open",
+      "exitCode": 1
+    },
+    {
+      "name": "wrong database",
+      "exitCode": 1
+    }
+  ]
+}

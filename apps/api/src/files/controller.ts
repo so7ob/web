@@ -34,6 +34,9 @@ import {
   AuthenticationService,
   AuthFault,
   FileService,
+  TrackService,
+  TRACK_COOKIE_NAME,
+  verifyTrackSessionValue,
   MAX_ATTACHMENT_SIZE,
   MAX_MEDIA_SIZE,
 } from "@so7ob/server";
@@ -54,6 +57,7 @@ interface MultipartFile {
 class MediaPatchDto {
   @ApiPropertyOptional() @Allow() altText?: unknown;
   @ApiPropertyOptional() @Allow() title?: unknown;
+  @ApiPropertyOptional() @Allow() folder?: unknown;
 }
 @Catch(HttpException)
 class UploadErrors implements ExceptionFilter {
@@ -83,6 +87,7 @@ const asFile = (file: MultipartFile) =>
 export class FileController {
   constructor(
     @Inject(FileService) private readonly files: FileService,
+    @Inject(TrackService) private readonly tracks: TrackService,
     @Inject(AuthenticationService) private readonly auth: AuthenticationService,
     @Inject(AuthHttpPolicy) private readonly policy: AuthHttpPolicy,
   ) {}
@@ -127,8 +132,11 @@ export class FileController {
     const session = await this.auth.session(
       this.policy.cookie(req, this.policy.sessionCookie),
     );
+    res.setHeader("Referrer-Policy", "no-referrer");
     if (!session) {
-      res.status(401).send("Unauthorized");
+      const capability = verifyTrackSessionValue(this.policy.cookie(req, TRACK_COOKIE_NAME));
+      if (!capability) { res.status(401).send("Unauthorized"); return; }
+      await this.download(res, () => this.files.trackedAttachment(this.tracks, {actor:null, capability}, id), false);
       return;
     }
     await this.download(
@@ -192,8 +200,8 @@ export class FileController {
 @RequiresPermission("media.manage")
 export class MediaController {
   constructor(@Inject(FileService) private readonly files: FileService) {}
-  @Get() list(@Req() req: FileRequest, @Query("page") page?: string) {
-    return this.files.listMedia(req.actor, page);
+  @Get() list(@Req() req: FileRequest, @Query("page") page?: string, @Query("search") search?:string,@Query("folder") folder?:string,@Query("usage") usage?:string) {
+    return this.files.listMedia(req.actor, page,{search,folder,usage});
   }
   @Post()
   @RequiresPermission("media.upload")
@@ -214,12 +222,14 @@ export class MediaController {
     @Req() req: FileRequest,
     @UploadedFile() file: MultipartFile | undefined,
     @Body("altText") altText: unknown,
+    @Body("folder") folder: unknown,
   ) {
     if (!file) throw new AuthFault(400, "no_file");
     return this.files.uploadMedia(
       req.actor,
       asFile(file),
       String(altText ?? ""),
+      folder,
     );
   }
   @Patch(":id") update(

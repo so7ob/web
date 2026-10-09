@@ -1,9 +1,14 @@
 import type { DataSource } from "typeorm";
-import { can, type AuthUser, type Permission } from "@so7ob/contracts";
+import { can, isTrackMode, type AuthUser, type Permission } from "@so7ob/contracts";
 import { AuthFault, audit, newId, transaction } from "../auth/persistence.js";
 import { insertRecord, lockOperation } from "../business/persistence.js";
 import { sqliteLike } from "../business/requests.js";
 const allowedSettings = [
+  "track.forceLogin",
+  "track.requestsMode",
+  "track.inquiriesMode",
+  "track.linkTtlDays",
+  "track.allowGuestAttachments",
   "contact.email",
   "contact.phone",
   "contact.address",
@@ -43,7 +48,7 @@ export class AdminOperationsService {
     requirePermission(actor, "settings.manage");
     const updates: Array<{ key: string; value: string }> = [];
     for (const key of allowedSettings)
-      if (key in body) {
+      if (body[key] !== undefined) {
         const value = String(body[key] ?? "").slice(0, 300);
         if (
           key === "contact.email" &&
@@ -87,11 +92,18 @@ export class AdminOperationsService {
           )
         )
           throw new AuthFault(400, "invalid");
+        if (["track.forceLogin", "track.allowGuestAttachments"].includes(key) && !["true", "false"].includes(value)) throw new AuthFault(400, "invalid");
+        if (["track.requestsMode", "track.inquiriesMode"].includes(key) && !isTrackMode(value)) throw new AuthFault(400, "invalid_track_mode");
+        if (key === "track.linkTtlDays") {
+          const ttl = Number.parseInt(value, 10);
+          if (!Number.isFinite(ttl) || String(ttl) !== value || ttl < 1 || ttl > 3650) throw new AuthFault(400, "invalid_track_ttl");
+        }
         updates.push({ key, value });
       }
     if (!updates.length) throw new AuthFault(400, "invalid");
     return transaction(this.db, async (r) => {
       await lockOperation(r, "site-settings");
+      if (updates.some(u => u.key.startsWith("track."))) await lockOperation(r, "track-policy");
       if (updates.some((u) => u.key.startsWith("announcement.")))
         updates.push({
           key: "announcement.revision",

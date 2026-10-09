@@ -1,0 +1,298 @@
+[
+  {
+    "name": "workflow",
+    "file": ".archify/workflow-agent-tool-loop-20261009-231121/agent-tool-loop.html",
+    "sha256": "d5e6ede23f11ae3439c0e9e3075f3fdb5e71b64a24ec3cbf4f88044e8f0a5e40",
+    "width": 375,
+    "dir": "ltr",
+    "rtlMode": "authored fallback",
+    "metrics": {
+      "width": 375,
+      "scrollWidth": 375,
+      "lang": "en",
+      "dir": ""
+    },
+    "keyboard": [
+      {
+        "tag": "BUTTON",
+        "label": "Toggle color theme"
+      },
+      {
+        "tag": "BUTTON",
+        "label": "Visual style: Classic. Choose visual style"
+      },
+      {
+        "tag": "BUTTON",
+        "label": "Enter presentation stage"
+      },
+      {
+        "tag": "BUTTON",
+        "label": "Export diagram"
+      },
+      {
+        "tag": "svg",
+        "label": "Agent tool-call flow — illustrative, not So7ob runtime\n        A workf"
+      },
+      {
+        "tag": "g",
+        "label": "Direct relationship explorer"
+      },
+      {
+        "tag": "g",
+        "label": "Inspect relationship 1 of 11: Approval gate to Tool call, approved. Press Enter for details."
+      },
+      {
+        "tag": "g",
+        "label": "Focus User request, asks for work, User surface"
+      }
+    ],
+    "violations": [
+      {
+        "id": "heading-order",
+        "impact": "moderate",
+        "nodes": 1,
+        "description": "Ensure the order of headings is semantically correct"
+      },
+      {
+        "id": "landmark-one-main",
+        "impact": "moderate",
+        "nodes": 1,
+        "description": "Ensure the document has a main landmark"
+      },
+      {
+        "id": "nested-interactive",
+        "impact": "serious",
+        "nodes": 1,
+        "description": "Ensure interactive controls are not nested as they are not always announced by screen readers or can cause focus problems for assistive technologies"
+      },
+      {
+        "id": "region",
+        "impact": "moderate",
+        "nodes": 3,
+        "description": "Ensure all page content is contained by landmarks"
+      }
+    ]
+  },
+  {
+    "name": "workflow",
+    "file": ".archify/workflow-agent-tool-loop-20261009-231121/agent-tool-loop.html",
+    "sha256": "d5e6ede23f11ae3439c0e9e3075f3fdb5e71b64a24ec3cbf4f88044e8f0a5e40",
+    "width": 375,
+    "dir": "rtl",
+    "rtlMode": "DOM emulation; not authored default",
+    "metrics": {
+      "width": 375,
+      "scrollWidth": 375,
+      "lang": "ar",
+      "dir": "rtl"
+    },
+    "keyboard": [
+      {
+        "tag": "BUTTON",
+        "label": "Toggle color theme"
+      },
+      {
+        "tag": "BUTTON",
+        "label": "Visual style: Classic. Choose visual style"
+      },
+      {
+        "tag": "BUTTON",
+        "label": "Enter presentation stage"
+      },
+      {
+        "tag": "BUTTON",
+        "label": "Export diagram"
+      },
+      {
+        "tag": "svg",
+        "label": "Agent tool-call flow — illustrative, not So7ob runtime\n        A workf"
+      },
+      {
+        "tag": "g",
+        "label": "Direct relationship explorer"
+      },
+      {
+        "tag": "g",
+        "label": "Inspect relationship 1 of 11: Approval gate to Tool call, approved. Press Enter for details."
+      },
+      {
+        "tag": "g",
+        "label": "Focus User request, asks for work, User surface"
+      }
+    ],
+    "violations": [
+      {
+        "id": "heading-order",
+        "impact": "moderate",
+        "nodes": 1,
+        "description": "Ensure the order of headings is semantically correct"
+      },
+      {
+        "id": "landmark-one-main",
+        "impact": "moderate",
+        "nodes": 1,
+        "description": "Ensure the document has a main landmark"
+      },
+      {
+        "id": "nested-interactive",
+        "impact": "serious",
+        "nodes": 1,
+        "description": "Ensure interactive controls are not nested as they are not always announced by screen readers or can cause focus problems for assistive technologies"
+      },
+      {
+        "id": "region",
+        "impact": "moderate",
+        "nodes": 3,
+        "description": "Ensure all page content is contained by landmarks"
+      }
+    ]
+  },
+  {
+    "name": "workflow",
+    "file": ".archify/workflow-agent-tool-loop-20261009-231121/agent-tool-loop.html",
+    "sha256": "d5e6ede23f11ae3439c0e9e3075f3fdb5e71b64a24ec3cbf4f88044e8f0a5e40",
+    "width": 1280,
+    "dir": "ltr",
+    "rtlMode": "authored fallback",
+    "metrics": {
+      "width": 1280,
+      "scrollWidth": 1280,
+      "lang": "en",
+      "dir": ""
+    },
+    "keyboard": [
+      {
+        "tag": "BUTTON",
+        "label": "Toggle color theme"
+      },
+      {
+        "tag": "BUTTON",
+        "label": "Visual style: Classic. Choose visual style"
+      },
+      {
+        "tag": "BUTTON",
+        "label": "Enter presentation stage"
+      },
+      {
+        "tag": "BUTTON",
+        "label": "Export diagram"
+      },
+      {
+        "tag": "svg",
+        "label": "Agent tool-call flow — illustrative, not So7ob runtime\n        A workf"
+      },
+      {
+        "tag": "g",
+        "label": "Direct relationship explorer"
+      },
+      {
+        "tag": "g",
+        "label": "Inspect relationship 1 of 11: Approval gate to Tool call, approved. Press Enter for details."
+      },
+      {
+        "tag": "g",
+        "label": "Focus User request, asks for work, User surface"
+      }
+    ],
+    "violations": [
+      {
+        "id": "heading-order",
+        "impact": "moderate",
+        "nodes": 1,
+        "description": "Ensure the order of headings is semantically correct"
+      },
+      {
+        "id": "landmark-one-main",
+        "impact": "moderate",
+        "nodes": 1,
+        "description": "Ensure the document has a main landmark"
+      },
+      {
+        "id": "nested-interactive",
+        "impact": "serious",
+        "nodes": 1,
+        "description": "Ensure interactive controls are not nested as they are not always announced by screen readers or can cause focus problems for assistive technologies"
+      },
+      {
+        "id": "region",
+        "impact": "moderate",
+        "nodes": 3,
+        "description": "Ensure all page content is contained by landmarks"
+      }
+    ]
+  },
+  {
+    "name": "workflow",
+    "file": ".archify/workflow-agent-tool-loop-20261009-231121/agent-tool-loop.html",
+    "sha256": "d5e6ede23f11ae3439c0e9e3075f3fdb5e71b64a24ec3cbf4f88044e8f0a5e40",
+    "width": 1280,
+    "dir": "rtl",
+    "rtlMode": "DOM emulation; not authored default",
+    "metrics": {
+      "width": 1280,
+      "scrollWidth": 1280,
+      "lang": "ar",
+      "dir": "rtl"
+    },
+    "keyboard": [
+      {
+        "tag": "BUTTON",
+        "label": "Toggle color theme"
+      },
+      {
+        "tag": "BUTTON",
+        "label": "Visual style: Classic. Choose visual style"
+      },
+      {
+        "tag": "BUTTON",
+        "label": "Enter presentation stage"
+      },
+      {
+        "tag": "BUTTON",
+        "label": "Export diagram"
+      },
+      {
+        "tag": "svg",
+        "label": "Agent tool-call flow — illustrative, not So7ob runtime\n        A workf"
+      },
+      {
+        "tag": "g",
+        "label": "Direct relationship explorer"
+      },
+      {
+        "tag": "g",
+        "label": "Inspect relationship 1 of 11: Approval gate to Tool call, approved. Press Enter for details."
+      },
+      {
+        "tag": "g",
+        "label": "Focus User request, asks for work, User surface"
+      }
+    ],
+    "violations": [
+      {
+        "id": "heading-order",
+        "impact": "moderate",
+        "nodes": 1,
+        "description": "Ensure the order of headings is semantically correct"
+      },
+      {
+        "id": "landmark-one-main",
+        "impact": "moderate",
+        "nodes": 1,
+        "description": "Ensure the document has a main landmark"
+      },
+      {
+        "id": "nested-interactive",
+        "impact": "serious",
+        "nodes": 1,
+        "description": "Ensure interactive controls are not nested as they are not always announced by screen readers or can cause focus problems for assistive technologies"
+      },
+      {
+        "id": "region",
+        "impact": "moderate",
+        "nodes": 3,
+        "description": "Ensure all page content is contained by landmarks"
+      }
+    ]
+  }
+]

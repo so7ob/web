@@ -1,0 +1,113 @@
+{
+  "recordedAt": "2026-10-06T19:59:26.189923+00:00",
+  "sourceSHA": "dddf8cd00a19cf7d562f503549f4c000109057d1",
+  "scope": "Code and functional migration; actual operations excluded by owner; visual/performance accepted by owner",
+  "localBaseCommit": "a33d8c9a7e10c69f554d30d3c5327a262d4917cc",
+  "localWorkingTree": true,
+  "checks": {
+    "lint": {
+      "result": "passed",
+      "localLog": ".migration/final-lint.log",
+      "logSHA256": "f53c816cc6f6619121d1bc9841ddb6af506e161209ac8f3479bed133f4eea735",
+      "finishedAt": "2026-10-06T19:45:21.829480+00:00"
+    },
+    "typecheck": {
+      "result": "passed",
+      "localLog": ".migration/final-typecheck-all.log",
+      "logSHA256": "515fc5287ba273cdd4b202cc41ae1de65500d3c7625871252a3c953d11cf9edb",
+      "finishedAt": "2026-10-06T19:45:28.389480+00:00"
+    },
+    "unit": {
+      "result": "842 passed / 41 files",
+      "localLog": ".migration/final-unit.log",
+      "logSHA256": "da2055ed93117d78874b06fdb49a5e7a0d0c7b685ed210ced513236a04b2eb33",
+      "finishedAt": "2026-10-06T19:26:32.429530+00:00"
+    },
+    "build": {
+      "result": "passed",
+      "localLog": ".migration/final-build.log",
+      "logSHA256": "7b3c2bf5ecfad7d1b14e570c766a08d12636f939a8c227886a378bd5f613084f",
+      "finishedAt": "2026-10-06T19:25:07.825534+00:00"
+    },
+    "e2e": {
+      "result": "138 passed / 0 skipped / 0 retries",
+      "localLog": ".migration/final-e2e-accepted.log",
+      "logSHA256": "e3faa63c36424d310d04b3fd8d19c2dd674759ca1ff8436c873688bb42c88ee9",
+      "finishedAt": "2026-10-06T19:58:05.669446+00:00"
+    },
+    "menuFixtureRepeatedSetup": {
+      "result": "4 passed, followed by full suite on same database",
+      "localLog": ".migration/final-menu-isolation.log",
+      "logSHA256": "57aad53ef4292042f330122d2a8dcb06b18ae1dae0c7a47af870689b342a46b8",
+      "finishedAt": "2026-10-06T19:49:32.305469+00:00"
+    },
+    "cmsMaximum": {
+      "result": "passed",
+      "localLog": ".migration/final-cms-maximum.log",
+      "logSHA256": "b5e66fea928399615d090207339e8c9ba0a2b462a6ec59780964d088592c5961",
+      "finishedAt": "2026-10-06T19:58:51.993444+00:00"
+    },
+    "infra": {
+      "result": "passed",
+      "localLog": ".migration/final-infra.log",
+      "logSHA256": "616f3e35c4d632b379aa08520e08f64a3f91f78906e10aef7a036ec310f6bb5e",
+      "finishedAt": "2026-10-06T19:42:56.873487+00:00"
+    },
+    "runtimeIndependence": {
+      "result": "passed",
+      "localLog": ".migration/final-independence.log",
+      "logSHA256": "7a6d2e481d411b45a528f81e0fcd0f430f197684b04bc83cc2e6dd8dfe83ca2f",
+      "finishedAt": "2026-10-06T19:42:57.921487+00:00"
+    },
+    "diff": {
+      "command": "git diff --check; git diff --cached --check",
+      "result": "passed"
+    }
+  },
+  "browserStats": {
+    "startTime": "2026-10-06T19:49:33.022Z",
+    "duration": 512648.768,
+    "expected": 138,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  },
+  "sourceSchemaMutations": 1550,
+  "propertyInteractionCases": 368,
+  "failuresRetained": [
+    {
+      "result": "124 passed / 10 failed; shared login quota; resolved with per-case test state preservation",
+      "localLog": ".migration/final-e2e-quota-failure.log",
+      "logSHA256": "4d0b15c0617aaf3ff4630bb71c01cd0028253c40a66e043b73e24bb81dc22722",
+      "finishedAt": "2026-10-06T19:35:50.349506+00:00"
+    },
+    {
+      "result": "134 passed / 4 failed; menu seed IDs accumulated after API-based cleanup; resolved with exact row restoration and repeated setup",
+      "localLog": ".migration/final-menu-fixture-failure.log",
+      "logSHA256": "fc8e6f9805e6295b4c83653efb39b56fda8cdb52d1e1888b46818097d35621f2",
+      "finishedAt": "2026-10-06T19:48:58.165471+00:00"
+    },
+    {
+      "result": "Passed previous 63758961-byte candidate; maximum-ID generator corrected to exclude short JSON escapes; final maximum is 63759001 bytes",
+      "localLog": ".migration/final-cms-maximum-initial.log",
+      "logSHA256": "d81495a9231a8e57206fa0891ed011b0c5f05a2cf2a19a1a1ac9dbdb6e876356",
+      "finishedAt": "2026-10-06T19:47:06.701476+00:00"
+    }
+  ],
+  "changedCodeAndTestSHA256": {
+    "apps/api/src/auth/controller.ts": "b5d2b8f23181a96723a7db28d5896d3f9901a1f1454150a32e825e57aeab2fe7",
+    "apps/web/src/components/admin/editor/props-interactions.test.tsx": "29e088c418f1325303246c921b85a06959d1560afdf898013feac21d2d543fe5",
+    "packages/contracts/src/source-block-parity.test.ts": "b0371d2406db2440b4b24f7a0884bd61b4f1f31e0c901681cdcd6b18cd57b496",
+    "tests/e2e/admin-configuration.spec.ts": "9402bf85437d65c49d385f253dad21c01b00890a4be3bb3dc901d6ee82b13d87",
+    "tests/e2e/api-inventory.spec.ts": "e2d67740c01fbf4c1a22aaf7f9bf211258d918791a8dd506c0862235b47a5c32",
+    "tests/e2e/auth-compatibility.spec.ts": "343baedf5516b5382ab997b1bbdcd0ab6f730652f9761c4924763ae982c2a3b5",
+    "tests/e2e/invite-ui.spec.ts": "415ee1d569132e300a8ec9f51175b67c2a11579f94baef3c283d6d4239199043",
+    "tests/e2e/quota-fixture.ts": "61fe35cf55d99394f67196a98c5d1d098b1d89855963d7c2b9257bcbd4bab2de",
+    "tests/e2e/role-contracts.spec.ts": "021d0962583bddb59258bef8ebf367be8ee9417e1172a0b9f06dc2c7413e8510",
+    "tests/fixtures/source-block-contracts.json": "11a9e7cb8bc67f89229d9a674679e276420d835230f5b736f3c21e06397ac3f7",
+    "tools/migration/cms-boundary-smoke.mjs": "4233d1b8506095fe0409796efdcb024f8a74acaf590a8c4a7b8e66caa75df4d9",
+    "tools/migration/generate-block-contracts.mjs": "68a1df4a06bdc04c924ae3abca6d70e622c3f58163aae28ec8e3a8897a820776",
+    "tools/migration/max-legacy-document.mjs": "2a275fae6c970205be2266ddfaf70750ae401259dbe74f9b6519b07a1d6d08a3"
+  },
+  "remoteCI": "Local evidence only. Exact pushed commit and CI results are attached to the pull request; do not infer CI from this record."
+}

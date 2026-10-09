@@ -11,6 +11,8 @@ import { Button } from "@/components/ui/button";
 import { getPortalContent } from "@/content/portal";
 import type { Block } from "@/lib/blocks/types";
 import type { Locale } from "@/lib/i18n";
+import { TreePageRenderer } from "@/components/blocks/tree-page-renderer";
+import type { ContentNode } from "@so7ob/contracts";
 import { PageRenderer } from "@/components/blocks/page-renderer";
 import { cn } from "@/lib/utils";
 import type { PreviewDevice } from "@/components/admin/editor/editor-canvas";
@@ -24,6 +26,7 @@ const DEVICE_WIDTHS: Record<PreviewDevice, string> = {
 interface PreviewShellProps {
   pageId: string;
   blocks: Block[];
+  nodes?: ContentNode[];
   locale: Locale; // لغة المحتوى المعروض
   uiLocale: Locale; // لغة واجهة المعاينة
   initialDevice: PreviewDevice;
@@ -32,6 +35,7 @@ interface PreviewShellProps {
 export function PreviewShell({
   pageId,
   blocks,
+  nodes,
   locale,
   uiLocale,
   initialDevice,
@@ -48,7 +52,7 @@ export function PreviewShell({
         className="mx-auto w-full max-w-7xl bg-white shadow-sm transition-[max-width] duration-300"
       >
         <div className={cn("mx-auto w-full", DEVICE_WIDTHS[device])}>
-          {blocks.length === 0 ? (
+          {(nodes ? nodes.length === 0 : blocks.length === 0) ? (
             <div className="flex min-h-64 flex-col items-center justify-center gap-2 p-8 text-center">
               <p className="text-sm font-semibold text-navy">{tp.empty}</p>
               <p className="max-w-xs text-xs leading-6 text-muted-foreground">
@@ -56,7 +60,7 @@ export function PreviewShell({
               </p>
             </div>
           ) : (
-            <PageRenderer blocks={blocks} locale={locale} />
+            nodes ? <TreePageRenderer nodes={nodes} locale={locale} /> : <PageRenderer blocks={blocks} locale={locale} />
           )}
         </div>
       </div>

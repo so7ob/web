@@ -6,18 +6,12 @@
  * قابلة للإضافة/الحذف/الترتيب، مجموعات مضمنة، وصفوف جدول.
  * كل تغيير يبني كائن props جديدًا كاملًا (تحديث غير قابل للتغيير) ويرفعه للأعلى.
  */
-import { useState } from "react";
+import { useId, useState } from "react";
 import { ArrowDown, ArrowUp, Plus, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
 import { Textarea } from "@/components/ui/textarea";
 import { getPortalContent } from "@/content/portal";
@@ -44,9 +38,7 @@ const asString = (v: unknown): string => (typeof v === "string" ? v : "");
 const asBool = (v: unknown): boolean => v === true;
 const asArray = (v: unknown): unknown[] => (Array.isArray(v) ? v : []);
 const asRecord = (v: unknown): Record<string, unknown> =>
-  typeof v === "object" && v !== null && !Array.isArray(v)
-    ? (v as Record<string, unknown>)
-    : {};
+  typeof v === "object" && v !== null && !Array.isArray(v) ? (v as Record<string, unknown>) : {};
 
 /** عنصر جديد افتراضي لمصفوفة وفق حقولها */
 function defaultItemValue(fields: FieldDef[]): Record<string, unknown> {
@@ -80,13 +72,7 @@ function defaultItemValue(fields: FieldDef[]): Record<string, unknown> {
   return item;
 }
 
-export function PropFieldsForm({
-  fields,
-  value,
-  onChange,
-  locale,
-  me,
-}: PropFieldsFormProps) {
+export function PropFieldsForm({ fields, value, onChange, locale, me }: PropFieldsFormProps) {
   const t = getPortalContent(locale).admin.editor;
 
   const setKey = (key: string, next: unknown) => {
@@ -123,41 +109,27 @@ interface FieldRowProps {
 }
 
 function FieldRow({ field, raw, onSet, locale, me, te }: FieldRowProps) {
+  const inputId = useId();
   const label = bi(field.label, locale);
-  const optionalLabel =
-    locale === "en" ? siteEn.form.optional : siteAr.form.optional;
+  const optionalLabel = locale === "en" ? siteEn.form.optional : siteAr.form.optional;
 
   return (
     <div className="space-y-1.5">
-      <Label
-        htmlFor={`pf-${field.key}`}
-        className="text-xs font-semibold text-navy"
-      >
+      <Label htmlFor={inputId} className="text-xs font-semibold text-navy">
         {label}
-        {field.optional && (
-          <span className="ms-1 font-normal text-muted-foreground">
-            ({optionalLabel})
-          </span>
-        )}
+        {field.optional && <span className="ms-1 font-normal text-muted-foreground">({optionalLabel})</span>}
       </Label>
-      <FieldControl
-        field={field}
-        raw={raw}
-        onSet={onSet}
-        locale={locale}
-        me={me}
-        te={te}
-      />
+      <FieldControl inputId={inputId} field={field} raw={raw} onSet={onSet} locale={locale} me={me} te={te} />
     </div>
   );
 }
 
-function FieldControl({ field, raw, onSet, locale, me, te }: FieldRowProps) {
+function FieldControl({ field, raw, onSet, locale, me, te, inputId }: FieldRowProps & { inputId: string }) {
   switch (field.type) {
     case "text":
       return (
         <Input
-          id={`pf-${field.key}`}
+          id={inputId}
           value={asString(raw)}
           onChange={(e) => onSet(e.target.value)}
           placeholder={field.placeholder}
@@ -167,7 +139,7 @@ function FieldControl({ field, raw, onSet, locale, me, te }: FieldRowProps) {
     case "textarea":
       return (
         <Textarea
-          id={`pf-${field.key}`}
+          id={inputId}
           value={asString(raw)}
           onChange={(e) => onSet(e.target.value)}
           rows={3}
@@ -176,86 +148,31 @@ function FieldControl({ field, raw, onSet, locale, me, te }: FieldRowProps) {
         />
       );
     case "number":
-      return <NumberInput raw={raw} onSet={onSet} id={`pf-${field.key}`} />;
+      return <NumberInput raw={raw} onSet={onSet} id={inputId} />;
     case "select":
-      return (
-        <SelectField field={field} raw={raw} onSet={onSet} locale={locale} />
-      );
+      return <SelectField inputId={inputId} field={field} raw={raw} onSet={onSet} locale={locale} />;
     case "switch":
       return (
         <div className="flex items-center gap-2 pt-1">
-          <Switch
-            id={`pf-${field.key}`}
-            checked={asBool(raw)}
-            onCheckedChange={(v) => onSet(v)}
-          />
+          <Switch id={inputId} checked={asBool(raw)} onCheckedChange={(v) => onSet(v)} />
         </div>
       );
     case "media":
-      return (
-        <MediaInput
-          raw={asString(raw)}
-          onSet={onSet}
-          locale={locale}
-          me={me}
-          id={`pf-${field.key}`}
-        />
-      );
+      return <MediaInput raw={asString(raw)} onSet={onSet} locale={locale} me={me} id={inputId} />;
     case "stringlist":
-      return (
-        <StringListField
-          raw={asArray(raw)}
-          onSet={onSet}
-          te={te}
-          locale={locale}
-        />
-      );
+      return <StringListField raw={asArray(raw)} onSet={onSet} te={te} locale={locale} />;
     case "array":
-      return (
-        <ArrayField
-          field={field}
-          raw={asArray(raw)}
-          onSet={onSet}
-          locale={locale}
-          me={me}
-          te={te}
-        />
-      );
+      return <ArrayField field={field} raw={asArray(raw)} onSet={onSet} locale={locale} me={me} te={te} />;
     case "group":
-      return (
-        <GroupField
-          field={field}
-          raw={asRecord(raw)}
-          onSet={onSet}
-          locale={locale}
-          me={me}
-          te={te}
-        />
-      );
+      return <GroupField field={field} raw={asRecord(raw)} onSet={onSet} locale={locale} me={me} te={te} />;
     case "rows":
-      return (
-        <RowsField
-          label={bi(field.label, locale)}
-          raw={asArray(raw)}
-          onSet={onSet}
-          te={te}
-          locale={locale}
-        />
-      );
+      return <RowsField label={bi(field.label, locale)} raw={asArray(raw)} onSet={onSet} te={te} locale={locale} />;
   }
 }
 
 // ——— رقم صحيح ———
 
-function NumberInput({
-  raw,
-  onSet,
-  id,
-}: {
-  raw: unknown;
-  onSet: (v: unknown) => void;
-  id: string;
-}) {
+function NumberInput({ raw, onSet, id }: { raw: unknown; onSet: (v: unknown) => void; id: string }) {
   return (
     <Input
       id={id}
@@ -273,36 +190,18 @@ function NumberInput({
 
 // ——— اختيار ———
 
-function SelectField({
-  field,
-  raw,
-  onSet,
-  locale,
-}: {
-  field: FieldDef;
-  raw: unknown;
-  onSet: (v: unknown) => void;
-  locale: Locale;
-}) {
+function SelectField({ field, raw, onSet, locale, inputId }: { inputId: string; field: FieldDef; raw: unknown; onSet: (v: unknown) => void; locale: Locale }) {
   const rawValue = field.numeric ? String(raw ?? "") : asString(raw);
-  const current =
-    rawValue || (field.optional ? "" : (field.options?.[0]?.value ?? ""));
+  const current = rawValue || (field.optional ? "" : field.options?.[0]?.value ?? "");
   return (
-    <Select
-      value={current || "__empty__"}
-      onValueChange={(v) =>
-        onSet(v === "__empty__" ? undefined : field.numeric ? Number(v) : v)
-      }
-    >
-      <SelectTrigger id={`pf-${field.key}`} className="min-h-9 w-full">
+    <Select value={current || "__empty__"} onValueChange={(v) => onSet(v === "__empty__" ? undefined : field.numeric ? Number(v) : v)}>
+      <SelectTrigger id={inputId} className="min-h-9 w-full">
         <SelectValue placeholder="—" />
       </SelectTrigger>
       <SelectContent>
         {field.optional && (
           <SelectItem value="__empty__">
-            <span className="text-muted-foreground">
-              — {bi({ ar: "بدون", en: "none" }, locale)} —
-            </span>
+            <span className="text-muted-foreground">— {bi({ ar: "بدون", en: "none" }, locale)} —</span>
           </SelectItem>
         )}
         {(field.options ?? []).map((opt) => (
@@ -317,19 +216,7 @@ function SelectField({
 
 // ——— حقل وسائط ———
 
-function MediaInput({
-  raw,
-  onSet,
-  locale,
-  me,
-  id,
-}: {
-  raw: string;
-  onSet: (v: unknown) => void;
-  locale: Locale;
-  me: Me;
-  id: string;
-}) {
+function MediaInput({ raw, onSet, locale, me, id }: { raw: string; onSet: (v: unknown) => void; locale: Locale; me: Me; id: string }) {
   const [open, setOpen] = useState(false);
   return (
     <>
@@ -340,30 +227,14 @@ function MediaInput({
         onOpenPicker={() => setOpen(true)}
         locale={locale}
       />
-      <MediaPicker
-        open={open}
-        onOpenChange={setOpen}
-        me={me}
-        locale={locale}
-        onSelect={(url) => onSet(url)}
-      />
+      <MediaPicker open={open} onOpenChange={setOpen} me={me} locale={locale} onSelect={(url) => onSet(url)} />
     </>
   );
 }
 
 // ——— قائمة نصوص ———
 
-function StringListField({
-  raw,
-  onSet,
-  te,
-  locale,
-}: {
-  raw: unknown[];
-  onSet: (v: unknown) => void;
-  te: FieldRowProps["te"];
-  locale: Locale;
-}) {
+function StringListField({ raw, onSet, te, locale }: { raw: unknown[]; onSet: (v: unknown) => void; te: FieldRowProps["te"]; locale: Locale }) {
   const items = raw.map(asString);
   const update = (index: number, value: string) => {
     const next = [...items];
@@ -393,48 +264,19 @@ function StringListField({
             aria-label={`${te.items} ${i + 1}`}
           />
           <div className="flex flex-col gap-1">
-            <Button
-              type="button"
-              variant="ghost"
-              size="icon"
-              className="size-7"
-              onClick={() => move(i, -1)}
-              disabled={i === 0}
-              aria-label={te.moveUp}
-            >
+            <Button type="button" variant="ghost" size="icon" className="size-7" onClick={() => move(i, -1)} disabled={i === 0} aria-label={te.moveUp}>
               <ArrowUp className="size-3.5" aria-hidden="true" />
             </Button>
-            <Button
-              type="button"
-              variant="ghost"
-              size="icon"
-              className="size-7"
-              onClick={() => move(i, 1)}
-              disabled={i === items.length - 1}
-              aria-label={te.moveDown}
-            >
+            <Button type="button" variant="ghost" size="icon" className="size-7" onClick={() => move(i, 1)} disabled={i === items.length - 1} aria-label={te.moveDown}>
               <ArrowDown className="size-3.5" aria-hidden="true" />
             </Button>
-            <Button
-              type="button"
-              variant="ghost"
-              size="icon"
-              className="size-7 text-destructive"
-              onClick={() => remove(i)}
-              aria-label={te.removeItem}
-            >
+            <Button type="button" variant="ghost" size="icon" className="size-7 text-destructive" onClick={() => remove(i)} aria-label={te.removeItem}>
               <Trash2 className="size-3.5" aria-hidden="true" />
             </Button>
           </div>
         </div>
       ))}
-      <Button
-        type="button"
-        variant="outline"
-        size="sm"
-        className="min-h-8 w-full text-xs"
-        onClick={add}
-      >
+      <Button type="button" variant="outline" size="sm" className="min-h-8 w-full text-xs" onClick={add}>
         <Plus className="size-3.5" aria-hidden="true" />
         {te.addItem}
       </Button>
@@ -444,21 +286,7 @@ function StringListField({
 
 // ——— مصفوفة كائنات ———
 
-function ArrayField({
-  field,
-  raw,
-  onSet,
-  locale,
-  me,
-  te,
-}: {
-  field: FieldDef;
-  raw: unknown[];
-  onSet: (v: unknown) => void;
-  locale: Locale;
-  me: Me;
-  te: FieldRowProps["te"];
-}) {
+function ArrayField({ field, raw, onSet, locale, me, te }: { field: FieldDef; raw: unknown[]; onSet: (v: unknown) => void; locale: Locale; me: Me; te: FieldRowProps["te"] }) {
   const items = raw.map(asRecord);
   const itemFields = field.itemFields ?? [];
   const label = bi(field.label, locale);
@@ -469,8 +297,7 @@ function ArrayField({
     onSet(clone);
   };
   const addItem = () => onSet([...items, defaultItemValue(itemFields)]);
-  const removeItem = (index: number) =>
-    onSet(items.filter((_, i) => i !== index));
+  const removeItem = (index: number) => onSet(items.filter((_, i) => i !== index));
   const moveItem = (index: number, dir: -1 | 1) => {
     const target = index + dir;
     if (target < 0 || target >= items.length) return;
@@ -483,65 +310,27 @@ function ArrayField({
     <div className="space-y-2">
       <p className="text-xs font-semibold text-navy">{label}</p>
       {items.map((item, i) => (
-        <div
-          key={i}
-          className="rounded-xl border border-border bg-muted/30 p-3"
-        >
+        <div key={i} className="rounded-xl border border-border bg-muted/30 p-3">
           <div className="mb-2 flex items-center justify-between gap-2">
             <p className="text-[11px] font-bold uppercase tracking-wider text-muted-foreground">
               {label} {i + 1}
             </p>
             <div className="flex items-center gap-0.5">
-              <Button
-                type="button"
-                variant="ghost"
-                size="icon"
-                className="size-7"
-                onClick={() => moveItem(i, -1)}
-                disabled={i === 0}
-                aria-label={te.moveUp}
-              >
+              <Button type="button" variant="ghost" size="icon" className="size-7" onClick={() => moveItem(i, -1)} disabled={i === 0} aria-label={te.moveUp}>
                 <ArrowUp className="size-3.5" aria-hidden="true" />
               </Button>
-              <Button
-                type="button"
-                variant="ghost"
-                size="icon"
-                className="size-7"
-                onClick={() => moveItem(i, 1)}
-                disabled={i === items.length - 1}
-                aria-label={te.moveDown}
-              >
+              <Button type="button" variant="ghost" size="icon" className="size-7" onClick={() => moveItem(i, 1)} disabled={i === items.length - 1} aria-label={te.moveDown}>
                 <ArrowDown className="size-3.5" aria-hidden="true" />
               </Button>
-              <Button
-                type="button"
-                variant="ghost"
-                size="icon"
-                className="size-7 text-destructive"
-                onClick={() => removeItem(i)}
-                aria-label={te.removeItem}
-              >
+              <Button type="button" variant="ghost" size="icon" className="size-7 text-destructive" onClick={() => removeItem(i)} aria-label={te.removeItem}>
                 <Trash2 className="size-3.5" aria-hidden="true" />
               </Button>
             </div>
           </div>
-          <PropFieldsForm
-            fields={itemFields}
-            value={item}
-            onChange={(next) => updateItem(i, next)}
-            locale={locale}
-            me={me}
-          />
+          <PropFieldsForm fields={itemFields} value={item} onChange={(next) => updateItem(i, next)} locale={locale} me={me} />
         </div>
       ))}
-      <Button
-        type="button"
-        variant="outline"
-        size="sm"
-        className="min-h-8 w-full text-xs"
-        onClick={addItem}
-      >
+      <Button type="button" variant="outline" size="sm" className="min-h-8 w-full text-xs" onClick={addItem}>
         <Plus className="size-3.5" aria-hidden="true" />
         {te.addItem}
       </Button>
@@ -551,51 +340,20 @@ function ArrayField({
 
 // ——— مجموعة مضمنة ———
 
-function GroupField({
-  field,
-  raw,
-  onSet,
-  locale,
-  me,
-  te,
-}: {
-  field: FieldDef;
-  raw: Record<string, unknown>;
-  onSet: (v: unknown) => void;
-  locale: Locale;
-  me: Me;
-  te: FieldRowProps["te"];
-}) {
+function GroupField({ field, raw, onSet, locale, me, te }: { field: FieldDef; raw: Record<string, unknown>; onSet: (v: unknown) => void; locale: Locale; me: Me; te: FieldRowProps["te"] }) {
   const label = bi(field.label, locale);
   const empty = Object.keys(raw).length === 0;
   return (
-    <div
-      className={cn(
-        "rounded-xl border p-3",
-        empty ? "border-dashed border-border" : "border-border bg-muted/20",
-      )}
-    >
+    <div className={cn("rounded-xl border p-3", empty ? "border-dashed border-border" : "border-border bg-muted/20")}>
       <p className="mb-2 text-xs font-semibold text-navy">{label}</p>
       {empty && field.optional && (
-        <Button
-          type="button"
-          variant="outline"
-          size="sm"
-          className="min-h-8 w-full text-xs"
-          onClick={() => onSet(defaultItemValue(field.itemFields ?? []))}
-        >
+        <Button type="button" variant="outline" size="sm" className="min-h-8 w-full text-xs" onClick={() => onSet(defaultItemValue(field.itemFields ?? []))}>
           <Plus className="size-3.5" aria-hidden="true" />
           {te.addItem}
         </Button>
       )}
       {!empty && (
-        <PropFieldsForm
-          fields={field.itemFields ?? []}
-          value={raw}
-          onChange={(next) => onSet(next)}
-          locale={locale}
-          me={me}
-        />
+        <PropFieldsForm fields={field.itemFields ?? []} value={raw} onChange={(next) => onSet(next)} locale={locale} me={me} />
       )}
     </div>
   );
@@ -603,19 +361,7 @@ function GroupField({
 
 // ——— صفوف جدول (مصفوفة مصفوفات نصوص) ———
 
-function RowsField({
-  label,
-  raw,
-  onSet,
-  te,
-  locale,
-}: {
-  label: string;
-  raw: unknown[];
-  onSet: (v: unknown) => void;
-  te: FieldRowProps["te"];
-  locale: Locale;
-}) {
+function RowsField({ label, raw, onSet, te, locale }: { label: string; raw: unknown[]; onSet: (v: unknown) => void; te: FieldRowProps["te"]; locale: Locale }) {
   const rows = raw.map((r) => asArray(r).map(asString));
 
   const updateCell = (rowIndex: number, cellIndex: number, value: string) => {
@@ -624,8 +370,7 @@ function RowsField({
     onSet(next);
   };
   const addRow = () => onSet([...rows, [""]]);
-  const removeRow = (index: number) =>
-    onSet(rows.filter((_, i) => i !== index));
+  const removeRow = (index: number) => onSet(rows.filter((_, i) => i !== index));
   const moveRow = (index: number, dir: -1 | 1) => {
     const target = index + dir;
     if (target < 0 || target >= rows.length) return;
@@ -649,45 +394,19 @@ function RowsField({
     <div className="space-y-2">
       <p className="text-xs font-semibold text-navy">{label}</p>
       {rows.map((row, i) => (
-        <div
-          key={i}
-          className="rounded-xl border border-border bg-muted/30 p-2.5"
-        >
+        <div key={i} className="rounded-xl border border-border bg-muted/30 p-2.5">
           <div className="mb-2 flex items-center justify-between">
             <p className="text-[11px] font-bold uppercase tracking-wider text-muted-foreground">
               {label} {i + 1}
             </p>
             <div className="flex items-center gap-0.5">
-              <Button
-                type="button"
-                variant="ghost"
-                size="icon"
-                className="size-7"
-                onClick={() => moveRow(i, -1)}
-                disabled={i === 0}
-                aria-label={te.moveUp}
-              >
+              <Button type="button" variant="ghost" size="icon" className="size-7" onClick={() => moveRow(i, -1)} disabled={i === 0} aria-label={te.moveUp}>
                 <ArrowUp className="size-3.5" aria-hidden="true" />
               </Button>
-              <Button
-                type="button"
-                variant="ghost"
-                size="icon"
-                className="size-7"
-                onClick={() => moveRow(i, 1)}
-                disabled={i === rows.length - 1}
-                aria-label={te.moveDown}
-              >
+              <Button type="button" variant="ghost" size="icon" className="size-7" onClick={() => moveRow(i, 1)} disabled={i === rows.length - 1} aria-label={te.moveDown}>
                 <ArrowDown className="size-3.5" aria-hidden="true" />
               </Button>
-              <Button
-                type="button"
-                variant="ghost"
-                size="icon"
-                className="size-7 text-destructive"
-                onClick={() => removeRow(i)}
-                aria-label={te.removeItem}
-              >
+              <Button type="button" variant="ghost" size="icon" className="size-7 text-destructive" onClick={() => removeRow(i)} aria-label={te.removeItem}>
                 <Trash2 className="size-3.5" aria-hidden="true" />
               </Button>
             </div>
@@ -702,38 +421,19 @@ function RowsField({
                   dir="auto"
                   aria-label={`${label} ${i + 1} — ${c + 1}`}
                 />
-                <Button
-                  type="button"
-                  variant="ghost"
-                  size="icon"
-                  className="size-7 text-destructive"
-                  onClick={() => removeCell(i, c)}
-                  aria-label={te.removeItem}
-                >
+                <Button type="button" variant="ghost" size="icon" className="size-7 text-destructive" onClick={() => removeCell(i, c)} aria-label={te.removeItem}>
                   <Trash2 className="size-3.5" aria-hidden="true" />
                 </Button>
               </div>
             ))}
-            <Button
-              type="button"
-              variant="ghost"
-              size="sm"
-              className="min-h-7 w-full text-xs text-muted-foreground"
-              onClick={() => addCell(i)}
-            >
+            <Button type="button" variant="ghost" size="sm" className="min-h-7 w-full text-xs text-muted-foreground" onClick={() => addCell(i)}>
               <Plus className="size-3" aria-hidden="true" />
               {te.addItem}
             </Button>
           </div>
         </div>
       ))}
-      <Button
-        type="button"
-        variant="outline"
-        size="sm"
-        className="min-h-8 w-full text-xs"
-        onClick={addRow}
-      >
+      <Button type="button" variant="outline" size="sm" className="min-h-8 w-full text-xs" onClick={addRow}>
         <Plus className="size-3.5" aria-hidden="true" />
         {te.addItem}
       </Button>

@@ -1,5 +1,5 @@
 {
-  "sourceSHA": "5321b7fd11db421c83290b262f276811e5f04e5f",
+  "sourceSHA": "dddf8cd00a19cf7d562f503549f4c000109057d1",
   "models": [
     "Role",
     "User",
@@ -21,9 +21,11 @@
     "AuditLog",
     "Page",
     "PageVersion",
+    "PageTemplate",
     "PageRedirect",
     "MenuItem",
-    "SiteSetting"
+    "SiteSetting",
+    "TrackLink"
   ],
   "blocks": [
     "hero",
@@ -54,6 +56,49 @@
     "divider",
     "spacer"
   ],
-  "routeHandlers": 72,
-  "note": "Includes two dynamic NextAuth exports; route behavior still requires runtime contract capture."
+  "containers": [
+    "section",
+    "container",
+    "row",
+    "column"
+  ],
+  "pages": [
+    "src/app/[locale]/[[...slug]]/page.tsx",
+    "src/app/[locale]/account/inquiries/[id]/page.tsx",
+    "src/app/[locale]/account/inquiries/page.tsx",
+    "src/app/[locale]/account/notifications/page.tsx",
+    "src/app/[locale]/account/page.tsx",
+    "src/app/[locale]/account/profile/page.tsx",
+    "src/app/[locale]/account/requests/[id]/page.tsx",
+    "src/app/[locale]/account/requests/new/page.tsx",
+    "src/app/[locale]/account/requests/page.tsx",
+    "src/app/[locale]/account/security/page.tsx",
+    "src/app/[locale]/admin/audit/page.tsx",
+    "src/app/[locale]/admin/inquiries/[id]/page.tsx",
+    "src/app/[locale]/admin/inquiries/page.tsx",
+    "src/app/[locale]/admin/media/page.tsx",
+    "src/app/[locale]/admin/menus/page.tsx",
+    "src/app/[locale]/admin/notifications/page.tsx",
+    "src/app/[locale]/admin/outbox/page.tsx",
+    "src/app/[locale]/admin/page.tsx",
+    "src/app/[locale]/admin/pages/[id]/edit/page.tsx",
+    "src/app/[locale]/admin/pages/[id]/preview/page.tsx",
+    "src/app/[locale]/admin/pages/page.tsx",
+    "src/app/[locale]/admin/requests/[id]/page.tsx",
+    "src/app/[locale]/admin/requests/page.tsx",
+    "src/app/[locale]/admin/settings/page.tsx",
+    "src/app/[locale]/admin/users/[id]/page.tsx",
+    "src/app/[locale]/admin/users/page.tsx",
+    "src/app/[locale]/auth/forgot-password/page.tsx",
+    "src/app/[locale]/auth/invite/page.tsx",
+    "src/app/[locale]/auth/login/page.tsx",
+    "src/app/[locale]/auth/logout/page.tsx",
+    "src/app/[locale]/auth/register/page.tsx",
+    "src/app/[locale]/auth/reset-password/page.tsx",
+    "src/app/[locale]/auth/verified/page.tsx",
+    "src/app/[locale]/track/page.tsx"
+  ],
+  "routeHandlers": 82,
+  "apiFiles": 60,
+  "note": "Current pinned source inventory; historical original retained in inventory-5321b7f.json. Counts do not establish parity."
 }

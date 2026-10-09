@@ -1,0 +1,16 @@
+{
+  "sourceSHA": "dddf8cd00a19cf7d562f503549f4c000109057d1",
+  "paths": {
+    "source": ".migration/reference/Website-dddf8cd/src/components/admin/editor/prop-fields.ts",
+    "target": "apps/web/src/components/admin/editor/prop-fields.ts"
+  },
+  "hashes": {
+    "source": "0b6534b677018ae377abc06b236fb5585f4ea4a7fa0f2f188a7aa8155b1308ab",
+    "target": "87c12f4a9be4b2e3b9fd687557fd124ea4d95709499d06aafe19f00131d71e40"
+  },
+  "declarationsMatch": [
+    "PROP_FIELDS",
+    "DEFAULT_PROPS"
+  ],
+  "scope": "31 field registries and defaults match pinned source text exactly; this does not itself prove every interaction"
+}

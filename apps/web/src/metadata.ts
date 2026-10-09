@@ -33,6 +33,10 @@ export function headMarkup(data: PublicView): string {
       data.canonicalOrigin + "/" + locale + (page.slug ? "/" + page.slug : "");
     alternates = `<link data-so7ob-meta rel="canonical" href="${escape(path(data.locale))}">${["ar", "en", "x-default"].map((l) => `<link data-so7ob-meta rel="alternate" hreflang="${l}" href="${escape(l === "x-default" ? data.canonicalOrigin + "/ar" : path(l))}">`).join("")}`;
     ogUrl = `<meta data-so7ob-meta property="og:url" content="${escape(path(data.locale))}">`;
+  } else if (data.kind === "track") {
+    title = getPortalContent(data.locale).track.title + " | " + meta.shortName;
+    ogTitle = title;
+    robots = "noindex, nofollow";
   } else if (data.kind === "auth") {
     const names = {
       login: auth.loginTitle,

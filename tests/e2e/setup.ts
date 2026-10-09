@@ -19,7 +19,7 @@ export default async function setup() {
     if ((await db.query(`SELECT ${q(pk)} FROM ${q(table)} WHERE ${q(pk)}=?`,[row[pk]])).length) continue;
     const columns=Object.keys(row); await db.query(`INSERT INTO ${q(table)} (${columns.map(q).join(',')}) VALUES (${columns.map(()=>'?').join(',')})`,columns.map(k=>schema[table].columns[k].type==='DateTime'&&row[k]!==null ? new Date(String(row[k])):row[k]));
   }
-  for (const [name,role] of [['owner','client'],['other','client'],['recovery','client'],['editor','content_editor'],['admin','super_admin'],['ops','ops_manager'],...['desktop','mobile'].flatMap(size=>['ar','en'].map(locale=>['portal'+size+locale,'client']))]) await db.query('INSERT INTO User(id,email,name,passwordHash,roleKey,status,emailVerifiedAt,locale) VALUES(?,?,?,?,?,\'active\',UTC_TIMESTAMP(3),?)',[prefix+name,prefix+name+'@example.invalid','Synthetic '+name,passwordHash,role,name.endsWith('en')?'en':'ar']);
+  for (const [name,role] of [['owner','client'],['other','client'],['recovery','client'],['editor','content_editor'],['admin','super_admin'],['ops','ops_manager'],['support','support'],...['desktop','mobile'].flatMap(size=>['ar','en'].map(locale=>['portal'+size+locale,'client']))]) await db.query('INSERT INTO User(id,email,name,passwordHash,roleKey,status,emailVerifiedAt,locale) VALUES(?,?,?,?,?,\'active\',UTC_TIMESTAMP(3),?)',[prefix+name,prefix+name+'@example.invalid','Synthetic '+name,passwordHash,role,name.endsWith('en')?'en':'ar']);
   mkdirSync('.migration/e2e',{recursive:true,mode:0o700}); writeFileSync('.migration/e2e/run.json',JSON.stringify({prefix,password}),{mode:0o600});
   await db.destroy();
   return async()=>{

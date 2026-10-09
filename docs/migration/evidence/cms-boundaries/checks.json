@@ -1,0 +1,48 @@
+{
+  "recordedAt": "2026-10-04T22:46:56.097358+00:00",
+  "scope": "local synthetic validation; CI recorded separately on PR head",
+  "checks": {
+    "lint": {
+      "result": "passed",
+      "localLog": ".migration/cms-boundaries/lint-final.log",
+      "sha256": "f53c816cc6f6619121d1bc9841ddb6af506e161209ac8f3479bed133f4eea735"
+    },
+    "typecheck": {
+      "result": "passed",
+      "localLog": ".migration/cms-boundaries/typecheck-final.log",
+      "sha256": "515fc5287ba273cdd4b202cc41ae1de65500d3c7625871252a3c953d11cf9edb"
+    },
+    "unit": {
+      "result": "passed",
+      "localLog": ".migration/cms-boundaries/unit-final.log",
+      "sha256": "bbb0a072342cd61ae0893e0ccecc061ceb61a5b0f11c9f9a589fefc6c29a9c0b",
+      "cases": 381
+    },
+    "build": {
+      "result": "passed",
+      "localLog": ".migration/cms-boundaries/build-final.log",
+      "sha256": "bcaff9ebeecd459ffe62ee15f0e45fbfefa15cafd9caf721bf318e4bfaabcc24"
+    },
+    "browser": {
+      "result": "passed",
+      "localLog": ".migration/cms-boundaries/e2e-final.log",
+      "sha256": "515a03b78bb02033b96f13b52f4d64f324dcd58b5df0bc5367f62736b143125b",
+      "cases": 104
+    },
+    "infra": {
+      "result": "passed",
+      "localLog": ".migration/cms-boundaries/infra-final.log",
+      "sha256": "0801988f6f8c4adcecb8af92c174ce4affc91ecdd676e1c10be71e8e13205b01"
+    },
+    "packet": {
+      "result": "passed",
+      "localLog": ".migration/cms-boundaries/packet-final.log",
+      "sha256": "7907dac8ddf326bf40aa9f8e49f023a5044952493c74b0309c9a7951d13c5e23"
+    },
+    "cms": {
+      "result": "passed",
+      "localLog": ".migration/cms-boundaries/http-final.log",
+      "sha256": "de161d9aba6b221b1e2719654b10402e4516c4cd52abc4b44dccabba21af2f0d"
+    }
+  }
+}

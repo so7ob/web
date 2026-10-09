@@ -59,8 +59,11 @@ jobs:
         with:
           node-version: '24.21.0'
           cache: npm
+      - name: Validate bundled skill contracts offline
+        run: python3 -B -m unittest discover -s .agents/skills/ui-ux-pro-max/scripts/tests
       - run: npm install --global npm@10.8.2
       - run: npm ci
+      - run: npm run test:independence
       - run: npm run lint
       - run: npm run typecheck
       - run: npm run db:migrate
@@ -70,6 +73,26 @@ jobs:
       - run: npm run test:file-worker
       - run: npm run test:webhook
       - run: npm run test:auth
+      - run: sudo apt-get update && sudo apt-get install -y mariadb-client
+      - name: Configure packet size on the isolated CI MariaDB service
+        run: |
+          mariadb --no-defaults --protocol=TCP --host=127.0.0.1 --port=3306 --user=root -e 'SET GLOBAL max_allowed_packet=16777216'
+          if npm run db:check-cms > /tmp/so7ob-cms-packet-check.log 2>&1; then
+            echo 'Expected CMS preflight to reject the isolated 16MiB configuration'
+            exit 1
+          fi
+          grep -q 'CMS compatibility requires max_allowed_packet' /tmp/so7ob-cms-packet-check.log
+          mariadb --no-defaults --protocol=TCP --host=127.0.0.1 --port=3306 --user=root -e 'SET GLOBAL max_allowed_packet=268435456'
+        env:
+          MYSQL_PWD: synthetic-ci-root-only
+      - run: npm run db:check-cms
+      - run: npm run test:cms-boundaries
+      - run: npm run test:restore
+        env:
+          DATABASE_USER: root
+          DATABASE_PASSWORD: synthetic-ci-root-only
+          RESTORE_REHEARSAL: synthetic-only
+          NODE_ENV: test
       - run: npx playwright install --with-deps chromium
       - run: npm run test:e2e
       - uses: actions/upload-artifact@v4

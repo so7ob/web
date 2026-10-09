@@ -1,3 +1,4 @@
+import { AppDirectionProvider } from "./components/ui/app-direction-provider";
 import {
   useLoaderData,
   Outlet,
@@ -71,6 +72,10 @@ function presentation(data: PublicView) {
   return { content, settings, header: menu("header"), footer: menu("footer") };
 }
 export function App() {
+  const data = useLoaderData<PublicView>();
+  return <AppDirectionProvider dir={data.locale === "ar" ? "rtl" : "ltr"}><AppContent /></AppDirectionProvider>;
+}
+function AppContent() {
   const data = useLoaderData<PublicView>();
   if (data.kind === "not-found") return <NotFound />;
   if (data.kind === "admin")
@@ -229,6 +234,7 @@ export const routes = (loader: LoaderFunction): RouteObject[] => [
           },
         ],
       },
+      { path: ":locale/track", lazy: () => import("./screens/track") },
       { path: ":locale/auth/:screen", lazy: () => import("./screens/auth") },
       { path: "*", lazy: () => import("./screens/cms") },
     ],

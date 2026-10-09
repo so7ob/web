@@ -1,0 +1,220 @@
+{
+  "schema_version": 2,
+  "diagram_type": "lifecycle",
+  "meta": {
+    "title": "Agent Run lifecycle \u2014 illustrative, not So7ob runtime",
+    "output": ".archify/lifecycle-agent-run-20261009-231544/agent-run.html",
+    "quality_profile": "showcase",
+    "locale": "en"
+  },
+  "lanes": [
+    {
+      "id": "main",
+      "label": "Main progress"
+    },
+    {
+      "id": "waiting",
+      "label": "Waiting / interruption"
+    },
+    {
+      "id": "recovery",
+      "label": "Recoverable failure"
+    },
+    {
+      "id": "terminal",
+      "label": "Terminal outcomes"
+    }
+  ],
+  "states": [
+    {
+      "id": "pending",
+      "type": "start",
+      "label": "Queued",
+      "sublabel": "request accepted",
+      "lane": "main",
+      "col": 0
+    },
+    {
+      "id": "plan",
+      "type": "active",
+      "label": "Planning",
+      "sublabel": "build task graph",
+      "lane": "main",
+      "col": 1
+    },
+    {
+      "id": "work",
+      "type": "active",
+      "label": "Executing",
+      "sublabel": "tool calls",
+      "lane": "main",
+      "col": 2
+    },
+    {
+      "id": "review",
+      "type": "decision",
+      "label": "Reviewing",
+      "sublabel": "quality gate",
+      "lane": "main",
+      "col": 3
+    },
+    {
+      "id": "approval",
+      "type": "waiting",
+      "label": "Needs Approval",
+      "sublabel": "human gate",
+      "lane": "waiting",
+      "col": 2
+    },
+    {
+      "id": "blocked",
+      "type": "waiting",
+      "label": "Blocked",
+      "sublabel": "missing input",
+      "lane": "waiting",
+      "col": 3
+    },
+    {
+      "id": "error",
+      "type": "failure",
+      "label": "Failed",
+      "sublabel": "recoverable error",
+      "lane": "recovery",
+      "col": 1
+    },
+    {
+      "id": "cancel",
+      "type": "failure",
+      "label": "Cancelled",
+      "sublabel": "user stopped",
+      "lane": "terminal",
+      "col": 2
+    },
+    {
+      "id": "timeout",
+      "type": "failure",
+      "label": "Expired",
+      "sublabel": "timeout",
+      "lane": "terminal",
+      "col": 3
+    },
+    {
+      "id": "success",
+      "type": "success",
+      "label": "Completed",
+      "sublabel": "final response",
+      "lane": "terminal",
+      "col": 4
+    }
+  ],
+  "transitions": [
+    {
+      "id": "start-planning",
+      "from": "pending",
+      "to": "plan",
+      "label": "advance*",
+      "variant": "emphasis"
+    },
+    {
+      "id": "start-work",
+      "from": "plan",
+      "to": "work",
+      "label": "advance*",
+      "variant": "emphasis"
+    },
+    {
+      "id": "start-review",
+      "from": "work",
+      "to": "review",
+      "label": "advance*",
+      "variant": "emphasis"
+    },
+    {
+      "id": "finish",
+      "from": "review",
+      "to": "success",
+      "label": "complete*",
+      "variant": "emphasis"
+    },
+    {
+      "id": "ask-approval",
+      "from": "work",
+      "to": "approval",
+      "label": "approval needed",
+      "variant": "security"
+    },
+    {
+      "id": "missing-input",
+      "from": "review",
+      "to": "blocked",
+      "label": "missing input",
+      "variant": "default"
+    },
+    {
+      "id": "work-fails",
+      "from": "work",
+      "to": "error",
+      "label": "execution error",
+      "variant": "security"
+    },
+    {
+      "id": "retry",
+      "from": "error",
+      "to": "work",
+      "label": "retry",
+      "variant": "emphasis"
+    },
+    {
+      "id": "expires",
+      "from": "blocked",
+      "to": "timeout",
+      "label": "timeout",
+      "variant": "security"
+    },
+    {
+      "id": "cancelled",
+      "from": "approval",
+      "to": "cancel",
+      "label": "user stops",
+      "variant": "security"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "What the source establishes",
+      "items": [
+        "The included Agent Run example has five ordered phases and six explicit branch/recovery transitions.",
+        "This v2 rendering makes the v1 implied phase rail explicit; * marks progression whose triggering event was not specified.",
+        "Transition labels describe the example; they are not implemented event identifiers or API contracts."
+      ]
+    },
+    {
+      "dot": "amber",
+      "title": "Waiting is not completion",
+      "items": [
+        "Executing \u2192 Needs Approval; Reviewing \u2192 Blocked for missing input.",
+        "The example defines no approved \u2192 resume or input supplied \u2192 resume transition. These omissions remain visible.",
+        "Cancellation is shown only from Needs Approval; timeout only from Blocked. No global cancel or timeout is implied."
+      ]
+    },
+    {
+      "dot": "rose",
+      "title": "Failure versus ending",
+      "items": [
+        "Failed is recoverable and returns to Executing; it is not a terminal failure here.",
+        "The source card mentions a retry budget, but specifies neither its value nor an exhausted-budget exit. No terminal failure state is invented.",
+        "Completed, Cancelled, and Expired are all explicit terminal outcomes with no outgoing transition."
+      ]
+    },
+    {
+      "dot": "slate",
+      "title": "Evidence boundary",
+      "items": [
+        "Source: local .agents/skills/archify/examples/agent-run.lifecycle.json, an untracked illustrative fixture.",
+        "Inspected So7ob develop @ e84fe1b3c3f6b2fd9bf2c79c0a08e53458e5dae3; no agent runtime implementation identified.",
+        "This is not the MailJob or ProjectRequest lifecycle. Policy instructions do not establish executable agent behavior."
+      ]
+    }
+  ]
+}

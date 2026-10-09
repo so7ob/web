@@ -1,6 +1,11 @@
 # Render for the independently approved destination domain only. Never use Website's domain.
 # Include this file inside nginx's http context. Query strings can contain account tokens.
 log_format so7ob_no_query '$remote_addr [$time_local] "$request_method $uri $server_protocol" $status $body_bytes_sent $request_time';
+map $uri $so7ob_referrer_policy {
+    default strict-origin-when-cross-origin;
+    ~^/(ar|en)/track/?$ no-referrer;
+    ~^/api/(v1/)?(track|attachments)(/|$) no-referrer;
+}
 server {
     listen 80;
     access_log __LOG_DIR__/access.log so7ob_no_query;
@@ -20,7 +25,8 @@ server {
     client_body_timeout 30s;
     send_timeout 60s;
     add_header X-Content-Type-Options nosniff always;
-    add_header Referrer-Policy strict-origin-when-cross-origin always;
+    proxy_hide_header Referrer-Policy;
+    add_header Referrer-Policy $so7ob_referrer_policy always;
     add_header X-Frame-Options SAMEORIGIN always;
     add_header Content-Security-Policy "frame-ancestors 'self'; base-uri 'self'; object-src 'none'" always;
     gzip on;

@@ -1,14 +1,20 @@
 # Independent Website migration
 
+## الحالة الحالية — قبول نقل الكود
+
+[سجل القبول الحالي](final-code-parity.md) و[مصفوفة الوظائف](feature-parity.csv) هما مرجع الحالة بعد مراحل التنفيذ أدناه. حصر المستخدم المهمة في نقل الكود والوظائف، واستبعد التشغيل الفعلي صراحةً؛ النشر وبيانات الإنتاج ليسا شرطًا لإغلاق هذا النطاق. تاريخ كل تشغيل ونتيجته في evidence/final-code-parity/checks.json وطلب السحب.
+
+## السجل التاريخي للمراحل
+
 Tracking: [parent #1](https://github.com/so7ob/web/issues/1). Phase issues are recorded in `issues.json`.
 
-Current source refresh: Website/main `d214018f3337198d8e17e5e7efa535a846ba6be2`, directly verified on 2026-10-03. [Refresh inventory, isolated reference and inherited migration failure](source-refresh.md). The new source has substantial changes not yet ported; historical counts and evidence below do not establish parity with it.
+Current source refresh: Website/main `dddf8cd00a19cf7d562f503549f4c000109057d1`, directly reverified on 2026-10-06. [Refresh inventory, isolated reference and inherited migration failure](source-refresh.md). The refresh introduced substantial changes subsequently implemented; current acceptance is recorded in final-code-parity.md. Historical counts and pending notes below belong to their original checkpoints.
 
 Source: Website/main `5321b7fd11db421c83290b262f276811e5f04e5f`. Technical reference: Rakim/main `cae0950bac45d97971bd3766c8c34f9869a856af`; develop `8b50b222185c60d9d06af8417f77765dada1bb8b` was inspected separately, not imported.
 
 `import-manifest.json` records source paths, SHA-256, destination mappings and exclusions. Imported source instructions, README, original ignore rules and CI/deployment configuration are retained under `source/`; destination instructions take precedence. Old audit reports concern earlier SHAs and are historical, not evidence for this migration.
 
-## Gates and status
+## Historical gates and status (original checkpoints)
 
 - A: source imported; isolated build, 133 tests, 40 browser captures and repeated read-performance baseline passed. Full behavior/SQL profiling remains required for final parity.
 - B: target workspaces/Node/Nest/Vite SSR/MariaDB foundation implemented; [PR #9](https://github.com/so7ob/web/pull/9).
@@ -16,7 +22,7 @@ Source: Website/main `5321b7fd11db421c83290b262f276811e5f04e5f`. Technical refer
 - D: public and authentication presentation implemented with scoped browser/visual/performance evidence; see [details and limitations](public-and-auth-ui.md). The original public request form now submits to real services. The nine client portal screens are ported in the next stacked portion; see [client portal](client-portal.md). Administrative screens and the original full editor are ported with scoped checks; complete visual/performance acceptance remains open.
 - E: durable mail worker and Nginx/systemd checks implemented ([PR #11](https://github.com/so7ob/web/pull/11)); full operational restore/cutover rehearsal and remaining job integrations pending.
 - F: full parity, all-role journeys, complete SQL/concurrency/load acceptance and final rollback rehearsal are pending. No migration completion claim. The original source files at root remain transitional reference material.
-- PRs #8–#17 were merged into develop on 2026-10-03 following the explicit merge request; each latest CI was checked. Later work remains on issue branches for review. No main merge or deployment occurred. CI success is reported per PR, not inferred for later commits.
+- PRs #8–#17 were merged into develop on 2026-10-03 following the explicit merge request; each latest CI was checked. At that checkpoint, later work remained on issue branches and no main merge or deployment had occurred. Subsequent authorized merges/releases are recorded below. CI success is reported per PR, not inferred for later commits.
 - Production data/files have not been inspected, copied or migrated. Local synthetic data only.
 - No source repository, branch, configuration, issue, PR or deployment was changed.
 
@@ -41,3 +47,26 @@ The pinned source is archived without `.git` under ignored `.migration/reference
 The next stacked phase C portion ports private attachments, public/admin media, durable physical file cleanup and prior-request ownership claims. See [files and claims](files-and-claims.md) for server authorization, transactional proof consumption, tests and explicit remaining scope. This does not establish complete migration or operational restore acceptance.
 
 User-administration APIs now have a separate [implementation and verification record](user-administration.md). Administrative operations/screens and CMS/editor now have a separate [implementation record](administration-and-editor.md), with final parity gates still pending.
+
+The source v2 schema and both-generation data transfer implementation are recorded in [source-schema-v2.md](source-schema-v2.md). Business/UI parity remains independently tracked.
+
+- [شجرة المحتوى والعرض المنشور وحدود النقل](content-tree.md).
+
+- دمج المستخدم #23 و#24 إلى develop عند `68b92209e8fe134451ea0d93d841183d01543239` في 2026-10-04 (Asia/Aden). main ما زال عند إصدار v1.0.0 السابق؛ لا إصدار جديد في هذا الجزء.
+- [خدمات قوالب الصفحات وعقودها واختباراتها](page-templates.md).
+
+- [إعدادات المسودة والنشر والجدولة](cms-publication.md).
+
+- [محرر شجرة المحتوى ورحلاته واستثناءات السلامة](tree-editor.md).
+
+تحديث التتبع: [tracking.md](tracking.md) يوثق نقل الروابط والسياسات والبريد والمرفقات فوق PR #27، مع اختبارات الأمن وحدود القبول. CI لطلب #27 نجح على `8c1868bc1fdb1d83fc57d86cb8a95bf3885861c5` في [التشغيل 37169851643](https://github.com/so7ob/web/actions/runs/37169851643)؛ هذه النتيجة لا تُنسب إلى commits لاحقة.
+
+- [تجربة الاستعادة التشغيلية وفحص مفتاح الطابور](operational-restore.md): الكود والبيانات والملفات والجلسات والعامل على بيانات اصطناعية؛ حدود الاستعادة خارج المضيف والإنتاج موثقة.
+
+- [حدود CMS قبل التطبيع وبعده وحد الطلب وMariaDB packet](cms-boundaries.md).
+
+## تحديث القبول في 2026-10-06
+
+اعتمد المستخدم الشكل والأداء. انظر [فصل المرجع والتدقيق الحالي](reference-isolation.md) لتصحيح البنود التاريخية، وقبول المستخدم وحدود الاختبارات. ملفات المصدر القديمة انتقلت إلى reference/website-import؛ خريطة المسارات والبصمات محفوظة. البنود أعلاه تسجل مراحلها التاريخية ولا تنفي ما نُفذ لاحقًا.
+
+- [تدقيق خصائص المحرر وإصلاح ارتباط التسميات بالحقول المتكررة](editor-properties.md).

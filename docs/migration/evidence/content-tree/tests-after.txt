@@ -1,0 +1,12 @@
+
+ RUN  v5.0.3 /root/So7ob/web
+
+
+ Test Files  5 passed (5)
+      Tests  60 passed (60)
+   Start at  22:38:06
+   Duration  1.47s (setup 42%, import 25%, transform 23%, tests 7%, worker 3%)
+
+    Isolate  5 workers spawned · ~98ms startup each (spawn + environment, per file)
+             at least ~390ms faster with isolate: false — reuses workers across files instead of one per file
+

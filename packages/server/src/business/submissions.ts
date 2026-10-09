@@ -1,3 +1,4 @@
+import { TrackService } from "../track/service.js";
 import { randomInt } from "node:crypto";
 import type { DataSource } from "typeorm";
 import {
@@ -64,7 +65,7 @@ export class SubmissionService {
     const email = data.email.trim().toLowerCase(),
       name = data.name,
       hash = fingerprint(data.description);
-    return transaction(this.db, async (r) => {
+    const result = await transaction(this.db, async (r) => {
       await lockOperation(r, "request-duplicate:" + email + ":" + hash);
       const recent = await r.query(
         "SELECT id FROM ProjectRequest WHERE email=? AND descriptionHash=? AND createdAt>DATE_SUB(UTC_TIMESTAMP(3),INTERVAL 30 MINUTE) LIMIT 1",
@@ -162,15 +163,16 @@ export class SubmissionService {
           sha256("request-webhook:" + id),
         );
       }
-      return { ok: true, ref: code };
+      return { ok: true, ref: code, id };
     });
+    return {ok:result.ok,ref:result.ref,trackUrl:await this.followup("request",result.id,data.locale,actor)};
   }
   async inquiry(
     raw: InquiryInput,
     actor: AuthUser | null,
     ip: string,
     portal = false,
-  ) {
+  ): Promise<{ok:boolean;ref:string;id?:string;trackUrl?:string|null}> {
     if (portal) {
       if (!actor) throw new AuthFault(401, "unauthorized");
       raw = { ...raw, name: actor.name, email: actor.email };
@@ -214,7 +216,7 @@ export class SubmissionService {
       throw new AuthFault(429, "rate_limited", {
         retryAfterSec: rate.retryAfterSec,
       });
-    return transaction(this.db, async (r) => {
+    const result = await transaction(this.db, async (r) => {
       const id = newId(),
         code = refCode("IQ");
       await insertRecord(r, "Inquiry", {
@@ -256,8 +258,17 @@ export class SubmissionService {
         { ref: code, subject },
         `/${locale}/admin/inquiries`,
       );
-      return { ok: true, ref: code, ...(portal ? { id } : {}) };
+      return { ok: true, ref: code, id };
     });
+    return {ok:result.ok,ref:result.ref,...(portal ? {id:result.id} : {trackUrl:await this.followup("inquiry",result.id,locale,actor)})};
+  }
+  private async followup(scope:"request"|"inquiry",id:string,locale:string,actor:AuthUser|null):Promise<string|null> {
+    try {
+      if(!this.env.SITE_URL) return null;
+      const service=new TrackService(this.db,new MailQueue(this.db,new PayloadCipher(this.env.OUTBOX_KEY)),this.env.SITE_URL);
+      const link=await service.issue(scope,id,actor);
+      return `/${locale === "en" ? "en" : "ar"}/track?t=${encodeURIComponent(link.token)}`;
+    } catch { process.stderr.write("track_issue_deferred: unavailable\n"); return null; }
   }
 }
 function notifyPayload(data: ProjectRequestInput, code: string) {

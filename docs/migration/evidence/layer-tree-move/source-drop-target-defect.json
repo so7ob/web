@@ -1,0 +1,59 @@
+{
+  "sourceSHA": "dddf8cd00a19cf7d562f503549f4c000109057d1",
+  "syntheticOnly": true,
+  "referenceOrigin": "http://127.0.0.1:3107",
+  "records": [
+    {
+      "target": {
+        "x": 301,
+        "y": 415.5,
+        "width": 16,
+        "height": 16
+      },
+      "pointer": {
+        "x": 309,
+        "y": 479.5
+      },
+      "live": [
+        "Draggable item alpha was moved over droppable area row.",
+        ""
+      ]
+    },
+    {
+      "target": {
+        "x": 318.59375,
+        "y": 441.5,
+        "width": 180.40625,
+        "height": 20
+      },
+      "pointer": {
+        "x": 408.796875,
+        "y": 451.5
+      },
+      "live": [
+        "Draggable item alpha was moved over droppable area into:section.",
+        ""
+      ]
+    },
+    {
+      "target": {
+        "x": 318.59375,
+        "y": 549.5,
+        "width": 180.40625,
+        "height": 20
+      },
+      "pointer": {
+        "x": 408.796875,
+        "y": 559.5
+      },
+      "live": [
+        "Draggable item alpha was moved over droppable area into:column.",
+        ""
+      ]
+    }
+  ],
+  "expected": "Dragging heading into row drop bar rejects type; preserves heading under section",
+  "observed": "Pointer inside row drop bar; closestCenter chooses into:column, accepts unintended relocation; expected rejection absent",
+  "correction": "Prefer pointerWithin collisions when a pointer exists; retain closestCenter fallback for keyboard and outside targets",
+  "referenceLog": ".migration/source-refresh-dddf8cd/source-drag-1.log"
+}

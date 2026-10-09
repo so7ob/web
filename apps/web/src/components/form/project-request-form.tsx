@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useSearchParams } from "@/routing/navigation";
-import { CheckCircle2, Loader2, ShieldCheck, TriangleAlert } from "lucide-react";
+import { CheckCircle2, Loader2, ShieldCheck, TriangleAlert, ExternalLink, Copy, Check } from "lucide-react";
 import {
   BUDGET_TIERS,
   CONTACT_METHODS,
@@ -16,6 +16,8 @@ import {
 } from "@/lib/validation";
 import type { Locale } from "@/lib/i18n";
 import type { SiteContent } from "@/content/types";
+
+import { getPortalContent } from "@/content/portal";
 
 const DRAFT_KEY = "so7ob-request-draft";
 
@@ -32,6 +34,8 @@ export interface ProjectRequestFormProps {
   onValuesChange?: (values: Partial<ProjectRequestInput>) => void;
   /** تخطي مسودة localStorage (قراءة وكتابة) — للحسابات المسجلة التي تستخدم مسودات الخادم */
   suppressLocalDraft?: boolean;
+  /** Explicit editor test mode: validation runs but submission never reaches the API. */
+  simulate?: boolean;
 }
 
 const EMPTY: FormState = {
@@ -63,6 +67,7 @@ export function ProjectRequestForm({
   onSubmitted,
   onValuesChange,
   suppressLocalDraft = false,
+  simulate = false,
 }: ProjectRequestFormProps) {
   const t = content.form;
   const params = useSearchParams();
@@ -80,6 +85,19 @@ export function ProjectRequestForm({
   const [status, setStatus] = useState<"idle" | "submitting" | "success">("idle");
   const [refCode, setRefCode] = useState("");
   const [restored, setRestored] = useState(false);
+  const [trackUrl, setTrackUrl] = useState<string | null>(null);
+  const [copied, setCopied] = useState(false);
+  const copiedTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const trackT = getPortalContent(locale).track;
+
+  useEffect(
+    () => () => {
+      if (copiedTimer.current) clearTimeout(copiedTimer.current);
+    },
+    []
+  );
+
+
 
   // تعبئة مبدئية من معاملات الرابط: ?type=quote|discussion&service=web
   useEffect(() => {
@@ -157,6 +175,11 @@ export function ProjectRequestForm({
     }
 
     setStatus("submitting");
+    if (simulate) {
+      const simulatedRef = `TEST-${Date.now().toString(36).toUpperCase()}`;
+      setRefCode(simulatedRef); setStatus("success"); onSubmitted?.(simulatedRef);
+      return;
+    }
     try {
       const res = await fetch("/api/requests", {
         method: "POST",
@@ -172,6 +195,7 @@ export function ProjectRequestForm({
           } catch {}
         }
         setRefCode(body.ref);
+        setTrackUrl(typeof body.trackUrl === "string" ? body.trackUrl : null);
         setStatus("success");
         onSubmitted?.(body.ref);
         document.getElementById("form-top")?.scrollIntoView({ behavior: "smooth", block: "start" });
@@ -198,8 +222,53 @@ export function ProjectRequestForm({
     setData({ ...EMPTY, locale });
     setErrors({});
     setRefCode("");
+    setTrackUrl(null);
+    setCopied(false);
     setStatus("idle");
     mountedAt.current = Date.now();
+  }
+
+  /** الرابط المطلق للحالة الراهنة — يُستدعى من معالجات النقر فقط (آمن للترطيب) */
+  function absoluteTrackUrl(): string {
+    if (!trackUrl) return "";
+    if (!trackUrl.startsWith("/")) return trackUrl;
+    return typeof window !== "undefined" ? `${window.location.origin}${trackUrl}` : trackUrl;
+  }
+
+  function openTracking() {
+    const url = absoluteTrackUrl();
+    if (!url) return;
+    window.open(url, "_blank", "noopener,noreferrer");
+  }
+
+  function copyTracking() {
+    const absolute = absoluteTrackUrl();
+    if (!absolute) return;
+    // احتياطي النسخ عبر textarea عند غياب/رفض واجهة الحافظة — فشل نهائي صامت
+    const legacyCopy = () => {
+      try {
+        const area = document.createElement("textarea");
+        area.value = absolute;
+        area.setAttribute("readonly", "");
+        area.style.position = "fixed";
+        area.style.opacity = "0";
+        document.body.appendChild(area);
+        area.select();
+        document.execCommand("copy");
+        document.body.removeChild(area);
+        return true;
+      } catch {
+        return false;
+      }
+    };
+    (navigator.clipboard ? navigator.clipboard.writeText(absolute) : Promise.reject(new Error("clipboard unavailable")))
+      .then(() => setCopied(true))
+      .catch(() => {
+        if (legacyCopy()) setCopied(true);
+        else console.warn("clipboard copy unavailable");
+      });
+    if (copiedTimer.current) clearTimeout(copiedTimer.current);
+    copiedTimer.current = setTimeout(() => setCopied(false), 2000);
   }
 
   const errorCount = useMemo(() => Object.values(errors).filter(Boolean).length, [errors]);
@@ -216,6 +285,31 @@ export function ProjectRequestForm({
           <span className="text-sm font-semibold">{t.success.refLabel}:</span>
           <span className="ltr-isolate font-mono text-lg font-bold tracking-wide">{refCode}</span>
         </p>
+        {trackUrl ? (
+          <div className="mx-auto mt-6 max-w-md rounded-2xl border border-brand/30 bg-accent/50 p-4 text-start">
+            <p className="text-sm leading-7 text-muted-foreground">{trackT.trackingHint}</p>
+            <div className="mt-3 flex flex-wrap gap-2">
+              <button
+                type="button"
+                onClick={openTracking}
+                className="inline-flex min-h-11 items-center gap-2 rounded-full bg-primary px-5 text-sm font-semibold text-primary-foreground shadow-md shadow-brand/20 transition-colors hover:bg-brand-strong"
+              >
+                <ExternalLink className="h-4 w-4" aria-hidden="true" />
+                {trackT.openTracking}
+              </button>
+              <button
+                type="button"
+                onClick={copyTracking}
+                className="inline-flex min-h-11 items-center gap-2 rounded-full border border-border bg-white px-5 text-sm font-semibold text-navy transition-colors hover:border-brand hover:text-brand"
+              >
+                {copied ? <Check className="h-4 w-4" aria-hidden="true" /> : <Copy className="h-4 w-4" aria-hidden="true" />}
+                {copied ? trackT.copied : trackT.copyTracking}
+              </button>
+            </div>
+          </div>
+        ) : (
+          <p className="mx-auto mt-6 max-w-md text-sm leading-7 text-muted-foreground">{trackT.trackingUnavailable}</p>
+        )}
         <div className="mt-8">
           <button
             type="button"

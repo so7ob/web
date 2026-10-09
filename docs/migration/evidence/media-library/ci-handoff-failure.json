@@ -1,0 +1,53 @@
+{
+  "run": "https://github.com/so7ob/web/actions/runs/37230995633",
+  "headSHA": "5a0f5ad4d4819cc8be7c22a0af53b6cac2db9470",
+  "reference": "passed",
+  "targetBrowser": {
+    "passed": 98,
+    "failed": 2,
+    "failures": [
+      "en desktop media blocked-dialog axe",
+      "ar mobile media blocked-dialog axe"
+    ],
+    "rule": "color-contrast",
+    "target": ".bg-destructive",
+    "reportedContrast": 1.01
+  },
+  "localHandoffObservation": {
+    "handoff": [
+      {
+        "state": "closed",
+        "opacity": "0.423502",
+        "animations": [
+          "running"
+        ]
+      },
+      {
+        "state": "open",
+        "opacity": "0.221049",
+        "animations": [
+          "running"
+        ]
+      }
+    ],
+    "settled": true
+  },
+  "classification": "Axe sampled the outgoing confirmation during its 200ms exit animation while replacement was entering; wait for old DOM removal and actual animation completion; keep full-page axe and all rules.",
+  "independentLocalProductFailure": {
+    "log": ".migration/media-library/e2e-handoff.log",
+    "expectedFolder": "synthetic fixture folder",
+    "actualFolder": "general",
+    "fix": "disable upload/file/alt/folder/search controls until hydration; gate actual route chunk in all four media journeys and verify stored folder after first input"
+  },
+  "retries": 0,
+  "followup": {
+    "focusedBrowser": "4/4 passed with delayed route bundle; folder and alt text verified in MariaDB",
+    "unit": "360 passed",
+    "lint": "passed",
+    "typecheck": "passed",
+    "build": "passed",
+    "infra": "passed",
+    "fullBrowser": "pending rerun",
+    "ci": "pending new commit"
+  }
+}

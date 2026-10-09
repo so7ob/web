@@ -79,6 +79,7 @@ export interface AdminPayload {
   dashboard?: AdminDashboardView;
   preview?: {
     blocks: Block[];
+    nodes?: import("./content/tree.js").ContentNode[];
     locale: "ar" | "en";
     device: "desktop" | "tablet" | "mobile";
   };

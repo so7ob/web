@@ -1,0 +1,16 @@
+{
+  "sourceSHA": "dddf8cd00a19cf7d562f503549f4c000109057d1",
+  "sourceFile": ".migration/reference/Website-dddf8cd/src/components/admin/editor/props-form.tsx",
+  "sha256": "0ba325160ed509e9050554b978df7508dc4bdb3c1bcf2ece02222afd4b497c41",
+  "inspection": "Source and target before fix use pf-${field.key} in nested forms; repeated title fields resolve labels to the first DOM ID",
+  "targetBefore": {
+    "cases": 64,
+    "failed": 22,
+    "passed": 42
+  },
+  "targetAfterFocused": {
+    "cases": 64,
+    "passed": 64
+  },
+  "sourceRuntimeReexecuted": false
+}

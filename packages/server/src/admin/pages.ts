@@ -1,8 +1,14 @@
+import {assertMediaReferences} from "../files/media-usage.js";
+import { PagePublicationService } from "./publication.js";
 import type { DataSource, QueryRunner } from "typeorm";
 import {
   can,
   isValidSlug,
   validateBlocks,
+  validateContent,
+  countNodes,
+  parsePageSettings,
+  hasUnpublishedChanges,
   type AuthUser,
   type Permission,
 } from "@so7ob/contracts";
@@ -25,6 +31,16 @@ function checkedBlocks(raw: unknown) {
   if (!checked.ok)
     throw new AuthFault(400, "invalid_blocks", { error: checked.error });
   return checked.blocks;
+}
+/** Keep v0 stored representation while accepting normalized v1 from template application. */
+function checkedDocument(raw: string) {
+  if (raw.trimStart().startsWith("[")) {
+    const blocks = checkedBlocks(raw);
+    return { json: JSON.stringify(blocks), count: blocks.length };
+  }
+  const content = validateContent(raw);
+  if (!content.ok) throw new AuthFault(400, "invalid_blocks", {error: content.error});
+  return { json: content.json, count: content.tree.length };
 }
 export class PageAdministrationService {
   constructor(private readonly db: DataSource) {}
@@ -69,9 +85,10 @@ export class PageAdministrationService {
         | "updatedAt"
         | "editorTouchedAt"
         | "sourceKey"
+        | "draftRevision" | "publishedRevision" | "draftSettings" | "publishedSettings" | "scheduledPublishAt"
       > & { versionCount: string | number }
     > = await this.db.query(
-      `SELECT p.id,p.slug,p.isHome,p.\`order\`,p.status,p.visibility,p.titleAr,p.titleEn,p.draftUpdatedAt,p.publishedAt,p.updatedAt,p.editorTouchedAt,p.sourceKey,(SELECT COUNT(*) FROM PageVersion v WHERE v.pageId=p.id) versionCount FROM Page p WHERE ${where.join(" AND ")} ORDER BY p.\`order\`,p.createdAt`,
+      `SELECT p.id,p.slug,p.isHome,p.\`order\`,p.status,p.visibility,p.titleAr,p.titleEn,p.draftUpdatedAt,p.publishedAt,p.updatedAt,p.editorTouchedAt,p.sourceKey,p.draftRevision,p.publishedRevision,p.draftSettings,p.publishedSettings,p.scheduledPublishAt,(SELECT COUNT(*) FROM PageVersion v WHERE v.pageId=p.id) versionCount FROM Page p WHERE ${where.join(" AND ")} ORDER BY p.\`order\`,p.createdAt`,
       values,
     );
     return {
@@ -80,18 +97,14 @@ export class PageAdministrationService {
         ...p,
         isHome: !!p.isHome,
         versionCount: Number(p.versionCount),
-        hasUnpublishedChanges:
-          p.status === "published" &&
-          p.draftUpdatedAt !== null &&
-          p.publishedAt !== null &&
-          p.draftUpdatedAt > p.publishedAt,
+        hasUnpublishedChanges: hasUnpublishedChanges(p),
       })),
     };
   }
   async detail(actor: AuthUser, id: string) {
     permit(actor, "pages.view");
-    const [p]: StoredPage[] = await this.db.query(
-      "SELECT * FROM Page WHERE id=?",
+    const [p]: Array<StoredPage & {draftUpdatedByName: string | null}> = await this.db.query(
+      "SELECT p.*,u.name draftUpdatedByName FROM Page p LEFT JOIN User u ON u.id=p.draftUpdatedById WHERE p.id=?",
       [id],
     );
     if (!p) throw new AuthFault(404, "not_found");
@@ -121,6 +134,17 @@ export class PageAdministrationService {
         publishedBlocksEn: p.publishedBlocksEn,
         draftUpdatedAt: p.draftUpdatedAt,
         draftUpdatedById: p.draftUpdatedById,
+        draftUpdatedByName: p.draftUpdatedByName,
+        draftRevision: p.draftRevision,
+        publishedRevision: p.publishedRevision,
+        draftSettings: parsePageSettings(p.draftSettings, p),
+        draftSlug: parsePageSettings(p.draftSettings, p).slug,
+        draftTitleAr: parsePageSettings(p.draftSettings, p).titleAr,
+        draftTitleEn: parsePageSettings(p.draftSettings, p).titleEn,
+        publishedSettings: p.publishedSettings ? parsePageSettings(p.publishedSettings, p) : null,
+        scheduledPublishAt: p.scheduledPublishAt,
+        scheduledRevision: p.scheduledRevision,
+        hasUnpublishedChanges: hasUnpublishedChanges(p),
         publishedAt: p.publishedAt,
         sourceKey: p.sourceKey,
         editorTouchedAt: p.editorTouchedAt,
@@ -213,9 +237,15 @@ export class PageAdministrationService {
   }
   async update(actor: AuthUser, id: string, body: Record<string, unknown>) {
     permit(actor, "pages.edit");
+    if (body.draftSettings !== undefined || (typeof body.baseRevision === "number" && [body.draftBlocksAr, body.draftBlocksEn].some(value => typeof value === "string"))) return new PagePublicationService(this.db).save(actor, id, body);
     return transaction(this.db, async (r) => {
       const page = await this.locked(r, id),
         updates: Record<string, unknown> = {};
+      const writesTree = [body.draftBlocksAr, body.draftBlocksEn].some(value => typeof value === "string" && value.trimStart().startsWith("{"));
+      if (writesTree || body.baseRevision !== undefined) {
+        if (typeof body.baseRevision !== "number" || !Number.isInteger(body.baseRevision)) throw new AuthFault(409, "revision_required");
+        if (body.baseRevision !== page.draftRevision) throw new AuthFault(409, "conflict", {serverRevision: page.draftRevision});
+      }
       if (typeof body.draftUpdatedAt === "string" && page.draftUpdatedAt) {
         const stamp = new Date(body.draftUpdatedAt).getTime();
         if (!Number.isFinite(stamp)) throw new AuthFault(400, "invalid");
@@ -227,13 +257,14 @@ export class PageAdministrationService {
       }
       for (const key of ["draftBlocksAr", "draftBlocksEn"] as const)
         if (typeof body[key] === "string") {
-          updates[key] = JSON.stringify(checkedBlocks(body[key]));
+          updates[key] = checkedDocument(body[key]).json;
         }
       if (Object.keys(updates).length) {
         updates.draftUpdatedAt = new Date(
           Math.max(Date.now(), (page.draftUpdatedAt?.getTime() ?? 0) + 1),
         );
         updates.draftUpdatedById = actor.id;
+        updates.draftRevision = page.draftRevision + 1;
         updates.editorTouchedAt = new Date();
       }
       for (const key of ["titleAr", "titleEn"])
@@ -294,6 +325,7 @@ export class PageAdministrationService {
           [newId(), page.slug, updates.slug],
         );
       if (!Object.keys(updates).length) throw new AuthFault(400, "invalid");
+      await assertMediaReferences(r,updates);
       await r.query(
         `UPDATE Page SET ${Object.keys(updates)
           .map((k) => "`" + k + "`=?")
@@ -304,9 +336,10 @@ export class PageAdministrationService {
         id: string;
         slug: string;
         draftUpdatedAt: Date | null;
+        draftRevision: number;
         status: string;
       }> = await r.query(
-        "SELECT id,slug,draftUpdatedAt,status FROM Page WHERE id=?",
+        "SELECT id,slug,draftUpdatedAt,draftRevision,status FROM Page WHERE id=?",
         [id],
       );
       if (body.draftBlocksAr !== undefined || body.draftBlocksEn !== undefined)
@@ -338,9 +371,10 @@ export class PageAdministrationService {
     permit(actor, "pages.publish");
     return transaction(this.db, async (r) => {
       const p = await this.locked(r, id),
-        ar = checkedBlocks(p.draftBlocksAr),
-        en = checkedBlocks(p.draftBlocksEn);
-      if (!ar.length && !en.length) throw new AuthFault(400, "empty_page");
+        ar = checkedDocument(p.draftBlocksAr),
+        en = checkedDocument(p.draftBlocksEn);
+      if (!ar.count && !en.count) throw new AuthFault(400, "empty_page");
+      await assertMediaReferences(r,{blocksAr:ar.json,blocksEn:en.json});
       const maxima: Array<{ locale: string; n: number }> = await r.query(
         "SELECT locale,MAX(version) n FROM PageVersion WHERE pageId=? GROUP BY locale",
         [id],
@@ -353,8 +387,8 @@ export class PageAdministrationService {
       await r.query(
         "UPDATE Page SET publishedBlocksAr=?,publishedBlocksEn=?,publishedAt=?,publishedById=?,status='published',updatedAt=UTC_TIMESTAMP(3) WHERE id=?",
         [
-          ar.length ? JSON.stringify(ar) : null,
-          en.length ? JSON.stringify(en) : null,
+          ar.count ? ar.json : null,
+          en.count ? en.json : null,
           now,
           actor.id,
           id,
@@ -366,7 +400,7 @@ export class PageAdministrationService {
           pageId: id,
           locale,
           version: versions[locale],
-          blocks: JSON.stringify(locale === "ar" ? ar : en),
+          blocks: locale === "ar" ? ar.json : en.json,
           authorId: actor.id,
         });
       await audit(
@@ -419,6 +453,7 @@ export class PageAdministrationService {
           try {
             const value = JSON.parse(blocks);
             if (Array.isArray(value)) blockCount = value.length;
+            else { const content = validateContent(blocks); if (content.ok) blockCount = countNodes(content.tree); }
           } catch {
             /* Source count fallback for historical malformed versions. */
           }
@@ -442,12 +477,13 @@ export class PageAdministrationService {
           versions.find((v) => v.locale === "ar")?.blocks ?? page.draftBlocksAr,
         en =
           versions.find((v) => v.locale === "en")?.blocks ?? page.draftBlocksEn;
+      await assertMediaReferences(r,{blocksAr:ar,blocksEn:en});
       // Source restores available locales and keeps a missing locale's current draft, without publishing.
       await r.query(
-        "UPDATE Page SET draftBlocksAr=?,draftBlocksEn=?,draftUpdatedAt=?,draftUpdatedById=?,editorTouchedAt=UTC_TIMESTAMP(3),updatedAt=UTC_TIMESTAMP(3) WHERE id=?",
+        "UPDATE Page SET draftBlocksAr=?,draftBlocksEn=?,draftRevision=draftRevision+1,draftUpdatedAt=?,draftUpdatedById=?,editorTouchedAt=UTC_TIMESTAMP(3),updatedAt=UTC_TIMESTAMP(3) WHERE id=?",
         [
-          JSON.stringify(checkedBlocks(ar)),
-          JSON.stringify(checkedBlocks(en)),
+          checkedDocument(ar).json,
+          checkedDocument(en).json,
           new Date(
             Math.max(Date.now(), (page.draftUpdatedAt?.getTime() ?? 0) + 1),
           ),

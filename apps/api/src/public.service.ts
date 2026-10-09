@@ -10,6 +10,9 @@ import {
   authScreens,
   can,
   validateBlocks,
+  validateContent,
+  loadContentForRender,
+  parsePageSettings,
   canAccessPage,
   type AdminPayload,
   type AdminScreen,
@@ -68,6 +71,7 @@ export class PublicService {
     }
     const db = await database();
     const shell = await this.shell(locale, viewer);
+    if (slug === "track") return {...shell,kind:"track",parameters:{token:url.searchParams.get("t")??"",cardParam:url.searchParams.get("card")??""}};
     const adminRoute =
       /^admin(?:\/(users(?:\/([^/]+))?|requests(?:\/([^/]+))?|inquiries(?:\/([^/]+))?|pages(?:\/([^/]+)\/(edit|preview))?|notifications|media|menus|settings|audit|outbox))?\/?$/.exec(
         decoded,
@@ -139,6 +143,7 @@ export class PublicService {
           rawDevice = url.searchParams.get("device");
         admin.preview = {
           blocks: checked.ok ? checked.blocks : [],
+          nodes: (() => { const tree = validateContent(contentLocale === "ar" ? result.page.draftBlocksAr : result.page.draftBlocksEn); return tree.ok ? tree.tree : undefined; })(),
           locale: contentLocale,
           device:
             rawDevice === "tablet" || rawDevice === "mobile"
@@ -228,9 +233,10 @@ export class PublicService {
       Omit<PublicPage, "restricted"> & {
         visibility: string;
         allowedRoles: string;
+        publishedSettings: string | null;
       }
     > = await db.query(
-      "SELECT id,slug,titleAr,titleEn,seoTitleAr,seoTitleEn,seoDescAr,seoDescEn,publishedBlocksAr,publishedBlocksEn,visibility,allowedRoles FROM Page WHERE slug=? AND status=? LIMIT 1",
+      "SELECT id,slug,titleAr,titleEn,seoTitleAr,seoTitleEn,seoDescAr,seoDescEn,publishedBlocksAr,publishedBlocksEn,visibility,allowedRoles,publishedSettings FROM Page WHERE slug=? AND status=? LIMIT 1",
       [slug, "published"],
     );
     const stored = pages[0];
@@ -250,22 +256,26 @@ export class PublicService {
         redirect: `/${locale}/auth/login?next=/${locale}${slug ? "/" + slug : ""}`,
       };
     if (!canAccessPage(viewer, stored)) throw new NotFoundException();
-    const { visibility, allowedRoles, ...published } = stored;
+    const { visibility, allowedRoles, publishedSettings, ...published } = stored;
+    const settings = parsePageSettings(publishedSettings, stored);
     void allowedRoles; // Authorization-only metadata is deliberately omitted from the DTO.
     const page: PublicPage = {
       ...published,
+      titleAr: settings.titleAr, titleEn: settings.titleEn,
+      seoTitleAr: settings.seoTitleAr, seoTitleEn: settings.seoTitleEn,
+      seoDescAr: settings.seoDescAr, seoDescEn: settings.seoDescEn,
       restricted: visibility !== "public",
     };
     const blocks =
       locale === "ar" ? page.publishedBlocksAr : page.publishedBlocksEn;
-    try {
-      if (
-        !Array.isArray(JSON.parse(blocks ?? "[]")) ||
-        JSON.parse(blocks ?? "[]").length === 0
-      )
-        throw new Error();
-    } catch {
-      throw new NotFoundException();
+    let parsed: unknown;
+    try { parsed = JSON.parse(blocks ?? "[]"); } catch { throw new NotFoundException(); }
+    if (Array.isArray(parsed)) {
+      // Keep the accepted v0 contract during the staged editor migration.
+      if (parsed.length === 0) throw new NotFoundException();
+    } else {
+      const rendered = loadContentForRender(blocks);
+      if (!rendered.ok || rendered.tree.length === 0) throw new NotFoundException();
     }
     return { ...shell, kind: "cms", page };
   }
