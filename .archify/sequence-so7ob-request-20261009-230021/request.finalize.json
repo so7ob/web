@@ -1,0 +1,152 @@
+{
+  "schemaVersion": 1,
+  "ok": false,
+  "command": "finalize",
+  "status": "fail",
+  "type": "sequence",
+  "quality": "showcase",
+  "startedAt": "2026-10-09T20:03:06.266Z",
+  "specification": {
+    "path": "/root/So7ob/web/.archify/sequence-so7ob-request-20261009-230021/candidate.json",
+    "sha256": "f61a61f0126a8b634b1ce1df1fe03fc4ce6103421dbfe9a2af6fd2f860ce005d",
+    "bytes": 13499
+  },
+  "artifact": {
+    "path": "/root/So7ob/web/.archify/sequence-so7ob-request-20261009-230021/request.html",
+    "sha256": "97c47d347131c1615073fba6f1c03d7f5351aacecb06505815d0b02973d3368f",
+    "bytes": 784547
+  },
+  "stages": {
+    "validate": {
+      "status": "not-run",
+      "execution": "embedded-in-deliver"
+    },
+    "deliver": {
+      "status": "fail",
+      "exitCode": 0,
+      "durationMs": 684,
+      "command": [
+        "/root/.nvm/versions/node/v24.21.0/bin/node",
+        "/root/So7ob/web/.agents/skills/archify/bin/archify.mjs",
+        "deliver",
+        "sequence",
+        "/root/So7ob/web/.archify/sequence-so7ob-request-20261009-230021/candidate.json",
+        "/root/So7ob/web/.archify/sequence-so7ob-request-20261009-230021/request.html",
+        "--quality",
+        "showcase",
+        "--repo-root",
+        "/root/So7ob/web",
+        "--json"
+      ],
+      "receipt": {
+        "schemaVersion": 1,
+        "receiptId": "3d19eb16-b225-4c4c-b0da-b19c8a20ea9d",
+        "ok": true,
+        "command": "deliver",
+        "type": "sequence",
+        "input": "/root/So7ob/web/.archify/sequence-so7ob-request-20261009-230021/candidate.json",
+        "output": "/root/So7ob/web/.archify/sequence-so7ob-request-20261009-230021/request.html",
+        "specification": {
+          "sha256": "f61a61f0126a8b634b1ce1df1fe03fc4ce6103421dbfe9a2af6fd2f860ce005d",
+          "bytes": 13499
+        },
+        "artifact": {
+          "sha256": "97c47d347131c1615073fba6f1c03d7f5351aacecb06505815d0b02973d3368f",
+          "bytes": 784547
+        },
+        "validation": {
+          "checksPassed": 9,
+          "checkCount": 9,
+          "compositionProfile": "showcase",
+          "compositionStatus": "pass",
+          "errors": 0,
+          "warnings": 1,
+          "compositionIssues": [
+            {
+              "severity": "warning",
+              "code": "composition/viewport-height",
+              "readerFit": null,
+              "viewBoxWidth": 1080,
+              "viewBoxHeight": 1840,
+              "viewportWidth": 1440,
+              "viewportHeight": 900,
+              "ratio": 0.59,
+              "wideRatio": 1.55,
+              "svgWidthPx": 1346,
+              "svgHeightPx": 2293,
+              "fixedChromePx": 126,
+              "pageHeightPx": 2419,
+              "overflowPx": 1519,
+              "detail": "[composition/viewport-height] Preserve every node, relationship, and label. This 1080x1840 canvas (ratio 0.59) declares no intrinsic-height fit and is below the 1.55 wide ratio, so the desktop Reader can neither narrow it nor accept vertical scroll: it renders 2293px tall at the full 1346px width and the page reaches 2419px before cards against 900px, a certain visual-check failure. Either compact vertical spacing so meta.viewBox height is at most 696 at this width, or spread content sideways so the width is at least 2852 at this height; for architecture, omitting meta.viewBox lets the renderer size the canvas and declare the fit."
+            }
+          ]
+        },
+        "evidence": {
+          "verified": true,
+          "repository": "https://github.com/so7ob/web",
+          "revision": "e84fe1b3c3f6b2fd9bf2c79c0a08e53458e5dae3",
+          "references": 15
+        },
+        "update": {
+          "status": "unavailable",
+          "installedVersion": null,
+          "availableVersion": null,
+          "releaseNotes": null,
+          "checkedAt": null,
+          "source": null,
+          "noticeRequired": false,
+          "noticeText": null,
+          "reason": "disabled"
+        }
+      }
+    }
+  },
+  "diagnostics": [
+    {
+      "code": "composition/viewport-height",
+      "severity": "error",
+      "message": "Showcase delivery reported composition/viewport-height; zero warnings are required.",
+      "subject": {
+        "stage": "deliver",
+        "check": "composition"
+      },
+      "evidence": {
+        "reportedSeverity": "warning",
+        "readerFit": null,
+        "viewBoxWidth": 1080,
+        "viewBoxHeight": 1840,
+        "viewportWidth": 1440,
+        "viewportHeight": 900,
+        "ratio": 0.59,
+        "wideRatio": 1.55,
+        "svgWidthPx": 1346,
+        "svgHeightPx": 2293,
+        "fixedChromePx": 126,
+        "pageHeightPx": 2419,
+        "overflowPx": 1519
+      },
+      "supportedFixes": [
+        "Preserve every node, relationship, and label. This 1080x1840 canvas (ratio 0.59) declares no intrinsic-height fit and is below the 1.55 wide ratio, so the desktop Reader can neither narrow it nor accept vertical scroll: it renders 2293px tall at the full 1346px width and the page reaches 2419px before cards against 900px, a certain visual-check failure. Either compact vertical spacing so meta.viewBox height is at most 696 at this width, or spread content sideways so the width is at least 2852 at this height; for architecture, omitting meta.viewBox lets the renderer size the canvas and declare the fit."
+      ]
+    }
+  ],
+  "evidence": {
+    "receipt": "/root/So7ob/web/.archify/sequence-so7ob-request-20261009-230021/request.finalize.json",
+    "summaryReceipt": "/root/So7ob/web/.archify/sequence-so7ob-request-20261009-230021/request.finalize-summary.json"
+  },
+  "visualReview": "not-requested",
+  "failedStage": "deliver",
+  "finishedAt": "2026-10-09T20:03:07.039Z",
+  "durationMs": 772,
+  "update": {
+    "status": "unavailable",
+    "installedVersion": null,
+    "availableVersion": null,
+    "releaseNotes": null,
+    "checkedAt": null,
+    "source": null,
+    "noticeRequired": false,
+    "noticeText": null,
+    "reason": "cache-valid"
+  }
+}

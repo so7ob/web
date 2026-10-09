@@ -1,0 +1,44 @@
+[
+  {
+    "command": "npm run lint",
+    "exitCode": 0,
+    "seconds": 10.9,
+    "log": ".archify/release-38-checks/0.log"
+  },
+  {
+    "command": "npm run typecheck",
+    "exitCode": 0,
+    "seconds": 19.4,
+    "log": ".archify/release-38-checks/1.log"
+  },
+  {
+    "command": "npm test",
+    "exitCode": 1,
+    "seconds": 41.7,
+    "log": ".archify/release-38-checks/2.log"
+  },
+  {
+    "command": "npm run build",
+    "exitCode": 0,
+    "seconds": 4.9,
+    "log": ".archify/release-38-checks/3.log"
+  },
+  {
+    "command": "npm run test:e2e",
+    "exitCode": 1,
+    "seconds": 0.8,
+    "log": ".archify/release-38-checks/4.log"
+  },
+  {
+    "command": "npm run test:infra",
+    "exitCode": 0,
+    "seconds": 0.7,
+    "log": ".archify/release-38-checks/5.log"
+  },
+  {
+    "command": "git diff --check",
+    "exitCode": 0,
+    "seconds": 0.0,
+    "log": ".archify/release-38-checks/6.log"
+  }
+]

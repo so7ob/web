@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "receiptId": "3225ba4f-1dcf-4bb7-9ff7-4db086d8b251",
+  "status": "current",
+  "command": "deliver",
+  "type": "lifecycle",
+  "input": "/root/So7ob/web/.archify/lifecycle-agent-run-20261009-231544/candidate.json",
+  "output": "/root/So7ob/web/.archify/lifecycle-agent-run-20261009-231544/agent-run.html",
+  "specification": {
+    "sha256": "5c5d0585f30d1d680a53b6e8969ea747798017acfa944cf04de5da67090930ab",
+    "bytes": 5489
+  },
+  "artifact": {
+    "sha256": "155fb4c91924e3e6da9079d618b5f1454ed9f90a6d671f9024a60567cf4f8fc3",
+    "bytes": 766012
+  }
+}

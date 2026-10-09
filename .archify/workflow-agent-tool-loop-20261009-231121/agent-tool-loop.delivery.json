@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "receiptId": "df0a477c-f6f5-4a57-b313-3c1cdc01a1fb",
+  "status": "current",
+  "command": "deliver",
+  "type": "workflow",
+  "input": "/root/So7ob/web/.archify/workflow-agent-tool-loop-20261009-231121/candidate.json",
+  "output": "/root/So7ob/web/.archify/workflow-agent-tool-loop-20261009-231121/agent-tool-loop.html",
+  "specification": {
+    "sha256": "8fda829b1f3a6ca958effd86bd5b2f239686c1e221381969e6fdfaa182cc4a79",
+    "bytes": 7520
+  },
+  "artifact": {
+    "sha256": "3f0465ad692cf2ff41db7a4c7d8a944ab519cbfa140abb50890df7581c28c358",
+    "bytes": 768870
+  }
+}

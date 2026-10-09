@@ -1,0 +1,13 @@
+{
+  "inspectedRepository": {
+    "url": "https://github.com/so7ob/web.git",
+    "branch": "develop",
+    "revision": "e84fe1b3c3f6b2fd9bf2c79c0a08e53458e5dae3"
+  },
+  "diagramBasis": "illustrative example; no agent runtime implementation found",
+  "sourcePath": ".agents/skills/archify/examples/agent-tool-call.workflow.json",
+  "sourceTracked": false,
+  "sourceSha256": "d67965d50872c97e4ff3476271e645bf19fab6b3ab44e111bdb44b063e3aa36f",
+  "snapshot": ".archify/workflow-agent-tool-loop-20261009-231121/source-example.json",
+  "candidate": ".archify/workflow-agent-tool-loop-20261009-231121/candidate.json"
+}

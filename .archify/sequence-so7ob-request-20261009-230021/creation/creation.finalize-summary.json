@@ -1,0 +1,48 @@
+{
+  "schemaVersion": 1,
+  "ok": true,
+  "command": "finalize",
+  "status": "pass",
+  "type": "sequence",
+  "quality": "showcase",
+  "specification": {
+    "path": "/root/So7ob/web/.archify/sequence-so7ob-request-20261009-230021/creation/candidate.json",
+    "sha256": "9acdf8ddeeead6d33683160fcaa9f2b6c73359dec62ee3ac8ab69485cde62d68",
+    "bytes": 7442
+  },
+  "artifact": {
+    "path": "/root/So7ob/web/.archify/sequence-so7ob-request-20261009-230021/creation/creation.html",
+    "sha256": "2edab69c2a1b24f467c663dcd2faa58078a2e062cfef6e4098ac56cd238d64ec",
+    "bytes": 757993
+  },
+  "gates": {
+    "validate": "pass",
+    "deliver": "pass",
+    "check": "pass",
+    "browser-check": "pass"
+  },
+  "diagnostics": [],
+  "diagnosticSummary": {
+    "total": 0,
+    "shown": 0,
+    "truncated": false
+  },
+  "evidence": {
+    "receipt": "/root/So7ob/web/.archify/sequence-so7ob-request-20261009-230021/creation/creation.finalize.json",
+    "summaryReceipt": "/root/So7ob/web/.archify/sequence-so7ob-request-20261009-230021/creation/creation.finalize-summary.json",
+    "browserCheckReceipt": "/root/So7ob/web/.archify/sequence-so7ob-request-20261009-230021/creation/creation.browser-check.json"
+  },
+  "update": {
+    "status": "unavailable",
+    "installedVersion": null,
+    "availableVersion": null,
+    "releaseNotes": null,
+    "checkedAt": null,
+    "source": null,
+    "noticeRequired": false,
+    "noticeText": null,
+    "reason": "cache-valid"
+  },
+  "visualReview": "not-requested",
+  "durationMs": 3252
+}

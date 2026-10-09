@@ -1,6 +1,6 @@
 {
   "name": "so7ob-web",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "private": true,
   "scripts": {
     "dev": "npm run build:server && node --env-file-if-exists=.env apps/api/dist/main.js",

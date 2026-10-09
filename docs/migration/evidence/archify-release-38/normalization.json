@@ -1,0 +1,72 @@
+[
+  {
+    "path": ".agents/skills/archify/assets/template.html",
+    "before": "b0b550d644b77cad401bbc4b21375919ef01db45d235122a0ee42b732cb34233",
+    "afterWhitespaceNormalization": "762f76c3d5c1fe6a72e3cb7bb4008704b3ec4a5c214448cb20b177d97388d235"
+  },
+  {
+    "path": ".agents/skills/archify/examples/dataflow-product-analytics.html",
+    "before": "6d6790f1fa3631241dba4065e33ba2ce947a1da032cdd6d7d44c7190f85d3f5d",
+    "afterWhitespaceNormalization": "dbecf82183c066be124f85124e0519d44d170b07dc5a33936c8b804f7409c468"
+  },
+  {
+    "path": ".agents/skills/archify/examples/lifecycle-agent-run.html",
+    "before": "0874c0723b10104ea03c566d1d63d958b6f93a6788c0075c1d1d162ccdb4054c",
+    "afterWhitespaceNormalization": "3a238d01afb2317e0ca44ce7a3def3893c21314dab88eff1f277f6d9cb5720da"
+  },
+  {
+    "path": ".agents/skills/archify/examples/sequence-cache-miss-request.html",
+    "before": "307951a168d2492eb0c41f318260d0a866f6e6057df5253d3528c32a23084ea3",
+    "afterWhitespaceNormalization": "64c03303c4e169aed43157cb67484b428a27d0c99932f4a7fc2bbc91d75a9bcd"
+  },
+  {
+    "path": ".agents/skills/archify/examples/web-app-rendered.html",
+    "before": "8233f4f600c89559b64ac650ad11b66ee1423103e8b6c5e53f63740afc06f6da",
+    "afterWhitespaceNormalization": "febbcea79441d32bf85fb392e288a19210c137736d51f2974d3eb08de09aa1fc"
+  },
+  {
+    "path": ".agents/skills/archify/examples/workflow-agent-tool-call-rendered.html",
+    "before": "3edbb38a05430865ee2f620c35de49f8e78dfd8788be14840d9e134b5912230d",
+    "afterWhitespaceNormalization": "fb74ca13620d9a66a8dadc784c387afdad875d1759828cd919fc401fd0712edc"
+  },
+  {
+    "path": ".agents/skills/archify/renderers/workflow/workflow-compiler.mjs",
+    "before": "25646b0a7ee13d62ed7b21c915d40665608ffd57c69af263a8ec4250ceb9214e",
+    "afterWhitespaceNormalization": "a21a91373ab7cbf996983bcff7820580e9c0547dd7bdef5cf5989393c5dda339"
+  },
+  {
+    "path": ".archify/architecture-so7ob-20261009-230021/so7ob.html",
+    "before": "4241f5c4e13882b15fc7019629da1b9c07f3f0534802036bf8173ba622317da6",
+    "afterWhitespaceNormalization": "951c17150b2077c2ca8ce70c2620badb3faaba59aceb9bf37529c0793cafcb5d"
+  },
+  {
+    "path": ".archify/lifecycle-agent-run-20261009-231544/agent-run.html",
+    "before": "4560a7250261ce58df9396e284e60ab506ea064684d9d902c3beb0ae8e5e8329",
+    "afterWhitespaceNormalization": "155fb4c91924e3e6da9079d618b5f1454ed9f90a6d671f9024a60567cf4f8fc3"
+  },
+  {
+    "path": ".archify/sequence-so7ob-request-20261009-230021/creation/creation.html",
+    "before": "57acd635dcd43c728fe25124a49d97b6121952e8dfa004f52f6b9d71fe6abafe",
+    "afterWhitespaceNormalization": "6ea30754c01f4383a90e4c552a51641f5c0778f5b041d7fbfee57fe10f0085bc"
+  },
+  {
+    "path": ".archify/sequence-so7ob-request-20261009-230021/followup/followup.html",
+    "before": "8ef88214a2146a0ad36f098e39af3b2861c0f07f552ecd0db742344777810058",
+    "afterWhitespaceNormalization": "e6be295a22948c5a18cb104654a046de0b7eac2789654816ed69cacb885471d3"
+  },
+  {
+    "path": ".archify/sequence-so7ob-request-20261009-230021/processing/processing.html",
+    "before": "d730327674472aae46894d143cf9e4b139e869592ecf08b3e2fae1df775d406a",
+    "afterWhitespaceNormalization": "ed3a7d51793820806270bb087cd408b3e7a62881416b1516abb2c28faac170d8"
+  },
+  {
+    "path": ".archify/sequence-so7ob-request-20261009-230021/request.html",
+    "before": "97c47d347131c1615073fba6f1c03d7f5351aacecb06505815d0b02973d3368f",
+    "afterWhitespaceNormalization": "52b3d96bfa2fbed15a24c8e89a2ac61d3f119359b4464d894f49505d790a731c"
+  },
+  {
+    "path": ".archify/workflow-agent-tool-loop-20261009-231121/agent-tool-loop.html",
+    "before": "d5e6ede23f11ae3439c0e9e3075f3fdb5e71b64a24ec3cbf4f88044e8f0a5e40",
+    "afterWhitespaceNormalization": "3f0465ad692cf2ff41db7a4c7d8a944ab519cbfa140abb50890df7581c28c358"
+  }
+]
