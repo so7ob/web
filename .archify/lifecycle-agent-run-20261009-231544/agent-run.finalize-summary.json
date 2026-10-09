@@ -1,0 +1,48 @@
+{
+  "schemaVersion": 1,
+  "ok": true,
+  "command": "finalize",
+  "status": "pass",
+  "type": "lifecycle",
+  "quality": "showcase",
+  "specification": {
+    "path": "/root/So7ob/web/.archify/lifecycle-agent-run-20261009-231544/candidate.json",
+    "sha256": "5c5d0585f30d1d680a53b6e8969ea747798017acfa944cf04de5da67090930ab",
+    "bytes": 5489
+  },
+  "artifact": {
+    "path": "/root/So7ob/web/.archify/lifecycle-agent-run-20261009-231544/agent-run.html",
+    "sha256": "4560a7250261ce58df9396e284e60ab506ea064684d9d902c3beb0ae8e5e8329",
+    "bytes": 766102
+  },
+  "gates": {
+    "validate": "pass",
+    "deliver": "pass",
+    "check": "pass",
+    "browser-check": "pass"
+  },
+  "diagnostics": [],
+  "diagnosticSummary": {
+    "total": 0,
+    "shown": 0,
+    "truncated": false
+  },
+  "evidence": {
+    "receipt": "/root/So7ob/web/.archify/lifecycle-agent-run-20261009-231544/agent-run.finalize.json",
+    "summaryReceipt": "/root/So7ob/web/.archify/lifecycle-agent-run-20261009-231544/agent-run.finalize-summary.json",
+    "browserCheckReceipt": "/root/So7ob/web/.archify/lifecycle-agent-run-20261009-231544/agent-run.browser-check.json"
+  },
+  "update": {
+    "status": "unavailable",
+    "installedVersion": null,
+    "availableVersion": null,
+    "releaseNotes": null,
+    "checkedAt": null,
+    "source": null,
+    "noticeRequired": false,
+    "noticeText": null,
+    "reason": "cache-valid"
+  },
+  "visualReview": "not-requested",
+  "durationMs": 3481
+}

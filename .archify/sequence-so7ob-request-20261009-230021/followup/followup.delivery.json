@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "receiptId": "c045ff45-c8a1-43d7-809e-b5f94b52d714",
+  "status": "current",
+  "command": "deliver",
+  "type": "sequence",
+  "input": "/root/So7ob/web/.archify/sequence-so7ob-request-20261009-230021/followup/candidate.json",
+  "output": "/root/So7ob/web/.archify/sequence-so7ob-request-20261009-230021/followup/followup.html",
+  "specification": {
+    "sha256": "b2a3fe13ff2c7cd3e2e7afc2cc64139b37dc9fdccac7817dddbfa856b50851a5",
+    "bytes": 8676
+  },
+  "artifact": {
+    "sha256": "e6be295a22948c5a18cb104654a046de0b7eac2789654816ed69cacb885471d3",
+    "bytes": 762676
+  }
+}

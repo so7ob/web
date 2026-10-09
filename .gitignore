@@ -18,3 +18,7 @@ db/backups/
 # Skill catalogs are source data, not runtime/private database directories.
 !.agents/skills/**/data/
 !.agents/skills/**/data/**
+
+# Local diagram verification caches are not deliverables.
+.archify/**/tmp/
+.archify/**/.cache/

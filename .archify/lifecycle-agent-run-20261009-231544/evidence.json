@@ -1,0 +1,11 @@
+{
+  "repository": "https://github.com/so7ob/web.git",
+  "branch": "develop",
+  "revision": "e84fe1b3c3f6b2fd9bf2c79c0a08e53458e5dae3",
+  "basis": "illustrative Agent Run example; assumption based on previous user choice",
+  "source": ".agents/skills/archify/examples/agent-run.lifecycle.json",
+  "tracked": false,
+  "sha256": "230242a7557663877766c43a9fe7cffe8b4fb66e4866457dccd24c63175b4917",
+  "explicitSourceTransitions": 6,
+  "impliedMainRailTransitions": 4
+}

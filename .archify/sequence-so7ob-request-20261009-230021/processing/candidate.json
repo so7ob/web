@@ -1,0 +1,272 @@
+{
+  "schema_version": 1,
+  "diagram_type": "sequence",
+  "meta": {
+    "title": "٢ — معالجة الطلب والرد",
+    "output": ".archify/sequence-so7ob-request-20261009-230021/processing/processing.html",
+    "quality_profile": "showcase",
+    "repository": {
+      "url": "https://github.com/so7ob/web.git",
+      "revision": "e84fe1b3c3f6b2fd9bf2c79c0a08e53458e5dae3",
+      "provider": "github"
+    },
+    "column_fit": "spread",
+    "viewBox": [
+      1080,
+      690
+    ],
+    "legend": {
+      "entries": {
+        "default": {
+          "label": "متزامن"
+        },
+        "emphasis": {
+          "label": "طلب API"
+        },
+        "security": {
+          "label": "تحقق / صلاحيات"
+        },
+        "dashed": {
+          "label": "تنفيذ خلفي"
+        },
+        "return": {
+          "label": "نتيجة الطلب"
+        }
+      }
+    }
+  },
+  "participants": [
+    {
+      "id": "staff",
+      "type": "frontend",
+      "label": "الموظف",
+      "sublabel": "لوحة الإدارة",
+      "sources": [
+        {
+          "path": "apps/web/src/components/admin/requests/request-detail-client.tsx",
+          "line": 187,
+          "end_line": 234
+        }
+      ]
+    },
+    {
+      "id": "api",
+      "type": "security",
+      "label": "API",
+      "sublabel": "Guards + DTO",
+      "sources": [
+        {
+          "path": "apps/api/src/business/controller.ts",
+          "line": 46,
+          "end_line": 104
+        },
+        {
+          "path": "apps/api/src/business/controller.ts",
+          "line": 156,
+          "end_line": 190
+        },
+        {
+          "path": "apps/api/src/admin/operations.controller.ts",
+          "line": 219,
+          "end_line": 237
+        }
+      ]
+    },
+    {
+      "id": "logic",
+      "type": "backend",
+      "label": "الخدمات",
+      "sublabel": "تفويض + قواعد",
+      "sources": [
+        {
+          "path": "packages/server/src/business/submissions.ts",
+          "line": 44,
+          "end_line": 168
+        },
+        {
+          "path": "packages/server/src/business/requests.ts",
+          "line": 274,
+          "end_line": 380
+        },
+        {
+          "path": "packages/server/src/admin/conversations.ts",
+          "line": 338,
+          "end_line": 412
+        }
+      ]
+    },
+    {
+      "id": "store",
+      "type": "database",
+      "label": "MariaDB",
+      "sublabel": "TypeORM / SQL",
+      "sources": [
+        {
+          "path": "packages/server/src/database/data-source.ts",
+          "line": 27,
+          "end_line": 39
+        },
+        {
+          "path": "packages/server/src/track/notify.ts",
+          "line": 8,
+          "end_line": 16
+        }
+      ]
+    }
+  ],
+  "messages": [
+    {
+      "id": "step-10",
+      "from": "staff",
+      "to": "api",
+      "y": 170,
+      "label": "GET /api/admin/requests/:id",
+      "variant": "emphasis"
+    },
+    {
+      "id": "step-11",
+      "from": "api",
+      "to": "logic",
+      "y": 198,
+      "label": "جلسة + requests.view.all",
+      "variant": "security"
+    },
+    {
+      "id": "step-12",
+      "from": "logic",
+      "to": "store",
+      "y": 226,
+      "label": "قراءة الطلب والمحادثة",
+      "variant": "default"
+    },
+    {
+      "id": "step-13",
+      "from": "api",
+      "to": "staff",
+      "y": 254,
+      "label": "200 — تفاصيل الطلب",
+      "variant": "return"
+    },
+    {
+      "id": "step-14",
+      "from": "staff",
+      "to": "api",
+      "y": 282,
+      "label": "PATCH /api/admin/requests/:id",
+      "variant": "emphasis"
+    },
+    {
+      "id": "step-15",
+      "from": "api",
+      "to": "logic",
+      "y": 310,
+      "label": "requests.status + انتقال new → in_review",
+      "variant": "security"
+    },
+    {
+      "id": "step-16",
+      "from": "logic",
+      "to": "store",
+      "y": 338,
+      "label": "قفل + حالة + StatusEvent + إشعار؛ COMMIT",
+      "variant": "default"
+    },
+    {
+      "id": "step-17",
+      "from": "api",
+      "to": "staff",
+      "y": 366,
+      "label": "200 ok",
+      "variant": "return"
+    },
+    {
+      "id": "step-18",
+      "from": "staff",
+      "to": "api",
+      "y": 394,
+      "label": "POST /api/account/requests/:id/messages",
+      "variant": "emphasis"
+    },
+    {
+      "id": "step-19",
+      "from": "api",
+      "to": "logic",
+      "y": 422,
+      "label": "جلسة + وصول + requests.reply + نص غير فارغ",
+      "variant": "security"
+    },
+    {
+      "id": "step-20",
+      "from": "logic",
+      "to": "store",
+      "y": 450,
+      "label": "قفل؛ حفظ الرد وNotification وAudit",
+      "variant": "default"
+    },
+    {
+      "id": "step-21",
+      "from": "logic",
+      "to": "store",
+      "y": 478,
+      "label": "SAVEPOINT: محاولة إسناد بريد الرد",
+      "variant": "default"
+    },
+    {
+      "id": "step-22",
+      "from": "store",
+      "to": "logic",
+      "y": 506,
+      "label": "COMMIT — الرد محفوظ ولو تعذّر إسناد البريد",
+      "variant": "return"
+    },
+    {
+      "id": "step-23",
+      "from": "api",
+      "to": "staff",
+      "y": 534,
+      "label": "201 ok + message",
+      "variant": "return"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "rose",
+      "title": "مسارات الرفض",
+      "items": [
+        "400: DTO/محتوى غير صالح أو رد فارغ؛ 403: Origin/CSRF أو منع الوصول/الصلاحية؛ 401: جلسة الحساب مفقودة.",
+        "إنشاء الطلب: 429 عند تجاوز المعدل؛ 409 duplicate خلال 30 دقيقة. المعاملة تتراجع إذا فشل حفظ الطلب أو مهام الطاقم.",
+        "404 إذا اختفى الطلب؛ 409 invalid_transition للحالة غير المسموحة. رد العميل على closed/cancelled يرفض بـ409 locked."
+      ]
+    },
+    {
+      "dot": "amber",
+      "title": "الإشعار والبريد ليسا نتيجة واحدة",
+      "items": [
+        "السيناريو لعميل مسجل؛ clientId يأتي من الجلسة. POST /api/requests يقبل زائرًا أيضًا؛ ليس AccountGuard.",
+        "رد الموظف العلني يحفظ Notification ويحاول MailJob إلى بريد التواصل المخزن في الطلب. SAVEPOINT يعزل فشل إسناد البريد.",
+        "بريد الطاقم عند الإنشاء يصبح EmailLog فقط في EMAIL_DEV_MODE؛ Webhook يُسند فقط عند NOTIFY_WEBHOOK_URL.",
+        "نجاح SMTP يعني قبول المزود، لا وصول صندوق الوارد. النتائج الملتبسة uncertain لا تُرسل مجددًا تلقائيًا."
+      ]
+    },
+    {
+      "dot": "emerald",
+      "title": "معنى الحالة والمتابعة",
+      "items": [
+        "المثال يغيّر new إلى in_review، ثم يرسل الرد. إرسال الرد وحده لا يغيّر الحالة إلى responded.",
+        "تغيير الحالة يحفظ RequestStatusEvent ورسالة system وإشعارًا داخليًا؛ لا يستدعي بريد تغيير حالة في هذا المسار.",
+        "العميل يجلب الحالة والرد عبر GET. لا يعتمد هذا المسار على WebSocket أو Push.",
+        "الرسالة المطابقة لآخر رسالة من نفس الكاتب خلال 5 دقائق تعيد الموجودة بدل إنشاء أخرى."
+      ]
+    },
+    {
+      "dot": "slate",
+      "title": "نطاق التحقق",
+      "items": [
+        "التسلسل قراءة للكود عند develop @ e84fe1b3؛ ليس تسجيلاً لتشغيل حي أو إثبات قبول شامل.",
+        "البريد قد يُنفّذ بين أي خطوتين بعد COMMIT؛ موضعه هنا للتوضيح، ولا ينتظره العميل.",
+        "SSR وHydration في مخطط البنية؛ المتصل طلب متزامن؛ الوردي المتقطع تحقق متزامن، والرمادي المتقطع عودة، والبنفسجي المتقطع عمل خلفي.",
+        "التسميات عربية؛ واجهة أدوات العارض الثابتة إنجليزية."
+      ]
+    }
+  ]
+}

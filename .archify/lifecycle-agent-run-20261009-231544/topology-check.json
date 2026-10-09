@@ -1,0 +1,11 @@
+{
+  "explicitAndImpliedSourceTopologyPreserved": true,
+  "states": 10,
+  "transitions": 10,
+  "terminals": [
+    "cancel",
+    "success",
+    "timeout"
+  ],
+  "failedHasRetry": true
+}

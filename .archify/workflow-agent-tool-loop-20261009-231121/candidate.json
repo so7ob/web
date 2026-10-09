@@ -1,0 +1,325 @@
+{
+  "schema_version": 2,
+  "diagram_type": "workflow",
+  "meta": {
+    "title": "Agent tool-call flow \u2014 illustrative, not So7ob runtime",
+    "locale": "en",
+    "output": ".archify/workflow-agent-tool-loop-20261009-231121/agent-tool-loop.html",
+    "quality_profile": "showcase"
+  },
+  "lanes": [
+    {
+      "id": "surface",
+      "label": "User surface"
+    },
+    {
+      "id": "runtime",
+      "label": "Agent runtime"
+    },
+    {
+      "id": "policy",
+      "label": "Policy boundary"
+    },
+    {
+      "id": "execution",
+      "label": "Tool execution"
+    },
+    {
+      "id": "exception",
+      "label": "Exception handling",
+      "variant": "exception"
+    },
+    {
+      "id": "observability",
+      "label": "Observability"
+    }
+  ],
+  "mainPath": [
+    "request",
+    "thread",
+    "plan",
+    "route",
+    "consent",
+    "invoke",
+    "service",
+    "reply"
+  ],
+  "nodes": [
+    {
+      "id": "request",
+      "lane": "surface",
+      "col": 0,
+      "type": "external",
+      "label": "User request",
+      "sublabel": "asks for work",
+      "width": 132
+    },
+    {
+      "id": "thread",
+      "lane": "surface",
+      "col": 1,
+      "type": "frontend",
+      "label": "Chat surface",
+      "sublabel": "thread + files",
+      "width": 132
+    },
+    {
+      "id": "reply",
+      "lane": "surface",
+      "col": 5,
+      "type": "frontend",
+      "label": "Final reply",
+      "sublabel": "answer + changes",
+      "width": 132
+    },
+    {
+      "id": "plan",
+      "lane": "runtime",
+      "col": 2,
+      "type": "backend",
+      "label": "Plan next step",
+      "sublabel": "example planner",
+      "width": 132
+    },
+    {
+      "id": "route",
+      "lane": "runtime",
+      "col": 3,
+      "type": "backend",
+      "label": "Choose capability",
+      "sublabel": "example router",
+      "width": 132
+    },
+    {
+      "id": "consent",
+      "lane": "policy",
+      "col": 3,
+      "type": "security",
+      "label": "Approval gate",
+      "sublabel": "scope + consent",
+      "width": 132
+    },
+    {
+      "id": "deny",
+      "lane": "exception",
+      "col": 3,
+      "type": "security",
+      "label": "Blocked",
+      "sublabel": "wait or reject",
+      "width": 132
+    },
+    {
+      "id": "revise",
+      "lane": "exception",
+      "col": 4,
+      "type": "messagebus",
+      "label": "Retry / revise",
+      "sublabel": "no re-entry shown",
+      "width": 132
+    },
+    {
+      "id": "invoke",
+      "lane": "execution",
+      "col": 4,
+      "type": "messagebus",
+      "label": "Tool call",
+      "sublabel": "shell / browser / MCP",
+      "width": 132
+    },
+    {
+      "id": "service",
+      "lane": "execution",
+      "col": 5,
+      "type": "cloud",
+      "label": "External API",
+      "sublabel": "example network call",
+      "width": 132
+    },
+    {
+      "id": "context",
+      "lane": "observability",
+      "col": 2,
+      "type": "database",
+      "label": "Context store",
+      "sublabel": "repo + memory",
+      "width": 132,
+      "yOffset": -42
+    },
+    {
+      "id": "evidence",
+      "lane": "observability",
+      "col": 2,
+      "type": "database",
+      "label": "Trace log",
+      "sublabel": "events + output",
+      "width": 132,
+      "yOffset": 42
+    }
+  ],
+  "edges": [
+    {
+      "id": "input",
+      "from": "request",
+      "to": "thread",
+      "label": "request",
+      "variant": "emphasis",
+      "role": "main"
+    },
+    {
+      "id": "intake",
+      "from": "thread",
+      "to": "plan",
+      "label": "plan",
+      "variant": "emphasis",
+      "role": "main"
+    },
+    {
+      "id": "select",
+      "from": "plan",
+      "to": "route",
+      "label": "select tool",
+      "variant": "emphasis",
+      "role": "main"
+    },
+    {
+      "id": "gate",
+      "from": "route",
+      "to": "consent",
+      "label": "check approval",
+      "variant": "security",
+      "role": "main"
+    },
+    {
+      "id": "allowed",
+      "from": "consent",
+      "to": "invoke",
+      "label": "approved",
+      "variant": "emphasis",
+      "role": "main"
+    },
+    {
+      "id": "denied",
+      "from": "consent",
+      "to": "deny",
+      "label": "denied",
+      "variant": "security",
+      "role": "error"
+    },
+    {
+      "id": "revise-request",
+      "from": "deny",
+      "to": "revise",
+      "label": "revise request",
+      "variant": "dashed",
+      "role": "branch"
+    },
+    {
+      "id": "call",
+      "from": "invoke",
+      "to": "service",
+      "label": "call",
+      "variant": "emphasis",
+      "role": "main"
+    },
+    {
+      "id": "response",
+      "from": "service",
+      "to": "reply",
+      "label": "result",
+      "variant": "emphasis",
+      "role": "return"
+    },
+    {
+      "id": "record",
+      "from": "service",
+      "to": "evidence",
+      "label": "record result",
+      "variant": "dashed",
+      "role": "branch",
+      "route": "bottom-channel",
+      "fromSide": "bottom",
+      "toSide": "bottom"
+    },
+    {
+      "id": "context-trace",
+      "from": "context",
+      "to": "evidence",
+      "label": "trace + memory",
+      "variant": "dashed",
+      "role": "branch"
+    }
+  ],
+  "semanticChecks": {
+    "allowedRoots": [
+      "request",
+      "context"
+    ],
+    "allowedTerminals": [
+      "reply",
+      "revise",
+      "evidence"
+    ],
+    "requiredEdges": [
+      {
+        "from": "consent",
+        "to": "invoke"
+      },
+      {
+        "from": "consent",
+        "to": "deny"
+      },
+      {
+        "from": "deny",
+        "to": "revise"
+      },
+      {
+        "from": "service",
+        "to": "evidence"
+      }
+    ]
+  },
+  "cards": [
+    {
+      "dot": "emerald",
+      "title": "Primary success path",
+      "items": [
+        "Request \u2192 chat \u2192 planner \u2192 router \u2192 approval \u2192 tool \u2192 external API \u2192 final reply.",
+        "These are relationships in the supplied Archify example, not implemented agent components in So7ob."
+      ]
+    },
+    {
+      "dot": "rose",
+      "title": "Approval and blocked path",
+      "items": [
+        "The example labels the gate scope + consent and branches on denial to wait or reject.",
+        "No approver identity, consent UI, timeout, cancellation handler, or policy implementation is supplied."
+      ]
+    },
+    {
+      "dot": "amber",
+      "title": "Retry is not a proven loop",
+      "items": [
+        "Denied \u2192 blocked \u2192 revise request is explicit in the example.",
+        "There is no retry \u2192 planner/tool edge, retry budget, backoff, or tool-error edge. None is added here."
+      ]
+    },
+    {
+      "dot": "violet",
+      "title": "Evidence paths",
+      "items": [
+        "The example connects external API \u2192 trace log and context store \u2192 trace log.",
+        "It does not connect evidence back to the planner or final reply. Storage, delivery guarantees, and asynchronous execution are unspecified.",
+        "Dashed purple links distinguish secondary evidence/revision paths; dashed pink links are policy checks."
+      ]
+    },
+    {
+      "dot": "slate",
+      "title": "Evidence status",
+      "items": [
+        "Inspected so7ob/web: develop @ e84fe1b3c3f6b2fd9bf2c79c0a08e53458e5dae3. No agent tool-call implementation found in apps, packages, or tools.",
+        "Diagram input: local .agents/skills/archify/examples/agent-tool-call.workflow.json; untracked and not part of that commit.",
+        "This is an explicit illustrative fallback. Repository policies are instructions, not proof of an executable approval engine."
+      ]
+    }
+  ]
+}

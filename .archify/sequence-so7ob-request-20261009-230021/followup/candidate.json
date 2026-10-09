@@ -1,0 +1,289 @@
+{
+  "schema_version": 1,
+  "diagram_type": "sequence",
+  "meta": {
+    "title": "٣ — البريد ومتابعة العميل",
+    "output": ".archify/sequence-so7ob-request-20261009-230021/followup/followup.html",
+    "quality_profile": "showcase",
+    "repository": {
+      "url": "https://github.com/so7ob/web.git",
+      "revision": "e84fe1b3c3f6b2fd9bf2c79c0a08e53458e5dae3",
+      "provider": "github"
+    },
+    "column_fit": "spread",
+    "viewBox": [
+      1080,
+      690
+    ],
+    "legend": {
+      "entries": {
+        "default": {
+          "label": "متزامن"
+        },
+        "emphasis": {
+          "label": "طلب API"
+        },
+        "security": {
+          "label": "تحقق / صلاحيات"
+        },
+        "dashed": {
+          "label": "تنفيذ خلفي"
+        },
+        "return": {
+          "label": "نتيجة الطلب"
+        }
+      }
+    }
+  },
+  "participants": [
+    {
+      "id": "client",
+      "type": "frontend",
+      "label": "العميل",
+      "sublabel": "واجهة الحساب",
+      "sources": [
+        {
+          "path": "apps/web/src/components/form/project-request-form.tsx",
+          "line": 174,
+          "end_line": 205
+        },
+        {
+          "path": "apps/web/src/components/account/request-detail-view.tsx",
+          "line": 65,
+          "end_line": 82
+        }
+      ]
+    },
+    {
+      "id": "api",
+      "type": "security",
+      "label": "API",
+      "sublabel": "Guards + DTO",
+      "sources": [
+        {
+          "path": "apps/api/src/business/controller.ts",
+          "line": 46,
+          "end_line": 104
+        },
+        {
+          "path": "apps/api/src/business/controller.ts",
+          "line": 156,
+          "end_line": 190
+        },
+        {
+          "path": "apps/api/src/admin/operations.controller.ts",
+          "line": 219,
+          "end_line": 237
+        }
+      ]
+    },
+    {
+      "id": "logic",
+      "type": "backend",
+      "label": "الخدمات",
+      "sublabel": "تفويض + قواعد",
+      "sources": [
+        {
+          "path": "packages/server/src/business/submissions.ts",
+          "line": 44,
+          "end_line": 168
+        },
+        {
+          "path": "packages/server/src/business/requests.ts",
+          "line": 274,
+          "end_line": 380
+        },
+        {
+          "path": "packages/server/src/admin/conversations.ts",
+          "line": 338,
+          "end_line": 412
+        }
+      ]
+    },
+    {
+      "id": "store",
+      "type": "database",
+      "label": "MariaDB",
+      "sublabel": "TypeORM / SQL",
+      "sources": [
+        {
+          "path": "packages/server/src/database/data-source.ts",
+          "line": 27,
+          "end_line": 39
+        },
+        {
+          "path": "packages/server/src/track/notify.ts",
+          "line": 8,
+          "end_line": 16
+        }
+      ]
+    },
+    {
+      "id": "worker",
+      "type": "backend",
+      "label": "العامل",
+      "sublabel": "MailQueue",
+      "sources": [
+        {
+          "path": "apps/worker/src/main.ts",
+          "line": 1,
+          "end_line": 24
+        },
+        {
+          "path": "packages/server/src/queue/worker.ts",
+          "line": 25,
+          "end_line": 49
+        }
+      ]
+    },
+    {
+      "id": "smtp",
+      "type": "external",
+      "label": "SMTP",
+      "sublabel": "مزود البريد",
+      "sources": [
+        {
+          "path": "packages/server/src/queue/worker.ts",
+          "line": 5,
+          "end_line": 14
+        },
+        {
+          "path": "packages/server/src/queue/worker.ts",
+          "line": 37,
+          "end_line": 48
+        }
+      ]
+    }
+  ],
+  "messages": [
+    {
+      "id": "step-24",
+      "from": "worker",
+      "to": "store",
+      "y": 170,
+      "label": "Polling: claim MailJob + lease",
+      "variant": "dashed"
+    },
+    {
+      "id": "step-25",
+      "from": "store",
+      "to": "worker",
+      "y": 198,
+      "label": "حمولة مشفرة للمهمة المتاحة",
+      "variant": "return"
+    },
+    {
+      "id": "step-26",
+      "from": "worker",
+      "to": "smtp",
+      "y": 226,
+      "label": "sendMail بعد beginSend",
+      "variant": "dashed"
+    },
+    {
+      "id": "step-27",
+      "from": "worker",
+      "to": "store",
+      "y": 254,
+      "label": "sent / retry / failed / uncertain",
+      "variant": "dashed"
+    },
+    {
+      "id": "step-28",
+      "from": "client",
+      "to": "api",
+      "y": 282,
+      "label": "GET /api/account/notifications",
+      "variant": "emphasis"
+    },
+    {
+      "id": "step-29",
+      "from": "api",
+      "to": "client",
+      "y": 310,
+      "label": "200 — إشعار رد / تغيير حالة",
+      "variant": "return"
+    },
+    {
+      "id": "step-30",
+      "from": "client",
+      "to": "api",
+      "y": 338,
+      "label": "GET /api/account/requests/:id",
+      "variant": "emphasis"
+    },
+    {
+      "id": "step-31",
+      "from": "api",
+      "to": "logic",
+      "y": 366,
+      "label": "AccountGuard + ملكية الطلب",
+      "variant": "security"
+    },
+    {
+      "id": "step-32",
+      "from": "logic",
+      "to": "store",
+      "y": 394,
+      "label": "قراءة؛ حجب internal_note ومرفقاتها",
+      "variant": "security"
+    },
+    {
+      "id": "step-33",
+      "from": "logic",
+      "to": "store",
+      "y": 422,
+      "label": "تحديث clientReadAt عند الحاجة",
+      "variant": "default"
+    },
+    {
+      "id": "step-34",
+      "from": "api",
+      "to": "client",
+      "y": 450,
+      "label": "200 — الحالة والرد وسجل الحالة",
+      "variant": "return"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "rose",
+      "title": "مسارات الرفض",
+      "items": [
+        "400: DTO/محتوى غير صالح أو رد فارغ؛ 403: Origin/CSRF أو منع الوصول/الصلاحية؛ 401: جلسة الحساب مفقودة.",
+        "إنشاء الطلب: 429 عند تجاوز المعدل؛ 409 duplicate خلال 30 دقيقة. المعاملة تتراجع إذا فشل حفظ الطلب أو مهام الطاقم.",
+        "404 إذا اختفى الطلب؛ 409 invalid_transition للحالة غير المسموحة. رد العميل على closed/cancelled يرفض بـ409 locked."
+      ]
+    },
+    {
+      "dot": "amber",
+      "title": "الإشعار والبريد ليسا نتيجة واحدة",
+      "items": [
+        "السيناريو لعميل مسجل؛ clientId يأتي من الجلسة. POST /api/requests يقبل زائرًا أيضًا؛ ليس AccountGuard.",
+        "رد الموظف العلني يحفظ Notification ويحاول MailJob إلى بريد التواصل المخزن في الطلب. SAVEPOINT يعزل فشل إسناد البريد.",
+        "بريد الطاقم عند الإنشاء يصبح EmailLog فقط في EMAIL_DEV_MODE؛ Webhook يُسند فقط عند NOTIFY_WEBHOOK_URL.",
+        "نجاح SMTP يعني قبول المزود، لا وصول صندوق الوارد. النتائج الملتبسة uncertain لا تُرسل مجددًا تلقائيًا."
+      ]
+    },
+    {
+      "dot": "emerald",
+      "title": "معنى الحالة والمتابعة",
+      "items": [
+        "المثال يغيّر new إلى in_review، ثم يرسل الرد. إرسال الرد وحده لا يغيّر الحالة إلى responded.",
+        "تغيير الحالة يحفظ RequestStatusEvent ورسالة system وإشعارًا داخليًا؛ لا يستدعي بريد تغيير حالة في هذا المسار.",
+        "العميل يجلب الحالة والرد عبر GET. لا يعتمد هذا المسار على WebSocket أو Push.",
+        "الرسالة المطابقة لآخر رسالة من نفس الكاتب خلال 5 دقائق تعيد الموجودة بدل إنشاء أخرى."
+      ]
+    },
+    {
+      "dot": "slate",
+      "title": "نطاق التحقق",
+      "items": [
+        "التسلسل قراءة للكود عند develop @ e84fe1b3؛ ليس تسجيلاً لتشغيل حي أو إثبات قبول شامل.",
+        "البريد قد يُنفّذ بين أي خطوتين بعد COMMIT؛ موضعه هنا للتوضيح، ولا ينتظره العميل.",
+        "SSR وHydration في مخطط البنية؛ المتصل طلب متزامن؛ الوردي المتقطع تحقق متزامن، والرمادي المتقطع عودة، والبنفسجي المتقطع عمل خلفي.",
+        "التسميات عربية؛ واجهة أدوات العارض الثابتة إنجليزية."
+      ]
+    }
+  ]
+}

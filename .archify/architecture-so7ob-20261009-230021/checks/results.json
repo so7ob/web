@@ -1,0 +1,30 @@
+[
+  {
+    "check": "lint",
+    "exitCode": 0
+  },
+  {
+    "check": "typecheck",
+    "exitCode": 0
+  },
+  {
+    "check": "test",
+    "exitCode": 1
+  },
+  {
+    "check": "build",
+    "exitCode": 0
+  },
+  {
+    "check": "e2e",
+    "exitCode": 1
+  },
+  {
+    "check": "infra",
+    "exitCode": 0
+  },
+  {
+    "check": "diff",
+    "exitCode": 0
+  }
+]

@@ -1,0 +1,77 @@
+{
+  "schemaVersion": 1,
+  "ok": true,
+  "command": "finalize",
+  "status": "pass",
+  "type": "workflow",
+  "quality": "showcase",
+  "specification": {
+    "path": "/root/So7ob/web/.archify/workflow-agent-tool-loop-20261009-231121/candidate.json",
+    "sha256": "8fda829b1f3a6ca958effd86bd5b2f239686c1e221381969e6fdfaa182cc4a79",
+    "bytes": 7520
+  },
+  "artifact": {
+    "path": "/root/So7ob/web/.archify/workflow-agent-tool-loop-20261009-231121/agent-tool-loop.html",
+    "sha256": "3f0465ad692cf2ff41db7a4c7d8a944ab519cbfa140abb50890df7581c28c358",
+    "bytes": 768870
+  },
+  "gates": {
+    "validate": "pass",
+    "deliver": "pass",
+    "check": "pass",
+    "browser-check": "pass"
+  },
+  "diagnostics": [],
+  "diagnosticSummary": {
+    "total": 0,
+    "shown": 0,
+    "truncated": false
+  },
+  "evidence": {
+    "receipt": "/root/So7ob/web/.archify/workflow-agent-tool-loop-20261009-231121/release-review/agent-tool-loop.finalize.json",
+    "summaryReceipt": "/root/So7ob/web/.archify/workflow-agent-tool-loop-20261009-231121/release-review/agent-tool-loop.finalize-summary.json",
+    "browserCheckReceipt": "/root/So7ob/web/.archify/workflow-agent-tool-loop-20261009-231121/release-review/agent-tool-loop.browser-check.json"
+  },
+  "update": {
+    "status": "unavailable",
+    "installedVersion": null,
+    "availableVersion": null,
+    "releaseNotes": null,
+    "checkedAt": null,
+    "source": null,
+    "noticeRequired": false,
+    "noticeText": null,
+    "reason": "cache-valid"
+  },
+  "visualReview": "not-requested",
+  "durationMs": 2964,
+  "visualReviewRecommendation": {
+    "action": "inspect-route-readability",
+    "signals": {
+      "routesOverSuggestedStretch": 1
+    },
+    "reason": "Automated gates passed, but crossings or detours still need perceptual review before claiming visual quality.",
+    "affectedRoutes": {
+      "crossings": [],
+      "detours": [
+        {
+          "relationship": {
+            "id": "denied",
+            "from": "consent",
+            "to": "deny",
+            "label": "denied",
+            "collectionIndex": 3,
+            "artifactIndex": 4
+          },
+          "bends": 2,
+          "stretch": 5.31
+        }
+      ],
+      "truncated": false
+    },
+    "hints": [
+      "consent → deny needs 2 bends: move node consent or deny so they share a row or column with matching centers, or sit diagonally with a clear corner."
+    ],
+    "repair": "Trace these relationships at the desktop viewport. For Architecture, use references/architecture-layout-repair.md: reflow a blocked main path or tangled connected scene, and repair an isolated defect locally only when the surrounding composition is accepted. Preserve all semantic content and user-fixed geometry. Rerun finalize once after the edit."
+  }
+}
