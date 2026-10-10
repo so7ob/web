@@ -480,6 +480,8 @@ export interface PortalContent {
       clientView: string;
       export: string;
       exportOk: string;
+      exportLimit: string;
+      exportFailed: string;
       awaitingTeam: string;
       overdueReply: string;
       agingHours: string;
@@ -506,6 +508,8 @@ export interface PortalContent {
       statuses: Record<string, string>;
       export: string;
       exportOk: string;
+      exportLimit: string;
+      exportFailed: string;
       archive: string;
       restore: string;
       archived: string;
