@@ -429,3 +429,17 @@ it('keeps policy-controlled list/dashboard overdue counts consistent and require
   for(const row of original)await db.query('INSERT INTO SiteSetting(`key`,value,updatedById,updatedAt) VALUES(?,?,?,?)',[row.key,row.value,row.updatedById,row.updatedAt]);
  }
 });
+
+it('summarizes only the latest public inquiry message, with deterministic timestamp ties and intact counts',async()=>{
+ const id=prefix+'summary',at=new Date('2026-01-01T00:00:00Z');
+ await db.query("INSERT INTO Inquiry(id,refCode,subject,name,email,category,locale) VALUES(?,?,?,'Synthetic','test@example.invalid','general','en')",[id,id,prefix]);
+ try{
+  await db.query("INSERT INTO InquiryMessage(id,inquiryId,authorType,kind,body,createdAt) VALUES (?,?,'client','message','synthetic',?),(?,?,'staff','message','synthetic',?),(?,?,'client','internal_note','not a reply',?)",[prefix+'summary-a',id,at,prefix+'summary-z',id,at,prefix+'summary-note',id,new Date(at.valueOf()+1000)]);
+  let result=await threads.list(admin,'inquiries',{q:prefix});
+  let row=(result.inquiries as Array<{id:string;awaitingSince:string|null;messageCount:number}>).find(r=>r.id===id)!;
+  expect(row.awaitingSince).toBeNull();expect(row.messageCount).toBeGreaterThanOrEqual(3);
+  await db.query('DELETE FROM InquiryMessage WHERE id=?',[prefix+'summary-z']);
+  result=await threads.list(admin,'inquiries',{q:prefix});row=(result.inquiries as Array<{id:string;awaitingSince:string|null;messageCount:number}>).find(r=>r.id===id)!;
+  expect(row.awaitingSince).toBe(at.toISOString());expect(row.messageCount).toBe(2);
+ }finally{await db.query('DELETE FROM Inquiry WHERE id=?',[id]);}
+});
