@@ -72,8 +72,11 @@ export function OutboxClient({ me, locale }: OutboxClientProps) {
 
   const reload = () => setReloadToken((v) => v + 1);
   const emails = data?.emails ?? [];
-  const statusLabel = (s: string) =>
-    s === "sent" ? to.sent : s === "failed" ? to.failed : to.devLogged;
+  const statusLabel = (s: string) => {
+    const labels: Record<string, string> = { queued:to.queued,retry:to.retry,leased:to.leased,sending:to.sending,
+      sent:to.sent,failed:to.failed,uncertain:to.uncertain,dev_logged:to.devLogged };
+    return Object.hasOwn(labels,s) ? labels[s] : to.unknown;
+  };
 
   return (
     <div className="space-y-5">
@@ -135,9 +138,9 @@ export function OutboxClient({ me, locale }: OutboxClientProps) {
                       <p className="max-w-96 truncate text-sm text-foreground">
                         {email.subject}
                       </p>
-                      {email.error ? (
+                      {email.errorCode ? (
                         <p className="max-w-96 truncate text-xs text-destructive">
-                          {email.error}
+                          {to.errorCode}: {email.errorCode}
                         </p>
                       ) : null}
                     </TableCell>
@@ -146,6 +149,8 @@ export function OutboxClient({ me, locale }: OutboxClientProps) {
                         status={email.status}
                         label={statusLabel(email.status)}
                       />
+                      {email.attempts !== null && <p className="mt-1 text-xs text-muted-foreground">{to.attempts}: {email.attempts}</p>}
+                      {email.nextAttemptAt && <p className="mt-1 text-xs text-muted-foreground">{to.nextAttempt}: {fmtDateTime(email.nextAttemptAt, locale)}</p>}
                     </TableCell>
                   </TableRow>
                 ))
