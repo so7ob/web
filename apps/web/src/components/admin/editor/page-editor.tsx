@@ -12,6 +12,7 @@
  */
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import Link from "@/routing/link";
+import { useEditorNavigationGuard, type EditorSaveStatus } from "./use-editor-navigation-guard";
 import { toast } from "sonner";
 import {
   AlertTriangle,
@@ -122,7 +123,7 @@ import {
   type DiscardResponse,
 } from "./types";
 
-type SaveStatus = "saved" | "saving" | "dirty" | "error" | "conflict";
+type SaveStatus = EditorSaveStatus;
 type LoadStatus = "loading" | "ready" | "notFound" | "error" | "invalid";
 
 /** مسار العقدة من الجذر حتى المطلوبة (شاملًا إياها) — null إن لم توجد */
@@ -634,34 +635,7 @@ export function PageEditor({ me, locale, pageId }: PageEditorProps) {
     testMode,
   ]);
 
-  // ——— حارس المغادرة ———
-  useEffect(() => {
-    const handler = (e: BeforeUnloadEvent) => {
-      if (saveStatus === "dirty" || saveStatus === "saving" || saveStatus === "error" || saveStatus === "conflict") {
-        e.preventDefault();
-        e.returnValue = te.leaveWarning;
-      }
-    };
-    window.addEventListener("beforeunload", handler);
-    return () => window.removeEventListener("beforeunload", handler);
-  }, [saveStatus, te.leaveWarning]);
-
-  // ——— حارس التنقل الداخلي: روابط التطبيق لا تسرق تغييرات معلقة ———
-  useEffect(() => {
-    const onClick = (e: MouseEvent) => {
-      if (saveStatusRef.current !== "dirty" && saveStatusRef.current !== "saving" && saveStatusRef.current !== "conflict") return;
-      const anchor = (e.target as HTMLElement | null)?.closest?.("a[href]") as HTMLAnchorElement | null;
-      if (!anchor) return;
-      const href = anchor.getAttribute("href") ?? "";
-      if (!href || href.startsWith("#") || anchor.target === "_blank" || href.startsWith("http")) return;
-      e.preventDefault();
-      e.stopPropagation();
-      navGuardRef.current = { href };
-      setNavGuard({ href });
-    };
-    document.addEventListener("click", onClick, true);
-    return () => document.removeEventListener("click", onClick, true);
-  }, []);
+  useEditorNavigationGuard({saveStatus, saveStatusRef, leaveWarning: te.leaveWarning, navGuardRef, setNavGuard});
 
   // ——— عمليات الشجرة ———
   // كل عملية تستنسخ شجرة اللغة الحالية (structuredClone) ثم تعدّل النسخة —

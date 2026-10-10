@@ -140,9 +140,11 @@ export class AdminConversationService {
       parentId: string;
       authorType: string;
       createdAt: Date;
-    }> = rows.length
+    }> = !request && rows.length
       ? await this.db.query(
-          `SELECT ${fk} parentId,authorType,createdAt FROM ${mt} WHERE kind='message' AND ${fk} IN (${rows.map(() => "?").join(",")}) ORDER BY createdAt ASC`,
+          // The existing (inquiryId, createdAt) index supports the backward lookup.
+          // Requests already have persisted last-reply timestamps; no history read is needed.
+          `SELECT m.${fk} parentId,m.authorType,m.createdAt FROM ${table} p JOIN ${mt} m ON m.id=(SELECT recent.id FROM ${mt} recent WHERE recent.${fk}=p.id AND recent.kind='message' ORDER BY recent.createdAt DESC,recent.id DESC LIMIT 1) WHERE p.id IN (${rows.map(() => "?").join(",")})`,
           rows.map((r: { id: string }) => r.id),
         )
       : [];

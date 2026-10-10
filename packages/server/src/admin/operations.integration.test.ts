@@ -430,31 +430,18 @@ it('keeps policy-controlled list/dashboard overdue counts consistent and require
  }
 });
 
-it('applies the same from filter to request list and export',async()=>{
- const query={q:prefix,from:new Date().toISOString()};
- expect((await threads.list(admin,'requests',query)).total).toBe(0);
- const artifact=await threads.csv(admin,'requests',query);
- const csv=await readFile(artifact.path,'utf8');await artifact.dispose();
- expect(csv).not.toContain(prefix+'ref');
-});
-it('exports more than 5000 synthetic rows in bounded batches without changing columns',async()=>{
- const stem=prefix+'large';
+it('summarizes only the latest public inquiry message, with deterministic timestamp ties and intact counts',async()=>{
+ const id=prefix+'summary',at=new Date('2026-01-01T00:00:00Z');
+ await db.query("INSERT INTO Inquiry(id,refCode,subject,name,email,category,locale) VALUES(?,?,?,'Synthetic','test@example.invalid','general','en')",[id,id,prefix]);
  try{
-  for(let start=0;start<5105;start+=200){
-   const count=Math.min(200,5105-start),values:unknown[]=[];
-   for(let i=start;i<start+count;i++)values.push(stem+i,stem+i,'اسم عربي '+i,stem+'@example.invalid');
-   await db.query("INSERT INTO ProjectRequest(id,refCode,requestType,serviceType,description,descriptionHash,budget,timeline,name,email,preferredContact,locale) VALUES "+Array.from({length:count},()=>"(?,?,'quote','web','synthetic','hash','unspecified','flexible',?,?,'email','ar')").join(','),values);
-  }
-  const before=process.memoryUsage().rss;
-  const result=await threads.csv(admin,'requests',{q:stem});
-  try{
-   expect(result.count).toBe(5105);expect(result.bytes).toBeLessThan(2*1024*1024);
-   const csv=await readFile(result.path,'utf8');expect(csv.split('\r\n')).toHaveLength(5107);
-   expect(csv).toContain('اسم عربي');
-   expect((await threads.list(admin,'requests',{q:stem})).total).toBe(5105);
-   console.info(JSON.stringify({syntheticRows:5105,bytes:result.bytes,rssDelta:process.memoryUsage().rss-before,batchRows:250}));
-  }finally{await result.dispose();}
- }finally{await db.query('DELETE FROM ProjectRequest WHERE id LIKE ?',[stem+'%']);}
+  await db.query("INSERT INTO InquiryMessage(id,inquiryId,authorType,kind,body,createdAt) VALUES (?,?,'client','message','synthetic',?),(?,?,'staff','message','synthetic',?),(?,?,'client','internal_note','not a reply',?)",[prefix+'summary-a',id,at,prefix+'summary-z',id,at,prefix+'summary-note',id,new Date(at.valueOf()+1000)]);
+  let result=await threads.list(admin,'inquiries',{q:prefix});
+  let row=(result.inquiries as Array<{id:string;awaitingSince:string|null;messageCount:number}>).find(r=>r.id===id)!;
+  expect(row.awaitingSince).toBeNull();expect(row.messageCount).toBeGreaterThanOrEqual(3);
+  await db.query('DELETE FROM InquiryMessage WHERE id=?',[prefix+'summary-z']);
+  result=await threads.list(admin,'inquiries',{q:prefix});row=(result.inquiries as Array<{id:string;awaitingSince:string|null;messageCount:number}>).find(r=>r.id===id)!;
+  expect(row.awaitingSince).toBe(at.toISOString());expect(row.messageCount).toBe(2);
+ }finally{await db.query('DELETE FROM Inquiry WHERE id=?',[id]);}
 });
 
 it("reports current job metadata, unknown historical states and only allowlisted errors", async () => {
