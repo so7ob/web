@@ -197,24 +197,32 @@ export class AdminOperationsController {
     @Query() q: AdminQuery,
     @Res() res: Response,
   ) {
+    const file = await this.conversations.csv(req.actor, "requests", q);
     res.setHeader("Content-Type", "text/csv; charset=utf-8");
-    res.setHeader(
-      "Content-Disposition",
-      `attachment; filename="so7ob-requests-${new Date().toISOString().slice(0, 10)}.csv"`,
-    );
-    res.send(await this.conversations.csv(req.actor, "requests", q));
+    res.setHeader("Cache-Control", "private, no-store");
+    res.setHeader("X-Export-Count", String(file.count));
+    res.setHeader("Content-Length", String(file.bytes));
+    res.setTimeout(60000,()=>res.destroy());
+    res.download(file.path, `so7ob-requests-${new Date().toISOString().slice(0,10)}.csv`, {dotfiles:"allow"}, (error) => {
+      void file.dispose();
+      if(error) res.destroy();
+    });
   }
   @Get("inquiries/export") async exportInquiries(
     @Req() req: AdminRequest,
     @Query() q: AdminQuery,
     @Res() res: Response,
   ) {
+    const file = await this.conversations.csv(req.actor, "inquiries", q);
     res.setHeader("Content-Type", "text/csv; charset=utf-8");
-    res.setHeader(
-      "Content-Disposition",
-      `attachment; filename="so7ob-inquiries-${new Date().toISOString().slice(0, 10)}.csv"`,
-    );
-    res.send(await this.conversations.csv(req.actor, "inquiries", q));
+    res.setHeader("Cache-Control", "private, no-store");
+    res.setHeader("X-Export-Count", String(file.count));
+    res.setHeader("Content-Length", String(file.bytes));
+    res.setTimeout(60000,()=>res.destroy());
+    res.download(file.path, `so7ob-inquiries-${new Date().toISOString().slice(0,10)}.csv`, {dotfiles:"allow"}, (error) => {
+      void file.dispose();
+      if(error) res.destroy();
+    });
   }
   @Get("requests/:id") request(
     @Req() req: AdminRequest,

@@ -1,3 +1,4 @@
+import {readFile} from 'node:fs/promises';
 import { beforeAll, afterAll, it, expect } from "vitest";
 import { randomBytes } from "node:crypto";
 import { SYSTEM_ROLES, type AuthUser } from "@so7ob/contracts";
@@ -293,7 +294,8 @@ it("archives/restores only matching ids in bulk and makes CSV safe for spreadshe
       action: "restore",
     }),
   ).toMatchObject({ count: 1 });
-  const csv = await threads.csv(admin, "requests", { q: prefix });
+  const artifact = await threads.csv(admin, "requests", { q: prefix });
+  const csv = await readFile(artifact.path,"utf8"); await artifact.dispose();
   expect(csv).toMatch(/^\uFEFFrefCode,status,priority/);
   expect(csv).toContain("'=HYPERLINK");
   expect(csv).not.toContain("descriptionHash");
@@ -347,6 +349,33 @@ it("rolls back conversation status/history/notifications when audit insertion fa
   } finally {
     await db.query("DROP TRIGGER `" + prefix + "audit`");
   }
+});
+
+it('applies the same from filter to request list and export',async()=>{
+ const query={q:prefix,from:new Date().toISOString()};
+ expect((await threads.list(admin,'requests',query)).total).toBe(0);
+ const artifact=await threads.csv(admin,'requests',query);
+ const csv=await readFile(artifact.path,'utf8');await artifact.dispose();
+ expect(csv).not.toContain(prefix+'ref');
+});
+it('exports more than 5000 synthetic rows in bounded batches without changing columns',async()=>{
+ const stem=prefix+'large';
+ try{
+  for(let start=0;start<5105;start+=200){
+   const count=Math.min(200,5105-start),values:unknown[]=[];
+   for(let i=start;i<start+count;i++)values.push(stem+i,stem+i,'اسم عربي '+i,stem+'@example.invalid');
+   await db.query("INSERT INTO ProjectRequest(id,refCode,requestType,serviceType,description,descriptionHash,budget,timeline,name,email,preferredContact,locale) VALUES "+Array.from({length:count},()=>"(?,?,'quote','web','synthetic','hash','unspecified','flexible',?,?,'email','ar')").join(','),values);
+  }
+  const before=process.memoryUsage().rss;
+  const result=await threads.csv(admin,'requests',{q:stem});
+  try{
+   expect(result.count).toBe(5105);expect(result.bytes).toBeLessThan(2*1024*1024);
+   const csv=await readFile(result.path,'utf8');expect(csv.split('\r\n')).toHaveLength(5107);
+   expect(csv).toContain('اسم عربي');
+   expect((await threads.list(admin,'requests',{q:stem})).total).toBe(5105);
+   console.info(JSON.stringify({syntheticRows:5105,bytes:result.bytes,rssDelta:process.memoryUsage().rss-before,batchRows:250}));
+  }finally{await result.dispose();}
+ }finally{await db.query('DELETE FROM ProjectRequest WHERE id LIKE ?',[stem+'%']);}
 });
 
 it("reports current job metadata, unknown historical states and only allowlisted errors", async () => {
