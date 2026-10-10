@@ -1,3 +1,7 @@
+import {responsePolicy,responseDueSql,responseDeadline} from "./response-policy.js";
+import { mkdtemp, open, rm } from 'node:fs/promises';
+import { tmpdir } from 'node:os';
+import { join } from 'node:path';
 import { enqueueTrackStaffReply } from "../track/notify.js";
 import type { DataSource, QueryRunner } from "typeorm";
 import {
@@ -13,6 +17,8 @@ import { fingerprint } from "../auth/rate-policy.js";
 import { insertRecord } from "../business/persistence.js";
 import { RequestService, sqliteLike } from "../business/requests.js";
 import { pageNumber, requirePermission } from "./operations.js";
+export const CSV_LIMITS = { rows:100000, bytes:32*1024*1024, batch:250, milliseconds:30000, concurrent:2 } as const;
+let activeExports=0;
 type Kind = "requests" | "inquiries";
 
 type Query = {
@@ -42,7 +48,7 @@ const inquiryStatuses = [
 ];
 export class AdminConversationService {
   constructor(private readonly db: DataSource, private readonly env: NodeJS.ProcessEnv = process.env) {}
-  private filters(kind: Kind, query: Query, exporting = false) {
+  private filters(kind: Kind, query: Query, hours=24) {
     const request = kind === "requests",
       conditions = [
         query.archived === "1"
@@ -81,16 +87,13 @@ export class AdminConversationService {
       );
       if (query.assignee !== "none") values.push(query.assignee);
     }
-    if (request && !exporting && query.from) {
+    if (request && query.from) {
       const date = new Date(query.from);
       if (!Number.isFinite(date.getTime())) throw new AuthFault(400, "invalid");
       conditions.push("p.createdAt>=?");
       values.push(date);
     }
-    if (request && query.overdue === "1")
-      conditions.push(
-        "p.status IN ('new','in_review','awaiting_info','in_progress','responded') AND p.archivedAt IS NULL AND ((p.lastClientReplyAt<DATE_SUB(UTC_TIMESTAMP(3),INTERVAL 24 HOUR) AND (p.lastStaffReplyAt IS NULL OR p.lastClientReplyAt>p.lastStaffReplyAt)) OR (p.lastClientReplyAt IS NULL AND p.lastStaffReplyAt IS NULL AND p.createdAt<DATE_SUB(UTC_TIMESTAMP(3),INTERVAL 24 HOUR)))",
-      );
+    if (request && query.overdue === "1") {conditions.push(responseDueSql('p')+'<UTC_TIMESTAMP(3)');values.push(hours);}
     if (q) {
       const terms = (
         request
@@ -111,7 +114,8 @@ export class AdminConversationService {
       actor,
       kind === "requests" ? "requests.view.all" : "inquiries.view.all",
     );
-    const { where, values } = this.filters(kind, query),
+    const policy=await responsePolicy(this.db);
+    const { where, values } = this.filters(kind, query,policy.hours),
       table = tableFor(kind),
       mt = messageFor(kind),
       fk = keyFor(kind),
@@ -136,9 +140,11 @@ export class AdminConversationService {
       parentId: string;
       authorType: string;
       createdAt: Date;
-    }> = rows.length
+    }> = !request && rows.length
       ? await this.db.query(
-          `SELECT ${fk} parentId,authorType,createdAt FROM ${mt} WHERE kind='message' AND ${fk} IN (${rows.map(() => "?").join(",")}) ORDER BY createdAt ASC`,
+          // The existing (inquiryId, createdAt) index supports the backward lookup.
+          // Requests already have persisted last-reply timestamps; no history read is needed.
+          `SELECT m.${fk} parentId,m.authorType,m.createdAt FROM ${table} p JOIN ${mt} m ON m.id=(SELECT recent.id FROM ${mt} recent WHERE recent.${fk}=p.id AND recent.kind='message' ORDER BY recent.createdAt DESC,recent.id DESC LIMIT 1) WHERE p.id IN (${rows.map(() => "?").join(",")})`,
           rows.map((r: { id: string }) => r.id),
         )
       : [];
@@ -173,11 +179,7 @@ export class AdminConversationService {
           awaitingSince,
           ...(request
             ? {
-                needsStaffReply:
-                  row.lastStaffReplyAt === null ||
-                  (row.lastClientReplyAt !== null &&
-                    (row.lastClientReplyAt ?? new Date(0)) >
-                      (row.lastStaffReplyAt ?? new Date(0))),
+                ...responseDeadline(row,policy.hours),
               }
             : {}),
         };
@@ -540,12 +542,9 @@ export class AdminConversationService {
       actor,
       kind === "requests" ? "requests.export" : "inquiries.export",
     );
-    const { where, values } = this.filters(kind, query, true),
+    const policy=await responsePolicy(this.db);
+    const { where, values } = this.filters(kind, query,policy.hours),
       request = kind === "requests";
-    const rows = await this.db.query(
-      `SELECT p.*,u.email assigneeEmail ${request ? "" : ",(SELECT m.createdAt FROM InquiryMessage m WHERE m.inquiryId=p.id ORDER BY m.createdAt DESC LIMIT 1) lastMessageAt"} FROM ${tableFor(kind)} p LEFT JOIN User u ON u.id=p.assigneeId WHERE ${where} ORDER BY ${request ? "p.lastActivityAt" : "p.createdAt"} DESC LIMIT 5000`,
-      values,
-    );
     const columns = request
       ? [
           "refCode",
@@ -587,7 +586,7 @@ export class AdminConversationService {
       if (/^[=+@\-\t\r]/.test(s)) s = "'" + s;
       return /[",\r\n]/.test(s) ? '"' + s.replaceAll('"', '""') + '"' : s;
     };
-    const lines = rows.map((r: Record<string, unknown>) =>
+    const line = (r: Record<string, unknown>) =>
       (request
         ? [
             r.refCode,
@@ -621,17 +620,54 @@ export class AdminConversationService {
           ]
       )
         .map(value)
-        .join(","),
-    );
-    await transaction(this.db, (r) =>
-      audit(
-        r,
-        request ? "requests.exported" : "inquiries.exported",
-        actor,
-        { count: rows.length, filters: query },
-        request ? "project_request" : "inquiry",
-      ),
-    );
-    return "\uFEFF" + [columns.join(","), ...lines].join("\r\n") + "\r\n";
+        .join(",") + "\r\n";
+    if (activeExports >= CSV_LIMITS.concurrent) throw new AuthFault(503,'export_busy');
+    activeExports++;
+    let directory: string | undefined;
+    let handedOff=false;
+    const runner = this.db.createQueryRunner();
+    try {
+      directory = await mkdtemp(join(tmpdir(),'so7ob-csv-'));
+      const path = join(directory,'export.csv');
+      const file = await open(path,'wx',0o600);
+      let count=0, bytes=0;
+      const started=Date.now();
+      try {
+        await runner.connect(); await runner.startTransaction('REPEATABLE READ');
+        const [total] = await runner.query(`SELECT COUNT(*) n FROM ${tableFor(kind)} p WHERE ${where}`,values);
+        if(Number(total.n)>CSV_LIMITS.rows) throw new AuthFault(413,'export_limit',{count:Number(total.n),maxRows:CSV_LIMITS.rows});
+        const write = async (chunk:string) => {
+          bytes+=Buffer.byteLength(chunk);
+          if(bytes>CSV_LIMITS.bytes) throw new AuthFault(413,'export_limit',{count:Number(total.n),maxBytes:CSV_LIMITS.bytes});
+          if(Date.now()-started>CSV_LIMITS.milliseconds) throw new AuthFault(503,'export_timeout');
+          await file.writeFile(chunk);
+        };
+        await write('\uFEFF'+columns.join(',')+'\r\n');
+        const selected = request
+          ? 'p.refCode,p.status,p.priority,p.serviceType,p.name,p.email,p.budget,p.currency,p.timeline,p.preferredContact,p.createdAt,p.lastActivityAt,p.resolutionNote,p.archivedAt'
+          : 'p.refCode,p.id,p.subject,p.category,p.status,p.name,p.email,p.createdAt,p.updatedAt,p.archivedAt,(SELECT m.createdAt FROM InquiryMessage m WHERE m.inquiryId=p.id ORDER BY m.createdAt DESC LIMIT 1) lastMessageAt';
+        while(count<Number(total.n)) {
+          const rows:Array<Record<string,unknown>> = await runner.query(
+            `SELECT ${selected},u.email assigneeEmail FROM ${tableFor(kind)} p LEFT JOIN User u ON u.id=p.assigneeId WHERE ${where} ORDER BY ${request?'p.lastActivityAt':'p.createdAt'} DESC,p.id DESC LIMIT ? OFFSET ?`,
+            [...values,CSV_LIMITS.batch,count]);
+          if(!rows.length) throw new AuthFault(503,'export_incomplete');
+          for(const row of rows) await write(line(row));
+          count+=rows.length;
+        }
+        await audit(runner,request?'requests.exported':'inquiries.exported',actor,{count,filters:query},request?'project_request':'inquiry');
+        await runner.commitTransaction();
+      } finally { await file.close(); }
+      const completedDirectory=directory;
+      let disposed=false;
+      const dispose=async()=>{if(disposed)return;disposed=true;clearTimeout(expiry);try{await rm(completedDirectory,{recursive:true,force:true});}finally{activeExports--;}};
+      const expiry=setTimeout(()=>{void dispose();},60000);expiry.unref();
+      handedOff=true;
+      return {path,count,bytes,dispose};
+    } catch(error) {
+      if(runner.isTransactionActive) await runner.rollbackTransaction();
+      if(directory) await rm(directory,{recursive:true,force:true});
+      throw error;
+    } finally { await runner.release();if(!handedOff)activeExports--; }
+
   }
 }

@@ -55,3 +55,5 @@ export { PageTemplateService } from "./admin/templates.js";
 export { PagePublicationService } from "./admin/publication.js";
 export { TrackService } from "./track/service.js";
 export * from "./track/session.js";
+
+export {WorkerHeartbeat,workerHealth} from './queue/monitor.js';

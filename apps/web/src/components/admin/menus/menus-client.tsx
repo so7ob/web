@@ -1,4 +1,5 @@
 "use client";
+import {ConflictReview} from "../conflict-review";
 
 /**
  * محرر القوائم: تبويب الموقع (ترويسة/تذييل)، صفوف قابلة للتحرير والإضافة
@@ -21,7 +22,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
-import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import {
   Select,
@@ -72,6 +73,8 @@ export function MenusClient({ me, locale }: MenusClientProps) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
+  const [revisions,setRevisions]=useState<Record<string,string>>({});
+  const [conflictDraft,setConflictDraft]=useState<unknown>(null);
 
   /** "/" = الصفحة الرئيسية (slug فارغ في قاعدة البيانات) — قيمة وسيطة للواجهة فقط */
   const slugToValue = (slug: string | null) =>
@@ -93,6 +96,7 @@ export function MenusClient({ me, locale }: MenusClientProps) {
     setError(null);
     try {
       const res = await apiGet<MenusResponse>("/api/admin/menus");
+      setRevisions(res.revisions);
       setHeaderItems(toEditable(res.header));
       setFooterItems(toEditable(res.footer));
       setPages(res.pages);
@@ -172,7 +176,8 @@ export function MenusClient({ me, locale }: MenusClientProps) {
     }
     setSaving(true);
     try {
-      await apiSend("/api/admin/menus", "PUT", {
+      await apiSend("/api/v1/admin/menus/checked", "PUT", {
+        baseRevision: revisions["menu:"+location]??"0",
         location,
         items: clean.map((item) => ({
           labelAr: item.labelAr,
@@ -185,7 +190,8 @@ export function MenusClient({ me, locale }: MenusClientProps) {
       toast.success(tm.saved);
       await load();
     } catch (err) {
-      toast.error(apiErrorMessage(err, t.auth.errors));
+      if(err instanceof ApiError && err.code==='conflict') setConflictDraft({location,items});
+      else toast.error(apiErrorMessage(err, t.auth.errors));
     } finally {
       setSaving(false);
     }
@@ -207,6 +213,7 @@ export function MenusClient({ me, locale }: MenusClientProps) {
 
   return (
     <div className="space-y-5">
+      <ConflictReview locale={locale} storageKey={'so7ob-menus-conflict:'+me.id} captured={conflictDraft} remoteUrl="/api/admin/menus" onReload={load} />
       <div className="flex flex-wrap items-end justify-between gap-3">
         <div>
           <h1 className="text-2xl font-bold text-navy">{tm.title}</h1>
@@ -241,7 +248,7 @@ export function MenusClient({ me, locale }: MenusClientProps) {
         </div>
       ) : null}
 
-      <Tabs value={location} onValueChange={(v) => setLocation(v as Location)}>
+      <Tabs value={location} onValueChange={(v) => setLocation(v as Location)} dir={locale === "ar" ? "rtl" : "ltr"} className="space-y-5">
         <TabsList className="h-auto w-max flex-wrap gap-1 rounded-full bg-muted/60 p-1">
           <TabsTrigger
             value="header"
@@ -256,7 +263,7 @@ export function MenusClient({ me, locale }: MenusClientProps) {
             {tm.footer}
           </TabsTrigger>
         </TabsList>
-      </Tabs>
+      <TabsContent value={location} className="space-y-5">
 
       {items.length === 0 ? (
         <div className="rounded-2xl border border-dashed border-border bg-white">
@@ -460,6 +467,8 @@ export function MenusClient({ me, locale }: MenusClientProps) {
         <Plus className="size-4" aria-hidden="true" />
         {tm.add}
       </Button>
+      </TabsContent>
+      </Tabs>
     </div>
   );
 }

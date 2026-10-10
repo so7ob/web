@@ -1,3 +1,4 @@
+import {readFile} from 'node:fs/promises';
 import { beforeAll, afterAll, it, expect } from "vitest";
 import { randomBytes } from "node:crypto";
 import { SYSTEM_ROLES, type AuthUser } from "@so7ob/contracts";
@@ -293,7 +294,8 @@ it("archives/restores only matching ids in bulk and makes CSV safe for spreadshe
       action: "restore",
     }),
   ).toMatchObject({ count: 1 });
-  const csv = await threads.csv(admin, "requests", { q: prefix });
+  const artifact = await threads.csv(admin, "requests", { q: prefix });
+  const csv = await readFile(artifact.path,"utf8"); await artifact.dispose();
   expect(csv).toMatch(/^\uFEFFrefCode,status,priority/);
   expect(csv).toContain("'=HYPERLINK");
   expect(csv).not.toContain("descriptionHash");
@@ -347,4 +349,118 @@ it("rolls back conversation status/history/notifications when audit insertion fa
   } finally {
     await db.query("DROP TRIGGER `" + prefix + "audit`");
   }
+});
+
+it('applies the same from filter to request list and export',async()=>{
+ const query={q:prefix,from:new Date().toISOString()};
+ expect((await threads.list(admin,'requests',query)).total).toBe(0);
+ const artifact=await threads.csv(admin,'requests',query);
+ const csv=await readFile(artifact.path,'utf8');await artifact.dispose();
+ expect(csv).not.toContain(prefix+'ref');
+});
+it('exports more than 5000 synthetic rows in bounded batches without changing columns',async()=>{
+ const stem=prefix+'large';
+ try{
+  for(let start=0;start<5105;start+=200){
+   const count=Math.min(200,5105-start),values:unknown[]=[];
+   for(let i=start;i<start+count;i++)values.push(stem+i,stem+i,'اسم عربي '+i,stem+'@example.invalid');
+   await db.query("INSERT INTO ProjectRequest(id,refCode,requestType,serviceType,description,descriptionHash,budget,timeline,name,email,preferredContact,locale) VALUES "+Array.from({length:count},()=>"(?,?,'quote','web','synthetic','hash','unspecified','flexible',?,?,'email','ar')").join(','),values);
+  }
+  const before=process.memoryUsage().rss;
+  const result=await threads.csv(admin,'requests',{q:stem});
+  try{
+   expect(result.count).toBe(5105);expect(result.bytes).toBeLessThan(2*1024*1024);
+   const csv=await readFile(result.path,'utf8');expect(csv.split('\r\n')).toHaveLength(5107);
+   expect(csv).toContain('اسم عربي');
+   expect((await threads.list(admin,'requests',{q:stem})).total).toBe(5105);
+   console.info(JSON.stringify({syntheticRows:5105,bytes:result.bytes,rssDelta:process.memoryUsage().rss-before,batchRows:250}));
+  }finally{await result.dispose();}
+ }finally{await db.query('DELETE FROM ProjectRequest WHERE id LIKE ?',[stem+'%']);}
+});
+
+it('rejects two editors saving the same settings base while merging unrelated fields',async()=>{
+ const first=await ops.settings(admin), second=await ops.settings(admin);
+ await ops.updateSettings(admin,{'contact.address':'first',baseRevisions:first.revisions},true);
+ await expect(ops.updateSettings(admin,{'contact.address':'stale',baseRevisions:second.revisions},true)).rejects.toMatchObject({status:409,code:'conflict'});
+ expect((await ops.settings(admin)).settings['contact.address']).toBe('first');
+});
+it('atomically accepts one same-base settings writer, merges different keys and detects legacy writes',async()=>{
+ const base=(await ops.settings(admin)).revisions;
+ const results=await Promise.allSettled(['one','two'].map(value=>ops.updateSettings(admin,{'contact.address':value,baseRevisions:base},true)));
+ expect(results.filter(r=>r.status==='fulfilled')).toHaveLength(1);
+ expect(results.filter(r=>r.status==='rejected')).toHaveLength(1);
+ const independent=(await ops.settings(admin)).revisions;
+ await Promise.all([
+  ops.updateSettings(admin,{'site.nameAr':'اسم',baseRevisions:independent},true),
+  ops.updateSettings(admin,{'site.nameEn':'Name',baseRevisions:independent},true),
+ ]);
+ const old=(await ops.settings(admin)).revisions;
+ await ops.updateSettings(admin,{'contact.address':'legacy'});
+ await expect(ops.updateSettings(admin,{'contact.address':'stale',baseRevisions:old},true)).rejects.toMatchObject({status:409});
+ await expect(ops.updateSettings(admin,{'contact.address':'missing'},true)).rejects.toMatchObject({status:400,code:'revision_required'});
+ await expect(ops.updateSettings(client,{'contact.address':'denied',baseRevisions:old},true)).rejects.toMatchObject({status:403});
+});
+it('fences concurrent menu snapshots per location and retains newer data',async()=>{
+ const base=(await ops.menus(admin)).revisions['menu:header']??'0';
+ const results=await Promise.allSettled(['first','second'].map(labelEn=>ops.updateMenu(admin,{location:'header',baseRevision:base,items:[{labelAr:prefix,labelEn,url:'/'}]},true)));
+ expect(results.filter(r=>r.status==='fulfilled')).toHaveLength(1);
+ const winner=(await ops.menus(admin)).header;
+ await expect(ops.updateMenu(admin,{location:'header',baseRevision:base,items:[{labelEn:'stale',url:'/'}]},true)).rejects.toMatchObject({status:409});
+ expect((await ops.menus(admin)).header).toEqual(winner);
+ await expect(ops.updateMenu(admin,{location:'footer',items:[{labelEn:'missing',url:'/'}]},true)).rejects.toMatchObject({status:400});
+});
+it('keeps policy-controlled list/dashboard overdue counts consistent and requires explicit impact acknowledgement',async()=>{
+ const original=await db.query("SELECT * FROM SiteSetting WHERE `key` IN ('response.hours','response.effectiveAt')");
+ const id=prefix+'request';
+ try{
+  await db.query("UPDATE ProjectRequest SET status='new',archivedAt=NULL,lastClientReplyAt=NULL,lastStaffReplyAt=NULL,createdAt=DATE_SUB(UTC_TIMESTAMP(3),INTERVAL 2 HOUR) WHERE id=?",[id]);
+  await expect(ops.updateSettings(admin,{'response.hours':'1'})).rejects.toMatchObject({status:400});
+  for(const hours of ['0','721','1.5'])await expect(ops.updateSettings(admin,{'response.hours':hours,'response.applyToExisting':true})).rejects.toMatchObject({status:400});
+  const base=(await ops.settings(admin)).revisions;
+  await ops.updateSettings(admin,{'response.hours':'1','response.applyToExisting':true,baseRevisions:base},true);
+  expect((await ops.settings(admin)).settings['response.effectiveAt']).toMatch(/^\d{4}-/);
+  const list=await threads.list(admin,'requests',{overdue:'1'}),dashboard=await dash.dashboard(admin,null);
+  expect(list.total).toBe(dashboard.overdueReplies);
+  expect(list.requests?.some((row:unknown)=>(row as {id:string}).id===id)).toBe(true);
+  await ops.updateSettings(admin,{'response.hours':'24','response.applyToExisting':true});
+  expect((await threads.list(admin,'requests',{q:prefix,overdue:'1'})).total).toBe(0);
+ }finally{
+  await db.query("DELETE FROM SiteSetting WHERE `key` IN ('response.hours','response.effectiveAt')");
+  for(const row of original)await db.query('INSERT INTO SiteSetting(`key`,value,updatedById,updatedAt) VALUES(?,?,?,?)',[row.key,row.value,row.updatedById,row.updatedAt]);
+ }
+});
+
+it('summarizes only the latest public inquiry message, with deterministic timestamp ties and intact counts',async()=>{
+ const id=prefix+'summary',at=new Date('2026-01-01T00:00:00Z');
+ await db.query("INSERT INTO Inquiry(id,refCode,subject,name,email,category,locale) VALUES(?,?,?,'Synthetic','test@example.invalid','general','en')",[id,id,prefix]);
+ try{
+  await db.query("INSERT INTO InquiryMessage(id,inquiryId,authorType,kind,body,createdAt) VALUES (?,?,'client','message','synthetic',?),(?,?,'staff','message','synthetic',?),(?,?,'client','internal_note','not a reply',?)",[prefix+'summary-a',id,at,prefix+'summary-z',id,at,prefix+'summary-note',id,new Date(at.valueOf()+1000)]);
+  let result=await threads.list(admin,'inquiries',{q:prefix});
+  let row=(result.inquiries as Array<{id:string;awaitingSince:string|null;messageCount:number}>).find(r=>r.id===id)!;
+  expect(row.awaitingSince).toBeNull();expect(row.messageCount).toBeGreaterThanOrEqual(3);
+  await db.query('DELETE FROM InquiryMessage WHERE id=?',[prefix+'summary-z']);
+  result=await threads.list(admin,'inquiries',{q:prefix});row=(result.inquiries as Array<{id:string;awaitingSince:string|null;messageCount:number}>).find(r=>r.id===id)!;
+  expect(row.awaitingSince).toBe(at.toISOString());expect(row.messageCount).toBe(2);
+ }finally{await db.query('DELETE FROM Inquiry WHERE id=?',[id]);}
+});
+
+it("reports current job metadata, unknown historical states and only allowlisted errors", async () => {
+  const id = prefix + "outboxstate";
+  await db.query("INSERT INTO EmailLog(id,`to`,subject,bodyText,status,error) VALUES(?,?,?,'secret account link','queued','secret token')", [id,client.email,'Synthetic']);
+  await db.query("INSERT INTO MailJob(id,dedupeKey,payload,payloadDigest,emailLogId,status,attempts,lastError) VALUES(?,?,'encrypted private payload',?,?, 'leased',2,'smtp_rejected_temporarily')", [id,id,id,id]);
+  try {
+    for (const status of ['queued','retry','leased','sending','sent','failed','uncertain']) {
+      await db.query('UPDATE MailJob SET status=? WHERE id=?',[status,id]);
+      const item = (await ops.outbox(admin)).emails.find((e: {id:string}) => e.id === id);
+      expect(item).toMatchObject({status,attempts:2,errorCode:'smtp_rejected_temporarily',bodyText:'',bodyHtml:null,error:null});
+      expect(item?.nextAttemptAt !== null).toBe(['queued','retry'].includes(status));
+      expect(JSON.stringify(item)).not.toMatch(/secret|encrypted|payload|leaseToken|providerMessageId/);
+    }
+    await db.query("UPDATE MailJob SET lastError='private_token_123' WHERE id=?",[id]);
+    expect((await ops.outbox(admin)).emails.find((e: {id:string})=>e.id===id)?.errorCode).toBe('unavailable');
+    await expect(ops.outbox(client)).rejects.toMatchObject({status:403});
+    await db.query('DELETE FROM MailJob WHERE id=?',[id]);
+    await db.query("UPDATE EmailLog SET status='historic_future' WHERE id=?",[id]);
+    expect((await ops.outbox(admin)).emails.find((e: {id:string})=>e.id===id)).toMatchObject({status:'unknown',attempts:null,nextAttemptAt:null,errorCode:null});
+  } finally { await db.query('DELETE FROM MailJob WHERE id=?',[id]); await db.query('DELETE FROM EmailLog WHERE id=?',[id]); }
 });

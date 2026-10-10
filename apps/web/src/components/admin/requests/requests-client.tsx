@@ -1,4 +1,6 @@
 "use client";
+import {fmtDateTime} from "../helpers";
+import {downloadCsv} from "../download-csv";
 
 /**
  * قائمة الطلبات: بحث وتصفية (حالة/أولوية/خدمة/مسؤول/مؤرشف) + تحديد جماعي
@@ -104,17 +106,19 @@ interface RequestsClientProps {
 function AgingBadge({
   since,
   tr,
+  overdue,
 }: {
+  overdue: boolean;
   since: string;
   tr: PortalContent["admin"]["requests"];
 }) {
   const ageMs = Date.now() - new Date(since).getTime();
   const hours = Math.max(0, Math.floor(ageMs / 3_600_000));
   const days = Math.max(0, Math.floor(ageMs / 86_400_000));
-  if (days >= 1) {
+  if (overdue) {
     return (
       <span className="inline-flex items-center rounded-full border border-amber-300 bg-amber-100 px-2 py-0.5 text-xs font-medium text-amber-900">
-        {tr.overdueReply} · {tr.agingDays.replace("{n}", String(days))}
+        {tr.overdueReply} · {days>=1?tr.agingDays.replace("{n}",String(days)):tr.agingHours.replace("{n}",String(hours))}
       </span>
     );
   }
@@ -451,7 +455,10 @@ export function RequestsClient({
   const serviceKeys = useMemo(() => Object.keys(tr.services), [tr.services]);
 
   // تصدير CSV بنفس تصفية العرض الحالية — رابط نسبي فيرسل الكوكيز تلقائيًا
-  const exportCsv = () => {
+  const [exporting,setExporting]=useState(false);
+  const exportCsv = async () => {
+    if(exporting) return;
+    setExporting(true);
     const query = buildQuery({
       q: debouncedQ,
       status: status !== "all" ? status : "",
@@ -461,8 +468,12 @@ export function RequestsClient({
       archived,
       overdue: overdue ? "1" : "",
     });
-    window.open(`/api/admin/requests/export${query}`, "_blank");
-    toast.success(tr.exportOk);
+    try {
+      await downloadCsv(`/api/admin/requests/export${query}`, 'so7ob-requests.csv');
+      toast.success(tr.exportOk);
+    } catch(error) {
+      toast.error(error instanceof ApiError && error.code === 'export_limit' ? tr.exportLimit : tr.exportFailed);
+    } finally {setExporting(false);}
   };
 
   return (
@@ -487,6 +498,7 @@ export function RequestsClient({
             <Button
               variant="outline"
               onClick={exportCsv}
+              disabled={exporting}
               className="min-h-11 rounded-full"
             >
               <Download className="size-4" aria-hidden="true" />
@@ -921,7 +933,10 @@ export function RequestsClient({
                           label={tr.statuses[row.status] ?? row.status}
                         />
                         {row.awaitingSince ? (
-                          <AgingBadge since={row.awaitingSince} tr={tr} />
+                          <span className="space-y-1">
+                            <AgingBadge since={row.awaitingSince} tr={tr} overdue={row.responseOverdue}/>
+                            {row.responseDueAt&&<span className="block text-xs text-muted-foreground">{locale==='ar'?(row.responseType==='first_response'?'استحقاق الرد الأول: ':'استحقاق الرد على العميل: '):(row.responseType==='first_response'?'First response due: ':'Client reply due: ')}<time dateTime={row.responseDueAt}>{fmtDateTime(row.responseDueAt,locale)}</time></span>}
+                          </span>
                         ) : null}
                       </div>
                     </TableCell>
