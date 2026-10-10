@@ -39,6 +39,7 @@ class AdminQuery {
   @ApiPropertyOptional() @IsOptional() @IsString() page?: string;
 }
 class OperationBody {
+  @Allow() baseRevision?: unknown;
   @ApiPropertyOptional() @Allow() name?: unknown;
   @ApiPropertyOptional() @Allow() content?: unknown;
   @ApiPropertyOptional() @Allow() body?: unknown;
@@ -53,6 +54,7 @@ class OperationBody {
   @ApiPropertyOptional() @Allow() items?: unknown;
 }
 class SettingsBody {
+  @Allow() baseRevisions?: unknown;
   @Allow() "track.forceLogin"?: unknown;
   @Allow() "track.requestsMode"?: unknown;
   @Allow() "track.inquiriesMode"?: unknown;
@@ -146,6 +148,8 @@ export class AdminOperationsController {
   @Get("audit") audit(@Req() req: AdminRequest, @Query() q: AdminQuery) {
     return this.ops.logs(req.actor, q);
   }
+  @Put('menus/checked') checkedMenu(@Req() req:AdminRequest,@Body() body:OperationBody){return this.ops.updateMenu(req.actor,{...body},true);}
+  @Patch('settings/checked') checkedSettings(@Req() req:AdminRequest,@Body() body:SettingsBody){return this.ops.updateSettings(req.actor,{...body},true);}
   @Get("outbox") outbox(@Req() req: AdminRequest, @Query() q: AdminQuery) {
     return this.ops.outbox(req.actor, q.page);
   }

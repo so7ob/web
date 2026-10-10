@@ -350,6 +350,64 @@ it("rolls back conversation status/history/notifications when audit insertion fa
     await db.query("DROP TRIGGER `" + prefix + "audit`");
   }
 });
+it('rejects two editors saving the same settings base while merging unrelated fields',async()=>{
+ const first=await ops.settings(admin), second=await ops.settings(admin);
+ await ops.updateSettings(admin,{'contact.address':'first',baseRevisions:first.revisions},true);
+ await expect(ops.updateSettings(admin,{'contact.address':'stale',baseRevisions:second.revisions},true)).rejects.toMatchObject({status:409,code:'conflict'});
+ expect((await ops.settings(admin)).settings['contact.address']).toBe('first');
+});
+it('atomically accepts one same-base settings writer, merges different keys and detects legacy writes',async()=>{
+ const base=(await ops.settings(admin)).revisions;
+ const results=await Promise.allSettled(['one','two'].map(value=>ops.updateSettings(admin,{'contact.address':value,baseRevisions:base},true)));
+ expect(results.filter(r=>r.status==='fulfilled')).toHaveLength(1);
+ expect(results.filter(r=>r.status==='rejected')).toHaveLength(1);
+ const independent=(await ops.settings(admin)).revisions;
+ await Promise.all([
+  ops.updateSettings(admin,{'site.nameAr':'اسم',baseRevisions:independent},true),
+  ops.updateSettings(admin,{'site.nameEn':'Name',baseRevisions:independent},true),
+ ]);
+ const old=(await ops.settings(admin)).revisions;
+ await ops.updateSettings(admin,{'contact.address':'legacy'});
+ await expect(ops.updateSettings(admin,{'contact.address':'stale',baseRevisions:old},true)).rejects.toMatchObject({status:409});
+ await expect(ops.updateSettings(admin,{'contact.address':'missing'},true)).rejects.toMatchObject({status:400,code:'revision_required'});
+ await expect(ops.updateSettings(client,{'contact.address':'denied',baseRevisions:old},true)).rejects.toMatchObject({status:403});
+});
+it('fences concurrent menu snapshots per location and retains newer data',async()=>{
+ const base=(await ops.menus(admin)).revisions['menu:header']??'0';
+ const results=await Promise.allSettled(['first','second'].map(labelEn=>ops.updateMenu(admin,{location:'header',baseRevision:base,items:[{labelAr:prefix,labelEn,url:'/'}]},true)));
+ expect(results.filter(r=>r.status==='fulfilled')).toHaveLength(1);
+ const winner=(await ops.menus(admin)).header;
+ await expect(ops.updateMenu(admin,{location:'header',baseRevision:base,items:[{labelEn:'stale',url:'/'}]},true)).rejects.toMatchObject({status:409});
+ expect((await ops.menus(admin)).header).toEqual(winner);
+ await expect(ops.updateMenu(admin,{location:'footer',items:[{labelEn:'missing',url:'/'}]},true)).rejects.toMatchObject({status:400});
+});
+
+it('applies the same from filter to request list and export',async()=>{
+ const query={q:prefix,from:new Date().toISOString()};
+ expect((await threads.list(admin,'requests',query)).total).toBe(0);
+ const artifact=await threads.csv(admin,'requests',query);
+ const csv=await readFile(artifact.path,'utf8');await artifact.dispose();
+ expect(csv).not.toContain(prefix+'ref');
+});
+it('exports more than 5000 synthetic rows in bounded batches without changing columns',async()=>{
+ const stem=prefix+'large';
+ try{
+  for(let start=0;start<5105;start+=200){
+   const count=Math.min(200,5105-start),values:unknown[]=[];
+   for(let i=start;i<start+count;i++)values.push(stem+i,stem+i,'اسم عربي '+i,stem+'@example.invalid');
+   await db.query("INSERT INTO ProjectRequest(id,refCode,requestType,serviceType,description,descriptionHash,budget,timeline,name,email,preferredContact,locale) VALUES "+Array.from({length:count},()=>"(?,?,'quote','web','synthetic','hash','unspecified','flexible',?,?,'email','ar')").join(','),values);
+  }
+  const before=process.memoryUsage().rss;
+  const result=await threads.csv(admin,'requests',{q:stem});
+  try{
+   expect(result.count).toBe(5105);expect(result.bytes).toBeLessThan(2*1024*1024);
+   const csv=await readFile(result.path,'utf8');expect(csv.split('\r\n')).toHaveLength(5107);
+   expect(csv).toContain('اسم عربي');
+   expect((await threads.list(admin,'requests',{q:stem})).total).toBe(5105);
+   console.info(JSON.stringify({syntheticRows:5105,bytes:result.bytes,rssDelta:process.memoryUsage().rss-before,batchRows:250}));
+  }finally{await result.dispose();}
+ }finally{await db.query('DELETE FROM ProjectRequest WHERE id LIKE ?',[stem+'%']);}
+});
 
 it('applies the same from filter to request list and export',async()=>{
  const query={q:prefix,from:new Date().toISOString()};
