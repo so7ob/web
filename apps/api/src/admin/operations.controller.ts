@@ -203,7 +203,7 @@ export class AdminOperationsController {
     res.setHeader("X-Export-Count", String(file.count));
     res.setHeader("Content-Length", String(file.bytes));
     res.setTimeout(60000,()=>res.destroy());
-    res.download(file.path, `so7ob-requests-${new Date().toISOString().slice(0,10)}.csv`, (error) => {
+    res.download(file.path, `so7ob-requests-${new Date().toISOString().slice(0,10)}.csv`, {dotfiles:"allow"}, (error) => {
       void file.dispose();
       if(error) res.destroy();
     });
@@ -219,7 +219,7 @@ export class AdminOperationsController {
     res.setHeader("X-Export-Count", String(file.count));
     res.setHeader("Content-Length", String(file.bytes));
     res.setTimeout(60000,()=>res.destroy());
-    res.download(file.path, `so7ob-inquiries-${new Date().toISOString().slice(0,10)}.csv`, (error) => {
+    res.download(file.path, `so7ob-inquiries-${new Date().toISOString().slice(0,10)}.csv`, {dotfiles:"allow"}, (error) => {
       void file.dispose();
       if(error) res.destroy();
     });

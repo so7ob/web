@@ -1,4 +1,5 @@
-import {test,expect} from '@playwright/test';
+import {expect} from '@playwright/test';
+import {test} from './quota-fixture';
 import {readFileSync} from 'node:fs';
 import {getPortalContent} from '../../apps/web/src/content/portal';
 for(const locale of ['ar','en'] as const)for(const kind of ['requests','inquiries'] as const)test(`${locale}: ${kind} CSV reports only verified download readiness`,async({page})=>{
