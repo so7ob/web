@@ -1,4 +1,6 @@
 import {workerHealth} from '../queue/monitor.js';
+import {snapshot,revisions,advance} from "./revisions.js";
+import { OUTBOX_STATUSES, type OutboxResponse, type OutboxStatus } from "@so7ob/contracts";
 import type { DataSource } from "typeorm";
 import { can, isTrackMode, type AuthUser, type Permission } from "@so7ob/contracts";
 import { AuthFault, audit, newId, transaction } from "../auth/persistence.js";
@@ -38,15 +40,15 @@ export class AdminOperationsService {
   async workerHealth(actor:AuthUser){return workerHealth(this.db,actor);}
   async settings(actor: AuthUser) {
     requirePermission(actor, "settings.manage");
-    const rows: Array<{ key: string; value: string }> = await this.db.query(
-      "SELECT `key`,value FROM SiteSetting",
-    );
-    return {
-      ok: true,
-      settings: Object.fromEntries(rows.map((r) => [r.key, r.value])),
-    };
+    return snapshot(this.db,async r=>{
+      const rows:Array<{key:string;value:string}>=await r.query('SELECT `key`,value FROM SiteSetting');
+      const versions=await revisions(r);
+      return {ok:true,settings:Object.fromEntries(rows.map(row=>[row.key,row.value])),
+        revisions:Object.fromEntries(allowedSettings.map(key=>[key,versions['setting:'+key]??'0']))};
+    });
   }
-  async updateSettings(actor: AuthUser, body: Record<string, unknown>) {
+
+  async updateSettings(actor: AuthUser, body: Record<string, unknown>, checked=false) {
     requirePermission(actor, "settings.manage");
     const updates: Array<{ key: string; value: string }> = [];
     for (const key of allowedSettings)
@@ -105,6 +107,8 @@ export class AdminOperationsService {
     if (!updates.length) throw new AuthFault(400, "invalid");
     return transaction(this.db, async (r) => {
       await lockOperation(r, "site-settings");
+      const bases=body.baseRevisions && typeof body.baseRevisions==='object' ? body.baseRevisions as Record<string,unknown> : {};
+      for(const update of updates) await advance(r,'setting:'+update.key,Object.hasOwn(bases,update.key)?bases[update.key]:undefined,checked);
       if (updates.some(u => u.key.startsWith("track."))) await lockOperation(r, "track-policy");
       if (updates.some((u) => u.key.startsWith("announcement.")))
         updates.push({
@@ -128,14 +132,15 @@ export class AdminOperationsService {
   }
   async menus(actor: AuthUser) {
     requirePermission(actor, "menus.manage");
+    return snapshot(this.db,async r=>{
     const [header, footer, pages] = await Promise.all([
-      this.db.query(
+      r.query(
         "SELECT id,location,labelAr,labelEn,url,pageSlug,enabled,`order` FROM MenuItem WHERE location='header' ORDER BY `order`",
       ),
-      this.db.query(
+      r.query(
         "SELECT id,location,labelAr,labelEn,url,pageSlug,enabled,`order` FROM MenuItem WHERE location='footer' ORDER BY `order`",
       ),
-      this.db.query(
+      r.query(
         "SELECT slug,titleAr,titleEn FROM Page WHERE status<>'archived' ORDER BY `order`",
       ),
     ]);
@@ -146,9 +151,11 @@ export class AdminOperationsService {
       header: normalize(header),
       footer: normalize(footer),
       pages,
+      revisions: Object.fromEntries(Object.entries(await revisions(r)).filter(([key])=>key.startsWith('menu:'))),
     };
+    });
   }
-  async updateMenu(actor: AuthUser, body: Record<string, unknown>) {
+  async updateMenu(actor: AuthUser, body: Record<string, unknown>, checked=false) {
     requirePermission(actor, "menus.manage");
     const location = String(body.location ?? ""),
       items = Array.isArray(body.items) ? body.items : [];
@@ -184,6 +191,7 @@ export class AdminOperationsService {
     if (!clean.length) throw new AuthFault(400, "empty");
     return transaction(this.db, async (r) => {
       await lockOperation(r, "menu:" + location);
+      await advance(r,'menu:'+location,body.baseRevision,checked);
       await r.query("DELETE FROM MenuItem WHERE location=?", [location]);
       for (const item of clean) await insertRecord(r, "MenuItem", item);
       await audit(
@@ -249,13 +257,13 @@ export class AdminOperationsService {
       }),
     };
   }
-  async outbox(actor: AuthUser, raw?: string) {
+  async outbox(actor: AuthUser, raw?: string): Promise<OutboxResponse> {
     requirePermission(actor, "email.outbox");
     const page = pageNumber(raw),
       [counts, emails] = await Promise.all([
         this.db.query("SELECT COUNT(*) n FROM EmailLog"),
         this.db.query(
-          "SELECT id,`to`,subject,status,createdAt FROM EmailLog ORDER BY createdAt DESC LIMIT 20 OFFSET ?",
+          "SELECT e.id,e.`to`,e.subject,COALESCE(j.status,e.status) status,e.createdAt,j.attempts,j.availableAt,j.lastError FROM EmailLog e LEFT JOIN MailJob j ON j.emailLogId=e.id ORDER BY e.createdAt DESC,e.id DESC LIMIT 20 OFFSET ?",
           [(page - 1) * 20],
         ),
       ]);
@@ -265,7 +273,16 @@ export class AdminOperationsService {
       page,
       pageSize: 20,
       emails: emails.map((r: Record<string, unknown>) => ({
-        ...r,
+        id: String(r.id), to: String(r.to), subject: String(r.subject),
+        status: OUTBOX_STATUSES.includes(r.status as OutboxStatus) ? r.status as OutboxStatus : 'unknown',
+        createdAt: (r.createdAt as Date).toISOString(),
+        attempts: r.attempts === null ? null : Number(r.attempts),
+        nextAttemptAt: ['queued','retry'].includes(String(r.status)) && r.availableAt instanceof Date ? r.availableAt.toISOString() : null,
+        errorCode: r.lastError === null ? null : [
+          'smtp_rejected_permanently','smtp_rejected_temporarily','smtp_connection_not_established',
+          'smtp_failed_before_data','smtp_acceptance_unknown','smtp_no_recipient_accepted',
+          'payload_authentication_failed','worker_lost_after_send_started','worker_lost_before_send',
+        ].includes(String(r.lastError)) ? String(r.lastError) : 'unavailable',
         bodyText: "",
         bodyHtml: null,
         error: null,

@@ -9,7 +9,7 @@ import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } f
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Skeleton } from "@/components/ui/skeleton";
-import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { EmptyState } from "@/components/admin/empty-state";
 import { toast } from "sonner";
 import type { Locale } from "@/lib/i18n";
@@ -252,7 +252,7 @@ export function RequestsView({
         </div>
       )}
 
-      <Tabs value={status} onValueChange={onStatusChange}>
+      <Tabs value={status} onValueChange={onStatusChange} dir={locale === "ar" ? "rtl" : "ltr"} className="space-y-5">
         <div className="overflow-x-auto pb-1">
           <TabsList className="h-auto w-max flex-wrap gap-1 rounded-full bg-muted/60 p-1">
             <TabsTrigger value="all" className={TAB_PILL_CLASS}>
@@ -273,7 +273,7 @@ export function RequestsView({
             ))}
           </TabsList>
         </div>
-      </Tabs>
+      <TabsContent value={status} className="space-y-5">
 
       {/* حقل البحث — مؤجل ٣٠٠ مللي ويمسح بزر مستقل */}
       <div className="flex justify-start">
@@ -431,6 +431,8 @@ export function RequestsView({
           </>
         )}
       </section>
+      </TabsContent>
+      </Tabs>
 
       {/* حوار ربط طلب سابق */}
       <Dialog open={claimOpen} onOpenChange={(open) => (open ? setClaimOpen(true) : resetClaim())}>

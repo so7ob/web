@@ -1,0 +1,305 @@
+{
+  "sha": "3b5a8f246f01f5264614ad449ca37061b810af5a",
+  "cases": [
+    {
+      "width": 375,
+      "locale": "ar",
+      "route": "requests",
+      "violations": [
+        {
+          "id": "aria-valid-attr-value",
+          "nodes": [
+            {
+              "target": [
+                "#radix-_R_v9h_-trigger-all"
+              ],
+              "summary": "Fix all of the following:\n  Invalid ARIA attribute value: aria-controls=\"radix-_R_v9h_-content-all\""
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "width": 375,
+      "locale": "ar",
+      "route": "inquiries",
+      "violations": [
+        {
+          "id": "aria-valid-attr-value",
+          "nodes": [
+            {
+              "target": [
+                "#radix-_R_n9h_-trigger-all"
+              ],
+              "summary": "Fix all of the following:\n  Invalid ARIA attribute value: aria-controls=\"radix-_R_n9h_-content-all\""
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "width": 375,
+      "locale": "ar",
+      "route": "requests/new",
+      "violations": [
+        {
+          "id": "color-contrast",
+          "nodes": [
+            {
+              "target": [
+                ".mt-1\\.5.ltr-isolate.text-slate-400"
+              ],
+              "summary": "Fix any of the following:\n  Element has insufficient color contrast of 2.63 (foreground color: #90a1b9, background color: #ffffff, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1"
+            },
+            {
+              "target": [
+                "label[for=\"company\"] > .ms-1.font-normal.text-slate-400"
+              ],
+              "summary": "Fix any of the following:\n  Element has insufficient color contrast of 2.63 (foreground color: #90a1b9, background color: #ffffff, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1"
+            },
+            {
+              "target": [
+                "label[for=\"phone\"] > .ms-1.font-normal.text-slate-400"
+              ],
+              "summary": "Fix any of the following:\n  Element has insufficient color contrast of 2.63 (foreground color: #90a1b9, background color: #ffffff, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1"
+            },
+            {
+              "target": [
+                "label[for=\"referenceUrl\"] > .ms-1.font-normal.text-slate-400"
+              ],
+              "summary": "Fix any of the following:\n  Element has insufficient color contrast of 2.63 (foreground color: #90a1b9, background color: #ffffff, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "width": 375,
+      "locale": "en",
+      "route": "requests",
+      "violations": [
+        {
+          "id": "aria-valid-attr-value",
+          "nodes": [
+            {
+              "target": [
+                "#radix-_R_v9h_-trigger-all"
+              ],
+              "summary": "Fix all of the following:\n  Invalid ARIA attribute value: aria-controls=\"radix-_R_v9h_-content-all\""
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "width": 375,
+      "locale": "en",
+      "route": "inquiries",
+      "violations": [
+        {
+          "id": "aria-valid-attr-value",
+          "nodes": [
+            {
+              "target": [
+                "#radix-_R_n9h_-trigger-all"
+              ],
+              "summary": "Fix all of the following:\n  Invalid ARIA attribute value: aria-controls=\"radix-_R_n9h_-content-all\""
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "width": 375,
+      "locale": "en",
+      "route": "requests/new",
+      "violations": [
+        {
+          "id": "color-contrast",
+          "nodes": [
+            {
+              "target": [
+                ".mt-1\\.5.ltr-isolate.text-slate-400"
+              ],
+              "summary": "Fix any of the following:\n  Element has insufficient color contrast of 2.63 (foreground color: #90a1b9, background color: #ffffff, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1"
+            },
+            {
+              "target": [
+                ".leading-6.mt-1\\.5.text-slate-400"
+              ],
+              "summary": "Fix any of the following:\n  Element has insufficient color contrast of 2.63 (foreground color: #90a1b9, background color: #ffffff, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1"
+            },
+            {
+              "target": [
+                "label[for=\"company\"] > .ms-1.font-normal.text-slate-400"
+              ],
+              "summary": "Fix any of the following:\n  Element has insufficient color contrast of 2.63 (foreground color: #90a1b9, background color: #ffffff, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1"
+            },
+            {
+              "target": [
+                "label[for=\"phone\"] > .ms-1.font-normal.text-slate-400"
+              ],
+              "summary": "Fix any of the following:\n  Element has insufficient color contrast of 2.63 (foreground color: #90a1b9, background color: #ffffff, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1"
+            },
+            {
+              "target": [
+                "label[for=\"referenceUrl\"] > .ms-1.font-normal.text-slate-400"
+              ],
+              "summary": "Fix any of the following:\n  Element has insufficient color contrast of 2.63 (foreground color: #90a1b9, background color: #ffffff, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "width": 1280,
+      "locale": "ar",
+      "route": "requests",
+      "violations": [
+        {
+          "id": "aria-valid-attr-value",
+          "nodes": [
+            {
+              "target": [
+                "#radix-_R_v9h_-trigger-all"
+              ],
+              "summary": "Fix all of the following:\n  Invalid ARIA attribute value: aria-controls=\"radix-_R_v9h_-content-all\""
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "width": 1280,
+      "locale": "ar",
+      "route": "inquiries",
+      "violations": [
+        {
+          "id": "aria-valid-attr-value",
+          "nodes": [
+            {
+              "target": [
+                "#radix-_R_n9h_-trigger-all"
+              ],
+              "summary": "Fix all of the following:\n  Invalid ARIA attribute value: aria-controls=\"radix-_R_n9h_-content-all\""
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "width": 1280,
+      "locale": "ar",
+      "route": "requests/new",
+      "violations": [
+        {
+          "id": "color-contrast",
+          "nodes": [
+            {
+              "target": [
+                ".mt-1\\.5.ltr-isolate.text-slate-400"
+              ],
+              "summary": "Fix any of the following:\n  Element has insufficient color contrast of 2.63 (foreground color: #90a1b9, background color: #ffffff, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1"
+            },
+            {
+              "target": [
+                "label[for=\"company\"] > .ms-1.font-normal.text-slate-400"
+              ],
+              "summary": "Fix any of the following:\n  Element has insufficient color contrast of 2.63 (foreground color: #90a1b9, background color: #ffffff, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1"
+            },
+            {
+              "target": [
+                "label[for=\"phone\"] > .ms-1.font-normal.text-slate-400"
+              ],
+              "summary": "Fix any of the following:\n  Element has insufficient color contrast of 2.63 (foreground color: #90a1b9, background color: #ffffff, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1"
+            },
+            {
+              "target": [
+                "label[for=\"referenceUrl\"] > .ms-1.font-normal.text-slate-400"
+              ],
+              "summary": "Fix any of the following:\n  Element has insufficient color contrast of 2.63 (foreground color: #90a1b9, background color: #ffffff, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "width": 1280,
+      "locale": "en",
+      "route": "requests",
+      "violations": [
+        {
+          "id": "aria-valid-attr-value",
+          "nodes": [
+            {
+              "target": [
+                "#radix-_R_v9h_-trigger-all"
+              ],
+              "summary": "Fix all of the following:\n  Invalid ARIA attribute value: aria-controls=\"radix-_R_v9h_-content-all\""
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "width": 1280,
+      "locale": "en",
+      "route": "inquiries",
+      "violations": [
+        {
+          "id": "aria-valid-attr-value",
+          "nodes": [
+            {
+              "target": [
+                "#radix-_R_n9h_-trigger-all"
+              ],
+              "summary": "Fix all of the following:\n  Invalid ARIA attribute value: aria-controls=\"radix-_R_n9h_-content-all\""
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "width": 1280,
+      "locale": "en",
+      "route": "requests/new",
+      "violations": [
+        {
+          "id": "color-contrast",
+          "nodes": [
+            {
+              "target": [
+                ".mt-1\\.5.ltr-isolate.text-slate-400"
+              ],
+              "summary": "Fix any of the following:\n  Element has insufficient color contrast of 2.63 (foreground color: #90a1b9, background color: #ffffff, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1"
+            },
+            {
+              "target": [
+                ".leading-6.mt-1\\.5.text-slate-400"
+              ],
+              "summary": "Fix any of the following:\n  Element has insufficient color contrast of 2.63 (foreground color: #90a1b9, background color: #ffffff, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1"
+            },
+            {
+              "target": [
+                "label[for=\"company\"] > .ms-1.font-normal.text-slate-400"
+              ],
+              "summary": "Fix any of the following:\n  Element has insufficient color contrast of 2.63 (foreground color: #90a1b9, background color: #ffffff, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1"
+            },
+            {
+              "target": [
+                "label[for=\"phone\"] > .ms-1.font-normal.text-slate-400"
+              ],
+              "summary": "Fix any of the following:\n  Element has insufficient color contrast of 2.63 (foreground color: #90a1b9, background color: #ffffff, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1"
+            },
+            {
+              "target": [
+                "label[for=\"referenceUrl\"] > .ms-1.font-normal.text-slate-400"
+              ],
+              "summary": "Fix any of the following:\n  Element has insufficient color contrast of 2.63 (foreground color: #90a1b9, background color: #ffffff, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

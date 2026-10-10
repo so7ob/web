@@ -1,4 +1,5 @@
 "use client";
+import {ConflictReview} from "../conflict-review";
 
 /**
  * إعدادات الموقع: بيانات التواصل + الروابط الاجتماعية + اسم الموقع
@@ -89,12 +90,15 @@ export function SettingsClient({ me, locale }: SettingsClientProps) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
+  const [revisions,setRevisions]=useState<Record<string,string>>({});
+  const [conflictDraft,setConflictDraft]=useState<unknown>(null);
 
   const load = useCallback(async () => {
     setLoading(true);
     setError(null);
     try {
       const res = await apiGet<SettingsResponse>("/api/admin/settings");
+      setRevisions(res.revisions);
       const next = { ...EMPTY_FORM };
       for (const key of FIELDS) next[key] = res.settings[key] ?? "";
       // قيم افتراضية للمفاتيح الثنائية والمنتقي — Radix لا يقبل قيمة فارغة
@@ -166,11 +170,12 @@ export function SettingsClient({ me, locale }: SettingsClientProps) {
 
     setSaving(true);
     try {
-      await apiSend("/api/admin/settings", "PATCH", updates);
+      await apiSend("/api/v1/admin/settings/checked", "PATCH", {...updates,baseRevisions:revisions});
       toast.success(ts.saved);
       await load();
     } catch (err) {
-      toast.error(apiErrorMessage(err, t.auth.errors));
+      if(err instanceof ApiError && err.code==='conflict') setConflictDraft(form);
+      else toast.error(apiErrorMessage(err, t.auth.errors));
     } finally {
       setSaving(false);
     }
@@ -190,6 +195,7 @@ export function SettingsClient({ me, locale }: SettingsClientProps) {
 
   return (
     <div className="space-y-5">
+      <ConflictReview locale={locale} storageKey={'so7ob-settings-conflict:'+me.id} captured={conflictDraft} remoteUrl="/api/admin/settings" onReload={load} />
       <div className="flex flex-wrap items-end justify-between gap-3">
         <div className="flex items-center gap-3">
           <span className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-accent text-brand-strong">

@@ -17,14 +17,14 @@ for(const locale of ['ar','en'] as const)test(`${locale}: administrator saves me
   await page.locator('#contact-phone').focus();await page.keyboard.press('Control+a');await page.keyboard.insertText('+967 123456789');
   await page.locator('#announcement-message-ar').fill(marker+' عربي');await page.locator('#announcement-message-en').fill(marker+' English');
   if((await page.locator('#announcement-enabled').getAttribute('aria-checked'))!=='true')await page.locator('#announcement-enabled').click();
-  const saved=page.waitForResponse(r=>r.request().method()==='PATCH'&&r.url().endsWith('/api/admin/settings'));
+  const saved=page.waitForResponse(r=>r.request().method()==='PATCH'&&r.url().endsWith('/api/v1/admin/settings/checked'));
   await page.getByRole('button',{name:t.admin.settings.save,exact:true}).click();expect((await saved).status()).toBe(200);
   await page.reload({waitUntil:'networkidle'});await expect(page.locator('#contact-phone')).toHaveValue('+967 123456789');
   expect((await db.query("SELECT value FROM SiteSetting WHERE `key`='announcement.messageAr'"))[0].value).toBe(marker+' عربي');
   expect(await(await page.request.get('/'+locale)).text()).toContain(marker+(locale==='ar'?' عربي':' English'));
   await page.goto('/'+locale+'/admin/menus',{waitUntil:'networkidle'});
   await page.locator('#label-ar-0').fill(marker+' قائمة');await page.locator('#label-en-0').fill(marker+' Menu');
-  const menuSaved=page.waitForResponse(r=>r.request().method()==='PUT'&&r.url().endsWith('/api/admin/menus'));
+  const menuSaved=page.waitForResponse(r=>r.request().method()==='PUT'&&r.url().endsWith('/api/v1/admin/menus/checked'));
   await page.getByRole('button',{name:t.admin.menus.save,exact:true}).click();expect((await menuSaved).status()).toBe(200);
   await page.reload({waitUntil:'networkidle'});await expect(page.locator('#label-en-0')).toHaveValue(marker+' Menu');
   expect(await(await page.request.get('/'+locale)).text()).toContain(marker+(locale==='ar'?' قائمة':' Menu'));

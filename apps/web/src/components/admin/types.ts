@@ -297,21 +297,7 @@ export interface AuditResponse {
   page: number;
   pageSize: number;
 }
-export interface OutboxEmail {
-  id: string;
-  to: string;
-  subject: string;
-  status: string;
-  error: string | null;
-  createdAt: string;
-}
-export interface OutboxResponse {
-  ok: boolean;
-  emails: OutboxEmail[];
-  total: number;
-  page: number;
-  pageSize: number;
-}
+export type { OutboxEmail, OutboxResponse } from "@so7ob/contracts";
 
 // ——— القوائم والإعدادات والوسائط ———
 export interface MenuItemRow {
@@ -330,6 +316,7 @@ export interface PageOption {
   titleEn: string;
 }
 export interface MenusResponse {
+  revisions: Record<string,string>;
   ok: boolean;
   header: MenuItemRow[];
   footer: MenuItemRow[];
@@ -369,6 +356,7 @@ export interface MediaUsageLocationView {
   archived?: boolean;
 }
 export interface SettingsResponse {
+  revisions: Record<string,string>;
   ok: boolean;
   settings: Record<string, string>;
 }
