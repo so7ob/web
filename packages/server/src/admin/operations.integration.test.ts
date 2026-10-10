@@ -429,3 +429,24 @@ it('keeps policy-controlled list/dashboard overdue counts consistent and require
   for(const row of original)await db.query('INSERT INTO SiteSetting(`key`,value,updatedById,updatedAt) VALUES(?,?,?,?)',[row.key,row.value,row.updatedById,row.updatedAt]);
  }
 });
+
+it("reports current job metadata, unknown historical states and only allowlisted errors", async () => {
+  const id = prefix + "outboxstate";
+  await db.query("INSERT INTO EmailLog(id,`to`,subject,bodyText,status,error) VALUES(?,?,?,'secret account link','queued','secret token')", [id,client.email,'Synthetic']);
+  await db.query("INSERT INTO MailJob(id,dedupeKey,payload,payloadDigest,emailLogId,status,attempts,lastError) VALUES(?,?,'encrypted private payload',?,?, 'leased',2,'smtp_rejected_temporarily')", [id,id,id,id]);
+  try {
+    for (const status of ['queued','retry','leased','sending','sent','failed','uncertain']) {
+      await db.query('UPDATE MailJob SET status=? WHERE id=?',[status,id]);
+      const item = (await ops.outbox(admin)).emails.find((e: {id:string}) => e.id === id);
+      expect(item).toMatchObject({status,attempts:2,errorCode:'smtp_rejected_temporarily',bodyText:'',bodyHtml:null,error:null});
+      expect(item?.nextAttemptAt !== null).toBe(['queued','retry'].includes(status));
+      expect(JSON.stringify(item)).not.toMatch(/secret|encrypted|payload|leaseToken|providerMessageId/);
+    }
+    await db.query("UPDATE MailJob SET lastError='private_token_123' WHERE id=?",[id]);
+    expect((await ops.outbox(admin)).emails.find((e: {id:string})=>e.id===id)?.errorCode).toBe('unavailable');
+    await expect(ops.outbox(client)).rejects.toMatchObject({status:403});
+    await db.query('DELETE FROM MailJob WHERE id=?',[id]);
+    await db.query("UPDATE EmailLog SET status='historic_future' WHERE id=?",[id]);
+    expect((await ops.outbox(admin)).emails.find((e: {id:string})=>e.id===id)).toMatchObject({status:'unknown',attempts:null,nextAttemptAt:null,errorCode:null});
+  } finally { await db.query('DELETE FROM MailJob WHERE id=?',[id]); await db.query('DELETE FROM EmailLog WHERE id=?',[id]); }
+});

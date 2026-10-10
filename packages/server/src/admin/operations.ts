@@ -1,4 +1,6 @@
+import {workerHealth} from '../queue/monitor.js';
 import {snapshot,revisions,advance} from "./revisions.js";
+import { OUTBOX_STATUSES, type OutboxResponse, type OutboxStatus } from "@so7ob/contracts";
 import type { DataSource } from "typeorm";
 import { can, isTrackMode, type AuthUser, type Permission } from "@so7ob/contracts";
 import { AuthFault, audit, newId, transaction } from "../auth/persistence.js";
@@ -36,6 +38,7 @@ export const pageNumber = (value?: string) => {
 };
 export class AdminOperationsService {
   constructor(private readonly db: DataSource) {}
+  async workerHealth(actor:AuthUser){return workerHealth(this.db,actor);}
   async settings(actor: AuthUser) {
     requirePermission(actor, "settings.manage");
     return snapshot(this.db,async r=>{
@@ -260,13 +263,13 @@ export class AdminOperationsService {
       }),
     };
   }
-  async outbox(actor: AuthUser, raw?: string) {
+  async outbox(actor: AuthUser, raw?: string): Promise<OutboxResponse> {
     requirePermission(actor, "email.outbox");
     const page = pageNumber(raw),
       [counts, emails] = await Promise.all([
         this.db.query("SELECT COUNT(*) n FROM EmailLog"),
         this.db.query(
-          "SELECT id,`to`,subject,status,createdAt FROM EmailLog ORDER BY createdAt DESC LIMIT 20 OFFSET ?",
+          "SELECT e.id,e.`to`,e.subject,COALESCE(j.status,e.status) status,e.createdAt,j.attempts,j.availableAt,j.lastError FROM EmailLog e LEFT JOIN MailJob j ON j.emailLogId=e.id ORDER BY e.createdAt DESC,e.id DESC LIMIT 20 OFFSET ?",
           [(page - 1) * 20],
         ),
       ]);
@@ -276,7 +279,16 @@ export class AdminOperationsService {
       page,
       pageSize: 20,
       emails: emails.map((r: Record<string, unknown>) => ({
-        ...r,
+        id: String(r.id), to: String(r.to), subject: String(r.subject),
+        status: OUTBOX_STATUSES.includes(r.status as OutboxStatus) ? r.status as OutboxStatus : 'unknown',
+        createdAt: (r.createdAt as Date).toISOString(),
+        attempts: r.attempts === null ? null : Number(r.attempts),
+        nextAttemptAt: ['queued','retry'].includes(String(r.status)) && r.availableAt instanceof Date ? r.availableAt.toISOString() : null,
+        errorCode: r.lastError === null ? null : [
+          'smtp_rejected_permanently','smtp_rejected_temporarily','smtp_connection_not_established',
+          'smtp_failed_before_data','smtp_acceptance_unknown','smtp_no_recipient_accepted',
+          'payload_authentication_failed','worker_lost_after_send_started','worker_lost_before_send',
+        ].includes(String(r.lastError)) ? String(r.lastError) : 'unavailable',
         bodyText: "",
         bodyHtml: null,
         error: null,
