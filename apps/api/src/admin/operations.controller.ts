@@ -146,6 +146,7 @@ export class AdminOperationsController {
   @Get("audit") audit(@Req() req: AdminRequest, @Query() q: AdminQuery) {
     return this.ops.logs(req.actor, q);
   }
+  @Get("worker-health") workerHealth(@Req() req:AdminRequest){return this.ops.workerHealth(req.actor);}
   @Get("outbox") outbox(@Req() req: AdminRequest, @Query() q: AdminQuery) {
     return this.ops.outbox(req.actor, q.page);
   }

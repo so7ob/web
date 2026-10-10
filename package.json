@@ -17,7 +17,7 @@
     "build:server": "tsc -b packages/contracts packages/server apps/api apps/worker",
     "data:transfer": "node --env-file-if-exists=.env --import tsx packages/server/src/migration/cli.ts",
     "data:backup": "node --env-file-if-exists=.env --import tsx packages/server/src/migration/backup-cli.ts",
-    "test:worker": "node tools/migration/worker-smoke.mjs",
+    "test:worker": "node tools/migration/worker-smoke.mjs && node tools/migration/worker-health-smoke.mjs",
     "test:auth": "node tools/migration/auth-smoke.mjs",
     "test:webhook": "node tools/migration/webhook-smoke.mjs",
     "test:file-worker": "node tools/migration/file-worker-smoke.mjs",

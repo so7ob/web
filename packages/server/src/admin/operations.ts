@@ -1,3 +1,4 @@
+import {workerHealth} from '../queue/monitor.js';
 import type { DataSource } from "typeorm";
 import { can, isTrackMode, type AuthUser, type Permission } from "@so7ob/contracts";
 import { AuthFault, audit, newId, transaction } from "../auth/persistence.js";
@@ -34,6 +35,7 @@ export const pageNumber = (value?: string) => {
 };
 export class AdminOperationsService {
   constructor(private readonly db: DataSource) {}
+  async workerHealth(actor:AuthUser){return workerHealth(this.db,actor);}
   async settings(actor: AuthUser) {
     requirePermission(actor, "settings.manage");
     const rows: Array<{ key: string; value: string }> = await this.db.query(
