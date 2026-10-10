@@ -24,7 +24,9 @@ for(const locale of ['ar','en'] as const) test(`${locale}: outbox states are exp
    const row=page.getByRole('row').filter({has:page.getByText(state,{exact:true})});
    await expect(row.getByText(label,{exact:true})).toBeVisible();
   }
-  await page.keyboard.press('Tab');expect(await page.evaluate(()=>document.activeElement?.tagName)).not.toBe('BODY');
+  await page.getByRole('table',{name:t.title}).focus();
+  await expect(page.getByRole('table',{name:t.title})).toBeFocused();
+  await page.keyboard.press(locale==='ar'?'ArrowLeft':'ArrowRight');
   expect((await new AxeBuilder({page}).withTags(['wcag2a','wcag2aa','wcag21aa','wcag22aa']).analyze()).violations).toEqual([]);
   await test.info().attach('outbox',{body:await page.screenshot({fullPage:true}),contentType:'image/png'});
  }finally{for(const id of ids)await db.query('DELETE FROM EmailLog WHERE id=?',[id]);await db.destroy();}
