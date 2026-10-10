@@ -330,6 +330,7 @@ export interface PageOption {
   titleEn: string;
 }
 export interface MenusResponse {
+  revisions: Record<string,string>;
   ok: boolean;
   header: MenuItemRow[];
   footer: MenuItemRow[];
@@ -369,6 +370,7 @@ export interface MediaUsageLocationView {
   archived?: boolean;
 }
 export interface SettingsResponse {
+  revisions: Record<string,string>;
   ok: boolean;
   settings: Record<string, string>;
 }
