@@ -75,7 +75,7 @@ test('HTTP mutation permissions, invalid input and concurrent independent fields
       expect((await denied.patch(url, { data: { priority:'urgent' } })).status()).toBe(401);
       expect((await request.patch(url, { data: { priority:'urgent' } })).status()).toBe(403);
       expect((await request.patch(url, { headers:{...headers,origin:'https://example.invalid'}, data:{status:'closed'} })).status()).toBe(403);
-      for (const data of [{}, {priority:null}, {priority:'invalid'}, {status:'invalid'}, {assigneeId:'missing'}, {action:'invalid'}])
+      for (const data of [{}, {priority:null}, {priority:'invalid'}, {status:'invalid'}, {assigneeId:'missing'}, {action:'invalid'}, {priority:false}, {priority:0}, {priority:''}, {status:'in_review',priority:'urgent'}, {assigneeId:null,status:'closed'}, {action:'archive',priority:'high'}, {note:'orphan note',priority:'high'}])
         expect((await request.patch(url, { headers, data })).status()).toBe(400);
       expect(await f.row()).toMatchObject({ priority:'normal',status:'new',assigneeId:prefix+'admin' });
     }
@@ -151,4 +151,24 @@ for (const locale of ['ar','en'] as const) test(`${locale}: details save priorit
     expect((await new AxeBuilder({page}).withTags(['wcag2a','wcag2aa','wcag21aa','wcag22aa']).analyze()).violations).toEqual([]);
     await page.screenshot({path:testInfo.outputPath('synthetic-request-details.png'),fullPage:true});
   } finally { await f.dispose(); }
+});
+
+for (const locale of ['ar','en'] as const) test(`${locale}: a confirmed save with failed refresh never repeats the write`,async({page})=>{
+  const {prefix}=await login(page.request),f=await fixture(prefix),tr=getPortalContent(locale).admin.requests;
+  try {
+    await page.goto(`/${locale}/admin/requests/${f.id}`,{waitUntil:'networkidle'});
+    let writes=0,failReads=false;
+    await page.route('**/api/admin/requests/'+f.id,async route=>{
+      if(route.request().method()==='PATCH'){writes++;failReads=true;await route.continue();}
+      else if(failReads)await route.fulfill({status:500,contentType:'application/json',body:'{"ok":false,"code":"internal_error"}'});
+      else await route.continue();
+    });
+    const priority=page.getByRole('combobox',{name:tr.priority,exact:true});
+    await priority.click();await page.getByRole('option',{name:tr.priorities.high,exact:true}).click();
+    await expect(page.getByText(tr.savedRefreshFailed,{exact:true})).toBeVisible();
+    expect((await f.row()).priority).toBe('high');expect(writes).toBe(1);await expect(priority).toBeDisabled();
+    failReads=false;await page.getByRole('button',{name:tr.refreshData,exact:true}).click();
+    await expect(page.getByText(tr.savedRefreshFailed,{exact:true})).toHaveCount(0);
+    await expect(priority).toContainText(tr.priorities.high);await expect(priority).toBeEnabled();expect(writes).toBe(1);
+  }finally{await f.dispose();}
 });

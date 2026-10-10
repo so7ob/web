@@ -265,6 +265,14 @@ export class AdminConversationService {
   ) {
     const table = tableFor(kind),
       request = kind === "requests";
+    // Exactly one mutation per PATCH. Presence is not truthiness: null/false/0/""
+    // remain supplied values and are validated by the selected operation.
+    const operations = ["assigneeId", "priority", "status", "action"].filter(
+      key => Object.hasOwn(body, key) && body[key] !== undefined,
+    );
+    if (operations.length !== 1 || (!request && operations[0] === "priority") ||
+        (body.note !== undefined && operations[0] !== "status"))
+      throw new AuthFault(400, "invalid");
     return transaction(this.db, async (r) => {
       const [record]: Array<ProjectRequest & Inquiry> = await r.query(
         `SELECT * FROM ${table} WHERE id=? FOR UPDATE`,
