@@ -897,6 +897,8 @@ export interface PortalContent {
       status: string;
       sent: string;
       devLogged: string;
+      queued: string; retry: string; leased: string; sending: string; uncertain: string; unknown: string;
+      attempts: string; nextAttempt: string; errorCode: string;
       failed: string;
       date: string;
       empty: string;

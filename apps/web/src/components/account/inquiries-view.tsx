@@ -7,7 +7,7 @@ import { ChevronLeft, ChevronRight, MessageCircle, MessageCircleQuestion, Plus, 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Skeleton } from "@/components/ui/skeleton";
-import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { EmptyState } from "@/components/admin/empty-state";
 import type { Locale } from "@/lib/i18n";
 import type { PortalContent } from "@/content/portal/types";
@@ -127,7 +127,7 @@ export function InquiriesView({
         </Button>
       </header>
 
-      <Tabs value={status} onValueChange={onStatusChange}>
+      <Tabs value={status} onValueChange={onStatusChange} dir={locale === "ar" ? "rtl" : "ltr"} className="space-y-5">
         <div className="overflow-x-auto pb-1">
           <TabsList className="h-auto w-max flex-wrap gap-1 rounded-full bg-muted/60 p-1">
             <TabsTrigger value="all" className={TAB_PILL_CLASS}>
@@ -143,7 +143,7 @@ export function InquiriesView({
             ))}
           </TabsList>
         </div>
-      </Tabs>
+      <TabsContent value={status} className="space-y-5">
 
       {/* حقل البحث — مؤجل ٣٠٠ مللي ويمسح بزر مستقل */}
       <div className="flex justify-start">
@@ -299,6 +299,8 @@ export function InquiriesView({
           </>
         )}
       </section>
+      </TabsContent>
+      </Tabs>
 
       <NewInquiryDialog locale={locale} t={t} authErrors={authErrors} open={createOpen} onOpenChange={setCreateOpen} />
     </div>

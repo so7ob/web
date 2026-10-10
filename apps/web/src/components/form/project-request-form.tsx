@@ -411,7 +411,7 @@ export function ProjectRequestForm({
               aria-describedby={describedBy("description", Boolean(errors.description))}
               className={`${selectClass(Boolean(errors.description))} resize-y leading-8`}
             />
-            <p className="mt-1.5 text-xs text-slate-400 ltr-isolate">
+            <p className="mt-1.5 text-xs text-muted-foreground ltr-isolate">
               {data.description.length} / {LIMIT_MAX}
             </p>
           </Field>
@@ -597,7 +597,7 @@ export function ProjectRequestForm({
 const LIMIT_MAX = 5000;
 
 const selectClass = (invalid: boolean) =>
-  `w-full rounded-xl border bg-white px-4 py-3 text-[15px] text-foreground shadow-sm transition-colors placeholder:text-slate-400 ${
+  `w-full rounded-xl border bg-white px-4 py-3 text-[15px] text-foreground shadow-sm transition-colors placeholder:text-muted-foreground ${
     invalid ? "border-red-400 focus:border-red-500" : "border-input focus:border-brand"
   } min-h-11`;
 
@@ -628,10 +628,10 @@ function Field({
     <div className={full ? "sm:col-span-2" : ""}>
       <label htmlFor={htmlFor} className="mb-2 block text-sm font-semibold text-navy">
         {label} {required && <span className="text-red-600" aria-hidden="true">*</span>}
-        {optional && <span className="ms-1 text-xs font-normal text-slate-400">({optionalLabel})</span>}
+        {optional && <span className="ms-1 text-xs font-normal text-muted-foreground">({optionalLabel})</span>}
       </label>
       {children}
-      {hint && !error && <p className="mt-1.5 text-xs leading-6 text-slate-400">{hint}</p>}
+      {hint && !error && <p className="mt-1.5 text-xs leading-6 text-muted-foreground">{hint}</p>}
       {error && (
         <p id={errorId} role="alert" className="mt-1.5 flex items-start gap-1.5 text-xs font-medium leading-6 text-red-700">
           <TriangleAlert className="mt-1 h-3.5 w-3.5 shrink-0" aria-hidden="true" />
