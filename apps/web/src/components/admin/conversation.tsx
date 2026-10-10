@@ -14,7 +14,7 @@ import {
   MessageSquareText,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Textarea } from "@/components/ui/textarea";
 import {
   Popover,
@@ -286,28 +286,8 @@ export function ReplyComposer({
     setBody((prev) => (prev.trim() ? `${prev}\n\n${content}` : content));
   };
 
-  return (
-    <div className="rounded-2xl border border-border bg-white p-4 transition-all focus-within:border-brand/40 focus-within:ring-2 focus-within:ring-ring/40">
-      <Tabs
-        value={currentTab}
-        onValueChange={(v) => setTab(v as "message" | "internal_note")}
-      >
-        <TabsList className="flex-wrap">
-          {canReply ? (
-            <TabsTrigger value="message" className="gap-1.5">
-              <MessageSquareText className="size-3.5" aria-hidden="true" />
-              {labels.reply}
-            </TabsTrigger>
-          ) : null}
-          {canNote ? (
-            <TabsTrigger value="internal_note" className="gap-1.5">
-              <Lock className="size-3.5" aria-hidden="true" />
-              {labels.internalNote}
-            </TabsTrigger>
-          ) : null}
-        </TabsList>
-      </Tabs>
-
+  const composer = (
+    <>
       {currentTab === "internal_note" ? (
         <p className="mt-2 flex items-center gap-1.5 text-xs text-amber-700">
           <Lock className="size-3" aria-hidden="true" />
@@ -376,6 +356,35 @@ export function ReplyComposer({
           {sending ? labels.sending : labels.send}
         </Button>
       </div>
+    </>
+  );
+
+  return (
+    <div className="rounded-2xl border border-border bg-white p-4 transition-all focus-within:border-brand/40 focus-within:ring-2 focus-within:ring-ring/40">
+      <Tabs
+        value={currentTab}
+        onValueChange={(v) => setTab(v as "message" | "internal_note")}
+      >
+        <TabsList className="flex-wrap">
+          {canReply ? (
+            <TabsTrigger value="message" className="gap-1.5">
+              <MessageSquareText className="size-3.5" aria-hidden="true" />
+              {labels.reply}
+            </TabsTrigger>
+          ) : null}
+          {canNote ? (
+            <TabsTrigger value="internal_note" className="gap-1.5">
+              <Lock className="size-3.5" aria-hidden="true" />
+              {labels.internalNote}
+            </TabsTrigger>
+          ) : null}
+        </TabsList>
+        {[...(canReply ? ["message"] : []), ...(canNote ? ["internal_note"] : [])].map((value) => (
+          <TabsContent key={value} value={value}>
+            {currentTab === value ? composer : null}
+          </TabsContent>
+        ))}
+      </Tabs>
     </div>
   );
 }

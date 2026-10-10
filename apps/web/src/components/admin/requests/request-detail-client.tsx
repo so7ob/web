@@ -195,12 +195,14 @@ export function RequestDetailClient({
       await apiSend(`/api/admin/requests/${requestId}`, "PATCH", body);
       if (successMsg) toast.success(successMsg);
       reload();
+      return true;
     } catch (err) {
       if (err instanceof ApiError && err.code === "invalid_transition") {
-        toast.error(t.auth.errors.generic);
+        toast.error(tr.invalidTransition);
       } else {
         toast.error(apiErrorMessage(err, t.auth.errors));
       }
+      return false;
     } finally {
       setBusy(false);
       busyRef.current = false;
@@ -282,15 +284,17 @@ export function RequestDetailClient({
     }
     setApplying(true);
     try {
-      await patch(
+      const saved = await patch(
         {
           status: statusTarget,
           note: isClosure ? closeReason.trim() : statusNote.trim() || undefined,
         },
         tr.statuses[statusTarget],
       );
-      setStatusNote("");
-      setCloseReason("");
+      if (saved) {
+        setStatusNote("");
+        setCloseReason("");
+      }
     } finally {
       setApplying(false);
     }
@@ -702,7 +706,7 @@ export function RequestDetailClient({
           <section className="space-y-4 rounded-2xl border border-border bg-white p-4 print:hidden">
             {mayAssign ? (
               <div className="space-y-2">
-                <Label>{tr.filterAssignee}</Label>
+                <Label htmlFor="request-assignee">{tr.filterAssignee}</Label>
                 <div className="flex items-center gap-2">
                   <Select
                     value={detail.assigneeId ?? "none"}
@@ -714,7 +718,7 @@ export function RequestDetailClient({
                     }
                     disabled={busy}
                   >
-                    <SelectTrigger className="min-h-11 flex-1">
+                    <SelectTrigger id="request-assignee" className="min-h-11 flex-1">
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
@@ -744,7 +748,7 @@ export function RequestDetailClient({
 
             {mayStatus ? (
               <div className="space-y-2">
-                <Label>{tr.priority}</Label>
+                <Label htmlFor="request-priority">{tr.priority}</Label>
                 <Select
                   value={detail.priority}
                   onValueChange={(v) =>
@@ -752,7 +756,7 @@ export function RequestDetailClient({
                   }
                   disabled={busy}
                 >
-                  <SelectTrigger className="min-h-11">
+                  <SelectTrigger id="request-priority" className="min-h-11">
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
@@ -768,12 +772,13 @@ export function RequestDetailClient({
 
             {mayStatus ? (
               <div className="space-y-2">
-                <Label>{tr.changeStatus}</Label>
+                <Label htmlFor="request-status">{tr.changeStatus}</Label>
                 <Select
                   value={statusTarget || detail.status}
                   onValueChange={setStatusTarget}
+                  disabled={busy}
                 >
-                  <SelectTrigger className="min-h-11">
+                  <SelectTrigger id="request-status" className="min-h-11">
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
@@ -791,6 +796,7 @@ export function RequestDetailClient({
                     </Label>
                     <Input
                       id="close-reason"
+                      disabled={busy}
                       value={closeReason}
                       onChange={(e) => setCloseReason(e.target.value)}
                       placeholder={tr.closeReasonPlaceholder}
@@ -800,6 +806,7 @@ export function RequestDetailClient({
                   </div>
                 ) : (
                   <Input
+                    disabled={busy}
                     value={statusNote}
                     onChange={(e) => setStatusNote(e.target.value)}
                     placeholder={tr.statusNotePlaceholder}

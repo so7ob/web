@@ -271,7 +271,9 @@ export class AdminConversationService {
         [id],
       );
       if (!record) throw new AuthFault(404, "not_found");
-      if ("assigneeId" in body) {
+      // Compiled DTOs have own undefined fields even when omitted from JSON.
+      // Only supplied values select an operation; explicit null still unassigns.
+      if (Object.hasOwn(body, "assigneeId") && body.assigneeId !== undefined) {
         requirePermission(
           actor,
           request ? "requests.assign" : "inquiries.assign",
@@ -316,7 +318,7 @@ export class AdminConversationService {
         );
         return { ok: true };
       }
-      if (request && "priority" in body) {
+      if (request && Object.hasOwn(body, "priority") && body.priority !== undefined) {
         requirePermission(actor, "requests.status");
         const priority = String(body.priority);
         if (!(REQUEST_PRIORITIES as readonly string[]).includes(priority))
@@ -337,7 +339,7 @@ export class AdminConversationService {
       }
       if (request && (body.action === "archive" || body.action === "restore"))
         return this.archiveOne(r, actor, kind, id, body.action);
-      if ("status" in body) {
+      if (Object.hasOwn(body, "status") && body.status !== undefined) {
         requirePermission(
           actor,
           request ? "requests.status" : "inquiries.status",

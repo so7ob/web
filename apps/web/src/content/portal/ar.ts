@@ -533,6 +533,7 @@ export const portalAr: PortalContent = {
       emptyBody: "عدّل عوامل التصفية أو انتظر وصول طلبات جديدة.",
       closeReason: "سبب الإغلاق/الإلغاء",
       closeReasonPlaceholder: "سبب يظهر للعميل…",
+      invalidTransition: "تعذر الانتقال من الحالة الحالية. أعد تحميل الطلب وراجع حالته؛ ملاحظتك محفوظة.",
       statusNotePlaceholder: "ملاحظة على تغيير الحالة (اختياري)…",
       applyStatus: "تطبيق",
       sentReply: "أُرسل الرد",

@@ -473,6 +473,7 @@ export interface PortalContent {
       emptyBody: string;
       closeReason: string;
       closeReasonPlaceholder: string;
+      invalidTransition: string;
       statusNotePlaceholder: string;
       applyStatus: string;
       sentReply: string;

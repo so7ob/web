@@ -91,6 +91,12 @@ test('HTTP mutation permissions, invalid input and concurrent independent fields
     const repeated = await request.patch(`/api/admin/requests/${f.id}`, {headers,data:{status:'awaiting_info'}});
     expect(repeated.status()).toBe(409);expect(await repeated.json()).toMatchObject({code:'invalid_transition'});
     expect(await f.db.query('SELECT id FROM RequestStatusEvent WHERE requestId=?',[f.id])).toHaveLength(1);
+    const support = await login(denied, 'support');
+    for (const kind of ['requests','inquiries']) {
+      expect((await denied.patch(`/api/admin/${kind}/${f.id}`, {headers:support.headers,data:{status:kind==='requests'?'in_progress':'responded'}})).status()).toBe(200);
+      expect((await denied.patch(`/api/v1/admin/${kind}/${f.id}`, {headers:support.headers,data:{assigneeId:null}})).status()).toBe(403);
+      expect((await f.row(kind)).assigneeId).toBe(prefix+'admin');
+    }
   } finally { await denied.dispose(); await f.dispose(); }
 });
 
@@ -119,6 +125,28 @@ for (const locale of ['ar','en'] as const) test(`${locale}: details save priorit
     await expect.poll(async()=>(await f.row()).status).toBe('in_review');
     await page.reload({waitUntil:'networkidle'});await expect(priority).toContainText(tr.priorities.high);await expect(status).toContainText(tr.statuses.in_review);
     expect((await f.row()).assigneeId).toBe(prefix+'admin');
+    await status.click();await page.getByRole('option',{name:tr.statuses.closed,exact:true}).click();
+    const reason = page.getByPlaceholder(tr.closeReasonPlaceholder);await reason.fill('Synthetic closure reason retained');
+    await page.route('**/api/admin/requests/'+f.id, async route=> {
+      if(route.request().method()==='PATCH') await route.fulfill({status:409,contentType:'application/json',body:JSON.stringify({ok:false,code:'invalid_transition'})});
+      else await route.continue();
+    });
+    const conflict = patchResponse();await page.getByRole('button',{name:tr.applyStatus,exact:true}).click();expect((await conflict).status()).toBe(409);
+    await expect(page.getByText(tr.invalidTransition,{exact:true})).toBeVisible();await expect(reason).toHaveValue('Synthetic closure reason retained');
+    await page.unroute('**/api/admin/requests/'+f.id);
+    const closed = patchResponse();await page.getByRole('button',{name:tr.applyStatus,exact:true}).click();expect((await closed).status()).toBe(200);
+    await expect.poll(async()=>(await f.row()).status).toBe('closed');
+    expect((await f.row()).resolutionNote).toBe('Synthetic closure reason retained');
+    const tabs = page.getByRole('tablist').last(), triggers = tabs.getByRole('tab');
+    await page.getByRole('tabpanel').getByRole('textbox').fill('Synthetic unsent reply draft');
+    await triggers.first().focus();await page.keyboard.press('End');
+    await expect(triggers.last()).toHaveAttribute('aria-selected','true');
+    await expect(page.getByRole('tabpanel').getByRole('textbox')).toHaveValue('Synthetic unsent reply draft');
+    await expect(page.getByRole('tabpanel')).toHaveAttribute('id',(await triggers.last().getAttribute('aria-controls'))!);
+    await expect(page.getByRole('tabpanel')).toHaveAttribute('aria-labelledby',(await triggers.last().getAttribute('id'))!);
+    expect((await new AxeBuilder({page}).withTags(['wcag2a','wcag2aa','wcag21aa','wcag22aa']).analyze()).violations).toEqual([]);
+    await page.keyboard.press('Home');await expect(triggers.first()).toHaveAttribute('aria-selected','true');
+    await expect(page.getByRole('tabpanel').getByRole('textbox')).toHaveValue('Synthetic unsent reply draft');
     await expect(page.locator('html')).toHaveAttribute('dir',locale==='ar'?'rtl':'ltr');
     expect((await new AxeBuilder({page}).withTags(['wcag2a','wcag2aa','wcag21aa','wcag22aa']).analyze()).violations).toEqual([]);
     await page.screenshot({path:testInfo.outputPath('synthetic-request-details.png'),fullPage:true});

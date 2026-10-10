@@ -533,6 +533,7 @@ export const portalEn: PortalContent = {
       emptyBody: "Adjust filters or wait for new requests.",
       closeReason: "Close/cancel reason",
       closeReasonPlaceholder: "Reason visible to the client…",
+      invalidTransition: "This transition is no longer available. Reload the request and review its current status; your note is preserved.",
       statusNotePlaceholder: "Note about this status change (optional)…",
       applyStatus: "Apply",
       sentReply: "Reply sent",
