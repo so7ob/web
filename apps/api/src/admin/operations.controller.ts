@@ -54,6 +54,8 @@ class OperationBody {
   @ApiPropertyOptional() @Allow() items?: unknown;
 }
 class SettingsBody {
+  @Allow() "response.hours"?: unknown;
+  @Allow() "response.applyToExisting"?: unknown;
   @Allow() baseRevisions?: unknown;
   @Allow() "track.forceLogin"?: unknown;
   @Allow() "track.requestsMode"?: unknown;

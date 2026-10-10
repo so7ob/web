@@ -1,3 +1,4 @@
+import {responsePolicy,responseDueSql} from "./response-policy.js";
 import type { DataSource } from "typeorm";
 import {
   can,
@@ -58,9 +59,10 @@ export class AdminDashboardService {
           "SELECT COUNT(*) total,SUM(status='active') active,SUM(status='pending_verification') pending FROM User",
         )
       : [{ total: 0, active: 0, pending: 0 }];
+    const policy=await responsePolicy(this.db);
     const requestCounts = access.requests
       ? await this.db.query(
-          "SELECT COUNT(*) open,SUM(status='awaiting_info') awaiting,SUM((lastClientReplyAt<DATE_SUB(UTC_TIMESTAMP(3),INTERVAL 24 HOUR) AND (lastStaffReplyAt IS NULL OR lastClientReplyAt>lastStaffReplyAt)) OR (lastClientReplyAt IS NULL AND lastStaffReplyAt IS NULL AND createdAt<DATE_SUB(UTC_TIMESTAMP(3),INTERVAL 24 HOUR))) overdue FROM ProjectRequest WHERE archivedAt IS NULL AND status IN ('new','in_review','awaiting_info','in_progress','responded')",
+          `SELECT COUNT(*) open,SUM(status='awaiting_info') awaiting,SUM(${responseDueSql('')}<UTC_TIMESTAMP(3)) overdue FROM ProjectRequest WHERE archivedAt IS NULL AND status IN ('new','in_review','awaiting_info','in_progress','responded')`,[policy.hours],
         )
       : [{ open: 0, awaiting: 0, overdue: 0 }];
     const [

@@ -408,7 +408,7 @@ export const portalAr: PortalContent = {
       range30: "آخر 30 يومًا",
       range90: "آخر 90 يومًا",
       overdueReplies: "ردود متأخرة",
-      overdueHint: "بانتظار رد الفريق أكثر من 24 ساعة",
+      overdueHint: "بانتظار رد الفريق بعد المهلة المحددة",
     },
     users: {
       title: "المستخدمون",
@@ -471,7 +471,7 @@ export const portalAr: PortalContent = {
       filterPriority: "الأولوية",
       filterService: "الخدمة",
       filterAssignee: "المسؤول",
-      filterOverdue: "متأخر الرد +24 ساعة",
+      filterOverdue: "ردود متأخرة حسب السياسة",
       filterAll: "الكل",
       unassigned: "غير معيّن",
       assign: "تعيين",

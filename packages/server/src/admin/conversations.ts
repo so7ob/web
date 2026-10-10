@@ -1,3 +1,4 @@
+import {responsePolicy,responseDueSql,responseDeadline} from "./response-policy.js";
 import { mkdtemp, open, rm } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
@@ -47,7 +48,7 @@ const inquiryStatuses = [
 ];
 export class AdminConversationService {
   constructor(private readonly db: DataSource, private readonly env: NodeJS.ProcessEnv = process.env) {}
-  private filters(kind: Kind, query: Query) {
+  private filters(kind: Kind, query: Query, hours=24) {
     const request = kind === "requests",
       conditions = [
         query.archived === "1"
@@ -92,10 +93,7 @@ export class AdminConversationService {
       conditions.push("p.createdAt>=?");
       values.push(date);
     }
-    if (request && query.overdue === "1")
-      conditions.push(
-        "p.status IN ('new','in_review','awaiting_info','in_progress','responded') AND p.archivedAt IS NULL AND ((p.lastClientReplyAt<DATE_SUB(UTC_TIMESTAMP(3),INTERVAL 24 HOUR) AND (p.lastStaffReplyAt IS NULL OR p.lastClientReplyAt>p.lastStaffReplyAt)) OR (p.lastClientReplyAt IS NULL AND p.lastStaffReplyAt IS NULL AND p.createdAt<DATE_SUB(UTC_TIMESTAMP(3),INTERVAL 24 HOUR)))",
-      );
+    if (request && query.overdue === "1") {conditions.push(responseDueSql('p')+'<UTC_TIMESTAMP(3)');values.push(hours);}
     if (q) {
       const terms = (
         request
@@ -116,7 +114,8 @@ export class AdminConversationService {
       actor,
       kind === "requests" ? "requests.view.all" : "inquiries.view.all",
     );
-    const { where, values } = this.filters(kind, query),
+    const policy=await responsePolicy(this.db);
+    const { where, values } = this.filters(kind, query,policy.hours),
       table = tableFor(kind),
       mt = messageFor(kind),
       fk = keyFor(kind),
@@ -178,11 +177,7 @@ export class AdminConversationService {
           awaitingSince,
           ...(request
             ? {
-                needsStaffReply:
-                  row.lastStaffReplyAt === null ||
-                  (row.lastClientReplyAt !== null &&
-                    (row.lastClientReplyAt ?? new Date(0)) >
-                      (row.lastStaffReplyAt ?? new Date(0))),
+                ...responseDeadline(row,policy.hours),
               }
             : {}),
         };
@@ -545,7 +540,8 @@ export class AdminConversationService {
       actor,
       kind === "requests" ? "requests.export" : "inquiries.export",
     );
-    const { where, values } = this.filters(kind, query),
+    const policy=await responsePolicy(this.db);
+    const { where, values } = this.filters(kind, query,policy.hours),
       request = kind === "requests";
     const columns = request
       ? [

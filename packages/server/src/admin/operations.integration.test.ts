@@ -409,3 +409,23 @@ it('fences concurrent menu snapshots per location and retains newer data',async(
  expect((await ops.menus(admin)).header).toEqual(winner);
  await expect(ops.updateMenu(admin,{location:'footer',items:[{labelEn:'missing',url:'/'}]},true)).rejects.toMatchObject({status:400});
 });
+it('keeps policy-controlled list/dashboard overdue counts consistent and requires explicit impact acknowledgement',async()=>{
+ const original=await db.query("SELECT * FROM SiteSetting WHERE `key` IN ('response.hours','response.effectiveAt')");
+ const id=prefix+'request';
+ try{
+  await db.query("UPDATE ProjectRequest SET status='new',archivedAt=NULL,lastClientReplyAt=NULL,lastStaffReplyAt=NULL,createdAt=DATE_SUB(UTC_TIMESTAMP(3),INTERVAL 2 HOUR) WHERE id=?",[id]);
+  await expect(ops.updateSettings(admin,{'response.hours':'1'})).rejects.toMatchObject({status:400});
+  for(const hours of ['0','721','1.5'])await expect(ops.updateSettings(admin,{'response.hours':hours,'response.applyToExisting':true})).rejects.toMatchObject({status:400});
+  const base=(await ops.settings(admin)).revisions;
+  await ops.updateSettings(admin,{'response.hours':'1','response.applyToExisting':true,baseRevisions:base},true);
+  expect((await ops.settings(admin)).settings['response.effectiveAt']).toMatch(/^\d{4}-/);
+  const list=await threads.list(admin,'requests',{overdue:'1'}),dashboard=await dash.dashboard(admin,null);
+  expect(list.total).toBe(dashboard.overdueReplies);
+  expect(list.requests?.some((row:unknown)=>(row as {id:string}).id===id)).toBe(true);
+  await ops.updateSettings(admin,{'response.hours':'24','response.applyToExisting':true});
+  expect((await threads.list(admin,'requests',{q:prefix,overdue:'1'})).total).toBe(0);
+ }finally{
+  await db.query("DELETE FROM SiteSetting WHERE `key` IN ('response.hours','response.effectiveAt')");
+  for(const row of original)await db.query('INSERT INTO SiteSetting(`key`,value,updatedById,updatedAt) VALUES(?,?,?,?)',[row.key,row.value,row.updatedById,row.updatedAt]);
+ }
+});

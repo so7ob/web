@@ -5,6 +5,7 @@ import { AuthFault, audit, newId, transaction } from "../auth/persistence.js";
 import { insertRecord, lockOperation } from "../business/persistence.js";
 import { sqliteLike } from "../business/requests.js";
 const allowedSettings = [
+  "response.hours",
   "track.forceLogin",
   "track.requestsMode",
   "track.inquiriesMode",
@@ -99,6 +100,7 @@ export class AdminOperationsService {
           const ttl = Number.parseInt(value, 10);
           if (!Number.isFinite(ttl) || String(ttl) !== value || ttl < 1 || ttl > 3650) throw new AuthFault(400, "invalid_track_ttl");
         }
+        if(key==='response.hours'&&(!/^[1-9][0-9]{0,2}$/.test(value)||Number(value)>720||body['response.applyToExisting']!==true))throw new AuthFault(400,'response_policy_ack_required');
         updates.push({ key, value });
       }
     if (!updates.length) throw new AuthFault(400, "invalid");
@@ -106,6 +108,10 @@ export class AdminOperationsService {
       await lockOperation(r, "site-settings");
       const bases=body.baseRevisions && typeof body.baseRevisions==='object' ? body.baseRevisions as Record<string,unknown> : {};
       for(const update of updates) await advance(r,'setting:'+update.key,Object.hasOwn(bases,update.key)?bases[update.key]:undefined,checked);
+      if(updates.some(u=>u.key==='response.hours')){
+        const [clock]=await r.query('SELECT UTC_TIMESTAMP(3) now');
+        updates.push({key:'response.effectiveAt',value:clock.now.toISOString()});
+      }
       if (updates.some(u => u.key.startsWith("track."))) await lockOperation(r, "track-policy");
       if (updates.some((u) => u.key.startsWith("announcement.")))
         updates.push({
@@ -121,7 +127,7 @@ export class AdminOperationsService {
         r,
         "settings.updated",
         actor,
-        { keys: updates.map((u) => u.key) },
+        { keys: updates.map((u) => u.key), ...(updates.some(u=>u.key==='response.hours')?{responseHours:updates.find(u=>u.key==='response.hours')!.value,appliesToExisting:true,effectiveAt:updates.find(u=>u.key==='response.effectiveAt')!.value}:{}) },
         "settings",
       );
       return { ok: true };
