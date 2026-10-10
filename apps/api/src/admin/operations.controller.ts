@@ -148,6 +148,7 @@ export class AdminOperationsController {
   @Get("audit") audit(@Req() req: AdminRequest, @Query() q: AdminQuery) {
     return this.ops.logs(req.actor, q);
   }
+  @Get("worker-health") workerHealth(@Req() req:AdminRequest){return this.ops.workerHealth(req.actor);}
   @Put('menus/checked') checkedMenu(@Req() req:AdminRequest,@Body() body:OperationBody){return this.ops.updateMenu(req.actor,{...body},true);}
   @Patch('settings/checked') checkedSettings(@Req() req:AdminRequest,@Body() body:SettingsBody){return this.ops.updateSettings(req.actor,{...body},true);}
   @Get("outbox") outbox(@Req() req: AdminRequest, @Query() q: AdminQuery) {

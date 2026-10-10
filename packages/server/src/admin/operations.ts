@@ -1,3 +1,4 @@
+import {workerHealth} from '../queue/monitor.js';
 import {snapshot,revisions,advance} from "./revisions.js";
 import { OUTBOX_STATUSES, type OutboxResponse, type OutboxStatus } from "@so7ob/contracts";
 import type { DataSource } from "typeorm";
@@ -36,6 +37,7 @@ export const pageNumber = (value?: string) => {
 };
 export class AdminOperationsService {
   constructor(private readonly db: DataSource) {}
+  async workerHealth(actor:AuthUser){return workerHealth(this.db,actor);}
   async settings(actor: AuthUser) {
     requirePermission(actor, "settings.manage");
     return snapshot(this.db,async r=>{
