@@ -123,6 +123,9 @@ export interface RequestRow {
   lastStaffReplyAt: string | null;
   archivedAt: string | null;
   needsStaffReply: boolean;
+  responseDueAt: string|null;
+  responseOverdue: boolean;
+  responseType: "first_response"|"client_reply"|null;
   /** وقت آخر رسالة عميل ظاهرة والطلب ينتظر رد الفريق (null إن لم يكن بانتظار) */
   awaitingSince: string | null;
 }

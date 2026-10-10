@@ -408,7 +408,7 @@ export const portalEn: PortalContent = {
       range30: "30 days",
       range90: "90 days",
       overdueReplies: "Overdue replies",
-      overdueHint: "Awaiting team reply for 24h+",
+      overdueHint: "Awaiting a team reply beyond the configured window",
     },
     users: {
       title: "Users",
@@ -471,7 +471,7 @@ export const portalEn: PortalContent = {
       filterPriority: "Priority",
       filterService: "Service",
       filterAssignee: "Assignee",
-      filterOverdue: "Overdue 24h+",
+      filterOverdue: "Overdue by policy",
       filterAll: "All",
       unassigned: "Unassigned",
       assign: "Assign",

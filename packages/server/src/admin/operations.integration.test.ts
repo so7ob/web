@@ -350,6 +350,34 @@ it("rolls back conversation status/history/notifications when audit insertion fa
     await db.query("DROP TRIGGER `" + prefix + "audit`");
   }
 });
+
+it('applies the same from filter to request list and export',async()=>{
+ const query={q:prefix,from:new Date().toISOString()};
+ expect((await threads.list(admin,'requests',query)).total).toBe(0);
+ const artifact=await threads.csv(admin,'requests',query);
+ const csv=await readFile(artifact.path,'utf8');await artifact.dispose();
+ expect(csv).not.toContain(prefix+'ref');
+});
+it('exports more than 5000 synthetic rows in bounded batches without changing columns',async()=>{
+ const stem=prefix+'large';
+ try{
+  for(let start=0;start<5105;start+=200){
+   const count=Math.min(200,5105-start),values:unknown[]=[];
+   for(let i=start;i<start+count;i++)values.push(stem+i,stem+i,'اسم عربي '+i,stem+'@example.invalid');
+   await db.query("INSERT INTO ProjectRequest(id,refCode,requestType,serviceType,description,descriptionHash,budget,timeline,name,email,preferredContact,locale) VALUES "+Array.from({length:count},()=>"(?,?,'quote','web','synthetic','hash','unspecified','flexible',?,?,'email','ar')").join(','),values);
+  }
+  const before=process.memoryUsage().rss;
+  const result=await threads.csv(admin,'requests',{q:stem});
+  try{
+   expect(result.count).toBe(5105);expect(result.bytes).toBeLessThan(2*1024*1024);
+   const csv=await readFile(result.path,'utf8');expect(csv.split('\r\n')).toHaveLength(5107);
+   expect(csv).toContain('اسم عربي');
+   expect((await threads.list(admin,'requests',{q:stem})).total).toBe(5105);
+   console.info(JSON.stringify({syntheticRows:5105,bytes:result.bytes,rssDelta:process.memoryUsage().rss-before,batchRows:250}));
+  }finally{await result.dispose();}
+ }finally{await db.query('DELETE FROM ProjectRequest WHERE id LIKE ?',[stem+'%']);}
+});
+
 it('rejects two editors saving the same settings base while merging unrelated fields',async()=>{
  const first=await ops.settings(admin), second=await ops.settings(admin);
  await ops.updateSettings(admin,{'contact.address':'first',baseRevisions:first.revisions},true);
@@ -381,32 +409,25 @@ it('fences concurrent menu snapshots per location and retains newer data',async(
  expect((await ops.menus(admin)).header).toEqual(winner);
  await expect(ops.updateMenu(admin,{location:'footer',items:[{labelEn:'missing',url:'/'}]},true)).rejects.toMatchObject({status:400});
 });
-
-it('applies the same from filter to request list and export',async()=>{
- const query={q:prefix,from:new Date().toISOString()};
- expect((await threads.list(admin,'requests',query)).total).toBe(0);
- const artifact=await threads.csv(admin,'requests',query);
- const csv=await readFile(artifact.path,'utf8');await artifact.dispose();
- expect(csv).not.toContain(prefix+'ref');
-});
-it('exports more than 5000 synthetic rows in bounded batches without changing columns',async()=>{
- const stem=prefix+'large';
+it('keeps policy-controlled list/dashboard overdue counts consistent and requires explicit impact acknowledgement',async()=>{
+ const original=await db.query("SELECT * FROM SiteSetting WHERE `key` IN ('response.hours','response.effectiveAt')");
+ const id=prefix+'request';
  try{
-  for(let start=0;start<5105;start+=200){
-   const count=Math.min(200,5105-start),values:unknown[]=[];
-   for(let i=start;i<start+count;i++)values.push(stem+i,stem+i,'اسم عربي '+i,stem+'@example.invalid');
-   await db.query("INSERT INTO ProjectRequest(id,refCode,requestType,serviceType,description,descriptionHash,budget,timeline,name,email,preferredContact,locale) VALUES "+Array.from({length:count},()=>"(?,?,'quote','web','synthetic','hash','unspecified','flexible',?,?,'email','ar')").join(','),values);
-  }
-  const before=process.memoryUsage().rss;
-  const result=await threads.csv(admin,'requests',{q:stem});
-  try{
-   expect(result.count).toBe(5105);expect(result.bytes).toBeLessThan(2*1024*1024);
-   const csv=await readFile(result.path,'utf8');expect(csv.split('\r\n')).toHaveLength(5107);
-   expect(csv).toContain('اسم عربي');
-   expect((await threads.list(admin,'requests',{q:stem})).total).toBe(5105);
-   console.info(JSON.stringify({syntheticRows:5105,bytes:result.bytes,rssDelta:process.memoryUsage().rss-before,batchRows:250}));
-  }finally{await result.dispose();}
- }finally{await db.query('DELETE FROM ProjectRequest WHERE id LIKE ?',[stem+'%']);}
+  await db.query("UPDATE ProjectRequest SET status='new',archivedAt=NULL,lastClientReplyAt=NULL,lastStaffReplyAt=NULL,createdAt=DATE_SUB(UTC_TIMESTAMP(3),INTERVAL 2 HOUR) WHERE id=?",[id]);
+  await expect(ops.updateSettings(admin,{'response.hours':'1'})).rejects.toMatchObject({status:400});
+  for(const hours of ['0','721','1.5'])await expect(ops.updateSettings(admin,{'response.hours':hours,'response.applyToExisting':true})).rejects.toMatchObject({status:400});
+  const base=(await ops.settings(admin)).revisions;
+  await ops.updateSettings(admin,{'response.hours':'1','response.applyToExisting':true,baseRevisions:base},true);
+  expect((await ops.settings(admin)).settings['response.effectiveAt']).toMatch(/^\d{4}-/);
+  const list=await threads.list(admin,'requests',{overdue:'1'}),dashboard=await dash.dashboard(admin,null);
+  expect(list.total).toBe(dashboard.overdueReplies);
+  expect(list.requests?.some((row:unknown)=>(row as {id:string}).id===id)).toBe(true);
+  await ops.updateSettings(admin,{'response.hours':'24','response.applyToExisting':true});
+  expect((await threads.list(admin,'requests',{q:prefix,overdue:'1'})).total).toBe(0);
+ }finally{
+  await db.query("DELETE FROM SiteSetting WHERE `key` IN ('response.hours','response.effectiveAt')");
+  for(const row of original)await db.query('INSERT INTO SiteSetting(`key`,value,updatedById,updatedAt) VALUES(?,?,?,?)',[row.key,row.value,row.updatedById,row.updatedAt]);
+ }
 });
 
 it('applies the same from filter to request list and export',async()=>{

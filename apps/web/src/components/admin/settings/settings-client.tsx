@@ -22,6 +22,7 @@ import { cn } from "@/lib/utils";
 import type { Me, SettingsResponse } from "../types";
 
 const FIELDS = [
+  "response.hours",
   "contact.email",
   "contact.phone",
   "contact.address",
@@ -47,6 +48,7 @@ type FieldKey = (typeof FIELDS)[number];
 type FormState = Record<FieldKey, string>;
 
 const EMPTY_FORM: FormState = {
+  "response.hours":"24",
   "contact.email": "",
   "contact.phone": "",
   "contact.address": "",
@@ -90,6 +92,8 @@ export function SettingsClient({ me, locale }: SettingsClientProps) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
+  const [applyPolicy,setApplyPolicy]=useState(false);
+  const [policyEffective,setPolicyEffective]=useState<string|null>(null);
   const [revisions,setRevisions]=useState<Record<string,string>>({});
   const [conflictDraft,setConflictDraft]=useState<unknown>(null);
 
@@ -120,6 +124,8 @@ export function SettingsClient({ me, locale }: SettingsClientProps) {
       const ttlRaw = Number.parseInt(res.settings["track.linkTtlDays"] ?? "", 10);
       next["track.linkTtlDays"] = Number.isFinite(ttlRaw) && ttlRaw >= 1 && ttlRaw <= 3650 ? String(ttlRaw) : "90";
       next["track.allowGuestAttachments"] = res.settings["track.allowGuestAttachments"] === "true" ? "true" : "false";
+      next["response.hours"]=res.settings["response.hours"]??"24";
+      setPolicyEffective(res.settings["response.effectiveAt"]??null);setApplyPolicy(false);
       setForm(next);
       setInitial(next);
     } catch (err) {
@@ -170,7 +176,7 @@ export function SettingsClient({ me, locale }: SettingsClientProps) {
 
     setSaving(true);
     try {
-      await apiSend("/api/v1/admin/settings/checked", "PATCH", {...updates,baseRevisions:revisions});
+      await apiSend("/api/v1/admin/settings/checked", "PATCH", {...updates,baseRevisions:revisions,"response.applyToExisting":applyPolicy});
       toast.success(ts.saved);
       await load();
     } catch (err) {
@@ -206,7 +212,7 @@ export function SettingsClient({ me, locale }: SettingsClientProps) {
             <p className="mt-1 max-w-2xl text-sm text-muted-foreground">{ts.subtitle}</p>
           </div>
         </div>
-        <Button onClick={save} disabled={saving || !dirty} className="min-h-11 rounded-full font-semibold shadow-md shadow-brand/20 hover:bg-brand-strong">
+        <Button onClick={save} disabled={saving || !dirty || (form["response.hours"]!==initial["response.hours"]&&!applyPolicy)} className="min-h-11 rounded-full font-semibold shadow-md shadow-brand/20 hover:bg-brand-strong">
           {saving ? <Loader2 className="size-4 animate-spin" aria-hidden="true" /> : <Save className="size-4" aria-hidden="true" />}
           {ts.save}
         </Button>
@@ -221,6 +227,13 @@ export function SettingsClient({ me, locale }: SettingsClientProps) {
         </div>
       ) : null}
 
+      <section className="space-y-3 rounded-2xl border border-border bg-white p-5">
+        <Label htmlFor="response-hours">{locale==='ar'?'مهلة متابعة الرد بالساعات (1–720)':'Response follow-up window in hours (1–720)'}</Label>
+        <Input id="response-hours" type="number" min={1} max={720} value={form['response.hours']} onChange={e=>setField('response.hours',e.target.value)} />
+        <p className="text-sm text-muted-foreground">{locale==='ar'?'الافتراضي 24 ساعة. تغيير السياسة يعيد حساب استحقاق الطلبات المفتوحة الحالية؛ ليست اتفاقية خدمة تجارية.':'Default: 24 hours. A policy change recalculates deadlines for existing open requests; this is not a commercial service agreement.'}</p>
+        <label className="flex items-center gap-2 text-sm"><input type="checkbox" checked={applyPolicy} onChange={e=>setApplyPolicy(e.target.checked)} />{locale==='ar'?'أوافق على تطبيق المهلة الجديدة على الطلبات الحالية':'Apply the new window to existing requests'}</label>
+        {policyEffective&&<p className="text-sm">{locale==='ar'?'آخر تغيير للسياسة: ':'Last policy change: '}<time dateTime={policyEffective}>{new Date(policyEffective).toLocaleString(locale)}</time></p>}
+      </section>
       {/* بيانات التواصل */}
       <section className="rounded-2xl border border-border bg-white p-5">
         <h2 className="flex items-center gap-2 text-sm font-semibold text-navy">
