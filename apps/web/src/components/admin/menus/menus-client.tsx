@@ -22,7 +22,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
-import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import {
   Select,
@@ -248,7 +248,7 @@ export function MenusClient({ me, locale }: MenusClientProps) {
         </div>
       ) : null}
 
-      <Tabs value={location} onValueChange={(v) => setLocation(v as Location)}>
+      <Tabs value={location} onValueChange={(v) => setLocation(v as Location)} dir={locale === "ar" ? "rtl" : "ltr"} className="space-y-5">
         <TabsList className="h-auto w-max flex-wrap gap-1 rounded-full bg-muted/60 p-1">
           <TabsTrigger
             value="header"
@@ -263,7 +263,7 @@ export function MenusClient({ me, locale }: MenusClientProps) {
             {tm.footer}
           </TabsTrigger>
         </TabsList>
-      </Tabs>
+      <TabsContent value={location} className="space-y-5">
 
       {items.length === 0 ? (
         <div className="rounded-2xl border border-dashed border-border bg-white">
@@ -467,6 +467,8 @@ export function MenusClient({ me, locale }: MenusClientProps) {
         <Plus className="size-4" aria-hidden="true" />
         {tm.add}
       </Button>
+      </TabsContent>
+      </Tabs>
     </div>
   );
 }
