@@ -57,3 +57,6 @@ export { TrackService } from "./track/service.js";
 export * from "./track/session.js";
 
 export {WorkerHeartbeat,workerHealth} from './queue/monitor.js';
+
+export * from "./diagnostics/logger.js";
+export * from "./diagnostics/store.js";

@@ -1,3 +1,4 @@
+import {correlationMiddleware,rememberError,diagnostics,initializeDiagnostics} from "./diagnostics.js";
 import "reflect-metadata";
 import { TrackController, AdminTrackController, trackAttemptMiddleware } from "./track/controller.js";
 import { TrackService, MailQueue, PayloadCipher } from "@so7ob/server";
@@ -155,10 +156,12 @@ type Renderer = {
 async function main() {
   const db = await database();
   await assertSchema(db);
+  initializeDiagnostics(db);
   const app = await NestFactory.create<NestExpressApplication>(
     ApplicationModule,
     { cors: false, bodyParser: false },
   );
+  app.use(correlationMiddleware);
   app.set("trust proxy", Number(process.env.TRUST_PROXY_HOPS ?? 0));
   app.enableCors({
     origin: (
@@ -168,6 +171,7 @@ async function main() {
     ).split(","),
     credentials: true,
     methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+    exposedHeaders: ["X-Request-Id", "X-Error-Id", "Retry-After"],
   });
   app.use(
     authAttemptMiddleware(
@@ -204,6 +208,7 @@ async function main() {
         "type" in error &&
         error.type === "entity.parse.failed"
       ) {
+        rememberError(_req,error);
         res.status(400).json({ ok: false, code: "invalid" });
         return;
       }
@@ -378,9 +383,9 @@ async function main() {
               `<script>window.__SO7OB__=${payload}</script>`,
             ),
         );
-    } catch {
-      process.stderr.write("ssr_failed: internal_error\n");
-      res.status(500).type("text/plain").send("Internal server error");
+    } catch (error) {
+      rememberError(req,error,"render_failed");
+      res.status(500).type("text/plain").send("Internal server error; reference: "+res.getHeader("X-Request-Id"));
     }
   });
   SwaggerModule.setup(
@@ -401,6 +406,6 @@ async function main() {
   );
 }
 main().catch((error) => {
-  console.error(error instanceof Error ? error.message : "Startup failed");
+  diagnostics.record({component:"API",event:"startup_failed",code:"internal_error",operation:"startup",level:"fatal"},error);
   process.exitCode = 1;
 });
