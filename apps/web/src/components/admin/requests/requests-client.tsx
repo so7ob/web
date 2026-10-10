@@ -1,4 +1,5 @@
 "use client";
+import {downloadCsv} from "../download-csv";
 
 /**
  * قائمة الطلبات: بحث وتصفية (حالة/أولوية/خدمة/مسؤول/مؤرشف) + تحديد جماعي
@@ -451,7 +452,10 @@ export function RequestsClient({
   const serviceKeys = useMemo(() => Object.keys(tr.services), [tr.services]);
 
   // تصدير CSV بنفس تصفية العرض الحالية — رابط نسبي فيرسل الكوكيز تلقائيًا
-  const exportCsv = () => {
+  const [exporting,setExporting]=useState(false);
+  const exportCsv = async () => {
+    if(exporting) return;
+    setExporting(true);
     const query = buildQuery({
       q: debouncedQ,
       status: status !== "all" ? status : "",
@@ -461,8 +465,12 @@ export function RequestsClient({
       archived,
       overdue: overdue ? "1" : "",
     });
-    window.open(`/api/admin/requests/export${query}`, "_blank");
-    toast.success(tr.exportOk);
+    try {
+      await downloadCsv(`/api/admin/requests/export${query}`, 'so7ob-requests.csv');
+      toast.success(tr.exportOk);
+    } catch(error) {
+      toast.error(error instanceof ApiError && error.code === 'export_limit' ? tr.exportLimit : tr.exportFailed);
+    } finally {setExporting(false);}
   };
 
   return (
@@ -487,6 +495,7 @@ export function RequestsClient({
             <Button
               variant="outline"
               onClick={exportCsv}
+              disabled={exporting}
               className="min-h-11 rounded-full"
             >
               <Download className="size-4" aria-hidden="true" />
