@@ -402,7 +402,7 @@ it('atomically accepts one same-base settings writer, merges different keys and 
 });
 it('fences concurrent menu snapshots per location and retains newer data',async()=>{
  const base=(await ops.menus(admin)).revisions['menu:header']??'0';
- const results=await Promise.allSettled(['first','second'].map(labelEn=>ops.updateMenu(admin,{location:'header',baseRevision:base,items:[{labelAr:'قائمة',labelEn,url:'/'}]},true)));
+ const results=await Promise.allSettled(['first','second'].map(labelEn=>ops.updateMenu(admin,{location:'header',baseRevision:base,items:[{labelAr:prefix,labelEn,url:'/'}]},true)));
  expect(results.filter(r=>r.status==='fulfilled')).toHaveLength(1);
  const winner=(await ops.menus(admin)).header;
  await expect(ops.updateMenu(admin,{location:'header',baseRevision:base,items:[{labelEn:'stale',url:'/'}]},true)).rejects.toMatchObject({status:409});
