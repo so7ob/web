@@ -106,6 +106,8 @@ export function RequestDetailClient({
   const [notFound, setNotFound] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [reloadToken, setReloadToken] = useState(0);
+  const [refreshFailed, setRefreshFailed] = useState(false);
+  const [refreshing, setRefreshing] = useState(false);
 
   const [clientView, setClientView] = useState(false);
   const [sending, setSending] = useState(false);
@@ -131,9 +133,12 @@ export function RequestDetailClient({
           setNotFound(false);
           setError(null);
           setStatusTarget((prev) => prev || res.request.status);
+          setRefreshFailed(false);
+          return true;
         }
       } catch (err) {
-        if (signal.aborted) return;
+        if (signal.aborted) return false;
+        if (quiet) return false;
         if (
           err instanceof ApiError &&
           (err.code === "not_found" || err.status === 404)
@@ -189,12 +194,14 @@ export function RequestDetailClient({
 
   // ——— الإجراءات ———
   const patch = async (body: Record<string, unknown>, successMsg?: string) => {
+    if (busyRef.current || refreshFailed) return false;
     setBusy(true);
     busyRef.current = true;
     try {
       await apiSend(`/api/admin/requests/${requestId}`, "PATCH", body);
-      if (successMsg) toast.success(successMsg);
-      reload();
+      const refreshed = await load(new AbortController().signal, true);
+      if (!refreshed) setRefreshFailed(true);
+      else if (successMsg) toast.success(successMsg);
       return true;
     } catch (err) {
       if (err instanceof ApiError && err.code === "invalid_transition") {
@@ -239,8 +246,10 @@ export function RequestDetailClient({
       toast.success(kind === "internal_note" ? tr.sentNote : tr.sentReply);
       const controller = new AbortController();
       void load(controller.signal, true);
+      return true;
     } catch (err) {
       toast.error(apiErrorMessage(err, t.auth.errors));
+      return false;
     } finally {
       setSending(false);
       busyRef.current = false;
@@ -379,6 +388,16 @@ export function RequestDetailClient({
 
   return (
     <div className="space-y-5">
+      {refreshFailed ? (
+        <div role="alert" className="rounded-2xl border border-border bg-muted p-4 text-sm">
+          <p>{tr.savedRefreshFailed}</p>
+          <Button variant="outline" disabled={refreshing} className="mt-2 min-h-11" onClick={async () => {
+            setRefreshing(true);
+            try { await load(new AbortController().signal, true); }
+            finally { setRefreshing(false); }
+          }}>{tr.refreshData}</Button>
+        </div>
+      ) : null}
       {/* ترويسة الطباعة — تظهر على الورق فقط: العلامة + التاريخ */}
       <div className="hidden print:block print:border-b print:border-border print:pb-2">
         <p className="text-xs font-medium text-muted-foreground">
@@ -716,7 +735,7 @@ export function RequestDetailClient({
                         v === "none" ? tr.unassigned : undefined,
                       )
                     }
-                    disabled={busy}
+                    disabled={busy || refreshFailed}
                   >
                     <SelectTrigger id="request-assignee" className="min-h-11 flex-1">
                       <SelectValue />
@@ -754,7 +773,7 @@ export function RequestDetailClient({
                   onValueChange={(v) =>
                     patch({ priority: v }, tr.priorities[v] ?? v)
                   }
-                  disabled={busy}
+                  disabled={busy || refreshFailed}
                 >
                   <SelectTrigger id="request-priority" className="min-h-11">
                     <SelectValue />
@@ -776,7 +795,7 @@ export function RequestDetailClient({
                 <Select
                   value={statusTarget || detail.status}
                   onValueChange={setStatusTarget}
-                  disabled={busy}
+                  disabled={busy || refreshFailed}
                 >
                   <SelectTrigger id="request-status" className="min-h-11">
                     <SelectValue />
@@ -796,7 +815,7 @@ export function RequestDetailClient({
                     </Label>
                     <Input
                       id="close-reason"
-                      disabled={busy}
+                      disabled={busy || refreshFailed}
                       value={closeReason}
                       onChange={(e) => setCloseReason(e.target.value)}
                       placeholder={tr.closeReasonPlaceholder}
@@ -806,7 +825,7 @@ export function RequestDetailClient({
                   </div>
                 ) : (
                   <Input
-                    disabled={busy}
+                    disabled={busy || refreshFailed}
                     value={statusNote}
                     onChange={(e) => setStatusNote(e.target.value)}
                     placeholder={tr.statusNotePlaceholder}
@@ -819,7 +838,7 @@ export function RequestDetailClient({
                   onClick={applyStatus}
                   disabled={
                     applying ||
-                    busy ||
+                    busy || refreshFailed ||
                     (statusTarget || detail.status) === detail.status
                   }
                   className="min-h-11 w-full rounded-full"
@@ -844,7 +863,7 @@ export function RequestDetailClient({
                     detail.archivedAt ? tr.restore : tr.archived,
                   )
                 }
-                disabled={busy}
+                disabled={busy || refreshFailed}
                 className="min-h-11 w-full rounded-full"
               >
                 {detail.archivedAt ? (

@@ -217,8 +217,10 @@ export function InquiryDetailClient({
       );
       const controller = new AbortController();
       void load(controller.signal, true);
+      return true;
     } catch (err) {
       toast.error(apiErrorMessage(err, t.auth.errors));
+      return false;
     } finally {
       setSending(false);
       busyRef.current = false;
@@ -460,7 +462,7 @@ export function InquiryDetailClient({
           <section className="space-y-4 rounded-2xl border border-border bg-white p-4 print:hidden">
             {mayAssign ? (
               <div className="space-y-2">
-                <Label>{ti.assign}</Label>
+                <Label htmlFor="inquiry-assignee">{ti.assign}</Label>
                 <Select
                   value={detail.assigneeId ?? "none"}
                   onValueChange={(v) =>
@@ -471,7 +473,7 @@ export function InquiryDetailClient({
                   }
                   disabled={busy}
                 >
-                  <SelectTrigger className="min-h-11 w-full focus-visible:ring-2 focus-visible:ring-ring/40">
+                  <SelectTrigger id="inquiry-assignee" className="min-h-11 w-full focus-visible:ring-2 focus-visible:ring-ring/40">
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
@@ -496,7 +498,7 @@ export function InquiryDetailClient({
 
             {mayStatus ? (
               <div className="space-y-2">
-                <Label>{t.admin.requests.changeStatus}</Label>
+                <Label htmlFor="inquiry-status">{t.admin.requests.changeStatus}</Label>
                 <Select
                   value={detail.status}
                   onValueChange={(v) =>
@@ -504,7 +506,7 @@ export function InquiryDetailClient({
                   }
                   disabled={busy}
                 >
-                  <SelectTrigger className="min-h-11 w-full focus-visible:ring-2 focus-visible:ring-ring/40">
+                  <SelectTrigger id="inquiry-status" className="min-h-11 w-full focus-visible:ring-2 focus-visible:ring-ring/40">
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>

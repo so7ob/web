@@ -1,0 +1,40 @@
+import {test} from './quota-fixture';
+import {expect} from '@playwright/test';
+import {readFileSync} from 'node:fs';
+import {randomBytes} from 'node:crypto';
+import {createDataSource} from '@so7ob/server';
+import {getPortalContent} from '../../apps/web/src/content/portal';
+import AxeBuilder from '@axe-core/playwright';
+test.use({contextOptions:{reducedMotion:'reduce'}});
+for(const locale of ['ar','en'] as const)for(const kind of ['requests','inquiries'] as const)test(`${locale} ${kind}: failed replies retain drafts and in-flight edits survive confirmed sends`,async({page})=>{
+ const {prefix,password}=JSON.parse(readFileSync('.migration/e2e/run.json','utf8'));
+ const {csrfToken}=await(await page.request.get('/api/auth/csrf')).json();
+ expect((await page.request.post('/api/auth/callback/credentials',{form:{email:prefix+'admin@example.invalid',password,csrfToken,json:'true'}})).status()).toBe(200);
+ const db=await createDataSource().initialize(),id=prefix+'reply'+randomBytes(4).toString('hex'),t=getPortalContent(locale);
+ const table=kind==='requests'?'ProjectRequest':'Inquiry',messages=kind==='requests'?'RequestMessage':'InquiryMessage',fk=kind==='requests'?'requestId':'inquiryId';
+ const endpoint=`/api/${kind==='requests'?'account':'admin'}/${kind}/${id}/messages`;
+ try {
+  if(kind==='requests')await db.query("INSERT INTO ProjectRequest(id,refCode,requestType,serviceType,description,descriptionHash,budget,timeline,name,email,preferredContact,locale) VALUES(?,?,'quote','web','Synthetic draft test','synthetic','unspecified','flexible','Synthetic','draft@example.invalid','email',?)",[id,'TEST-'+id.slice(-6),locale]);
+  else await db.query("INSERT INTO Inquiry(id,refCode,subject,name,email,category,locale) VALUES(?,?,'Synthetic draft test','Synthetic','draft@example.invalid','general',?)",[id,'TEST-'+id.slice(-6),locale]);
+  await page.goto(`/${locale}/admin/${kind}/${id}`,{waitUntil:'networkidle'});
+  const panel=page.getByRole('tabpanel'),draft=panel.getByRole('textbox'),send=panel.getByRole('button').last();
+  const text='Synthetic reply retained after server failure';await draft.fill(text);
+  await page.route('**'+endpoint,route=>route.fulfill({status:500,contentType:'application/json',body:'{"ok":false,"code":"internal_error"}'}));
+  await send.click();await expect(page.getByText(t.auth.errors.generic,{exact:true})).toBeVisible();await expect(draft).toHaveValue(text);
+  expect(Number((await db.query(`SELECT COUNT(*) n FROM ${messages} WHERE ${fk}=?`,[id]))[0].n)).toBe(0);
+  await page.unroute('**'+endpoint);
+  let release!:()=>void,calls=0;const gate=new Promise<void>(resolve=>{release=resolve;});
+  await page.route('**'+endpoint,async route=>{calls++;await gate;await route.continue();});
+  const saved=page.waitForResponse(r=>r.url().endsWith(endpoint)&&r.request().method()==='POST');
+  await send.click();await expect(send).toBeDisabled();await expect.poll(()=>calls).toBe(1);
+  await draft.fill('A newer unsent draft');await draft.press('Control+Enter');expect(calls).toBe(1);release();
+  expect((await saved).status()).toBe(201);await expect(draft).toHaveValue('A newer unsent draft');
+  await page.unroute('**'+endpoint);
+  await page.getByRole('tab',{name:t.admin.requests.internalNote,exact:true}).click();
+  await draft.fill('Synthetic internal note');const note=page.waitForResponse(r=>r.url().endsWith(endpoint)&&r.request().method()==='POST');
+  await draft.press('Control+Enter');expect((await note).status()).toBe(201);await expect(draft).toHaveValue('');
+  const rows=await db.query(`SELECT kind,body FROM ${messages} WHERE ${fk}=? ORDER BY createdAt,id`,[id]);
+  expect(rows).toEqual([{kind:'message',body:text},{kind:'internal_note',body:'Synthetic internal note'}]);
+  expect((await new AxeBuilder({page}).withTags(['wcag2a','wcag2aa','wcag21aa','wcag22aa']).analyze()).violations).toEqual([]);
+ }finally{await db.query('DELETE FROM AuditLog WHERE entityId=?',[id]);await db.query(`DELETE FROM ${table} WHERE id=?`,[id]);await db.destroy();}
+});
