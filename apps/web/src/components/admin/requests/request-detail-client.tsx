@@ -1,4 +1,6 @@
 "use client";
+import {ErrorFeedback} from '@/components/errors/error-feedback';
+import {asApiError} from '@/lib/errors/transport';
 import { TrackPanel } from "@/components/admin/track/track-panel";
 
 /**
@@ -104,6 +106,8 @@ export function RequestDetailClient({
   const [staffOptions, setStaffOptions] = useState<StaffOption[]>([]);
   const [loading, setLoading] = useState(true);
   const [notFound, setNotFound] = useState(false);
+  const [failure,setFailure]=useState<{error:ApiError;operation:string}|null>(null);
+  const needsReview=!!failure&&["network","timeout","invalid_response"].includes(failure.error.code);
   const [error, setError] = useState<string | null>(null);
   const [reloadToken, setReloadToken] = useState(0);
   const [refreshFailed, setRefreshFailed] = useState(false);
@@ -126,7 +130,7 @@ export function RequestDetailClient({
       if (!quiet) setLoading(true);
       try {
         const res = await apiGet<RequestDetailResponse>(
-          `/api/admin/requests/${requestId}`,
+          `/api/admin/requests/${requestId}`,signal,
         );
         if (!signal.aborted) {
           setDetail(res.request);
@@ -194,7 +198,8 @@ export function RequestDetailClient({
 
   // ——— الإجراءات ———
   const patch = async (body: Record<string, unknown>, successMsg?: string) => {
-    if (busyRef.current || refreshFailed) return false;
+    if (busyRef.current || refreshFailed || needsReview) return false;
+    setFailure(null);
     setBusy(true);
     busyRef.current = true;
     try {
@@ -204,11 +209,7 @@ export function RequestDetailClient({
       else if (successMsg) toast.success(successMsg);
       return true;
     } catch (err) {
-      if (err instanceof ApiError && err.code === "invalid_transition") {
-        toast.error(tr.invalidTransition);
-      } else {
-        toast.error(apiErrorMessage(err, t.auth.errors));
-      }
+      setFailure({error:asApiError(err),operation:body.priority!==undefined?tr.priority:body.status!==undefined?tr.changeStatus:tr.filterAssignee});
       return false;
     } finally {
       setBusy(false);
@@ -220,6 +221,8 @@ export function RequestDetailClient({
     kind: "message" | "internal_note",
     body: string,
   ) => {
+    if(needsReview)return false;
+    setFailure(null);
     setSending(true);
     busyRef.current = true;
     try {
@@ -245,10 +248,10 @@ export function RequestDetailClient({
       );
       toast.success(kind === "internal_note" ? tr.sentNote : tr.sentReply);
       const controller = new AbortController();
-      void load(controller.signal, true);
+      if(!await load(controller.signal,true))setFailure({error:new ApiError(0,"network"),operation:t.admin.requests.savedRefreshFailed});
       return true;
     } catch (err) {
-      toast.error(apiErrorMessage(err, t.auth.errors));
+      setFailure({error:asApiError(err),operation:t.admin.requests.reply});
       return false;
     } finally {
       setSending(false);
@@ -388,6 +391,7 @@ export function RequestDetailClient({
 
   return (
     <div className="space-y-5">
+      {failure?<ErrorFeedback error={failure.error} operation={failure.operation} locale={locale} onRefresh={async()=>{if(await load(new AbortController().signal,true))setFailure(null);}}/>:null}
       {refreshFailed ? (
         <div role="alert" className="rounded-2xl border border-border bg-muted p-4 text-sm">
           <p>{tr.savedRefreshFailed}</p>

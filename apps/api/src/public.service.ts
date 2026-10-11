@@ -73,7 +73,7 @@ export class PublicService {
     const shell = await this.shell(locale, viewer);
     if (slug === "track") return {...shell,kind:"track",parameters:{token:url.searchParams.get("t")??"",cardParam:url.searchParams.get("card")??""}};
     const adminRoute =
-      /^admin(?:\/(users(?:\/([^/]+))?|requests(?:\/([^/]+))?|inquiries(?:\/([^/]+))?|pages(?:\/([^/]+)\/(edit|preview))?|notifications|media|menus|settings|audit|outbox))?\/?$/.exec(
+      /^admin(?:\/(users(?:\/([^/]+))?|requests(?:\/([^/]+))?|inquiries(?:\/([^/]+))?|pages(?:\/([^/]+)\/(edit|preview))?|notifications|media|menus|settings|audit|outbox|diagnostics))?\/?$/.exec(
         decoded,
       );
     if (adminRoute) {
@@ -92,6 +92,7 @@ export class PublicService {
         media: "media.manage",
         menus: "menus.manage",
         settings: "settings.manage",
+        diagnostics: "diagnostics.view",
         audit: "audit.view",
         outbox: "email.outbox",
       };

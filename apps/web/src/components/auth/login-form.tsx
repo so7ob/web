@@ -1,4 +1,6 @@
 "use client";
+import {ErrorFeedback} from '@/components/errors/error-feedback';
+import {asApiError,ApiError} from '@/lib/errors/transport';
 
 import { useEffect, useState } from "react";
 import Link from "@/routing/link";
@@ -17,6 +19,7 @@ export function LoginForm({ locale, t, next }: { locale: Locale; t: PortalConten
   const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [failure,setFailure]=useState<ApiError|null>(null);
   const [error, setError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
   const [interactive, setInteractive] = useState(false);
@@ -28,7 +31,7 @@ export function LoginForm({ locale, t, next }: { locale: Locale; t: PortalConten
   async function onSubmit(ev: React.FormEvent<HTMLFormElement>) {
     ev.preventDefault();
     if (submitting) return;
-    setError(null);
+    setError(null);setFailure(null);
 
     if (!email.trim() || !password) {
       setError(t.errors.required);
@@ -63,8 +66,8 @@ export function LoginForm({ locale, t, next }: { locale: Locale; t: PortalConten
 
       router.push(safeNext ?? target);
       router.refresh();
-    } catch {
-      setError(t.errors.generic);
+    } catch (error) {
+      setFailure(asApiError(error));
       setSubmitting(false);
     }
   }
@@ -97,7 +100,8 @@ export function LoginForm({ locale, t, next }: { locale: Locale; t: PortalConten
       }
     >
       <form onSubmit={onSubmit} noValidate className="mt-6 space-y-5">
-        {error && (
+        {failure?<ErrorFeedback error={failure} locale={locale} operation={t.loginTitle}/>:null}
+      {error && (
           <div role="alert" className="rounded-2xl border border-rose-200 bg-rose-50 px-4 py-3 text-sm font-medium text-rose-700">
             {error}
           </div>

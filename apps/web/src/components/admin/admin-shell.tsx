@@ -1,4 +1,5 @@
 "use client";
+import {diagnosticsCopy} from '@/content/diagnostics';
 
 /**
  * هيكل لوحة الإدارة: شريط جانبي كثيف (سطح المكتب) + درج (الجوال) + شريط علوي.
@@ -156,6 +157,7 @@ export function AdminShell({
       icon: Settings,
       permission: "settings.manage",
     },
+    {href:`/${locale}/admin/diagnostics`,label:diagnosticsCopy[locale].title,icon:ScrollText,permission:"diagnostics.view"},
     {
       href: `/${locale}/admin/audit`,
       label: t.audit,
@@ -193,6 +195,7 @@ export function AdminShell({
       media: t.media,
       menus: t.menus,
       settings: t.settings,
+      diagnostics: diagnosticsCopy[locale].title,
       audit: t.audit,
       outbox: t.outbox,
     };

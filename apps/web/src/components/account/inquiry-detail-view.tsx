@@ -1,4 +1,6 @@
 "use client";
+import {ErrorFeedback} from '@/components/errors/error-feedback';
+import {ApiError} from '@/lib/errors/transport';
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import Link from "@/routing/link";
@@ -57,8 +59,9 @@ export function InquiryDetailView({
   authErrors: PortalContent["auth"]["errors"];
   siteName: string;
 }) {
+  const [failure,setFailure]=useState<ApiError|null>(null);
   const [inquiry, setInquiry] = useState<InquiryDetail | null>(null);
-  const [phase, setPhase] = useState<"loading" | "ready" | "notFound">("loading");
+  const [phase, setPhase] = useState<"loading" | "ready" | "notFound" | "error">("loading");
   const [reply, setReply] = useState("");
   const [sending, setSending] = useState(false);
   const conversationRef = useRef<HTMLDivElement>(null);
@@ -66,11 +69,13 @@ export function InquiryDetailView({
   const load = useCallback(async () => {
     const result = await fetchInquiryDetail(id);
     if (result.data.ok && result.data.inquiry) {
+      setFailure(null);
       setInquiry(result.data.inquiry);
       setPhase("ready");
     } else {
-      // 404 not_found أو أي فشل — رسالة ودّية موحدة مع زر عودة
-      setPhase("notFound");
+      if(result.cancelled)return;
+      if(result.status===404)setPhase("notFound");
+      else {setFailure(result.error??new ApiError(result.status,"internal_error"));setPhase(prev=>prev==="ready"?prev:"error");}
     }
   }, [id]);
 
@@ -97,12 +102,13 @@ export function InquiryDetailView({
       toast.error(t.replyEmpty);
       return;
     }
+    setFailure(null);
     setSending(true);
     const result = await sendInquiryReply(id, body);
     setSending(false);
 
     if (result.data.ok) {
-      setReply("");
+      setReply(current=>current===reply?"":current);
       toast.success(t.replySuccess);
       if (result.data.message) {
         // إلحاق الرسالة الجديدة بالمحادثة مباشرة دون إعادة جلب
@@ -117,15 +123,7 @@ export function InquiryDetailView({
       await load(); // قُفل الاستفسار من الطاقم أثناء الكتابة
       return;
     }
-    if (result.data.code === "empty") {
-      toast.error(t.replyEmpty);
-      return;
-    }
-    if (result.status === 429) {
-      toast.error(authErrors.rateLimited);
-      return;
-    }
-    toast.error(authErrors.generic);
+    if(!result.cancelled)setFailure(result.error??new ApiError(result.status,'internal_error'));
   }
 
   if (phase === "loading") {
@@ -137,6 +135,8 @@ export function InquiryDetailView({
       </div>
     );
   }
+
+  if (phase === "error")return <ErrorFeedback error={failure} locale={locale} operation={t.title} onRefresh={load}/>;
 
   if (phase === "notFound" || !inquiry) {
     return (
@@ -161,6 +161,7 @@ export function InquiryDetailView({
 
   return (
     <div className="space-y-5">
+      <ErrorFeedback error={failure} locale={locale} operation={t.title} onRefresh={load}/>
       {/* ترويسة الطباعة — تظهر على الورق فقط: العلامة + التاريخ */}
       <div className="hidden print:block print:border-b print:border-border print:pb-2">
         <p className="text-xs font-medium text-muted-foreground">

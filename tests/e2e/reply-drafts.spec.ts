@@ -1,3 +1,4 @@
+import {errorCopy} from '../../apps/web/src/lib/errors/messages';
 import {test} from './quota-fixture';
 import {expect} from '@playwright/test';
 import {readFileSync} from 'node:fs';
@@ -20,7 +21,7 @@ for(const locale of ['ar','en'] as const)for(const kind of ['requests','inquirie
   const panel=page.getByRole('tabpanel'),draft=panel.getByRole('textbox'),send=panel.getByRole('button').last();
   const text='Synthetic reply retained after server failure';await draft.fill(text);
   await page.route('**'+endpoint,route=>route.fulfill({status:500,contentType:'application/json',body:'{"ok":false,"code":"internal_error"}'}));
-  await send.click();await expect(page.getByText(t.auth.errors.generic,{exact:true})).toBeVisible();await expect(draft).toHaveValue(text);
+  await send.click();await expect(page.getByText(errorCopy[locale].internal,{exact:true})).toBeVisible();await expect(draft).toHaveValue(text);
   expect(Number((await db.query(`SELECT COUNT(*) n FROM ${messages} WHERE ${fk}=?`,[id]))[0].n)).toBe(0);
   await page.unroute('**'+endpoint);
   let release!:()=>void,calls=0;const gate=new Promise<void>(resolve=>{release=resolve;});

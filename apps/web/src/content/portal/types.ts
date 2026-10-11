@@ -1,3 +1,4 @@
+import type {ErrorCategory} from '@so7ob/contracts';
 /** أنواع ترجمات المنصة (المصادقة/بوابة العميل/لوحة الإدارة) — تتطابق بين اللغتين */
 
 export interface PortalContent {
@@ -39,6 +40,7 @@ export interface PortalContent {
     resendVerification: string;
     devOutboxHint: string;
     errors: {
+      diagnostic: Record<ErrorCategory,string>;
       invalid: string;
       wrongPassword: string;
       emailTaken: string;

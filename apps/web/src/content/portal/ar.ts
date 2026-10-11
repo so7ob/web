@@ -1,3 +1,4 @@
+import {errorCopy} from '@/lib/errors/messages';
 import type { PortalContent } from "./types";
 
 /** ترجمات المنصة — العربية (المصدر) */
@@ -40,6 +41,7 @@ export const portalAr: PortalContent = {
     resendVerification: "إعادة إرسال رابط التأكيد",
     devOutboxHint: "وضع تطوير البريد: الرسائل تُسجل في صندوق الصادر داخل لوحة الإدارة ولا تُرسل فعليًا.",
     errors: {
+      diagnostic: errorCopy.ar,
       invalid: "بيانات غير صالحة",
       wrongPassword: "كلمة المرور الحالية غير صحيحة",
       emailTaken: "البريد مستخدم في حساب آخر",

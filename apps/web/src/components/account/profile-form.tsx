@@ -1,4 +1,6 @@
 "use client";
+import {ErrorFeedback} from "@/components/errors/error-feedback";
+import {ApiError} from "@/lib/errors/transport";
 
 import { useEffect, useState } from "react";
 import { useRouter } from "@/routing/navigation";
@@ -51,7 +53,7 @@ export function ProfileForm({
     name?: string;
     phone?: string;
   }>({});
-  const [formError, setFormError] = useState<string | null>(null);
+  const [formError, setFormError] = useState<ApiError | null>(null);
   const [saving, setSaving] = useState(false);
 
   async function onSubmit(ev: React.FormEvent<HTMLFormElement>) {
@@ -96,7 +98,7 @@ export function ProfileForm({
     if (errors.name) mapped.name = authErrors.nameInvalid;
     if (errors.phone) mapped.phone = authErrors.invalid;
     setFieldErrors(mapped);
-    if (Object.keys(mapped).length === 0) setFormError(authErrors.generic);
+    if (Object.keys(mapped).length === 0) setFormError(result.error??new ApiError(result.status,"internal_error"));
   }
 
   return (
@@ -109,14 +111,7 @@ export function ProfileForm({
       </header>
 
       <section className="max-w-2xl rounded-2xl border border-border bg-white p-6">
-        {formError && (
-          <div
-            role="alert"
-            className="mb-5 rounded-xl bg-red-50 px-4 py-3 text-sm font-medium text-red-800"
-          >
-            {formError}
-          </div>
-        )}
+        <ErrorFeedback error={formError} locale={locale} operation={t.title}/>
         <form onSubmit={onSubmit} noValidate className="space-y-5">
           <fieldset
             disabled={!interactive}
