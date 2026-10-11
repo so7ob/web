@@ -22,3 +22,7 @@ db/backups/
 # Local diagram verification caches are not deliverables.
 .archify/**/tmp/
 .archify/**/.cache/
+
+# Python development-tool caches are local outputs.
+__pycache__/
+*.pyc

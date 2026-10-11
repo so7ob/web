@@ -16,7 +16,10 @@ try {
   const [state] = await db.query('SELECT COUNT(*) n FROM information_schema.TABLES WHERE TABLE_SCHEMA=?', [name]);
   if (Number(state.n) !== 0) throw new Error('Upgrade rehearsal requires a new empty test database; no reset is performed');
   const complete = db.migrations;
-  db.migrations = complete.filter(m => m.name !== 'SourceV21791072000000');
+  const upgradeAt = complete.findIndex(m => m.name === 'SourceV21791072000000');
+  assert(upgradeAt > 0, 'The frozen v1 migration prefix must precede the v2 upgrade');
+  // Apply only the actual v1 prefix. Newer migrations must follow v2 in the normal order.
+  db.migrations = complete.slice(0, upgradeAt);
   await db.runMigrations();
   mkdirSync('.migration', {recursive:true});
   const root = mkdtempSync('.migration/upgrade-v2-');
@@ -36,7 +39,10 @@ try {
   } finally { sqlite.close(); }
   db.migrations = complete;
   const applied = await db.runMigrations();
-  assert.deepEqual(applied.map(m=>m.name), ['SourceV21791072000000']);
+  assert.deepEqual(applied.map(m=>m.name), [
+    'SourceV21791072000000', 'AdminRevisions1791676800000',
+    'WorkerHeartbeat1791676801000', 'Diagnostics1791763200000', 'Audit1791849600000',
+  ]);
   await assertSchema(db);
   for (const [table, rows] of Object.entries(before)) {
     const actual = await db.query(`SELECT * FROM ${q(table)}`);
@@ -45,7 +51,8 @@ try {
     assert.deepEqual(stable(projection), stable(rows), `All original ${table} values must survive`);
   }
   assert.deepEqual(await db.runMigrations(), []);
-  const result = {database:name,sourceSchemaVersion:1,targetSchemaVersion:2,originalTables:23,targetTables:25,
+  const [tables] = await db.query('SELECT COUNT(*) n FROM information_schema.TABLES WHERE TABLE_SCHEMA=?', [name]);
+  const result = {database:name,sourceSchemaVersion:1,targetSchemaVersion:2,originalTables:23,targetTables:Number(tables.n),
     allOriginalIdsAndValuesPreserved:true,repeatApplied:0,productionData:false,fixtureDirectory:root};
   writeFileSync(root+'/result.json', JSON.stringify(result,null,2)+'\n');
   console.log(JSON.stringify(result));

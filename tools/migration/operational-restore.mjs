@@ -6,8 +6,8 @@ import { spawn, execFileSync } from 'node:child_process';
 import { once } from 'node:events';
 import { createServer } from 'node:net';
 import { setTimeout as delay } from 'node:timers/promises';
-import { mkdirSync, readFileSync, writeFileSync, existsSync, statSync, realpathSync, createReadStream } from 'node:fs';
-import { resolve, join } from 'node:path';
+import { mkdirSync, readFileSync, writeFileSync, existsSync, statSync, lstatSync, readdirSync, realpathSync, createReadStream } from 'node:fs';
+import { resolve, join, relative, isAbsolute } from 'node:path';
 import mysql from 'mysql2/promise';
 import bcrypt from 'bcryptjs';
 import { createDataSource, assertSchema, AuthenticationService, MailQueue, PayloadCipher, WebhookCipher, sha256, transaction } from '@so7ob/server';
@@ -30,6 +30,7 @@ const children = new Set(), sockets = new Set();
 const phases = [];
 const mark = name => { phases.push(name); process.stdout.write(`PASS ${name}\n`); };
 const hashFile = async path => { const h = createHash('sha256'); for await (const b of createReadStream(path)) h.update(b); return h.digest('hex'); };
+const filesWithin = path => readdirSync(path, { withFileTypes: true }).flatMap(entry => entry.isDirectory() ? filesWithin(join(path, entry.name)) : [join(path, entry.name)]);
 async function command(binary, args, options = {}) {
   const child = spawn(binary, args, { ...options, stdio: ['ignore', 'pipe', 'pipe'] });
   child.stdout.resume(); child.stderr.resume();
@@ -132,7 +133,12 @@ try {
   mark('actual worker killed after SMTP DATA; sending state retained');
 
   const archive = join(root, 'release.tar');
-  const paths = ['package.json', 'package-lock.json', 'node_modules', 'public', 'ops'];
+  // Nest serves apps/web/public even in production; dist/assets contains Vite's bundles/fonts.
+  const publicFiles = await Promise.all(filesWithin('apps/web/public').map(async path => ({
+    path: relative('apps/web/public', path), sha256: await hashFile(path),
+  })));
+  assert(publicFiles.length > 0);
+  const paths = ['package.json', 'package-lock.json', 'node_modules', 'apps/web/public', 'ops'];
   for (const workspace of ['apps/api', 'apps/worker', 'apps/web', 'packages/server', 'packages/contracts']) {
     paths.push(workspace + '/package.json', workspace + '/dist');
     if (existsSync(workspace + '/node_modules')) paths.push(workspace + '/node_modules');
@@ -144,6 +150,13 @@ try {
   await command('tar', ['--compare', '-f', archive, '-C', release]);
   assert.equal(await hashFile(join(release, 'package-lock.json')), await hashFile('package-lock.json'));
   for (const workspace of ['server', 'contracts']) assert.equal(realpathSync(join(release, 'node_modules/@so7ob', workspace)), join(release, 'packages', workspace));
+  for (const path of filesWithin(release)) {
+    if (!lstatSync(path).isSymbolicLink()) continue;
+    const target = relative(release, realpathSync(path));
+    assert(target && !target.startsWith('..') && !isAbsolute(target), 'Recovered release symlink must stay inside its own release');
+  }
+  assert(!existsSync(join(release, 'public')), 'No duplicate root public directory');
+  for (const file of publicFiles) assert.equal(await hashFile(join(release, 'apps/web/public', file.path)), file.sha256);
   mark('offline release including locked dependencies copied and byte-verified');
   const before = await rows(source);
   const snapshot = join(root, 'backup');
@@ -189,8 +202,24 @@ try {
   const html = await published.text(); assert(html.includes('Published restore content')); assert(!html.includes('PRIVATE RESTORE DRAFT'));
   const script = html.match(/<script[^>]+src="([^"]+)"/); assert(script && script[1].startsWith('/assets/'));
   const asset = await fetch(origin + script[1]); assert.equal(asset.status, 200); assert((await asset.arrayBuffer()).byteLength > 0);
+  for (const file of publicFiles) {
+    const response = await fetch(origin + '/' + file.path.split('/').map(encodeURIComponent).join('/'));
+    assert.equal(response.status, 200, `Recovered public asset ${file.path}`);
+    assert.equal(sha256(Buffer.from(await response.arrayBuffer())), file.sha256, `Recovered public asset bytes ${file.path}`);
+  }
+  // Verify the stylesheet and actual bundled font bytes from the recovered server, too.
+  const style = html.match(/<link[^>]+href="([^"]+\.css)"/); assert(style && style[1].startsWith('/assets/'));
+  const stylesheet = await fetch(origin + style[1]); assert.equal(stylesheet.status, 200);
+  assert.equal(sha256(Buffer.from(await stylesheet.arrayBuffer())), await hashFile(join(release, 'apps/web/dist', style[1])));
+  const fonts = filesWithin(join(release, 'apps/web/dist/assets')).filter(path => path.endsWith('.woff2'));
+  assert(fonts.length > 0);
+  for (const path of fonts) {
+    const response = await fetch(origin + '/assets/' + relative(join(release, 'apps/web/dist/assets'), path));
+    assert.equal(response.status, 200);
+    assert.equal(sha256(Buffer.from(await response.arrayBuffer())), await hashFile(path));
+  }
   await stop(api);
-  mark('recovered SSR and client asset served without private draft; recovered Nest reads files and live session; revoked/expired sessions stay rejected');
+  mark('recovered SSR, JS, stylesheet, all public assets and bundled fonts served from release-owned bytes; no external symlinks or private draft; files and sessions verified');
   smtpMode = 'accept';
   const recoveredWorker = worker({ ...targetEnv, ...recoveredKeys, DATA_DIR: targetData }, release); assert.equal((await once(recoveredWorker, 'exit'))[0], 0);
   assert.equal((await target.query('SELECT status FROM MailJob WHERE id=?', [ambiguous.id]))[0].status, 'uncertain');

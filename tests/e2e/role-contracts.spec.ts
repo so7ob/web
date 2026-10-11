@@ -22,7 +22,7 @@ for(const [suffix,role] of [['admin','super_admin'],['ops','ops_manager'],['supp
  }
 });
 test('all inventoried protected handlers reject unauthenticated legacy and v1 requests',async({request})=>{
- const inventory=JSON.parse(readFileSync('docs/migration/api-inventory.json','utf8')) as Array<{method:string;path:string}>;
+ const inventory=JSON.parse(readFileSync('tests/fixtures/api-inventory.json','utf8')) as Array<{method:string;path:string}>;
  for(const row of inventory.filter(r=>/^\/api\/(admin|account)\//.test(r.path)&&!r.path.endsWith('/claim-verify'))){
   for(const prefix of ['/api/','/api/v1/']){
    const path=row.path.replace('/api/',prefix).replace(/\[[^\]]+\]/g,'missing-synthetic-id');

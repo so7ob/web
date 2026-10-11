@@ -1,0 +1,423 @@
+{
+  "baseline": {
+    "initialSHA": "2a6c37b9c7bcd21cc690119da1ac523c4451748a",
+    "developSHA": "aea86246105df492b6793f8aa0814f7a853d83b4",
+    "sameTree": true,
+    "clean": true,
+    "testFiles": 49,
+    "tests": 895,
+    "lint": 0,
+    "typecheck": 0,
+    "independence": 0,
+    "build": 0
+  },
+  "freshWorktree": {
+    "sha": "baadb6840adf5efc64eff5fbbf07b74fe8c6224e",
+    "cwd": "/root/So7ob/web/.migration/repository-cleanup/checkout",
+    "cleanStart": true,
+    "isolatedMariaDB": "10.11.18 loopback:33777",
+    "results": [
+      {
+        "command": "npm ci",
+        "sha": "baadb6840adf5efc64eff5fbbf07b74fe8c6224e",
+        "exitCode": 0,
+        "log": "../clean-install.log",
+        "freshDependencies": true,
+        "logSHA256": "b869b3d2209733c99d6a5d36f73a4f45695d1d1774bf3f82fce472a59e106776"
+      },
+      {
+        "command": "npm run test:independence",
+        "sha": "baadb6840adf5efc64eff5fbbf07b74fe8c6224e",
+        "exitCode": 0,
+        "signal": null,
+        "startedAt": "2026-10-11T17:43:52.199Z",
+        "finishedAt": "2026-10-11T17:43:53.740Z",
+        "log": ".migration/repository-cleanup/checks/npm-run-test-independence.log",
+        "logSHA256": "788f4a6100fb7422415c77ca7af8322f76a23f6694bed98c14bf01f5988d84d4"
+      },
+      {
+        "command": "npm run lint",
+        "sha": "baadb6840adf5efc64eff5fbbf07b74fe8c6224e",
+        "exitCode": 0,
+        "signal": null,
+        "startedAt": "2026-10-11T17:43:53.741Z",
+        "finishedAt": "2026-10-11T17:44:00.332Z",
+        "log": ".migration/repository-cleanup/checks/npm-run-lint.log",
+        "logSHA256": "9a76ba31051d2634a8763edfe3d33f12cc02b5305669613b47a9eff73a17e3ba"
+      },
+      {
+        "command": "npm run typecheck",
+        "sha": "baadb6840adf5efc64eff5fbbf07b74fe8c6224e",
+        "exitCode": 0,
+        "signal": null,
+        "startedAt": "2026-10-11T17:44:00.333Z",
+        "finishedAt": "2026-10-11T17:44:13.769Z",
+        "log": ".migration/repository-cleanup/checks/npm-run-typecheck.log",
+        "logSHA256": "c179121bce22ed7322563c38f015035de2b744ad023c390aba81311abcc37adb"
+      },
+      {
+        "command": "npm run db:migrate",
+        "sha": "baadb6840adf5efc64eff5fbbf07b74fe8c6224e",
+        "exitCode": 0,
+        "signal": null,
+        "startedAt": "2026-10-11T17:44:13.770Z",
+        "finishedAt": "2026-10-11T17:44:15.252Z",
+        "log": ".migration/repository-cleanup/checks/npm-run-db-migrate.log",
+        "logRetained": false
+      },
+      {
+        "command": "npm test",
+        "sha": "baadb6840adf5efc64eff5fbbf07b74fe8c6224e",
+        "exitCode": 0,
+        "signal": null,
+        "startedAt": "2026-10-11T17:44:15.252Z",
+        "finishedAt": "2026-10-11T17:45:22.986Z",
+        "log": ".migration/repository-cleanup/checks/npm-test.log",
+        "logSHA256": "5bd8cf0af15a6a619b0edb989db5c1a14dd15a424771ce54d2f6cea542de2b35"
+      },
+      {
+        "command": "npm run build",
+        "sha": "baadb6840adf5efc64eff5fbbf07b74fe8c6224e",
+        "exitCode": 0,
+        "signal": null,
+        "startedAt": "2026-10-11T17:45:22.987Z",
+        "finishedAt": "2026-10-11T17:45:31.477Z",
+        "log": ".migration/repository-cleanup/checks/npm-run-build.log",
+        "logSHA256": "02586307c5ff815e5f02c18e47c30c414b71acfc05b44fe7576620a7696e4a9d"
+      },
+      {
+        "command": "python3 -B -m unittest discover -s .agents/skills/ui-ux-pro-max/scripts/tests",
+        "sha": "baadb6840adf5efc64eff5fbbf07b74fe8c6224e",
+        "exitCode": 0,
+        "signal": null,
+        "startedAt": "2026-10-11T17:45:31.477Z",
+        "finishedAt": "2026-10-11T17:45:38.363Z",
+        "log": ".migration/repository-cleanup/checks/python3-B-m-unittest-discover-s-agents-skills-ui-ux-pro-max-scripts-tests.log",
+        "logSHA256": "f40becb555d002d6ec978c2ca1223037dd00d5dacaa7a9ffd159ef8a2eac0b4a"
+      },
+      {
+        "command": "npm run db:migrate",
+        "sha": "baadb6840adf5efc64eff5fbbf07b74fe8c6224e",
+        "exitCode": 0,
+        "signal": null,
+        "startedAt": "2026-10-11T17:45:38.363Z",
+        "finishedAt": "2026-10-11T17:45:39.931Z",
+        "log": ".migration/repository-cleanup/checks/npm-run-db-migrate.log",
+        "logRetained": false
+      },
+      {
+        "command": "npm run test:worker",
+        "sha": "baadb6840adf5efc64eff5fbbf07b74fe8c6224e",
+        "exitCode": 0,
+        "signal": null,
+        "startedAt": "2026-10-11T17:45:39.931Z",
+        "finishedAt": "2026-10-11T17:45:59.809Z",
+        "log": ".migration/repository-cleanup/checks/npm-run-test-worker.log",
+        "logSHA256": "093f0d401b1a3a35c90efd41cdef24864653d07bddac14c2e46083fea468f912"
+      },
+      {
+        "command": "npm run test:file-worker",
+        "sha": "baadb6840adf5efc64eff5fbbf07b74fe8c6224e",
+        "exitCode": 0,
+        "signal": null,
+        "startedAt": "2026-10-11T17:45:59.809Z",
+        "finishedAt": "2026-10-11T17:46:07.822Z",
+        "log": ".migration/repository-cleanup/checks/npm-run-test-file-worker.log",
+        "logSHA256": "bb11e3676430293c399a66bb25549be92c50de0dbb7ff231cfcef606a5360e53"
+      },
+      {
+        "command": "npm run test:webhook",
+        "sha": "baadb6840adf5efc64eff5fbbf07b74fe8c6224e",
+        "exitCode": 0,
+        "signal": null,
+        "startedAt": "2026-10-11T17:46:07.822Z",
+        "finishedAt": "2026-10-11T17:46:30.628Z",
+        "log": ".migration/repository-cleanup/checks/npm-run-test-webhook.log",
+        "logSHA256": "406c5961f37a114487f20e68ca13eaec491c345a560f94252bab26d4e08a1554"
+      },
+      {
+        "command": "npm run test:auth",
+        "sha": "baadb6840adf5efc64eff5fbbf07b74fe8c6224e",
+        "exitCode": 0,
+        "signal": null,
+        "startedAt": "2026-10-11T17:46:30.629Z",
+        "finishedAt": "2026-10-11T17:46:43.142Z",
+        "log": ".migration/repository-cleanup/checks/npm-run-test-auth.log",
+        "logSHA256": "806185b846549a912447393608cadd3c22bbd2f3695295beec90234009420e7c"
+      },
+      {
+        "command": "npm run db:check-cms",
+        "sha": "baadb6840adf5efc64eff5fbbf07b74fe8c6224e",
+        "exitCode": 0,
+        "signal": null,
+        "startedAt": "2026-10-11T17:46:43.142Z",
+        "finishedAt": "2026-10-11T17:46:43.834Z",
+        "log": ".migration/repository-cleanup/checks/npm-run-db-check-cms.log",
+        "logSHA256": "a8c0c75ce83049c8b99ffe82b725840c6d4a940c6d549dfd3edff1dc0721749a"
+      },
+      {
+        "command": "npm run test:cms-boundaries",
+        "sha": "baadb6840adf5efc64eff5fbbf07b74fe8c6224e",
+        "exitCode": 0,
+        "signal": null,
+        "startedAt": "2026-10-11T17:46:43.835Z",
+        "finishedAt": "2026-10-11T17:47:26.879Z",
+        "log": ".migration/repository-cleanup/checks/npm-run-test-cms-boundaries.log",
+        "logSHA256": "6d7ecdb2d92c65d21994c3de02334fed4cd4da386f361b1d1ac74c5e656c0fbe"
+      },
+      {
+        "command": "npm run test:restore",
+        "sha": "baadb6840adf5efc64eff5fbbf07b74fe8c6224e",
+        "exitCode": 0,
+        "signal": null,
+        "startedAt": "2026-10-11T17:47:26.881Z",
+        "finishedAt": "2026-10-11T17:47:59.309Z",
+        "log": ".migration/repository-cleanup/checks/npm-run-test-restore.log",
+        "logSHA256": "7039c859e5098f0bf15a2778ec8183a2c16d63b6e9ab76ecfc18c5a297926e8b"
+      },
+      {
+        "command": "npm run db:migrate",
+        "sha": "baadb6840adf5efc64eff5fbbf07b74fe8c6224e",
+        "exitCode": 0,
+        "signal": null,
+        "startedAt": "2026-10-11T17:47:59.310Z",
+        "finishedAt": "2026-10-11T17:48:00.926Z",
+        "log": ".migration/repository-cleanup/checks/npm-run-db-migrate.log",
+        "logSHA256": "f15c3941e8b32309ea53dfc4c2d9d81a22ade0f77330c9b16931b107f1a43c80"
+      },
+      {
+        "command": "npm run test:e2e",
+        "sha": "baadb6840adf5efc64eff5fbbf07b74fe8c6224e",
+        "exitCode": 0,
+        "signal": null,
+        "startedAt": "2026-10-11T17:48:00.926Z",
+        "finishedAt": "2026-10-11T18:02:16.198Z",
+        "log": ".migration/repository-cleanup/checks/npm-run-test-e2e.log",
+        "logSHA256": "e778b6363de86f849d597dad1f59b3458520c2916a6317124facc36a510e509b"
+      },
+      {
+        "command": "npm run test:infra",
+        "sha": "baadb6840adf5efc64eff5fbbf07b74fe8c6224e",
+        "exitCode": 0,
+        "signal": null,
+        "startedAt": "2026-10-11T18:02:16.199Z",
+        "finishedAt": "2026-10-11T18:02:16.801Z",
+        "log": ".migration/repository-cleanup/checks/npm-run-test-infra.log",
+        "logSHA256": "e0a4f035c52ae3e57fac39d9792eee735276dd71928e538ccdd62f49a840ffec"
+      },
+      {
+        "command": "git diff --check",
+        "sha": "baadb6840adf5efc64eff5fbbf07b74fe8c6224e",
+        "exitCode": 0,
+        "signal": null,
+        "startedAt": "2026-10-11T18:02:16.802Z",
+        "finishedAt": "2026-10-11T18:02:16.809Z",
+        "log": ".migration/repository-cleanup/checks/git-diff-check.log",
+        "logSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    ]
+  },
+  "unit": {
+    "files": 49,
+    "passed": 895
+  },
+  "browser": {
+    "startTime": "2026-10-11T17:48:01.724Z",
+    "duration": 854417.041,
+    "expected": 240,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  },
+  "skillContracts": {
+    "passed": 153,
+    "skipped": 0
+  },
+  "independence": {
+    "policyTests": 3,
+    "sourcesChecked": 459,
+    "importsChecked": 2618,
+    "configurationsChecked": 30
+  },
+  "frozenFixtureSHA256": {
+    "tests/fixtures/api-inventory.json": "c03877355673e6e7968f3edc7aec6e56ab6f8543e53bd7a79becaa4c2b60ec92",
+    "tests/fixtures/legacy-size-ranking.json": "cd55c5a84fdbdcb7e61543db5c83a5083b73eb0cb2ef4e1503685daad2f973e2",
+    "tests/fixtures/source-block-contracts.json": "11a9e7cb8bc67f89229d9a674679e276420d835230f5b736f3c21e06397ac3f7"
+  },
+  "restore": {
+    "syntheticOnly": true,
+    "codeBaseCommit": "baadb6840adf5efc64eff5fbbf07b74fe8c6224e",
+    "workingTreeDirty": false,
+    "node": "v24.21.0",
+    "releaseSha256": "6aa3740dabee3ada1f705379bf5bdaefab43c9a33c880a5a4bea738122aa2b04",
+    "lockSha256": "53f4358ee41280e380d5549946a9009dbbacbf2d23f5941d8726218e4cacaaea",
+    "phases": [
+      "actual worker killed after SMTP DATA; sending state retained",
+      "offline release including locked dependencies copied and byte-verified",
+      "all MariaDB tables and files restored; occupied target rejected without mutation",
+      "separate key recovery; missing/wrong key rejected before worker and without mutation",
+      "recovered SSR, JS, stylesheet, all public assets and bundled fonts served from release-owned bytes; no external symlinks or private draft; files and sessions verified",
+      "recovered worker marks ambiguous mail uncertain; pending mail sent once; cleanup resumes; repeat sends nothing",
+      "post-open writes protected; original snapshot remains unchanged"
+    ],
+    "scope": "synthetic host-local recovery; not off-host disaster recovery or production cutover"
+  },
+  "bootstrap": {
+    "passed": true,
+    "sha": "baadb6840adf5efc64eff5fbbf07b74fe8c6224e",
+    "freshCheckout": true,
+    "commands": [
+      {
+        "command": "npm run db:migrate",
+        "exitCode": 0,
+        "expected": 0
+      },
+      {
+        "command": "npm run site:init -- --database=so7ob_cleanup_init2_test --confirm-empty",
+        "exitCode": 0,
+        "expected": 0
+      },
+      {
+        "command": "npm run admin:create -- --database=so7ob_cleanup_init2_test --email=admin@example.invalid --name=Synthetic admin --password-from-stdin",
+        "exitCode": 0,
+        "expected": 0
+      },
+      {
+        "command": "npm run site:init -- --database=so7ob_cleanup_init2_test --confirm-empty",
+        "exitCode": 1,
+        "expected": 1
+      },
+      {
+        "command": "npm run admin:create -- --database=so7ob_cleanup_init2_test --email=admin2@example.invalid --password-from-stdin",
+        "exitCode": 1,
+        "expected": 1
+      },
+      {
+        "command": "npm run data:backup -- --mode=backup --directory=/root/So7ob/web/.migration/repository-cleanup/checkout/.migration/independent-bootstrap-2/backup --uploads=/root/So7ob/web/.migration/repository-cleanup/checkout/.migration/independent-bootstrap-2/source-data/uploads --confirm-database=so7ob_cleanup_init2_test",
+        "exitCode": 0,
+        "expected": 0
+      },
+      {
+        "command": "npm run data:backup -- --mode=restore --directory=/root/So7ob/web/.migration/repository-cleanup/checkout/.migration/independent-bootstrap-2/backup --uploads=/root/So7ob/web/.migration/repository-cleanup/checkout/.migration/independent-bootstrap-2/restored-data/uploads --confirm-database=so7ob_cleanup_init2_restore_test",
+        "exitCode": 0,
+        "expected": 0
+      },
+      {
+        "command": "npm run db:check",
+        "exitCode": 0,
+        "expected": 0
+      },
+      {
+        "command": "npm run data:recovery-check -- --confirm-database=so7ob_cleanup_init2_restore_test",
+        "exitCode": 0,
+        "expected": 0
+      },
+      {
+        "command": "npm run start:worker -- --once",
+        "exitCode": 0,
+        "expected": 0
+      }
+    ],
+    "publishedPages": 7,
+    "publicLocaleRoutes": 14,
+    "existingInitializationRejectedWithoutChange": true,
+    "existingAdminRejected": true,
+    "backupRestoreCli": true,
+    "bcryptHashAndIdsPreserved": true,
+    "administratorLogin": true,
+    "apiStarted": true,
+    "workerStarted": true,
+    "productionMigration": false
+  },
+  "packetPreflight": {
+    "isolatedPort": 33777,
+    "sixteenMiBExit": 1,
+    "expectedRejected": true,
+    "restored256MiBExit": 0
+  },
+  "limitations": [
+    "Host-local synthetic recovery only; no production migration, off-host disaster recovery, merge or deployment.",
+    "Optional baseline visual probe used an invalid test-mode build with a production API; no visual comparison success claimed.",
+    "First bootstrap worker lacked SMTP configuration and was stopped as an owned failed synthetic child; successful replay used configured loopback transport with empty queue. Actual SMTP integration is covered by test:worker.",
+    "Original v1 upgrade harness failed protected migration-order verification; harness corrected without changing migrations or weakening schema/row assertions.",
+    "npm ci reports 12 high-severity advisories; dependencies were not upgraded by this cleanup."
+  ],
+  "followupCleanVerification": {
+    "sha": "48313a1003c68fdae921444223c619713fd496a6",
+    "productRuntimeAndBrowserTestSourcesIdenticalToFullSuiteSHA": true,
+    "commands": [
+      {
+        "command": "node --import tsx tools/migration/upgrade-source-v2-smoke.ts",
+        "sha": "48313a1003c68fdae921444223c619713fd496a6",
+        "exitCode": 0,
+        "logSHA256": "fe1fa16b9d742cf01f1c0558139a3b275960b7ad11ba54d4f2ac6944abdf49a7",
+        "log": ".migration/repository-cleanup/upgrade-3-clean.log"
+      },
+      {
+        "command": "npm run lint",
+        "sha": "48313a1003c68fdae921444223c619713fd496a6",
+        "exitCode": 0,
+        "logSHA256": "9a76ba31051d2634a8763edfe3d33f12cc02b5305669613b47a9eff73a17e3ba",
+        "log": ".migration/repository-cleanup/final-lint.log"
+      },
+      {
+        "command": "npm run typecheck",
+        "sha": "48313a1003c68fdae921444223c619713fd496a6",
+        "exitCode": 0,
+        "logSHA256": "c179121bce22ed7322563c38f015035de2b744ad023c390aba81311abcc37adb",
+        "log": ".migration/repository-cleanup/final-typecheck.log"
+      },
+      {
+        "command": "npm run test:independence",
+        "sha": "48313a1003c68fdae921444223c619713fd496a6",
+        "exitCode": 0,
+        "logSHA256": "bba1a95db5ddc8756f61f9e2c390a95488bdf3981f298c617c88c28c66f70048",
+        "log": ".migration/repository-cleanup/final-independence.log"
+      },
+      {
+        "command": "npm run build (NODE_ENV unset, as CI)",
+        "sha": "48313a1003c68fdae921444223c619713fd496a6",
+        "exitCode": 0,
+        "logSHA256": "1530b7caa0ff083939488307d1559feae7fb44f9764dacaf26a474d384505044",
+        "log": ".migration/repository-cleanup/final-build.log"
+      }
+    ],
+    "upgrade": {
+      "database": "so7ob_cleanup_upgrade3_test",
+      "sourceSchemaVersion": 1,
+      "targetSchemaVersion": 2,
+      "originalTables": 23,
+      "targetTables": 51,
+      "allOriginalIdsAndValuesPreserved": true,
+      "repeatApplied": 0,
+      "productionData": false,
+      "fixtureDirectory": ".migration/upgrade-v2-2vayFF"
+    }
+  },
+  "galleryLinkNormalizations": [
+    {
+      "path": ".archify/sequence-so7ob-request-20261009-230021/processing/final-review/visual-check/processing.visual-check.html",
+      "before": "d80f386f2aea24d67c3ee500acffc17c2db8f0b90d8e97c5a813c6006564d583",
+      "after": "763ee07b19a36d4fd7fd897d87c94a2ca9772f40489dd9b1fe7eee318411df4c",
+      "change": "Point duplicate screenshot links to the byte-identical canonical capture"
+    },
+    {
+      "path": ".archify/sequence-so7ob-request-20261009-230021/creation/final-review/visual-check/creation.visual-check.html",
+      "before": "d00764d5d2ae8964ec9fc0eb84c753c34e8ca7f1880bbac9cf68d871a2b3a524",
+      "after": "7744e98b9e39b0b745cd1ff352a82864edf768a2f22a7d62c09344878e70324f",
+      "change": "Point duplicate screenshot links to the byte-identical canonical capture"
+    },
+    {
+      "path": ".archify/sequence-so7ob-request-20261009-230021/followup/final-review/visual-check/followup.visual-check.html",
+      "before": "4afb6a04a2f3f460726a97bc1af42b8bd307e572445cbabb4fa974e837676c58",
+      "after": "8c956e900cde7bc18e627b13a506b8358bc306e244605756192ff1fc620e78c9",
+      "change": "Point duplicate screenshot links to the byte-identical canonical capture"
+    },
+    {
+      "path": ".archify/architecture-so7ob-20261009-230021/final-review/visual-check/so7ob.visual-check.html",
+      "before": "10e1cc04744fded911e38c14e11621019e0d66e329ab7041837a71b906928f94",
+      "after": "2dfe4d039de20bad1d53f7d3cd6b3b57c49b7d6a6e98546d527541f421611252",
+      "change": "Point duplicate screenshot links to the byte-identical canonical capture"
+    }
+  ]
+}
