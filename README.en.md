@@ -86,7 +86,7 @@ npm run dev
 
 `site:init` installs the seven original bilingual public pages, menus and settings, and refuses an existing site. `admin:create` prints a random password once and refuses an existing administrator; there are no default credentials. Bootstrap tools require `NODE_ENV=development` and loopback MariaDB. Skip initialization for imported sites and follow the [data-transfer guide](docs/migration/data-transfer.md).
 
-Start the worker in a **second terminal**, with the same database, private `DATA_DIR` and secrets:
+Configure `SMTP_HOST`, `SMTP_FROM` and an SMTP service before starting the worker; `EMAIL_DEV_MODE` does not replace worker transport configuration. Start the worker in a **second terminal**, with the same database, private `DATA_DIR` and secrets:
 
 ```sh
 node --env-file=.env apps/worker/dist/main.js
@@ -100,7 +100,7 @@ The worker handles mail, scheduled work and reports; the web server alone does n
 
 | Path | Responsibility |
 |---|---|
-| `apps/web` | React, Vite and React Router; browser UI and SSR |
+| `apps/web` | React, Vite and React Router; browser UI and SSR; its `public/` is the static asset source |
 | `apps/api` | NestJS/Express; REST, sessions, authorization and SSR hosting |
 | `apps/worker` | Independent Node worker polling MariaDB jobs with leases and locks |
 | `packages/contracts` | Shared data contracts, permissions and validation |

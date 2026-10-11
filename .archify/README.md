@@ -18,3 +18,5 @@ Use the bundled ../.agents/skills/archify/SKILL.md workflow for new diagrams. Do
 Release normalization and refreshed receipts: [delivery report](../docs/migration/archify-release-38.md). Earlier receipts and captures describe pre-normalization bytes.
 
 See [repository cleanup](../docs/migration/repository-cleanup-77.md) for removed generic outputs and [source provenance](../docs/migration/source-provenance.md) for their former Git tree.
+
+#77 also updates the four earlier review galleries to link to the byte-identical canonical screenshots. Only gallery links changed; the approved So7ob diagram HTML and screenshot bytes remain unchanged. Historical receipt hashes describe the original gallery files.

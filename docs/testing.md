@@ -20,7 +20,7 @@ npm run db:migrate
 npm run lint
 npm run typecheck
 npm test
-npm run build
+NODE_ENV=production npm run build
 npm run test:independence
 ```
 
@@ -53,4 +53,4 @@ Browser suites create their fixture outputs under `.migration/e2e`, block uninte
 
 ## Independent first setup
 
-With `NODE_ENV=development`, a separate empty `so7ob_verify_init_test` database, a writable absolute `DATA_DIR`, loopback `SITE_URL`/`WEB_ORIGIN`, and separately generated secrets, follow [local development](migration/local-development.ar.md): `db:migrate`, `site:init -- --database=so7ob_verify_init_test --confirm-empty`, `admin:create -- --database=so7ob_verify_init_test --email=admin@example.invalid --name="Synthetic admin"`, build, start API and `start:worker` separately. The account command prints a random password once; do not put it in evidence or Git. Initialization rejects an occupied site. All current TypeORM migrations remain under `packages/server/src/database/migrations`.
+With `NODE_ENV=development`, a separate empty `so7ob_verify_init_test` database, a writable absolute `DATA_DIR`, loopback `SITE_URL`/`WEB_ORIGIN`, and separately generated secrets, follow [local development](migration/local-development.ar.md): `db:migrate`, `site:init -- --database=so7ob_verify_init_test --confirm-empty`, `admin:create -- --database=so7ob_verify_init_test --email=admin@example.invalid --name="Synthetic admin"`, build with NODE_ENV=production (or unset, as in CI), start API and `start:worker` separately. Configure SMTP_HOST and SMTP_FROM before starting the worker, even when its queue is empty; local synthetic mail tests create their own loopback SMTP receiver. EMAIL_DEV_MODE does not replace worker SMTP configuration. The account command prints a random password once; do not put it in evidence or Git. Initialization rejects an occupied site. All current TypeORM migrations remain under `packages/server/src/database/migrations`.
