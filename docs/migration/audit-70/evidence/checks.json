@@ -1,0 +1,123 @@
+{
+  "synthetic": true,
+  "unitTests": 894,
+  "unitFiles": 49,
+  "auditIntegrationTests": 16,
+  "auditBrowserTests": 8,
+  "checks": [
+    {
+      "check": "lint",
+      "status": "passed",
+      "source": "abf3304df8abb4723155880ca7791245d9374386",
+      "localLog": ".migration/audit-implementation/lint-access.log",
+      "logSha256": "1e13e534c1fa121256b22b774cf8344424470c761390fcc8674b362595e0d596"
+    },
+    {
+      "check": "typecheck",
+      "status": "passed",
+      "source": "abf3304df8abb4723155880ca7791245d9374386",
+      "localLog": ".migration/audit-implementation/typecheck-access.log",
+      "logSha256": "79f214a51a8d34f69491c349fa48a077a1573c2daef6b7c22fe4e233a998549a"
+    },
+    {
+      "check": "test",
+      "status": "passed",
+      "source": "abf3304df8abb4723155880ca7791245d9374386",
+      "localLog": ".migration/audit-implementation/test-access.log",
+      "logSha256": "eb3af02fde161951777976e58ed1514b648c727081e454d22071dc3bd0daebc5"
+    },
+    {
+      "check": "build",
+      "status": "passed",
+      "source": "abf3304df8abb4723155880ca7791245d9374386",
+      "localLog": ".migration/audit-implementation/build-access.log",
+      "logSha256": "78a47c1754621df748aacafd75fd59a545526190bce3bd2dbc187d56bc8ba7b5"
+    },
+    {
+      "check": "audit-browser",
+      "status": "passed",
+      "source": "abf3304df8abb4723155880ca7791245d9374386",
+      "localLog": ".migration/audit-implementation/e2e-access-migrated.log",
+      "logSha256": "bc014bd7e04bbcc3a059e281fbac3480a60ee058637013a19a39f75028eb3387"
+    },
+    {
+      "check": "auth",
+      "status": "passed",
+      "source": "54b8921",
+      "localLog": ".migration/audit-implementation/auth-review.log",
+      "logSha256": "b2baba598f3254dbc46fbd4e83961225b59c481be13efdeefa962639fdad5bbe"
+    },
+    {
+      "check": "restricted-runtime",
+      "status": "passed",
+      "source": "abf3304df8abb4723155880ca7791245d9374386",
+      "localLog": ".migration/audit-implementation/runtime-access.log",
+      "logSha256": "a90ffb74446e6de53c2e0ea0faadd8f9994434632284dac9c320673576eb09d4"
+    },
+    {
+      "check": "live-acceptance",
+      "status": "passed",
+      "source": "abf3304df8abb4723155880ca7791245d9374386",
+      "localLog": ".migration/audit-implementation/live/acceptance-access.log",
+      "logSha256": "8d1c512cf9b907c81f04a8f7d9babd75d7150967fa9371cacc58b0818786d961"
+    },
+    {
+      "check": "infra",
+      "status": "passed",
+      "source": "24d1d12",
+      "localLog": ".migration/audit-implementation/infra-final.log",
+      "logSha256": "4922cfa995de9ad85fd4c85bc7c917b3f703d495b9bc475a9c3e5d69403bb476"
+    },
+    {
+      "check": "independence",
+      "status": "passed",
+      "source": "24d1d12",
+      "localLog": ".migration/audit-implementation/independence-final.log",
+      "logSha256": "9bde89701ada4f4a40e0195c1eb66a1c45984fcf90a9d545bbc33c071614283d"
+    },
+    {
+      "check": "worker",
+      "status": "passed",
+      "source": "24d1d12",
+      "localLog": ".migration/audit-implementation/worker-final.log",
+      "logSha256": "a574bf428cd55bc922566aa7c242201887c6232821271f29fec90036c366784c"
+    },
+    {
+      "check": "file-worker",
+      "status": "passed",
+      "source": "24d1d12",
+      "localLog": ".migration/audit-implementation/file-worker-final.log",
+      "logSha256": "2d618d25f6527736ad38e339d46f72a32b4a873a1c3ab116377e6b6348b254cd"
+    },
+    {
+      "check": "webhook",
+      "status": "passed",
+      "source": "24d1d12",
+      "localLog": ".migration/audit-implementation/webhook-final.log",
+      "logSha256": "b3e4d5c2f3bca72bb8f39f2c8df752ce3fe8a58dc3060cc9f2bf0e0b51333a41"
+    },
+    {
+      "check": "cms-boundaries",
+      "status": "passed",
+      "source": "24d1d12",
+      "localLog": ".migration/audit-implementation/cms-candidate-final.log",
+      "logSha256": "f8dc98f9229ab9902d1aa861deef4da1096d58468014fd5c58818e36e4d892e6"
+    },
+    {
+      "check": "restore",
+      "status": "passed",
+      "source": "26f46b7",
+      "localLog": ".migration/audit-implementation/restore-final.log",
+      "logSha256": "41b5205d801152539f4fcfe930edc5479e2852a2f6d503225af1b5209d2bf973"
+    },
+    {
+      "check": "full-browser",
+      "status": "passed",
+      "source": "54b8921d94b4c4d4a774a3c8a294cdc01916c071",
+      "localLog": ".migration/audit-implementation/e2e-verified.log",
+      "fixtureSource": "4f7292e151ac5448605617b4b4184a7bfc81b652",
+      "logSha256": "e2c0f422923e88bf2886341cc6393a43329dc4185b1bd8599410d87e4f6ccf2d"
+    }
+  ],
+  "fullBrowserTests": 236
+}

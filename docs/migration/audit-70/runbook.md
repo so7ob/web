@@ -20,7 +20,8 @@ All new routes start `/api/v1/admin/audit` (also `/api/admin/audit`). POST/PATCH
 | `/events/search` | POST | AuditFilter → rows, complete stats, nextCursor, measuredAt |
 | `/events/:id` | GET | Sanitized historical event; authorized deleted-resource status |
 | `/events/:id/related?kind=resource\|batch\|correlation` | GET | Cursor-page of related events |
-| `/access` | POST | Explicit opening/detail access, bounded deduplication |
+| `/events/check` | POST | Authorized count/latest-ID hint for polling; no event bodies or access event |
+| `/access` | POST | Compatibility access marker, bounded deduplication; normal search/detail routes record access themselves |
 | `/preferences`, `/views` | GET/POST | Private density/columns/timezone and named filters; DELETE `/views/:id` |
 | `/bookmarks`, `/events/:id/bookmark` | GET/POST | Independent private flags |
 | `/cases`, `/cases/:id`, `/assignees` | GET/POST/PATCH | Limited investigation workflow and history |

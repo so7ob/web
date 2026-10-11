@@ -1,7 +1,7 @@
 {
   "synthetic": true,
-  "sha": "54b8921d94b4c4d4a774a3c8a294cdc01916c071",
-  "at": "2026-10-11T14:28:54.230Z",
+  "sha": "abf3304df8abb4723155880ca7791245d9374386",
+  "at": "2026-10-11T14:49:03.764Z",
   "baseURL": "https://127.0.0.1:3213",
   "actualRestrictedRuntime": true,
   "actualWorker": true,
@@ -18,16 +18,16 @@
     }
   ],
   "resourceTimeline": 2,
-  "caseId": "c683daf7f2cd7f1c7a61c8b3c75d017",
-  "reportId": "c5bafce945a4848397bd765ec7dc6aa",
+  "caseId": "ce1ee28abddea1d099da54973392fc7",
+  "reportId": "cf57d2cac493d87d9f12a306d4ba64e",
   "eventCount": 2,
   "checksumVerified": true,
   "alerts": 1,
   "health": "healthy",
   "unauthorized": {
     "/events/ccf83af8ebed8c63279a01b9b1aa243": 403,
-    "/reports/c5bafce945a4848397bd765ec7dc6aa/download": 403,
-    "/cases/c683daf7f2cd7f1c7a61c8b3c75d017": 403,
+    "/reports/cf57d2cac493d87d9f12a306d4ba64e/download": 403,
+    "/cases/ce1ee28abddea1d099da54973392fc7": 403,
     "/health": 403
   }
 }

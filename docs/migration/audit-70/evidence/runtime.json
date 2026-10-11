@@ -1,10 +1,10 @@
 {
   "synthetic": true,
-  "capturedAt": "2026-10-11T14:30:08.867782+00:00",
-  "sourceSha": "54b8921d94b4c4d4a774a3c8a294cdc01916c071",
+  "capturedAt": "2026-10-11T14:50:43.272143+00:00",
+  "sourceSha": "abf3304df8abb4723155880ca7791245d9374386",
   "branch": "feat/70-audit-investigation",
   "build": {
-    "sha": "54b8921d94b4c4d4a774a3c8a294cdc01916c071",
+    "sha": "abf3304df8abb4723155880ca7791245d9374386",
     "dirty": false
   },
   "preview": "https://127.0.0.1:3213",
@@ -17,17 +17,8 @@
   ],
   "processes": [
     {
-      "pid": 487310,
-      "cwd": "/root/So7ob/web/.migration/audit-implementation/scratch/review",
-      "command": [
-        "node",
-        "--env-file=/root/So7ob/web/.migration/audit-implementation/live/runtime.env",
-        "apps/worker/dist/main.js"
-      ]
-    },
-    {
-      "pid": 487312,
-      "cwd": "/root/So7ob/web/.migration/audit-implementation/scratch/review",
+      "pid": 510465,
+      "cwd": "/root/So7ob/web/.migration/audit-implementation/scratch/accept",
       "command": [
         "node",
         "--env-file=/root/So7ob/web/.migration/audit-implementation/live/runtime.env",
@@ -35,11 +26,20 @@
       ]
     },
     {
-      "pid": 487347,
-      "cwd": "/root/So7ob/web/.migration/audit-implementation/scratch/review",
+      "pid": 510474,
+      "cwd": "/root/So7ob/web/.migration/audit-implementation/scratch/accept",
       "command": [
         "/root/.nvm/versions/node/v24.21.0/bin/node",
         "apps/api/dist/main.js"
+      ]
+    },
+    {
+      "pid": 510685,
+      "cwd": "/root/So7ob/web/.migration/audit-implementation/scratch/accept",
+      "command": [
+        "node",
+        "--env-file=/root/So7ob/web/.migration/audit-implementation/live/runtime.env",
+        "apps/worker/dist/main.js"
       ]
     }
   ],
