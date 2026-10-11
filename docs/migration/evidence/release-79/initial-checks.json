@@ -1,0 +1,307 @@
+{
+  "sourceSha": "8e35464ab194f96809ac821107c37117bb2b8fdb",
+  "node": "24.21.0",
+  "npm": "10.8.2",
+  "mariadb": "10.11.18",
+  "port": 33779,
+  "syntheticOnly": true,
+  "checksAtDocumentationCommit": [
+    {
+      "command": [
+        "npm",
+        "ci"
+      ],
+      "sha": "8e35464ab194f96809ac821107c37117bb2b8fdb",
+      "exit": 0,
+      "database": null,
+      "durationSeconds": 19.223,
+      "log": "npm-ci.log"
+    },
+    {
+      "command": [
+        "npm",
+        "run",
+        "lint"
+      ],
+      "sha": "8e35464ab194f96809ac821107c37117bb2b8fdb",
+      "exit": 0,
+      "database": null,
+      "durationSeconds": 7.739,
+      "log": "lint.log"
+    },
+    {
+      "command": [
+        "npm",
+        "run",
+        "typecheck"
+      ],
+      "sha": "8e35464ab194f96809ac821107c37117bb2b8fdb",
+      "exit": 0,
+      "database": null,
+      "durationSeconds": 16.436,
+      "log": "typecheck.log"
+    },
+    {
+      "command": [
+        "npm",
+        "run",
+        "test:independence"
+      ],
+      "sha": "8e35464ab194f96809ac821107c37117bb2b8fdb",
+      "exit": 0,
+      "database": null,
+      "durationSeconds": 1.819,
+      "log": "independence.log"
+    },
+    {
+      "command": [
+        "npm",
+        "run",
+        "build"
+      ],
+      "sha": "8e35464ab194f96809ac821107c37117bb2b8fdb",
+      "exit": 0,
+      "database": null,
+      "durationSeconds": 3.121,
+      "log": "build.log"
+    },
+    {
+      "command": [
+        "npm",
+        "run",
+        "db:migrate"
+      ],
+      "sha": "8e35464ab194f96809ac821107c37117bb2b8fdb",
+      "exit": 0,
+      "database": "so7ob_release79_unit_test",
+      "durationSeconds": 2.381,
+      "log": "unit-migrate.log"
+    },
+    {
+      "command": [
+        "npm",
+        "run",
+        "db:migrate"
+      ],
+      "sha": "8e35464ab194f96809ac821107c37117bb2b8fdb",
+      "exit": 0,
+      "database": "so7ob_release79_acceptance_test",
+      "durationSeconds": 2.396,
+      "log": "browser-migrate.log"
+    },
+    {
+      "command": [
+        "node",
+        "--import",
+        "tsx",
+        "--input-type=module",
+        "-e",
+        "const {default:setup}=await import(\"./tests/e2e/setup.ts\");await setup();"
+      ],
+      "sha": "8e35464ab194f96809ac821107c37117bb2b8fdb",
+      "exit": 0,
+      "database": "so7ob_release79_acceptance_test",
+      "durationSeconds": 6.288,
+      "log": "capture-fixtures.log"
+    },
+    {
+      "command": [
+        "node",
+        ".migration/capture-footer.mjs"
+      ],
+      "sha": "8e35464ab194f96809ac821107c37117bb2b8fdb",
+      "exit": 0,
+      "database": "so7ob_release79_acceptance_test",
+      "durationSeconds": 8.642,
+      "log": "after-capture.log"
+    },
+    {
+      "command": [
+        "npx",
+        "playwright",
+        "test",
+        "tests/e2e/footer-targets.spec.ts",
+        "tests/e2e/auth-error-state.spec.ts"
+      ],
+      "sha": "8e35464ab194f96809ac821107c37117bb2b8fdb",
+      "exit": 0,
+      "database": "so7ob_release79_acceptance_test",
+      "durationSeconds": 72.675,
+      "log": "focused-browser.log"
+    },
+    {
+      "command": [
+        "npm",
+        "test"
+      ],
+      "sha": "8e35464ab194f96809ac821107c37117bb2b8fdb",
+      "exit": 0,
+      "database": "so7ob_release79_unit_test",
+      "durationSeconds": 94.793,
+      "log": "test.log"
+    },
+    {
+      "command": [
+        "npm",
+        "run",
+        "db:migrate"
+      ],
+      "sha": "8e35464ab194f96809ac821107c37117bb2b8fdb",
+      "exit": 0,
+      "database": "so7ob_release79_full_browser_test",
+      "durationSeconds": 1.812,
+      "log": "full-browser-migrate.log"
+    },
+    {
+      "command": [
+        "npm",
+        "run",
+        "db:migrate"
+      ],
+      "sha": "8e35464ab194f96809ac821107c37117bb2b8fdb",
+      "exit": 0,
+      "database": "so7ob_release79_ops_test",
+      "durationSeconds": 1.651,
+      "log": "ops-migrate.log"
+    },
+    {
+      "command": [
+        "npm",
+        "run",
+        "test:worker"
+      ],
+      "sha": "8e35464ab194f96809ac821107c37117bb2b8fdb",
+      "exit": 0,
+      "database": "so7ob_release79_ops_test",
+      "durationSeconds": 24.929,
+      "log": "test-worker.log"
+    },
+    {
+      "command": [
+        "npm",
+        "run",
+        "test:file-worker"
+      ],
+      "sha": "8e35464ab194f96809ac821107c37117bb2b8fdb",
+      "exit": 0,
+      "database": "so7ob_release79_ops_test",
+      "durationSeconds": 9.76,
+      "log": "test-file-worker.log"
+    },
+    {
+      "command": [
+        "npm",
+        "run",
+        "test:webhook"
+      ],
+      "sha": "8e35464ab194f96809ac821107c37117bb2b8fdb",
+      "exit": 0,
+      "database": "so7ob_release79_ops_test",
+      "durationSeconds": 25.046,
+      "log": "test-webhook.log"
+    },
+    {
+      "command": [
+        "npm",
+        "run",
+        "test:auth"
+      ],
+      "sha": "8e35464ab194f96809ac821107c37117bb2b8fdb",
+      "exit": 0,
+      "database": "so7ob_release79_ops_test",
+      "durationSeconds": 14.218,
+      "log": "test-auth.log"
+    },
+    {
+      "command": [
+        "npm",
+        "run",
+        "db:check-cms"
+      ],
+      "sha": "8e35464ab194f96809ac821107c37117bb2b8fdb",
+      "exit": 0,
+      "database": "so7ob_release79_ops_test",
+      "durationSeconds": 0.761,
+      "log": "db-check-cms.log"
+    },
+    {
+      "command": [
+        "npm",
+        "run",
+        "test:cms-boundaries"
+      ],
+      "sha": "8e35464ab194f96809ac821107c37117bb2b8fdb",
+      "exit": 0,
+      "database": "so7ob_release79_ops_test",
+      "durationSeconds": 53.17,
+      "log": "test-cms-boundaries.log"
+    },
+    {
+      "command": [
+        "npm",
+        "run",
+        "test:restore"
+      ],
+      "sha": "8e35464ab194f96809ac821107c37117bb2b8fdb",
+      "exit": 0,
+      "database": "so7ob_release79_ops_test",
+      "durationSeconds": 28.914,
+      "log": "test-restore.log"
+    },
+    {
+      "command": [
+        "node",
+        "--import",
+        "tsx",
+        "tools/migration/upgrade-source-v2-smoke.ts"
+      ],
+      "sha": "8e35464ab194f96809ac821107c37117bb2b8fdb",
+      "exit": 0,
+      "database": "so7ob_release79_upgrade_test",
+      "durationSeconds": 2.472,
+      "log": "upgrade.log"
+    },
+    {
+      "command": [
+        "npm",
+        "run",
+        "test:infra"
+      ],
+      "sha": "8e35464ab194f96809ac821107c37117bb2b8fdb",
+      "exit": 0,
+      "database": null,
+      "durationSeconds": 0.683,
+      "log": "infra.log"
+    },
+    {
+      "command": [
+        "git",
+        "diff",
+        "--check"
+      ],
+      "sha": "8e35464ab194f96809ac821107c37117bb2b8fdb",
+      "exit": 0,
+      "database": null,
+      "durationSeconds": 0.009,
+      "log": "diff-check.log"
+    },
+    {
+      "command": [
+        "python3",
+        "-B",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        ".agents/skills/ui-ux-pro-max/scripts/tests"
+      ],
+      "sha": "8e35464ab194f96809ac821107c37117bb2b8fdb",
+      "exit": 0,
+      "database": null,
+      "durationSeconds": 8.402,
+      "log": "skills.log"
+    }
+  ],
+  "unitPassed": 895,
+  "fullBrowserAndRemainingMaintenance": "Results recorded on preparation PR and promotion PR after actual completion"
+}

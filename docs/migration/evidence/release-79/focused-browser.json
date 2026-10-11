@@ -1,0 +1,19 @@
+{
+  "sourceSha": "8e35464ab194f96809ac821107c37117bb2b8fdb",
+  "command": "npx playwright test tests/e2e/footer-targets.spec.ts tests/e2e/auth-error-state.spec.ts",
+  "exit": 0,
+  "registered": 20,
+  "passed": 20,
+  "failed": 0,
+  "skipped": 0,
+  "flaky": 0,
+  "evidenceSource": "preserved runner stdout; its temporary JSON output was cleaned when the next suite started",
+  "coverage": [
+    "bounding rectangles >=24 CSS px",
+    "original font and fallback font",
+    "keyboard Tab order and Enter activation",
+    "full wcag2a/wcag2aa/wcag21aa/wcag22aa axe",
+    "original auth error assertions retained"
+  ],
+  "logSha256": "26b71cd633aaefef49203aef747622b24d1f25a56ccbc629b0a4f504daabf51c"
+}

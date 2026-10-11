@@ -1,0 +1,374 @@
+[
+  {
+    "locale": "ar",
+    "width": 375,
+    "dir": "rtl",
+    "stage": "after",
+    "sourceSha": "8e35464ab194f96809ac821107c37117bb2b8fdb",
+    "targets": [
+      {
+        "href": "/ar/about",
+        "width": 43,
+        "height": 24,
+        "rectangles": 1
+      },
+      {
+        "href": "/ar/services",
+        "width": 46,
+        "height": 24,
+        "rectangles": 1
+      },
+      {
+        "href": "/ar/works",
+        "width": 33,
+        "height": 24,
+        "rectangles": 1
+      },
+      {
+        "href": "/ar/process",
+        "width": 52,
+        "height": 24,
+        "rectangles": 1
+      },
+      {
+        "href": "/ar/faq",
+        "width": 79,
+        "height": 24,
+        "rectangles": 1
+      },
+      {
+        "href": "/ar/contact",
+        "width": 35,
+        "height": 24,
+        "rectangles": 1
+      },
+      {
+        "href": "/ar/services#web",
+        "width": 123,
+        "height": 24,
+        "rectangles": 1
+      },
+      {
+        "href": "/ar/services#mobile",
+        "width": 81,
+        "height": 24,
+        "rectangles": 1
+      },
+      {
+        "href": "/ar/services#systems",
+        "width": 77,
+        "height": 24,
+        "rectangles": 1
+      },
+      {
+        "href": "/ar/services#ux",
+        "width": 182,
+        "height": 24,
+        "rectangles": 1
+      },
+      {
+        "href": "/ar/services#automation",
+        "width": 163,
+        "height": 24,
+        "rectangles": 1
+      },
+      {
+        "href": "/ar/services#maintenance",
+        "width": 165,
+        "height": 24,
+        "rectangles": 1
+      },
+      {
+        "href": "https://github.com/so7ob/Website",
+        "width": 343,
+        "height": 24,
+        "rectangles": 1
+      }
+    ],
+    "violations": [],
+    "screenshot": "footer-after-ar-375.png",
+    "sha256": "82f9b3a51c9e9b24b9ee348b815ea16e92760df09a0e6a39f927881f0dde08c3",
+    "horizontalOverflow": false,
+    "viewportHeight": 900,
+    "captureScope": "footer element in actual scrolled page; fixed header can overlap the captured region"
+  },
+  {
+    "locale": "ar",
+    "width": 1280,
+    "dir": "rtl",
+    "stage": "after",
+    "sourceSha": "8e35464ab194f96809ac821107c37117bb2b8fdb",
+    "targets": [
+      {
+        "href": "/ar/about",
+        "width": 43,
+        "height": 24,
+        "rectangles": 1
+      },
+      {
+        "href": "/ar/services",
+        "width": 46,
+        "height": 24,
+        "rectangles": 1
+      },
+      {
+        "href": "/ar/works",
+        "width": 33,
+        "height": 24,
+        "rectangles": 1
+      },
+      {
+        "href": "/ar/process",
+        "width": 52,
+        "height": 24,
+        "rectangles": 1
+      },
+      {
+        "href": "/ar/faq",
+        "width": 79,
+        "height": 24,
+        "rectangles": 1
+      },
+      {
+        "href": "/ar/contact",
+        "width": 35,
+        "height": 24,
+        "rectangles": 1
+      },
+      {
+        "href": "/ar/services#web",
+        "width": 123,
+        "height": 24,
+        "rectangles": 1
+      },
+      {
+        "href": "/ar/services#mobile",
+        "width": 81,
+        "height": 24,
+        "rectangles": 1
+      },
+      {
+        "href": "/ar/services#systems",
+        "width": 77,
+        "height": 24,
+        "rectangles": 1
+      },
+      {
+        "href": "/ar/services#ux",
+        "width": 182,
+        "height": 24,
+        "rectangles": 1
+      },
+      {
+        "href": "/ar/services#automation",
+        "width": 163,
+        "height": 24,
+        "rectangles": 1
+      },
+      {
+        "href": "/ar/services#maintenance",
+        "width": 165,
+        "height": 24,
+        "rectangles": 1
+      },
+      {
+        "href": "https://github.com/so7ob/Website",
+        "width": 150,
+        "height": 24,
+        "rectangles": 1
+      }
+    ],
+    "violations": [],
+    "screenshot": "footer-after-ar-1280.png",
+    "sha256": "3d31c6a17fbb85fff39c6ab74a66e74ac9fafb97d24238c1094a910e134020b8",
+    "horizontalOverflow": false,
+    "viewportHeight": 900,
+    "captureScope": "footer element in actual scrolled page; fixed header can overlap the captured region"
+  },
+  {
+    "locale": "en",
+    "width": 375,
+    "dir": "ltr",
+    "stage": "after",
+    "sourceSha": "8e35464ab194f96809ac821107c37117bb2b8fdb",
+    "targets": [
+      {
+        "href": "/en/about",
+        "width": 38,
+        "height": 24,
+        "rectangles": 1
+      },
+      {
+        "href": "/en/services",
+        "width": 54,
+        "height": 24,
+        "rectangles": 1
+      },
+      {
+        "href": "/en/works",
+        "width": 32,
+        "height": 24,
+        "rectangles": 1
+      },
+      {
+        "href": "/en/process",
+        "width": 85,
+        "height": 24,
+        "rectangles": 1
+      },
+      {
+        "href": "/en/faq",
+        "width": 26,
+        "height": 24,
+        "rectangles": 1
+      },
+      {
+        "href": "/en/contact",
+        "width": 49,
+        "height": 24,
+        "rectangles": 1
+      },
+      {
+        "href": "/en/services#web",
+        "width": 182,
+        "height": 24,
+        "rectangles": 1
+      },
+      {
+        "href": "/en/services#mobile",
+        "width": 123,
+        "height": 24,
+        "rectangles": 1
+      },
+      {
+        "href": "/en/services#systems",
+        "width": 97,
+        "height": 24,
+        "rectangles": 1
+      },
+      {
+        "href": "/en/services#ux",
+        "width": 83,
+        "height": 24,
+        "rectangles": 1
+      },
+      {
+        "href": "/en/services#automation",
+        "width": 236,
+        "height": 24,
+        "rectangles": 1
+      },
+      {
+        "href": "/en/services#maintenance",
+        "width": 311,
+        "height": 24,
+        "rectangles": 1
+      },
+      {
+        "href": "https://github.com/so7ob/Website",
+        "width": 343,
+        "height": 24,
+        "rectangles": 1
+      }
+    ],
+    "violations": [],
+    "screenshot": "footer-after-en-375.png",
+    "sha256": "0a77d8d4e5928fe4f31e29eac63cb5050f51e5df7220a059d3086f6c126d6407",
+    "horizontalOverflow": false,
+    "viewportHeight": 900,
+    "captureScope": "footer element in actual scrolled page; fixed header can overlap the captured region"
+  },
+  {
+    "locale": "en",
+    "width": 1280,
+    "dir": "ltr",
+    "stage": "after",
+    "sourceSha": "8e35464ab194f96809ac821107c37117bb2b8fdb",
+    "targets": [
+      {
+        "href": "/en/about",
+        "width": 38,
+        "height": 24,
+        "rectangles": 1
+      },
+      {
+        "href": "/en/services",
+        "width": 54,
+        "height": 24,
+        "rectangles": 1
+      },
+      {
+        "href": "/en/works",
+        "width": 32,
+        "height": 24,
+        "rectangles": 1
+      },
+      {
+        "href": "/en/process",
+        "width": 85,
+        "height": 24,
+        "rectangles": 1
+      },
+      {
+        "href": "/en/faq",
+        "width": 26,
+        "height": 24,
+        "rectangles": 1
+      },
+      {
+        "href": "/en/contact",
+        "width": 49,
+        "height": 24,
+        "rectangles": 1
+      },
+      {
+        "href": "/en/services#web",
+        "width": 182,
+        "height": 24,
+        "rectangles": 1
+      },
+      {
+        "href": "/en/services#mobile",
+        "width": 123,
+        "height": 24,
+        "rectangles": 1
+      },
+      {
+        "href": "/en/services#systems",
+        "width": 97,
+        "height": 24,
+        "rectangles": 1
+      },
+      {
+        "href": "/en/services#ux",
+        "width": 83,
+        "height": 24,
+        "rectangles": 1
+      },
+      {
+        "href": "/en/services#automation",
+        "width": 236,
+        "height": 24,
+        "rectangles": 1
+      },
+      {
+        "href": "/en/services#maintenance",
+        "width": 311,
+        "height": 24,
+        "rectangles": 1
+      },
+      {
+        "href": "https://github.com/so7ob/Website",
+        "width": 168,
+        "height": 24,
+        "rectangles": 1
+      }
+    ],
+    "violations": [],
+    "screenshot": "footer-after-en-1280.png",
+    "sha256": "8ddb38d53477371f85f8b03c4f30179c18208e127e929223ba6f9db9dca49022",
+    "horizontalOverflow": false,
+    "viewportHeight": 900,
+    "captureScope": "footer element in actual scrolled page; fixed header can overlap the captured region"
+  }
+]

@@ -2,7 +2,7 @@
   <img src="apps/web/public/icon-192.png" width="112" alt="شعار سُحُب التقنية">
   <h1>سُحُب · So7ob</h1>
   <p>منصة عربية وإنجليزية لإدارة المحتوى والطلبات وخدمة العملاء والتحقيق في العمليات.</p>
-  <p><a href="README.en.md">English</a> · <a href="docs/releases/v1.2.0.md">ملاحظات v1.2.0</a> · <a href="docs/migration/local-development.ar.md">التشغيل المحلي</a> · <a href="CONTRIBUTING.md">المساهمة</a></p>
+  <p><a href="README.en.md">English</a> · <a href="docs/releases/v1.2.1.md">ملاحظات v1.2.1</a> · <a href="docs/migration/local-development.ar.md">التشغيل المحلي</a> · <a href="CONTRIBUTING.md">المساهمة</a></p>
 </div>
 
 [![فحوص المشروع](https://github.com/so7ob/web/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/so7ob/web/actions/workflows/ci.yml)
@@ -44,14 +44,14 @@
 
 **مصدر الصور:** لقطات من اختبارات تشغيل فعلية ببيانات اصطناعية فقط، بعرضي 375 و1280. صور التحقيق من `abf3304`، وصور الصحة من `d978938`. راجع [أدلة التدقيق](docs/migration/audit-70/verification.md) و[إصلاح توافق المقارنات](docs/migration/audit-72/README.md) للنسخ والفحوص والحدود؛ الصور ليست حسابات عملاء أو نماذج تصميم.
 
-## الجديد في v1.2.0
+## الجديد في v1.2.1
 
-- مساحة تحقيق متكاملة: أحداث بهوية تاريخية، فروق منقحة، عروض شخصية، مراجعات وقضايا مستقلة، تقارير وقواعد تنبيه وصحة تشغيلية.
-- تشخيص خادمي بمعرفي `requestId` و`errorId`، مع رسائل فشل واضحة وحفظ المدخلات والمسودات عند التعثر.
-- إصلاح تغييرات حالة الطلب وأولويته، وتحسين موثوقية الردود والتصدير والتعارضات في القوائم والإعدادات.
-- مراقبة العامل المستقل، وتوحيد سياسة مهلة الرد، وتحسين استعلامات المحادثات وإتاحة لوحة الإدارة.
+- مشروع مستقل: التثبيت والبناء والفحص والتشغيل والصيانة من web وحده، دون أرشيف المصدر السابق أو checkout تاريخي.
+- مصدر واحد للأصول في `apps/web/public/`، مع فحص تقديم الصور والخطوط من الإصدار المستعاد نفسه.
+- تنظيف الشيفرة والحزم والأدوات المنتهية، مع حفظ عقود الاختبار والترحيلات والحقوق وأدلة قبول المنتج.
+- روابط تذييل بمساحة نقر لا تقل عن 24×24 CSS px، مع بقاء النصوص والروابط والعربية والإنجليزية.
 
-[النطاق الكامل والترقية والتراجع](docs/releases/v1.2.0.md) · [الإصدارات المنشورة](https://github.com/so7ob/web/releases)
+[النطاق الكامل والترقية والتراجع](docs/releases/v1.2.1.md) · [ميزات v1.2.0](docs/releases/v1.2.0.md) · [الإصدارات المنشورة](https://github.com/so7ob/web/releases)
 
 ## التشغيل المحلي
 
@@ -81,7 +81,7 @@ npm run dev
 
 ينشئ `site:init` الصفحات العامة السبع باللغتين والقوائم والإعدادات، ويرفض الكتابة فوق موقع قائم. يطبع `admin:create` كلمة مرور عشوائية مرة واحدة ويرفض وجود مدير سابق؛ لا توجد بيانات دخول افتراضية. تتطلب أدوات التهيئة `NODE_ENV=development` واتصال قاعدة محليًا. للموقع المستورد، تخطَّ التهيئة واتبع [دليل نقل البيانات](docs/migration/data-transfer.md).
 
-شغّل العامل في **طرفية ثانية**، بنفس قاعدة البيانات و`DATA_DIR` والأسرار:
+اضبط `SMTP_HOST` و`SMTP_FROM` ومزود SMTP قبل تشغيل العامل؛ `EMAIL_DEV_MODE` لا يعوض إعداد SMTP للعامل. للتطوير استخدم مستقبِل SMTP محليًا مع الإعدادات الموثقة في دليل التشغيل. شغّل العامل في **طرفية ثانية**، بنفس قاعدة البيانات و`DATA_DIR` والأسرار:
 
 ```sh
 node --env-file=.env apps/worker/dist/main.js
@@ -95,12 +95,11 @@ node --env-file=.env apps/worker/dist/main.js
 
 | المسار | المسؤولية |
 |---|---|
-| `apps/web` | React + Vite + React Router؛ واجهة المتصفح وSSR |
+| `apps/web` | React + Vite + React Router؛ واجهة المتصفح وSSR؛ `public/` داخله مصدر الأصول الثابتة |
 | `apps/api` | NestJS + Express؛ REST والجلسات والصلاحيات واستضافة SSR |
 | `apps/worker` | عامل Node مستقل يستطلع مهام MariaDB بإيجارات وأقفال |
 | `packages/contracts` | عقود البيانات والأذون والتحقق المشتركة |
 | `packages/server` | منطق الأعمال والتدقيق والتخزين عبر TypeORM/mysql2 |
-| `reference/` | أرشيف المصدر التاريخي، معزول عن تشغيل المنتج |
 
 الخادم يتحقق من الوصول قبل خدمة الملفات الخاصة. تُحفظ مهام البريد وWebhook والتنظيف والتقارير في MariaDB؛ لا يحتاج المنتج إلى Redis أو Kafka. مخطط البنية مثبت بتاريخ إنشائه؛ [شرح البنية](docs/migration/architecture-explained-2026-10-09.ar.md) و[مخططات التسلسل التفاعلية](.archify/README.md) يوضحان مصدره وحدوده. GitHub يعرض مصدر HTML؛ نزّل الملف لفتحه تفاعليًا.
 
@@ -117,12 +116,13 @@ npm run lint
 npm run typecheck
 npm test
 npm run build
+npm run test:independence
 npm run test:e2e
 npm run test:infra
 git diff --check
 ```
 
-تحتاج الاختبارات إلى MariaDB معزولة وبيانات اصطناعية. اضبط `TEST_DATABASE_NAME` للتكامل، واستخدم `DATABASE_NAME` مطابقًا للنمط `so7ob_*_test` للمتصفح مع Chromium الخاص بـPlaywright. تشغّل CI أيضًا اختبارات العامل والملفات وWebhook والمصادقة وحدود CMS والاستعادة. [آخر أدلة الإصلاح](docs/migration/audit-72/README.md) تسجل **895 اختبارًا و240 مسار متصفح** على النسخة المحددة فيها؛ [GitHub Actions](https://github.com/so7ob/web/actions) هو مرجع نتائج كل التزام لاحق.
+[تهيئة الفحوص من نسخة نظيفة](docs/testing.md) توثق قواعد الاختبار والخدمات وأوامر CI والصيانة. تحتاج الاختبارات إلى MariaDB معزولة وبيانات اصطناعية. اضبط `TEST_DATABASE_NAME` للتكامل، واستخدم `DATABASE_NAME` مطابقًا للنمط `so7ob_*_test` للمتصفح مع Chromium الخاص بـPlaywright. تشغّل CI أيضًا اختبارات العامل والملفات وWebhook والمصادقة وحدود CMS والاستعادة. [آخر أدلة الإصلاح](docs/migration/audit-72/README.md) تسجل **895 اختبارًا و240 مسار متصفح** على النسخة المحددة فيها؛ [GitHub Actions](https://github.com/so7ob/web/actions) هو مرجع نتائج كل التزام لاحق.
 
 ## دليل الوثائق
 
@@ -133,13 +133,13 @@ git diff --check
 | معالجة الأخطاء والتتبع | [التشخيص الآمن](docs/migration/error-diagnostics-61.md) |
 | العامل والطوابير | [التشغيل الخلفي](docs/migration/worker-and-operations.md) · [صحة العامل](docs/migration/worker-health-50.md) |
 | التعافي | [متطلبات الاستعادة المستقلة](docs/migration/independent-recovery-56.md) |
-| النقل من المصدر | [القبول النهائي](docs/migration/final-code-parity.md) · [عزل المرجع](docs/migration/reference-isolation.md) |
+| النقل من المصدر | [القبول النهائي](docs/migration/final-code-parity.md) · [أصل الشيفرة](docs/migration/source-provenance.md) |
 | المساهمة | [CONTRIBUTING](CONTRIBUTING.md) · [تعليمات المستودع](AGENTS.md) |
 
 ## المصدر والمساهمة
 
 هذا تنفيذ مستقل يحافظ على هوية ووظائف [so7ob/Website](https://github.com/so7ob/Website). خط الاستيراد الأصلي `5321b7fd11db421c83290b262f276811e5f04e5f`، والمقارنة المثبتة `dddf8cd00a19cf7d562f503549f4c000109057d1`. استُخدم [Rakim](https://github.com/so7ob/Rakim) عند `cae0950bac45d97971bd3766c8c34f9869a856af` مرجعًا معماريًا للقراءة فقط.
 
-اكتمل قبول نقل الكود والوظائف ضمن [النطاق الموثق](docs/migration/final-code-parity.md)؛ نشر الإنتاج ونقل بياناته والاستعادة خارج المضيف لها إجراءات تحقق مستقلة. تشغيل المنتج لا يعتمد على Next.js أو Prisma أو Bun؛ `npm run test:independence` يتحقق من عزل الأرشيف.
+اكتمل قبول نقل الكود والوظائف ضمن [النطاق الموثق](docs/migration/final-code-parity.md)؛ نشر الإنتاج ونقل بياناته والاستعادة خارج المضيف لها إجراءات تحقق مستقلة. تشغيل المنتج لا يعتمد على Next.js أو Prisma أو Bun؛ `npm run test:independence` يفحص استقلال المنتج وأدوات الاختبار والصيانة دون أرشيف أو checkout تاريخي.
 
 كل الكود والوثائق وIssues وPRs تُدار في `so7ob/web`: **Issue → فرع → PR → فحوص → مراجعة**. [المهارات المحلية](.agents/skills) وأدوات المخططات أدوات تطوير وليست اعتمادات تشغيل. تبقى حقوق المصدر وإشعارات الأطراف الثالثة سارية؛ اسم وشعار سُحُب للتقنية، وخطوط IBM Plex تحت إشعارات OFL الخاصة بها.
