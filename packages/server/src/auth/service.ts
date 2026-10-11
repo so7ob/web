@@ -1,3 +1,4 @@
+import { AUDIT_SENSITIVE_PERMISSIONS } from '@so7ob/contracts';
 import { randomBytes } from 'node:crypto';
 import bcrypt from 'bcryptjs';
 import type { DataSource, QueryRunner } from 'typeorm';
@@ -143,7 +144,7 @@ export class AuthenticationService {
         if (changed.affectedRows !== 1) throw new AuthFault(400,'invalid_token');
         const [invite] = await r.query('SELECT * FROM UserInvite WHERE tokenHash=?',[sha256(raw)]); const id = newId();
         await r.query("INSERT INTO User(id,email,name,passwordHash,locale,roleKey,status,emailVerifiedAt) VALUES(?,?,?,?,'ar',?,'active',UTC_TIMESTAMP(3))",[id,invite.email,name,passwordHash,invite.roleKey]);
-        await r.query('UPDATE UserInvite SET acceptedUserId=? WHERE id=?',[id,invite.id]); await audit(r,'user.invite_accepted',{ id,email:invite.email },{ roleKey:invite.roleKey },'user',id);
+        await r.query('UPDATE UserInvite SET acceptedUserId=? WHERE id=?',[id,invite.id]); const [acceptedRole]=await r.query('SELECT permissions FROM Role WHERE `key`=?',[invite.roleKey]); const acceptedPermissions=JSON.parse(acceptedRole.permissions) as string[]; await audit(r,'user.invite_accepted',{ id,email:invite.email },{ roleKey:invite.roleKey, grantedPermissions:AUDIT_SENSITIVE_PERMISSIONS.filter(permission=>invite.roleKey==='super_admin'||acceptedPermissions.includes(permission)) },'user',id);
       });
     } catch(error) { if (error && typeof error === 'object' && 'code' in error && error.code === 'ER_DUP_ENTRY') throw new AuthFault(409,'email_taken'); throw error; }
   }

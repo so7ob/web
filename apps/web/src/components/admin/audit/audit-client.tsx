@@ -1,5 +1,5 @@
-import type { AuditPreference, AuditSavedView } from "@so7ob/contracts";
 "use client";
+import type { AuditPreference, AuditSavedView } from "@so7ob/contracts";
 import { useEffect, useState, useCallback, useRef } from "react";
 import { useSearchParams } from "react-router-dom";
 import {

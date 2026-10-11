@@ -1,6 +1,7 @@
 import { randomBytes } from "node:crypto";
 import { z } from "zod";
 import type { DataSource, QueryRunner } from "typeorm";
+import { AUDIT_SENSITIVE_PERMISSIONS } from "@so7ob/contracts";
 import type { AuthUser } from "@so7ob/contracts";
 import { AuthFault, audit, newId, transaction } from "../auth/persistence.js";
 import { lockOperation } from "../business/persistence.js";
@@ -136,12 +137,19 @@ export class AuditOperations {
       }
       matched =
         event.outcome === "success" &&
-        ["user.role_changed", "user.invite_accepted"].includes(
+        String(event.action).startsWith("user.") &&
+        ((["user.role_changed", "user.invite_accepted"].includes(
           String(event.action),
         ) &&
-        ["super_admin", "ops_manager"].includes(
-          String(details.toRole ?? details.roleKey),
-        );
+          ["super_admin", "ops_manager"].includes(
+            String(details.toRole ?? details.roleKey),
+          )) ||
+          (Array.isArray(details.grantedPermissions) &&
+            details.grantedPermissions.some((permission) =>
+              AUDIT_SENSITIVE_PERMISSIONS.some(
+                (allowed) => allowed === permission,
+              ),
+            )));
     }
     if (rule.kind === "export") {
       let details: Record<string, unknown> = {};

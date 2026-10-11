@@ -65,13 +65,76 @@ export interface AuditCaseDetail {
   }[];
 }
 
-export interface AuditPreference { timezone: string; density: string; columns: string[] }
-export interface AuditSavedView { id: string; name: string; filters: AuditFilter; createdAt?: string }
-export interface AuditReportRequest { format: 'csv' | 'json' | 'html'; scope: 'page' | 'selected' | 'all'; locale: 'ar' | 'en'; timezone: string; filters: AuditFilter }
-export interface AuditCaseRequest { title: string; ownerId: string; eventIds: string[] }
-export interface AuditCaseUpdate { revision: number; state?: 'new' | 'reviewing' | 'closed'; note?: string; closureReason?: string; held?: boolean; ownerId?: string }
-export type AuditRuleUpdate = Pick<AuditRule, 'revision' | 'enabled' | 'thresholdValue' | 'windowSeconds' | 'cooldownSeconds' | 'severity' | 'rationale' | 'scope'>;
-export interface AuditPolicy { retentionDays: number | null; revision: number }
-export interface AuditRelatedResponse { ok: true; rows: AuditEventV1[]; nextCursor: string | null }
-export interface AuditDetailResponse { ok: true; event: AuditEventV1 }
-export interface AuditReportManifest { reference: string; createdAt: string; snapshotAt: string; timezone: string; source: string; scope: string; filters: AuditFilter; eventCount: number; resourceCount: number; locale: 'ar' | 'en'; schemaVersion: number; eventIds: string[]; bytes: number; checksum: string; checksumAlgorithm: 'sha256'; integrityClaim: string }
+export interface AuditPreference {
+  timezone: string;
+  density: string;
+  columns: string[];
+}
+export interface AuditSavedView {
+  id: string;
+  name: string;
+  filters: AuditFilter;
+  createdAt?: string;
+}
+export interface AuditReportRequest {
+  format: "csv" | "json" | "html";
+  scope: "page" | "selected" | "all";
+  locale: "ar" | "en";
+  timezone: string;
+  filters: AuditFilter;
+}
+export interface AuditCaseRequest {
+  title: string;
+  ownerId: string;
+  eventIds: string[];
+}
+export interface AuditCaseUpdate {
+  revision: number;
+  state?: "new" | "reviewing" | "closed";
+  note?: string;
+  closureReason?: string;
+  held?: boolean;
+  ownerId?: string;
+}
+export type AuditRuleUpdate = Pick<
+  AuditRule,
+  | "revision"
+  | "enabled"
+  | "thresholdValue"
+  | "windowSeconds"
+  | "cooldownSeconds"
+  | "severity"
+  | "rationale"
+  | "scope"
+>;
+export interface AuditPolicy {
+  retentionDays: number | null;
+  revision: number;
+}
+export interface AuditRelatedResponse {
+  ok: true;
+  rows: AuditEventV1[];
+  nextCursor: string | null;
+}
+export interface AuditDetailResponse {
+  ok: true;
+  event: AuditEventV1;
+}
+export interface AuditReportManifest {
+  reference: string;
+  createdAt: string;
+  snapshotAt: string;
+  timezone: string;
+  source: string;
+  scope: string;
+  filters: AuditFilter;
+  eventCount: number;
+  resourceCount: number;
+  locale: "ar" | "en";
+  schemaVersion: number;
+  eventIds: string[];
+  bytes: number;
+  checksum: string;
+  checksumAlgorithm: "sha256";
+  integrityClaim: string;
+}

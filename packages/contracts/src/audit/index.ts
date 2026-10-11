@@ -573,3 +573,8 @@ AUDIT_CATALOG["audit.retention_completed"].context = [
   ...AUDIT_CATALOG["audit.retention_completed"].context,
   "maintenanceUser",
 ];
+
+/** Deterministic privilege rule scope; compare effective grants at the operation time. */
+export const AUDIT_SENSITIVE_PERMISSIONS = ["users.roles", "users.suspend", "pages.publish", "settings.manage", "audit.export", "audit.rules.manage", "audit.policy.manage", "audit.sensitive.view", "diagnostics.manage"] as const;
+for (const [code, spec] of Object.entries(AUDIT_CATALOG))
+  if (code.startsWith("user.")) spec.context = [...spec.context, "grantedPermissions"];

@@ -14,6 +14,7 @@ import { AuditReader } from "./reader.js";
 import { AuditReports, csvCell } from "./reports.js";
 import { AuditReviews } from "./reviews.js";
 import { AuditOperations } from "./operations.js";
+import { validateFilter } from "./query.js";
 import { diff, safeContext } from "./redaction.js";
 const name = process.env.TEST_DATABASE_NAME;
 if (!name || !/^so7ob_[a-z0-9_]+_test$/.test(name))
@@ -321,15 +322,35 @@ it("prepares complete CSV/JSON reports and checks current permission at download
   const manifest = (await reports.verify(actor, job.id)).manifest;
   expect(manifest.eventCount).toBe(ids.length);
   expect(manifest.eventIds.sort()).toEqual(ids.sort());
+  const otherId = prefix + "reportOwner";
+  await db.query(
+    "INSERT INTO User(id,email,name,passwordHash,roleKey,status) VALUES(?,?,'Other authorized reporter','synthetic','super_admin','active')",
+    [otherId, otherId + "@example.invalid"],
+  );
+  try {
+    await expect(
+      reports.download({ ...actor, id: otherId }, job.id),
+    ).rejects.toMatchObject({ status: 404 });
+  } finally {
+    await db.query("DELETE FROM User WHERE id=?", [otherId]);
+  }
+
   await db.query(
     "INSERT INTO Role(`key`,nameAr,nameEn,permissions) VALUES(?,'محدود','Limited',?)",
-    [prefix + "role", JSON.stringify(["audit.view"])],
+    [prefix + "role", JSON.stringify(["audit.view", "audit.export"])],
   );
   await db.query("UPDATE User SET roleKey=? WHERE id=?", [
     prefix + "role",
     prefix,
   ]);
   try {
+    await expect(reports.download(actor, job.id)).rejects.toMatchObject({
+      status: 403,
+    });
+    await db.query("UPDATE Role SET permissions=? WHERE `key`=?", [
+      JSON.stringify(["audit.view"]),
+      prefix + "role",
+    ]);
     await expect(reports.download(actor, job.id)).rejects.toMatchObject({
       status: 403,
     });
@@ -632,4 +653,132 @@ it("exports a real consistent snapshot despite a transaction committing after sn
   expect(
     (await reader.search(actor, { resourceId: prefix + "req" })).stats.events,
   ).toBe(initial.stats.events + 1);
+});
+
+it("alerts on newly granted sensitive permissions in custom roles using historical grants", async () => {
+  const { UserAdministrationService } = await import("../admin/users.js");
+  const [original] = await db.query(
+    "SELECT * FROM AuditRule WHERE id='privilege'",
+  );
+  const roleKey = prefix + "customSensitive",
+    targetId = prefix + "customTarget";
+  await db.query(
+    "INSERT INTO Role(`key`,nameAr,nameEn,permissions) VALUES(?,'مخصص','Custom',?)",
+    [roleKey, JSON.stringify(["audit.view", "audit.export"])],
+  );
+  await db.query(
+    "INSERT INTO Role(`key`,nameAr,nameEn,permissions) VALUES(?,'بداية','Baseline','[]')",
+    [roleKey + "base"],
+  );
+  await db.query(
+    "INSERT INTO User(id,email,name,passwordHash,roleKey,status) VALUES(?,?,'Synthetic target','synthetic',?,'active')",
+    [targetId, targetId + "@example.invalid", roleKey + "base"],
+  );
+  let eventId: string | undefined;
+  try {
+    await ops.updateRule(actor, original.id, {
+      revision: original.revision,
+      enabled: true,
+      thresholdValue: 1,
+      windowSeconds: 300,
+      cooldownSeconds: 0,
+      severity: "high",
+      rationale: "Synthetic custom permission grant",
+      scope: "identity",
+    });
+    // A combined role/status mutation must not hide the grant behind the status action.
+    await new UserAdministrationService(db).update(actor, targetId, {
+      roleKey,
+      status: "suspended",
+    });
+    const result = await reader.search(actor, { resourceId: targetId });
+    eventId = result.rows[0].id;
+    expect(result.rows[0].action).toBe("user.suspended");
+    expect(
+      (await reader.detail(actor, eventId)).event.context.grantedPermissions,
+    ).toEqual(["audit.export"]);
+    // Subsequent role edits must not change evaluation of the historical grant.
+    await db.query("UPDATE Role SET permissions='[]' WHERE `key`=?", [roleKey]);
+    for (let n = 0; n < 500 && (await ops.processOne()); n++) {
+      /* bounded outbox drain */
+    }
+    expect(
+      await db.query("SELECT eventId FROM AuditAlertEvent WHERE eventId=?", [
+        eventId,
+      ]),
+    ).toHaveLength(1);
+    await db.query("UPDATE AuditWork SET status='queued' WHERE eventId=?", [
+      eventId,
+    ]);
+    await ops.processOne();
+    expect(
+      await db.query("SELECT eventId FROM AuditAlertEvent WHERE eventId=?", [
+        eventId,
+      ]),
+    ).toHaveLength(1);
+  } finally {
+    if (eventId) {
+      const links = await db.query(
+        "SELECT alertId FROM AuditAlertEvent WHERE eventId=?",
+        [eventId],
+      );
+      for (const link of links) {
+        await db.query("DELETE FROM AuditAlertEvent WHERE alertId=?", [
+          link.alertId,
+        ]);
+        await db.query("DELETE FROM AuditAlert WHERE id=?", [link.alertId]);
+      }
+    }
+    await db.query(
+      "UPDATE AuditRule SET enabled=?,revision=?,activatedAt=?,thresholdValue=?,windowSeconds=?,cooldownSeconds=?,severity=?,rationale=?,scope=? WHERE id=?",
+      [
+        original.enabled,
+        original.revision,
+        original.activatedAt,
+        original.thresholdValue,
+        original.windowSeconds,
+        original.cooldownSeconds,
+        original.severity,
+        original.rationale,
+        original.scope,
+        original.id,
+      ],
+    );
+    await db.query("DELETE FROM User WHERE id=?", [targetId]);
+    await db.query("DELETE FROM Role WHERE `key` IN (?,?)", [
+      roleKey,
+      roleKey + "base",
+    ]);
+  }
+});
+
+it("uses explicit UTC half-open periods across DST offsets and preserves safe CSV text", async () => {
+  const period = validateFilter({
+    from: "2026-11-01T01:30:00-04:00",
+    to: "2026-11-01T01:30:00-05:00",
+  });
+  expect(period.from).toBe("2026-11-01T05:30:00.000Z");
+  expect(period.to).toBe("2026-11-01T06:30:00.000Z");
+  expect(() => validateFilter({ from: "2026-11-01T01:30:00" })).toThrow();
+  expect(() => validateFilter({ from: "2026-02-30T00:00:00Z" })).toThrow();
+  const [sample] = (await reader.search(actor, { resourceId: prefix + "req" }))
+    .rows;
+  const from = sample.occurredAt,
+    to = new Date(Date.parse(from) + 1).toISOString();
+  const exact = await reader.search(actor, {
+    resourceId: prefix + "req",
+    from,
+    to,
+  });
+  expect(exact.rows.some((e) => e.id === sample.id)).toBe(true);
+  expect(exact.rows.every((e) => e.occurredAt === from)).toBe(true);
+  const previous = await reader.search(actor, {
+    resourceId: prefix + "req",
+    to: from,
+  });
+  expect(previous.rows.some((e) => e.id === sample.id)).toBe(false);
+  expect(csvCell('عربي, "نص"\nالسطر الثاني')).toBe(
+    '"عربي, ""نص""\nالسطر الثاني"',
+  );
+  expect(csvCell("@SUM(1,2)")).toBe('"\'@SUM(1,2)"');
 });

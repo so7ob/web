@@ -3,6 +3,7 @@ import { randomBytes } from "node:crypto";
 import type { DataSource, QueryRunner } from "typeorm";
 import {
   can,
+  AUDIT_SENSITIVE_PERMISSIONS,
   ROLE_KEYS,
   type AuthUser,
   type Permission,
@@ -205,13 +206,20 @@ export class UserAdministrationService {
         updates.company = body.company.trim().slice(0, 120) || null;
       if (typeof body.roleKey === "string" && body.roleKey !== target.roleKey) {
         requirePermission(current, "users.roles");
-        const [role] = await r.query("SELECT `key` FROM Role WHERE `key`=?", [
+        const [role] = await r.query("SELECT `key`,permissions FROM Role WHERE `key`=?", [
           body.roleKey,
         ]);
         if (!role) throw new AuthFault(400, "invalid");
         updates.roleKey = role.key;
         details.fromRole = target.roleKey;
         details.toRole = role.key;
+        const [previousRole] = await r.query("SELECT permissions FROM Role WHERE `key`=?", [target.roleKey]);
+        const previousPermissions = JSON.parse(previousRole.permissions) as string[];
+        const nextPermissions = JSON.parse(role.permissions) as string[];
+        details.grantedPermissions = AUDIT_SENSITIVE_PERMISSIONS.filter(permission =>
+          !(target.roleKey === "super_admin" || previousPermissions.includes(permission)) &&
+          (role.key === "super_admin" || nextPermissions.includes(permission)));
+
       }
       if (
         typeof body.status === "string" &&
