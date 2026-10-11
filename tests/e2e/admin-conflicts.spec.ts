@@ -2,6 +2,7 @@ import {expect} from '@playwright/test';
 import {test} from './quota-fixture';
 import AxeBuilder from '@axe-core/playwright';
 import{readFileSync}from'node:fs';
+import {createDataSource} from '@so7ob/server';
 import{getPortalContent}from'../../apps/web/src/content/portal';
 test.use({contextOptions:{reducedMotion:'reduce'}});
 for(const locale of ['ar','en'] as const)test(`${locale}: stale settings and menu edits survive conflict review and reload`,async({page,context})=>{
@@ -11,7 +12,8 @@ for(const locale of ['ar','en'] as const)test(`${locale}: stale settings and men
  expect((await page.request.post('/api/auth/callback/credentials',{form:{email:prefix+'admin@example.invalid',password,csrfToken,json:'true'}})).status()).toBe(200);
  const other=await context.newPage(),headers={'x-csrf-token':csrfToken};
  const originalSettings=(await(await page.request.get('/api/admin/settings')).json()).settings;
- const originalMenu=(await(await page.request.get('/api/admin/menus')).json()).header;
+ const db=await createDataSource().initialize();
+ const menuSnapshot=await db.query("SELECT * FROM MenuItem WHERE location='header'");
  try{
   for(const kind of ['settings','menus'] as const){
    const path=`/${locale}/admin/${kind}`,field=kind==='settings'?'#contact-address':'#label-en-0';
@@ -33,6 +35,11 @@ for(const locale of ['ar','en'] as const)test(`${locale}: stale settings and men
   }
  }finally{
   await page.request.patch('/api/admin/settings',{headers,data:{'contact.address':originalSettings['contact.address']??''}});
-  await page.request.put('/api/admin/menus',{headers,data:{location:'header',items:originalMenu}});await other.close();
+  // Restore exact fixture identities; the replacement API would cause the
+  // next global setup to reinsert the original seed IDs alongside new IDs.
+  try{await db.transaction(async manager=>{
+   await manager.query("DELETE FROM MenuItem WHERE location='header'");
+   for(const row of menuSnapshot){const keys=Object.keys(row);await manager.query('INSERT INTO MenuItem ('+keys.map(k=>'`'+k+'`').join(',')+') VALUES ('+keys.map(()=>'?').join(',')+')',keys.map(k=>row[k]));}
+  });expect(await db.query("SELECT * FROM MenuItem WHERE location='header' ORDER BY id")).toEqual([...menuSnapshot].sort((a,b)=>a.id.localeCompare(b.id)));}finally{await db.destroy();await other.close();}
  }
 });
