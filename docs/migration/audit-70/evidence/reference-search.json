@@ -1,0 +1,22 @@
+{
+  "synthetic": true,
+  "dataset": "100000 representative events plus benchmark/worker evidence",
+  "query": "REQ-DEMO-104",
+  "samples": 30,
+  "p50": 4.255928999999924,
+  "p95": 9.678969999999936,
+  "explain": [
+    {
+      "id": "1",
+      "select_type": "SIMPLE",
+      "table": "a",
+      "type": "range",
+      "possible_keys": "audit_reference",
+      "key": "audit_reference",
+      "key_len": "1023",
+      "ref": null,
+      "rows": "100",
+      "Extra": "Using index condition; Using filesort"
+    }
+  ]
+}

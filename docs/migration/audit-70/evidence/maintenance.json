@@ -1,0 +1,28 @@
+{
+  "synthetic": true,
+  "sourceSha": "54b8921d94b4c4d4a774a3c8a294cdc01916c071",
+  "distinctMaintenanceAccount": "audit70_maintenance",
+  "dryRun": {
+    "ok": true,
+    "configured": true,
+    "cutoff": "2024-04-24T14:33:08.716Z",
+    "candidates": 1,
+    "held": 1,
+    "deleted": 0,
+    "policyVersion": 1
+  },
+  "apply": {
+    "ok": true,
+    "configured": true,
+    "cutoff": "2024-04-24T14:33:11.662Z",
+    "candidates": 1,
+    "held": 1,
+    "deleted": 1,
+    "policyVersion": 1
+  },
+  "heldEventPreserved": true,
+  "eligibleEventRemoved": true,
+  "auditActorType": "system",
+  "auditPrincipalRecorded": true,
+  "credentialsPublished": false
+}

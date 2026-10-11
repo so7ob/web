@@ -34,3 +34,12 @@ export * from "./track.js";
 
 export * from "./media.js";
 export * from "./content/tree-move.js";
+
+export * from "./outbox.js";
+
+export * from "./errors.js";
+export * from './audit/index.js';
+
+export * from './audit/display.js';
+
+export type * from "./audit/workspace.js";

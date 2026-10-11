@@ -8,6 +8,7 @@ import assert from 'node:assert/strict';
 import { database, assertSchema, MailQueue, PayloadCipher } from '@so7ob/server';
 if (!/^so7ob_[a-z0-9_]+_test$/.test(process.env.DATABASE_NAME ?? '')) throw new Error('Worker smoke requires an isolated so7ob_*_test database');
 const db = await database(); await assertSchema(db);
+const originalHeartbeats=new Set((await db.query('SELECT id FROM WorkerHeartbeat')).map(row=>row.id));
 const secret = randomBytes(32).toString('hex'); const queue = new MailQueue(db,new PayloadCipher(secret));
 const created = []; const children = new Set(); const sockets = new Set();
 let accepted = 0; let mode = 'accept';
@@ -55,5 +56,6 @@ try {
   for (const child of children) child.kill('SIGTERM');
   for (const socket of sockets) socket.destroy(); await new Promise(resolve => server.close(resolve));
   for (const job of created) { await db.query('DELETE FROM MailJob WHERE id=?',[job.id]); await db.query('DELETE FROM EmailLog WHERE id=?',[job.emailLogId]); }
+  for(const row of await db.query('SELECT id FROM WorkerHeartbeat'))if(!originalHeartbeats.has(row.id))await db.query('DELETE FROM WorkerHeartbeat WHERE id=?',[row.id]);
   await db.destroy();
 }

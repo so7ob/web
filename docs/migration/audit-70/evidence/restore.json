@@ -1,0 +1,230 @@
+{
+  "syntheticOnly": true,
+  "productionMigration": false,
+  "codeBaseCommit": "26f46b7fd49c789e53e4bfaaa0ed66b59e05b614",
+  "workingTreeDirty": true,
+  "at": "2026-10-11T14:15:24.797Z",
+  "node": "v24.21.0",
+  "releaseSha256": "c79abca755a2ad70871966d2530a5ba8908b56de4496f8b822b621bd50255364",
+  "lockSha256": "d069c9e6eb89eac00fc7c75558c2a54005546e8aa771363299482ceaf32f8a6e",
+  "sourceDatabase": "so7ob_restore_78987d62aa90_source_test",
+  "targetDatabase": "so7ob_restore_78987d62aa90_target_test",
+  "tables": {
+    "AdminRevision": {
+      "rows": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    "Attachment": {
+      "rows": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    "AuditAccess": {
+      "rows": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    "AuditAlert": {
+      "rows": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    "AuditAlertEvent": {
+      "rows": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    "AuditBookmark": {
+      "rows": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    "AuditCase": {
+      "rows": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    "AuditCaseEvent": {
+      "rows": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    "AuditCaseHistory": {
+      "rows": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    "AuditHealth": {
+      "rows": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    "AuditLog": {
+      "rows": 4,
+      "sha256": "40d512edc3329b8f5a8692d1ffdd356af1ef050d210c7deeb99b97ff7f303aca"
+    },
+    "AuditPolicy": {
+      "rows": 1,
+      "sha256": "2ddcf063f492fa0bc8bc02cacda231e92663aa9e644c075f8f8424cc84989b6a"
+    },
+    "AuditPreference": {
+      "rows": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    "AuditReport": {
+      "rows": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    "AuditRule": {
+      "rows": 4,
+      "sha256": "8ea35ca0f12bea722275d5c44e714d682656fb711a830794c9417aff156070dc"
+    },
+    "AuditView": {
+      "rows": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    "AuditWork": {
+      "rows": 4,
+      "sha256": "7d43fd9762f2588ce3664034f1c9ac447f0f499b63ec5024f95eda45dd0ce406"
+    },
+    "AuthorizationLock": {
+      "rows": 1,
+      "sha256": "44d73053165867fad1707b6425c7016f2cdaeff9b163c4b28a0032d4f7c64505"
+    },
+    "AuthSession": {
+      "rows": 3,
+      "sha256": "d9dd4c209eed7718ca0099034cb03ff22975e0373d2d5821c9fb374ad79a2f89"
+    },
+    "AuthToken": {
+      "rows": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    "DiagnosticEvent": {
+      "rows": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    "DiagnosticReview": {
+      "rows": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    "EmailLog": {
+      "rows": 2,
+      "sha256": "226ad52fac673287c0a0b3a874451d358862648f6ba83f8babe36d3bf976ac93"
+    },
+    "FileCleanupJob": {
+      "rows": 1,
+      "sha256": "86783ba649ac0912a84758f11b2e024630d3f4a7eaa91d56e5155c0792212549"
+    },
+    "Inquiry": {
+      "rows": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    "InquiryMessage": {
+      "rows": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    "MailJob": {
+      "rows": 2,
+      "sha256": "e8fa38f616ff644594a1c450fcfde4187789cc88f278b80dc987c7e783355d97"
+    },
+    "MediaItem": {
+      "rows": 1,
+      "sha256": "26534c83a5d6956c120a9c57c01ba44bc4026fd26955f52459d27e80cbfd3ff3"
+    },
+    "MenuItem": {
+      "rows": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    "MigrationTransfer": {
+      "rows": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    "Notification": {
+      "rows": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    "OperationLock": {
+      "rows": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    "Page": {
+      "rows": 1,
+      "sha256": "713e7cd3eaece51344d435ad111e37c4e153b841620b564ac05f753e165a0795"
+    },
+    "PageRedirect": {
+      "rows": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    "PageTemplate": {
+      "rows": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    "PageVersion": {
+      "rows": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    "ProjectRequest": {
+      "rows": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    "RateLimitBucket": {
+      "rows": 1,
+      "sha256": "38bcb3364a39d947bba6bcc953244245a10c16ce93d6d643ad68001cb3ffd8c7"
+    },
+    "RequestClaim": {
+      "rows": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    "RequestDraft": {
+      "rows": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    "RequestMessage": {
+      "rows": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    "RequestStatusEvent": {
+      "rows": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    "Role": {
+      "rows": 1,
+      "sha256": "6ae7226b3e9e4927e03ec4b3728a9b3ebc4dbb2b333230a1e3e8f43dfae97c0e"
+    },
+    "SavedReply": {
+      "rows": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    "SiteSetting": {
+      "rows": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    "so7ob_schema_migrations": {
+      "rows": 13,
+      "sha256": "d173272fba70452ddb0ed6ebf4974388913acccb6e6ede7cacface9bf80d0269"
+    },
+    "TrackLink": {
+      "rows": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    "User": {
+      "rows": 1,
+      "sha256": "7b7765427cf61e782cb17dabb6dba9b3a64372f128e4dac7e39f2558397b78f5"
+    },
+    "UserInvite": {
+      "rows": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    "WebhookJob": {
+      "rows": 102,
+      "sha256": "5a36a738945729215510c78b7850245aaca6d9836b37c419b211ea0226585e47"
+    },
+    "WorkerHeartbeat": {
+      "rows": 1,
+      "sha256": "2374a3e400a718148e8272eaf6dd778801109e98a9dd2fcc67a6f996ce4db826"
+    }
+  },
+  "phases": [
+    "actual worker killed after SMTP DATA; sending state retained",
+    "offline release including locked dependencies copied and byte-verified",
+    "all MariaDB tables and files restored; occupied target rejected without mutation",
+    "separate key recovery; missing/wrong key rejected before worker and without mutation",
+    "recovered SSR and client asset served without private draft; recovered Nest reads files and live session; revoked/expired sessions stay rejected",
+    "recovered worker marks ambiguous mail uncertain; pending mail sent once; cleanup resumes; repeat sends nothing",
+    "post-open writes protected; original snapshot remains unchanged"
+  ],
+  "smtpDataReceived": 2,
+  "recipientDeliveryProven": false,
+  "scope": "synthetic host-local recovery; not off-host disaster recovery or production cutover"
+}

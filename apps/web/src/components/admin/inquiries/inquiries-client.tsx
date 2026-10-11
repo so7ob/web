@@ -1,4 +1,5 @@
 "use client";
+import {downloadCsv} from "../download-csv";
 
 /**
  * قائمة الاستفسارات: بحث وتصفية (حالة/تصنيف/مؤرشف) + تحديد جماعي
@@ -191,7 +192,10 @@ export function InquiriesClient({
   const someChecked = inquiries.some((i) => selected.has(i.id)) && !allChecked;
 
   // تصدير CSV بنفس تصفية العرض الحالية — رابط نسبي فيرسل الكوكيز تلقائيًا
-  const exportCsv = () => {
+  const [exporting,setExporting]=useState(false);
+  const exportCsv = async () => {
+    if(exporting) return;
+    setExporting(true);
     const query = buildQuery({
       q: debouncedQ,
       status: status !== "all" ? status : "",
@@ -199,8 +203,12 @@ export function InquiriesClient({
       // تصدير ما يُرى: عرض المؤرشف يصدّر المؤرشف فقط — اتساقًا مع القائمة
       archived,
     });
-    window.open(`/api/admin/inquiries/export${query}`, "_blank");
-    toast.success(ti.exportOk);
+    try {
+      await downloadCsv(`/api/admin/inquiries/export${query}`, 'so7ob-inquiries.csv');
+      toast.success(ti.exportOk);
+    } catch(error) {
+      toast.error(error instanceof ApiError && error.code === 'export_limit' ? ti.exportLimit : ti.exportFailed);
+    } finally {setExporting(false);}
   };
 
   return (
@@ -219,6 +227,7 @@ export function InquiriesClient({
           <Button
             variant="outline"
             onClick={exportCsv}
+              disabled={exporting}
             className="min-h-11 rounded-full"
           >
             <Download className="size-4" aria-hidden="true" />

@@ -1,4 +1,6 @@
 "use client";
+import {ErrorFeedback} from '@/components/errors/error-feedback';
+import {ApiError} from '@/lib/errors/transport';
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import Link from "@/routing/link";
@@ -52,6 +54,7 @@ export function RequestDetailView({
   authErrors: PortalContent["auth"]["errors"];
   priorities: Record<string, string>;
 }) {
+  const [failure,setFailure]=useState<ApiError|null>(null);
   const [request, setRequest] = useState<RequestDetail | null>(null);
   const [phase, setPhase] = useState<"loading" | "ready" | "error">("loading");
   const [errorCode, setErrorCode] = useState<string | null>(null);
@@ -64,17 +67,23 @@ export function RequestDetailView({
   const [cancelOpen, setCancelOpen] = useState(false);
   const [cancelNote, setCancelNote] = useState("");
   const [cancelling, setCancelling] = useState(false);
+  const [cancelFailure,setCancelFailure]=useState<ApiError|null>(null);
+  const cancelPending=useRef(false);
 
   const conversationRef = useRef<HTMLDivElement>(null);
 
   const load = useCallback(async () => {
     const result = await apiFetch<RequestDetailResponse>(`/api/account/requests/${id}`);
     if (result.data.ok && result.data.request) {
+      setFailure(null);
       setRequest(result.data.request);
       setPhase("ready");
+      return true;
     } else {
       setErrorCode(result.data.code ?? "error");
-      setPhase("error");
+      if(!result.cancelled)setFailure(result.error??new ApiError(result.status,"internal_error"));
+      setPhase(prev=>prev==="ready"?prev:"error");
+      return false;
     }
   }, [id]);
 
@@ -118,7 +127,7 @@ export function RequestDetailView({
     setSending(false);
 
     if (result.data.ok) {
-      setReply("");
+      setReply(current=>current===reply?"":current);
       toast.success(d.replySuccess);
       await load();
       return;
@@ -127,7 +136,7 @@ export function RequestDetailView({
       await load(); // المحادثة قُفلت من الطاقم meanwhile
       return;
     }
-    toast.error(result.status === 429 ? authErrors.rateLimited : authErrors.generic);
+    if(!result.cancelled)setFailure(result.error??new ApiError(result.status,"internal_error"));
   }
 
   async function onFileSelected(ev: React.ChangeEvent<HTMLInputElement>) {
@@ -155,25 +164,26 @@ export function RequestDetailView({
     } else if (result.data.code === "locked") {
       await load();
     } else {
-      toast.error(authErrors.generic);
+      if(!result.cancelled)setFailure(result.error??new ApiError(result.status,"internal_error"));
     }
   }
 
   async function confirmCancel() {
-    if (cancelling) return;
+    if (cancelPending.current || cancelFailure?.uncertain) return;
+    cancelPending.current=true;setCancelFailure(null);
     setCancelling(true);
     const result = await apiFetch<{ ok?: boolean; code?: string }>(`/api/account/requests/${id}`, {
       method: "PATCH",
       body: JSON.stringify({ action: "cancel", note: cancelNote.trim() || undefined }),
     });
-    setCancelling(false);
-    setCancelOpen(false);
-    setCancelNote("");
+    setCancelling(false);cancelPending.current=false;
     if (result.data.ok) {
+      setCancelOpen(false);
+      setCancelNote("");
       await load();
       return;
     }
-    toast.error(result.status === 409 ? authErrors.invalid : authErrors.generic);
+    if(!result.cancelled)setCancelFailure(result.error??new ApiError(result.status,"internal_error"));
   }
 
   if (phase === "loading") {
@@ -192,7 +202,7 @@ export function RequestDetailView({
         <span className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-rose-100 text-rose-800">
           <ShieldX className="h-7 w-7" aria-hidden="true" />
         </span>
-        <p className="mt-4 font-semibold text-navy">{errorCode === "forbidden" || errorCode === "not_found" ? authErrors.invalid : authErrors.generic}</p>
+        <ErrorFeedback error={failure??new ApiError(404,errorCode??"not_found")} locale={locale} operation={t.title} onRefresh={load}/>
         <Button asChild variant="outline" className="mt-6 h-11 rounded-full px-6 font-semibold">
           <Link href={`/${locale}/account/requests`}>{t.title}</Link>
         </Button>
@@ -205,6 +215,7 @@ export function RequestDetailView({
 
   return (
     <div className="space-y-6">
+      <ErrorFeedback error={failure} locale={locale} operation={t.title} onRefresh={load}/>
       {/* ترويسة الطباعة — تظهر على الورق فقط: العلامة + التاريخ */}
       <div className="hidden print:block print:border-b print:border-border print:pb-2">
         <p className="text-xs font-medium text-muted-foreground">
@@ -466,7 +477,7 @@ export function RequestDetailView({
       </div>
 
       {/* حوار إلغاء الطلب */}
-      <Dialog open={cancelOpen} onOpenChange={setCancelOpen}>
+      <Dialog open={cancelOpen} onOpenChange={open=>{if(!cancelPending.current)setCancelOpen(open);}}>
         <DialogContent className="max-w-md rounded-2xl p-6">
           <DialogHeader>
             <DialogTitle className="text-lg font-bold text-navy">
@@ -474,6 +485,7 @@ export function RequestDetailView({
             </DialogTitle>
           </DialogHeader>
           <div className="space-y-4">
+            <ErrorFeedback error={cancelFailure} locale={locale} operation={t.cancelEdit} onRefresh={async()=>{if(await load())setCancelFailure(null);}}/>
             <Textarea
               value={cancelNote}
               onChange={(e) => setCancelNote(e.target.value)}
@@ -485,7 +497,7 @@ export function RequestDetailView({
             />
             <Button
               onClick={confirmCancel}
-              disabled={cancelling}
+              disabled={cancelling||!!cancelFailure?.uncertain||!canCancel}
               className="h-11 w-full rounded-full bg-red-600 font-bold text-white hover:bg-red-700"
             >
               {cancelling ? <Loader2 className="h-4 w-4 animate-spin" aria-hidden="true" /> : null}

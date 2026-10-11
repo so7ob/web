@@ -1,0 +1,90 @@
+{
+  "unitTests": 895,
+  "integrationTests": 17,
+  "browserTests": 240,
+  "focusedHealthTests": 4,
+  "checks": [
+    {
+      "check": "lint",
+      "result": "passed",
+      "source": "d978938b431456ca10297ef24937f6ebbcaef6b6",
+      "localLog": ".migration/audit-health-fix/lint-final.log",
+      "sha256": "1e13e534c1fa121256b22b774cf8344424470c761390fcc8674b362595e0d596"
+    },
+    {
+      "check": "typecheck",
+      "result": "passed",
+      "source": "d978938b431456ca10297ef24937f6ebbcaef6b6",
+      "localLog": ".migration/audit-health-fix/typecheck-final.log",
+      "sha256": "79f214a51a8d34f69491c349fa48a077a1573c2daef6b7c22fe4e233a998549a"
+    },
+    {
+      "check": "test",
+      "result": "passed",
+      "source": "d978938b431456ca10297ef24937f6ebbcaef6b6",
+      "localLog": ".migration/audit-health-fix/test.log",
+      "sha256": "649a8ff7b88bfc5c2e1365b4e9e6d8dfe11f4e7a4127122dd6c5d5a8eee1a2de"
+    },
+    {
+      "check": "audit-integration",
+      "result": "passed",
+      "source": "d978938b431456ca10297ef24937f6ebbcaef6b6",
+      "localLog": ".migration/audit-health-fix/audit.log",
+      "sha256": "61facc69f7ba9ea7d32a72680f95e4a1c66c1e1047f82731b5d9291344b1460d"
+    },
+    {
+      "check": "build",
+      "result": "passed",
+      "source": "d978938b431456ca10297ef24937f6ebbcaef6b6",
+      "localLog": ".migration/audit-health-fix/build.log",
+      "sha256": "baa775d92e7446bbab645f781ee551cb20fdd67591a8c37f867b47756ccb8cf5"
+    },
+    {
+      "check": "health-browser",
+      "result": "passed",
+      "source": "d978938b431456ca10297ef24937f6ebbcaef6b6",
+      "localLog": ".migration/audit-health-fix/health-browser-isolated.log",
+      "sha256": "2693507b0ce0a3bbf7b35f844910bf7e20a30be6f5cea4d67428218e5aa00281"
+    },
+    {
+      "check": "e2e",
+      "result": "passed",
+      "source": "d978938b431456ca10297ef24937f6ebbcaef6b6",
+      "localLog": ".migration/audit-health-fix/e2e.log",
+      "sha256": "20d00655a500e73174b92071d670b7eaf693e911c8662828b687d7bb77d83811"
+    },
+    {
+      "check": "infra",
+      "result": "passed",
+      "source": "d978938b431456ca10297ef24937f6ebbcaef6b6",
+      "localLog": ".migration/audit-health-fix/infra.log",
+      "sha256": "d35da80e248a64ad1b1745a6c651c7c4edbfaf9c5df01984eca5a98a377a8060"
+    }
+  ],
+  "images": [
+    {
+      "file": "health-ar-desktop.png",
+      "sha256": "25c3079d8d0ba0e14727bdc55c6d045bcae60426f52d0ec426babcbcb8bb9f12",
+      "synthetic": true,
+      "source": "d978938b431456ca10297ef24937f6ebbcaef6b6"
+    },
+    {
+      "file": "health-en-mobile.png",
+      "sha256": "240ccc60aec8d605df331ce4571f6b674a921e8bc9f357fc89ff8032b52ffc92",
+      "synthetic": true,
+      "source": "d978938b431456ca10297ef24937f6ebbcaef6b6"
+    },
+    {
+      "file": "health-en-desktop.png",
+      "sha256": "3fd140537ab6fc5db2e0dc6b93602bd11bb43ad0fafaea49b27404af44926afe",
+      "synthetic": true,
+      "source": "d978938b431456ca10297ef24937f6ebbcaef6b6"
+    },
+    {
+      "file": "health-ar-mobile.png",
+      "sha256": "d3e15e29c5a0e6efcffbd2895c95ad535f1e03ee7c2f953454fb44c49e03844c",
+      "synthetic": true,
+      "source": "d978938b431456ca10297ef24937f6ebbcaef6b6"
+    }
+  ]
+}

@@ -1,0 +1,23 @@
+import{beforeAll,afterAll,it,expect}from'vitest';
+import{createDataSource}from'../database/data-source.js';
+import{WorkerHeartbeat,workerHealth}from'./monitor.js';
+import{SYSTEM_ROLES,type AuthUser}from'@so7ob/contracts';
+const name=process.env.TEST_DATABASE_NAME;if(!name||!/^so7ob_[a-z0-9_]+_test$/.test(name))throw Error('Isolated MariaDB required');
+const db=createDataSource({...process.env,DATABASE_NAME:name});
+const actor:AuthUser={id:'synthetic',email:'synthetic@example.invalid',name:'Synthetic',roleKey:'super_admin',status:'active',emailVerified:true,locale:'en',permissions:SYSTEM_ROLES.find(r=>r.key==='super_admin')!.permissions};
+const heartbeat=new WorkerHeartbeat(db);
+beforeAll(async()=>{await db.initialize();await db.runMigrations();});
+afterAll(async()=>{await db.query('DELETE FROM WorkerHeartbeat WHERE id=?',[heartbeat.id]);await db.destroy();});
+it('reports independent idle liveness then stale/stop degradation without changing any queue',async()=>{
+ const before=await db.query('SELECT id,status,attempts FROM MailJob ORDER BY id');
+ await heartbeat.start();expect(await workerHealth(db,actor)).toMatchObject({status:'healthy'});
+ await heartbeat.activity();await heartbeat.beat();
+ const report=await workerHealth(db,actor);expect(report.lastActivityAt).toBeInstanceOf(Date);
+ expect(JSON.stringify(report)).not.toMatch(/payload|leaseToken|lastError|providerMessageId/);
+ await db.query('UPDATE WorkerHeartbeat SET heartbeatAt=DATE_SUB(UTC_TIMESTAMP(3),INTERVAL 31 SECOND) WHERE id=?',[heartbeat.id]);
+ expect(await workerHealth(db,actor)).toMatchObject({status:'degraded'});
+ await heartbeat.beat();expect(await workerHealth(db,actor)).toMatchObject({status:'healthy'});
+ await heartbeat.stop();expect(await workerHealth(db,actor)).toMatchObject({status:'degraded'});
+ expect(await db.query('SELECT id,status,attempts FROM MailJob ORDER BY id')).toEqual(before);
+ await expect(workerHealth(db,{...actor,permissions:[],roleKey:'client'})).rejects.toMatchObject({status:403});
+});

@@ -1,14 +1,28 @@
 import { ArgumentsHost, Catch, HttpException, type ExceptionFilter } from '@nestjs/common';
-import type { Response } from 'express';
+import type { Request, Response } from 'express';
 import { AuthFault } from '@so7ob/server';
+import {rememberError} from './diagnostics.js';
 @Catch()
 export class SafeExceptionFilter implements ExceptionFilter {
   catch(error:unknown, host:ArgumentsHost):void {
-    const res=host.switchToHttp().getResponse<Response>();
+    const context=host.switchToHttp(),res=context.getResponse<Response>(),req=context.getRequest<Request>();
+    rememberError(req,error);
+    if(res.headersSent){res.end();return;}
     res.setHeader('Cache-Control','no-store');
-    if (error instanceof AuthFault) { if (error.status===429 && typeof error.extra.retryAfterSec==='number') res.setHeader('Retry-After',error.extra.retryAfterSec); res.status(error.status).json({ ok:false,code:error.code,...error.extra }); return; }
-    if (error instanceof HttpException) { res.status(error.getStatus()).json(error.getResponse()); return; }
-    // Do not log SQL bindings, tokenized URLs, message bodies or provider exceptions.
-    process.stderr.write('request_failed: internal_error\n'); res.status(500).json({ ok:false,code:'storage' });
+    if (error instanceof AuthFault) {
+      if(error.status===429 && typeof error.extra.retryAfterSec==='number')res.setHeader('Retry-After',error.extra.retryAfterSec);
+      res.status(error.status).json({ok:false,code:error.code,...error.extra});return;
+    }
+    if(error instanceof HttpException){
+      const status=error.getStatus();
+      res.status(status).json({ok:false,code:status>=500?'internal_error':status===401?'unauthorized':status===403?'forbidden':status===404?'not_found':status===429?'rate_limited':status===413?'too_large':'invalid'});return;
+    }
+    if(error && typeof error==='object' && 'type' in error && error.type==='entity.too.large'){
+      res.status(413).json({ok:false,code:'too_large'});return;
+    }
+    res.status(500).json({ok:false,code:'internal_error'});
   }
 }
+
+const fieldCodes=new Set(['required','invalidEmail','name_invalid','email_invalid','phone_invalid','password_short','password_long','password_weak']);
+export function validationCode(value:unknown){return typeof value==='string'&&fieldCodes.has(value)?value:'invalid';}

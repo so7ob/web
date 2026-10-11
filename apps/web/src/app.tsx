@@ -1,6 +1,11 @@
+import {useEffect,useMemo} from 'react';
+import {ClientErrors} from './components/errors/client-errors';
+import {ErrorFeedback} from './components/errors/error-feedback';
+import {ApiError,asApiError} from './lib/errors/transport';
 import { AppDirectionProvider } from "./components/ui/app-direction-provider";
 import {
   useLoaderData,
+  useLocation,
   Outlet,
   useRouteError,
   isRouteErrorResponse,
@@ -73,7 +78,7 @@ function presentation(data: PublicView) {
 }
 export function App() {
   const data = useLoaderData<PublicView>();
-  return <AppDirectionProvider dir={data.locale === "ar" ? "rtl" : "ltr"}><AppContent /></AppDirectionProvider>;
+  return <AppDirectionProvider dir={data.locale === "ar" ? "rtl" : "ltr"}><ClientErrors locale={data.locale}/><AppContent /></AppDirectionProvider>;
 }
 function AppContent() {
   const data = useLoaderData<PublicView>();
@@ -136,12 +141,16 @@ function AppContent() {
 }
 function RouteError() {
   const error = useRouteError();
-  const status = isRouteErrorResponse(error) ? error.status : 500;
+  const failure=useMemo(()=>asApiError(error),[error]);
+  useEffect(()=>{if(failure.category!=='cancelled')console.error(JSON.stringify({at:new Date().toISOString(),component:'Web',level:'error',event:'render_failed',revision:import.meta.env.VITE_BUILD_SHA??'unavailable',category:failure.category,requestId:failure.requestId,errorId:failure.errorId,localId:failure.localId}));},[failure]);
+  const locale=useLocation().pathname.startsWith('/en')?'en':'ar';
+  const status = isRouteErrorResponse(error) ? error.status : error instanceof ApiError?error.status:500;
   return status === 404 ? (
     <NotFound />
   ) : (
     <main id="main-content" className="p-12">
-      <h1>{status}</h1>
+      <h1>{locale==='ar'?'تعذر عرض الصفحة':'Unable to display the page'}</h1>
+      <ErrorFeedback error={failure} locale={locale}/>
       <a href="/ar">سُحُب — so7ob</a>
     </main>
   );
@@ -194,6 +203,7 @@ export const routes = (loader: LoaderFunction): RouteObject[] => [
           { path: "media", lazy: () => import("./screens/admin/media") },
           { path: "menus", lazy: () => import("./screens/admin/menus") },
           { path: "settings", lazy: () => import("./screens/admin/settings") },
+          { path: "diagnostics", lazy: () => import("./screens/admin/diagnostics") },
           { path: "audit", lazy: () => import("./screens/admin/audit") },
           { path: "outbox", lazy: () => import("./screens/admin/outbox") },
         ],

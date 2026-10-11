@@ -1,4 +1,6 @@
 "use client";
+import {ErrorFeedback} from "@/components/errors/error-feedback";
+import {ApiError} from "@/lib/errors/transport";
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import Link from "@/routing/link";
@@ -7,7 +9,7 @@ import { ChevronLeft, ChevronRight, MessageCircle, MessageCircleQuestion, Plus, 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Skeleton } from "@/components/ui/skeleton";
-import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { EmptyState } from "@/components/admin/empty-state";
 import type { Locale } from "@/lib/i18n";
 import type { PortalContent } from "@/content/portal/types";
@@ -57,6 +59,7 @@ export function InquiriesView({
   const [data, setData] = useState<InquiryListResponse | null>(null);
   const [loading, setLoading] = useState(true);
   const [failed, setFailed] = useState(false);
+  const [failure,setFailure]=useState<ApiError|null>(null);
   // تسلسل الطلبات: تجاهل الاستجابات القديمة عند تغير البحث/التصفية بسرعة
   const seqRef = useRef(0);
 
@@ -74,9 +77,11 @@ export function InquiriesView({
     if (seq !== seqRef.current) return; // استجابة متأخرة عن طلب أحدث
     if (result.data.ok) {
       setData(result.data);
+      setFailure(null);
       setFailed(false);
     } else {
       setFailed(true);
+      if(!result.cancelled)setFailure(result.error??new ApiError(result.status,"internal_error"));
     }
     setLoading(false);
   }, []);
@@ -127,7 +132,7 @@ export function InquiriesView({
         </Button>
       </header>
 
-      <Tabs value={status} onValueChange={onStatusChange}>
+      <Tabs value={status} onValueChange={onStatusChange} dir={locale === "ar" ? "rtl" : "ltr"} className="space-y-5">
         <div className="overflow-x-auto pb-1">
           <TabsList className="h-auto w-max flex-wrap gap-1 rounded-full bg-muted/60 p-1">
             <TabsTrigger value="all" className={TAB_PILL_CLASS}>
@@ -143,7 +148,7 @@ export function InquiriesView({
             ))}
           </TabsList>
         </div>
-      </Tabs>
+      <TabsContent value={status} className="space-y-5">
 
       {/* حقل البحث — مؤجل ٣٠٠ مللي ويمسح بزر مستقل */}
       <div className="flex justify-start">
@@ -184,9 +189,7 @@ export function InquiriesView({
             ))}
           </div>
         ) : failed ? (
-          <div role="alert" className="rounded-xl border border-rose-200 bg-rose-50 px-4 py-3 text-sm font-medium text-rose-700">
-            {authErrors.generic}
-          </div>
+          <ErrorFeedback error={failure} locale={locale} operation={t.title} onRefresh={()=>load(status,page,debouncedQ)}/>
         ) : inquiries.length === 0 ? (
           filterActive ? (
             <div>
@@ -299,6 +302,8 @@ export function InquiriesView({
           </>
         )}
       </section>
+      </TabsContent>
+      </Tabs>
 
       <NewInquiryDialog locale={locale} t={t} authErrors={authErrors} open={createOpen} onOpenChange={setCreateOpen} />
     </div>

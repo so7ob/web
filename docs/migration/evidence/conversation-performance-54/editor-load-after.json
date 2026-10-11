@@ -1,0 +1,66 @@
+[
+  {
+    "sha": "c5811c686588aba6e85e292c49d4e24224e5fe5a",
+    "locale": "ar",
+    "viewport": {
+      "width": 1280,
+      "height": 900
+    },
+    "domContentLoadedMs": 760.5,
+    "visibleTemplatesAtMs": 1355,
+    "editorChunks": [
+      {
+        "durationMs": 61.60000000009313,
+        "encodedBodyBytes": 230806
+      }
+    ]
+  },
+  {
+    "sha": "c5811c686588aba6e85e292c49d4e24224e5fe5a",
+    "locale": "ar",
+    "viewport": {
+      "width": 375,
+      "height": 812
+    },
+    "domContentLoadedMs": 255.89999999990687,
+    "visibleTemplatesAtMs": 867.2999999998137,
+    "editorChunks": [
+      {
+        "durationMs": 62.799999999813735,
+        "encodedBodyBytes": 230806
+      }
+    ]
+  },
+  {
+    "sha": "c5811c686588aba6e85e292c49d4e24224e5fe5a",
+    "locale": "en",
+    "viewport": {
+      "width": 1280,
+      "height": 900
+    },
+    "domContentLoadedMs": 220.1999999997206,
+    "visibleTemplatesAtMs": 898.1999999997206,
+    "editorChunks": [
+      {
+        "durationMs": 53.8000000002794,
+        "encodedBodyBytes": 230806
+      }
+    ]
+  },
+  {
+    "sha": "c5811c686588aba6e85e292c49d4e24224e5fe5a",
+    "locale": "en",
+    "viewport": {
+      "width": 375,
+      "height": 812
+    },
+    "domContentLoadedMs": 254.60000000009313,
+    "visibleTemplatesAtMs": 859.8000000002794,
+    "editorChunks": [
+      {
+        "durationMs": 32.299999999813735,
+        "encodedBodyBytes": 230806
+      }
+    ]
+  }
+]

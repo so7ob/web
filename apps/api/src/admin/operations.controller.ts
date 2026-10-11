@@ -39,6 +39,7 @@ class AdminQuery {
   @ApiPropertyOptional() @IsOptional() @IsString() page?: string;
 }
 class OperationBody {
+  @Allow() baseRevision?: unknown;
   @ApiPropertyOptional() @Allow() name?: unknown;
   @ApiPropertyOptional() @Allow() content?: unknown;
   @ApiPropertyOptional() @Allow() body?: unknown;
@@ -53,6 +54,9 @@ class OperationBody {
   @ApiPropertyOptional() @Allow() items?: unknown;
 }
 class SettingsBody {
+  @Allow() "response.hours"?: unknown;
+  @Allow() "response.applyToExisting"?: unknown;
+  @Allow() baseRevisions?: unknown;
   @Allow() "track.forceLogin"?: unknown;
   @Allow() "track.requestsMode"?: unknown;
   @Allow() "track.inquiriesMode"?: unknown;
@@ -146,6 +150,9 @@ export class AdminOperationsController {
   @Get("audit") audit(@Req() req: AdminRequest, @Query() q: AdminQuery) {
     return this.ops.logs(req.actor, q);
   }
+  @Get("worker-health") workerHealth(@Req() req:AdminRequest){return this.ops.workerHealth(req.actor);}
+  @Put('menus/checked') checkedMenu(@Req() req:AdminRequest,@Body() body:OperationBody){return this.ops.updateMenu(req.actor,{...body},true);}
+  @Patch('settings/checked') checkedSettings(@Req() req:AdminRequest,@Body() body:SettingsBody){return this.ops.updateSettings(req.actor,{...body},true);}
   @Get("outbox") outbox(@Req() req: AdminRequest, @Query() q: AdminQuery) {
     return this.ops.outbox(req.actor, q.page);
   }
@@ -197,24 +204,32 @@ export class AdminOperationsController {
     @Query() q: AdminQuery,
     @Res() res: Response,
   ) {
+    const file = await this.conversations.csv(req.actor, "requests", q);
     res.setHeader("Content-Type", "text/csv; charset=utf-8");
-    res.setHeader(
-      "Content-Disposition",
-      `attachment; filename="so7ob-requests-${new Date().toISOString().slice(0, 10)}.csv"`,
-    );
-    res.send(await this.conversations.csv(req.actor, "requests", q));
+    res.setHeader("Cache-Control", "private, no-store");
+    res.setHeader("X-Export-Count", String(file.count));
+    res.setHeader("Content-Length", String(file.bytes));
+    res.setTimeout(60000,()=>res.destroy());
+    res.download(file.path, `so7ob-requests-${new Date().toISOString().slice(0,10)}.csv`, {dotfiles:"allow"}, (error) => {
+      void file.dispose();
+      if(error) res.destroy();
+    });
   }
   @Get("inquiries/export") async exportInquiries(
     @Req() req: AdminRequest,
     @Query() q: AdminQuery,
     @Res() res: Response,
   ) {
+    const file = await this.conversations.csv(req.actor, "inquiries", q);
     res.setHeader("Content-Type", "text/csv; charset=utf-8");
-    res.setHeader(
-      "Content-Disposition",
-      `attachment; filename="so7ob-inquiries-${new Date().toISOString().slice(0, 10)}.csv"`,
-    );
-    res.send(await this.conversations.csv(req.actor, "inquiries", q));
+    res.setHeader("Cache-Control", "private, no-store");
+    res.setHeader("X-Export-Count", String(file.count));
+    res.setHeader("Content-Length", String(file.bytes));
+    res.setTimeout(60000,()=>res.destroy());
+    res.download(file.path, `so7ob-inquiries-${new Date().toISOString().slice(0,10)}.csv`, {dotfiles:"allow"}, (error) => {
+      void file.dispose();
+      if(error) res.destroy();
+    });
   }
   @Get("requests/:id") request(
     @Req() req: AdminRequest,

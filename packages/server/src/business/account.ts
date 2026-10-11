@@ -43,6 +43,7 @@ export class AccountService {
     if (body.locale === "ar" || body.locale === "en") data.locale = body.locale;
     if (!Object.keys(data).length) throw new AuthFault(400, "invalid");
     return transaction(this.db, async (r) => {
+      const [before]=await r.query("SELECT name,phone,company,locale FROM User WHERE id=? FOR UPDATE",[actor.id]);
       await r.query(
         `UPDATE User SET ${Object.keys(data)
           .map((k) => identifier(k) + "=?")
@@ -56,6 +57,7 @@ export class AccountService {
         { fields: Object.keys(data) },
         "user",
         actor.id,
+        undefined,{before,after:{...before,...data}},
       );
       const [user] = await r.query(
         "SELECT name,phone,company,locale FROM User WHERE id=?",

@@ -9,8 +9,8 @@ import {
   rmSync,
   writeFileSync,
 } from "node:fs";
-import { tmpdir } from "node:os";
 import { resolve } from "node:path";
+import { tmpdir } from "node:os";
 const origin = new URL(process.env.E2E_BASE_URL ?? "https://127.0.0.1:3198");
 if (
   origin.protocol !== "https:" ||
@@ -20,6 +20,8 @@ if (
   throw new Error(
     "TLS fixture requires loopback and an isolated test database",
   );
+const apiPort = Number(process.env.E2E_API_PORT ?? 3197);
+if (!Number.isInteger(apiPort) || apiPort < 1024 || apiPort > 65535 || apiPort === Number(origin.port)) throw new Error('Invalid isolated API test port');
 const directory = resolve(".migration/e2e/tls");
 mkdirSync(directory, { recursive: true, mode: 0o700 });
 execFileSync(
@@ -43,7 +45,7 @@ execFileSync(
   ],
   { stdio: "ignore" },
 );
-const dataDir = mkdtempSync(resolve(tmpdir(), "so7ob-e2e-data-"));
+const dataDir = mkdtempSync(resolve(tmpdir(), ".so7ob-e2e-data-"));
 writeFileSync(
   resolve(".migration/e2e/storage.json"),
   JSON.stringify({ dataDir }),
@@ -54,7 +56,7 @@ const api = spawn(process.execPath, ["apps/api/dist/main.js"], {
   env: {
     ...process.env,
     DATA_DIR: dataDir,
-    PORT: "3197",
+    PORT: String(apiPort),
     BIND_HOST: "127.0.0.1",
     TRUST_PROXY_HOPS: "1",
     SITE_URL: origin.origin,
@@ -71,7 +73,7 @@ const server = https.createServer(
     const upstream = http.request(
       {
         host: "127.0.0.1",
-        port: 3197,
+        port: apiPort,
         path: req.url,
         method: req.method,
         headers: {

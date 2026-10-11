@@ -241,7 +241,7 @@ export class FileService {
     if (!Object.keys(updates).length) throw new AuthFault(400, "invalid");
     return transaction(this.db, async (r) => {
       const [row] = await r.query(
-        "SELECT id FROM MediaItem WHERE id=? FOR UPDATE",
+        "SELECT id,altText,title,folder FROM MediaItem WHERE id=? FOR UPDATE",
         [id],
       );
       if (!row) throw new AuthFault(404, "not_found");
@@ -257,7 +257,7 @@ export class FileService {
         "SELECT id,altText,title,folder FROM MediaItem WHERE id=?",
         [id],
       );
-      await audit(r,"media.updated",user,updates,"media",id);
+      await audit(r,"media.updated",user,null,"media",id,undefined,{before:row,after:media});
       return { ok: true, media };
     });
   }
@@ -284,6 +284,7 @@ export class FileService {
         { filename: item.filename },
         "media",
         id,
+        undefined,{before:{...item},after:{}},
       );
       return { ok: true as const };
     });

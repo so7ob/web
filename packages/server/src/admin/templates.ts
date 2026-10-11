@@ -47,7 +47,7 @@ export class PageTemplateService {
             const id = newId();
             await insertRecord(r, 'PageTemplate', { id, ...parsed.data, kind: 'custom', createdById: actor.id });
             const t = await this.template(r, id);
-            await audit(r, 'template.created', actor, { nameAr: t.nameAr, nameEn: t.nameEn, locales: [t.blocksAr ? 'ar' : null, t.blocksEn ? 'en' : null].filter(Boolean) }, 'page_template', id);
+            await audit(r, 'template.created', actor, { nameAr: t.nameAr, nameEn: t.nameEn, locales: [t.blocksAr ? 'ar' : null, t.blocksEn ? 'en' : null].filter(Boolean) }, 'page_template', id,undefined,{before:{},after:{...t}});
             return { ok: true, template: templateListItem(t) };
         });
     }
@@ -63,7 +63,7 @@ export class PageTemplateService {
                 throw new AuthFault(400, parsed.error);
             const { changed, ...data } = parsed.data;
             await r.query('UPDATE PageTemplate SET nameAr=?,nameEn=?,descAr=?,descEn=?,updatedAt=UTC_TIMESTAMP(3) WHERE id=?', [data.nameAr, data.nameEn, data.descAr, data.descEn, id]);
-            await audit(r, 'template.updated', actor, { changed, nameAr: data.nameAr, nameEn: data.nameEn }, 'page_template', id);
+            await audit(r, 'template.updated', actor, { changed, nameAr: data.nameAr, nameEn: data.nameEn }, 'page_template', id,undefined,{before:{...current},after:{...current,...data}});
             return { ok: true, template: templateListItem(await this.template(r, id)) };
         });
     }
@@ -75,7 +75,7 @@ export class PageTemplateService {
             if (t.kind === 'builtin')
                 throw new AuthFault(400, 'builtin_readonly');
             await r.query('DELETE FROM PageTemplate WHERE id=?', [id]);
-            await audit(r, 'template.deleted', actor, { nameAr: t.nameAr, nameEn: t.nameEn }, 'page_template', id);
+            await audit(r, 'template.deleted', actor, { nameAr: t.nameAr, nameEn: t.nameEn }, 'page_template', id,undefined,{before:{...t},after:{}});
             return { ok: true };
         });
     }

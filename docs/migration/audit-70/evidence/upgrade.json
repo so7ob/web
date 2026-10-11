@@ -1,0 +1,12 @@
+{
+  "synthetic": true,
+  "migrations": [
+    "Audit1791849600000"
+  ],
+  "originalId": "synthetic-upgrade-70",
+  "originalDate": "2020-01-01T00:00:00.123Z",
+  "unchangedLegacyColumns": true,
+  "redacted": true,
+  "outcome": "unknown",
+  "recordedAt": null
+}

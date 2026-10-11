@@ -1,0 +1,26 @@
+{
+  "source": "d978938b431456ca10297ef24937f6ebbcaef6b6",
+  "localPort": 3108,
+  "pid": 539754,
+  "readOnlySchemaVerification": true,
+  "migrationApplied": false,
+  "probe": {
+    "component": "api",
+    "checkedAt": "2026-10-11T15:38:20.061Z",
+    "status": "healthy"
+  },
+  "plan": [
+    {
+      "table": "w",
+      "type": "range",
+      "key": "audit_work_due",
+      "rows": "19"
+    },
+    {
+      "table": "a",
+      "type": "eq_ref",
+      "key": "PRIMARY",
+      "rows": "1"
+    }
+  ]
+}

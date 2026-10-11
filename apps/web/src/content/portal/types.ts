@@ -1,3 +1,4 @@
+import type {ErrorCategory} from '@so7ob/contracts';
 /** أنواع ترجمات المنصة (المصادقة/بوابة العميل/لوحة الإدارة) — تتطابق بين اللغتين */
 
 export interface PortalContent {
@@ -39,6 +40,7 @@ export interface PortalContent {
     resendVerification: string;
     devOutboxHint: string;
     errors: {
+      diagnostic: Record<ErrorCategory,string>;
       invalid: string;
       wrongPassword: string;
       emailTaken: string;
@@ -473,6 +475,9 @@ export interface PortalContent {
       emptyBody: string;
       closeReason: string;
       closeReasonPlaceholder: string;
+      savedRefreshFailed: string;
+      refreshData: string;
+      invalidTransition: string;
       statusNotePlaceholder: string;
       applyStatus: string;
       sentReply: string;
@@ -480,6 +485,8 @@ export interface PortalContent {
       clientView: string;
       export: string;
       exportOk: string;
+      exportLimit: string;
+      exportFailed: string;
       awaitingTeam: string;
       overdueReply: string;
       agingHours: string;
@@ -506,6 +513,8 @@ export interface PortalContent {
       statuses: Record<string, string>;
       export: string;
       exportOk: string;
+      exportLimit: string;
+      exportFailed: string;
       archive: string;
       restore: string;
       archived: string;
@@ -893,6 +902,8 @@ export interface PortalContent {
       status: string;
       sent: string;
       devLogged: string;
+      queued: string; retry: string; leased: string; sending: string; uncertain: string; unknown: string;
+      attempts: string; nextAttempt: string; errorCode: string;
       failed: string;
       date: string;
       empty: string;

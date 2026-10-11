@@ -12,12 +12,6 @@ const fixture = () =>
     password: string;
   };
 async function assertPortalAxe(page: Page, locale: string, name: string) {
-  const baseline = JSON.parse(
-    readFileSync("tests/e2e/fixtures/account-axe-baseline.json", "utf8"),
-  ).cases[`${page.viewportSize()!.width}:${locale}:${name}`] as Record<
-    string,
-    string[]
-  >;
   const toast = page.locator(
     '[data-sonner-toast][data-front="true"][data-removed="false"]',
   );
@@ -56,11 +50,6 @@ async function assertPortalAxe(page: Page, locale: string, name: string) {
     .analyze();
   if (locale === "en" && name === "requests-migrationrequest" && page.viewportSize()!.width === 1280)
     await test.info().attach("visible-toast-contrast", {body:await page.screenshot(),contentType:"image/png"});
-  const signature = (target: unknown) =>
-    JSON.stringify(target).replace(
-      /#radix-[^\s]*?-trigger-/g,
-      "#radix-trigger-",
-    );
   if (result.violations.length)
     await test.info().attach(`axe-${locale}-${name}`, {
       body: JSON.stringify(result.violations, null, 2),
@@ -68,12 +57,6 @@ async function assertPortalAxe(page: Page, locale: string, name: string) {
     });
   expect(
     result.violations
-      .filter(
-        (v) =>
-          !(v.id in baseline) ||
-          v.nodes.length > baseline[v.id].length ||
-          v.nodes.some((n) => !baseline[v.id].includes(signature(n.target))),
-      )
       .map((v) => ({
         id: v.id,
         nodes: v.nodes.map((n) => ({

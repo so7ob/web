@@ -1,3 +1,4 @@
+import {writeAudit,type AuditWriteOptions} from '../audit/writer.js';
 import { createHash, randomBytes } from 'node:crypto';
 import type { DataSource, QueryRunner } from 'typeorm';
 import { checkRateLimit, type RateLimitResult } from './rate-policy.js';
@@ -21,8 +22,8 @@ export async function consumeRateLimit(db: DataSource, key: string, limits?: { s
     return result;
   });
 }
-export async function audit(r: QueryRunner, action: string, user: { id: string; email: string } | null, details: Record<string, unknown> | null = null, entityType = 'user', entityId: string | null = user?.id ?? null, ip?: string): Promise<void> {
-  await r.query('INSERT INTO AuditLog(id,actorId,actorEmail,action,entityType,entityId,details,ipHash) VALUES(?,?,?,?,?,?,?,?)', [newId(),user?.id ?? null,user?.email ?? null,action,entityType,entityId,details ? JSON.stringify(details) : null,ip ? sha256('ip:'+ip) : null]);
+export async function audit(r: QueryRunner, action: string, user: { id: string; email: string; name?:string;roleKey?:string } | null, details: Record<string, unknown> | null, entityType: string, entityId: string | null, ip?: string, options:AuditWriteOptions={}): Promise<void> {
+  await writeAudit(r,action,user,details,entityType,entityId,ip,options);
 }
 export class AuthFault extends Error {
   constructor(readonly status: number, readonly code: string, readonly extra: Record<string, unknown> = {}) { super(code); }

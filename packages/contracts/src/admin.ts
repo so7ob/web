@@ -71,6 +71,7 @@ export type AdminScreen =
   | "media"
   | "menus"
   | "settings"
+  | "diagnostics"
   | "audit"
   | "outbox";
 export interface AdminPayload {

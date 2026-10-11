@@ -206,7 +206,7 @@ export class RequestService {
           kind: "system",
           body: note ?? "",
         });
-        await audit(r, "request.cancelled", actor, { note }, "request", id);
+        await audit(r, "request.cancelled", actor, { ref:request.refCode }, "request", id,undefined,{before:{status:request.status},after:{status:"cancelled"}});
         return { ok: true };
       }
       if (actor.roleKey !== "client" || !canAccessRequest(actor, request))
@@ -248,26 +248,7 @@ export class RequestService {
         kind: "system",
         body: "request_updated",
       });
-      await audit(
-        r,
-        "request.updated",
-        actor,
-        {
-          before: JSON.stringify({
-            description: request.description,
-            referenceUrl: request.referenceUrl,
-            serviceType: request.serviceType,
-          }),
-          after: JSON.stringify({
-            description: updates.description ?? request.description,
-            referenceUrl: updates.referenceUrl ?? request.referenceUrl,
-            serviceType: updates.serviceType ?? request.serviceType,
-          }),
-          fields: Object.keys(updates),
-        },
-        "request",
-        id,
-      );
+      await audit(r,"request.updated",actor,{fields:Object.keys(updates),ref:request.refCode},"request",id,undefined,{before:{...request},after:{...request,...updates}});
       return { ok: true };
     });
   }

@@ -14,7 +14,7 @@ import {
   MessageSquareText,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Textarea } from "@/components/ui/textarea";
 import {
   Popover,
@@ -83,7 +83,7 @@ export function MessageBubble({
         <div className="flex items-center gap-1.5 text-[11px] font-medium text-amber-700">
           <Lock className="size-3" aria-hidden="true" />
           <span className="truncate">{labels.internalHint}</span>
-          <span className="text-amber-600/70">· {author}</span>
+          <span className="text-amber-700">· {author}</span>
         </div>
         <div className="rounded-2xl border border-amber-200 bg-amber-50 px-4 py-3">
           <p className="whitespace-pre-wrap break-words text-sm leading-relaxed text-amber-900">
@@ -149,7 +149,7 @@ interface ReplyComposerProps {
   canNote: boolean;
   sending: boolean;
   labels: ComposerLabels;
-  onSend: (kind: "message" | "internal_note", body: string) => Promise<void>;
+  onSend: (kind: "message" | "internal_note", body: string) => Promise<boolean>;
   onAttach?: (file: File) => Promise<void>;
   /** يُمرر من صفحات الطاقم فقط لعرض منتقي الردود المحفوظة */
   savedReplies?: SavedReplyPickerLabels;
@@ -257,6 +257,7 @@ export function ReplyComposer({
   const [body, setBody] = useState("");
   const fileRef = useRef<HTMLInputElement>(null);
   const [attaching, setAttaching] = useState(false);
+  const submitting = useRef(false);
 
   if (!canReply && !canNote) return null;
   const currentTab: "message" | "internal_note" = canReply
@@ -265,9 +266,16 @@ export function ReplyComposer({
 
   const submit = async () => {
     const text = body.trim();
-    if (!text || sending) return;
-    await onSend(currentTab, text);
-    setBody("");
+    if (!text || sending || submitting.current) return;
+    submitting.current = true;
+    try {
+      if (await onSend(currentTab, text)) {
+        // An edit made while the request was in flight belongs to the next draft.
+        setBody(current => current === body ? "" : current);
+      }
+    } finally {
+      submitting.current = false;
+    }
   };
 
   const pickFile = async (file: File | undefined) => {
@@ -286,28 +294,8 @@ export function ReplyComposer({
     setBody((prev) => (prev.trim() ? `${prev}\n\n${content}` : content));
   };
 
-  return (
-    <div className="rounded-2xl border border-border bg-white p-4 transition-all focus-within:border-brand/40 focus-within:ring-2 focus-within:ring-ring/40">
-      <Tabs
-        value={currentTab}
-        onValueChange={(v) => setTab(v as "message" | "internal_note")}
-      >
-        <TabsList className="flex-wrap">
-          {canReply ? (
-            <TabsTrigger value="message" className="gap-1.5">
-              <MessageSquareText className="size-3.5" aria-hidden="true" />
-              {labels.reply}
-            </TabsTrigger>
-          ) : null}
-          {canNote ? (
-            <TabsTrigger value="internal_note" className="gap-1.5">
-              <Lock className="size-3.5" aria-hidden="true" />
-              {labels.internalNote}
-            </TabsTrigger>
-          ) : null}
-        </TabsList>
-      </Tabs>
-
+  const composer = (
+    <>
       {currentTab === "internal_note" ? (
         <p className="mt-2 flex items-center gap-1.5 text-xs text-amber-700">
           <Lock className="size-3" aria-hidden="true" />
@@ -342,6 +330,8 @@ export function ReplyComposer({
             <input
               ref={fileRef}
               type="file"
+              hidden
+              aria-label={labels.attachFile}
               className="hidden"
               onChange={(e) => void pickFile(e.target.files?.[0])}
               accept="image/*,.pdf,.txt,.doc,.docx,.xls,.xlsx,.zip,.rar"
@@ -376,6 +366,35 @@ export function ReplyComposer({
           {sending ? labels.sending : labels.send}
         </Button>
       </div>
+    </>
+  );
+
+  return (
+    <div className="rounded-2xl border border-border bg-white p-4 transition-all focus-within:border-brand/40 focus-within:ring-2 focus-within:ring-ring/40">
+      <Tabs
+        value={currentTab}
+        onValueChange={(v) => setTab(v as "message" | "internal_note")}
+      >
+        <TabsList className="flex-wrap">
+          {canReply ? (
+            <TabsTrigger value="message" disabled={sending} className="gap-1.5">
+              <MessageSquareText className="size-3.5" aria-hidden="true" />
+              {labels.reply}
+            </TabsTrigger>
+          ) : null}
+          {canNote ? (
+            <TabsTrigger value="internal_note" disabled={sending} className="gap-1.5">
+              <Lock className="size-3.5" aria-hidden="true" />
+              {labels.internalNote}
+            </TabsTrigger>
+          ) : null}
+        </TabsList>
+        {[...(canReply ? ["message"] : []), ...(canNote ? ["internal_note"] : [])].map((value) => (
+          <TabsContent key={value} value={value}>
+            {currentTab === value ? composer : null}
+          </TabsContent>
+        ))}
+      </Tabs>
     </div>
   );
 }

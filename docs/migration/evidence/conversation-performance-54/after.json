@@ -1,0 +1,110 @@
+{
+  "sha": "c5811c686588aba6e85e292c49d4e24224e5fe5a",
+  "node": "v24.21.0",
+  "mariaDB": "10.11.18-MariaDB-0+deb12u1",
+  "parentsPerKind": 20,
+  "messagesPerParent": 1000,
+  "samples": [
+    {
+      "kind": "requests",
+      "sample": 0,
+      "milliseconds": 7.67,
+      "messageRows": 0,
+      "heapDeltaBytes": 248920,
+      "returnedParents": 20,
+      "total": 20,
+      "countsCorrect": true
+    },
+    {
+      "kind": "requests",
+      "sample": 1,
+      "milliseconds": 8.48,
+      "messageRows": 0,
+      "heapDeltaBytes": 248128,
+      "returnedParents": 20,
+      "total": 20,
+      "countsCorrect": true
+    },
+    {
+      "kind": "requests",
+      "sample": 2,
+      "milliseconds": 11.34,
+      "messageRows": 0,
+      "heapDeltaBytes": 232832,
+      "returnedParents": 20,
+      "total": 20,
+      "countsCorrect": true
+    },
+    {
+      "kind": "requests",
+      "sample": 3,
+      "milliseconds": 16.58,
+      "messageRows": 0,
+      "heapDeltaBytes": 233352,
+      "returnedParents": 20,
+      "total": 20,
+      "countsCorrect": true
+    },
+    {
+      "kind": "requests",
+      "sample": 4,
+      "milliseconds": 10.77,
+      "messageRows": 0,
+      "heapDeltaBytes": 249296,
+      "returnedParents": 20,
+      "total": 20,
+      "countsCorrect": true
+    },
+    {
+      "kind": "inquiries",
+      "sample": 0,
+      "milliseconds": 12.43,
+      "messageRows": 20,
+      "heapDeltaBytes": 230488,
+      "returnedParents": 20,
+      "total": 20,
+      "countsCorrect": true
+    },
+    {
+      "kind": "inquiries",
+      "sample": 1,
+      "milliseconds": 17.11,
+      "messageRows": 20,
+      "heapDeltaBytes": 224440,
+      "returnedParents": 20,
+      "total": 20,
+      "countsCorrect": true
+    },
+    {
+      "kind": "inquiries",
+      "sample": 2,
+      "milliseconds": 10.83,
+      "messageRows": 20,
+      "heapDeltaBytes": 221888,
+      "returnedParents": 20,
+      "total": 20,
+      "countsCorrect": true
+    },
+    {
+      "kind": "inquiries",
+      "sample": 3,
+      "milliseconds": 17.87,
+      "messageRows": 20,
+      "heapDeltaBytes": 228480,
+      "returnedParents": 20,
+      "total": 20,
+      "countsCorrect": true
+    },
+    {
+      "kind": "inquiries",
+      "sample": 4,
+      "milliseconds": 10.57,
+      "messageRows": 20,
+      "heapDeltaBytes": 237232,
+      "returnedParents": 20,
+      "total": 20,
+      "countsCorrect": true
+    }
+  ],
+  "peakRssKiB": 129356
+}

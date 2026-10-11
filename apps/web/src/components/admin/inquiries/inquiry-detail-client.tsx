@@ -1,4 +1,6 @@
 "use client";
+import {ErrorFeedback} from '@/components/errors/error-feedback';
+import {asApiError} from '@/lib/errors/transport';
 import { TrackPanel } from "@/components/admin/track/track-panel";
 
 /**
@@ -107,6 +109,8 @@ export function InquiryDetailClient({
   const [staffOptions, setStaffOptions] = useState<StaffOption[]>([]);
   const [loading, setLoading] = useState(true);
   const [notFound, setNotFound] = useState(false);
+  const [failure,setFailure]=useState<{error:ApiError;operation:string}|null>(null);
+  const needsReview=!!failure&&["network","timeout","invalid_response"].includes(failure.error.code);
   const [error, setError] = useState<string | null>(null);
   const [reloadToken, setReloadToken] = useState(0);
   const [sending, setSending] = useState(false);
@@ -123,15 +127,16 @@ export function InquiryDetailClient({
       if (!quiet) setLoading(true);
       try {
         const res = await apiGet<InquiryDetailResponse>(
-          `/api/admin/inquiries/${inquiryId}`,
+          `/api/admin/inquiries/${inquiryId}`,signal,
         );
         if (!signal.aborted) {
           setDetail(res.inquiry);
           setNotFound(false);
           setError(null);
+          return true;
         }
       } catch (err) {
-        if (signal.aborted) return;
+        if (signal.aborted || quiet) return false;
         if (
           err instanceof ApiError &&
           (err.code === "not_found" || err.status === 404)
@@ -170,24 +175,23 @@ export function InquiryDetailClient({
   const reload = () => setReloadToken((v) => v + 1);
 
   const patch = async (body: Record<string, unknown>, successMsg?: string) => {
-    setBusy(true);
-    busyRef.current = true;
-    try {
-      await apiSend(`/api/admin/inquiries/${inquiryId}`, "PATCH", body);
-      if (successMsg) toast.success(successMsg);
-      reload();
-    } catch (err) {
-      toast.error(apiErrorMessage(err, t.auth.errors));
-    } finally {
-      setBusy(false);
-      busyRef.current = false;
-    }
+    if(busyRef.current||needsReview)return false;
+    setFailure(null);setBusy(true);busyRef.current=true;
+    try{
+      await apiSend(`/api/admin/inquiries/${inquiryId}`,"PATCH",body);
+      if(!await load(new AbortController().signal,true))setFailure({error:new ApiError(0,'network'),operation:t.admin.requests.savedRefreshFailed});
+      else if(successMsg)toast.success(successMsg);
+      return true;
+    }catch(err){setFailure({error:asApiError(err),operation:body.status!==undefined?t.admin.requests.changeStatus:ti.assign});return false;}
+    finally{setBusy(false);busyRef.current=false;}
   };
 
   const sendMessage = async (
     kind: "message" | "internal_note",
     body: string,
   ) => {
+    if(needsReview)return false;
+    setFailure(null);
     setSending(true);
     busyRef.current = true;
     try {
@@ -216,9 +220,11 @@ export function InquiryDetailClient({
           : t.admin.requests.sentReply,
       );
       const controller = new AbortController();
-      void load(controller.signal, true);
+      if(!await load(controller.signal,true))setFailure({error:new ApiError(0,"network"),operation:t.admin.requests.savedRefreshFailed});
+      return true;
     } catch (err) {
-      toast.error(apiErrorMessage(err, t.auth.errors));
+      setFailure({error:asApiError(err),operation:t.admin.requests.reply});
+      return false;
     } finally {
       setSending(false);
       busyRef.current = false;
@@ -287,6 +293,7 @@ export function InquiryDetailClient({
 
   return (
     <div className="space-y-5">
+      {failure?<ErrorFeedback error={failure.error} operation={failure.operation} locale={locale} onRefresh={async()=>{if(await load(new AbortController().signal,true))setFailure(null);}}/>:null}
       {/* ترويسة الطباعة — تظهر على الورق فقط: العلامة + التاريخ + الرقم المرجعي */}
       <div className="hidden print:block print:border-b print:border-border print:pb-2">
         <p className="text-xs font-medium text-muted-foreground">
@@ -460,7 +467,7 @@ export function InquiryDetailClient({
           <section className="space-y-4 rounded-2xl border border-border bg-white p-4 print:hidden">
             {mayAssign ? (
               <div className="space-y-2">
-                <Label>{ti.assign}</Label>
+                <Label htmlFor="inquiry-assignee">{ti.assign}</Label>
                 <Select
                   value={detail.assigneeId ?? "none"}
                   onValueChange={(v) =>
@@ -471,7 +478,7 @@ export function InquiryDetailClient({
                   }
                   disabled={busy}
                 >
-                  <SelectTrigger className="min-h-11 w-full focus-visible:ring-2 focus-visible:ring-ring/40">
+                  <SelectTrigger id="inquiry-assignee" className="min-h-11 w-full focus-visible:ring-2 focus-visible:ring-ring/40">
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
@@ -496,7 +503,7 @@ export function InquiryDetailClient({
 
             {mayStatus ? (
               <div className="space-y-2">
-                <Label>{t.admin.requests.changeStatus}</Label>
+                <Label htmlFor="inquiry-status">{t.admin.requests.changeStatus}</Label>
                 <Select
                   value={detail.status}
                   onValueChange={(v) =>
@@ -504,7 +511,7 @@ export function InquiryDetailClient({
                   }
                   disabled={busy}
                 >
-                  <SelectTrigger className="min-h-11 w-full focus-visible:ring-2 focus-visible:ring-ring/40">
+                  <SelectTrigger id="inquiry-status" className="min-h-11 w-full focus-visible:ring-2 focus-visible:ring-ring/40">
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>

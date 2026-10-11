@@ -1,4 +1,6 @@
 "use client";
+import {ErrorFeedback} from '@/components/errors/error-feedback';
+import {ApiError} from '@/lib/errors/transport';
 
 import { useState } from "react";
 import { useRouter } from "@/routing/navigation";
@@ -36,6 +38,7 @@ export function NewInquiryDialog({
 }) {
   const router = useRouter();
 
+  const [failure,setFailure]=useState<ApiError|null>(null);
   const [subject, setSubject] = useState("");
   const [category, setCategory] = useState<string>("general");
   const [message, setMessage] = useState("");
@@ -70,6 +73,7 @@ export function NewInquiryDialog({
       toast.error(authErrors.required);
       return;
     }
+    setFailure(null);
     setSending(true);
     const result = await createInquiry({
       subject: subject.trim(),
@@ -85,15 +89,7 @@ export function NewInquiryDialog({
       router.refresh();
       return;
     }
-    if (result.status === 429) {
-      toast.error(authErrors.rateLimited);
-      return;
-    }
-    if (result.status === 0) {
-      toast.error(authErrors.generic);
-      return;
-    }
-    toast.error(authErrors.invalid);
+    if(!result.cancelled)setFailure(result.error??new ApiError(result.status,'internal_error'));
   }
 
   return (
@@ -132,6 +128,7 @@ export function NewInquiryDialog({
           </div>
         ) : (
           <form onSubmit={submit} noValidate className="space-y-4">
+          <ErrorFeedback error={failure} locale={locale}/>
             <DialogHeader>
               <DialogTitle className="text-lg font-bold text-navy">{t.formTitle}</DialogTitle>
               <DialogDescription className="leading-7 text-muted-foreground">{t.formIntro}</DialogDescription>

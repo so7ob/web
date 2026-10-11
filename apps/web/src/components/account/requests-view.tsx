@@ -1,4 +1,6 @@
 "use client";
+import {ErrorFeedback} from "@/components/errors/error-feedback";
+import {ApiError} from "@/lib/errors/transport";
 
 import { Fragment, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import Link from "@/routing/link";
@@ -9,7 +11,7 @@ import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } f
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Skeleton } from "@/components/ui/skeleton";
-import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { EmptyState } from "@/components/admin/empty-state";
 import { toast } from "sonner";
 import type { Locale } from "@/lib/i18n";
@@ -105,6 +107,7 @@ export function RequestsView({
   const [data, setData] = useState<RequestListResponse | null>(null);
   const [loading, setLoading] = useState(true);
   const [failed, setFailed] = useState(false);
+  const [failure,setFailure]=useState<ApiError|null>(null);
   // تسلسل الطلبات: تجاهل الاستجابات القديمة عند تغير البحث/التصفية بسرعة
   const seqRef = useRef(0);
 
@@ -112,6 +115,8 @@ export function RequestsView({
   const [claimOpen, setClaimOpen] = useState(() => params.get("claim") === "open");
   const [claimRef, setClaimRef] = useState("");
   const [claimSending, setClaimSending] = useState(false);
+  const [claimFailure,setClaimFailure]=useState<ApiError|null>(null);
+  const claimPending=useRef(false);
   const [claimResult, setClaimResult] = useState<{ sent: boolean; devVerifyUrl?: string } | null>(null);
 
   // لوائح ?claim=ok|invalid|login_required
@@ -135,9 +140,11 @@ export function RequestsView({
     if (seq !== seqRef.current) return; // استجابة متأخرة عن طلب أحدث
     if (result.data.ok) {
       setData(result.data);
+      setFailure(null);
       setFailed(false);
     } else {
       setFailed(true);
+      if(!result.cancelled)setFailure(result.error??new ApiError(result.status,"internal_error"));
     }
     setLoading(false);
   }, []);
@@ -161,24 +168,21 @@ export function RequestsView({
 
   async function submitClaim(ev: React.FormEvent<HTMLFormElement>) {
     ev.preventDefault();
-    if (claimSending) return;
+    if (claimPending.current) return;
+    setClaimFailure(null);
     const refCode = claimRef.trim().toUpperCase();
     if (!refCode) {
       toast.error(t.claimBody);
       return;
     }
-    setClaimSending(true);
+    claimPending.current=true;setClaimSending(true);
     const result = await apiFetch<{ ok?: boolean; devVerifyUrl?: string }>("/api/account/requests/claim", {
       method: "POST",
       body: JSON.stringify({ refCode }),
     });
-    setClaimSending(false);
-    if (result.status === 429) {
-      toast.error(authErrors.rateLimited);
-      return;
-    }
-    if (result.status === 0) {
-      toast.error(authErrors.generic);
+    claimPending.current=false;setClaimSending(false);
+    if(!result.ok||!result.data.ok){
+      if(!result.cancelled)setClaimFailure(result.error??new ApiError(result.status,"internal_error"));
       return;
     }
     setClaimResult({ sent: true, devVerifyUrl: result.data.devVerifyUrl });
@@ -188,6 +192,7 @@ export function RequestsView({
     setClaimOpen(false);
     setClaimRef("");
     setClaimResult(null);
+    setClaimFailure(null);
   }
 
   const requests = data?.requests ?? [];
@@ -252,7 +257,7 @@ export function RequestsView({
         </div>
       )}
 
-      <Tabs value={status} onValueChange={onStatusChange}>
+      <Tabs value={status} onValueChange={onStatusChange} dir={locale === "ar" ? "rtl" : "ltr"} className="space-y-5">
         <div className="overflow-x-auto pb-1">
           <TabsList className="h-auto w-max flex-wrap gap-1 rounded-full bg-muted/60 p-1">
             <TabsTrigger value="all" className={TAB_PILL_CLASS}>
@@ -273,7 +278,7 @@ export function RequestsView({
             ))}
           </TabsList>
         </div>
-      </Tabs>
+      <TabsContent value={status} className="space-y-5">
 
       {/* حقل البحث — مؤجل ٣٠٠ مللي ويمسح بزر مستقل */}
       <div className="flex justify-start">
@@ -313,9 +318,7 @@ export function RequestsView({
             ))}
           </div>
         ) : failed ? (
-          <div role="alert" className="rounded-xl border border-rose-200 bg-rose-50 px-4 py-3 text-sm font-medium text-rose-700">
-            {authErrors.generic}
-          </div>
+          <ErrorFeedback error={failure} locale={locale} operation={t.title} onRefresh={()=>load(status,page,debouncedQ)}/>
         ) : requests.length === 0 ? (
           searchActive ? (
             <div>
@@ -431,9 +434,11 @@ export function RequestsView({
           </>
         )}
       </section>
+      </TabsContent>
+      </Tabs>
 
       {/* حوار ربط طلب سابق */}
-      <Dialog open={claimOpen} onOpenChange={(open) => (open ? setClaimOpen(true) : resetClaim())}>
+      <Dialog open={claimOpen} onOpenChange={(open) => {if(!claimPending.current){if(open)setClaimOpen(true);else resetClaim();}}}>
         <DialogContent className="max-w-md rounded-2xl p-6">
           <DialogHeader>
             <DialogTitle className="text-lg font-bold text-navy">{t.claimTitle}</DialogTitle>
@@ -455,12 +460,14 @@ export function RequestsView({
             </div>
           ) : (
             <form onSubmit={submitClaim} noValidate className="space-y-4">
+              <ErrorFeedback error={claimFailure} locale={locale} operation={t.claimTitle}/>
               <div className="space-y-2">
                 <Label htmlFor="claim-ref" className="text-sm font-semibold text-navy">
                   {t.refCode}
                 </Label>
                 <Input
                   id="claim-ref"
+                  disabled={claimSending}
                   value={claimRef}
                   onChange={(e) => setClaimRef(e.target.value)}
                   dir="ltr"

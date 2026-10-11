@@ -101,14 +101,10 @@ export class SubmissionService {
         actor,
         { ref: code, authenticated: !!actor },
         "request",
-        code,
+        id,
         ip === "unknown" ? undefined : ip,
+        {before:{},after:(await r.query("SELECT status,priority,assigneeId,clientId,serviceType,budget,currency,timeline,preferredContact FROM ProjectRequest WHERE id=?",[id]))[0]},
       );
-      if (!actor)
-        await r.query(
-          "UPDATE AuditLog SET actorEmail=? WHERE entityType=? AND entityId=? AND action=?",
-          [email, "request", code, "request.submitted"],
-        );
       const staff = await notifyStaff(
         r,
         "new_request",
@@ -246,12 +242,8 @@ export class SubmissionService {
         "inquiry",
         id,
         portal ? undefined : ip,
+        {before:{},after:(await r.query("SELECT status,assigneeId,clientId FROM Inquiry WHERE id=?",[id]))[0]},
       );
-      if (!actor)
-        await r.query(
-          "UPDATE AuditLog SET actorEmail=? WHERE entityType=? AND entityId=?",
-          [email, "inquiry", id],
-        );
       await notifyStaff(
         r,
         "new_inquiry",

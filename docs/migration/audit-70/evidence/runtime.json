@@ -1,0 +1,48 @@
+{
+  "synthetic": true,
+  "capturedAt": "2026-10-11T14:50:43.272143+00:00",
+  "sourceSha": "abf3304df8abb4723155880ca7791245d9374386",
+  "branch": "feat/70-audit-investigation",
+  "build": {
+    "sha": "abf3304df8abb4723155880ca7791245d9374386",
+    "dirty": false
+  },
+  "preview": "https://127.0.0.1:3213",
+  "upstream": "http://127.0.0.1:3214",
+  "database": "so7ob_audit70_live_test",
+  "runtimeUser": "audit70_runtime",
+  "evidenceGrants": [
+    "SELECT",
+    "INSERT"
+  ],
+  "processes": [
+    {
+      "pid": 510465,
+      "cwd": "/root/So7ob/web/.migration/audit-implementation/scratch/accept",
+      "command": [
+        "node",
+        "--env-file=/root/So7ob/web/.migration/audit-implementation/live/runtime.env",
+        "/root/So7ob/web/.migration/audit-implementation/live/server.mjs"
+      ]
+    },
+    {
+      "pid": 510474,
+      "cwd": "/root/So7ob/web/.migration/audit-implementation/scratch/accept",
+      "command": [
+        "/root/.nvm/versions/node/v24.21.0/bin/node",
+        "apps/api/dist/main.js"
+      ]
+    },
+    {
+      "pid": 510685,
+      "cwd": "/root/So7ob/web/.migration/audit-implementation/scratch/accept",
+      "command": [
+        "node",
+        "--env-file=/root/So7ob/web/.migration/audit-implementation/live/runtime.env",
+        "apps/worker/dist/main.js"
+      ]
+    }
+  ],
+  "existing3108ObservedPid": 473812,
+  "existing3108UsedForAcceptance": false
+}
