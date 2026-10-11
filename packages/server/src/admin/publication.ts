@@ -98,7 +98,7 @@ export class PagePublicationService {
                     data[key] = body[key].slice(0, 200);
             const now = stamp(p);
             await writePage(r, id, { ...data, draftRevision: p.draftRevision + 1, draftUpdatedAt: now, draftUpdatedById: actor.id, editorTouchedAt: now });
-            await audit(r, 'page.draft_saved', actor, { slug: p.slug, revision: p.draftRevision + 1 }, 'page', id);
+            await audit(r, 'page.draft_saved', actor, { slug: p.slug, revision: p.draftRevision + 1 }, 'page', id,undefined,{before:{...p},after:{...p,...data,draftRevision:p.draftRevision+1}});
             return { ok: true, page: { id, slug: p.slug, status: p.status, draftUpdatedAt: now, draftRevision: p.draftRevision + 1, draftSettings: settings } };
         });
     }
@@ -133,7 +133,7 @@ export class PagePublicationService {
             await backup(r, p, locale, actor, via === 'scheduled' ? 'scheduled' : null);
         if (p.slug && p.slug !== settings.slug)
             await r.query('INSERT INTO PageRedirect(id,fromSlug,toSlug) VALUES(?,?,?) ON DUPLICATE KEY UPDATE toSlug=VALUES(toSlug)', [newId(), p.slug, settings.slug]);
-        await audit(r, 'page.published', actor, { slug: settings.slug, locales: selected, revision: p.draftRevision, via }, 'page', p.id);
+        await audit(r, 'page.published', actor, { slug: settings.slug, locales: selected, revision: p.draftRevision, via }, 'page', p.id,undefined,{before:{...p},after:{...p,...settings,status:'published',publishedRevision:p.draftRevision}});
         const recipients: Array<{
             id: string;
             locale: string;
@@ -155,7 +155,7 @@ export class PagePublicationService {
             // Never reuse a revision: source rewinds create an ABA lost-update/scheduling hazard.
             const next = p.draftRevision + 1, now = stamp(p);
             await writePage(r, id, { draftBlocksAr: p.publishedBlocksAr ?? '[]', draftBlocksEn: p.publishedBlocksEn ?? '[]', draftSettings: p.publishedSettings ?? p.draftSettings, draftRevision: next, publishedRevision: next, draftUpdatedAt: now, draftUpdatedById: actor.id, editorTouchedAt: now });
-            await audit(r, 'page.draft_discarded', actor, { slug: p.slug, revertedFromRevision: p.draftRevision, revision: next }, 'page', id);
+            await audit(r, 'page.draft_discarded', actor, { slug: p.slug, revertedFromRevision: p.draftRevision, revision: next }, 'page', id,undefined,{before:{...p},after:{...p,draftRevision:next,publishedRevision:next}});
             return { ok: true, page: { slug: p.slug, draftRevision: next, publishedRevision: next, hasUnpublishedChanges: false, draftUpdatedAt: now } };
         });
     }
@@ -180,7 +180,7 @@ export class PagePublicationService {
                 backupCreated = (await backup(r, p, locale, actor, 'auto-backup-before-restore')) || backupCreated;
             const now = stamp(p);
             await writePage(r, id, { ...data, draftRevision: p.draftRevision + 1, draftUpdatedAt: now, draftUpdatedById: actor.id, editorTouchedAt: now });
-            await audit(r, 'page.version_restored', actor, { version, locales: selected, slug: p.slug, backupCreated }, 'page', id);
+            await audit(r, 'page.version_restored', actor, { version, locales: selected, slug: p.slug, backupCreated }, 'page', id,undefined,{before:{...p},after:{...p,draftRevision:p.draftRevision+1}});
             return { ok: true, restoredVersion: version, locales: selected, draftRevision: p.draftRevision + 1, draftUpdatedAt: now };
         });
     }
@@ -193,7 +193,7 @@ export class PagePublicationService {
                 if (!p.scheduledPublishAt)
                     throw new AuthFault(409, 'nothing_scheduled');
                 await this.clearSchedule(r, id);
-                await audit(r, 'page.schedule_cancelled', actor, { slug: p.slug, cancelledAtRevision: p.draftRevision }, 'page', id);
+                await audit(r, 'page.schedule_cancelled', actor, { slug: p.slug, cancelledAtRevision: p.draftRevision }, 'page', id,undefined,{before:{...p},after:{...p,scheduledPublishAt:null,scheduledRevision:null}});
                 return { ok: true, scheduledPublishAt: null };
             }
             revision(p, body.baseRevision);
@@ -201,7 +201,7 @@ export class PagePublicationService {
             if (!parsed.ok)
                 throw new AuthFault(400, parsed.code);
             await writePage(r, id, { scheduledPublishAt: parsed.date, scheduledRevision: p.draftRevision, scheduledPublishById: actor.id });
-            await audit(r, 'page.schedule_set', actor, { slug: p.slug, publishAt: parsed.date.toISOString(), revision: p.draftRevision }, 'page', id);
+            await audit(r, 'page.schedule_set', actor, { slug: p.slug, publishAt: parsed.date.toISOString(), revision: p.draftRevision }, 'page', id,undefined,{before:{...p},after:{...p,scheduledPublishAt:parsed.date,scheduledRevision:p.draftRevision}});
             return { ok: true, scheduledPublishAt: parsed.date, scheduledRevision: p.draftRevision };
         });
     }

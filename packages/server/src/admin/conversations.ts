@@ -324,7 +324,7 @@ export class AdminConversationService {
           actor,
           request
             ? { from: record.assigneeId, to: assigneeId, ref: record.refCode }
-            : { to: assigneeId },
+            : { from: record.assigneeId, to: assigneeId, ref: record.refCode },
           request ? "request" : "inquiry",
           id,
         );
@@ -343,7 +343,7 @@ export class AdminConversationService {
           r,
           "request.priority_changed",
           actor,
-          { from: record.priority, to: priority },
+          { from: record.priority, to: priority, ref: record.refCode },
           "request",
           id,
         );
@@ -413,7 +413,7 @@ export class AdminConversationService {
           actor,
           request
             ? { from: record.status, to, note, ref: record.refCode }
-            : { from: record.status, to },
+            : { from: record.status, to, ref: record.refCode },
           request ? "request" : "inquiry",
           id,
         );
@@ -443,19 +443,12 @@ export class AdminConversationService {
       actor,
       kind === "requests" ? "requests.archive" : "inquiries.archive",
     );
-    await r.query(
-      `UPDATE ${tableFor(kind)} SET archivedAt=?,updatedAt=UTC_TIMESTAMP(3) WHERE id=?`,
-      [action === "archive" ? new Date() : null, id],
-    );
-    if (kind === "requests")
-      await audit(
-        r,
-        action === "archive" ? "request.archived" : "request.restored",
-        actor,
-        {},
-        "request",
-        id,
-      );
+    const [before] = await r.query(`SELECT archivedAt,refCode FROM ${tableFor(kind)} WHERE id=? FOR UPDATE`,[id]);
+    if(!before)throw new AuthFault(404,'not_found');
+    const after=action==='archive'?(before.archivedAt??new Date()):null;
+    const unchanged=Boolean(before.archivedAt)===Boolean(after);
+    if(!unchanged)await r.query(`UPDATE ${tableFor(kind)} SET archivedAt=?,updatedAt=UTC_TIMESTAMP(3) WHERE id=?`,[after,id]);
+    await audit(r,`${kind==='requests'?'request':'inquiry'}.${action==='archive'?'archived':'restored'}`,actor,{ref:before.refCode},kind==='requests'?'request':'inquiry',id,undefined,{before:{archivedAt:before.archivedAt},after:{archivedAt:after},...(unchanged?{reasonCode:'no_change'}:{})});
     return { ok: true };
   }
   async bulk(actor: AuthUser, kind: Kind, body: Record<string, unknown>) {
@@ -473,21 +466,13 @@ export class AdminConversationService {
       const table = tableFor(kind),
         where = `id IN (${ids.map(() => "?").join(",")}) AND archivedAt IS ${action === "archive" ? "" : "NOT "}NULL`;
       const rows = await r.query(
-        `SELECT id FROM ${table} WHERE ${where} ORDER BY id FOR UPDATE`,
+        `SELECT id,refCode,archivedAt FROM ${table} WHERE ${where} ORDER BY id FOR UPDATE`,
         ids,
       );
-      if (rows.length)
-        await r.query(
-          `UPDATE ${table} SET archivedAt=?,updatedAt=UTC_TIMESTAMP(3) WHERE ${where}`,
-          [action === "archive" ? new Date() : null, ...ids],
-        );
-      await audit(
-        r,
-        `${kind === "requests" ? "request" : "inquiry"}.${action === "archive" ? "archived" : "restored"}`,
-        actor,
-        { bulk: true, count: rows.length },
-        kind === "requests" ? "request" : "inquiry",
-      );
+      const batchId=newId(),after=action==='archive'?new Date():null;
+      if(rows.length)await r.query(`UPDATE ${table} SET archivedAt=?,updatedAt=UTC_TIMESTAMP(3) WHERE ${where}`,[after,...ids]);
+      for(const row of rows)await audit(r,`${kind==='requests'?'request':'inquiry'}.${action==='archive'?'archived':'restored'}`,actor,{ref:row.refCode},kind==='requests'?'request':'inquiry',row.id,undefined,{batchId,before:{archivedAt:row.archivedAt},after:{archivedAt:after}});
+      await audit(r,'batch.completed',actor,{count:rows.length,requested:ids.length,unchanged:ids.length-rows.length,operation:action},'batch',batchId,undefined,{batchId});
       return { ok: true, count: rows.length };
     });
   }
@@ -668,7 +653,7 @@ export class AdminConversationService {
           for(const row of rows) await write(line(row));
           count+=rows.length;
         }
-        await audit(runner,request?'requests.exported':'inquiries.exported',actor,{count,filters:query},request?'project_request':'inquiry');
+        await audit(runner,request?'requests.exported':'inquiries.exported',actor,{count,resourceCount:count},'export',null);
         await runner.commitTransaction();
       } finally { await file.close(); }
       const completedDirectory=directory;
