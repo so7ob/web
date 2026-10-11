@@ -273,6 +273,10 @@ export class AdminConversationService {
     if (operations.length !== 1 || (!request && operations[0] === "priority") ||
         (body.note !== undefined && operations[0] !== "status"))
       throw new AuthFault(400, "invalid");
+    const operation = operations[0], value = body[operation];
+    if ((operation === "assigneeId" ? value !== null && typeof value !== "string" : typeof value !== "string") ||
+        (body.note !== undefined && body.note !== null && typeof body.note !== "string"))
+      throw new AuthFault(400, "invalid");
     return transaction(this.db, async (r) => {
       const [record]: Array<ProjectRequest & Inquiry> = await r.query(
         `SELECT * FROM ${table} WHERE id=? FOR UPDATE`,
