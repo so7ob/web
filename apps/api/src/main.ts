@@ -45,7 +45,7 @@ import {
 import { authAttemptMiddleware } from "./auth/attempts.js";
 import { AuthController } from "./auth/controller.js";
 import { AuthHttpPolicy } from "./auth/policy.js";
-import { SafeExceptionFilter } from "./errors.js";
+import { SafeExceptionFilter, validationCode } from "./errors.js";
 import { AuthenticationService, AuthFault } from "@so7ob/server";
 import { Controller, Get, Module, ValidationPipe } from "@nestjs/common";
 import { NestFactory } from "@nestjs/core";
@@ -227,7 +227,7 @@ async function main() {
           errors: Object.fromEntries(
             errors.map((e) => [
               e.property,
-              "invalid",
+              validationCode(Object.values(e.constraints ?? {})[0]),
             ]),
           ),
         }),

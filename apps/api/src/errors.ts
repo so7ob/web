@@ -23,3 +23,6 @@ export class SafeExceptionFilter implements ExceptionFilter {
     res.status(500).json({ok:false,code:'internal_error'});
   }
 }
+
+const fieldCodes=new Set(['required','invalidEmail','name_invalid','email_invalid','phone_invalid','password_short','password_long','password_weak']);
+export function validationCode(value:unknown){return typeof value==='string'&&fieldCodes.has(value)?value:'invalid';}

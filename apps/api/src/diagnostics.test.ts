@@ -2,7 +2,7 @@ import {describe,it,expect} from 'vitest';
 import express from 'express';
 import {once} from 'node:events';
 import {correlationMiddleware,diagnostics,rememberError} from './diagnostics.js';
-import {SafeExceptionFilter} from './errors.js';
+import {SafeExceptionFilter,validationCode} from './errors.js';
 import {AuthFault} from '@so7ob/server';
 import {HttpException,type ArgumentsHost} from '@nestjs/common';
 describe('real HTTP error boundaries',()=>{
@@ -23,3 +23,5 @@ describe('real HTTP error boundaries',()=>{
   }finally{await diagnostics.flush();await new Promise<void>(resolve=>server.close(()=>resolve()));}
  });
 });
+
+it('preserves established field codes but never reflects raw validator messages',()=>{for(const code of ['name_invalid','email_invalid','password_short','password_long','password_weak','required','invalidEmail'])expect(validationCode(code)).toBe(code);expect(validationCode('SQL SYNTHETIC_SECRET')).toBe('invalid');});
