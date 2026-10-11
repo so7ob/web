@@ -14,8 +14,8 @@ export async function signIn(provider: 'credentials', options: { email: string; 
   }
 }
 export async function signOut(options: { callbackUrl?: string; redirect?: boolean } = {}) {
-  const csrf=await (await fetch('/api/auth/csrf',{ credentials:'same-origin',cache:'no-store' })).json();
-  const response=await fetch('/api/auth/signout',{ method:'POST',credentials:'same-origin',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:new URLSearchParams({ csrfToken:csrf.csrfToken,callbackUrl:options.callbackUrl ?? window.location.href,json:'true' }) });
-  if (!response.ok) throw new Error('Logout failed'); const result=await response.json();
-  if (options.redirect!==false) window.location.assign(result.url); return result as { url:string };
+  const {data:csrf}=await requestJson<{csrfToken:string}>('/api/auth/csrf',{credentials:'same-origin',cache:'no-store'});
+  const result=await requestJson<{url:string}>('/api/auth/signout',{method:'POST',credentials:'same-origin',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:new URLSearchParams({csrfToken:csrf.csrfToken,callbackUrl:options.callbackUrl??window.location.href,json:'true'})});
+  if(typeof result.data.url!=='string')throw new ApiError(result.status,'invalid_response');
+  if(options.redirect!==false)window.location.assign(result.data.url);return result.data;
 }

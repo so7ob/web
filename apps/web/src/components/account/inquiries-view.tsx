@@ -1,4 +1,6 @@
 "use client";
+import {ErrorFeedback} from "@/components/errors/error-feedback";
+import {ApiError} from "@/lib/errors/transport";
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import Link from "@/routing/link";
@@ -57,6 +59,7 @@ export function InquiriesView({
   const [data, setData] = useState<InquiryListResponse | null>(null);
   const [loading, setLoading] = useState(true);
   const [failed, setFailed] = useState(false);
+  const [failure,setFailure]=useState<ApiError|null>(null);
   // تسلسل الطلبات: تجاهل الاستجابات القديمة عند تغير البحث/التصفية بسرعة
   const seqRef = useRef(0);
 
@@ -74,9 +77,11 @@ export function InquiriesView({
     if (seq !== seqRef.current) return; // استجابة متأخرة عن طلب أحدث
     if (result.data.ok) {
       setData(result.data);
+      setFailure(null);
       setFailed(false);
     } else {
       setFailed(true);
+      if(!result.cancelled)setFailure(result.error??new ApiError(result.status,"internal_error"));
     }
     setLoading(false);
   }, []);
@@ -184,9 +189,7 @@ export function InquiriesView({
             ))}
           </div>
         ) : failed ? (
-          <div role="alert" className="rounded-xl border border-rose-200 bg-rose-50 px-4 py-3 text-sm font-medium text-rose-700">
-            {authErrors.generic}
-          </div>
+          <ErrorFeedback error={failure} locale={locale} operation={t.title} onRefresh={()=>load(status,page,debouncedQ)}/>
         ) : inquiries.length === 0 ? (
           filterActive ? (
             <div>

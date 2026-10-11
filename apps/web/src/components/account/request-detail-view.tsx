@@ -164,7 +164,7 @@ export function RequestDetailView({
     } else if (result.data.code === "locked") {
       await load();
     } else {
-      toast.error(authErrors.generic);
+      if(!result.cancelled)setFailure(result.error??new ApiError(result.status,"internal_error"));
     }
   }
 
