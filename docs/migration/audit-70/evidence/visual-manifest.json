@@ -1,0 +1,83 @@
+{
+  "files": [
+    {
+      "file": "after-en-desktop.png",
+      "sha256": "644f66b3e48824dba300881aaa76cb558c8edfcc252eea9d4888ec5b7c15e06b",
+      "sourceSha": "54b8921d94b4c4d4a774a3c8a294cdc01916c071",
+      "synthetic": true
+    },
+    {
+      "file": "after-ar-desktop.png",
+      "sha256": "b3e076abea3ccf0e283a3109d8194d14885cce325734eef52ecffd5c620e3bdd",
+      "sourceSha": "54b8921d94b4c4d4a774a3c8a294cdc01916c071",
+      "synthetic": true
+    },
+    {
+      "file": "after-en-mobile.png",
+      "sha256": "330be44c9dd0c3eb1f36a7e57686b493d969072bfdf8b406b82c454a42597593",
+      "sourceSha": "54b8921d94b4c4d4a774a3c8a294cdc01916c071",
+      "synthetic": true
+    },
+    {
+      "file": "after-ar-mobile.png",
+      "sha256": "a8f0ab5b101c6ed00c95b809568094a353d2f885e3a5eb49f1ab2a0fcc6f7698",
+      "sourceSha": "54b8921d94b4c4d4a774a3c8a294cdc01916c071",
+      "synthetic": true
+    },
+    {
+      "file": "detail-ar-mobile.png",
+      "sha256": "a1f54b78fa3b9cf55292964ff2193c91b1dad7d549462a1d6c83369d90222f26",
+      "sourceSha": "54b8921d94b4c4d4a774a3c8a294cdc01916c071",
+      "synthetic": true
+    },
+    {
+      "file": "detail-ar-desktop.png",
+      "sha256": "a0dff5c19c9d51ca87c00d46ef3bb30fb43c049676af272b710f3f1d88336822",
+      "sourceSha": "54b8921d94b4c4d4a774a3c8a294cdc01916c071",
+      "synthetic": true
+    },
+    {
+      "file": "detail-en-desktop.png",
+      "sha256": "463d8c96aa138615bde3e5fd3a9ba5bd7c8c7db179d83b1d12fa392449d142a7",
+      "sourceSha": "54b8921d94b4c4d4a774a3c8a294cdc01916c071",
+      "synthetic": true
+    },
+    {
+      "file": "detail-en-mobile.png",
+      "sha256": "2f3fa4f8612517be1957605fa4209ce2ddc45b594053bb9b6c7bc7651c12571b",
+      "sourceSha": "54b8921d94b4c4d4a774a3c8a294cdc01916c071",
+      "synthetic": true
+    },
+    {
+      "file": "print-ar.pdf",
+      "sha256": "13916afbc146f32c0e4d21ef16812b8a12c6b0ef3a8fcbbf3946038b6a8b8948",
+      "sourceSha": "54b8921d94b4c4d4a774a3c8a294cdc01916c071",
+      "synthetic": true
+    },
+    {
+      "file": "print-en.png",
+      "sha256": "ff1e7e603954da462a4501269e2d91e19bad8bfd9032b05368c82381b595fef9",
+      "sourceSha": "54b8921d94b4c4d4a774a3c8a294cdc01916c071",
+      "synthetic": true
+    },
+    {
+      "file": "print-en.pdf",
+      "sha256": "8cda33701d93cdf4f50018790fc451bf6235d2acb91058777266785dccc3b521",
+      "sourceSha": "54b8921d94b4c4d4a774a3c8a294cdc01916c071",
+      "synthetic": true
+    },
+    {
+      "file": "print-ar.png",
+      "sha256": "a0a023322e529ec51dd75d20b0637bb1c171c9ab6b19b43c65347943907177b0",
+      "sourceSha": "54b8921d94b4c4d4a774a3c8a294cdc01916c071",
+      "synthetic": true
+    },
+    {
+      "file": "live-ar-1280.png",
+      "sha256": "8f75efaeb6fe92cfdc986f97fa0a189bb696d57c104d1410a25d2e91f0d2db5e",
+      "sourceSha": "54b8921d94b4c4d4a774a3c8a294cdc01916c071",
+      "synthetic": true
+    }
+  ],
+  "capture": "Playwright real server and separately running restricted preview; AR/EN, 375/1280"
+}

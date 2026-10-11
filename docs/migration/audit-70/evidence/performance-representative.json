@@ -1,0 +1,86 @@
+{
+  "synthetic": true,
+  "events": 100000,
+  "node": "v24.21.0",
+  "cpu": "Intel(R) Xeon(R) E-2176M  CPU @ 2.70GHz",
+  "cpuCount": 4,
+  "ramBytes": 16733294592,
+  "databaseVersion": "10.11.18-MariaDB-0+deb12u1",
+  "oldFirst": {
+    "samples": 30,
+    "p50": 2.063097000000198,
+    "p95": 4.489046000000599,
+    "max": 9.059965000000375
+  },
+  "oldDeep": {
+    "samples": 30,
+    "p50": 712.8897859999997,
+    "p95": 891.3997610000006,
+    "max": 916.955264000002
+  },
+  "newFirstIncludingStats": {
+    "samples": 30,
+    "p50": 180.59685300000274,
+    "p95": 238.80261699999392,
+    "max": 249.76894800000446
+  },
+  "newCursorIncludingStats": {
+    "samples": 30,
+    "p50": 165.70547500000248,
+    "p95": 196.42433600000368,
+    "max": 197.12829899999633
+  },
+  "newFiltered": {
+    "samples": 30,
+    "p50": 4.059872999998333,
+    "p95": 6.382800999999745,
+    "max": 7.542118999997911
+  },
+  "newDetail": {
+    "samples": 30,
+    "p50": 0.6752510000005714,
+    "p95": 1.4425049999990733,
+    "max": 1.9392420000003767
+  },
+  "newSearch": {
+    "samples": 30,
+    "p50": 608.9796009999991,
+    "p95": 699.5281860000032,
+    "max": 761.0010870000042
+  },
+  "transactionWithoutAudit": {
+    "samples": 30,
+    "p50": 0.6503479999955744,
+    "p95": 0.8002230000129202,
+    "max": 0.9421280000096885
+  },
+  "transactionWithAudit": {
+    "samples": 30,
+    "p50": 1.4549580000020796,
+    "p95": 1.8249480000085896,
+    "max": 1.9841209999867715
+  },
+  "explain": [
+    {
+      "id": "1",
+      "select_type": "SIMPLE",
+      "table": "a",
+      "type": "ref",
+      "possible_keys": "ix_AuditLog_0,audit_resource,audit_resource_id",
+      "key": "audit_resource",
+      "key_len": "2045",
+      "ref": "const,const",
+      "rows": "100",
+      "Extra": "Using where"
+    }
+  ],
+  "storage": [
+    {
+      "TABLE_ROWS": "96939",
+      "DATA_LENGTH": "52019200",
+      "INDEX_LENGTH": "58949632"
+    }
+  ],
+  "rssBytes": 324157440,
+  "limits": "Service/database timing on this host; not production or million-event capacity; run alongside other synthetic checks"
+}
