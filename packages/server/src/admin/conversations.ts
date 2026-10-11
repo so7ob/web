@@ -265,13 +265,27 @@ export class AdminConversationService {
   ) {
     const table = tableFor(kind),
       request = kind === "requests";
+    // Exactly one mutation per PATCH. Presence is not truthiness: null/false/0/""
+    // remain supplied values and are validated by the selected operation.
+    const operations = ["assigneeId", "priority", "status", "action"].filter(
+      key => Object.hasOwn(body, key) && body[key] !== undefined,
+    );
+    if (operations.length !== 1 || (!request && operations[0] === "priority") ||
+        (body.note !== undefined && operations[0] !== "status"))
+      throw new AuthFault(400, "invalid");
+    const operation = operations[0], value = body[operation];
+    if ((operation === "assigneeId" ? value !== null && typeof value !== "string" : typeof value !== "string") ||
+        (body.note !== undefined && body.note !== null && typeof body.note !== "string"))
+      throw new AuthFault(400, "invalid");
     return transaction(this.db, async (r) => {
       const [record]: Array<ProjectRequest & Inquiry> = await r.query(
         `SELECT * FROM ${table} WHERE id=? FOR UPDATE`,
         [id],
       );
       if (!record) throw new AuthFault(404, "not_found");
-      if ("assigneeId" in body) {
+      // Compiled DTOs have own undefined fields even when omitted from JSON.
+      // Only supplied values select an operation; explicit null still unassigns.
+      if (Object.hasOwn(body, "assigneeId") && body.assigneeId !== undefined) {
         requirePermission(
           actor,
           request ? "requests.assign" : "inquiries.assign",
@@ -316,7 +330,7 @@ export class AdminConversationService {
         );
         return { ok: true };
       }
-      if (request && "priority" in body) {
+      if (request && Object.hasOwn(body, "priority") && body.priority !== undefined) {
         requirePermission(actor, "requests.status");
         const priority = String(body.priority);
         if (!(REQUEST_PRIORITIES as readonly string[]).includes(priority))
@@ -337,7 +351,7 @@ export class AdminConversationService {
       }
       if (request && (body.action === "archive" || body.action === "restore"))
         return this.archiveOne(r, actor, kind, id, body.action);
-      if ("status" in body) {
+      if (Object.hasOwn(body, "status") && body.status !== undefined) {
         requirePermission(
           actor,
           request ? "requests.status" : "inquiries.status",

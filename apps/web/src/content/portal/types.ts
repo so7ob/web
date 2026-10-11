@@ -473,6 +473,9 @@ export interface PortalContent {
       emptyBody: string;
       closeReason: string;
       closeReasonPlaceholder: string;
+      savedRefreshFailed: string;
+      refreshData: string;
+      invalidTransition: string;
       statusNotePlaceholder: string;
       applyStatus: string;
       sentReply: string;

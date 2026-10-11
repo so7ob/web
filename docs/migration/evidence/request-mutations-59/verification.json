@@ -1,0 +1,114 @@
+{
+  "syntheticOnly": true,
+  "codeSha": "e52900deda4368b6950ee1eeba97b1ed1fbff242",
+  "focusedBrowser": {
+    "passed": 12,
+    "failed": 0,
+    "widths": [
+      375,
+      1280
+    ],
+    "locales": [
+      "ar",
+      "en"
+    ]
+  },
+  "localChecksAtCapture": [
+    {
+      "script": "lint",
+      "exit": 0,
+      "seconds": 9.658,
+      "sha": "e52900deda4368b6950ee1eeba97b1ed1fbff242"
+    },
+    {
+      "script": "typecheck",
+      "exit": 0,
+      "seconds": 21.075,
+      "sha": "e52900deda4368b6950ee1eeba97b1ed1fbff242"
+    },
+    {
+      "script": "test:independence",
+      "exit": 0,
+      "seconds": 0.828,
+      "sha": "e52900deda4368b6950ee1eeba97b1ed1fbff242"
+    },
+    {
+      "script": "test",
+      "exit": 0,
+      "seconds": 77.37,
+      "sha": "e52900deda4368b6950ee1eeba97b1ed1fbff242"
+    },
+    {
+      "script": "build",
+      "exit": 0,
+      "seconds": 2.981,
+      "sha": "e52900deda4368b6950ee1eeba97b1ed1fbff242"
+    },
+    {
+      "script": "test:worker",
+      "exit": 0,
+      "seconds": 25.185,
+      "sha": "e52900deda4368b6950ee1eeba97b1ed1fbff242"
+    },
+    {
+      "script": "test:file-worker",
+      "exit": 0,
+      "seconds": 9.897,
+      "sha": "e52900deda4368b6950ee1eeba97b1ed1fbff242"
+    },
+    {
+      "script": "test:webhook",
+      "exit": 0,
+      "seconds": 24.654,
+      "sha": "e52900deda4368b6950ee1eeba97b1ed1fbff242"
+    },
+    {
+      "script": "test:auth",
+      "exit": 0,
+      "seconds": 13.557,
+      "sha": "e52900deda4368b6950ee1eeba97b1ed1fbff242"
+    },
+    {
+      "script": "db:check-cms",
+      "exit": 0,
+      "seconds": 0.678,
+      "sha": "e52900deda4368b6950ee1eeba97b1ed1fbff242"
+    },
+    {
+      "script": "test:cms-boundaries",
+      "exit": 0,
+      "seconds": 43.448,
+      "sha": "e52900deda4368b6950ee1eeba97b1ed1fbff242"
+    },
+    {
+      "script": "test:restore",
+      "exit": 0,
+      "seconds": 29.022,
+      "sha": "e52900deda4368b6950ee1eeba97b1ed1fbff242"
+    }
+  ],
+  "fullBrowserAtCapture": {
+    "sha": "e52900deda4368b6950ee1eeba97b1ed1fbff242",
+    "passed": 173,
+    "failed": 1,
+    "failure": "desktop English tree-editor login expected 200, got 429; two additional synthetic login probes shared loopback quota",
+    "followUp": "16 focused cases passed without concurrent probes; final uploaded SHA CI remains separate"
+  },
+  "earlierCodeSha": "e8b5bb8a90c8af3ae14c50e32742d073d116ada0",
+  "earlierFullBrowserPassed": 170,
+  "earlierUnitPassed": 860,
+  "earlierCi": "https://github.com/so7ob/web/actions/runs/38096000831",
+  "redHttpSha": "566aca946f6229b7dd1a9a3e6817ec736975f45c",
+  "redHttp": {
+    "operation": "PATCH priority only",
+    "expectedStatus": 200,
+    "observedStatus": 400,
+    "observedCode": "invalid_assignee"
+  },
+  "limitations": [
+    "No writes to the reported real request",
+    "No deployment or production migration",
+    "Historical checks are not attributed to later commits"
+  ],
+  "strictValidationSha": "3e7e2f2f189ede174a50fa9bdabb52067cdc2e6e"
+}
