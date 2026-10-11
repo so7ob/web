@@ -142,7 +142,7 @@ function AppContent() {
 function RouteError() {
   const error = useRouteError();
   const failure=useMemo(()=>asApiError(error),[error]);
-  useEffect(()=>{if(failure.category!=='cancelled')console.error(JSON.stringify({at:new Date().toISOString(),component:'Web',event:'render_failed',revision:import.meta.env.VITE_BUILD_SHA??'unavailable',category:failure.category,requestId:failure.requestId,errorId:failure.errorId,localId:failure.localId}));},[failure]);
+  useEffect(()=>{if(failure.category!=='cancelled')console.error(JSON.stringify({at:new Date().toISOString(),component:'Web',level:'error',event:'render_failed',revision:import.meta.env.VITE_BUILD_SHA??'unavailable',category:failure.category,requestId:failure.requestId,errorId:failure.errorId,localId:failure.localId}));},[failure]);
   const locale=useLocation().pathname.startsWith('/en')?'en':'ar';
   const status = isRouteErrorResponse(error) ? error.status : error instanceof ApiError?error.status:500;
   return status === 404 ? (

@@ -38,5 +38,5 @@ hydrateRoot(document.getElementById('root')!, <RouterProvider router={router} />
  const notice=document.createElement('section');notice.setAttribute('role','alert');notice.dir=locale==='ar'?'rtl':'ltr';notice.className='m-4 rounded-xl border border-rose-200 bg-rose-50 p-4 text-rose-950';
  const message=document.createElement('p');message.textContent=`${t.failed}. ${t.internal} ${t.local}: ${failure.localId??failure.errorId??failure.requestId}. `+(locale==='ar'?'احتفظ بنسخة من المدخلات قبل إعادة تحميل الصفحة.':'Keep a copy of your input before reloading the page.');notice.append(message);
  const button=document.createElement('button');button.textContent=t.reload;button.className='min-h-11 underline';button.onclick=()=>window.location.reload();notice.append(button);document.getElementById('root')?.before(notice);
- console.error(JSON.stringify({at:new Date().toISOString(),component:'Web',event:'bootstrap_failed',revision:import.meta.env.VITE_BUILD_SHA??'unavailable',localId:failure.localId,requestId:failure.requestId,errorId:failure.errorId}));
+ console.error(JSON.stringify({at:new Date().toISOString(),component:'Web',level:'error',event:'bootstrap_failed',revision:import.meta.env.VITE_BUILD_SHA??'unavailable',localId:failure.localId,requestId:failure.requestId,errorId:failure.errorId}));
 }
