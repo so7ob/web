@@ -246,8 +246,10 @@ export function RequestDetailClient({
       toast.success(kind === "internal_note" ? tr.sentNote : tr.sentReply);
       const controller = new AbortController();
       void load(controller.signal, true);
+      return true;
     } catch (err) {
       toast.error(apiErrorMessage(err, t.auth.errors));
+      return false;
     } finally {
       setSending(false);
       busyRef.current = false;
