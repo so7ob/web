@@ -115,6 +115,8 @@ export function RequestsView({
   const [claimOpen, setClaimOpen] = useState(() => params.get("claim") === "open");
   const [claimRef, setClaimRef] = useState("");
   const [claimSending, setClaimSending] = useState(false);
+  const [claimFailure,setClaimFailure]=useState<ApiError|null>(null);
+  const claimPending=useRef(false);
   const [claimResult, setClaimResult] = useState<{ sent: boolean; devVerifyUrl?: string } | null>(null);
 
   // لوائح ?claim=ok|invalid|login_required
@@ -166,24 +168,21 @@ export function RequestsView({
 
   async function submitClaim(ev: React.FormEvent<HTMLFormElement>) {
     ev.preventDefault();
-    if (claimSending) return;
+    if (claimPending.current) return;
+    setClaimFailure(null);
     const refCode = claimRef.trim().toUpperCase();
     if (!refCode) {
       toast.error(t.claimBody);
       return;
     }
-    setClaimSending(true);
+    claimPending.current=true;setClaimSending(true);
     const result = await apiFetch<{ ok?: boolean; devVerifyUrl?: string }>("/api/account/requests/claim", {
       method: "POST",
       body: JSON.stringify({ refCode }),
     });
-    setClaimSending(false);
-    if (result.status === 429) {
-      toast.error(authErrors.rateLimited);
-      return;
-    }
-    if (result.status === 0) {
-      toast.error(authErrors.generic);
+    claimPending.current=false;setClaimSending(false);
+    if(!result.ok||!result.data.ok){
+      if(!result.cancelled)setClaimFailure(result.error??new ApiError(result.status,"internal_error"));
       return;
     }
     setClaimResult({ sent: true, devVerifyUrl: result.data.devVerifyUrl });
@@ -193,6 +192,7 @@ export function RequestsView({
     setClaimOpen(false);
     setClaimRef("");
     setClaimResult(null);
+    setClaimFailure(null);
   }
 
   const requests = data?.requests ?? [];
@@ -438,7 +438,7 @@ export function RequestsView({
       </Tabs>
 
       {/* حوار ربط طلب سابق */}
-      <Dialog open={claimOpen} onOpenChange={(open) => (open ? setClaimOpen(true) : resetClaim())}>
+      <Dialog open={claimOpen} onOpenChange={(open) => {if(!claimPending.current){if(open)setClaimOpen(true);else resetClaim();}}}>
         <DialogContent className="max-w-md rounded-2xl p-6">
           <DialogHeader>
             <DialogTitle className="text-lg font-bold text-navy">{t.claimTitle}</DialogTitle>
@@ -460,12 +460,14 @@ export function RequestsView({
             </div>
           ) : (
             <form onSubmit={submitClaim} noValidate className="space-y-4">
+              <ErrorFeedback error={claimFailure} locale={locale} operation={t.claimTitle}/>
               <div className="space-y-2">
                 <Label htmlFor="claim-ref" className="text-sm font-semibold text-navy">
                   {t.refCode}
                 </Label>
                 <Input
                   id="claim-ref"
+                  disabled={claimSending}
                   value={claimRef}
                   onChange={(e) => setClaimRef(e.target.value)}
                   dir="ltr"
