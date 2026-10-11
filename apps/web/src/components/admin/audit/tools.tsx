@@ -1,3 +1,4 @@
+import type { AuditReport as Report, AuditReviewCase as ReviewCase, AuditRule as Rule, AuditAlert as Alert, AuditHealth as Health, AuditCaseDetail as CaseDetail } from "@so7ob/contracts";
 import { useEffect, useState, useCallback } from "react";
 import { can, type AuditFilter } from "@so7ob/contracts";
 import { Button } from "@/components/ui/button";
@@ -8,70 +9,6 @@ import type { Me } from "../types";
 import { auditCopy, word } from "./copy";
 import { auditApi, AUDIT_API } from "./api";
 import { auditTime, Outcome } from "./audit-client";
-interface Report {
-  id: string;
-  status: string;
-  format: string;
-  eventCount: number | null;
-  resourceCount: number | null;
-  createdAt: string;
-  expiresAt: string | null;
-  errorCode: string | null;
-  checksum: string | null;
-}
-interface ReviewCase {
-  id: string;
-  title: string;
-  ownerId: string;
-  state: string;
-  held: boolean;
-  revision: number;
-  eventCount: number;
-  closureReason: string | null;
-}
-interface Rule {
-  id: string;
-  name: string;
-  kind: string;
-  enabled: boolean;
-  thresholdValue: number;
-  windowSeconds: number;
-  cooldownSeconds: number;
-  severity: string;
-  rationale: string;
-  scope: string;
-  revision: number;
-}
-interface Alert {
-  id: string;
-  name: string;
-  ruleId: string;
-  severity: string;
-  reason: string;
-  createdAt: string;
-}
-interface Health {
-  status: string;
-  probes: {
-    component: string;
-    status: string;
-    checkedAt: string;
-    failures: number;
-  }[];
-  queues: { status: string; count: number; oldestSeconds: number }[];
-  lastBusinessEventAt: string | null;
-}
-interface CaseDetail {
-  case: ReviewCase;
-  events: { eventId: string }[];
-  history: {
-    id: string;
-    actorName: string;
-    kind: string;
-    body: string;
-    createdAt: string;
-  }[];
-}
 interface ToolData {
   reports?: Report[];
   cases?: ReviewCase[];

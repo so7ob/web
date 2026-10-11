@@ -41,3 +41,5 @@ export * from "./errors.js";
 export * from './audit/index.js';
 
 export * from './audit/display.js';
+
+export type * from "./audit/workspace.js";

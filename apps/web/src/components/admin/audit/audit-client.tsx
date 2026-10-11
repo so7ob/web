@@ -1,3 +1,4 @@
+import type { AuditPreference, AuditSavedView } from "@so7ob/contracts";
 "use client";
 import { useEffect, useState, useCallback, useRef } from "react";
 import { useSearchParams } from "react-router-dom";
@@ -107,7 +108,7 @@ export function AuditClient({ me, locale }: { me: Me; locale: "ar" | "en" }) {
       "changes",
     ]);
   const [views, setViews] = useState<
-      { id: string; name: string; filters: AuditFilter }[]
+      AuditSavedView[]
     >([]),
     [viewName, setViewName] = useState("");
   const [event, setEvent] = useState<AuditEventV1 | null>(null),
@@ -170,7 +171,7 @@ export function AuditClient({ me, locale }: { me: Me; locale: "ar" | "en" }) {
   useEffect(() => {
     const controller = new AbortController();
     void auditApi<{
-      preferences: { timezone: string; density: string; columns: string[] };
+      preferences: AuditPreference;
     }>("/preferences", undefined, "GET", controller.signal)
       .then((r) => {
         setTimezone(r.preferences.timezone);
