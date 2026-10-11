@@ -10,5 +10,5 @@
   "generator": "tools/migration/generate-block-contracts.mjs",
   "targetTest": "packages/contracts/src/source-block-parity.test.ts",
   "fixtureSHA256": "11a9e7cb8bc67f89229d9a674679e276420d835230f5b736f3c21e06397ac3f7",
-  "maximumDocumentOracle": "docs/migration/evidence/final-code-parity/legacy-size-ranking.json"
+  "maximumDocumentOracle": "tests/fixtures/legacy-size-ranking.json"
 }

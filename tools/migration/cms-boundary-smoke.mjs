@@ -62,7 +62,7 @@ try{
  measurements.push({transportBytes:limit,accepted:full.status,overByOne:tooLarge.status,anonymous:anonymous.status,storedBytes:Number(before.bytes),paddingIsNotStorageEvidence:true});
  // Exhaust all 27 finite schema shapes, then fill the 60-block document with the largest.
  const maximum=largestLegacyDocument(blockSchemas);
- const reference=JSON.parse(readFileSync('docs/migration/evidence/final-code-parity/legacy-size-ranking.json','utf8'));
+ const reference=JSON.parse(readFileSync('tests/fixtures/legacy-size-ranking.json','utf8'));
  assert.deepEqual(maximum.ranking,reference.ranking);
  let raw=JSON.stringify(maximum.blocks);maximum.blocks=null;assert.equal(Buffer.byteLength(raw),reference.bytes);
  let normalized=validateBlocks(raw);assert(normalized.ok);const canonical=JSON.stringify(normalized.blocks),bytes=Buffer.byteLength(canonical),hash=createHash('sha256').update(canonical).digest('hex');normalized=null;

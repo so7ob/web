@@ -95,12 +95,11 @@ node --env-file=.env apps/worker/dist/main.js
 
 | المسار | المسؤولية |
 |---|---|
-| `apps/web` | React + Vite + React Router؛ واجهة المتصفح وSSR |
+| `apps/web` | React + Vite + React Router؛ واجهة المتصفح وSSR؛ `public/` داخله مصدر الأصول الثابتة |
 | `apps/api` | NestJS + Express؛ REST والجلسات والصلاحيات واستضافة SSR |
 | `apps/worker` | عامل Node مستقل يستطلع مهام MariaDB بإيجارات وأقفال |
 | `packages/contracts` | عقود البيانات والأذون والتحقق المشتركة |
 | `packages/server` | منطق الأعمال والتدقيق والتخزين عبر TypeORM/mysql2 |
-| `reference/` | أرشيف المصدر التاريخي، معزول عن تشغيل المنتج |
 
 الخادم يتحقق من الوصول قبل خدمة الملفات الخاصة. تُحفظ مهام البريد وWebhook والتنظيف والتقارير في MariaDB؛ لا يحتاج المنتج إلى Redis أو Kafka. مخطط البنية مثبت بتاريخ إنشائه؛ [شرح البنية](docs/migration/architecture-explained-2026-10-09.ar.md) و[مخططات التسلسل التفاعلية](.archify/README.md) يوضحان مصدره وحدوده. GitHub يعرض مصدر HTML؛ نزّل الملف لفتحه تفاعليًا.
 
@@ -117,12 +116,13 @@ npm run lint
 npm run typecheck
 npm test
 npm run build
+npm run test:independence
 npm run test:e2e
 npm run test:infra
 git diff --check
 ```
 
-تحتاج الاختبارات إلى MariaDB معزولة وبيانات اصطناعية. اضبط `TEST_DATABASE_NAME` للتكامل، واستخدم `DATABASE_NAME` مطابقًا للنمط `so7ob_*_test` للمتصفح مع Chromium الخاص بـPlaywright. تشغّل CI أيضًا اختبارات العامل والملفات وWebhook والمصادقة وحدود CMS والاستعادة. [آخر أدلة الإصلاح](docs/migration/audit-72/README.md) تسجل **895 اختبارًا و240 مسار متصفح** على النسخة المحددة فيها؛ [GitHub Actions](https://github.com/so7ob/web/actions) هو مرجع نتائج كل التزام لاحق.
+[تهيئة الفحوص من نسخة نظيفة](docs/testing.md) توثق قواعد الاختبار والخدمات وأوامر CI والصيانة. تحتاج الاختبارات إلى MariaDB معزولة وبيانات اصطناعية. اضبط `TEST_DATABASE_NAME` للتكامل، واستخدم `DATABASE_NAME` مطابقًا للنمط `so7ob_*_test` للمتصفح مع Chromium الخاص بـPlaywright. تشغّل CI أيضًا اختبارات العامل والملفات وWebhook والمصادقة وحدود CMS والاستعادة. [آخر أدلة الإصلاح](docs/migration/audit-72/README.md) تسجل **895 اختبارًا و240 مسار متصفح** على النسخة المحددة فيها؛ [GitHub Actions](https://github.com/so7ob/web/actions) هو مرجع نتائج كل التزام لاحق.
 
 ## دليل الوثائق
 
@@ -133,13 +133,13 @@ git diff --check
 | معالجة الأخطاء والتتبع | [التشخيص الآمن](docs/migration/error-diagnostics-61.md) |
 | العامل والطوابير | [التشغيل الخلفي](docs/migration/worker-and-operations.md) · [صحة العامل](docs/migration/worker-health-50.md) |
 | التعافي | [متطلبات الاستعادة المستقلة](docs/migration/independent-recovery-56.md) |
-| النقل من المصدر | [القبول النهائي](docs/migration/final-code-parity.md) · [عزل المرجع](docs/migration/reference-isolation.md) |
+| النقل من المصدر | [القبول النهائي](docs/migration/final-code-parity.md) · [أصل الشيفرة](docs/migration/source-provenance.md) |
 | المساهمة | [CONTRIBUTING](CONTRIBUTING.md) · [تعليمات المستودع](AGENTS.md) |
 
 ## المصدر والمساهمة
 
 هذا تنفيذ مستقل يحافظ على هوية ووظائف [so7ob/Website](https://github.com/so7ob/Website). خط الاستيراد الأصلي `5321b7fd11db421c83290b262f276811e5f04e5f`، والمقارنة المثبتة `dddf8cd00a19cf7d562f503549f4c000109057d1`. استُخدم [Rakim](https://github.com/so7ob/Rakim) عند `cae0950bac45d97971bd3766c8c34f9869a856af` مرجعًا معماريًا للقراءة فقط.
 
-اكتمل قبول نقل الكود والوظائف ضمن [النطاق الموثق](docs/migration/final-code-parity.md)؛ نشر الإنتاج ونقل بياناته والاستعادة خارج المضيف لها إجراءات تحقق مستقلة. تشغيل المنتج لا يعتمد على Next.js أو Prisma أو Bun؛ `npm run test:independence` يتحقق من عزل الأرشيف.
+اكتمل قبول نقل الكود والوظائف ضمن [النطاق الموثق](docs/migration/final-code-parity.md)؛ نشر الإنتاج ونقل بياناته والاستعادة خارج المضيف لها إجراءات تحقق مستقلة. تشغيل المنتج لا يعتمد على Next.js أو Prisma أو Bun؛ `npm run test:independence` يفحص استقلال المنتج وأدوات الاختبار والصيانة دون أرشيف أو checkout تاريخي.
 
 كل الكود والوثائق وIssues وPRs تُدار في `so7ob/web`: **Issue → فرع → PR → فحوص → مراجعة**. [المهارات المحلية](.agents/skills) وأدوات المخططات أدوات تطوير وليست اعتمادات تشغيل. تبقى حقوق المصدر وإشعارات الأطراف الثالثة سارية؛ اسم وشعار سُحُب للتقنية، وخطوط IBM Plex تحت إشعارات OFL الخاصة بها.

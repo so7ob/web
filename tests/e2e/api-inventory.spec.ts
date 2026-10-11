@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
 import { readFileSync } from 'node:fs';
-const inventory: {method:string;path:string}[] = JSON.parse(readFileSync('docs/migration/api-inventory.json','utf8'));
+const inventory: {method:string;path:string}[] = JSON.parse(readFileSync('tests/fixtures/api-inventory.json','utf8'));
 test('OpenAPI declares every inventoried legacy handler and its versioned mapping', async ({ request }) => {
   const response=await request.get('/api/docs-json');
   expect(response.status()).toBe(200);

@@ -1,7 +1,0 @@
-{
-  "sameDirectedTopology": true,
-  "nodeCount": 12,
-  "edgeCount": 11,
-  "laneCount": 6,
-  "retryHasNoOutgoingEdge": true
-}

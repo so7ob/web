@@ -105,7 +105,6 @@ The worker handles mail, scheduled work and reports; the web server alone does n
 | `apps/worker` | Independent Node worker polling MariaDB jobs with leases and locks |
 | `packages/contracts` | Shared data contracts, permissions and validation |
 | `packages/server` | Business rules, audit and TypeORM/mysql2 persistence |
-| `reference/` | Historical source archive, isolated from product runtime |
 
 Private files are served after authorization. Mail, webhook, cleanup and report jobs use MariaDB; the product does not require Redis or Kafka. The architecture diagram is pinned to its creation source: see the [source-backed explanation](docs/migration/architecture-explained-2026-10-09.ar.md) and [interactive diagram index](.archify/README.md). Download the HTML files to explore them; GitHub displays their source.
 
@@ -122,12 +121,13 @@ npm run lint
 npm run typecheck
 npm test
 npm run build
+npm run test:independence
 npm run test:e2e
 npm run test:infra
 git diff --check
 ```
 
-Use isolated MariaDB and synthetic fixtures. Set `TEST_DATABASE_NAME` for integration tests; browser tests require `DATABASE_NAME` matching `so7ob_*_test` and Playwright Chromium. CI also runs worker, file, webhook, authentication, CMS boundary and restore checks. The [latest fix evidence](docs/migration/audit-72/README.md) records **895 tests and 240 browser journeys** for its pinned source; consult [GitHub Actions](https://github.com/so7ob/web/actions) for subsequent commits.
+[Clean-checkout verification](docs/testing.md) documents services, test databases and CI/maintenance commands. Use isolated MariaDB and synthetic fixtures. Set `TEST_DATABASE_NAME` for integration tests; browser tests require `DATABASE_NAME` matching `so7ob_*_test` and Playwright Chromium. CI also runs worker, file, webhook, authentication, CMS boundary and restore checks. The [latest fix evidence](docs/migration/audit-72/README.md) records **895 tests and 240 browser journeys** for its pinned source; consult [GitHub Actions](https://github.com/so7ob/web/actions) for subsequent commits.
 
 ## Documentation map
 
@@ -138,13 +138,13 @@ Use isolated MariaDB and synthetic fixtures. Set `TEST_DATABASE_NAME` for integr
 | Errors and correlation | [Safe diagnostics](docs/migration/error-diagnostics-61.md) |
 | Worker and queues | [Worker operations](docs/migration/worker-and-operations.md) · [Worker health](docs/migration/worker-health-50.md) |
 | Recovery | [Independent recovery requirements](docs/migration/independent-recovery-56.md) |
-| Source migration | [Final acceptance](docs/migration/final-code-parity.md) · [Reference isolation](docs/migration/reference-isolation.md) |
+| Source migration | [Final acceptance](docs/migration/final-code-parity.md) · [Source provenance](docs/migration/source-provenance.md) |
 | Contributions | [CONTRIBUTING](CONTRIBUTING.md) · [Repository instructions](AGENTS.md) |
 
 ## Provenance and contributions
 
 This is an independent implementation preserving the identity and functionality of [so7ob/Website](https://github.com/so7ob/Website). Original import: `5321b7fd11db421c83290b262f276811e5f04e5f`; pinned comparison: `dddf8cd00a19cf7d562f503549f4c000109057d1`. [Rakim](https://github.com/so7ob/Rakim) at `cae0950bac45d97971bd3766c8c34f9869a856af` is a read-only architectural reference.
 
-Code and functional migration acceptance is complete within the [documented scope](docs/migration/final-code-parity.md). Production deployment, data migration and off-host recovery require separate verification. The product does not run on Next.js, Prisma or Bun; `npm run test:independence` verifies the archive boundary.
+Code and functional migration acceptance is complete within the [documented scope](docs/migration/final-code-parity.md). Production deployment, data migration and off-host recovery require separate verification. The product does not run on Next.js, Prisma or Bun; `npm run test:independence` checks the product and its tools without a source archive or historical checkout.
 
 All implementation, documentation, issues and PRs belong to `so7ob/web`: **Issue → branch → PR → checks → review**. [Local skills](.agents/skills) and diagram tools support development and are not runtime dependencies. Existing source copyright and third-party notices remain applicable. The So7ob name and logo belong to سُحُب التقنية; IBM Plex fonts retain their OFL notices.
