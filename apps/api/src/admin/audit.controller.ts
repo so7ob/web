@@ -156,7 +156,9 @@ export class AuditController {
         "Content-Security-Policy",
         "default-src 'none'; style-src 'unsafe-inline'; sandbox allow-modals",
       );
-    res.download(report.path, `audit-${id}.${report.format}`);
+    // The absolute path is service-generated and authorized; private DATA_DIR may
+    // legitimately contain dot-directories (for example the isolated preview).
+    res.download(report.path, `audit-${id}.${report.format}`, { dotfiles: "allow" });
   }
   @Get("rules") rules(@Req() r: AuditRequest) {
     return this.operations.rules(r.actor);
