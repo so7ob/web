@@ -20,3 +20,8 @@ it('distinguishes network, deadline and deliberate cancellation without retry',a
  await expect(requestJson('/api/test',{}, {timeoutMs:5})).rejects.toMatchObject({code:'timeout'});
  const controller=new AbortController();controller.abort();await expect(requestJson('/api/test',{signal:controller.signal})).rejects.toMatchObject({code:'cancelled'});
 });
+
+it('keeps the server trace on logout failure and never claims a redirect succeeded',async()=>{
+ const {signOut}=await import('@/routing/auth');const id='e14cb2f9-4851-49af-902e-4779d87622c4';const fetch=vi.fn().mockResolvedValueOnce(new Response('{"csrfToken":"synthetic"}')).mockResolvedValueOnce(new Response('{"ok":false,"code":"internal_error"}',{status:500,headers:{'X-Error-Id':id}}));vi.stubGlobal('fetch',fetch);
+ await expect(signOut({redirect:false,callbackUrl:'/'})).rejects.toMatchObject({status:500,errorId:id,uncertain:true});expect(fetch).toHaveBeenCalledTimes(2);
+});

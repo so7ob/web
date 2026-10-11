@@ -12,6 +12,7 @@ for(const locale of ['ar','en'] as const)test(`${locale}: account server failure
  await page.route('**/api/account/inquiries/synthetic-diagnostics',route=>route.fulfill(failure));
  await page.goto(`/${locale}/account/inquiries/synthetic-diagnostics`,{waitUntil:'networkidle'});
  await expect(page.getByText(errorCopy[locale].internal,{exact:true})).toBeVisible();await expect(page.getByText(t.account.inquiries.notFound,{exact:true})).toHaveCount(0);
+ for(const kind of ['requests','inquiries']){await page.route('**/api/account/'+kind+'?**',route=>route.fulfill(failure));await page.goto(`/${locale}/account/${kind}`,{waitUntil:'networkidle'});await expect(page.getByText(errorCopy[locale].internal,{exact:true})).toBeVisible();await expect(page.getByText(id,{exact:false})).toBeVisible();}
  await page.goto(`/${locale}/account/profile`,{waitUntil:'networkidle'});const name=page.locator('#profile-name');await name.fill('Synthetic unsaved profile');
  await page.route('**/api/account/profile',route=>route.request().method()==='PATCH'?route.fulfill(failure):route.continue());await page.locator('form button[type=submit]').click();
  await expect(page.getByText(errorCopy[locale].internal,{exact:true})).toBeVisible();await expect(page.getByText(id,{exact:false})).toBeVisible();await expect(name).toHaveValue('Synthetic unsaved profile');
