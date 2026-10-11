@@ -87,7 +87,13 @@
       "sha": "e52900deda4368b6950ee1eeba97b1ed1fbff242"
     }
   ],
-  "fullBrowserAtCapture": "running; final result follows PR #60 checks and review evidence",
+  "fullBrowserAtCapture": {
+    "sha": "e52900deda4368b6950ee1eeba97b1ed1fbff242",
+    "passed": 173,
+    "failed": 1,
+    "failure": "desktop English tree-editor login expected 200, got 429; two additional synthetic login probes shared loopback quota",
+    "followUp": "16 focused cases passed without concurrent probes; final uploaded SHA CI remains separate"
+  },
   "earlierCodeSha": "e8b5bb8a90c8af3ae14c50e32742d073d116ada0",
   "earlierFullBrowserPassed": 170,
   "earlierUnitPassed": 860,
@@ -103,5 +109,6 @@
     "No writes to the reported real request",
     "No deployment or production migration",
     "Historical checks are not attributed to later commits"
-  ]
+  ],
+  "strictValidationSha": "3e7e2f2f189ede174a50fa9bdabb52067cdc2e6e"
 }
