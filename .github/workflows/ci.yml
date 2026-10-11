@@ -66,6 +66,16 @@ jobs:
           MYSQL_PWD: synthetic-ci-root-only
       - run: npm run db:check-cms
       - run: npm run test:cms-boundaries
+      - name: Prepare isolated v1 upgrade rehearsal database
+        run: mariadb --no-defaults --protocol=TCP --host=127.0.0.1 --port=3306 --user=root -e 'CREATE DATABASE so7ob_schema_upgrade_test'
+        env:
+          MYSQL_PWD: synthetic-ci-root-only
+      - name: Verify v1 records through the current ordered migrations
+        run: node --import tsx tools/migration/upgrade-source-v2-smoke.ts
+        env:
+          DATABASE_NAME: so7ob_schema_upgrade_test
+          DATABASE_USER: root
+          DATABASE_PASSWORD: synthetic-ci-root-only
       - run: npm run test:restore
         env:
           DATABASE_USER: root
