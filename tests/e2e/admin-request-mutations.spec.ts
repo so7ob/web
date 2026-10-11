@@ -1,3 +1,4 @@
+import {errorCopy} from '../../apps/web/src/lib/errors/messages';
 import { expect, type APIRequestContext } from '@playwright/test';
 import { test } from './quota-fixture';
 import { readFileSync } from 'node:fs';
@@ -119,7 +120,7 @@ for (const locale of ['ar','en'] as const) test(`${locale}: details save priorit
       else await route.continue();
     });
     const failed = patchResponse();await page.getByRole('button',{name:tr.applyStatus,exact:true}).click();expect((await failed).status()).toBe(500);
-    await expect(page.getByText(t.auth.errors.generic,{exact:true})).toBeVisible();await expect(note).toHaveValue('Synthetic note retained after failure');
+    await expect(page.getByText(errorCopy[locale].internal,{exact:true})).toBeVisible();await expect(note).toHaveValue('Synthetic note retained after failure');
     expect((await f.row()).status).toBe('new');
     await page.unroute('**/api/admin/requests/'+f.id);
     const saved = patchResponse();await page.getByRole('button',{name:tr.applyStatus,exact:true}).click();expect((await saved).status()).toBe(200);
@@ -133,7 +134,7 @@ for (const locale of ['ar','en'] as const) test(`${locale}: details save priorit
       else await route.continue();
     });
     const conflict = patchResponse();await page.getByRole('button',{name:tr.applyStatus,exact:true}).click();expect((await conflict).status()).toBe(409);
-    await expect(page.getByText(tr.invalidTransition,{exact:true})).toBeVisible();await expect(reason).toHaveValue('Synthetic closure reason retained');
+    await expect(page.getByText(errorCopy[locale].transition,{exact:true})).toBeVisible();await expect(reason).toHaveValue('Synthetic closure reason retained');
     await page.unroute('**/api/admin/requests/'+f.id);
     const closed = patchResponse();await page.getByRole('button',{name:tr.applyStatus,exact:true}).click();expect((await closed).status()).toBe(200);
     await expect.poll(async()=>(await f.row()).status).toBe('closed');

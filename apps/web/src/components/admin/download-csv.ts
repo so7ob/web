@@ -4,7 +4,7 @@ export async function downloadCsv(url:string,filename:string):Promise<void> {
  const response=await fetch(url,{cache:'no-store',credentials:'same-origin',redirect:'error'});
  if(!response.ok){
   const data=await response.json().catch(()=>null);
-  throw new ApiError(response.status,data?.code??'generic',data);
+  throw new ApiError(response.status,data?.code??'generic',data,response.headers);
  }
  if(!response.headers.get('content-type')?.startsWith('text/csv')) throw new ApiError(502,'export_incomplete');
  const blob=await response.blob();

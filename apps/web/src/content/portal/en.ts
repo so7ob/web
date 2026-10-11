@@ -1,3 +1,4 @@
+import {errorCopy} from '@/lib/errors/messages';
 import type { PortalContent } from "./types";
 
 /** Portal translations — English (mirrors ar.ts; parity is tested) */
@@ -40,6 +41,7 @@ export const portalEn: PortalContent = {
     resendVerification: "Resend confirmation link",
     devOutboxHint: "Email dev mode: messages are logged to the admin outbox without actual sending.",
     errors: {
+      diagnostic: errorCopy.en,
       invalid: "Invalid input",
       wrongPassword: "Current password is incorrect",
       emailTaken: "Email already used by another account",

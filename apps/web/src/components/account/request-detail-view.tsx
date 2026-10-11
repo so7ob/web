@@ -1,4 +1,6 @@
 "use client";
+import {ErrorFeedback} from '@/components/errors/error-feedback';
+import {ApiError} from '@/lib/errors/transport';
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import Link from "@/routing/link";
@@ -52,6 +54,7 @@ export function RequestDetailView({
   authErrors: PortalContent["auth"]["errors"];
   priorities: Record<string, string>;
 }) {
+  const [failure,setFailure]=useState<ApiError|null>(null);
   const [request, setRequest] = useState<RequestDetail | null>(null);
   const [phase, setPhase] = useState<"loading" | "ready" | "error">("loading");
   const [errorCode, setErrorCode] = useState<string | null>(null);
@@ -70,11 +73,13 @@ export function RequestDetailView({
   const load = useCallback(async () => {
     const result = await apiFetch<RequestDetailResponse>(`/api/account/requests/${id}`);
     if (result.data.ok && result.data.request) {
+      setFailure(null);
       setRequest(result.data.request);
       setPhase("ready");
     } else {
       setErrorCode(result.data.code ?? "error");
-      setPhase("error");
+      if(!result.cancelled)setFailure(result.error??new ApiError(result.status,"internal_error"));
+      setPhase(prev=>prev==="ready"?prev:"error");
     }
   }, [id]);
 
@@ -118,7 +123,7 @@ export function RequestDetailView({
     setSending(false);
 
     if (result.data.ok) {
-      setReply("");
+      setReply(current=>current===reply?"":current);
       toast.success(d.replySuccess);
       await load();
       return;
@@ -127,7 +132,7 @@ export function RequestDetailView({
       await load(); // المحادثة قُفلت من الطاقم meanwhile
       return;
     }
-    toast.error(result.status === 429 ? authErrors.rateLimited : authErrors.generic);
+    if(!result.cancelled)setFailure(result.error??new ApiError(result.status,"internal_error"));
   }
 
   async function onFileSelected(ev: React.ChangeEvent<HTMLInputElement>) {
@@ -192,7 +197,7 @@ export function RequestDetailView({
         <span className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-rose-100 text-rose-800">
           <ShieldX className="h-7 w-7" aria-hidden="true" />
         </span>
-        <p className="mt-4 font-semibold text-navy">{errorCode === "forbidden" || errorCode === "not_found" ? authErrors.invalid : authErrors.generic}</p>
+        <ErrorFeedback error={failure??new ApiError(404,errorCode??"not_found")} locale={locale} operation={t.title} onRefresh={load}/>
         <Button asChild variant="outline" className="mt-6 h-11 rounded-full px-6 font-semibold">
           <Link href={`/${locale}/account/requests`}>{t.title}</Link>
         </Button>
@@ -205,6 +210,7 @@ export function RequestDetailView({
 
   return (
     <div className="space-y-6">
+      <ErrorFeedback error={failure} locale={locale} operation={t.title} onRefresh={load}/>
       {/* ترويسة الطباعة — تظهر على الورق فقط: العلامة + التاريخ */}
       <div className="hidden print:block print:border-b print:border-border print:pb-2">
         <p className="text-xs font-medium text-muted-foreground">

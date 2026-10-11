@@ -7,54 +7,11 @@ import { ar as arDfns } from "date-fns/locale";
 import type { PortalContent } from "@/content/portal/types";
 import type { Locale } from "@/lib/i18n";
 
-/** خطأ موحد لاستجابات الواجهة غير الناجحة */
-export class ApiError extends Error {
-  status: number;
-  code: string;
-  constructor(status: number, code: string, readonly body: Record<string, unknown> | null = null) {
-    super(code);
-    this.name = "ApiError";
-    this.status = status;
-    this.code = code;
-  }
-}
-
-async function handle<T>(res: Response): Promise<T> {
-  let data: unknown = null;
-  try {
-    data = await res.json();
-  } catch {
-    // لا جسم JSON — يعالج كخطأ عام
-  }
-  if (!res.ok) {
-    const code = (data as { code?: string } | null)?.code ?? "generic";
-    throw new ApiError(res.status, code, typeof data === "object" && data !== null ? data as Record<string, unknown> : null);
-  }
-  return data as T;
-}
-
-export async function apiGet<T>(url: string): Promise<T> {
-  const res = await fetch(url, { cache: "no-store" });
-  return handle<T>(res);
-}
-
-export async function apiSend<T>(
-  url: string,
-  method: "POST" | "PATCH" | "PUT" | "DELETE",
-  body?: unknown,
-): Promise<T> {
-  const res = await fetch(url, {
-    method,
-    headers: { "Content-Type": "application/json" },
-    body: body === undefined ? undefined : JSON.stringify(body),
-  });
-  return handle<T>(res);
-}
-
-export async function apiUpload<T>(url: string, form: FormData): Promise<T> {
-  const res = await fetch(url, { method: "POST", body: form });
-  return handle<T>(res);
-}
+export {ApiError} from '@/lib/errors/transport';
+import {ApiError,requestJson} from '@/lib/errors/transport';
+export async function apiGet<T>(url:string,signal?:AbortSignal):Promise<T>{return (await requestJson<T>(url,{cache:'no-store',signal})).data;}
+export async function apiSend<T>(url:string,method:'POST'|'PATCH'|'PUT'|'DELETE',body?:unknown):Promise<T>{return (await requestJson<T>(url,{method,headers:{'Content-Type':'application/json'},body:body===undefined?undefined:JSON.stringify(body)},{requireOk:true})).data;}
+export async function apiUpload<T>(url:string,form:FormData):Promise<T>{return (await requestJson<T>(url,{method:'POST',body:form},{requireOk:true})).data;}
 
 /** رسالة خطأ مفهومة من رمز الواجهة — كل النصوص من ترجمات المنصة */
 export function apiErrorMessage(
@@ -70,12 +27,15 @@ export function apiErrorMessage(
     empty: errors.required,
     email_invalid: errors.emailInvalid,
     invalid_email: errors.emailInvalid,
-    not_found: errors.generic,
-    forbidden: errors.generic,
-    unauthorized: errors.generic,
+    not_found: errors.diagnostic.unavailable,
+    forbidden: errors.diagnostic.authorization,
+    unauthorized: errors.diagnostic.authentication,
     bad_origin: errors.generic,
   };
-  return map[code] ?? errors.generic;
+  if(err instanceof ApiError&&err.category==='cancelled')return '';
+  const message=map[code]??(err instanceof ApiError?errors.diagnostic[err.category]:errors.generic);
+  const reference=err instanceof ApiError?(err.errorId??err.requestId):undefined;
+  return reference?`${message} (${reference})`:message;
 }
 
 const dfnsLocale = (locale: Locale) => (locale === "ar" ? arDfns : undefined);

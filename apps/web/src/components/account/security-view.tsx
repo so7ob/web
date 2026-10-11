@@ -1,4 +1,6 @@
 "use client";
+import {ErrorFeedback} from "@/components/errors/error-feedback";
+import {ApiError} from "@/lib/errors/transport";
 
 import { useCallback, useEffect, useState } from "react";
 import { signOut } from "@/routing/auth";
@@ -30,7 +32,7 @@ export function SecurityView({
   const [newPassword, setNewPassword] = useState("");
   const [confirm, setConfirm] = useState("");
   const [fieldErrors, setFieldErrors] = useState<{ currentPassword?: string; newPassword?: string; confirm?: string }>({});
-  const [formError, setFormError] = useState<string | null>(null);
+  const [formError, setFormError] = useState<ApiError | null>(null);
   const [saving, setSaving] = useState(false);
 
   const [sessions, setSessions] = useState<AuthSessionRow[] | null>(null);
@@ -39,7 +41,7 @@ export function SecurityView({
 
   const loadSessions = useCallback(async () => {
     const result = await apiFetch<{ ok?: boolean; sessions?: AuthSessionRow[] }>("/api/auth/sessions");
-    setSessions(result.data.ok ? (result.data.sessions ?? []) : []);
+    if(result.data.ok){setSessions(result.data.sessions??[]);}else if(!result.cancelled){setFormError(result.error??new ApiError(result.status,"internal_error"));}
   }, []);
 
   useEffect(() => {
@@ -84,7 +86,7 @@ export function SecurityView({
     if (serverErrors.newPassword === "password_weak") mapped.newPassword = authErrors.passwordWeak;
     if (serverErrors.newPassword === "same_password") mapped.newPassword = authErrors.invalid;
     setFieldErrors(mapped);
-    if (Object.keys(mapped).length === 0) setFormError(authErrors.generic);
+    if (Object.keys(mapped).length === 0) setFormError(result.error??new ApiError(result.status,"internal_error"));
   }
 
   async function revoke(id: string) {
@@ -105,7 +107,7 @@ export function SecurityView({
       toast.success(t.revoked);
       await loadSessions();
     } else {
-      toast.error(authErrors.generic);
+      if(!result.cancelled)setFormError(result.error??new ApiError(result.status,"internal_error"));
     }
   }
 
@@ -121,7 +123,7 @@ export function SecurityView({
       toast.success(t.revoked);
       await loadSessions();
     } else {
-      toast.error(authErrors.generic);
+      if(!result.cancelled)setFormError(result.error??new ApiError(result.status,"internal_error"));
     }
   }
 
@@ -147,11 +149,7 @@ export function SecurityView({
             </span>
             {t.changePassword}
           </h2>
-          {formError && (
-            <div role="alert" className="mt-4 rounded-xl border border-rose-200 bg-rose-50 px-4 py-3 text-sm font-medium text-rose-700">
-              {formError}
-            </div>
-          )}
+          <ErrorFeedback error={formError} locale={locale} operation={t.title}/>
           <form onSubmit={onChangePassword} noValidate className="mt-5 space-y-5">
             <PasswordField
               id="security-current"

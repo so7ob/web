@@ -1,3 +1,4 @@
+import {ApiError,requestJson,asApiError} from '@/lib/errors/transport';
 /**
  * جلب واجهات API من المتصفح — مسارات نسبية فقط، JSON افتراضيًا،
  * ولا يرمي الاستثناءات: النتيجة تُقرأ من {ok,status,data}.
@@ -13,6 +14,8 @@ export interface ApiResult<T> {
   ok: boolean;
   status: number;
   data: T;
+  error?: ApiError;
+  cancelled?: boolean;
 }
 
 export async function apiFetch<T = Record<string, unknown>>(url: string, init: RequestInit = {}): Promise<ApiResult<T>> {
@@ -21,11 +24,11 @@ export async function apiFetch<T = Record<string, unknown>>(url: string, init: R
     headers.set("Content-Type", "application/json");
   }
   try {
-    const res = await fetch(url, { ...init, headers });
-    const data = (await res.json().catch(() => ({}))) as T;
-    return { ok: res.ok, status: res.status, data };
-  } catch {
-    return { ok: false, status: 0, data: {} as T };
+    const result=await requestJson<T>(url,{...init,headers},{requireOk:!!init.method&&init.method!=='GET'});
+    return {ok:true,status:result.status,data:result.data};
+  } catch (caught) {
+    const error=asApiError(caught);
+    return {ok:false,status:error.status,data:(error.body??{ok:false,code:error.code}) as T,error,cancelled:error.category==='cancelled'};
   }
 }
 
