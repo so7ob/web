@@ -10,6 +10,7 @@ import {
   writeFileSync,
 } from "node:fs";
 import { resolve } from "node:path";
+import { tmpdir } from "node:os";
 const origin = new URL(process.env.E2E_BASE_URL ?? "https://127.0.0.1:3198");
 if (
   origin.protocol !== "https:" ||
@@ -44,7 +45,7 @@ execFileSync(
   ],
   { stdio: "ignore" },
 );
-const dataDir = mkdtempSync(resolve(directory, "..", "data-"));
+const dataDir = mkdtempSync(resolve(tmpdir(), ".so7ob-e2e-data-"));
 writeFileSync(
   resolve(".migration/e2e/storage.json"),
   JSON.stringify({ dataDir }),

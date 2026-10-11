@@ -14,6 +14,7 @@ import { AuditReader } from "./reader.js";
 import { AuditReports, csvCell } from "./reports.js";
 import { AuditReviews } from "./reviews.js";
 import { AuditOperations } from "./operations.js";
+import { auditContext } from "./context.js";
 import { validateFilter } from "./query.js";
 import { diff, safeContext } from "./redaction.js";
 const name = process.env.TEST_DATABASE_NAME;
@@ -84,12 +85,13 @@ afterAll(async () => {
   await db.query("DELETE FROM AuditPreference WHERE userId=?", [prefix]);
   await db.query("DELETE FROM AuditReport WHERE userId=?", [prefix]);
   await db.query(
-    "DELETE w FROM AuditWork w JOIN AuditLog a ON a.id=w.eventId WHERE a.actorId=? OR a.entityId LIKE ?",
-    [prefix, prefix + "%"],
+    "DELETE w FROM AuditWork w JOIN AuditLog a ON a.id=w.eventId WHERE a.actorId=? OR a.entityId LIKE ? OR a.correlationId=?",
+    [prefix, prefix + "%", prefix],
   );
-  await db.query("DELETE FROM AuditLog WHERE actorId=? OR entityId LIKE ?", [
+  await db.query("DELETE FROM AuditLog WHERE actorId=? OR entityId LIKE ? OR correlationId=?", [
     prefix,
     prefix + "%",
+    prefix,
   ]);
   await db.query("DELETE FROM ProjectRequest WHERE id=?", [prefix + "req"]);
   await db.query("DELETE FROM Inquiry WHERE id=?", [prefix + "inq"]);
@@ -556,7 +558,7 @@ it("retention is opt-in, bounded, and respects independent case holds", async ()
     expect(dry.held).toBeGreaterThanOrEqual(1);
     expect(dry.candidates).toBeGreaterThanOrEqual(1);
     expect(dry.deleted).toBe(0);
-    await ops.retention(actor, true, 250, policy.revision + 1);
+    await auditContext.run({source: "system", correlationId: prefix}, () => ops.retention(actor, true, 250, policy.revision + 1));
     expect(
       await db.query("SELECT id FROM AuditLog WHERE id=?", [kept]),
     ).toHaveLength(1);
