@@ -103,7 +103,7 @@ describe('Nest authentication persistence on real MariaDB', { concurrent:false }
     const [row]=await db.query('SELECT roleKey,status,emailVerifiedAt FROM User WHERE email=?',[email('invite')]); expect(row.roleKey).toBe('client'); expect(row.status).toBe('active'); expect(row.emailVerifiedAt).toBeInstanceOf(Date);
   });
   it('keeps audit writes in the same transaction',async()=>{
-    await expect(transaction(db,async r=>{ await audit(r,'synthetic.rollback',{id:prefix+'legacy',email:email('legacy')}); throw new Error('rollback'); })).rejects.toThrow('rollback');
-    expect(await db.query("SELECT id FROM AuditLog WHERE actorId=? AND action='synthetic.rollback'",[prefix+'legacy'])).toEqual([]);
+    await expect(transaction(db,async r=>{ await audit(r,'user.updated',{id:prefix+'legacy',email:email('legacy')},null,'user',prefix+'legacy'); throw new Error('rollback'); })).rejects.toThrow('rollback');
+    expect(await db.query("SELECT id FROM AuditLog WHERE actorId=? AND action='user.updated'",[prefix+'legacy'])).toEqual([]);
   });
 });

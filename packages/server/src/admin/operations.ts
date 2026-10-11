@@ -1,3 +1,4 @@
+import {AuditReader} from '../audit/reader.js';
 import {workerHealth} from '../queue/monitor.js';
 import {snapshot,revisions,advance} from "./revisions.js";
 import { OUTBOX_STATUSES, type OutboxResponse, type OutboxStatus } from "@so7ob/contracts";
@@ -5,7 +6,6 @@ import type { DataSource } from "typeorm";
 import { can, isTrackMode, type AuthUser, type Permission } from "@so7ob/contracts";
 import { AuthFault, audit, newId, transaction } from "../auth/persistence.js";
 import { insertRecord, lockOperation } from "../business/persistence.js";
-import { sqliteLike } from "../business/requests.js";
 const allowedSettings = [
   "response.hours",
   "track.forceLogin",
@@ -132,6 +132,7 @@ export class AdminOperationsService {
         actor,
         { keys: updates.map((u) => u.key), ...(updates.some(u=>u.key==='response.hours')?{responseHours:updates.find(u=>u.key==='response.hours')!.value,appliesToExisting:true,effectiveAt:updates.find(u=>u.key==='response.effectiveAt')!.value}:{}) },
         "settings",
+        null,
       );
       return { ok: true };
     });
@@ -198,6 +199,7 @@ export class AdminOperationsService {
     return transaction(this.db, async (r) => {
       await lockOperation(r, "menu:" + location);
       await advance(r,'menu:'+location,body.baseRevision,checked);
+      const beforeItems=await r.query("SELECT labelAr,labelEn,pageSlug,enabled,`order` FROM MenuItem WHERE location=? ORDER BY `order`,id FOR UPDATE",[location]);
       await r.query("DELETE FROM MenuItem WHERE location=?", [location]);
       for (const item of clean) await insertRecord(r, "MenuItem", item);
       await audit(
@@ -207,6 +209,7 @@ export class AdminOperationsService {
         { count: clean.length },
         "menu",
         location,
+        undefined,{before:{items:beforeItems.map((item:Record<string,unknown>)=>({...item,enabled:!!item.enabled}))},after:{items:clean.map(({labelAr,labelEn,pageSlug,enabled,order})=>({labelAr,labelEn,pageSlug,enabled,order}))}},
       );
       return { ok: true };
     });
@@ -215,54 +218,9 @@ export class AdminOperationsService {
     actor: AuthUser,
     query: { q?: string; entity?: string; page?: string },
   ) {
-    requirePermission(actor, "audit.view");
-    const q = (query.q ?? "").trim().toLowerCase().slice(0, 80),
-      page = pageNumber(query.page),
-      values: unknown[] = [],
-      where = ["1=1"];
-    if (query.entity) {
-      where.push("a.entityType=?");
-      values.push(query.entity);
-    }
-    if (q) {
-      const terms = ["a.action", "a.actorEmail", "a.entityId"].map((f) =>
-        sqliteLike(f, q),
-      );
-      where.push("(" + terms.map((t) => t.sql).join(" OR ") + ")");
-      values.push(...terms.map((t) => t.value));
-    }
-    const [counts, rows] = await Promise.all([
-      this.db.query(
-        `SELECT COUNT(*) n FROM AuditLog a WHERE ${where.join(" AND ")}`,
-        values,
-      ),
-      this.db.query(
-        `SELECT a.id,a.actorEmail,a.action,a.entityType,a.entityId,a.details,a.createdAt,u.name actorName,u.email userEmail FROM AuditLog a LEFT JOIN User u ON u.id=a.actorId WHERE ${where.join(" AND ")} ORDER BY a.createdAt DESC LIMIT 30 OFFSET ?`,
-        [...values, (page - 1) * 30],
-      ),
-    ]);
-    return {
-      ok: true,
-      total: Number(counts[0].n),
-      page,
-      pageSize: 30,
-      logs: rows.map((r: Record<string, unknown>) => {
-        const { actorName, userEmail, details, ...safe } = r;
-        let parsed: unknown = null;
-        try {
-          parsed = JSON.parse(String(details));
-        } catch {
-          /* historical malformed audit */
-        }
-        return {
-          ...safe,
-          actor: actorName ?? r.actorEmail ?? "—",
-          actorEmail: userEmail ?? r.actorEmail,
-          details: parsed,
-        };
-      }),
-    };
+    return new AuditReader(this.db).legacy(actor,query);
   }
+
   async outbox(actor: AuthUser, raw?: string): Promise<OutboxResponse> {
     requirePermission(actor, "email.outbox");
     const page = pageNumber(raw),

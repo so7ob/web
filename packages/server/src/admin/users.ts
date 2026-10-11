@@ -1,7 +1,9 @@
+import {project} from '../audit/reader.js';
 import { randomBytes } from "node:crypto";
 import type { DataSource, QueryRunner } from "typeorm";
 import {
   can,
+  AUDIT_SENSITIVE_PERMISSIONS,
   ROLE_KEYS,
   type AuthUser,
   type Permission,
@@ -127,10 +129,7 @@ export class UserAdministrationService {
           "SELECT r.id,r.refCode,r.status,r.serviceType,r.createdAt,r.lastActivityAt,u.name assigneeName FROM ProjectRequest r LEFT JOIN User u ON u.id=r.assigneeId WHERE r.clientId=? ORDER BY r.createdAt DESC LIMIT 20",
           [id],
         ),
-        this.db.query(
-          "SELECT action,entityType,entityId,createdAt FROM AuditLog WHERE actorId=? ORDER BY createdAt DESC LIMIT 10",
-          [id],
-        ),
+        can(actor,"audit.view") ? this.db.query("SELECT * FROM AuditLog WHERE actorId=? ORDER BY createdAt DESC,id DESC LIMIT 10",[id]) : [],
         this.db.query(
           "SELECT createdAt FROM AuditLog WHERE action='user.suspended' AND entityType='user' AND entityId=? ORDER BY createdAt DESC LIMIT 1",
           [id],
@@ -161,7 +160,7 @@ export class UserAdministrationService {
       },
       requests,
       sessions: { activeCount: sessions.length, last5: sessions.slice(0, 5) },
-      auditLog: auditLogs,
+      auditLog: auditLogs.map((row:Record<string,unknown>)=>{const e=project(row,actor,false);return {action:e.action,entityType:e.resource.type,entityId:e.resource.id,createdAt:e.occurredAt};}),
     };
   }
   private async currentActor(
@@ -207,13 +206,20 @@ export class UserAdministrationService {
         updates.company = body.company.trim().slice(0, 120) || null;
       if (typeof body.roleKey === "string" && body.roleKey !== target.roleKey) {
         requirePermission(current, "users.roles");
-        const [role] = await r.query("SELECT `key` FROM Role WHERE `key`=?", [
+        const [role] = await r.query("SELECT `key`,permissions FROM Role WHERE `key`=?", [
           body.roleKey,
         ]);
         if (!role) throw new AuthFault(400, "invalid");
         updates.roleKey = role.key;
         details.fromRole = target.roleKey;
         details.toRole = role.key;
+        const [previousRole] = await r.query("SELECT permissions FROM Role WHERE `key`=?", [target.roleKey]);
+        const previousPermissions = JSON.parse(previousRole.permissions) as string[];
+        const nextPermissions = JSON.parse(role.permissions) as string[];
+        details.grantedPermissions = AUDIT_SENSITIVE_PERMISSIONS.filter(permission =>
+          !(target.roleKey === "super_admin" || previousPermissions.includes(permission)) &&
+          (role.key === "super_admin" || nextPermissions.includes(permission)));
+
       }
       if (
         typeof body.status === "string" &&
@@ -271,6 +277,7 @@ export class UserAdministrationService {
         { ...details, fields: Object.keys(updates) },
         "user",
         id,
+        undefined, {before:{...target},after:{...target,...updated}},
       );
       return { ok: true, user: updated };
     });
@@ -368,7 +375,7 @@ export class UserAdministrationService {
         current,
         { roleKey, emailStatus: "queued" },
         "user_invite",
-        email,
+        id,
         ip,
       );
       return {

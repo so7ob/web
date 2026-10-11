@@ -231,6 +231,7 @@ export class PageAdministrationService {
         { slug, template: String(body.template ?? "empty") },
         "page",
         id,
+        undefined,{before:{},after:(await r.query("SELECT status,slug,titleAr,titleEn,draftRevision,visibility FROM Page WHERE id=?",[id]))[0]},
       );
       return { ok: true, page: { id, slug } };
     });
@@ -342,14 +343,14 @@ export class PageAdministrationService {
         "SELECT id,slug,draftUpdatedAt,draftRevision,status FROM Page WHERE id=?",
         [id],
       );
-      if (body.draftBlocksAr !== undefined || body.draftBlocksEn !== undefined)
-        await audit(
+      await audit(
           r,
           "page.draft_saved",
           actor,
-          { slug: updated.slug },
+          { slug: updated.slug,fields:Object.keys(updates) },
           "page",
           id,
+          undefined,{before:{...page},after:{...page,...updates,...updated}},
         );
       return { ok: true, page: updated };
     });
@@ -363,7 +364,7 @@ export class PageAdministrationService {
         "UPDATE Page SET status='archived',updatedAt=UTC_TIMESTAMP(3) WHERE id=?",
         [id],
       );
-      await audit(r, "page.archived", actor, { slug: page.slug }, "page", id);
+      await audit(r, "page.archived", actor, { slug: page.slug }, "page", id,undefined,{before:{...page},after:{...page,status:"archived"}});
       return { ok: true };
     });
   }
@@ -410,6 +411,7 @@ export class PageAdministrationService {
         { slug: p.slug, versions },
         "page",
         id,
+        undefined,{before:{...p},after:(await r.query("SELECT status,slug,visibility,draftRevision,publishedRevision,titleAr,titleEn,scheduledPublishAt,scheduledRevision FROM Page WHERE id=?",[id]))[0]},
       );
       const recipients: Array<{ id: string }> = await r.query(
         "SELECT id FROM User WHERE status='active' AND roleKey IN ('super_admin','content_editor','ops_manager') AND id<>?",
@@ -498,6 +500,7 @@ export class PageAdministrationService {
         { version, slug: page.slug },
         "page",
         id,
+        undefined,{before:{...page},after:{...page,draftRevision:page.draftRevision+1}},
       );
       return { ok: true, restoredVersion: version };
     });

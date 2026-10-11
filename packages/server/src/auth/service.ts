@@ -1,3 +1,4 @@
+import { AUDIT_SENSITIVE_PERMISSIONS } from '@so7ob/contracts';
 import { randomBytes } from 'node:crypto';
 import bcrypt from 'bcryptjs';
 import type { DataSource, QueryRunner } from 'typeorm';
@@ -54,13 +55,13 @@ export class AuthenticationService {
     if (!limit.allowed) throw new AuthFault(429,'rate_limited',{ retryAfterSec:limit.retryAfterSec });
     return transaction(this.db,async r => {
       const rows: User[] = await r.query('SELECT * FROM User WHERE email=? FOR UPDATE',[email.trim().toLowerCase()]); const user = rows[0];
-      if (!user || !['active','pending_verification'].includes(user.status) || (user.lockedUntil && user.lockedUntil.valueOf()>Date.now())) return null;
+      if (!user || !['active','pending_verification'].includes(user.status) || (user.lockedUntil && user.lockedUntil.valueOf()>Date.now())) { await audit(r,'user.login_failed',null,{flow:'credentials'},'auth_flow',null,ip,{outcome:'denied',reasonCode:'invalid_credentials'}); return null; }
       const valid = await bcrypt.compare(password,user.passwordHash);
       if (!valid) {
         const recent = user.failedLoginCount>0 && Date.now()-user.updatedAt.valueOf()<900000;
         const count = recent || user.failedLoginCount === 0 ? user.failedLoginCount+1 : 1;
         await r.query('UPDATE User SET failedLoginCount=?,lockedUntil=?,updatedAt=UTC_TIMESTAMP(3) WHERE id=?',[count,count>=5 ? new Date(Date.now()+900000) : null,user.id]);
-        await audit(r,'user.login_failed',null,{ flow:'credentials' },'user',null,ip); return null;
+        await audit(r,'user.login_failed',null,{ flow:'credentials' },'auth_flow',null,ip,{outcome:'denied',reasonCode:'invalid_credentials'}); return null;
       }
       await r.query('UPDATE User SET failedLoginCount=0,lockedUntil=NULL,lastLoginAt=UTC_TIMESTAMP(3),updatedAt=UTC_TIMESTAMP(3) WHERE id=?',[user.id]);
       const raw = randomBytes(32).toString('hex'); const expiresAt = new Date(Date.now()+30*86400000); const id = newId();
@@ -82,14 +83,14 @@ export class AuthenticationService {
   }
   async logout(raw: string | undefined): Promise<void> {
     const current = await this.session(raw); if (!current) return;
-    await transaction(this.db, async r => { await r.query("UPDATE AuthSession SET revokedAt=UTC_TIMESTAMP(3),revokedReason='user_logout' WHERE id=? AND revokedAt IS NULL",[current.id]); await audit(r,'user.logout',current.user); });
+    await transaction(this.db, async r => { await r.query("UPDATE AuthSession SET revokedAt=UTC_TIMESTAMP(3),revokedReason='user_logout' WHERE id=? AND revokedAt IS NULL",[current.id]); await audit(r,'user.logout',current.user,null,'user',current.user.id); });
   }
   async verifyEmail(raw: string): Promise<'invalid' | 'ok' | 'already'> {
     return transaction(this.db,async r => {
       const id = await consumeToken(r,raw,'email_verify'); if (!id) return 'invalid';
       const [user]: User[] = await r.query('SELECT * FROM User WHERE id=? FOR UPDATE',[id]); const already = !!user.emailVerifiedAt;
       if (!already) await r.query("UPDATE User SET emailVerifiedAt=UTC_TIMESTAMP(3),status=IF(status='pending_verification','active',status),updatedAt=UTC_TIMESTAMP(3) WHERE id=?",[id]);
-      await audit(r,'user.email_verified',user); return already ? 'already' : 'ok';
+      await audit(r,'user.email_verified',user,null,'user',user.id); return already ? 'already' : 'ok';
     });
   }
   async forgot(email: string, ip: string, permit?:object) {
@@ -100,7 +101,7 @@ export class AuthenticationService {
       if (!user || user.status === 'suspended') { await audit(r,'user.login_failed',null,{ flow:'forgot_password',emailHint:'not_found' },'user',null,ip); return generic; }
       const token = await issueToken(r,user.id,'password_reset'); const url = this.absolute(`/${user.locale}/auth/reset-password?token=${token.raw}`);
       const status = await this.email(r,{ to:user.email,...resetPasswordMail(user.locale,{ url }) },'password_reset:'+sha256(token.raw));
-      await audit(r,'user.password_reset',user,{ stage:'requested',emailStatus:status },'user',user.id,ip);
+      await audit(r,'user.password_reset',null,{ stage:'requested',emailStatus:status },'user',user.id,ip);
       return { ...generic,...(this.dev ? { devResetUrl:url } : {}) };
     });
   }
@@ -112,7 +113,7 @@ export class AuthenticationService {
       const id = await consumeToken(r,raw,'password_reset'); if (!id) throw new AuthFault(400,'invalid_token');
       await r.query('UPDATE User SET passwordHash=?,sessionsRevokedAt=UTC_TIMESTAMP(3),failedLoginCount=0,lockedUntil=NULL,updatedAt=UTC_TIMESTAMP(3) WHERE id=?',[passwordHash,id]);
       await r.query("UPDATE AuthSession SET revokedAt=UTC_TIMESTAMP(3),revokedReason='password_reset' WHERE userId=? AND revokedAt IS NULL",[id]);
-      const [user]: User[] = await r.query('SELECT id,email FROM User WHERE id=?',[id]); await audit(r,'user.password_reset',user,{ stage:'completed' });
+      const [user]: User[] = await r.query('SELECT id,email FROM User WHERE id=?',[id]); await audit(r,'user.password_reset',user,{ stage:'completed' },'user',user.id);
     });
   }
   private async activeInTransaction(r: QueryRunner, current: AuthenticatedSession): Promise<User> {
@@ -130,7 +131,7 @@ export class AuthenticationService {
       const hash = await bcrypt.hash(newPassword,12);
       await r.query('UPDATE User SET passwordHash=?,sessionsRevokedAt=UTC_TIMESTAMP(3),failedLoginCount=0,lockedUntil=NULL,updatedAt=UTC_TIMESTAMP(3) WHERE id=?',[hash,user.id]);
       await r.query("UPDATE AuthSession SET revokedAt=UTC_TIMESTAMP(3),revokedReason='password_changed' WHERE userId=? AND revokedAt IS NULL",[user.id]);
-      await audit(r,'user.password_changed',user);
+      await audit(r,'user.password_changed',user,null,'user',user.id,undefined,{before:{password:'changed'},after:{password:'replaced'}});
     });
   }
   async acceptInvite(raw: string, name: string, password: string): Promise<void> {
@@ -143,7 +144,7 @@ export class AuthenticationService {
         if (changed.affectedRows !== 1) throw new AuthFault(400,'invalid_token');
         const [invite] = await r.query('SELECT * FROM UserInvite WHERE tokenHash=?',[sha256(raw)]); const id = newId();
         await r.query("INSERT INTO User(id,email,name,passwordHash,locale,roleKey,status,emailVerifiedAt) VALUES(?,?,?,?,'ar',?,'active',UTC_TIMESTAMP(3))",[id,invite.email,name,passwordHash,invite.roleKey]);
-        await r.query('UPDATE UserInvite SET acceptedUserId=? WHERE id=?',[id,invite.id]); await audit(r,'user.invite_accepted',{ id,email:invite.email },{ roleKey:invite.roleKey });
+        await r.query('UPDATE UserInvite SET acceptedUserId=? WHERE id=?',[id,invite.id]); const [acceptedRole]=await r.query('SELECT permissions FROM Role WHERE `key`=?',[invite.roleKey]); const acceptedPermissions=JSON.parse(acceptedRole.permissions) as string[]; await audit(r,'user.invite_accepted',{ id,email:invite.email },{ roleKey:invite.roleKey, grantedPermissions:AUDIT_SENSITIVE_PERMISSIONS.filter(permission=>invite.roleKey==='super_admin'||acceptedPermissions.includes(permission)) },'user',id);
       });
     } catch(error) { if (error && typeof error === 'object' && 'code' in error && error.code === 'ER_DUP_ENTRY') throw new AuthFault(409,'email_taken'); throw error; }
   }
@@ -157,7 +158,7 @@ export class AuthenticationService {
       if (all) {
         const result = await r.query("UPDATE AuthSession SET revokedAt=UTC_TIMESTAMP(3),revokedReason='user_revoke_all' WHERE userId=? AND revokedAt IS NULL AND id<>?",[current.user.id,current.id]);
         // Preserve actual source semantics: the global cutoff also invalidates the current login.
-        await r.query('UPDATE User SET sessionsRevokedAt=UTC_TIMESTAMP(3),updatedAt=UTC_TIMESTAMP(3) WHERE id=?',[current.user.id]); await audit(r,'sessions.revoked_all',current.user,{ count:result.affectedRows });
+        await r.query('UPDATE User SET sessionsRevokedAt=UTC_TIMESTAMP(3),updatedAt=UTC_TIMESTAMP(3) WHERE id=?',[current.user.id]); await audit(r,'sessions.revoked_all',current.user,{ count:result.affectedRows },'user',current.user.id);
         return { ok:true,revoked:result.affectedRows };
       }
       if (!id) throw new AuthFault(400,'invalid');

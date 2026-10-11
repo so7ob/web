@@ -62,3 +62,10 @@ export * from "./diagnostics/logger.js";
 export * from "./diagnostics/store.js";
 
 export * from './diagnostics/admin.js';
+
+export * from './audit/reader.js';
+export * from './audit/context.js';
+
+export * from './audit/reviews.js';
+export * from './audit/reports.js';
+export * from './audit/operations.js';

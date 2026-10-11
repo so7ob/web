@@ -1,3 +1,5 @@
+import {AuditController} from './admin/audit.controller.js';
+import {AuditReader,AuditReviews,AuditReports,AuditOperations} from '@so7ob/server';
 import {DiagnosticController} from './admin/diagnostics.controller.js';
 import {DiagnosticAdministration} from '@so7ob/server';
 import {correlationMiddleware,rememberError,diagnostics,initializeDiagnostics} from "./diagnostics.js";
@@ -73,7 +75,7 @@ class HealthController {
   }
 }
 @Module({
-  controllers: [DiagnosticController,
+  controllers: [AuditController,DiagnosticController,
     TrackController, AdminTrackController,
     AdminOperationsController,
     PageAdministrationController,
@@ -89,7 +91,8 @@ class HealthController {
     MediaController,
     ClaimController,
   ],
-  providers: [{provide:DiagnosticAdministration,useFactory:async()=>new DiagnosticAdministration(await database())},
+  providers: [
+    ...[AuditReader,AuditReviews,AuditReports,AuditOperations].map(service=>({provide:service,useFactory:async()=>new service(await database())})),{provide:DiagnosticAdministration,useFactory:async()=>new DiagnosticAdministration(await database())},
     { provide: TrackService, useFactory: async () => { const db = await database(); return new TrackService(db, new MailQueue(db, new PayloadCipher()), process.env.SITE_URL!); } },
     { provide: PagePublicationService, useFactory: async () => new PagePublicationService(await database()) },
     { provide: PageTemplateService, useFactory: async () => new PageTemplateService(await database()) },
@@ -164,6 +167,7 @@ async function main() {
     { cors: false, bodyParser: false, logger: false, abortOnError: false },
   );
   app.use(correlationMiddleware);
+  app.use((req:Request,res:Response,next:NextFunction)=>{if(/^\/api\/(?:v1\/)?admin\/audit(?:\/|$)/.test(req.path))res.setHeader('Cache-Control','private, no-store');next();});
   app.set("trust proxy", Number(process.env.TRUST_PROXY_HOPS ?? 0));
   app.enableCors({
     origin: (

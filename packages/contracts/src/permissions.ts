@@ -43,6 +43,13 @@ export const PERMISSIONS = {
   "diagnostics.view": "عرض السجل التشخيصي المنقح",
   "diagnostics.manage": "تصنيف متابعة مجموعات الأخطاء",
   "audit.view": "عرض سجل التدقيق",
+  "audit.export": "تصدير سجل التدقيق",
+  "audit.review": "مراجعة أحداث التدقيق",
+  "audit.cases.manage": "إدارة قضايا التدقيق",
+  "audit.rules.manage": "إدارة قواعد التدقيق",
+  "audit.policy.manage": "إدارة سياسة التدقيق ومنع الحذف",
+  "audit.sensitive.view": "عرض بيانات التدقيق الحساسة المنقحة",
+  "audit.health.view": "عرض صحة تسجيل التدقيق",
 } as const;
 
 export type Permission = keyof typeof PERMISSIONS;

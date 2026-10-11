@@ -1,0 +1,28 @@
+{
+  "synthetic": true,
+  "actualWorker": true,
+  "workerRuns": 4,
+  "elapsedMs": 40080,
+  "reports": [
+    {
+      "id": "c073307bd34aac12cef403bb17d01c9",
+      "status": "completed",
+      "format": "json",
+      "eventCount": 100000,
+      "resourceCount": 1000,
+      "bytes": 79142338,
+      "checksum": "2a6440c8d41634fae97c7a19083e843957a5eccf5635df35e5ca9f0e898f720d"
+    },
+    {
+      "id": "c07b7900cb86ee7a97033c57b44bfb9",
+      "status": "completed",
+      "format": "csv",
+      "eventCount": 100000,
+      "resourceCount": 1000,
+      "bytes": 34353191,
+      "checksum": "335561f579da7124d96994cdae7edc76ecda56e583b2b7df2fb57441401aa88d"
+    }
+  ],
+  "largeExportAlerts": 2,
+  "externalDelivery": false
+}

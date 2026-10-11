@@ -1,3 +1,4 @@
+import {project} from '../audit/reader.js';
 import {responsePolicy,responseDueSql} from "./response-policy.js";
 import type { DataSource } from "typeorm";
 import {
@@ -99,7 +100,7 @@ export class AdminDashboardService {
         : [],
       access.audit
         ? this.db.query(
-            "SELECT a.id,a.action,a.entityType,a.entityId,a.actorEmail,a.createdAt,u.name actorName FROM AuditLog a LEFT JOIN User u ON u.id=a.actorId ORDER BY a.createdAt DESC LIMIT 10",
+            "SELECT a.* FROM AuditLog a ORDER BY a.createdAt DESC,a.id DESC LIMIT 10",
           )
         : [],
       access.requests
@@ -145,24 +146,7 @@ export class AdminDashboardService {
           };
         },
       ),
-      recentAudit: audits.map(
-        (r: {
-          id: string;
-          action: string;
-          entityType: string;
-          entityId: string | null;
-          actorEmail: string | null;
-          createdAt: Date;
-          actorName: string | null;
-        }) => {
-          const { actorName, ...safe } = r;
-          return {
-            ...safe,
-            createdAt: r.createdAt.toISOString(),
-            actor: actorName === null ? null : { name: actorName },
-          };
-        },
-      ),
+      recentAudit: audits.map((row:Record<string,unknown>)=>{const e=project(row,actor,false);return {id:e.id,action:e.action,entityType:e.resource.type,entityId:e.resource.id,actorEmail:e.actor.email??null,createdAt:e.occurredAt,actor:e.actor.name?{name:e.actor.name}:null};}),
       rangeRows: rangeRows.map((r: { createdAt: Date }) => ({
         createdAt: r.createdAt.toISOString(),
       })),
