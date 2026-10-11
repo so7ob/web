@@ -1,0 +1,366 @@
+[
+  {
+    "locale": "ar",
+    "width": 375,
+    "dir": "rtl",
+    "stage": "before",
+    "sourceSha": "5324f97abe7d49787d847be6e82bd325bce44317",
+    "targets": [
+      {
+        "href": "/ar/about",
+        "width": 43,
+        "height": 21,
+        "rectangles": 1
+      },
+      {
+        "href": "/ar/services",
+        "width": 46,
+        "height": 21,
+        "rectangles": 1
+      },
+      {
+        "href": "/ar/works",
+        "width": 33,
+        "height": 21,
+        "rectangles": 1
+      },
+      {
+        "href": "/ar/process",
+        "width": 52,
+        "height": 21,
+        "rectangles": 1
+      },
+      {
+        "href": "/ar/faq",
+        "width": 79,
+        "height": 21,
+        "rectangles": 1
+      },
+      {
+        "href": "/ar/contact",
+        "width": 35,
+        "height": 21,
+        "rectangles": 1
+      },
+      {
+        "href": "/ar/services#web",
+        "width": 123,
+        "height": 21,
+        "rectangles": 1
+      },
+      {
+        "href": "/ar/services#mobile",
+        "width": 81,
+        "height": 21,
+        "rectangles": 1
+      },
+      {
+        "href": "/ar/services#systems",
+        "width": 77,
+        "height": 21,
+        "rectangles": 1
+      },
+      {
+        "href": "/ar/services#ux",
+        "width": 182,
+        "height": 21,
+        "rectangles": 1
+      },
+      {
+        "href": "/ar/services#automation",
+        "width": 163,
+        "height": 21,
+        "rectangles": 1
+      },
+      {
+        "href": "/ar/services#maintenance",
+        "width": 165,
+        "height": 21,
+        "rectangles": 1
+      },
+      {
+        "href": "https://github.com/so7ob/Website",
+        "width": 343,
+        "height": 16,
+        "rectangles": 1
+      }
+    ],
+    "violations": [],
+    "screenshot": "footer-before-ar-375.png",
+    "sha256": "a72c0b6d10693025f3fabae2f52c32e3f8837f50aeab3f1d521810e60d0f473b",
+    "horizontalOverflow": false
+  },
+  {
+    "locale": "ar",
+    "width": 1280,
+    "dir": "rtl",
+    "stage": "before",
+    "sourceSha": "5324f97abe7d49787d847be6e82bd325bce44317",
+    "targets": [
+      {
+        "href": "/ar/about",
+        "width": 43,
+        "height": 21,
+        "rectangles": 1
+      },
+      {
+        "href": "/ar/services",
+        "width": 46,
+        "height": 21,
+        "rectangles": 1
+      },
+      {
+        "href": "/ar/works",
+        "width": 33,
+        "height": 21,
+        "rectangles": 1
+      },
+      {
+        "href": "/ar/process",
+        "width": 52,
+        "height": 21,
+        "rectangles": 1
+      },
+      {
+        "href": "/ar/faq",
+        "width": 79,
+        "height": 21,
+        "rectangles": 1
+      },
+      {
+        "href": "/ar/contact",
+        "width": 35,
+        "height": 21,
+        "rectangles": 1
+      },
+      {
+        "href": "/ar/services#web",
+        "width": 123,
+        "height": 21,
+        "rectangles": 1
+      },
+      {
+        "href": "/ar/services#mobile",
+        "width": 81,
+        "height": 21,
+        "rectangles": 1
+      },
+      {
+        "href": "/ar/services#systems",
+        "width": 77,
+        "height": 21,
+        "rectangles": 1
+      },
+      {
+        "href": "/ar/services#ux",
+        "width": 182,
+        "height": 21,
+        "rectangles": 1
+      },
+      {
+        "href": "/ar/services#automation",
+        "width": 163,
+        "height": 21,
+        "rectangles": 1
+      },
+      {
+        "href": "/ar/services#maintenance",
+        "width": 165,
+        "height": 21,
+        "rectangles": 1
+      },
+      {
+        "href": "https://github.com/so7ob/Website",
+        "width": 150,
+        "height": 16,
+        "rectangles": 1
+      }
+    ],
+    "violations": [],
+    "screenshot": "footer-before-ar-1280.png",
+    "sha256": "f18830577a77e6fed14b37d72051b2a571c49432c7f3ec979ae9798e0275adca",
+    "horizontalOverflow": false
+  },
+  {
+    "locale": "en",
+    "width": 375,
+    "dir": "ltr",
+    "stage": "before",
+    "sourceSha": "5324f97abe7d49787d847be6e82bd325bce44317",
+    "targets": [
+      {
+        "href": "/en/about",
+        "width": 38,
+        "height": 18,
+        "rectangles": 1
+      },
+      {
+        "href": "/en/services",
+        "width": 54,
+        "height": 18,
+        "rectangles": 1
+      },
+      {
+        "href": "/en/works",
+        "width": 32,
+        "height": 18,
+        "rectangles": 1
+      },
+      {
+        "href": "/en/process",
+        "width": 85,
+        "height": 18,
+        "rectangles": 1
+      },
+      {
+        "href": "/en/faq",
+        "width": 26,
+        "height": 18,
+        "rectangles": 1
+      },
+      {
+        "href": "/en/contact",
+        "width": 49,
+        "height": 18,
+        "rectangles": 1
+      },
+      {
+        "href": "/en/services#web",
+        "width": 182,
+        "height": 18,
+        "rectangles": 1
+      },
+      {
+        "href": "/en/services#mobile",
+        "width": 123,
+        "height": 18,
+        "rectangles": 1
+      },
+      {
+        "href": "/en/services#systems",
+        "width": 97,
+        "height": 18,
+        "rectangles": 1
+      },
+      {
+        "href": "/en/services#ux",
+        "width": 83,
+        "height": 18,
+        "rectangles": 1
+      },
+      {
+        "href": "/en/services#automation",
+        "width": 236,
+        "height": 18,
+        "rectangles": 1
+      },
+      {
+        "href": "/en/services#maintenance",
+        "width": 311,
+        "height": 18,
+        "rectangles": 1
+      },
+      {
+        "href": "https://github.com/so7ob/Website",
+        "width": 343,
+        "height": 16,
+        "rectangles": 1
+      }
+    ],
+    "violations": [],
+    "screenshot": "footer-before-en-375.png",
+    "sha256": "2d64aae7ea32620c4f09a9360979024bbc8eeb1b095d6a308b7fa189478c92a6",
+    "horizontalOverflow": false
+  },
+  {
+    "locale": "en",
+    "width": 1280,
+    "dir": "ltr",
+    "stage": "before",
+    "sourceSha": "5324f97abe7d49787d847be6e82bd325bce44317",
+    "targets": [
+      {
+        "href": "/en/about",
+        "width": 38,
+        "height": 18,
+        "rectangles": 1
+      },
+      {
+        "href": "/en/services",
+        "width": 54,
+        "height": 18,
+        "rectangles": 1
+      },
+      {
+        "href": "/en/works",
+        "width": 32,
+        "height": 18,
+        "rectangles": 1
+      },
+      {
+        "href": "/en/process",
+        "width": 85,
+        "height": 18,
+        "rectangles": 1
+      },
+      {
+        "href": "/en/faq",
+        "width": 26,
+        "height": 18,
+        "rectangles": 1
+      },
+      {
+        "href": "/en/contact",
+        "width": 49,
+        "height": 18,
+        "rectangles": 1
+      },
+      {
+        "href": "/en/services#web",
+        "width": 182,
+        "height": 18,
+        "rectangles": 1
+      },
+      {
+        "href": "/en/services#mobile",
+        "width": 123,
+        "height": 18,
+        "rectangles": 1
+      },
+      {
+        "href": "/en/services#systems",
+        "width": 97,
+        "height": 18,
+        "rectangles": 1
+      },
+      {
+        "href": "/en/services#ux",
+        "width": 83,
+        "height": 18,
+        "rectangles": 1
+      },
+      {
+        "href": "/en/services#automation",
+        "width": 236,
+        "height": 18,
+        "rectangles": 1
+      },
+      {
+        "href": "/en/services#maintenance",
+        "width": 311,
+        "height": 18,
+        "rectangles": 1
+      },
+      {
+        "href": "https://github.com/so7ob/Website",
+        "width": 168,
+        "height": 16,
+        "rectangles": 1
+      }
+    ],
+    "violations": [],
+    "screenshot": "footer-before-en-1280.png",
+    "sha256": "3d5d675777c3f4aa90df35cda2f5e8ef6623353e265ae85198def44cc899c906",
+    "horizontalOverflow": false
+  }
+]
