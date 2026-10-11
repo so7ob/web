@@ -169,6 +169,7 @@ for (const locale of ['ar','en'] as const) test(`${locale}: a confirmed save wit
     await priority.click();await page.getByRole('option',{name:tr.priorities.high,exact:true}).click();
     await expect(page.getByText(tr.savedRefreshFailed,{exact:true})).toBeVisible();
     expect((await f.row()).priority).toBe('high');expect(writes).toBe(1);await expect(priority).toBeDisabled();
+    await expect(page.locator('input[type="file"]')).toHaveAttribute('aria-label',getPortalContent(locale).account.detail.attachFile);
     expect((await new AxeBuilder({page}).withTags(['wcag2a','wcag2aa','wcag21aa','wcag22aa']).analyze()).violations).toEqual([]);
     failReads=false;await page.getByRole('button',{name:tr.refreshData,exact:true}).click();
     await expect(page.getByText(tr.savedRefreshFailed,{exact:true})).toHaveCount(0);

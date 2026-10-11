@@ -330,6 +330,8 @@ export function ReplyComposer({
             <input
               ref={fileRef}
               type="file"
+              hidden
+              aria-label={labels.attachFile}
               className="hidden"
               onChange={(e) => void pickFile(e.target.files?.[0])}
               accept="image/*,.pdf,.txt,.doc,.docx,.xls,.xlsx,.zip,.rar"
