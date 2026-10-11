@@ -1,0 +1,18 @@
+import {test,expect} from '@playwright/test';
+import {randomUUID} from 'node:crypto';
+import {getPortalContent} from '../../apps/web/src/content/portal';
+import {errorCopy} from '../../apps/web/src/lib/errors/messages';
+import AxeBuilder from '@axe-core/playwright';
+test.use({contextOptions:{reducedMotion:'reduce'}});
+for(const locale of ['ar','en'] as const)for(const form of ['forgot','register','reset','invite'] as const)test(`${locale} ${form}: failed auth writes preserve fields and explain only verified causes`,async({page})=>{
+ const t=getPortalContent(locale).auth,id=randomUUID(),path=form==='forgot'?'forgot-password':form==='reset'?'reset-password':form,endpoint='/api/auth/'+path;
+ await page.goto(`/${locale}/auth/${path}`+(form==='reset'||form==='invite'?'?token='+'a'.repeat(64):''),{waitUntil:'networkidle'});await expect(page.locator('html')).toHaveAttribute('dir',locale==='ar'?'rtl':'ltr');
+ const values:Record<string,string>=form==='forgot'?{'forgot-email':'synthetic@example.invalid'}:form==='register'?{'register-name':'Synthetic','register-email':'synthetic@example.invalid','register-password':'Synthetic123!','register-confirm':'Synthetic123!'}:form==='reset'?{'reset-password':'Synthetic123!','reset-confirm':'Synthetic123!'}:{'invite-name':'Synthetic','invite-password':'Synthetic123!','invite-confirm':'Synthetic123!'};
+ for(const [field,value] of Object.entries(values))await page.locator('#'+field).fill(value);const send=page.locator('form button[type=submit]');
+ const cases=form==='forgot'?[[401,'authentication'],[403,'authorization'],[429,'rate_limit'],[500,'internal'],[0,'network'],[200,'invalid_response']] as const:[[500,'internal'],[0,'network'],[200,'invalid_response']] as const;
+ for(const [status,category] of cases){let count=0;await page.route('**'+endpoint,route=>{count++;return status===0?route.abort('failed'):route.fulfill({status,contentType:status===200?'text/html':'application/json',headers:{'x-error-id':id},body:status===200?'<p>SYNTHETIC_SECRET</p>':JSON.stringify({ok:false,code:status===500?'internal_error':'invalid'})});});await send.focus();await page.keyboard.press('Enter');for(const [field,value] of Object.entries(values))await expect(page.locator('#'+field)).toHaveValue(value);await expect(page.getByText(errorCopy[locale][category],{exact:true})).toBeVisible();if(status)await expect(page.getByText(id,{exact:false})).toBeVisible();expect(count).toBe(1);expect(await page.locator('main').innerText()).not.toContain('SYNTHETIC_SECRET');await page.unroute('**'+endpoint);}
+ expect((await new AxeBuilder({page}).withTags(['wcag2a','wcag2aa','wcag21aa','wcag22aa']).analyze()).violations).toEqual([]);
+ if(form==='forgot'){await page.route('**'+endpoint,route=>route.fulfill({status:200,contentType:'application/json',body:'{"ok":true}'}));await send.focus();await page.keyboard.press('Enter');await expect(page.getByText(t.forgotSent,{exact:true})).toBeVisible();}
+ else if(form==='register'){await page.route('**'+endpoint,route=>route.fulfill({status:400,contentType:'application/json',body:'{"ok":false,"code":"invalid","errors":{"email":"email_invalid"}}'}));await send.focus();await page.keyboard.press('Enter');await expect(page.getByText(t.errors.emailInvalid,{exact:true})).toBeVisible();await expect(page.locator('#register-email')).toHaveValue(values['register-email']);}
+ else{await page.route('**'+endpoint,route=>route.fulfill({status:400,contentType:'application/json',body:'{"ok":false,"code":"invalid_token"}'}));await send.focus();await page.keyboard.press('Enter');await expect(page.getByText(form==='reset'?t.verifyInvalidBody:t.errors.invalid,{exact:true})).toBeVisible();}
+});

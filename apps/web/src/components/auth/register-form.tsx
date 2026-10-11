@@ -1,6 +1,8 @@
 "use client";
+import {ErrorFeedback} from "@/components/errors/error-feedback";
+import {ApiError} from "@/lib/errors/transport";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import Link from "@/routing/link";
 import { CheckCircle2, Loader2, UserPlus } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -20,8 +22,9 @@ export function RegisterForm({ locale, t, nameLabel }: { locale: Locale; t: Port
   const [password, setPassword] = useState("");
   const [confirm, setConfirm] = useState("");
   const [fieldErrors, setFieldErrors] = useState<{ name?: string; email?: string; password?: string; confirm?: string }>({});
-  const [formError, setFormError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
+  const pending=useRef(false);
+  const [failure,setFailure]=useState<ApiError|null>(null);
   const [success, setSuccess] = useState<{ devVerifyUrl?: string } | null>(null);
 
   function mapFieldError(code: string | undefined, fallback: string): string {
@@ -43,8 +46,8 @@ export function RegisterForm({ locale, t, nameLabel }: { locale: Locale; t: Port
 
   async function onSubmit(ev: React.FormEvent<HTMLFormElement>) {
     ev.preventDefault();
-    if (submitting) return;
-    setFormError(null);
+    if (pending.current) return;
+    setFailure(null);
     setFieldErrors({});
 
     const errors: typeof fieldErrors = {};
@@ -58,12 +61,12 @@ export function RegisterForm({ locale, t, nameLabel }: { locale: Locale; t: Port
       return;
     }
 
-    setSubmitting(true);
+    pending.current=true;setSubmitting(true);
     const result = await apiFetch<RegisterResponse>("/api/auth/register", {
       method: "POST",
       body: JSON.stringify({ name: name.trim(), email: email.trim().toLowerCase(), password, locale }),
     });
-    setSubmitting(false);
+    pending.current=false;setSubmitting(false);
 
     if (result.status === 201 && result.data.ok) {
       setSuccess({ devVerifyUrl: result.data.devVerifyUrl });
@@ -77,11 +80,7 @@ export function RegisterForm({ locale, t, nameLabel }: { locale: Locale; t: Port
     if (serverErrors.password) mapped.password = mapFieldError(serverErrors.password, t.errors.passwordWeak);
     setFieldErrors(mapped);
 
-    if (result.status === 429) {
-      setFormError(t.errors.rateLimited);
-    } else if (Object.keys(mapped).length === 0) {
-      setFormError(t.errors.generic);
-    }
+    if(Object.keys(mapped).length===0&&!result.cancelled)setFailure(result.error??new ApiError(result.status,"internal_error"));
   }
 
   if (success) {
@@ -123,11 +122,8 @@ export function RegisterForm({ locale, t, nameLabel }: { locale: Locale; t: Port
       }
     >
       <form onSubmit={onSubmit} noValidate className="mt-6 space-y-5">
-        {formError && (
-          <div role="alert" className="rounded-2xl border border-rose-200 bg-rose-50 px-4 py-3 text-sm font-medium text-rose-700">
-            {formError}
-          </div>
-        )}
+        <ErrorFeedback focusOnError error={failure} locale={locale} operation={t.registerTitle}/>
+
         <TextField id="register-name" label={nameLabel} value={name} onChange={setName} autoComplete="name" error={fieldErrors.name} maxLength={100} />
         <TextField id="register-email" label={t.email} type="email" value={email} onChange={setEmail} autoComplete="email" dir="ltr" error={fieldErrors.email} />
         <TextField id="register-password" label={t.password} type="password" value={password} onChange={setPassword} autoComplete="new-password" hint={t.passwordHint} error={fieldErrors.password} />
