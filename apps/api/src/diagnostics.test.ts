@@ -20,7 +20,7 @@ describe('real HTTP error boundaries',()=>{
     expect(res.status).toBe(status);expect(body.requestId).toBe(res.headers.get('x-request-id'));expect(body.errorId).toBe(res.headers.get('x-error-id'));expect(JSON.stringify(body)).not.toContain('SYNTHETIC_SECRET');
     if(status===429)expect(res.headers.get('retry-after')).toBe('13');if(status===500)expect(body.code).toBe('internal_error');
   }
-  for(const code of ['missing','expired','revoked','owner_required','policy_denied','denied']){const res=await fetch(`http://127.0.0.1:${address.port}/api/legacy/${code}`);expect((await res.json()).code).toBe(code);}
+  for(const code of ['missing','expired','revoked','owner_required','policy_denied','denied','blocks_required','name_required','nothing_to_update','type_not_allowed','extension_mismatch']){const res=await fetch(`http://127.0.0.1:${address.port}/api/legacy/${code}`);expect((await res.json()).code).toBe(code);}
   for(const [body,status] of [['{',400],[JSON.stringify({body:'x'.repeat(200)}),413]] as const){const res=await fetch(`http://127.0.0.1:${address.port}/api/example/400`,{method:'POST',headers:{'content-type':'application/json'},body});expect(res.status).toBe(status);expect((await res.json()).requestId).toBe(res.headers.get('x-request-id'));}
   }finally{await diagnostics.flush();await new Promise<void>(resolve=>server.close(()=>resolve()));}
  });
