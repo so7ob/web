@@ -43,21 +43,30 @@ export class AuditController {
     @Inject(AuditReports) private readonly reports: AuditReports,
     @Inject(AuditOperations) private readonly operations: AuditOperations,
   ) {}
-  @Post("events/search") @Header("Cache-Control", "private, no-store") search(
+  @Post("events/search")
+  @Header("Cache-Control", "private, no-store")
+  async search(@Req() r: AuditRequest, @Body() body: PayloadDto) {
+    const result = await this.reader.search(r.actor, body.payload);
+    await this.reader.access(r.actor);
+    return result;
+  }
+  @Post("events/check") @Header("Cache-Control", "private, no-store") check(
     @Req() r: AuditRequest,
     @Body() body: PayloadDto,
   ) {
-    return this.reader.search(r.actor, body.payload);
+    return this.reader.check(r.actor, body.payload);
   }
-  @Get("events/:id") @Header("Cache-Control", "private, no-store") detail(
+  @Get("events/:id") @Header("Cache-Control", "private, no-store") async detail(
     @Req() r: AuditRequest,
     @Param("id") id: string,
   ) {
-    return this.reader.detail(r.actor, id);
+    const result = await this.reader.detail(r.actor, id);
+    await this.reader.access(r.actor, id);
+    return result;
   }
   @Get("events/:id/related")
   @Header("Cache-Control", "private, no-store")
-  related(
+  async related(
     @Req() r: AuditRequest,
     @Param("id") id: string,
     @Query("kind") kind: string,
@@ -65,7 +74,14 @@ export class AuditController {
   ) {
     if (!["resource", "batch", "correlation"].includes(kind))
       throw new AuthFault(400, "invalid");
-    return this.reader.related(r.actor, id, kind as "resource", cursor);
+    const result = await this.reader.related(
+      r.actor,
+      id,
+      kind as "resource",
+      cursor,
+    );
+    await this.reader.access(r.actor, id);
+    return result;
   }
   @Post("access") access(@Req() r: AuditRequest, @Body() body: PayloadDto) {
     const p = body.payload as { eventId?: unknown } | undefined;
@@ -158,7 +174,9 @@ export class AuditController {
       );
     // The absolute path is service-generated and authorized; private DATA_DIR may
     // legitimately contain dot-directories (for example the isolated preview).
-    res.download(report.path, `audit-${id}.${report.format}`, { dotfiles: "allow" });
+    res.download(report.path, `audit-${id}.${report.format}`, {
+      dotfiles: "allow",
+    });
   }
   @Get("rules") rules(@Req() r: AuditRequest) {
     return this.operations.rules(r.actor);

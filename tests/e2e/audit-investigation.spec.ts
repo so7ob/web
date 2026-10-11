@@ -50,6 +50,33 @@ for (const locale of ["ar", "en"] as const)
             })
           ).status(),
         ).toBe(200);
+      // Direct API reads are audited server-side; polling cannot fetch event bodies.
+      const direct = await page.request.post(
+        "/api/v1/admin/audit/events/search",
+        { headers, data: { payload: { q: ref } } },
+      );
+      expect(direct.status()).toBe(201);
+      const directEvent = (await direct.json()).rows[0].id;
+      await page.request.get("/api/v1/admin/audit/events/" + directEvent);
+      const accessCount = async () =>
+        Number(
+          (
+            await db.query(
+              "SELECT COUNT(*) n FROM AuditLog WHERE actorId=? AND action IN ('audit.opened','audit.detail_viewed')",
+              [prefix + "admin"],
+            )
+          )[0].n,
+        );
+      const accesses = await accessCount();
+      expect(accesses).toBeGreaterThanOrEqual(2);
+      await page.request.get("/api/v1/admin/audit/events/" + directEvent);
+      const probe = await page.request.post(
+        "/api/v1/admin/audit/events/check",
+        { headers, data: { payload: { q: ref } } },
+      );
+      const hint = await probe.json();
+      expect(hint).toEqual({ ok: true, latestId: directEvent, count: 2 });
+      expect(await accessCount()).toBe(accesses);
       await page.goto("/" + locale + "/admin/audit", {
         waitUntil: "networkidle",
       });

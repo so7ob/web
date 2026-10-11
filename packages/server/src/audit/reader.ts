@@ -220,6 +220,25 @@ export class AuditReader {
       ]),
     ) as unknown as AuditStats;
   }
+  /** A polling hint exposes no event bodies and does not create access evidence. */
+  async check(actor: AuthUser, raw: unknown) {
+    permit(actor);
+    const filter = validateFilter(raw),
+      { sql, args } = predicate(filter, actor);
+    const [head] = await this.db.query(
+      `SELECT a.id FROM AuditLog a WHERE ${sql} ORDER BY a.createdAt DESC,a.id DESC LIMIT 1`,
+      args,
+    );
+    const [count] = await this.db.query(
+      `SELECT COUNT(*) n FROM AuditLog a WHERE ${sql}`,
+      args,
+    );
+    return {
+      ok: true as const,
+      latestId: head?.id ?? null,
+      count: Number(count.n),
+    };
+  }
   async detail(actor: AuthUser, id: string) {
     permit(actor);
     if (!/^[a-zA-Z0-9_-]{1,255}$/.test(id)) throw new AuthFault(400, "invalid");
@@ -302,6 +321,7 @@ export class AuditReader {
       }),
       { sql, args } = predicate(filter, actor);
     permit(actor);
+    await this.access(actor);
     const rows = await this.db.query(
       `SELECT a.* FROM AuditLog a WHERE ${sql} ORDER BY a.createdAt DESC,a.id DESC LIMIT 30 OFFSET ?`,
       [...args, (page - 1) * 30],

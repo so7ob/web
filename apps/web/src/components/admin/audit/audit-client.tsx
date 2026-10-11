@@ -107,9 +107,7 @@ export function AuditClient({ me, locale }: { me: Me; locale: "ar" | "en" }) {
       "outcome",
       "changes",
     ]);
-  const [views, setViews] = useState<
-      AuditSavedView[]
-    >([]),
+  const [views, setViews] = useState<AuditSavedView[]>([]),
     [viewName, setViewName] = useState("");
   const [event, setEvent] = useState<AuditEventV1 | null>(null),
     [detailError, setDetailError] = useState(""),
@@ -191,7 +189,6 @@ export function AuditClient({ me, locale }: { me: Me; locale: "ar" | "en" }) {
       .catch((e) => {
         if (!controller.signal.aborted) setNotice(fail(e));
       });
-    void auditApi("/access", {}).catch((e) => setNotice(fail(e)));
     if (can(me, "audit.review"))
       void auditApi<{ bookmarks: { eventId: string }[] }>(
         "/bookmarks",
@@ -210,16 +207,16 @@ export function AuditClient({ me, locale }: { me: Me; locale: "ar" | "en" }) {
     const controller = new AbortController();
     const timer = setInterval(() => {
       if (document.visibilityState !== "visible") return;
-      void auditApi<AuditSearchResponse>(
-        "/events/search",
+      void auditApi<{ latestId: string | null; count: number }>(
+        "/events/check",
         { ...filter, limit: 1 },
         "POST",
         controller.signal,
       )
         .then((result) => {
           if (
-            result.stats.events !== current.stats.events ||
-            result.rows[0]?.id !== current.rows[0]?.id
+            result.count !== current.stats.events ||
+            result.latestId !== (current.rows[0]?.id ?? null)
           )
             setNewEvents(true);
         })
@@ -250,9 +247,6 @@ export function AuditClient({ me, locale }: { me: Me; locale: "ar" | "en" }) {
       .then((r) => {
         if (!controller.signal.aborted) {
           setEvent(r.event);
-          void auditApi("/access", { eventId }).catch((e) =>
-            setNotice(fail(e)),
-          );
         }
       })
       .catch((e) => {
