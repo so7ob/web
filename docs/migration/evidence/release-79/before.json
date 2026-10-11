@@ -88,7 +88,9 @@
     "violations": [],
     "screenshot": "footer-before-ar-375.png",
     "sha256": "a72c0b6d10693025f3fabae2f52c32e3f8837f50aeab3f1d521810e60d0f473b",
-    "horizontalOverflow": false
+    "horizontalOverflow": false,
+    "viewportHeight": 900,
+    "captureScope": "footer element in actual scrolled page; fixed header can overlap the captured region"
   },
   {
     "locale": "ar",
@@ -179,7 +181,9 @@
     "violations": [],
     "screenshot": "footer-before-ar-1280.png",
     "sha256": "f18830577a77e6fed14b37d72051b2a571c49432c7f3ec979ae9798e0275adca",
-    "horizontalOverflow": false
+    "horizontalOverflow": false,
+    "viewportHeight": 900,
+    "captureScope": "footer element in actual scrolled page; fixed header can overlap the captured region"
   },
   {
     "locale": "en",
@@ -270,7 +274,9 @@
     "violations": [],
     "screenshot": "footer-before-en-375.png",
     "sha256": "2d64aae7ea32620c4f09a9360979024bbc8eeb1b095d6a308b7fa189478c92a6",
-    "horizontalOverflow": false
+    "horizontalOverflow": false,
+    "viewportHeight": 900,
+    "captureScope": "footer element in actual scrolled page; fixed header can overlap the captured region"
   },
   {
     "locale": "en",
@@ -361,6 +367,8 @@
     "violations": [],
     "screenshot": "footer-before-en-1280.png",
     "sha256": "3d5d675777c3f4aa90df35cda2f5e8ef6623353e265ae85198def44cc899c906",
-    "horizontalOverflow": false
+    "horizontalOverflow": false,
+    "viewportHeight": 900,
+    "captureScope": "footer element in actual scrolled page; fixed header can overlap the captured region"
   }
 ]
