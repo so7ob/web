@@ -1,6 +1,8 @@
 "use client";
+import {ErrorFeedback} from "@/components/errors/error-feedback";
+import {ApiError} from "@/lib/errors/transport";
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useRouter } from "@/routing/navigation";
 import {
   Bell,
@@ -18,7 +20,6 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
-import { toast } from "sonner";
 import { cn } from "@/lib/utils";
 import type { Locale } from "@/lib/i18n";
 import type { PortalContent } from "@/content/portal/types";
@@ -56,6 +57,9 @@ export function NotificationsView({
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(true);
   const [failed, setFailed] = useState(false);
+  const [failure,setFailure]=useState<ApiError|null>(null);
+  const [marking,setMarking]=useState(false);
+  const pending=useRef(false);
   const [markingAll, setMarkingAll] = useState(false);
 
   const load = useCallback(async (targetPage: number, append: boolean) => {
@@ -64,11 +68,13 @@ export function NotificationsView({
     const result = await apiFetch<NotificationsResponse>(`/api/account/notifications?page=${targetPage}`);
     setLoading(false);
     if (result.data.ok) {
+      setFailure(null);
       setItems((prev) => (append ? [...prev, ...(result.data.notifications ?? [])] : result.data.notifications ?? []));
       setUnread(result.data.unread ?? 0);
       setTotal(result.data.total ?? 0);
     } else {
       setFailed(true);
+      if(!result.cancelled)setFailure(result.error??new ApiError(result.status,"internal_error"));
     }
   }, []);
 
@@ -81,38 +87,30 @@ export function NotificationsView({
   const hasMore = items.length < total;
 
   async function markRead(notification: AccountNotification) {
-    if (!notification.readAt) {
-      const result = await apiFetch("/api/account/notifications", {
-        method: "POST",
-        body: JSON.stringify({ id: notification.id }),
-      });
-      if (!result.data.ok && result.status !== 0) {
-        toast.error(authErrors.generic);
-        return;
+    if(pending.current||failure?.uncertain)return;
+    pending.current=true;setMarking(true);setFailure(null);
+    try {
+      if (!notification.readAt) {
+        const result = await apiFetch("/api/account/notifications", {method:"POST",body:JSON.stringify({id:notification.id})});
+        if (!result.ok || !result.data.ok) {
+          if(!result.cancelled)setFailure(result.error??new ApiError(result.status,"internal_error"));
+          return;
+        }
+        setItems(prev=>prev.map(n=>n.id===notification.id?{...n,readAt:new Date().toISOString()}:n));
+        setUnread(u=>Math.max(0,u-1));
       }
-      setItems((prev) => prev.map((n) => (n.id === notification.id ? { ...n, readAt: new Date().toISOString() } : n)));
-      setUnread((u) => Math.max(0, u - 1));
-    }
-    if (notification.link) {
-      router.push(notification.link);
-    }
+      if(notification.link)router.push(notification.link);
+    } finally {pending.current=false;setMarking(false);}
   }
 
   async function markAllRead() {
-    if (markingAll) return;
-    setMarkingAll(true);
-    const result = await apiFetch("/api/account/notifications", {
-      method: "POST",
-      body: JSON.stringify({ all: true }),
-    });
-    setMarkingAll(false);
-    if (result.data.ok) {
-      const now = new Date().toISOString();
-      setItems((prev) => prev.map((n) => ({ ...n, readAt: n.readAt ?? now })));
-      setUnread(0);
-    } else if (result.status !== 0) {
-      toast.error(authErrors.generic);
-    }
+    if(pending.current||failure?.uncertain)return;
+    pending.current=true;setMarkingAll(true);setFailure(null);
+    try {
+      const result=await apiFetch("/api/account/notifications",{method:"POST",body:JSON.stringify({all:true})});
+      if(result.ok&&result.data.ok){const now=new Date().toISOString();setItems(prev=>prev.map(n=>({...n,readAt:n.readAt??now})));setUnread(0);}
+      else if(!result.cancelled)setFailure(result.error??new ApiError(result.status,"internal_error"));
+    } finally {pending.current=false;setMarkingAll(false);}
   }
 
   const chevron =
@@ -140,7 +138,7 @@ export function NotificationsView({
             variant="outline"
             className="h-11 rounded-full px-5 font-semibold"
             onClick={markAllRead}
-            disabled={markingAll}
+            disabled={markingAll||marking||!!failure?.uncertain}
           >
             {markingAll ? <Loader2 className="h-4 w-4 animate-spin" aria-hidden="true" /> : <CheckCheck className="h-4 w-4" aria-hidden="true" />}
             {t.markAllRead}
@@ -148,6 +146,7 @@ export function NotificationsView({
         )}
       </header>
 
+      <ErrorFeedback error={failure} locale={locale} operation={t.title} onRefresh={async()=>{setPage(1);await load(1,false);}}/>
       <section className="rounded-2xl border border-border bg-white p-4 sm:p-6">
         {loading && items.length === 0 ? (
           <div className="space-y-3" aria-busy="true" aria-label={t.title}>
@@ -161,11 +160,7 @@ export function NotificationsView({
               </div>
             ))}
           </div>
-        ) : failed ? (
-          <div role="alert" className="rounded-xl bg-red-50 px-4 py-3 text-sm font-medium text-red-800">
-            {authErrors.generic}
-          </div>
-        ) : items.length === 0 ? (
+        ) : failed ? null : items.length === 0 ? (
           <div className="py-10 text-center">
             <span className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-muted text-muted-foreground">
               <Bell className="h-7 w-7" aria-hidden="true" />
@@ -183,6 +178,7 @@ export function NotificationsView({
                 <li key={notification.id}>
                   <button
                     type="button"
+                    disabled={markingAll||marking||!!failure?.uncertain}
                     onClick={() => void markRead(notification)}
                     aria-label={typeLabel}
                     className={cn(

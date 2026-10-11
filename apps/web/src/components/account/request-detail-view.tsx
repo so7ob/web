@@ -67,6 +67,8 @@ export function RequestDetailView({
   const [cancelOpen, setCancelOpen] = useState(false);
   const [cancelNote, setCancelNote] = useState("");
   const [cancelling, setCancelling] = useState(false);
+  const [cancelFailure,setCancelFailure]=useState<ApiError|null>(null);
+  const cancelPending=useRef(false);
 
   const conversationRef = useRef<HTMLDivElement>(null);
 
@@ -76,10 +78,12 @@ export function RequestDetailView({
       setFailure(null);
       setRequest(result.data.request);
       setPhase("ready");
+      return true;
     } else {
       setErrorCode(result.data.code ?? "error");
       if(!result.cancelled)setFailure(result.error??new ApiError(result.status,"internal_error"));
       setPhase(prev=>prev==="ready"?prev:"error");
+      return false;
     }
   }, [id]);
 
@@ -165,20 +169,21 @@ export function RequestDetailView({
   }
 
   async function confirmCancel() {
-    if (cancelling) return;
+    if (cancelPending.current || cancelFailure?.uncertain) return;
+    cancelPending.current=true;setCancelFailure(null);
     setCancelling(true);
     const result = await apiFetch<{ ok?: boolean; code?: string }>(`/api/account/requests/${id}`, {
       method: "PATCH",
       body: JSON.stringify({ action: "cancel", note: cancelNote.trim() || undefined }),
     });
-    setCancelling(false);
-    setCancelOpen(false);
-    setCancelNote("");
+    setCancelling(false);cancelPending.current=false;
     if (result.data.ok) {
+      setCancelOpen(false);
+      setCancelNote("");
       await load();
       return;
     }
-    toast.error(result.status === 409 ? authErrors.invalid : authErrors.generic);
+    if(!result.cancelled)setCancelFailure(result.error??new ApiError(result.status,"internal_error"));
   }
 
   if (phase === "loading") {
@@ -472,7 +477,7 @@ export function RequestDetailView({
       </div>
 
       {/* حوار إلغاء الطلب */}
-      <Dialog open={cancelOpen} onOpenChange={setCancelOpen}>
+      <Dialog open={cancelOpen} onOpenChange={open=>{if(!cancelPending.current)setCancelOpen(open);}}>
         <DialogContent className="max-w-md rounded-2xl p-6">
           <DialogHeader>
             <DialogTitle className="text-lg font-bold text-navy">
@@ -480,6 +485,7 @@ export function RequestDetailView({
             </DialogTitle>
           </DialogHeader>
           <div className="space-y-4">
+            <ErrorFeedback error={cancelFailure} locale={locale} operation={t.cancelEdit} onRefresh={async()=>{if(await load())setCancelFailure(null);}}/>
             <Textarea
               value={cancelNote}
               onChange={(e) => setCancelNote(e.target.value)}
@@ -491,7 +497,7 @@ export function RequestDetailView({
             />
             <Button
               onClick={confirmCancel}
-              disabled={cancelling}
+              disabled={cancelling||!!cancelFailure?.uncertain||!canCancel}
               className="h-11 w-full rounded-full bg-red-600 font-bold text-white hover:bg-red-700"
             >
               {cancelling ? <Loader2 className="h-4 w-4 animate-spin" aria-hidden="true" /> : null}
