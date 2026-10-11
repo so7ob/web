@@ -784,3 +784,71 @@ it("uses explicit UTC half-open periods across DST offsets and preserves safe CS
   );
   expect(csvCell("@SUM(1,2)")).toBe('"\'@SUM(1,2)"');
 });
+
+it("supports mixed evidence collations without conflating case or trailing-space IDs", async () => {
+  // These DDL changes run only against the explicitly isolated test database.
+  // Reproduce an existing installation; CREATE TABLE IF NOT EXISTS cannot repair it.
+  const originals: Array<{ TABLE_NAME: string; COLLATION_NAME: string }> =
+    await db.query(
+      "SELECT TABLE_NAME,COLLATION_NAME FROM information_schema.COLUMNS WHERE TABLE_SCHEMA=DATABASE() AND TABLE_NAME IN ('AuditWork','AuditCaseEvent') AND COLUMN_NAME='eventId'",
+    );
+  const [policy] = await db.query("SELECT * FROM AuditPolicy WHERE id=1");
+  for (const row of originals) {
+      if (!["AuditWork", "AuditCaseEvent"].includes(row.TABLE_NAME) || !/^utf8mb4_[a-z0-9_]+$/.test(row.COLLATION_NAME))
+        throw new Error("Unexpected isolated fixture collation");
+  }
+  const exact = prefix + "Exact",
+    caseId = prefix + "Case",
+    padded = prefix + "Pad",
+    workIds = [exact, caseId.toLowerCase(), padded + " "],
+    probe = prefix + "mixed";
+  try {
+    for (const table of ["AuditWork", "AuditCaseEvent"])
+      await db.query(
+        `ALTER TABLE ${table} MODIFY eventId VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL`,
+      );
+    // This is the precise pre-fix failure, rather than a mocked driver exception.
+    await expect(
+      db.query("SELECT w.eventId FROM AuditWork w JOIN AuditLog a ON a.id=w.eventId LIMIT 1"),
+    ).rejects.toMatchObject({ driverError: { code: "ER_CANT_AGGREGATE_2COLLATIONS" } });
+    for (const id of [exact, caseId, padded])
+      await db.query(
+        "INSERT INTO AuditLog(id,actorId,action,entityType,entityId,createdAt) VALUES(?,?,'request.updated','request',?,TIMESTAMPADD(DAY,-1000,UTC_TIMESTAMP(3)))",
+        [id, prefix, prefix + "req"],
+      );
+    for (const id of workIds)
+      await db.query("INSERT INTO AuditWork(eventId) VALUES(?)", [id]);
+    const originalEvent = await db.query("SELECT * FROM AuditLog WHERE id=?", [exact]);
+    const item = await reviews.createCase(actor, {
+      title: "Synthetic mixed-collation hold", ownerId: prefix, eventIds: [exact],
+    });
+    await reviews.updateCase(actor, item.id, { revision: 0, held: true });
+    for (const id of workIds.slice(1))
+      await db.query("INSERT INTO AuditCaseEvent(caseId,eventId) VALUES(?,?)", [item.id, id]);
+    await ops.probe(probe);
+    expect((await ops.health(actor)).probes).toEqual(expect.arrayContaining([
+      expect.objectContaining({ component: probe, status: "healthy" }),
+    ]));
+    await expect(ops.health({ ...actor, roleKey: "client", permissions: [] })).rejects.toMatchObject({ status: 403 });
+    for (let n = 0; n < 500 && await ops.processOne(); n++) { /* bounded queue drain */ }
+    expect((await db.query("SELECT status FROM AuditWork WHERE eventId=?", [exact]))[0].status).toBe("completed");
+    for (const id of workIds.slice(1))
+      expect((await db.query("SELECT status FROM AuditWork WHERE eventId=?", [id]))[0].status).toBe("queued");
+    await db.query("UPDATE AuditPolicy SET retentionDays=900 WHERE id=1");
+    const dry = await ops.retention(actor);
+    expect(dry.held).toBeGreaterThanOrEqual(1);
+    expect(dry.candidates).toBeGreaterThanOrEqual(2);
+    expect(dry.deleted).toBe(0);
+    await auditContext.run({ source: "system", correlationId: prefix }, () =>
+      ops.retention(actor, true, 250, policy.revision));
+    expect(await db.query("SELECT * FROM AuditLog WHERE id=?", [exact])).toEqual(originalEvent);
+    expect(await db.query("SELECT id FROM AuditLog WHERE id IN (?,?)", [caseId, padded])).toHaveLength(0);
+  } finally {
+    for (const row of originals) {
+      await db.query(`ALTER TABLE ${row.TABLE_NAME} MODIFY eventId VARCHAR(255) CHARACTER SET utf8mb4 COLLATE ${row.COLLATION_NAME} NOT NULL`);
+    }
+    await db.query("DELETE FROM AuditWork WHERE eventId IN (?,?,?)", workIds);
+    await db.query("DELETE FROM AuditHealth WHERE component=?", [probe]);
+    await db.query("UPDATE AuditPolicy SET retentionDays=?,revision=? WHERE id=1", [policy.retentionDays, policy.revision]);
+  }
+});

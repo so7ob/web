@@ -22,6 +22,9 @@ interface Rule {
   revision: number;
   activatedAt: Date | null;
 }
+// Evidence IDs use exact, case-sensitive, no-padding comparisons. Existing
+// auxiliary tables may still use utf8mb4_bin; collate their side of each join
+// explicitly while preserving the canonical AuditLog primary-key lookup.
 export class AuditOperations {
   private lastFailureCount = 0;
   constructor(readonly db: DataSource) {}
@@ -260,7 +263,7 @@ export class AuditOperations {
         "UPDATE AuditWork SET status=IF(attempts>=3,'failed','queued'),leaseToken=NULL,leaseUntil=NULL,lastError='worker_lost' WHERE status='running' AND leaseUntil<UTC_TIMESTAMP(3)",
       );
       const [row] = await r.query(
-        "SELECT w.eventId FROM AuditWork w JOIN AuditLog a ON a.id=w.eventId WHERE w.status='queued' AND w.availableAt<=UTC_TIMESTAMP(3) ORDER BY w.availableAt,w.eventId LIMIT 1 FOR UPDATE SKIP LOCKED",
+        "SELECT w.eventId FROM AuditWork w JOIN AuditLog a ON a.id=w.eventId COLLATE utf8mb4_nopad_bin WHERE w.status='queued' AND w.availableAt<=UTC_TIMESTAMP(3) ORDER BY w.availableAt,w.eventId LIMIT 1 FOR UPDATE SKIP LOCKED",
       );
       if (!row) return null;
       await r.query(
@@ -368,7 +371,7 @@ export class AuditOperations {
       "SELECT * FROM AuditRule WHERE enabled=1 AND kind='health'",
     );
     const [pending] = await this.db.query(
-      "SELECT MAX(TIMESTAMPDIFF(SECOND,w.availableAt,UTC_TIMESTAMP(3))) age FROM AuditWork w JOIN AuditLog a ON a.id=w.eventId WHERE w.status IN ('queued','running','failed')",
+      "SELECT MAX(TIMESTAMPDIFF(SECOND,w.availableAt,UTC_TIMESTAMP(3))) age FROM AuditWork w JOIN AuditLog a ON a.id=w.eventId COLLATE utf8mb4_nopad_bin WHERE w.status IN ('queued','running','failed')",
     );
     for (const rule of rules)
       if (
@@ -406,7 +409,7 @@ export class AuditOperations {
       "SELECT MAX(createdAt) lastBusinessEventAt FROM AuditLog WHERE category NOT IN ('audit','diagnostics')",
     );
     const queues = await this.db.query(
-      "SELECT w.status,COUNT(*) count,MAX(TIMESTAMPDIFF(SECOND,w.availableAt,UTC_TIMESTAMP(3))) oldestSeconds FROM AuditWork w JOIN AuditLog a ON a.id=w.eventId GROUP BY w.status",
+      "SELECT w.status,COUNT(*) count,MAX(TIMESTAMPDIFF(SECOND,w.availableAt,UTC_TIMESTAMP(3))) oldestSeconds FROM AuditWork w JOIN AuditLog a ON a.id=w.eventId COLLATE utf8mb4_nopad_bin GROUP BY w.status",
     );
     const reports = await this.db.query(
       "SELECT status,COUNT(*) count FROM AuditReport GROUP BY status",
@@ -503,7 +506,7 @@ export class AuditOperations {
           Date.now() - Number(policy.retentionDays) * 86400000,
         ),
         held =
-          "EXISTS(SELECT 1 FROM AuditCaseEvent ce JOIN AuditCase c ON c.id=ce.caseId WHERE ce.eventId=a.id AND c.held=1)";
+          "EXISTS(SELECT 1 FROM AuditCaseEvent ce JOIN AuditCase c ON c.id=ce.caseId WHERE ce.eventId COLLATE utf8mb4_nopad_bin=a.id AND c.held=1)";
       const [count] = await r.query(
         `SELECT SUM(NOT ${held}) candidates,SUM(${held}) held FROM AuditLog a WHERE createdAt<?`,
         [cutoff],
