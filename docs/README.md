@@ -7,7 +7,7 @@
 - [العامل والطوابير](migration/worker-and-operations.md)، [صحة العامل](migration/worker-health-50.md)، [إعدادات التشغيل](../ops/).
 - [النسخ ونقل البيانات](migration/data-transfer.md)، [الاستعادة المحلية](migration/operational-restore.md)، [حدود الاستعادة على مضيف مستقل](migration/independent-recovery-56.md).
 - [تشغيل التدقيق والصلاحيات والاحتفاظ](migration/audit-70/runbook.md)، [التشخيص المنقح](migration/error-diagnostics-61.md)، [حدود CMS](migration/cms-boundaries.md).
-- [شرح البنية المثبت بالمصدر](migration/architecture-explained-2026-10-09.ar.md)، [المخططات المعتمدة](../.archify/README.md)، [الإصدارات](releases/v1.2.0.md).
+- [شرح البنية المثبت بالمصدر](migration/architecture-explained-2026-10-09.ar.md)، [المخططات المعتمدة](../.archify/README.md)، [الإصدارات](releases/v1.2.1.md).
 - [تقرير التنظيف والاستقلال #77](migration/repository-cleanup-77.md)، [أصل الشيفرة والحقوق](migration/source-provenance.md).
 
 ## العقود والأدلة والتاريخ

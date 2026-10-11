@@ -1,0 +1,150 @@
+{
+  "run": "https://github.com/so7ob/web/actions/runs/38165792437",
+  "sha": "5324f97abe7d49787d847be6e82bd325bce44317",
+  "conclusion": "failure",
+  "browserPassed": 239,
+  "browserFailed": 1,
+  "failingTest": "[mobile] auth-error-state.spec.ts: en reset: failed auth writes preserve fields and explain only verified causes",
+  "rule": "target-size",
+  "observedHeightCssPx": 17,
+  "requiredCssPx": 24,
+  "observedClosestOffsetCssPx": 19,
+  "steps": [
+    {
+      "name": "Set up job",
+      "conclusion": "success"
+    },
+    {
+      "name": "Initialize containers",
+      "conclusion": "success"
+    },
+    {
+      "name": "Run actions/checkout@v4",
+      "conclusion": "success"
+    },
+    {
+      "name": "Run actions/setup-node@v4",
+      "conclusion": "success"
+    },
+    {
+      "name": "Validate bundled skill contracts offline",
+      "conclusion": "success"
+    },
+    {
+      "name": "Run npm install --global npm@10.8.2",
+      "conclusion": "success"
+    },
+    {
+      "name": "Run npm ci",
+      "conclusion": "success"
+    },
+    {
+      "name": "Run npm run test:independence",
+      "conclusion": "success"
+    },
+    {
+      "name": "Run npm run lint",
+      "conclusion": "success"
+    },
+    {
+      "name": "Run npm run typecheck",
+      "conclusion": "success"
+    },
+    {
+      "name": "Run npm run db:migrate",
+      "conclusion": "success"
+    },
+    {
+      "name": "Run npm test",
+      "conclusion": "success"
+    },
+    {
+      "name": "Run npm run build",
+      "conclusion": "success"
+    },
+    {
+      "name": "Run npm run test:worker",
+      "conclusion": "success"
+    },
+    {
+      "name": "Run npm run test:file-worker",
+      "conclusion": "success"
+    },
+    {
+      "name": "Run npm run test:webhook",
+      "conclusion": "success"
+    },
+    {
+      "name": "Run npm run test:auth",
+      "conclusion": "success"
+    },
+    {
+      "name": "Run sudo apt-get update && sudo apt-get install -y mariadb-client",
+      "conclusion": "success"
+    },
+    {
+      "name": "Configure packet size on the isolated CI MariaDB service",
+      "conclusion": "success"
+    },
+    {
+      "name": "Run npm run db:check-cms",
+      "conclusion": "success"
+    },
+    {
+      "name": "Run npm run test:cms-boundaries",
+      "conclusion": "success"
+    },
+    {
+      "name": "Prepare isolated v1 upgrade rehearsal database",
+      "conclusion": "success"
+    },
+    {
+      "name": "Verify v1 records through the current ordered migrations",
+      "conclusion": "success"
+    },
+    {
+      "name": "Run npm run test:restore",
+      "conclusion": "success"
+    },
+    {
+      "name": "Run npx playwright install --with-deps chromium",
+      "conclusion": "success"
+    },
+    {
+      "name": "Run npm run test:e2e",
+      "conclusion": "failure"
+    },
+    {
+      "name": "Run actions/upload-artifact@v4",
+      "conclusion": "success"
+    },
+    {
+      "name": "Run sudo apt-get update && sudo apt-get install -y nginx openssl",
+      "conclusion": "skipped"
+    },
+    {
+      "name": "Run npm run test:infra",
+      "conclusion": "skipped"
+    },
+    {
+      "name": "Run git diff --check",
+      "conclusion": "skipped"
+    },
+    {
+      "name": "Post Run actions/setup-node@v4",
+      "conclusion": "skipped"
+    },
+    {
+      "name": "Post Run actions/checkout@v4",
+      "conclusion": "success"
+    },
+    {
+      "name": "Stop containers",
+      "conclusion": "success"
+    },
+    {
+      "name": "Complete job",
+      "conclusion": "success"
+    }
+  ]
+}
