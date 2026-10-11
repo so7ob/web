@@ -1,3 +1,5 @@
+import {DiagnosticController} from './admin/diagnostics.controller.js';
+import {DiagnosticAdministration} from '@so7ob/server';
 import {correlationMiddleware,rememberError,diagnostics,initializeDiagnostics} from "./diagnostics.js";
 import "reflect-metadata";
 import { TrackController, AdminTrackController, trackAttemptMiddleware } from "./track/controller.js";
@@ -71,7 +73,7 @@ class HealthController {
   }
 }
 @Module({
-  controllers: [
+  controllers: [DiagnosticController,
     TrackController, AdminTrackController,
     AdminOperationsController,
     PageAdministrationController,
@@ -87,7 +89,7 @@ class HealthController {
     MediaController,
     ClaimController,
   ],
-  providers: [
+  providers: [{provide:DiagnosticAdministration,useFactory:async()=>new DiagnosticAdministration(await database())},
     { provide: TrackService, useFactory: async () => { const db = await database(); return new TrackService(db, new MailQueue(db, new PayloadCipher()), process.env.SITE_URL!); } },
     { provide: PagePublicationService, useFactory: async () => new PagePublicationService(await database()) },
     { provide: PageTemplateService, useFactory: async () => new PageTemplateService(await database()) },
@@ -225,7 +227,7 @@ async function main() {
           errors: Object.fromEntries(
             errors.map((e) => [
               e.property,
-              Object.values(e.constraints ?? {})[0] ?? "invalid",
+              "invalid",
             ]),
           ),
         }),
@@ -385,7 +387,7 @@ async function main() {
         );
     } catch (error) {
       rememberError(req,error,"render_failed");
-      res.status(500).type("text/plain").send("Internal server error; reference: "+res.getHeader("X-Request-Id"));
+      res.status(500).type("text/plain").send((req.path.startsWith("/en")?"Unable to display the page. Try reloading. Reference: ":"تعذر عرض الصفحة. حاول إعادة التحميل. المرجع: ")+res.getHeader("X-Request-Id"));
     }
   });
   SwaggerModule.setup(

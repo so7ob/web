@@ -34,11 +34,11 @@ export function correlationMiddleware(req:Request,res:Response,next:NextFunction
   res.json=function(body:unknown){
     if(res.statusCode>=400) {
       const previous=body && typeof body==='object' && !Array.isArray(body)?body as Record<string,unknown>:{};
-      const code=safeCode(previous.code,res.statusCode>=500?'internal_error':res.statusCode===404?'not_found':'invalid');
+      const code=safeCode(previous.code,res.statusCode>=500?'internal_error':res.statusCode===401?'unauthorized':res.statusCode===403?'forbidden':res.statusCode===404?'not_found':res.statusCode===429?'rate_limited':'invalid');
       context.code=code;
       // Domain extra fields have already passed service authorization/validation; no raw HttpException response reaches here.
       const category=errorCategory(res.statusCode,code);
-      body={...previous,ok:false,code,category,messageKey:`errors.${category}`,requestId:context.requestId,errorId:context.errorId};
+      body={...(res.statusCode>=500?{}:previous),ok:false,code,category,messageKey:`errors.${category}`,requestId:context.requestId,errorId:context.errorId};
     }
     return json(body);
   };

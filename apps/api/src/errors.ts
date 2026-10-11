@@ -6,8 +6,9 @@ import {rememberError} from './diagnostics.js';
 export class SafeExceptionFilter implements ExceptionFilter {
   catch(error:unknown, host:ArgumentsHost):void {
     const context=host.switchToHttp(),res=context.getResponse<Response>(),req=context.getRequest<Request>();
-    rememberError(req,error);res.setHeader('Cache-Control','no-store');
+    rememberError(req,error);
     if(res.headersSent){res.end();return;}
+    res.setHeader('Cache-Control','no-store');
     if (error instanceof AuthFault) {
       if(error.status===429 && typeof error.extra.retryAfterSec==='number')res.setHeader('Retry-After',error.extra.retryAfterSec);
       res.status(error.status).json({ok:false,code:error.code,...error.extra});return;

@@ -1,6 +1,6 @@
 import { createHash, randomUUID } from 'node:crypto';
 import { mkdir, appendFile, rename, stat, unlink, readdir } from 'node:fs/promises';
-import { readFileSync } from 'node:fs';
+import { readFileSync, existsSync } from 'node:fs';
 import { resolve } from 'node:path';
 import type { DiagnosticEvent } from '@so7ob/contracts';
 import { TRACE_ID } from '@so7ob/contracts';
@@ -12,6 +12,7 @@ const codes = new Set(['actor_inactive', 'archived', 'bad_origin', 'builtin_read
 export const safeCode = (value: unknown, fallback = 'internal_error') => typeof value === 'string' && codes.has(value) ? value : fallback;
 /** Never read messages, SQL, params, request values, arbitrary URL segments or causes into logs. */
 export function exceptionDiagnostic(error: unknown): {exception:string;reason:string;frames:string[]} {
+ try {
   let reason = 'unexpected_exception';
   const visited = new Set<unknown>();
   let current = error;
@@ -25,13 +26,16 @@ export function exceptionDiagnostic(error: unknown): {exception:string;reason:st
   // Keep only source locations in our code, never the exception message or function arguments.
   const frames = error instanceof Error ? (error.stack ?? '').split('\n').slice(1,16).flatMap(line=>{
     const match = /\b((?:apps|packages)\/[a-zA-Z0-9_./-]+\.(?:js|ts|tsx)):(\d+):(\d+)\)?$/.exec(line);
-    return match && !match[1].includes('..') ? [`${match[1]}:${match[2]}:${match[3]}`] : [];
+    return match && !match[1].includes('..') && existsSync(resolve(match[1])) ? [`${match[1]}:${match[2]}:${match[3]}`] : [];
   }).slice(0,8) : [];
   return {exception,reason,frames};
+ } catch {return {exception:'Error',reason:'unreadable_exception',frames:[]};}
 }
-export function runtimeRevision(component: DiagnosticEvent['component']): string {
+function readRevision(component: DiagnosticEvent['component']): string {
   try { const value=JSON.parse(readFileSync(resolve(`apps/${component==='Worker'?'worker':'api'}/dist/build-info.json`),'utf8'));return /^[a-f0-9]{40}$/.test(value.sha) ? value.sha+(value.dirty?'+dirty':'') : 'unavailable'; } catch { return 'unavailable'; }
 }
+const revisions = {API:readRevision('API'),Web:readRevision('Web'),Worker:readRevision('Worker')};
+export function runtimeRevision(component:DiagnosticEvent['component']){return revisions[component];}
 export function diagnosticEvent(input: Partial<DiagnosticEvent>, error?:unknown): DiagnosticEvent {
   const component = ['API','Web','Worker'].includes(input.component ?? '') ? input.component! : 'API';
   const code = safeCode(input.code);
@@ -89,11 +93,12 @@ export class RotatingDiagnosticFile implements DiagnosticSink {
 export class DiagnosticLogger {
   private pending=new Set<Promise<void>>();
   private dropped=0;
-  constructor(private readonly sink?:DiagnosticSink,private readonly fallback:(line:string)=>void=(line)=>{process.stderr.write(line);}) {}
+  private fallbackDropped=0;
+  constructor(private readonly sink?:DiagnosticSink,private readonly fallback:(line:string)=>void=(line)=>{if(process.stderr.writableLength>1024*1024)throw new Error('Diagnostic stderr backlog full');process.stderr.write(line);}) {}
   record(input:Partial<DiagnosticEvent>,error?:unknown):DiagnosticEvent {
     const event=diagnosticEvent(input,error);
     // stdout/stderr survives DB rollback and is the fallback when both DB and disk are unavailable.
-    try{this.fallback(JSON.stringify(event)+'\n');}catch{/* Never replace the original error. */}
+    try{this.fallback(JSON.stringify(event)+'\n');}catch{this.fallbackDropped++; /* Never replace the original error. */}
     if(this.sink && this.pending.size<256) {
       const work=Promise.resolve().then(()=>this.sink!.write(event)).catch(()=>{this.dropped++;}).finally(()=>{this.pending.delete(work);});
       this.pending.add(work);
@@ -101,5 +106,20 @@ export class DiagnosticLogger {
     return event;
   }
   get lostPersistenceCount(){return this.dropped;}
+  get lostFallbackCount(){return this.fallbackDropped;}
   async flush(){await Promise.allSettled([...this.pending]);}
+}
+
+/** Re-project persisted rows before sending them to a browser; never return arbitrary payload keys. */
+export function safeStoredEvent(value:Partial<DiagnosticEvent>):DiagnosticEvent {
+  const safe=diagnosticEvent(value);
+  const reasonValues=new Set([...Object.values(reasons),'unexpected_exception','unreadable_exception']);
+  return {...safe,
+    at:typeof value.at==='string'&&Number.isFinite(Date.parse(value.at))?new Date(value.at).toISOString():safe.at,
+    revision:typeof value.revision==='string'&&/^[a-f0-9]{40}(?:\+dirty)?$/.test(value.revision)?value.revision:'unavailable',
+    exception:exceptionNames.has(value.exception??'')?value.exception!:'Error',
+    reason:reasonValues.has(value.reason??'')?value.reason!:'unexpected_exception',
+    frames:Array.isArray(value.frames)?value.frames.filter(x=>typeof x==='string'&&/^(apps|packages)\/[a-zA-Z0-9_./-]+\.(js|ts|tsx):\d+:\d+$/.test(x)&&!x.includes('..')&&existsSync(resolve(x.replace(/:\d+:\d+$/, '')))).slice(0,8):[],
+    fingerprint:typeof value.fingerprint==='string'&&/^[a-f0-9]{64}$/.test(value.fingerprint)?value.fingerprint:safe.fingerprint,
+  };
 }

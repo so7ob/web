@@ -47,3 +47,8 @@ export interface DiagnosticEvent {
   frames: string[];
   fields: string[];
 }
+export interface DiagnosticList {
+ ok:true;rows:Array<{fingerprint:string;occurrences:number;firstAt:string;lastAt:string;event:DiagnosticEvent;state:'reviewing'|'resolved';reviewedAt:string|null}>;
+ total:number;page:number;pageSize:number;retention:{days:number;rows:number};countScope:'retained_matching_events';
+ processLoss?:{persistence:number;fallback:number};
+}

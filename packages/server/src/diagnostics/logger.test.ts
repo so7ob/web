@@ -6,7 +6,7 @@ import {diagnosticEvent,DiagnosticLogger,RotatingDiagnosticFile} from './logger.
 describe('allowlisted diagnostic events',()=>{
   it('excludes secrets in provider messages, nested causes, SQL and arbitrary fields',()=>{
     const secret='SYNTHETIC_PRIVATE_PASSWORD',cause=Object.assign(new Error(secret),{code:'ER_DUP_ENTRY',sql:'SELECT '+secret,parameters:[secret]});
-    const error=new Error('token='+secret,{cause});error.stack='Error: '+secret+'\n at query (/private/'+secret+'/driver.js:1:2)\n at patch (/root/web/packages/server/src/admin/conversations.ts:12:3)';
+    const error=new Error('token='+secret,{cause});error.stack='Error: '+secret+'\n at query (/private/'+secret+'/driver.js:1:2)\n at forged (/apps/api/src/'+secret+'.ts:1:2)\n at patch (/root/web/packages/server/src/admin/conversations.ts:12:3)';
     const event=diagnosticEvent({code:secret,operation:'update',fields:['password',secret,'status'],requestId:secret},error);
     expect(JSON.stringify(event)).not.toContain(secret);expect(event.reason).toBe('duplicate_key');expect(event.frames).toEqual(['packages/server/src/admin/conversations.ts:12:3']);
     expect(event.fields).toEqual(['password','status']);expect(event.requestId).toBeUndefined();expect(event.code).toBe('internal_error');

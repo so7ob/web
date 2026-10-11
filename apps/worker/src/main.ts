@@ -5,6 +5,7 @@ import { database, assertSchema, MailQueue, PayloadCipher, smtpTransport, proces
 const fileLog=new RotatingDiagnosticFile(resolve(process.env.DATA_DIR??'.migration/runtime','diagnostics'),'worker');
 let store:DiagnosticStore|undefined;
 const diagnostics=new DiagnosticLogger({async write(event){await Promise.all([fileLog.write(event),...(store?[store.write(event)]:[])]);}});
+async function main(){
 const db = await database().catch(error=>{diagnostics.record({component:'Worker',event:'startup_failed',code:'internal_error',operation:'startup',level:'fatal'},error);throw new Error('Worker database unavailable');}); await assertSchema(db);store=new DiagnosticStore(db);
 let stopping = false;
 process.once('SIGTERM', () => { stopping = true; }); process.once('SIGINT', () => { stopping = true; });
@@ -37,4 +38,7 @@ try {
 } catch (error) {
   // Provider/DB errors may contain payloads or credentials. Supervisor restarts; leases recover safely.
   diagnostics.record({component:'Worker',event:'worker_failed',code:'internal_error',operation:'process_jobs'},error); process.exitCode = 1;
-} finally { if(heartbeat)clearInterval(heartbeat);await pending; if(started)await health.stop().catch(()=>{process.exitCode=1;});transport.close();await diagnostics.flush();await db.destroy(); }
+} finally { if(heartbeat)clearInterval(heartbeat);await pending; if(started)await health.stop().catch(error=>{diagnostics.record({component:'Worker',event:'worker_failed',code:'internal_error',operation:'shutdown'},error);process.exitCode=1;});transport.close();await diagnostics.flush();await db.destroy(); }
+
+}
+main().catch(async error=>{diagnostics.record({component:'Worker',event:'startup_failed',code:'internal_error',operation:'startup',level:'fatal'},error);await diagnostics.flush();process.exitCode=1;});

@@ -60,3 +60,5 @@ export {WorkerHeartbeat,workerHealth} from './queue/monitor.js';
 
 export * from "./diagnostics/logger.js";
 export * from "./diagnostics/store.js";
+
+export * from './diagnostics/admin.js';

@@ -40,6 +40,8 @@ export const PERMISSIONS = {
   // الإشعارات والبريد والتدقيق
   "notifications.send": "إرسال إشعارات بريدية",
   "email.outbox": "عرض صندوق صادر البريد",
+  "diagnostics.view": "عرض السجل التشخيصي المنقح",
+  "diagnostics.manage": "تصنيف متابعة مجموعات الأخطاء",
   "audit.view": "عرض سجل التدقيق",
 } as const;
 
