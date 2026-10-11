@@ -161,7 +161,7 @@ async function main() {
   initializeDiagnostics(db);
   const app = await NestFactory.create<NestExpressApplication>(
     ApplicationModule,
-    { cors: false, bodyParser: false },
+    { cors: false, bodyParser: false, logger: false, abortOnError: false },
   );
   app.use(correlationMiddleware);
   app.set("trust proxy", Number(process.env.TRUST_PROXY_HOPS ?? 0));
