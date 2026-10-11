@@ -36,3 +36,5 @@ export * from "./media.js";
 export * from "./content/tree-move.js";
 
 export * from "./outbox.js";
+
+export * from "./errors.js";

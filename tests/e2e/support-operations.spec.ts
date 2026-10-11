@@ -26,7 +26,7 @@ for(const locale of ['ar','en'] as const)test(`${locale}: operations assigns, su
    const sent=page.waitForResponse(r=>r.url().includes('/messages')&&r.request().method()==='POST');
    await page.getByRole('textbox',{name:label,exact:true}).press('Control+Enter');
    expect((await sent).status()).toBe(201); // Source account message creation returns 201.
-   await expect(page.getByText(body,{exact:true})).toBeVisible();
+   await expect(page.getByLabel(t.admin.requests.conversation,{exact:true}).getByText(body,{exact:true})).toBeVisible();
   }
   await page.reload({waitUntil:'networkidle'});
   await expect(page.getByText(privateBody,{exact:true})).toBeVisible();

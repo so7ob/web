@@ -38,7 +38,7 @@ try {
   const invalid=await post('/api/auth/register',{name:'x',email:'invalid',password:'short'}); assert.equal(invalid.status,400); assert.deepEqual((await invalid.json()).errors,{name:'name_invalid',email:'email_invalid',password:'password_short'});
   const register=await post('/api/auth/register',{name:'Synthetic Client',email:prefix+'-registered@example.invalid',password,locale:'en',roleKey:'super_admin'}); assert.equal(register.status,201); assert.deepEqual(await register.json(),{ok:true,emailStatus:'queued'});
   // One invalid DTO + one successful registration consumed two attempts. Malformed JSON is the third.
-  const malformed=await request('/api/auth/register',{method:'POST',headers:{'Content-Type':'application/json'},body:'{'});assert.equal(malformed.status,400);assert.deepEqual(await malformed.json(),{ok:false,code:'invalid'});
+  const malformed=await request('/api/auth/register',{method:'POST',headers:{'Content-Type':'application/json'},body:'{'});assert.equal(malformed.status,400);assert.deepEqual(await malformed.json(),{ok:false,code:'invalid',category:'validation',messageKey:'errors.validation',requestId:malformed.headers.get('x-request-id'),errorId:malformed.headers.get('x-error-id')});
   const throttled=await post('/api/v1/auth/register',{name:'Never Created',email:prefix+'-limited@example.invalid',password});assert.equal(throttled.status,429);
   for(let n=0;n<3;n++){const bad=await request('/api/auth/forgot-password',{method:'POST',headers:{'Content-Type':'application/json'},body:'{'});assert.equal(bad.status,400);}
   assert.equal((await post('/api/v1/auth/forgot-password',{email:'missing@example.invalid'})).status,429);

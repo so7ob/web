@@ -1,3 +1,6 @@
+import {DiagnosticController} from './admin/diagnostics.controller.js';
+import {DiagnosticAdministration} from '@so7ob/server';
+import {correlationMiddleware,rememberError,diagnostics,initializeDiagnostics} from "./diagnostics.js";
 import "reflect-metadata";
 import { TrackController, AdminTrackController, trackAttemptMiddleware } from "./track/controller.js";
 import { TrackService, MailQueue, PayloadCipher } from "@so7ob/server";
@@ -42,7 +45,7 @@ import {
 import { authAttemptMiddleware } from "./auth/attempts.js";
 import { AuthController } from "./auth/controller.js";
 import { AuthHttpPolicy } from "./auth/policy.js";
-import { SafeExceptionFilter } from "./errors.js";
+import { SafeExceptionFilter, validationCode } from "./errors.js";
 import { AuthenticationService, AuthFault } from "@so7ob/server";
 import { Controller, Get, Module, ValidationPipe } from "@nestjs/common";
 import { NestFactory } from "@nestjs/core";
@@ -70,7 +73,7 @@ class HealthController {
   }
 }
 @Module({
-  controllers: [
+  controllers: [DiagnosticController,
     TrackController, AdminTrackController,
     AdminOperationsController,
     PageAdministrationController,
@@ -86,7 +89,7 @@ class HealthController {
     MediaController,
     ClaimController,
   ],
-  providers: [
+  providers: [{provide:DiagnosticAdministration,useFactory:async()=>new DiagnosticAdministration(await database())},
     { provide: TrackService, useFactory: async () => { const db = await database(); return new TrackService(db, new MailQueue(db, new PayloadCipher()), process.env.SITE_URL!); } },
     { provide: PagePublicationService, useFactory: async () => new PagePublicationService(await database()) },
     { provide: PageTemplateService, useFactory: async () => new PageTemplateService(await database()) },
@@ -155,10 +158,12 @@ type Renderer = {
 async function main() {
   const db = await database();
   await assertSchema(db);
+  initializeDiagnostics(db);
   const app = await NestFactory.create<NestExpressApplication>(
     ApplicationModule,
-    { cors: false, bodyParser: false },
+    { cors: false, bodyParser: false, logger: false, abortOnError: false },
   );
+  app.use(correlationMiddleware);
   app.set("trust proxy", Number(process.env.TRUST_PROXY_HOPS ?? 0));
   app.enableCors({
     origin: (
@@ -168,6 +173,7 @@ async function main() {
     ).split(","),
     credentials: true,
     methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+    exposedHeaders: ["X-Request-Id", "X-Error-Id", "Retry-After"],
   });
   app.use(
     authAttemptMiddleware(
@@ -204,6 +210,7 @@ async function main() {
         "type" in error &&
         error.type === "entity.parse.failed"
       ) {
+        rememberError(_req,error);
         res.status(400).json({ ok: false, code: "invalid" });
         return;
       }
@@ -220,7 +227,7 @@ async function main() {
           errors: Object.fromEntries(
             errors.map((e) => [
               e.property,
-              Object.values(e.constraints ?? {})[0] ?? "invalid",
+              validationCode(Object.values(e.constraints ?? {})[0]),
             ]),
           ),
         }),
@@ -378,9 +385,9 @@ async function main() {
               `<script>window.__SO7OB__=${payload}</script>`,
             ),
         );
-    } catch {
-      process.stderr.write("ssr_failed: internal_error\n");
-      res.status(500).type("text/plain").send("Internal server error");
+    } catch (error) {
+      rememberError(req,error,"render_failed");
+      res.status(500).type("text/plain").send((req.path.startsWith("/en")?"Unable to display the page. Try reloading. Reference: ":"تعذر عرض الصفحة. حاول إعادة التحميل. المرجع: ")+res.getHeader("X-Request-Id"));
     }
   });
   SwaggerModule.setup(
@@ -401,6 +408,6 @@ async function main() {
   );
 }
 main().catch((error) => {
-  console.error(error instanceof Error ? error.message : "Startup failed");
+  diagnostics.record({component:"API",event:"startup_failed",code:"internal_error",operation:"startup",level:"fatal"},error);
   process.exitCode = 1;
 });

@@ -56,7 +56,7 @@ test("administration legacy and v1 contracts preserve projections, filters and s
     for (const api of ["/api/admin/users", "/api/v1/admin/users"]) {
       const denied = await client.get(api);
       expect(denied.status()).toBe(403);
-      expect(await denied.json()).toEqual({ ok: false, code: "forbidden" });
+      expect(await denied.json()).toEqual({ ok: false, code: "forbidden", category: "authorization", messageKey: "errors.authorization", requestId: denied.headers()["x-request-id"], errorId: denied.headers()["x-error-id"] });
       const result = await ops.get(api + "?q=" + subject);
       expect(result.status()).toBe(200);
       expect(result.headers()["cache-control"]).toBe("no-store");
@@ -115,7 +115,7 @@ test("administration legacy and v1 contracts preserve projections, filters and s
         data: { passwordHash: "invalid" },
       });
       expect(invalid.status()).toBe(400);
-      expect(await invalid.json()).toEqual({ ok: false, code: "invalid" });
+      expect(await invalid.json()).toEqual({ ok: false, code: "invalid", category: "validation", messageKey: "errors.validation", requestId: invalid.headers()["x-request-id"], errorId: invalid.headers()["x-error-id"] });
     }
     expect(
       (await db.query("SELECT roleKey FROM User WHERE id=?", [subject]))[0]
@@ -158,7 +158,7 @@ test("invitation HTTP admission counts malformed input and delivers a single-use
     expect(duplicate.status()).toBe(409);
     expect(await duplicate.json()).toEqual({
       ok: false,
-      code: "invite_pending",
+      code: "invite_pending", category: "conflict", messageKey: "errors.conflict", requestId: duplicate.headers()["x-request-id"], errorId: duplicate.headers()["x-error-id"],
     });
     const [job] = await db.query(
       "SELECT j.id,j.payload,e.bodyText FROM MailJob j JOIN EmailLog e ON e.id=j.emailLogId WHERE e.`to`=?",
@@ -175,14 +175,14 @@ test("invitation HTTP admission counts malformed input and delivers a single-use
         data: "{broken",
       });
       expect(malformed.status()).toBe(400);
-      expect(await malformed.json()).toEqual({ ok: false, code: "invalid" });
+      expect(await malformed.json()).toEqual({ ok: false, code: "invalid", category: "validation", messageKey: "errors.validation", requestId: malformed.headers()["x-request-id"], errorId: malformed.headers()["x-error-id"] });
     }
     const invalid = await context.post("/api/admin/users", {
       headers,
       data: { email: "invalid" },
     });
     expect(invalid.status()).toBe(400);
-    expect(await invalid.json()).toEqual({ ok: false, code: "invalid" });
+    expect(await invalid.json()).toEqual({ ok: false, code: "invalid", category: "validation", messageKey: "errors.validation", requestId: invalid.headers()["x-request-id"], errorId: invalid.headers()["x-error-id"] });
     const limited = await context.post("/api/v1/admin/users", {
       headers,
       data: { email },
