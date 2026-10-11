@@ -1,6 +1,8 @@
 "use client";
+import {ErrorFeedback} from "@/components/errors/error-feedback";
+import {ApiError} from "@/lib/errors/transport";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import Link from "@/routing/link";
 import { Loader2, MailCheck, MailQuestion, Send } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -11,20 +13,21 @@ import { DevLink } from "@/components/account/dev-link";
 import { AuthCard } from "./auth-card";
 import { TextField } from "./text-field";
 
-type ForgotResponse = { ok?: boolean; devResetUrl?: string; code?: string };
+type ForgotResponse = { ok?: boolean; devResetUrl?: string; code?: string; errors?: Record<string,string> };
 
 /** استعادة كلمة المرور — الرد دائمًا عام؛ رابط التطوير يظهر في وضع dev فقط */
 export function ForgotForm({ locale, t }: { locale: Locale; t: PortalContent["auth"] }) {
   const [email, setEmail] = useState("");
   const [fieldError, setFieldError] = useState<string | null>(null);
-  const [error, setError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
+  const pending=useRef(false);
+  const [failure,setFailure]=useState<ApiError|null>(null);
   const [sent, setSent] = useState<{ devResetUrl?: string } | null>(null);
 
   async function onSubmit(ev: React.FormEvent<HTMLFormElement>) {
     ev.preventDefault();
-    if (submitting) return;
-    setError(null);
+    if (pending.current) return;
+    setFailure(null);
     setFieldError(null);
 
     if (!email.trim()) {
@@ -32,19 +35,16 @@ export function ForgotForm({ locale, t }: { locale: Locale; t: PortalContent["au
       return;
     }
 
-    setSubmitting(true);
+    pending.current=true;setSubmitting(true);
     const result = await apiFetch<ForgotResponse>("/api/auth/forgot-password", {
       method: "POST",
       body: JSON.stringify({ email: email.trim().toLowerCase() }),
     });
-    setSubmitting(false);
+    pending.current=false;setSubmitting(false);
 
-    if (result.status === 429) {
-      setError(t.errors.rateLimited);
-      return;
-    }
-    if (result.status === 0) {
-      setError(t.errors.generic);
+    if(!result.ok||!result.data.ok){
+      if(result.data.errors?.email)setFieldError(t.errors.emailInvalid);
+      else if(!result.cancelled)setFailure(result.error??new ApiError(result.status,"internal_error"));
       return;
     }
     // رد عام دائمًا — لا نكشف وجود الحساب
@@ -87,11 +87,8 @@ export function ForgotForm({ locale, t }: { locale: Locale; t: PortalContent["au
       }
     >
       <form onSubmit={onSubmit} noValidate className="mt-6 space-y-5">
-        {error && (
-          <div role="alert" className="rounded-2xl border border-rose-200 bg-rose-50 px-4 py-3 text-sm font-medium text-rose-700">
-            {error}
-          </div>
-        )}
+        <ErrorFeedback focusOnError error={failure} locale={locale} operation={t.forgotTitle}/>
+
         <TextField
           id="forgot-email"
           label={t.email}

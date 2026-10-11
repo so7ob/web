@@ -1,6 +1,8 @@
 "use client";
+import {ErrorFeedback} from "@/components/errors/error-feedback";
+import {ApiError} from "@/lib/errors/transport";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import Link from "@/routing/link";
 import { useRouter } from "@/routing/navigation";
 import { Loader2, Mail, MailPlus, ShieldX } from "lucide-react";
@@ -22,10 +24,13 @@ export function InviteForm({ locale, t, token, nameLabel }: { locale: Locale; t:
   const [fieldErrors, setFieldErrors] = useState<{ name?: string; password?: string; confirm?: string }>({});
   const [formError, setFormError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
+  const pending=useRef(false);
+  const [failure,setFailure]=useState<ApiError|null>(null);
 
   async function onSubmit(ev: React.FormEvent<HTMLFormElement>) {
     ev.preventDefault();
-    if (submitting) return;
+    if (pending.current) return;
+    setFailure(null);
     setFormError(null);
     setFieldErrors({});
 
@@ -39,12 +44,12 @@ export function InviteForm({ locale, t, token, nameLabel }: { locale: Locale; t:
       return;
     }
 
-    setSubmitting(true);
+    pending.current=true;setSubmitting(true);
     const result = await apiFetch<InviteResponse>("/api/auth/invite", {
       method: "POST",
       body: JSON.stringify({ token, name: name.trim(), password }),
     });
-    setSubmitting(false);
+    pending.current=false;setSubmitting(false);
 
     if (result.status === 201 && result.data.ok) {
       router.push(`/${locale}/auth/login`);
@@ -53,11 +58,14 @@ export function InviteForm({ locale, t, token, nameLabel }: { locale: Locale; t:
 
     if (result.data.errors?.password) {
       setFieldErrors({ password: t.errors.passwordWeak });
-    } else if (result.status === 409) {
+    } else if(result.data.errors?.name){
+      setFieldErrors({name:t.errors.nameInvalid});
+    } else if (result.status === 409 && result.data.code === "email_taken") {
       setFormError(t.errors.emailTaken);
-    } else {
-      // رمز منتهٍ أو مستخدم
+    } else if(result.data.code === "invalid_token") {
       setFormError(t.errors.invalid);
+    } else if(!result.cancelled) {
+      setFailure(result.error??new ApiError(result.status,"internal_error"));
     }
   }
 
@@ -101,6 +109,7 @@ export function InviteForm({ locale, t, token, nameLabel }: { locale: Locale; t:
       }
     >
       <form onSubmit={onSubmit} noValidate className="mt-6 space-y-5">
+        <ErrorFeedback focusOnError error={failure} locale={locale} operation={t.registerTitle}/>
         {formError && (
           <div role="alert" className="rounded-2xl border border-rose-200 bg-rose-50 px-4 py-3 text-sm font-medium text-rose-700">
             {formError}

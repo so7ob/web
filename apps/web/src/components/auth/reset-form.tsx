@@ -1,6 +1,8 @@
 "use client";
+import {ErrorFeedback} from "@/components/errors/error-feedback";
+import {ApiError} from "@/lib/errors/transport";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import Link from "@/routing/link";
 import { useRouter } from "@/routing/navigation";
 import { KeyRound, Loader2, ShieldX } from "lucide-react";
@@ -22,10 +24,13 @@ export function ResetForm({ locale, t, token }: { locale: Locale; t: PortalConte
   const [fieldErrors, setFieldErrors] = useState<{ password?: string; confirm?: string }>({});
   const [formError, setFormError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
+  const pending=useRef(false);
+  const [failure,setFailure]=useState<ApiError|null>(null);
 
   async function onSubmit(ev: React.FormEvent<HTMLFormElement>) {
     ev.preventDefault();
-    if (submitting) return;
+    if (pending.current) return;
+    setFailure(null);
     setFormError(null);
     setFieldErrors({});
 
@@ -38,12 +43,12 @@ export function ResetForm({ locale, t, token }: { locale: Locale; t: PortalConte
       return;
     }
 
-    setSubmitting(true);
+    pending.current=true;setSubmitting(true);
     const result = await apiFetch<ResetResponse>("/api/auth/reset-password", {
       method: "POST",
       body: JSON.stringify({ token, password }),
     });
-    setSubmitting(false);
+    pending.current=false;setSubmitting(false);
 
     if (result.data.ok) {
       toast.success(t.resetSuccess);
@@ -53,11 +58,10 @@ export function ResetForm({ locale, t, token }: { locale: Locale; t: PortalConte
 
     if (result.data.errors?.password) {
       setFieldErrors({ password: t.errors.passwordWeak });
-    } else if (result.status === 429) {
-      setFormError(t.errors.rateLimited);
-    } else {
-      // رمز منتهٍ أو مستخدم — بطاقة خطأ واضحة
+    } else if (result.data.code === "invalid_token") {
       setFormError(t.verifyInvalidBody);
+    } else if(!result.cancelled) {
+      setFailure(result.error??new ApiError(result.status,"internal_error"));
     }
   }
 
@@ -97,6 +101,7 @@ export function ResetForm({ locale, t, token }: { locale: Locale; t: PortalConte
       }
     >
       <form onSubmit={onSubmit} noValidate className="mt-6 space-y-5">
+        <ErrorFeedback focusOnError error={failure} locale={locale} operation={t.resetTitle}/>
         {formError && (
           <div role="alert" className="rounded-2xl border border-rose-200 bg-rose-50 px-4 py-3 text-sm font-medium text-rose-700">
             {formError}
