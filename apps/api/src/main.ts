@@ -61,6 +61,7 @@ import express, {
 import { readFile } from "node:fs/promises";
 import { resolve } from "node:path";
 import { pathToFileURL } from "node:url";
+import { styleText } from "node:util";
 import { database, assertSchema } from "@so7ob/server";
 import type { PublicView } from "@so7ob/contracts";
 import { PublicController } from "./public.controller.js";
@@ -159,8 +160,10 @@ type Renderer = {
   ): Promise<{ html: string; head: string; lang: string; dir: string }>;
 };
 async function main() {
+  console.log(styleText("cyan", "[سُحُب] STARTING / جارٍ تشغيل الخادم — checking database and schema…"));
   const db = await database();
   await assertSchema(db);
+  console.log(styleText("cyan", "[سُحُب] Database and schema verified / قاعدة البيانات والمخطط جاهزان"));
   initializeDiagnostics(db);
   const app = await NestFactory.create<NestExpressApplication>(
     ApplicationModule,
@@ -410,8 +413,20 @@ async function main() {
     Number(process.env.PORT ?? 3000),
     process.env.BIND_HOST ?? "127.0.0.1",
   );
+  const url = await app.getUrl();
+  console.log(styleText("green", [
+    "",
+    "================================================================",
+    "  سُحُب — READY / الخادم جاهز",
+    `  HTTP:   ${url}`,
+    `  Health: ${url}/api/health/ready`,
+    "  Stop / إيقاف: Ctrl+C",
+    "================================================================",
+    "",
+  ].join("\n")));
 }
 main().catch((error) => {
-  diagnostics.record({component:"API",event:"startup_failed",code:"internal_error",operation:"startup",level:"fatal"},error);
+  const event = diagnostics.record({component:"API",event:"startup_failed",code:"internal_error",operation:"startup",level:"fatal"},error);
+  console.error(styleText("red", `[سُحُب] STARTUP FAILED / تعذر تشغيل الخادم — reference / المرجع: ${event.errorId}`, { stream: process.stderr }));
   process.exitCode = 1;
 });
