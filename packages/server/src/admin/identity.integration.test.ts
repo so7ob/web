@@ -1,5 +1,5 @@
 import { beforeAll, afterAll, it, expect } from "vitest";
-import { randomBytes } from "node:crypto";
+import { createHash, randomBytes } from "node:crypto";
 import bcrypt from "bcryptjs";
 import {
   SYSTEM_ROLES,
@@ -107,6 +107,17 @@ afterAll(async () => {
   );
   await db.query("DELETE FROM EmailLog WHERE `to` LIKE ?", [prefix + "%"]);
   await db.query("DELETE FROM UserInvite WHERE email LIKE ?", [prefix + "%"]);
+  // Direct accounts receive random IDs; their authentication events are owned
+  // by those IDs, not by the fixture's actor prefix. Remove only this run's data.
+  await db.query(
+    "DELETE a FROM AuditLog a JOIN User u ON a.actorId=u.id OR a.entityId=u.id WHERE u.email LIKE ?",
+    [prefix + "%"],
+  );
+  const loginIps = ['login','changed','setup','reader','reader2','suspend','suspend2','expire','expired','old'];
+  await db.query(
+    `DELETE FROM AuditLog WHERE ipHash IN (${loginIps.map(() => '?').join(',')})`,
+    loginIps.map(suffix => createHash('sha256').update('ip:' + prefix + suffix).digest('hex')),
+  );
   await db.query(
     "DELETE FROM AuditLog WHERE actorId LIKE ? OR entityId LIKE ?",
     [prefix + "%", prefix + "%"],

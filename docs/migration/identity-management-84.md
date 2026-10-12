@@ -53,3 +53,7 @@ Capabilities are checked again inside the common user-administration lock. Role 
 ## Verification notes
 
 Early runs exposed an existing CSV test timeout at 5105 records and the resulting fixture contamination. Export now evaluates its search once in a transaction-local temporary selection and writes bounded batches, retaining all original limits/assertions. No timeout, retry count or assertion was weakened. New browser runs exposed a native-select label lookup defect and missing diagnostic allowlist entries for identity errors; both were corrected in product code.
+
+The first remote CI run (#38318262321) reported 898 passed / 10 failed: identity fixtures left authentication audit events belonging to generated account IDs, so the strict transfer tests correctly rejected the non-empty destination. Fixture cleanup now selects only this run's generated users and hashed synthetic login identifiers; transfer assertions and product audit retention remain unchanged. The final browser run was restarted after the requested sidebar simplification: identity sub-sections remain tabs within Users, with a single Users sidebar entry.
+
+Arabic operating instructions: [دليل الإدارة](identity-management-84.ar.md).
