@@ -17,7 +17,7 @@ Temporary passwords expire after 24 hours, are bcrypt hashed, returned only by t
 
 Security references: [authorization](https://cheatsheetseries.owasp.org/cheatsheets/Authorization_Cheat_Sheet.html), [authentication](https://cheatsheetseries.owasp.org/cheatsheets/Authentication_Cheat_Sheet.html), [sessions](https://cheatsheetseries.owasp.org/cheatsheets/Session_Management_Cheat_Sheet.html), [password storage](https://cheatsheetseries.owasp.org/cheatsheets/Password_Storage_Cheat_Sheet.html), [recovery](https://cheatsheetseries.owasp.org/cheatsheets/Forgot_Password_Cheat_Sheet.html).
 
-Verification results will be recorded after execution. No deployment or production migration is authorized.
+No deployment or production migration is authorized. [PR #85](https://github.com/so7ob/web/pull/85) records the final check results and links to the exact CI run and head SHA.
 
 ## Action and delegation matrix
 
@@ -57,3 +57,14 @@ Early runs exposed an existing CSV test timeout at 5105 records and the resultin
 The first remote CI run (#38318262321) reported 898 passed / 10 failed: identity fixtures left authentication audit events belonging to generated account IDs, so the strict transfer tests correctly rejected the non-empty destination. Fixture cleanup now selects only this run's generated users and hashed synthetic login identifiers; transfer assertions and product audit retention remain unchanged. The final browser run was restarted after the requested sidebar simplification: identity sub-sections remain tabs within Users, with a single Users sidebar entry.
 
 Arabic operating instructions: [دليل الإدارة](identity-management-84.ar.md).
+
+## Evidence and reproduction
+
+- Local `ce3a46625fdb8450ddd975434c27618f151d9e5d`: 908 tests in 50 files passed, exit 0, on `so7ob_identity_84_clean_test`; lint, typecheck, build, independence and infrastructure checks passed. Its complete browser run is recorded separately from subsequent backend-only changes.
+- `90068275e2a44a201214767fad761f6289f20286` keeps the inaccessible setup-account placeholder within bcrypt's 72-byte limit. Lint, typecheck, independence and infrastructure checks passed locally; CI run `38319117582` passed the complete integration suite before proceeding to operational checks. This is an observed intermediate result, not a claim that that run or the final PR has completed all gates.
+- `tools/migration/upgrade-identity-smoke.ts` passed on an empty isolated `so7ob_identity_84_upgrade3_test`, replaying the old schema and synthetic historical data before the new migration. It verifies IDs, role permissions, bcrypt hash, verification timestamp, timestamps, invitation and normalized-email uniqueness. It never resets an existing database.
+- `tests/e2e/identity-management.spec.ts` captures Users, Roles preview and Permission catalog for ar/en at 375/1280. The one-time credential modal is deliberately closed before screenshots. CI retains these PNGs in **identity-84-synthetic-interfaces** for 30 days; download the artifact from the exact run linked in PR checks. Local equivalents are `.migration/iam/{users,roles,permissions}-{ar,en}-{desktop,mobile}.png`. All records are synthetic; credentials and traces are excluded from this evidence artifact.
+- Browser acceptance performs creation, forced change, allowed/denied API calls, foreign-resource denial, live-session permission withdrawal, audit verification, retained duplicate form, axe and keyboard checks. The complete suite also preserves existing invitation routes and resource workflows.
+- Synthetic SMTP/queue tests establish enqueue and worker behavior, not delivery through a real external mailbox. No production database, service cutover, release or deployment was performed. Local full-browser evidence included one 90-second portal timeout while other suites were running; its retained trace and rerun outcome are reported in the PR, without changing the timeout.
+
+Reproduce using Node 24.21.0/npm 10.8.2 and explicitly configured isolated `so7ob_*_test` MariaDB databases. Run `npm run db:migrate` before browser acceptance, keep browser fixtures separate from integration/worker fixtures, then execute every gate in CONTRIBUTING.md. Upgrade rehearsal requires a separate empty database. Require exit code 0; do not infer success from partial output.

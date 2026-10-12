@@ -94,6 +94,16 @@ jobs:
           NODE_ENV: test
       - run: npx playwright install --with-deps chromium
       - run: npm run test:e2e
+      - name: Preserve synthetic bilingual identity screenshots
+        uses: actions/upload-artifact@v4
+        with:
+          name: identity-84-synthetic-interfaces
+          path: |
+            .migration/iam/users-*.png
+            .migration/iam/roles-*.png
+            .migration/iam/permissions-*.png
+          if-no-files-found: error
+          retention-days: 30
       - uses: actions/upload-artifact@v4
         if: failure()
         with:
