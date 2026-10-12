@@ -38,7 +38,7 @@ export async function notifyStaff(
 ): Promise<Array<{ id: string; email: string; locale: string }>> {
   const staff: Array<{ id: string; email: string; locale: string }> =
     await r.query(
-      "SELECT id,email,locale FROM User WHERE status='active' AND roleKey IN ('super_admin','ops_manager','support')",
+      "SELECT id,email,locale FROM User WHERE status='active' AND roleKey IN (SELECT `key` FROM Role WHERE status='active' AND (`key`='super_admin' OR JSON_CONTAINS(permissions, '\"requests.view.all\"')))",
     );
   if (staff.length)
     await r.query(

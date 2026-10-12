@@ -38,7 +38,7 @@ export class AuthController {
     this.policy.mutation(req,true); res.setHeader('Cache-Control','no-store');
     const logged=await this.auth.login(body.email,body.password,req.headers['user-agent'] ?? '',req.ip ?? 'unknown');
     if (!logged) { const url=new URL('/api/auth/error?error=CredentialsSignin',process.env.SITE_URL).href; if(req.is('application/x-www-form-urlencoded')&&body.json!=='true')res.redirect(302,url);else res.status(401).json({ url }); return; }
-    this.policy.setSession(res,logged.raw,logged.expiresAt); const url=this.policy.callback(body.callbackUrl);
+    this.policy.setSession(res,logged.raw,logged.expiresAt); const url=logged.user.credentialState==='temporary'?new URL(`/${logged.user.locale}/auth/change-password`,process.env.SITE_URL).href:this.policy.callback(body.callbackUrl);
     if(req.is('application/x-www-form-urlencoded')&&body.json!=='true'){res.redirect(302,url);return;}
     res.json({ url });
   }

@@ -69,11 +69,12 @@ export class PublicService {
     } catch {
       throw new NotFoundException();
     }
+    if (viewer?.credentialState && viewer.credentialState !== "ready" && slug !== "auth/change-password") return {redirect:`/${locale}/auth/change-password`};
     const db = await database();
     const shell = await this.shell(locale, viewer);
     if (slug === "track") return {...shell,kind:"track",parameters:{token:url.searchParams.get("t")??"",cardParam:url.searchParams.get("card")??""}};
     const adminRoute =
-      /^admin(?:\/(users(?:\/([^/]+))?|requests(?:\/([^/]+))?|inquiries(?:\/([^/]+))?|pages(?:\/([^/]+)\/(edit|preview))?|notifications|media|menus|settings|audit|outbox|diagnostics))?\/?$/.exec(
+      /^admin(?:\/(users(?:\/([^/]+))?|requests(?:\/([^/]+))?|inquiries(?:\/([^/]+))?|pages(?:\/([^/]+)\/(edit|preview))?|roles|permissions|invitations|notifications|media|menus|settings|audit|outbox|diagnostics))?\/?$/.exec(
         decoded,
       );
     if (adminRoute) {
@@ -86,6 +87,7 @@ export class PublicService {
       const section = adminRoute[1]?.split("/")[0] ?? "dashboard";
       const permissions: Record<string, Permission> = {
         users: "users.view",
+        roles:"roles.view",permissions:"roles.view",invitations:"invitations.manage",
         requests: "requests.view.all",
         inquiries: "inquiries.view.all",
         pages: adminRoute[6] === "edit" ? "pages.edit" : "pages.view",
@@ -315,7 +317,7 @@ export class PublicService {
       canonicalOrigin: (
         process.env.SITE_URL ?? "http://127.0.0.1:3000"
       ).replace(/\/+$/, ""),
-      viewer: viewer ? { name: viewer.name, roleKey: viewer.roleKey } : null,
+      viewer: viewer ? { name: viewer.name, roleKey: viewer.roleKey, isStaff:can(viewer,"admin.dashboard") } : null,
     };
   }
 }

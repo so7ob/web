@@ -26,13 +26,14 @@ export interface SiteViewBase {
   }>;
   settings: Record<string, string>;
   canonicalOrigin: string;
-  viewer: { name: string; roleKey: string } | null;
+  viewer: { name: string; roleKey: string; isStaff?:boolean } | null;
 }
 export const authScreens = [
   "login",
   "register",
   "forgot-password",
   "reset-password",
+  "change-password",
   "invite",
   "verified",
   "logout",

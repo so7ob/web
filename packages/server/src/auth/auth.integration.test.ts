@@ -34,6 +34,7 @@ afterAll(async()=>{
       await db.query('DELETE FROM AuditLog WHERE ipHash=?',[sha256('ip:'+ip(flow))]);
       for (const operation of ['register','login','forgot','test']) await db.query('DELETE FROM RateLimitBucket WHERE bucketKey=?',[sha256(operation+':'+ip(flow))]);
     }
+    await db.query('DELETE FROM Role WHERE `key`=?',[prefix+'sender']);
     if (createdRole) await db.query("DELETE FROM Role WHERE `key`='client'"); await db.destroy();
   }
 });
@@ -98,7 +99,9 @@ describe('Nest authentication persistence on real MariaDB', { concurrent:false }
     await auth.changePassword(current,password,'New-Synthetic-4829'); expect(await auth.session(one!.raw)).toBeNull(); expect(await auth.session(two!.raw)).toBeNull();
   });
   it('atomically accepts one invite and preserves the invited role rather than a client-selected role',async()=>{
-    const token=randomBytes(32).toString('hex'); await db.query("INSERT INTO UserInvite(id,email,roleKey,tokenHash,expiresAt) VALUES(?,?,'client',?,DATE_ADD(UTC_TIMESTAMP(3),INTERVAL 1 DAY))",[prefix+'invite',email('invite'),sha256(token)]);
+    await db.query("INSERT INTO Role(`key`,nameAr,nameEn,permissions) VALUES(?,'مرسل','Sender','[\"users.create\"]')",[prefix+'sender']);
+    await db.query("UPDATE User SET roleKey=? WHERE id=?",[prefix+'sender',prefix+'other']);
+    const token=randomBytes(32).toString('hex'); await db.query("INSERT INTO UserInvite(id,email,roleKey,tokenHash,invitedById,expiresAt) VALUES(?,?,'client',?,?,DATE_ADD(UTC_TIMESTAMP(3),INTERVAL 1 DAY))",[prefix+'invite',email('invite'),sha256(token),prefix+'other']);
     const results=await Promise.allSettled([auth.acceptInvite(token,'Invited',password),auth.acceptInvite(token,'Invited',password)]); expect(results.filter(r=>r.status==='fulfilled')).toHaveLength(1);
     const [row]=await db.query('SELECT roleKey,status,emailVerifiedAt FROM User WHERE email=?',[email('invite')]); expect(row.roleKey).toBe('client'); expect(row.status).toBe('active'); expect(row.emailVerifiedAt).toBeInstanceOf(Date);
   });

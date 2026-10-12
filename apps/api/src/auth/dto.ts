@@ -1,11 +1,12 @@
+import { validPassword } from '@so7ob/server';
 import { Transform } from 'class-transformer';
 import { IsBoolean, IsIn, IsOptional, IsString, Matches, MaxLength, Validate, ValidatorConstraint, type ValidatorConstraintInterface } from 'class-validator';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 const string = (value: unknown) => String(value ?? '');
 @ValidatorConstraint({ name:'registrationPassword',async:false })
 class RegistrationPassword implements ValidatorConstraintInterface {
-  validate(value:unknown){return typeof value==='string'&&value.length>=8&&value.length<=100&&/[A-Za-z]/.test(value)&&/\d/.test(value);}
-  defaultMessage(args?:{value:unknown}){const value=String(args?.value??'');return value.length<8?'password_short':value.length>100?'password_long':'password_weak';}
+  validate(value:unknown){return typeof value==='string'&&validPassword(value);}
+  defaultMessage(args?:{value:unknown}){const value=String(args?.value??'');return value.length<8?'password_short':(value.length>100||Buffer.byteLength(value)>72)?'password_long':'password_weak';}
 }
 export class RegisterDto {
   @ApiProperty() @Transform(({ value })=>string(value).trim().slice(0,100)) @Matches(/^[\s\S]{2,100}$/,{ message:'name_invalid' }) name:string='';

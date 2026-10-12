@@ -1,3 +1,4 @@
+import { can } from "@so7ob/contracts";
 import { formatDistanceToNow } from "date-fns";
 import { ar, enUS } from "date-fns/locale";
 import type { DataSource } from "typeorm";
@@ -14,7 +15,7 @@ export class PortalService {
     locale: "ar" | "en" = "ar",
   ): Promise<AccountDashboardData> {
     // The source account dashboard shows owned records for clients and assigned records for staff.
-    const scope = user.roleKey === "client" ? "clientId" : "assigneeId";
+    const scope = !can(user, "requests.view.all") ? "clientId" : "assigneeId";
     const [[requests], [inquiries], [notifications], recent] =
       await Promise.all([
         this.db.query(

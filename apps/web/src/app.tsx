@@ -120,7 +120,7 @@ function AppContent() {
         items={header}
         auth={{
           loggedIn: !!data.viewer,
-          isStaff: !!data.viewer && data.viewer.roleKey !== "client",
+          isStaff: !!data.viewer?.isStaff,
           accountLabel: portal.account.nav.dashboard,
           adminLabel: portal.admin.nav.dashboard,
           loginLabel: portal.auth.loginTitle,
@@ -178,6 +178,7 @@ export const routes = (loader: LoaderFunction): RouteObject[] => [
             path: "pages/:id/preview",
             lazy: () => import("./screens/admin/page-preview"),
           },
+          ...["roles","permissions","invitations"].map(path=>({path,lazy:()=>import("./screens/admin/identity")})),
           { path: "users", lazy: () => import("./screens/admin/users") },
           {
             path: "users/:id",

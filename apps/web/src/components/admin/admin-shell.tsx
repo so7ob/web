@@ -108,13 +108,15 @@ export function AdminShell({
     };
   }, [pathname]);
 
+  const identitySection = can(me, 'users.view') ? 'users' : can(me, 'roles.view') ? 'roles' : 'invitations';
+  const identityHref = `/${locale}/admin/${identitySection}`;
   const items: NavItem[] = [
     { href: `/${locale}/admin`, label: t.dashboard, icon: LayoutDashboard },
     {
-      href: `/${locale}/admin/users`,
+      href: identityHref,
       label: t.users,
       icon: Users,
-      permission: "users.view",
+      permission: identitySection === 'users' ? 'users.view' : identitySection === 'roles' ? 'roles.view' : 'invitations.manage',
     },
     {
       href: `/${locale}/admin/requests`,
@@ -178,7 +180,8 @@ export function AdminShell({
   const isActive = (href: string) =>
     href === `/${locale}/admin`
       ? pathname === href
-      : pathname === href || pathname.startsWith(`${href}/`);
+      : pathname === href || pathname.startsWith(`${href}/`) ||
+        (href === identityHref && ['users','roles','permissions','invitations'].some(section => pathname === `/${locale}/admin/${section}`));
 
   const titleFor = (path: string): string => {
     const rest = path
@@ -188,6 +191,9 @@ export function AdminShell({
     const segment = rest[0] ?? "";
     const map: Record<string, string> = {
       users: t.users,
+      roles: locale === 'ar' ? 'الأدوار' : 'Roles',
+      permissions: locale === 'ar' ? 'دليل الصلاحيات' : 'Permission catalog',
+      invitations: locale === 'ar' ? 'الدعوات' : 'Invitations',
       requests: t.requests,
       inquiries: t.inquiries,
       notifications: t.notifications,

@@ -39,6 +39,8 @@ export interface UsersResponse {
 
 // ——— ملف المستخدم الموسّع ———
 export interface UserDetailInfo {
+  credentialState:string;
+  credentialExpiresAt:string|null;
   id: string;
   email: string;
   name: string;
@@ -76,6 +78,7 @@ export interface UserAuditRow {
   createdAt: string;
 }
 export interface UserDetailResponse {
+  role:{nameAr:string;nameEn:string;permissions:Permission[];status:string};
   ok: boolean;
   user: UserDetailInfo;
   stats: { totalRequests: number; openRequests: number };

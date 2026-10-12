@@ -137,7 +137,7 @@ export class PagePublicationService {
         const recipients: Array<{
             id: string;
             locale: string;
-        }> = await r.query("SELECT id,locale FROM User WHERE status='active' AND roleKey IN ('super_admin','content_editor','ops_manager') AND id<>?", [actor.id]);
+        }> = await r.query("SELECT id,locale FROM User WHERE status='active' AND roleKey IN (SELECT `key` FROM Role WHERE status='active' AND (`key`='super_admin' OR JSON_CONTAINS(permissions, '\"pages.view\"'))) AND id<>?", [actor.id]);
         if (recipients.length)
             await r.query('INSERT INTO Notification(id,userId,type,payload,link) VALUES ' + recipients.map(() => '(?,?,?,?,?)').join(','), recipients.flatMap(u => [newId(), u.id, 'content_published', JSON.stringify({ slug: settings.slug || 'home', title: p.titleAr }), `/${u.locale === 'en' ? 'en' : 'ar'}/admin/pages`]));
         return { ok: true, publishedAt: now, page: { slug: settings.slug, status: 'published', draftRevision: p.draftRevision, publishedRevision: p.draftRevision, hasUnpublishedChanges: false } };

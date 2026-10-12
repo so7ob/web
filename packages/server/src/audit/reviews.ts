@@ -349,7 +349,7 @@ export class AuditReviews {
   async assignees(actor: AuthUser) {
     permit(actor, "audit.cases.manage");
     const users = await this.db.query(
-      "SELECT u.id,u.name,u.roleKey,r.permissions FROM User u JOIN Role r ON r.`key`=u.roleKey WHERE u.status='active' AND u.roleKey<>'client' ORDER BY u.name LIMIT 200",
+      "SELECT u.id,u.name,u.roleKey,r.permissions FROM User u JOIN Role r ON r.`key`=u.roleKey WHERE u.status='active' AND r.status='active' ORDER BY u.name LIMIT 200",
     );
     return {
       ok: true,

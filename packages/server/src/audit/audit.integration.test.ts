@@ -692,6 +692,7 @@ it("alerts on newly granted sensitive permissions in custom roles using historic
     await new UserAdministrationService(db).update(actor, targetId, {
       roleKey,
       status: "suspended",
+      reason:"security_response",
     });
     const result = await reader.search(actor, { resourceId: targetId });
     eventId = result.rows[0].id;

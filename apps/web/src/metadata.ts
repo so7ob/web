@@ -43,6 +43,7 @@ export function headMarkup(data: PublicView): string {
       register: auth.registerTitle,
       "forgot-password": auth.forgotTitle,
       "reset-password": auth.resetTitle,
+      "change-password": auth.resetTitle,
       invite: auth.registerTitle,
       verified: auth.verifyTitle,
       logout: meta.pages.home.title,
@@ -52,7 +53,7 @@ export function headMarkup(data: PublicView): string {
         ? meta.pages.home.title
         : names[data.screen] + " | " + meta.shortName;
     ogTitle = title;
-    if (["logout", "reset-password", "invite"].includes(data.screen))
+    if (["logout", "reset-password", "change-password", "invite"].includes(data.screen))
       robots = "noindex, nofollow";
   } else if (data.kind === "account") {
     const portal = getPortalContent(data.locale).account;

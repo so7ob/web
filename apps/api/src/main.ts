@@ -1,3 +1,5 @@
+import { IdentityAdministrationController, identityAttemptMiddleware, restrictedCredentialMiddleware } from './admin/identity.controller.js';
+import { IdentityAdministrationService } from '@so7ob/server';
 import {AuditController} from './admin/audit.controller.js';
 import {AuditReader,AuditReviews,AuditReports,AuditOperations} from '@so7ob/server';
 import {DiagnosticController} from './admin/diagnostics.controller.js';
@@ -82,6 +84,7 @@ class HealthController {
     PageAdministrationController,
     PageTemplateController,
     UserAdministrationController,
+    IdentityAdministrationController,
     HealthController,
     PublicController,
     AuthController,
@@ -112,6 +115,10 @@ class HealthController {
     {
       provide: PageAdministrationService,
       useFactory: async () => new PageAdministrationService(await database()),
+    },
+    {
+      provide: IdentityAdministrationService,
+      useFactory: async () => new IdentityAdministrationService(await database()),
     },
     {
       provide: UserAdministrationService,
@@ -182,6 +189,7 @@ async function main() {
     methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
     exposedHeaders: ["X-Request-Id", "X-Error-Id", "Retry-After"],
   });
+  app.use(restrictedCredentialMiddleware(app.get(AuthenticationService),app.get(AuthHttpPolicy)));
   app.use(
     authAttemptMiddleware(
       app.get(AuthenticationService),
@@ -195,6 +203,7 @@ async function main() {
       app.get(AuthHttpPolicy),
     ),
   );
+  app.use(identityAttemptMiddleware(app.get(AuthenticationService),app.get(IdentityAdministrationService),app.get(AuthHttpPolicy)));
   app.use(
     invitationAttemptMiddleware(
       app.get(AuthenticationService),

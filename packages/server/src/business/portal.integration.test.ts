@@ -20,7 +20,7 @@ const owner: AuthUser = {
   emailVerified: true,
   permissions: [],
 };
-const staff = { ...owner, id: prefix + "staff", roleKey: "support" };
+const staff = { ...owner, id: prefix + "staff", roleKey: "support", permissions:["requests.view.all","inquiries.view.all"] as import("@so7ob/contracts").Permission[] };
 beforeAll(async () => {
   await db.initialize();
   await db.runMigrations();
