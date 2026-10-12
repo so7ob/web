@@ -92,6 +92,7 @@ for (const locale of ["ar", "en"] as const)
       await expect(
         dialog.getByText(t.affected + ": 0", { exact: true }),
       ).toBeVisible();
+      await dialog.getByRole("button", { name: t.confirm, exact: true }).scrollIntoViewIfNeeded();
       await page.screenshot({path:`.migration/iam/roles-${locale}-${info.project.name}.png`,fullPage:true});
       await dialog
         .getByRole("button", { name: t.confirm, exact: true })
