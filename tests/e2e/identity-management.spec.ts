@@ -42,10 +42,27 @@ for (const locale of ["ar", "en"] as const)
       password,
     );
     try {
-      await page.goto(`/${locale}/admin/roles`);
-      await page
-        .getByRole("button", { name: t.createRole, exact: true })
-        .click();
+      // A real delayed route chunk must not expose an inert SSR action.
+      let release!: () => void;
+      const gate = new Promise<void>(resolve => { release = resolve; });
+      let intercepted = 0;
+      await page.route('**/assets/identity-*.js', async route => {
+        intercepted++;
+        await gate;
+        await route.continue();
+      });
+      const createRole = page.getByRole("button", { name: t.createRole, exact: true });
+      try {
+        await page.goto(`/${locale}/admin/roles`, { waitUntil: 'commit' });
+        await expect(createRole).toBeDisabled();
+        await expect.poll(() => intercepted).toBeGreaterThan(0);
+        release();
+        await expect(createRole).toBeEnabled();
+        await createRole.click();
+      } finally {
+        release();
+        await page.unroute('**/assets/identity-*.js');
+      }
       let dialog = page.getByRole("dialog");
       await dialog.getByLabel(t.key, { exact: true }).fill(key);
       await dialog

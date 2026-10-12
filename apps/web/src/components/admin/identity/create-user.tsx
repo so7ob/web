@@ -79,6 +79,7 @@ export function CreateUser({
     <>
       <Button
         className="min-h-11"
+        disabled={roles.length === 0}
         onClick={() => {
           setResult(null);
           setError("");

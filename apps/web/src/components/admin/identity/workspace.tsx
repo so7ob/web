@@ -325,6 +325,7 @@ export function IdentityWorkspace({
         <h1 className="text-2xl font-bold">{t[screen]}</h1>
         {screen === "roles" && can(me, "roles.create") ? (
           <Button
+            disabled={loading}
             onClick={() => {
               setOriginal(null);
               setEditing({ ...blank });
