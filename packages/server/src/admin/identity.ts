@@ -335,7 +335,7 @@ export class IdentityAdministrationService {
         ? "S7!" + randomBytes(24).toString("base64url")
         : null;
     const passwordHash = await bcrypt.hash(
-      temporaryPassword ?? randomBytes(48).toString("hex"),
+      temporaryPassword ?? randomBytes(48).toString("base64url"),
       12,
     );
     const id = newId(),
