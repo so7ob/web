@@ -9,7 +9,7 @@ export { MailQueue } from "./queue/mail-queue.js";
 export { PayloadCipher } from "./queue/crypto.js";
 export { smtpTransport, processMail } from "./queue/worker.js";
 
-export { AuthenticationService } from "./auth/service.js";
+export { AuthenticationService, validPassword } from "./auth/service.js";
 export type { AuthenticatedSession } from "./auth/service.js";
 export {
   AuthFault,
@@ -69,3 +69,5 @@ export * from './audit/context.js';
 export * from './audit/reviews.js';
 export * from './audit/reports.js';
 export * from './audit/operations.js';
+
+export * from './admin/identity.js';

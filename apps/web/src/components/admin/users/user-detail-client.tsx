@@ -1,4 +1,7 @@
 "use client";
+import { UserSecurity } from '../identity/user-security';
+import { IdentityNav } from '../identity/shared';
+import { useAdmin } from '@/screens/admin/data';
 
 /**
  * ملف المستخدم الموسّع (إدارة): بيانات الحساب + إحصاءات + آخر الطلبات (روابط مباشرة
@@ -60,6 +63,7 @@ interface UserDetailClientProps {
 }
 
 export function UserDetailClient({ locale, userId }: UserDetailClientProps) {
+  const {user:me}=useAdmin();
   const t = getPortalContent(locale);
   const tud = t.admin.users.detail;
 
@@ -168,6 +172,8 @@ export function UserDetailClient({ locale, userId }: UserDetailClientProps) {
 
   return (
     <div className="space-y-5">
+      <IdentityNav me={me} locale={locale}/>
+      <UserSecurity me={me} locale={locale} data={data} onChanged={reload}/>
       {/* الترويسة */}
       <div className="flex flex-wrap items-center gap-3">
         <Button
@@ -189,7 +195,7 @@ export function UserDetailClient({ locale, userId }: UserDetailClientProps) {
           </p>
         </div>
         <div className="ms-auto flex flex-wrap items-center gap-2">
-          <RoleBadge roleKey={user.roleKey} locale={locale} />
+          <RoleBadge roleKey={user.roleKey} role={data.role} locale={locale} />
           <UserStatusBadge
             status={user.status}
             label={statusLabel(user.status)}

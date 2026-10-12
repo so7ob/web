@@ -87,7 +87,7 @@ export class FileService {
           id,
         );
         const payload = { ref: locked.refCode, attachment: stored.filename };
-        if (user.roleKey === "client") {
+        if (!can(user, "requests.view.all")) {
           if (locked.assigneeId)
             await insertRecord(r, "Notification", {
               id: newId(),
@@ -127,7 +127,7 @@ export class FileService {
     if (!request) throw new AuthFault(404, "not_found");
     if (!canAccessRequest(user, request)) throw new AuthFault(403, "forbidden");
     if (
-      user.roleKey === "client" &&
+      !can(user, "requests.view.all") &&
       ["closed", "cancelled"].includes(request.status)
     )
       throw new AuthFault(409, "locked");
@@ -153,7 +153,7 @@ export class FileService {
       allowed = !!inquiry && canAccessInquiry(user, inquiry);
     } else allowed = record.uploaderId === user.id;
     if (!allowed) throw new AuthFault(403, "forbidden");
-    if (user.roleKey === "client" && record.messageId) {
+    if (!can(user, "requests.internal_notes") && record.messageId) {
       const internal = await this.db.query(
         "SELECT id FROM RequestMessage WHERE id=? AND kind='internal_note' UNION ALL SELECT id FROM InquiryMessage WHERE id=? AND kind='internal_note' LIMIT 1",
         [record.messageId, record.messageId],

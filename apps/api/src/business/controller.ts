@@ -58,6 +58,7 @@ export class SubmissionGuard implements CanActivate {
           this.policy.cookie(req, this.policy.sessionCookie),
         )
       )?.user ?? null;
+    if (req.actor?.credentialState && req.actor.credentialState !== "ready") throw new AuthFault(403,"password_change_required");
     if (req.path.endsWith('/inquiries') && req.body && typeof req.body === 'object' && !Array.isArray(req.body)) {
       req.body.name ??= req.actor?.name ?? '';
       req.body.email ??= req.actor?.email ?? '';
@@ -79,6 +80,7 @@ export class AccountGuard implements CanActivate {
           this.policy.cookie(req, this.policy.sessionCookie),
         )
       )?.user ?? null;
+    if (req.actor?.credentialState && req.actor.credentialState !== "ready") throw new AuthFault(403,"password_change_required");
     if (!req.actor) throw new AuthFault(401, "unauthorized");
     if (!["GET", "HEAD"].includes(req.method)) this.policy.mutation(req);
     context.switchToHttp().getResponse().setHeader("Cache-Control", "no-store");

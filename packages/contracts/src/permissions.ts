@@ -8,7 +8,19 @@ export const PERMISSIONS = {
   "admin.dashboard": "عرض لوحة الإدارة ومؤشراتها",
   // المستخدمون
   "users.view": "عرض قائمة المستخدمين",
-  "users.create": "إنشاء/دعوة مستخدمين",
+  "users.create": "دعوة مستخدمين (العقد الحالي)",
+  "users.provision": "إنشاء حساب مباشر",
+  "users.credentials.reset": "طلب رابط إعداد الاعتماد",
+  "users.credentials.temporary": "إصدار اعتماد مؤقت",
+  "users.sessions.manage": "عرض جلسات المستخدمين وإنهاؤها",
+  "users.protected": "إدارة حسابات مدير النظام بتحقق حديث",
+  "roles.view": "عرض الأدوار ودليل الصلاحيات",
+  "roles.create": "إنشاء ونسخ دور",
+  "roles.update": "تعديل بيانات الدور",
+  "roles.permissions": "تعديل صلاحيات الدور",
+  "roles.delegate": "تفويض منح الصلاحيات",
+  "roles.archive": "أرشفة دور غير مستخدم",
+  "invitations.manage": "عرض وإلغاء وإعادة إرسال الدعوات",
   "users.update": "تعديل بيانات المستخدمين",
   "users.suspend": "إيقاف/إعادة تفعيل الحسابات",
   "users.roles": "تعديل أدوار المستخدمين وصلاحياتهم",
@@ -63,6 +75,7 @@ export const SYSTEM_ROLES: {
   descriptionAr: string;
   descriptionEn: string;
   permissions: PermissionList;
+  credentialState?: string;
 }[] = [
   {
     key: "super_admin",
@@ -146,7 +159,7 @@ export const ROLE_KEYS = SYSTEM_ROLES.map((r) => r.key);
 
 /** أدوار لها حق دخول لوحة الإدارة */
 export function isStaffRole(roleKey: string): boolean {
-  return roleKey !== "client";
+  return ["super_admin", "ops_manager", "support", "content_editor"].includes(roleKey);
 }
 
 export interface AuthUser {
@@ -158,6 +171,7 @@ export interface AuthUser {
   locale: string;
   emailVerified: boolean;
   permissions: PermissionList;
+  credentialState?: string;
 }
 
 /** تحقق الصلاحية — يستدعى في الخادم دائمًا */
@@ -171,6 +185,6 @@ export function can(
 }
 
 /** هل المستخدم من الطاقم (غير العميل)؟ */
-export function isStaff(user: Pick<AuthUser, "roleKey"> | null | undefined): boolean {
-  return !!user && isStaffRole(user.roleKey);
+export function isStaff(user: Pick<AuthUser, "roleKey" | "permissions"> | null | undefined): boolean {
+  return can(user, "admin.dashboard");
 }

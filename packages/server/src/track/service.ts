@@ -148,7 +148,7 @@ export class TrackService {
    const mid=newId();await insertRecord(r,n.message,{id:mid,[n.field]:id,authorId:ctx.actor?.id??null,authorType:'client',kind:'message',body:text});
    await r.query(`UPDATE ${n.table} SET lastActivityAt=UTC_TIMESTAMP(3),updatedAt=UTC_TIMESTAMP(3)${scope==='request'?',lastClientReplyAt=UTC_TIMESTAMP(3)':''} WHERE id=?`,[id]);
    await audit(r,'track.guest_reply',ctx.actor,{via:ctx.actor?'account_owner':'track_link',messageId:mid},scope,id);
-   const staff:Array<{id:string}>=await r.query("SELECT id FROM User WHERE status='active' AND roleKey IN ('super_admin','support') ORDER BY id LIMIT 50");
+   const staff:Array<{id:string}>=await r.query("SELECT id FROM User WHERE status='active' AND roleKey IN (SELECT `key` FROM Role WHERE status='active' AND (`key`='super_admin' OR JSON_CONTAINS(permissions, '\"requests.view.all\"'))) ORDER BY id LIMIT 50");
    if(staff.length)await r.query('INSERT INTO Notification(id,userId,type,payload,link) VALUES '+staff.map(()=>'(?,?,?,?,?)').join(','),staff.flatMap(u=>[newId(),u.id,'reply_received',JSON.stringify({ref:card.refCode}),`/ar/admin/${scope==='request'?'requests':'inquiries'}/${id}`]));
    const [row]:Array<{createdAt:Date}>=await r.query(`SELECT createdAt FROM ${n.message} WHERE id=?`,[mid]);
    return {ok:true,message:{id:mid,authorType:'client',authorName:null,body:text,createdAt:row.createdAt.toISOString(),attachments:[]}};

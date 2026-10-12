@@ -109,6 +109,9 @@ export function AdminShell({
   }, [pathname]);
 
   const items: NavItem[] = [
+    {href:`/${locale}/admin/roles`,label:locale==='ar'?'الأدوار':'Roles',icon:Users,permission:'roles.view'},
+    {href:`/${locale}/admin/permissions`,label:locale==='ar'?'دليل الصلاحيات':'Permission catalog',icon:ScrollText,permission:'roles.view'},
+    {href:`/${locale}/admin/invitations`,label:locale==='ar'?'الدعوات':'Invitations',icon:Send,permission:'invitations.manage'},
     { href: `/${locale}/admin`, label: t.dashboard, icon: LayoutDashboard },
     {
       href: `/${locale}/admin/users`,

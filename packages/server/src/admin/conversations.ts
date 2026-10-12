@@ -132,7 +132,7 @@ export class AdminConversationService {
       ),
       request
         ? this.db.query(
-            "SELECT id,name FROM User WHERE roleKey IN ('super_admin','ops_manager','support') AND status='active' ORDER BY name",
+            "SELECT id,name FROM User WHERE roleKey IN (SELECT `key` FROM Role WHERE status='active' AND (`key`='super_admin' OR JSON_CONTAINS(permissions, '\"requests.view.all\"'))) AND status='active' ORDER BY name",
           )
         : [],
     ]);
@@ -296,13 +296,13 @@ export class AdminConversationService {
             : String(body.assigneeId);
         if (assigneeId) {
           const [assignee] = await r.query(
-            "SELECT status,roleKey FROM User WHERE id=?",
+            "SELECT u.status,u.roleKey,r.permissions,r.status roleStatus FROM User u JOIN Role r ON r.`key`=u.roleKey WHERE u.id=?",
             [assigneeId],
           );
           if (
             !assignee ||
             assignee.status !== "active" ||
-            assignee.roleKey === "client"
+            assignee.roleStatus !== "active" || !(assignee.roleKey === "super_admin" || JSON.parse(assignee.permissions).includes(request ? "requests.view.all" : "inquiries.view.all"))
           )
             throw new AuthFault(400, "invalid_assignee");
           if (request)
@@ -645,12 +645,16 @@ export class AdminConversationService {
         const selected = request
           ? 'p.refCode,p.status,p.priority,p.serviceType,p.name,p.email,p.budget,p.currency,p.timeline,p.preferredContact,p.createdAt,p.lastActivityAt,p.resolutionNote,p.archivedAt'
           : 'p.refCode,p.id,p.subject,p.category,p.status,p.name,p.email,p.createdAt,p.updatedAt,p.archivedAt,(SELECT m.createdAt FROM InquiryMessage m WHERE m.inquiryId=p.id ORDER BY m.createdAt DESC LIMIT 1) lastMessageAt';
+        // Evaluate Unicode-preserving search once in the snapshot; page bounded rows by ordinal.
+        await runner.query('CREATE TEMPORARY TABLE so7ob_export_selection (ordinal BIGINT PRIMARY KEY,id VARCHAR(255) NOT NULL) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_nopad_bin');
+        await runner.query(`INSERT INTO so7ob_export_selection(ordinal,id) SELECT ROW_NUMBER() OVER (ORDER BY ${request?'p.lastActivityAt':'p.createdAt'} DESC,p.id DESC),p.id FROM ${tableFor(kind)} p WHERE ${where}`,values);
         while(count<Number(total.n)) {
           const rows:Array<Record<string,unknown>> = await runner.query(
-            `SELECT ${selected},u.email assigneeEmail FROM ${tableFor(kind)} p LEFT JOIN User u ON u.id=p.assigneeId WHERE ${where} ORDER BY ${request?'p.lastActivityAt':'p.createdAt'} DESC,p.id DESC LIMIT ? OFFSET ?`,
-            [...values,CSV_LIMITS.batch,count]);
+            `SELECT ${selected},u.email assigneeEmail FROM so7ob_export_selection selection JOIN ${tableFor(kind)} p ON p.id=selection.id LEFT JOIN User u ON u.id=p.assigneeId WHERE selection.ordinal>? AND selection.ordinal<=? ORDER BY selection.ordinal`,
+            [count,count+CSV_LIMITS.batch]);
           if(!rows.length) throw new AuthFault(503,'export_incomplete');
-          for(const row of rows) await write(line(row));
+          // One bounded write per database batch; retain byte/time/row limits.
+          await write(rows.map(line).join(''));
           count+=rows.length;
         }
         await audit(runner,request?'requests.exported':'inquiries.exported',actor,{count,resourceCount:count},'export',null);
@@ -666,7 +670,7 @@ export class AdminConversationService {
       if(runner.isTransactionActive) await runner.rollbackTransaction();
       if(directory) await rm(directory,{recursive:true,force:true});
       throw error;
-    } finally { await runner.release();if(!handedOff)activeExports--; }
+    } finally { try { if(!runner.isReleased)await runner.query('DROP TEMPORARY TABLE IF EXISTS so7ob_export_selection'); } finally { await runner.release();if(!handedOff)activeExports--; } }
 
   }
 }

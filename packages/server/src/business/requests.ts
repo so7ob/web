@@ -4,7 +4,6 @@ import {
   can,
   canAccessRequest,
   canTransition,
-  isStaff,
   REQUEST_STATUSES,
   SERVICE_TYPES,
   type AuthUser,
@@ -43,7 +42,7 @@ export class RequestService {
       pageSize = 20;
     const params: unknown[] = [actor.id];
     let where =
-      (actor.roleKey === "client" ? "r.clientId" : "r.assigneeId") + "=?";
+      (!can(actor, "requests.view.all") ? "r.clientId" : "r.assigneeId") + "=?";
     if (query.awaiting === "you")
       where +=
         " AND r.archivedAt IS NULL AND r.lastStaffReplyAt IS NOT NULL AND (r.lastClientReplyAt IS NULL OR r.lastStaffReplyAt>r.lastClientReplyAt)";
@@ -102,7 +101,7 @@ export class RequestService {
     if (!request) throw new AuthFault(404, "not_found");
     if (!canAccessRequest(actor, request))
       throw new AuthFault(403, "forbidden");
-    const staff = isStaff(actor);
+    const staff = can(actor,"requests.internal_notes");
     const [messages, history, attachments, assignees, claims, clients] =
       await Promise.all([
         this.db.query(
@@ -158,7 +157,7 @@ export class RequestService {
         ? { client: clients[0] ?? null }
         : { claim: claims[0] ?? null }),
     };
-    const side = actor.roleKey === "client" ? "clientReadAt" : "staffReadAt";
+    const side = !can(actor, "requests.view.all") ? "clientReadAt" : "staffReadAt";
     if (
       side === "staffReadAt" ||
       (request.lastStaffReplyAt &&
@@ -179,7 +178,7 @@ export class RequestService {
       );
       if (!request) throw new AuthFault(404, "not_found");
       if (body.action === "cancel") {
-        const side = actor.roleKey === "client" ? "client" : "staff";
+        const side = !can(actor, "requests.view.all") ? "client" : "staff";
         if (side === "staff" && !can(actor, "requests.status"))
           throw new AuthFault(403, "forbidden");
         if (side === "client" && !canAccessRequest(actor, request))
@@ -209,7 +208,7 @@ export class RequestService {
         await audit(r, "request.cancelled", actor, { ref:request.refCode }, "request", id,undefined,{before:{status:request.status},after:{status:"cancelled"}});
         return { ok: true };
       }
-      if (actor.roleKey !== "client" || !canAccessRequest(actor, request))
+      if (can(actor, "requests.view.all") || !canAccessRequest(actor, request))
         throw new AuthFault(403, "forbidden");
       if (!["new", "in_review", "awaiting_info"].includes(request.status))
         throw new AuthFault(409, "locked");
@@ -271,7 +270,7 @@ export class RequestService {
       if (!request) throw new AuthFault(404, "not_found");
       if (!canAccessRequest(actor, request))
         throw new AuthFault(403, "forbidden");
-      const client = actor.roleKey === "client";
+      const client = !can(actor, "requests.view.all");
       if (client && kind !== "message") throw new AuthFault(403, "forbidden");
       if (client && ["closed", "cancelled"].includes(request.status))
         throw new AuthFault(409, "locked");

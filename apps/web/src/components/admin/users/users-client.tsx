@@ -45,7 +45,6 @@ import {
 } from "@/components/ui/dialog";
 import {
   AlertDialog,
-  AlertDialogAction,
   AlertDialogCancel,
   AlertDialogContent,
   AlertDialogDescription,
@@ -72,7 +71,10 @@ import {
 import { Skeleton } from "@/components/ui/skeleton";
 import { getPortalContent } from "@/content/portal";
 import { can } from "@/lib/auth/permissions";
-import { SYSTEM_ROLES } from "@/lib/auth/permissions";
+import { IdentityNav, Reason, identityError, loadRoleOptions, type RoleOption } from '../identity/shared';
+import { CreateUser } from '../identity/create-user';
+import { identityCopy } from '@/content/identity';
+import { useSearchParams } from 'react-router-dom';
 import type { Locale } from "@/lib/i18n";
 import { RoleBadge, UserStatusBadge } from "@/components/admin/badges";
 import { AdminPagination } from "@/components/admin/pagination";
@@ -109,14 +111,23 @@ export function UsersClient({
 }: UsersClientProps) {
   const t = getPortalContent(locale);
   const tu = t.admin.users;
+  const it=identityCopy[locale];
+  const [searchParams,setSearchParams]=useSearchParams();
+  const [roles,setRoles]=useState<RoleOption[]>([]);
+  const [mutationError,setMutationError]=useState('');
+  const [reason,setReason]=useState('account_support');
+  const [currentPassword,setCurrentPassword]=useState('');
+  const [statusSaving,setStatusSaving]=useState(false);
+  useEffect(()=>{void loadRoleOptions().then(setRoles).catch(err=>setError(identityError(err,locale)));},[locale]);
 
   const [q, setQ] = useState(initialQ);
   const debouncedQ = useDebounced(q);
-  const [role, setRole] = useState("all");
+  const [role, setRole] = useState(searchParams.get("role")??"all");
   const [status, setStatus] = useState(initialStatus ?? "all");
-  const [sort, setSort] = useState<SortCol>("createdAt");
-  const [dir, setDir] = useState<"asc" | "desc">("desc");
-  const [page, setPage] = useState(1);
+  const [sort, setSort] = useState<SortCol>((searchParams.get("sort") as SortCol)??"createdAt");
+  const [dir, setDir] = useState<"asc" | "desc">(searchParams.get("dir")==="asc"?"asc":"desc");
+  const [page, setPage] = useState(Number(searchParams.get("page"))||1);
+  useEffect(()=>{const next=new URLSearchParams({q:debouncedQ,role,status,sort,dir,page:String(page)});if(next.toString()!==searchParams.toString())setSearchParams(next,{replace:true});},[debouncedQ,role,status,sort,dir,page,setSearchParams,searchParams]);
   const [reloadToken, setReloadToken] = useState(0);
 
   const [data, setData] = useState<UsersResponse | null>(null);
@@ -187,16 +198,21 @@ export function UsersClient({
     body: Record<string, unknown>,
     successMsg: string,
   ) => {
+    setMutationError('');
     try {
-      await apiSend(`/api/admin/users/${id}`, "PATCH", body);
+      await apiSend(`/api/admin/users/${id}`, "PATCH", {...body,currentPassword,reason});
       toast.success(successMsg);
       reload();
+      setCurrentPassword('');
+      return true;
     } catch (err) {
+      setMutationError(identityError(err,locale));
       if (err instanceof ApiError && err.code === "last_admin") {
         toast.error(tu.lastAdminError);
       } else {
-        toast.error(apiErrorMessage(err, t.auth.errors));
+        toast.error(identityError(err,locale));
       }
+      return false;
     }
   };
 
@@ -214,9 +230,9 @@ export function UsersClient({
         devInviteUrl?: string;
       }>("/api/admin/users", "POST", {
         email,
-        roleKey: inviteRole,
+        roleKey: inviteRole,currentPassword,
       });
-      toast.success(tu.inviteSent);
+      toast.success(it.queued);
       setInviteUrl(res.devInviteUrl ?? null);
       setInviteEmail("");
     } catch (err) {
@@ -230,14 +246,14 @@ export function UsersClient({
     if (!editTarget) return;
     setEditSaving(true);
     try {
-      await patchUser(
+      const ok = await patchUser(
         editTarget.id,
         { name: editName, phone: editPhone, company: editCompany },
         tu.saved,
       );
+      if(ok)setEditTarget(null);
     } finally {
       setEditSaving(false);
-      setEditTarget(null);
     }
   };
 
@@ -245,27 +261,18 @@ export function UsersClient({
     if (!roleTarget) return;
     setRoleSaving(true);
     try {
-      await patchUser(roleTarget.id, { roleKey: roleValue }, tu.userUpdated);
+      if(await patchUser(roleTarget.id, { roleKey: roleValue }, tu.userUpdated))setRoleTarget(null);
     } finally {
       setRoleSaving(false);
-      setRoleTarget(null);
     }
   };
 
   const applyStatus = async () => {
     if (!confirmTarget) return;
     const next = confirmTarget.status === "suspended" ? "active" : "suspended";
-    await patchUser(confirmTarget.id, { status: next }, tu.userUpdated);
-    setConfirmTarget(null);
-  };
-
-  const sendReset = async (user: AdminUser) => {
-    try {
-      await apiSend("/api/auth/forgot-password", "POST", { email: user.email });
-      toast.success(tu.resetSent);
-    } catch (err) {
-      toast.error(apiErrorMessage(err, t.auth.errors));
-    }
+    if(statusSaving)return;setStatusSaving(true);
+    if(await patchUser(confirmTarget.id, { status: next }, tu.userUpdated))setConfirmTarget(null);
+    setStatusSaving(false);
   };
 
   const onSort = (col: SortCol) => {
@@ -288,6 +295,7 @@ export function UsersClient({
 
   return (
     <div className="space-y-5">
+      <IdentityNav me={me} locale={locale}/>
       <div className="flex flex-wrap items-end justify-between gap-3">
         <header className="flex items-center gap-3">
           <span className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-accent text-brand-strong">
@@ -298,13 +306,14 @@ export function UsersClient({
             <p className="mt-1 text-sm text-muted-foreground">{tu.subtitle}</p>
           </div>
         </header>
+        <CreateUser me={me} locale={locale} roles={roles} onCreated={reload}/>
         {mayInvite ? (
           <Button
             onClick={() => {
               setInviteUrl(null);
               setInviteOpen(true);
             }}
-            className="min-h-11 rounded-full shadow-md shadow-brand/20 hover:bg-brand-strong"
+            variant="outline" className="min-h-11 rounded-full"
           >
             <UserPlus className="size-4" aria-hidden="true" />
             {tu.invite}
@@ -347,7 +356,7 @@ export function UsersClient({
             <SelectItem value="all">
               {tu.filterAll} — {tu.role}
             </SelectItem>
-            {SYSTEM_ROLES.map((r) => (
+            {roles.map((r) => (
               <SelectItem key={r.key} value={r.key}>
                 {locale === "en" ? r.nameEn : r.nameAr}
               </SelectItem>
@@ -469,7 +478,7 @@ export function UsersClient({
                       </div>
                     </TableCell>
                     <TableCell>
-                      <RoleBadge roleKey={user.roleKey} locale={locale} />
+                      <RoleBadge roleKey={user.roleKey} role={roles.find(r=>r.key===user.roleKey)} locale={locale} />
                     </TableCell>
                     <TableCell>
                       <UserStatusBadge
@@ -554,9 +563,9 @@ export function UsersClient({
                               {tu.changeRole}
                             </DropdownMenuItem>
                           ) : null}
-                          <DropdownMenuItem onClick={() => sendReset(user)}>
+                          <DropdownMenuItem asChild><Link href={`/${locale}/admin/users/${user.id}`}>
                             <KeyRound className="size-4" aria-hidden="true" />
-                            {tu.sendReset}
+                            {tu.sendReset}</Link>
                           </DropdownMenuItem>
                           {maySuspend ? (
                             <>
@@ -661,7 +670,7 @@ export function UsersClient({
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  {SYSTEM_ROLES.map((r) => (
+                  {roles.filter(r=>r.assignable!==false).map((r) => (
                     <SelectItem key={r.key} value={r.key}>
                       {locale === "en" ? r.nameEn : r.nameAr}
                     </SelectItem>
@@ -696,6 +705,8 @@ export function UsersClient({
               </div>
             ) : null}
           </div>
+          {mutationError?<p role="alert" className="text-destructive break-all">{mutationError}</p>:null}
+          {((editTarget?.roleKey==='super_admin')||(roleTarget?.roleKey==='super_admin')||roleValue==='super_admin'||inviteRole==='super_admin')?<label>{it.currentPassword}<Input type="password" autoComplete="current-password" value={currentPassword} onChange={e=>setCurrentPassword(e.target.value)}/></label>:null}
           <DialogFooter className="gap-2">
             <Button
               variant="outline"
@@ -764,6 +775,8 @@ export function UsersClient({
               />
             </div>
           </div>
+          {mutationError?<p role="alert" className="text-destructive break-all">{mutationError}</p>:null}
+          {((editTarget?.roleKey==='super_admin')||(roleTarget?.roleKey==='super_admin')||roleValue==='super_admin'||inviteRole==='super_admin')?<label>{it.currentPassword}<Input type="password" autoComplete="current-password" value={currentPassword} onChange={e=>setCurrentPassword(e.target.value)}/></label>:null}
           <DialogFooter className="gap-2">
             <Button
               variant="outline"
@@ -806,7 +819,7 @@ export function UsersClient({
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
-                {SYSTEM_ROLES.map((r) => (
+                {roles.filter(r=>r.assignable!==false).map((r) => (
                   <SelectItem key={r.key} value={r.key}>
                     {locale === "en" ? r.nameEn : r.nameAr}
                   </SelectItem>
@@ -815,8 +828,11 @@ export function UsersClient({
             </Select>
             <p className="text-xs text-muted-foreground">
               {tu.confirmLastAdmin}
+              <span className="block break-all">{it.source}: {roles.find(r=>r.key===roleTarget?.roleKey)?.permissions.join(', ')||'—'} → {roles.find(r=>r.key===roleValue)?.permissions.join(', ')||'—'}</span>
             </p>
           </div>
+          {mutationError?<p role="alert" className="text-destructive break-all">{mutationError}</p>:null}
+          {((editTarget?.roleKey==='super_admin')||(roleTarget?.roleKey==='super_admin')||roleValue==='super_admin'||inviteRole==='super_admin')?<label>{it.currentPassword}<Input type="password" autoComplete="current-password" value={currentPassword} onChange={e=>setCurrentPassword(e.target.value)}/></label>:null}
           <DialogFooter className="gap-2">
             <Button
               variant="outline"
@@ -858,16 +874,19 @@ export function UsersClient({
                 : tu.confirmSuspend}
             </AlertDialogDescription>
           </AlertDialogHeader>
+          <Reason locale={locale} value={reason} onChange={setReason}/>
+          {confirmTarget?.roleKey==='super_admin'?<label>{it.currentPassword}<Input type="password" value={currentPassword} onChange={e=>setCurrentPassword(e.target.value)}/></label>:null}
+          {mutationError?<p role="alert" className="text-destructive break-all">{mutationError}</p>:null}
           <AlertDialogFooter>
             <AlertDialogCancel className="min-h-11 rounded-full">
               {tu.cancel}
             </AlertDialogCancel>
-            <AlertDialogAction
+            <Button disabled={statusSaving}
               onClick={applyStatus}
               className="min-h-11 rounded-full"
             >
               {confirmTarget?.status === "suspended" ? tu.activate : tu.suspend}
-            </AlertDialogAction>
+            </Button>
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>

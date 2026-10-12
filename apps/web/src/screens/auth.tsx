@@ -1,3 +1,4 @@
+import { ChangePasswordForm } from '@/components/auth/change-password-form';
 import { useRouteLoaderData } from 'react-router-dom';
 import type { PublicView } from '@so7ob/contracts';
 import { getPortalContent } from '@/content/portal';
@@ -14,6 +15,7 @@ export function Component() {
   if (!data || data.kind!=='auth') throw new Error('Invalid authentication view');
   const { locale,screen,parameters }=data; const portal=getPortalContent(locale); const t=portal.auth;
   const views={
+    'change-password':<ChangePasswordForm locale={locale}/>,
     login:<LoginForm locale={locale} t={t} next={parameters.next}/>,
     register:<RegisterForm locale={locale} t={t} nameLabel={portal.account.profile.name}/>,
     'forgot-password':<ForgotForm locale={locale} t={t}/>,

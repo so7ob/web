@@ -182,12 +182,14 @@ export function RoleBadge({
   roleKey,
   locale,
   className,
+  role:suppliedRole,
 }: {
   roleKey: string;
   locale: Locale;
+  role?:{nameAr:string;nameEn:string};
   className?: string;
 }) {
-  const role = SYSTEM_ROLES.find((r) => r.key === roleKey);
+  const role = suppliedRole ?? SYSTEM_ROLES.find((r) => r.key === roleKey);
   const label =
     locale === "en" ? (role?.nameEn ?? roleKey) : (role?.nameAr ?? roleKey);
   return (

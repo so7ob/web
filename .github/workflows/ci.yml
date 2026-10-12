@@ -76,6 +76,16 @@ jobs:
           DATABASE_NAME: so7ob_schema_upgrade_test
           DATABASE_USER: root
           DATABASE_PASSWORD: synthetic-ci-root-only
+      - name: Prepare isolated identity upgrade rehearsal
+        run: mariadb --no-defaults --protocol=TCP --host=127.0.0.1 --port=3306 --user=root -e 'CREATE DATABASE so7ob_identity_upgrade_test'
+        env:
+          MYSQL_PWD: synthetic-ci-root-only
+      - name: Verify identity migration preserves existing accounts and roles
+        run: node --import tsx tools/migration/upgrade-identity-smoke.ts
+        env:
+          DATABASE_NAME: so7ob_identity_upgrade_test
+          DATABASE_USER: root
+          DATABASE_PASSWORD: synthetic-ci-root-only
       - run: npm run test:restore
         env:
           DATABASE_USER: root

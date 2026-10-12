@@ -1,4 +1,5 @@
 "use client";
+import { can } from "@so7ob/contracts";
 
 /**
  * إشعارات الفريق: نفس بيانات بوابة العميل (واجهة /api/account/notifications
@@ -89,7 +90,7 @@ export function NotificationsClient({
   const [error, setError] = useState<string | null>(null);
   const [markingAll, setMarkingAll] = useState(false);
 
-  const isStaff = me.roleKey !== "client";
+  const isStaff = can(me,"admin.dashboard");
 
   const load = useCallback(
     async (targetPage: number, append: boolean) => {
