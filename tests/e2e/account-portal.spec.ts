@@ -229,7 +229,16 @@ for (const locale of ["ar", "en"] as const)
       await page.goto("/" + locale + "/account/requests");
       await expect(page.getByText(ref, { exact: true })).toBeVisible();
       await assertPortalAxe(page, locale, "requests");
+      let releaseInquiries!: () => void;
+      const inquiriesGate = new Promise<void>(resolve => { releaseInquiries = resolve; });
+      await page.route("**/api/account/inquiries?**", async route => { await inquiriesGate; await route.continue(); });
       await page.goto("/" + locale + "/account/inquiries");
+      try {
+        await expect(page.getByRole("status", {name: t.inquiries.title, exact: true})).toBeVisible();
+        await assertPortalAxe(page, locale, "inquiries-loading");
+      } finally { releaseInquiries(); }
+      await expect(page.locator('[aria-busy="true"]')).toHaveCount(0);
+      await page.unroute("**/api/account/inquiries?**");
       await expect(
         page
           .getByRole("button", { name: t.inquiries.create, exact: true })

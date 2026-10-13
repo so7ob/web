@@ -128,7 +128,7 @@ export function InquiryDetailView({
 
   if (phase === "loading") {
     return (
-      <div className="space-y-5" aria-busy="true" aria-label={t.title}>
+      <div className="space-y-5" role="status" aria-busy="true" aria-label={t.title}>
         <Skeleton className="animate-shimmer h-9 w-48" />
         <Skeleton className="animate-shimmer h-6 w-2/3" />
         <Skeleton className="animate-shimmer h-72 w-full rounded-2xl" />

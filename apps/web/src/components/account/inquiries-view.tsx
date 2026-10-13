@@ -177,7 +177,7 @@ export function InquiriesView({
 
       <section className="rounded-2xl border border-border bg-white p-4 sm:p-6">
         {loading ? (
-          <div className="space-y-3" aria-busy="true" aria-label={t.title}>
+          <div className="space-y-3" role="status" aria-busy="true" aria-label={t.title}>
             {[...Array(5)].map((_, i) => (
               <div key={i} className="flex items-center gap-4">
                 <Skeleton className="animate-shimmer h-5 w-24" />

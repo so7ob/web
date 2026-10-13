@@ -137,7 +137,12 @@ missing the new migration. Its expected ordered list was extended, and the v1
 and identity upgrade rehearsals passed on new isolated databases. Final review
 also corrected an early revision increment on compatibility-route assignment and
 added scope-view checks to transfer previews/confirmation and assignment; tests
-cover both assignment routes and permission revocation after preview.
+cover both assignment routes and permission revocation after preview. A later
+local full rerun exposed an inherited accessibility defect in customer loading
+placeholders: named generic divs lacked a semantic role. Their layout is unchanged;
+loading containers now use `role="status"`. The portal test deliberately holds the
+inquiries response and checks axe while loading, then checks the loaded screen.
+That failing rerun was stopped with exit 130 to rebuild; it is not a passing run.
 
 ## Recovery and boundaries
 

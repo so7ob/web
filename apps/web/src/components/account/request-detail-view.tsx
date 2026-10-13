@@ -188,7 +188,7 @@ export function RequestDetailView({
 
   if (phase === "loading") {
     return (
-      <div className="space-y-6" aria-busy="true" aria-label={d.requestInfo}>
+      <div className="space-y-6" role="status" aria-busy="true" aria-label={d.requestInfo}>
         <Skeleton className="animate-shimmer h-9 w-48" />
         <Skeleton className="animate-shimmer h-40 w-full rounded-2xl" />
         <Skeleton className="animate-shimmer h-64 w-full rounded-2xl" />
