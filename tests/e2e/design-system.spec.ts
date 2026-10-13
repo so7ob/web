@@ -17,6 +17,10 @@ test.use({contextOptions:{reducedMotion:'reduce'}});
 async function audit(page: Page, label: string) {
   await page.evaluate(()=>document.fonts.ready);
   expect.soft(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),label+' overflow').toBe(true);
+  for(const dialog of await page.locator('[data-slot="dialog-content"], [data-slot="alert-dialog-content"], [data-slot="sheet-content"]').filter({visible:true}).all())expect.soft(await dialog.evaluate(e=>e.scrollWidth<=e.clientWidth),label+' dialog overflow').toBe(true);
+  for(const close of await page.locator('[data-slot="dialog-close"], [data-slot="sheet-close"]').filter({visible:true}).all()){
+    const box=(await close.boundingBox())!;expect.soft(box.width,label+' close width').toBe(44);expect.soft(box.height,label+' close height').toBe(44);
+  }
   const result=await new AxeBuilder({page}).exclude('iframe').withTags(['wcag2a','wcag2aa','wcag21aa','wcag22aa']).analyze();
   // Sandboxed editor/settings frames are independently measured below when present.
   expect.soft(result.violations.map(v=>({id:v.id,nodes:v.nodes.map(n=>({target:n.target,summary:n.failureSummary}))})),label).toEqual([]);
@@ -55,7 +59,7 @@ for(const locale of ['ar','en'] as const)for(const mode of ['light','dark'] as c
     const tabs=scope.getByRole('tab').filter({visible:true});
     await expect(tabs.first()).toBeVisible();
     const count=await tabs.count();
-    for(let i=0;i<count;i++){await tabs.nth(i).click();await expect(tabs.nth(i)).toHaveCSS('color',rgb(appearanceTokens(palette,mode).primary));await capture(`${name}-tab-${i+1}`);}
+    for(let i=0;i<count;i++){await tabs.nth(i).click();await expect.soft(tabs.nth(i)).toHaveCSS('color',rgb(appearanceTokens(palette,mode).primary));await capture(`${name}-tab-${i+1}`);}
   }
   async function visit(path:string,name=path.replaceAll('/','-').replaceAll('?','-').replaceAll('=','-')){
     const response=await page.goto(`/${locale}${path}`);
@@ -75,7 +79,7 @@ for(const locale of ['ar','en'] as const)for(const mode of ['light','dark'] as c
         const trigger=page.getByRole('button',{name:label,exact:true});await trigger.click();
         const dialog=page.getByRole('dialog').filter({visible:true});
         await captureTabs('editor-'+name,dialog);
-        await page.keyboard.press('Escape');await expect(dialog).not.toBeVisible();await expect(trigger).toBeFocused();
+        await page.keyboard.press('Escape');await expect(dialog).not.toBeVisible();await expect.soft(trigger).toBeFocused();
       }
     }
   }

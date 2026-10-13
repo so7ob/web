@@ -238,6 +238,7 @@ export function UserDetailClient({ locale, userId }: UserDetailClientProps) {
               {tud.userRequests}
             </h2>
           </div>
+          {requests.length === 0 ? <EmptyState icon={Inbox} title={tud.noRequests} /> : (
           <div className="overflow-x-auto">
             <Table>
               <TableHeader>
@@ -260,14 +261,7 @@ export function UserDetailClient({ locale, userId }: UserDetailClientProps) {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {requests.length === 0 ? (
-                  <TableRow>
-                    <TableCell colSpan={5} className="p-0">
-                      <EmptyState icon={Inbox} title={tud.noRequests} />
-                    </TableCell>
-                  </TableRow>
-                ) : (
-                  requests.map((r) => (
+                {requests.map((r) => (
                     <TableRow
                       key={r.id}
                       className="transition-colors hover:bg-muted/50"
@@ -303,11 +297,11 @@ export function UserDetailClient({ locale, userId }: UserDetailClientProps) {
                         )}
                       </TableCell>
                     </TableRow>
-                  ))
-                )}
+                  ))}
               </TableBody>
             </Table>
           </div>
+          )}
         </section>
 
         <aside className="min-w-0 space-y-4">

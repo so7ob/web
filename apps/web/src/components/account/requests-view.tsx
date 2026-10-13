@@ -30,12 +30,8 @@ const STATUS_KEYS = ["new", "in_review", "awaiting_info", "in_progress", "respon
 /** قيمة وسمية لتبويب «بانتظار ردك» — عرضٌ حصري (awaiting=you) وليس حالة طلب */
 const AWAITING_YOU = "awaiting_you";
 
-/** لغة حبوب التبويب — مشتركة بين «الكل» وحالات الطلب (كحلي عند التفعيل) */
+/** التحديد يتبع اللون الأساسي؛ تبقى ألوان الحالة في الشارات. */
 const TAB_PILL_CLASS = "min-h-11 px-4";
-
-/** تبويب «بانتظار ردك» — تفعيل كهرماني بدل الكحلي ليُقرأ عرضًا خاصًّا لا حالة،
- *  بنفس لغة شارة الانتظار ومؤشر لوحة الحساب (amber-300 على amber-100) */
-const AWAITING_TAB_PILL_CLASS = "min-h-11 px-4 data-[state=active]:text-warning-foreground";
 
 type ClaimBanner = { kind: "ok" | "invalid" | "login_required"; ref?: string };
 
@@ -270,7 +266,7 @@ export function RequestsView({
                 </TabsTrigger>
                 {/* «بانتظار ردك» — عرضٌ حصري بعد «تم الرد» وقبل الحالات الختامية */}
                 {key === "responded" && (
-                  <TabsTrigger value={AWAITING_YOU} className={AWAITING_TAB_PILL_CLASS}>
+                  <TabsTrigger value={AWAITING_YOU} className={TAB_PILL_CLASS}>
                     {t.awaitingYou}
                   </TabsTrigger>
                 )}

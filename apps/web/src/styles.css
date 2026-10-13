@@ -290,8 +290,8 @@ html { scroll-padding-block: 6rem 10rem; }
 [data-slot="dropdown-menu-radio-item"], [data-slot="select-item"] { min-height:2.75rem; }
 [data-slot="dialog-content"] > [data-slot="dialog-close"],
 [data-slot="sheet-content"] > [data-slot="sheet-close"] {
-  min-width:2.75rem; min-height:2.75rem; display:grid; place-items:center;
-  inset-block-start:0.5rem; inset-inline-end:0.5rem;
+  width:2.75rem; height:2.75rem; min-width:2.75rem; min-height:2.75rem; display:grid; place-items:center;
+  inset-block-start:0.5rem; inset-inline-start:auto; inset-inline-end:0.5rem;
 }
 
 :where(input, textarea, select, button, a[href]) { scroll-margin-block: 6rem; }
