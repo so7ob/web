@@ -1,5 +1,11 @@
 import { PERMISSIONS, type Permission } from "./permissions.js";
 const english: Record<Permission, string> = {
+  "workflows.view": "View workflows",
+  "workflows.manage": "Edit workflows and business calendars",
+  "workflows.publish": "Publish workflow versions",
+  "workflows.transfer": "Transfer conversations between workflows",
+  "workflows.supervise": "Supervise restricted conversations",
+  "teams.manage": "Manage work teams",
   "admin.dashboard": "View administration dashboard",
   "users.view": "View users",
   "users.create": "Invite users",
@@ -54,6 +60,10 @@ const english: Record<Permission, string> = {
   "audit.health.view": "View audit recording health",
 };
 const dependencies: Partial<Record<Permission, Permission[]>> = {
+  "workflows.manage": ["workflows.view"],
+  "workflows.publish": ["workflows.view"],
+  "workflows.transfer": ["workflows.view"],
+  "teams.manage": ["workflows.view"],
   "users.roles": ["users.update"],
   "users.suspend": ["users.update"],
   "roles.permissions": ["roles.update"],
@@ -107,7 +117,7 @@ export const PERMISSION_CATALOG: PermissionDefinition[] = (
   descriptionEn: explanations[key]?.[1] ?? english[key],
   group: key.split(".")[0],
   sensitivity:
-    /^(users\.(roles|suspend|protected|credentials)|roles\.|settings\.|audit\.)|export|publish/.test(
+    /^(users\.(roles|suspend|protected|credentials)|roles\.|settings\.|audit\.|workflows\.|teams\.)|export|publish/.test(
       key,
     )
       ? "sensitive"

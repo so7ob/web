@@ -1,3 +1,4 @@
+import {notificationAccessSql} from '../workflows/access.js';
 import type { DataSource } from "typeorm";
 import type { AuthUser } from "@so7ob/contracts";
 import { AuthFault, audit, newId, transaction } from "../auth/persistence.js";
@@ -123,13 +124,13 @@ export class AccountService {
     const page = pageNumber(query.page),
       pageSize = 20,
       unreadOnly = query.unread === "1";
-    const where = "userId=?" + (unreadOnly ? " AND readAt IS NULL" : "");
+    const where = "userId=? AND ("+notificationAccessSql(actor)+")" + (unreadOnly ? " AND readAt IS NULL" : "");
     const [[total], [unread], rows] = await Promise.all([
       this.db.query("SELECT COUNT(*) n FROM Notification WHERE " + where, [
         actor.id,
       ]),
       this.db.query(
-        "SELECT COUNT(*) n FROM Notification WHERE userId=? AND readAt IS NULL",
+        `SELECT COUNT(*) n FROM Notification WHERE userId=? AND readAt IS NULL AND (${notificationAccessSql(actor)})`,
         [actor.id],
       ),
       this.db.query(
@@ -162,7 +163,7 @@ export class AccountService {
   ) {
     if (body.all === true) {
       await this.db.query(
-        "UPDATE Notification SET readAt=UTC_TIMESTAMP(3) WHERE userId=? AND readAt IS NULL",
+        `UPDATE Notification SET readAt=UTC_TIMESTAMP(3) WHERE userId=? AND readAt IS NULL AND (${notificationAccessSql(actor)})`,
         [actor.id],
       );
       return { ok: true };
@@ -170,7 +171,7 @@ export class AccountService {
     const id = String(body.id ?? "");
     if (!id) throw new AuthFault(400, "invalid");
     const result = await this.db.query(
-      "UPDATE Notification SET readAt=UTC_TIMESTAMP(3) WHERE id=? AND userId=?",
+      `UPDATE Notification SET readAt=UTC_TIMESTAMP(3) WHERE id=? AND userId=? AND (${notificationAccessSql(actor)})`,
       [id, actor.id],
     );
     if (!result.affectedRows) throw new AuthFault(404, "not_found");

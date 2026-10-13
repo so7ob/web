@@ -71,3 +71,5 @@ export * from './audit/reports.js';
 export * from './audit/operations.js';
 
 export * from './admin/identity.js';
+export {WorkflowEngine} from './workflows/engine.js';
+export {WorkflowAdministration} from './workflows/admin.js';

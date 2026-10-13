@@ -1,3 +1,5 @@
+import { WorkflowController } from './admin/workflows.controller.js';
+import { WorkflowAdministration } from '@so7ob/server';
 import { IdentityAdministrationController, identityAttemptMiddleware, restrictedCredentialMiddleware } from './admin/identity.controller.js';
 import { IdentityAdministrationService } from '@so7ob/server';
 import {AuditController} from './admin/audit.controller.js';
@@ -78,7 +80,7 @@ class HealthController {
   }
 }
 @Module({
-  controllers: [AuditController,DiagnosticController,
+  controllers: [WorkflowController,AuditController,DiagnosticController,
     TrackController, AdminTrackController,
     AdminOperationsController,
     PageAdministrationController,
@@ -95,7 +97,7 @@ class HealthController {
     MediaController,
     ClaimController,
   ],
-  providers: [
+  providers: [{provide:WorkflowAdministration,useFactory:async()=>new WorkflowAdministration(await database())},
     ...[AuditReader,AuditReviews,AuditReports,AuditOperations].map(service=>({provide:service,useFactory:async()=>new service(await database())})),{provide:DiagnosticAdministration,useFactory:async()=>new DiagnosticAdministration(await database())},
     { provide: TrackService, useFactory: async () => { const db = await database(); return new TrackService(db, new MailQueue(db, new PayloadCipher()), process.env.SITE_URL!); } },
     { provide: PagePublicationService, useFactory: async () => new PagePublicationService(await database()) },

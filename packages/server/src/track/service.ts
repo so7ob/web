@@ -1,3 +1,6 @@
+import {notifyStaff} from '../business/persistence.js';
+import {assertWorkflowAccess,publicWorkflowStage} from '../workflows/access.js';
+import {WorkflowEngine} from '../workflows/engine.js';
 import type {DataSource,QueryRunner} from 'typeorm';
 import {can,DEFAULT_TRACK_POLICY,TRACK_SETTING_KEYS,isTrackMode,isCardClosed,resolveTrackPolicy,type AuthUser,type TrackScope,type TrackPolicySettings,type TrackViewResult,type TrackMessageView} from '@so7ob/contracts';
 import type {TrackLink} from '../database/models.js';
@@ -77,6 +80,7 @@ export class TrackService {
  }
  async adminState(actor:AuthUser,scope:TrackScope,id:string){
   this.permit(actor,scope);return this.run(async r=>{
+   await assertWorkflowAccess(r,actor,scope==='request'?'requests':'inquiries',id);
    if(!await this.card(r,scope,id))throw new AuthFault(404,'not_found');
    const link=await this.latest(r,scope,id),{settings,policy}=await this.policy(r,scope,id);
    return {ok:true,link:link?{id:link.id,state:state(link),expiresAt:link.expiresAt.toISOString(),revokedAt:link.revokedAt?.toISOString()??null,revokedReason:link.revokedReason,createdAt:link.createdAt.toISOString()}:null,policy:{mode:policy.mode,source:policy.source,canReplyViaLink:policy.canReplyViaLink},settings:{forceLogin:settings.forceLogin}};
@@ -84,6 +88,7 @@ export class TrackService {
  }
  async renew(actor:AuthUser,scope:TrackScope,id:string){
   this.permit(actor,scope,true);return this.run(async r=>{
+   await assertWorkflowAccess(r,actor,scope==='request'?'requests':'inquiries',id);
    const card=await this.card(r,scope,id,true);if(!card||card.archivedAt)throw new AuthFault(404,'not_found');
    const link=await this.latest(r,scope,id);if(!link)throw new AuthFault(404,'not_found');
    const settings=await this.settings(r),token=generateTrackToken(),expiresAt=new Date(Date.now()+settings.linkTtlDays*86400000);
@@ -95,7 +100,7 @@ export class TrackService {
  }
  async revoke(actor:AuthUser,scope:TrackScope,id:string,reason:unknown){
   this.permit(actor,scope,true);return this.run(async r=>{
-   if(!await this.card(r,scope,id,true))throw new AuthFault(404,'not_found');const link=await this.latest(r,scope,id);if(!link)throw new AuthFault(404,'not_found');
+   await assertWorkflowAccess(r,actor,scope==='request'?'requests':'inquiries',id);if(!await this.card(r,scope,id,true))throw new AuthFault(404,'not_found');const link=await this.latest(r,scope,id);if(!link)throw new AuthFault(404,'not_found');
    if(link.revokedAt)return {ok:false,code:'already_revoked'};
    const text=typeof reason==='string'?reason.slice(0,200):null;
    await r.query('UPDATE TrackLink SET revokedAt=UTC_TIMESTAMP(3),revokedReason=?,updatedAt=UTC_TIMESTAMP(3) WHERE id=?',[text||'admin_revoked',link.id]);
@@ -105,7 +110,7 @@ export class TrackService {
  async setException(actor:AuthUser,scope:TrackScope,id:string,mode:unknown){
   this.permit(actor,scope,true);if(mode!=='inherit'&&!isTrackMode(mode))throw new AuthFault(400,'invalid_mode');
   return this.run(async r=>{
-   if(!await this.card(r,scope,id,true))throw new AuthFault(404,'not_found');
+   await assertWorkflowAccess(r,actor,scope==='request'?'requests':'inquiries',id);if(!await this.card(r,scope,id,true))throw new AuthFault(404,'not_found');
    await r.query('INSERT INTO SiteSetting(`key`,value,updatedById) VALUES(?,?,?) ON DUPLICATE KEY UPDATE value=VALUES(value),updatedById=VALUES(updatedById),updatedAt=UTC_TIMESTAMP(3)',[`track.exception.${scope}.${id}`,mode,actor.id]);
    await audit(r,'track.policy_changed',actor,{exception:mode},scope,id);return {ok:true};
   },true);
@@ -116,6 +121,7 @@ export class TrackService {
   const actor=ctx.actor&&['active','pending_verification'].includes(ctx.actor.status)?ctx.actor:null;
   const owner=!!actor&&!!card.clientId&&actor.id===card.clientId,staff=!!actor&&can(actor,names(scope).view);
   const cap=ctx.capability,matched=!!cap&&!!link&&cap.lid===link.id&&cap.generation===link.tokenHash&&cap.exp*1000>Date.now();
+  if(staff&&!owner){try{await assertWorkflowAccess(r,actor!,scope==='request'?'requests':'inquiries',id);}catch{return {card,link,policy,reason:'not_found' as const};}}
   if(owner||staff)return {card,link,policy,reason:null};
   if(card.archivedAt)return {card,link,policy,reason:'not_found' as const};
   if(link&&state(link)!=='valid')return {card,link,policy,reason:state(link) as 'expired'|'revoked'};
@@ -132,7 +138,7 @@ export class TrackService {
    const byMessage=new Map<string,TrackMessageView['attachments']>();for(const a of attachments){const items=byMessage.get(a.messageId)??[];items.push({id:a.id,filename:a.filename,size:a.size,mimeType:a.mimeType});byMessage.set(a.messageId,items);}
    const events:Array<{toStatus:string;createdAt:Date}>=scope==='request'?await r.query('SELECT toStatus,createdAt FROM RequestStatusEvent WHERE requestId=? ORDER BY createdAt,id',[id]):[{toStatus:card.status,createdAt:card.updatedAt}];
    const closed=isCardClosed(card.status);
-   return {ok:true,link:record,policy:{...policy,cardClosed:closed,canReplyViaLink:policy.canReplyViaLink&&!closed,canReplyByOwner:policy.canReplyByOwner&&!closed},card:{scope,id:card.id,refCode:card.refCode,typeLabel:card.requestType??'general',subject:scope==='request'?'#'+card.refCode:card.subject??'#'+card.refCode,description:scope==='request'?card.description??'':card.subject??'',status:card.status,createdAt:card.createdAt.toISOString(),updatedAt:card.lastActivityAt.toISOString(),timeline:events.map(e=>({toStatus:e.toStatus,at:e.createdAt.toISOString()})),messages:messages.map(m=>({...m,createdAt:m.createdAt.toISOString(),attachments:byMessage.get(m.id)??[]}))}};
+   return {ok:true,link:record,policy:{...policy,cardClosed:closed,canReplyViaLink:policy.canReplyViaLink&&!closed,canReplyByOwner:policy.canReplyByOwner&&!closed},card:{workflowStage:await publicWorkflowStage(r,scope==='request'?'requests':'inquiries',id),scope,id:card.id,refCode:card.refCode,typeLabel:card.requestType??'general',subject:scope==='request'?'#'+card.refCode:card.subject??'#'+card.refCode,description:scope==='request'?card.description??'':card.subject??'',status:card.status,createdAt:card.createdAt.toISOString(),updatedAt:card.lastActivityAt.toISOString(),timeline:events.map(e=>({toStatus:e.toStatus,at:e.createdAt.toISOString()})),messages:messages.map(m=>({...m,createdAt:m.createdAt.toISOString(),attachments:byMessage.get(m.id)??[]}))}};
   });
  }
  async reply(scope:TrackScope,id:string,ctx:TrackContext,body:unknown){
@@ -147,9 +153,9 @@ export class TrackService {
    if(recent.some(m=>m.body.trim()===text))throw new AuthFault(409,'duplicate');
    const mid=newId();await insertRecord(r,n.message,{id:mid,[n.field]:id,authorId:ctx.actor?.id??null,authorType:'client',kind:'message',body:text});
    await r.query(`UPDATE ${n.table} SET lastActivityAt=UTC_TIMESTAMP(3),updatedAt=UTC_TIMESTAMP(3)${scope==='request'?',lastClientReplyAt=UTC_TIMESTAMP(3)':''} WHERE id=?`,[id]);
+   await new WorkflowEngine(this.db).reply(r,scope==='request'?'requests':'inquiries',id,'client',mid,false);
    await audit(r,'track.guest_reply',ctx.actor,{via:ctx.actor?'account_owner':'track_link',messageId:mid},scope,id);
-   const staff:Array<{id:string}>=await r.query("SELECT id FROM User WHERE status='active' AND roleKey IN (SELECT `key` FROM Role WHERE status='active' AND (`key`='super_admin' OR JSON_CONTAINS(permissions, '\"requests.view.all\"'))) ORDER BY id LIMIT 50");
-   if(staff.length)await r.query('INSERT INTO Notification(id,userId,type,payload,link) VALUES '+staff.map(()=>'(?,?,?,?,?)').join(','),staff.flatMap(u=>[newId(),u.id,'reply_received',JSON.stringify({ref:card.refCode}),`/ar/admin/${scope==='request'?'requests':'inquiries'}/${id}`]));
+   await notifyStaff(r,'reply_received',{ref:card.refCode},`/ar/admin/${scope==='request'?'requests':'inquiries'}/${id}`);
    const [row]:Array<{createdAt:Date}>=await r.query(`SELECT createdAt FROM ${n.message} WHERE id=?`,[mid]);
    return {ok:true,message:{id:mid,authorType:'client',authorName:null,body:text,createdAt:row.createdAt.toISOString(),attachments:[]}};
   });

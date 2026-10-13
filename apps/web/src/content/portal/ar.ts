@@ -293,6 +293,9 @@ export const portalAr: PortalContent = {
       types: {
         new_request: "طلب جديد",
         new_inquiry: "استفسار جديد",
+        workflow_assigned: "إحالة معاملة",
+        workflow_overdue: "تأخر مهلة معاملة",
+        workflow_blocked: "تعثر تنفيذ المسار",
         request_assigned: "تعيين طلب",
         reply_received: "رد جديد",
         info_requested: "طلب معلومات",
@@ -603,6 +606,9 @@ export const portalAr: PortalContent = {
       types: {
         new_request: "طلب جديد",
         new_inquiry: "استفسار جديد",
+        workflow_assigned: "إحالة معاملة",
+        workflow_overdue: "تأخر مهلة معاملة",
+        workflow_blocked: "تعثر تنفيذ المسار",
         request_assigned: "تعيين طلب",
         reply_received: "رد جديد",
         info_requested: "طلب معلومات",

@@ -1,3 +1,4 @@
+import {auditWorkflowAccessSql} from "../workflows/access.js";
 import {
   AUDIT_CATALOG,
   can,
@@ -242,7 +243,7 @@ export class AuditReader {
   async detail(actor: AuthUser, id: string) {
     permit(actor);
     if (!/^[a-zA-Z0-9_-]{1,255}$/.test(id)) throw new AuthFault(400, "invalid");
-    const [row] = await this.db.query("SELECT * FROM AuditLog WHERE id=?", [
+    const [row] = await this.db.query(`SELECT a.* FROM AuditLog a WHERE a.id=? AND (${auditWorkflowAccessSql(actor)})`, [
       id,
     ]);
     if (!row) throw new AuthFault(404, "not_found");

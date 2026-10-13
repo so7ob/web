@@ -2,7 +2,6 @@ import assert from "node:assert/strict";
 import { randomBytes } from "node:crypto";
 import bcrypt from "bcryptjs";
 import { createDataSource, AuthenticationService } from "@so7ob/server";
-import { IdentityManagement1792022400000 } from "../../packages/server/src/database/migrations/1792022400000-identity-management.js";
 if (!/^so7ob_[a-z0-9_]+_test$/.test(process.env.DATABASE_NAME ?? ""))
   throw new Error("An empty isolated MariaDB test database is required");
 const db = await createDataSource().initialize();
@@ -11,9 +10,10 @@ try {
     "SELECT COUNT(*) n FROM information_schema.TABLES WHERE TABLE_SCHEMA=DATABASE()",
   );
   assert.equal(Number(n), 0, "Rehearsal never resets an existing database");
-  db.migrations = db.migrations.filter(
-    (m) => m.name !== "IdentityManagement1792022400000",
-  );
+  const complete = db.migrations;
+  const identityAt = complete.findIndex(m => m.name === "IdentityManagement1792022400000");
+  assert(identityAt > 0, "Identity migration must follow its historical prefix");
+  db.migrations = complete.slice(0, identityAt);
   await db.runMigrations();
   const key = "upgrade_custom",
     id = "upgradeidentitysynthetic",
@@ -35,7 +35,7 @@ try {
     "SELECT id,email,passwordHash,roleKey,status,emailVerifiedAt,createdAt FROM User WHERE id=?",
     [id],
   );
-  db.migrations.push(new IdentityManagement1792022400000());
+  db.migrations = complete;
   await db.runMigrations();
   const [after] = await db.query(
     "SELECT id,email,passwordHash,roleKey,status,emailVerifiedAt,createdAt FROM User WHERE id=?",

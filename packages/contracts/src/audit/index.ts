@@ -138,6 +138,12 @@ const metadata = [
   "fields",
 ];
 export const AUDIT_CATALOG: Record<string, AuditCatalogEntry> = {
+  "workflow.team_updated": entry("حدّث فريق العمل", "Updated work team", "workflows", [], ["teamId", "members"]),
+  "workflow.calendar_created": entry("أنشأ إصدار تقويم", "Created calendar version", "workflows", [], ["calendarId"]),
+  "workflow.draft_saved": entry("حفظ مسودة مسار", "Saved workflow draft", "workflows", [], ["workflowId"]),
+  "workflow.published": entry("نشر إصدار مسار", "Published workflow version", "workflows", [], ["versionId", "selector"]),
+  "workflow.assigned": entry("غيّر المسؤول", "Changed assignee", "workflows", ["assigneeId"], []),
+  "workflow.transitioned": entry("نقل المرحلة", "Transitioned stage", "workflows", ["stageId", "teamId", "assigneeId"], ["fromStage", "toStage", "versionId", "teamId", "assigneeId"]),
   "request.submitted": entry(
     "أنشأ طلبًا",
     "Created request",

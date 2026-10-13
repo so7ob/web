@@ -203,6 +203,7 @@ export const routes = (loader: LoaderFunction): RouteObject[] => [
           },
           { path: "media", lazy: () => import("./screens/admin/media") },
           { path: "menus", lazy: () => import("./screens/admin/menus") },
+          { path: "workflows", lazy: () => import("./screens/admin/workflows") },
           { path: "settings", lazy: () => import("./screens/admin/settings") },
           { path: "diagnostics", lazy: () => import("./screens/admin/diagnostics") },
           { path: "audit", lazy: () => import("./screens/admin/audit") },

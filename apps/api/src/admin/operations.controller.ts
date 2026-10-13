@@ -25,6 +25,9 @@ import {
 } from "@so7ob/server";
 import { AccountGuard } from "../business/controller.js";
 class AdminQuery {
+  @IsOptional() @IsString() team?: string;
+  @IsOptional() @IsString() stage?: string;
+  @IsOptional() @IsString() version?: string;
   @ApiPropertyOptional() @IsOptional() @IsString() q?: string;
   @ApiPropertyOptional() @IsOptional() @IsString() range?: string;
   @ApiPropertyOptional() @IsOptional() @IsString() status?: string;
@@ -39,6 +42,7 @@ class AdminQuery {
   @ApiPropertyOptional() @IsOptional() @IsString() page?: string;
 }
 class OperationBody {
+  @Allow() expectedRevision?: unknown;
   @Allow() baseRevision?: unknown;
   @ApiPropertyOptional() @Allow() name?: unknown;
   @ApiPropertyOptional() @Allow() content?: unknown;

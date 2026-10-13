@@ -73,6 +73,7 @@ export type AdminScreen =
   | "notifications"
   | "media"
   | "menus"
+  | "workflows"
   | "settings"
   | "diagnostics"
   | "audit"
