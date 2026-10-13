@@ -48,7 +48,7 @@ const STATUS_TONES: Record<string, Tone> = {
     dot: "bg-slate-400",
   },
   awaiting_info: {
-    chip: "border-amber-200 bg-amber-50 text-amber-800",
+    chip: "border-amber-200 bg-amber-50 dark:bg-amber-950 text-amber-800 dark:text-amber-200",
     dot: "bg-amber-400",
   },
   in_progress: {
@@ -56,15 +56,15 @@ const STATUS_TONES: Record<string, Tone> = {
     dot: "bg-brand",
   },
   responded: {
-    chip: "border-emerald-200 bg-emerald-50 text-emerald-800",
+    chip: "border-emerald-200 bg-emerald-50 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-200",
     dot: "bg-emerald-500",
   },
   closed: {
-    chip: "border-slate-300 bg-slate-100 text-slate-600",
+    chip: "border-slate-300 bg-slate-100 dark:bg-slate-950 text-slate-600 dark:text-slate-200",
     dot: "bg-slate-400",
   },
   cancelled: {
-    chip: "border-rose-200 bg-rose-50 text-rose-700",
+    chip: "border-rose-200 bg-rose-50 dark:bg-rose-950 text-rose-700 dark:text-rose-200",
     dot: "bg-rose-500",
   },
 };
@@ -98,10 +98,10 @@ const PRIORITY_TONES: Record<string, Tone> = {
     dot: "bg-brand",
   },
   high: {
-    chip: "border-amber-200 bg-amber-50 text-amber-800",
+    chip: "border-amber-200 bg-amber-50 dark:bg-amber-950 text-amber-800 dark:text-amber-200",
     dot: "bg-amber-500",
   },
-  urgent: { chip: "border-red-200 bg-red-50 text-red-700", dot: "bg-red-500" },
+  urgent: { chip: "border-red-200 bg-red-50 dark:bg-red-950 text-red-700 dark:text-red-200", dot: "bg-red-500" },
 };
 
 /** شارة الأولوية */
@@ -125,15 +125,15 @@ export function PriorityBadge({
 
 const USER_STATUS_TONES: Record<string, Tone> = {
   active: {
-    chip: "border-emerald-200 bg-emerald-50 text-emerald-800",
+    chip: "border-emerald-200 bg-emerald-50 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-200",
     dot: "bg-emerald-500",
   },
   pending_verification: {
-    chip: "border-amber-200 bg-amber-50 text-amber-800",
+    chip: "border-amber-200 bg-amber-50 dark:bg-amber-950 text-amber-800 dark:text-amber-200",
     dot: "bg-amber-400",
   },
   suspended: {
-    chip: "border-rose-200 bg-rose-50 text-rose-700",
+    chip: "border-rose-200 bg-rose-50 dark:bg-rose-950 text-rose-700 dark:text-rose-200",
     dot: "bg-rose-500",
   },
 };
@@ -158,7 +158,7 @@ export function UserStatusBadge({
 }
 
 const ROLE_TONES: Record<string, Tone> = {
-  super_admin: { chip: "border-navy bg-navy text-white", dot: "bg-skydrop" },
+  super_admin: { chip: "border-navy bg-inverse text-white", dot: "bg-skydrop" },
   ops_manager: {
     chip: "border-sky-200 bg-brand-soft/70 text-brand-strong",
     dot: "bg-brand",
@@ -168,7 +168,7 @@ const ROLE_TONES: Record<string, Tone> = {
     dot: "bg-brand",
   },
   content_editor: {
-    chip: "border-purple-200 bg-purple-50 text-purple-800",
+    chip: "border-purple-200 bg-purple-50 dark:bg-purple-950 text-purple-800 dark:text-purple-200",
     dot: "bg-purple-500",
   },
   client: {
@@ -211,7 +211,7 @@ export function roleLabel(roleKey: string, locale: Locale): string {
 
 const OUTBOX_TONES: Record<string, Tone> = {
   sent: {
-    chip: "border-emerald-200 bg-emerald-50 text-emerald-800",
+    chip: "border-emerald-200 bg-emerald-50 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-200",
     dot: "bg-emerald-500",
   },
   dev_logged: {
@@ -220,7 +220,7 @@ const OUTBOX_TONES: Record<string, Tone> = {
   },
   failed: {
     chip: "border-destructive/60 bg-destructive text-white",
-    dot: "bg-white/80",
+    dot: "bg-card/80",
   },
 };
 

@@ -32,7 +32,7 @@ function escapeRegExp(s: string): string {
 
 // ——— أنواع المواقع ———
 
-export type MediaUsageKind = "page_published" | "page_draft" | "page_og" | "template";
+export type MediaUsageKind = "page_published" | "page_draft" | "page_og" | "template" | "site_setting";
 
 export interface MediaUsageLocation {
   kind: MediaUsageKind;

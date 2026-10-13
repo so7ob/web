@@ -1,3 +1,4 @@
+import {IDENTITY_MEDIA_KEYS,mediaSettingId} from '@so7ob/contracts';
 import type {QueryRunner} from 'typeorm';
 import {extractMediaRefs,textReferencesMedia,type MediaUsageLocation} from '@so7ob/contracts';
 import {AuthFault} from '../auth/persistence.js';
@@ -17,6 +18,8 @@ export async function mediaUsageIndex(r:QueryRunner){
    for(const id of extractMediaRefs(p[field]))add(id,{...base,kind:state==='published'?'page_published':'page_draft',locale,state});
  }
  for(const p of templates)for(const [field,locale]of [['blocksAr','ar'],['blocksEn','en']]as const)for(const id of extractMediaRefs(p[field]))add(id,{entityId:p.id,titleAr:p.nameAr,titleEn:p.nameEn,kind:'template',locale,state:null});
+ const settings:Array<{key:string;value:string}>=await r.query("SELECT `key`,value FROM SiteSetting WHERE `key` IN ("+IDENTITY_MEDIA_KEYS.map(()=>"?").join(",")+")",[...IDENTITY_MEDIA_KEYS]);
+ for(const setting of settings){const id=mediaSettingId(setting.value);if(id)add(id,{entityId:setting.key,titleAr:"هوية الموقع والمشاركة",titleEn:"Site identity and sharing",kind:"site_setting",locale:null,state:null});}
  return index;
 }
 /** Reject a newly saved local media reference if deletion won the shared CMS lock first. */

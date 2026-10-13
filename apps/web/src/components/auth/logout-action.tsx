@@ -24,7 +24,7 @@ export function LogoutAction({ locale, label }: { locale: Locale; label: string 
   }, [locale]);
 
   return (
-    <div className="flex flex-col items-center gap-4 rounded-2xl border border-border bg-white p-10 text-center shadow-sm" role="status" aria-live="polite">
+    <div className="flex flex-col items-center gap-4 rounded-2xl border border-border bg-card p-10 text-center shadow-sm" role="status" aria-live="polite">
       <Loader2 className="h-8 w-8 animate-spin text-brand" aria-hidden="true" />
       <p className="text-sm font-medium text-muted-foreground">{label}</p>
     </div>

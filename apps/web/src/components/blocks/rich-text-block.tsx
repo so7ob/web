@@ -25,8 +25,8 @@ export function RichTextBlock({ props }: { props: RichTextBlockProps; locale: Lo
           ))}
         </div>
         {props.notice && (
-          <div className="mt-8 rounded-2xl border border-amber-200 bg-amber-50 p-5">
-            <p className="flex items-start gap-3 text-sm font-semibold leading-7 text-amber-900">
+          <div className="mt-8 rounded-2xl border border-amber-200 bg-amber-50 dark:bg-amber-950 p-5">
+            <p className="flex items-start gap-3 text-sm font-semibold leading-7 text-amber-900 dark:text-amber-200">
               <Info className="mt-1 h-4.5 w-4.5 shrink-0" aria-hidden="true" />
               {props.notice}
             </p>

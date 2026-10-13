@@ -243,7 +243,7 @@ export function SavedRepliesDialog({
                 ) : (
                   <div
                     key={reply.id}
-                    className="rounded-xl border border-border/70 bg-white p-3 transition-colors hover:bg-muted/50"
+                    className="rounded-xl border border-border/70 bg-card p-3 transition-colors hover:bg-muted/50"
                   >
                     <div className="flex items-start justify-between gap-2">
                       <div className="min-w-0">

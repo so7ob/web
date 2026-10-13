@@ -41,7 +41,7 @@ interface StatDef {
 
 /** فئات بطاقات المؤشرات — البطاقة نفسها بلا تغيير بصري، والرابط يضيف حلقة تركيز فقط */
 const STAT_CARD_CLASS =
-  "relative overflow-hidden rounded-2xl border border-border bg-white p-5 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-navy/10";
+  "relative overflow-hidden rounded-2xl border border-border bg-card p-5 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-navy/10";
 
 /** تدرجات أشرطة الحالة — نفس عائلات ألوان شارات الحالة */
 const STATUS_BAR: Record<string, string> = {
@@ -113,7 +113,7 @@ export function AdminDashboard({
       value: pendingUsers,
       label: t.pendingUsers,
       href: `/${locale}/admin/users?status=pending_verification`,
-      chip: "bg-purple-100 text-purple-800",
+      chip: "bg-purple-100 dark:bg-purple-950 text-purple-800 dark:text-purple-200",
       bar: "bg-gradient-to-r from-purple-400 to-purple-500",
     },
     {
@@ -124,7 +124,7 @@ export function AdminDashboard({
       hint: `${rangeTotal} · ${rangeDays === 7 ? t.last7days : rangeLabel}`,
       href: `/${locale}/admin/requests`,
       chip: "bg-skydrop/20 text-brand-strong",
-      bar: "bg-gradient-to-r from-navy to-skydrop",
+      bar: "bg-gradient-to-r from-inverse to-skydrop",
     },
     {
       icon: Hourglass,
@@ -132,7 +132,7 @@ export function AdminDashboard({
       value: awaitingInfo,
       label: t.awaitingInfo,
       href: `/${locale}/admin/requests?status=awaiting_info`,
-      chip: "bg-amber-100 text-amber-800",
+      chip: "bg-amber-100 dark:bg-amber-950 text-amber-800 dark:text-amber-200",
       bar: "bg-gradient-to-r from-amber-400 to-amber-300",
     },
     {
@@ -142,7 +142,7 @@ export function AdminDashboard({
       label: t.overdueReplies,
       hint: t.overdueHint,
       href: `/${locale}/admin/requests?overdue=1`,
-      chip: "bg-rose-100 text-rose-800",
+      chip: "bg-rose-100 dark:bg-rose-950 text-rose-800 dark:text-rose-200",
       bar: "bg-gradient-to-r from-rose-300 to-rose-500",
     },
     {
@@ -153,7 +153,7 @@ export function AdminDashboard({
       // «open» مرشّح مركّب في واجهة الاستفسارات: الحالات غير المغلقة وغير المؤرشفة —
       // يطابق هذا المؤشر تمامًا (أُضيف في تكامل الجولة 19)
       href: `/${locale}/admin/inquiries?status=open`,
-      chip: "bg-emerald-100 text-emerald-800",
+      chip: "bg-emerald-100 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-200",
       bar: "bg-gradient-to-r from-emerald-400 to-emerald-300",
     },
     {
@@ -196,7 +196,7 @@ export function AdminDashboard({
                     "inline-flex min-h-9 items-center rounded-full border px-4 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/40",
                     active
                       ? "border-brand bg-accent text-brand-strong"
-                      : "border-border bg-white text-muted-foreground hover:bg-muted/50 hover:text-foreground",
+                      : "border-border bg-card text-muted-foreground hover:bg-muted/50 hover:text-foreground",
                   )}
                 >
                   {option.label}
@@ -268,7 +268,7 @@ export function AdminDashboard({
       {access.requests && (
         <div className="grid gap-4 print:block print:space-y-4 lg:grid-cols-2">
           {/* الطلبات حسب الحالة — أشرطة أفقية */}
-          <section className="rounded-2xl border border-border bg-white p-5">
+          <section className="rounded-2xl border border-border bg-card p-5">
             <div className="flex items-center gap-2.5">
               <span className="flex size-9 shrink-0 items-center justify-center rounded-xl bg-accent text-brand-strong">
                 <ChartBar className="size-4" aria-hidden="true" />
@@ -315,7 +315,7 @@ export function AdminDashboard({
           </section>
 
           {/* المدى المختار — أعمدة مصغرة (أيام لـ 7/30، أسابيع لـ 90) — تُخفى عند الطباعة */}
-          <section className="rounded-2xl border border-border bg-white p-5 print:hidden">
+          <section className="rounded-2xl border border-border bg-card p-5 print:hidden">
             <div className="flex items-center gap-2.5">
               <span className="flex size-9 shrink-0 items-center justify-center rounded-xl bg-accent text-brand-strong">
                 <CalendarDays className="size-4" aria-hidden="true" />
@@ -378,7 +378,7 @@ export function AdminDashboard({
       <div className="grid gap-4 print:block print:space-y-4 lg:grid-cols-2">
         {/* أحدث الطلبات */}
         {access.requests && (
-          <section className="rounded-2xl border border-border bg-white">
+          <section className="rounded-2xl border border-border bg-card">
             <div className="flex items-center justify-between gap-2 border-b border-border px-5 py-4">
               <div className="flex min-w-0 items-center gap-2.5">
                 <span className="flex size-9 shrink-0 items-center justify-center rounded-xl bg-accent text-brand-strong">
@@ -436,7 +436,7 @@ export function AdminDashboard({
 
         {/* أحدث الأحداث (سجل التدقيق) */}
         {access.audit && (
-          <section className="rounded-2xl border border-border bg-white">
+          <section className="rounded-2xl border border-border bg-card">
             <div className="flex items-center justify-between gap-2 border-b border-border px-5 py-4">
               <div className="flex min-w-0 items-center gap-2.5">
                 <span className="flex size-9 shrink-0 items-center justify-center rounded-xl bg-accent text-brand-strong">

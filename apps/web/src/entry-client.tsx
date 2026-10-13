@@ -5,14 +5,6 @@ import { createBrowserRouter, RouterProvider, redirect, matchRoutes } from 'reac
 import type { PublicView } from '@so7ob/contracts';
 import { updateMetadata } from './metadata';
 import { routes } from './app';
-import '@fontsource/ibm-plex-sans-arabic/400.css';
-import '@fontsource/ibm-plex-sans-arabic/500.css';
-import '@fontsource/ibm-plex-sans-arabic/600.css';
-import '@fontsource/ibm-plex-sans-arabic/700.css';
-import '@fontsource/ibm-plex-sans/400.css';
-import '@fontsource/ibm-plex-sans/500.css';
-import '@fontsource/ibm-plex-sans/600.css';
-import '@fontsource/ibm-plex-sans/700.css';
 import './styles.css';
 declare global { interface Window { __SO7OB__: PublicView } }
 const definitions = routes(async ({ request }) => {
@@ -35,7 +27,7 @@ hydrateRoot(document.getElementById('root')!, <RouterProvider router={router} />
 
 }catch(error){
  const failure=asApiError(error),locale=window.location.pathname.startsWith('/en')?'en':'ar',t=errorCopy[locale];
- const notice=document.createElement('section');notice.setAttribute('role','alert');notice.dir=locale==='ar'?'rtl':'ltr';notice.className='m-4 rounded-xl border border-rose-200 bg-rose-50 p-4 text-rose-950';
+ const notice=document.createElement('section');notice.setAttribute('role','alert');notice.dir=locale==='ar'?'rtl':'ltr';notice.className='m-4 rounded-xl border border-rose-200 bg-rose-50 dark:bg-rose-950 p-4 text-rose-950 dark:text-rose-200';
  const message=document.createElement('p');message.textContent=`${t.failed}. ${t.internal} ${t.local}: ${failure.localId??failure.errorId??failure.requestId}. `+(locale==='ar'?'احتفظ بنسخة من المدخلات قبل إعادة تحميل الصفحة.':'Keep a copy of your input before reloading the page.');notice.append(message);
  const button=document.createElement('button');button.textContent=t.reload;button.className='min-h-11 underline';button.onclick=()=>window.location.reload();notice.append(button);document.getElementById('root')?.before(notice);
  console.error(JSON.stringify({at:new Date().toISOString(),component:'Web',level:'error',event:'bootstrap_failed',revision:import.meta.env.VITE_BUILD_SHA??'unavailable',localId:failure.localId,requestId:failure.requestId,errorId:failure.errorId}));

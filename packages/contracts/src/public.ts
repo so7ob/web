@@ -1,6 +1,7 @@
 import type { AccountPayload, AccountIdentity } from "./account.js";
 import type { AdminPayload, AdminIdentity } from "./admin.js";
 export interface PublicPage {
+  ogImage?: string | null;
   id: string;
   slug: string;
   titleAr: string;

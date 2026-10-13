@@ -8,16 +8,16 @@ import { localePath } from "@/lib/i18n";
  */
 export function NotFound() {
   return (
-    <div lang="ar" dir="rtl" style={{ margin: 0, background: "#F8FAFC", fontFamily: "'IBM Plex Sans Arabic', 'IBM Plex Sans', system-ui, sans-serif" }}>
+    <div lang="ar" dir="rtl" style={{ margin: 0, background: "var(--background)", fontFamily: "var(--site-font, system-ui)" }}>
         <main style={{ minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", padding: "1.5rem" }}>
           <div style={{ maxWidth: "32rem", textAlign: "center" }}>
-            <p style={{ fontFamily: "monospace", fontSize: "5rem", fontWeight: 700, color: "#0B1F3A", opacity: 0.12, margin: 0 }} aria-hidden="true">
+            <p style={{ fontFamily: "monospace", fontSize: "5rem", fontWeight: 700, color: "var(--foreground)", opacity: 0.12, margin: 0 }} aria-hidden="true">
               {"{ 404 }"}
             </p>
-            <h1 style={{ fontSize: "1.75rem", fontWeight: 700, color: "#0B1F3A", margin: "0.5rem 0 1rem" }}>
+            <h1 style={{ fontSize: "1.75rem", fontWeight: 700, color: "var(--foreground)", margin: "0.5rem 0 1rem" }}>
               الصفحة غير موجودة — Page not found
             </h1>
-            <p style={{ color: "#475569", lineHeight: 2, margin: "0 0 1.75rem" }}>
+            <p style={{ color: "var(--muted-foreground)", lineHeight: 2, margin: "0 0 1.75rem" }}>
               الرابط الذي طلبته غير متاح أو تغيّر. يمكنك العودة إلى الموقع واختيار اللغة المناسبة.
               <br />
               The page you requested is unavailable or has moved.
@@ -26,7 +26,7 @@ export function NotFound() {
               <Link
                 href={localePath("ar")}
                 style={{
-                  background: "#0369A1", color: "#fff", borderRadius: "999px", padding: "0.7rem 1.6rem",
+                  background: "var(--primary)", color: "var(--primary-foreground)", borderRadius: "999px", padding: "0.7rem 1.6rem",
                   fontWeight: 600, textDecoration: "none", display: "inline-block",
                 }}
                 lang="ar"
@@ -36,7 +36,7 @@ export function NotFound() {
               <Link
                 href={localePath("en")}
                 style={{
-                  border: "2px solid #0B1F3A22", color: "#0B1F3A", borderRadius: "999px", padding: "0.7rem 1.6rem",
+                  border: "2px solid var(--border)", color: "var(--foreground)", borderRadius: "999px", padding: "0.7rem 1.6rem",
                   fontWeight: 600, textDecoration: "none", display: "inline-block",
                 }}
                 lang="en"

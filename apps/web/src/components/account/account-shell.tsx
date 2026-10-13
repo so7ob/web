@@ -39,7 +39,7 @@ function UnreadDot({ count }: { count: number }) {
   if (count <= 0) return null;
   return (
     <span
-      className="ms-auto inline-flex h-5 min-w-5 items-center justify-center rounded-full bg-skydrop px-1.5 text-[11px] font-bold text-navy"
+      className="ms-auto inline-flex h-5 min-w-5 items-center justify-center rounded-full bg-skydrop px-1.5 text-[11px] font-bold text-inverse"
       aria-label={String(count)}
     >
       {count > 99 ? "99+" : count}
@@ -49,9 +49,9 @@ function UnreadDot({ count }: { count: number }) {
 
 function UserCard({ user }: { user: AccountShellUser }) {
   return (
-    <div className="flex items-center gap-3 rounded-2xl border border-border bg-white p-4">
+    <div className="flex items-center gap-3 rounded-2xl border border-border bg-card p-4">
       <span
-        className="flex size-9 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-brand to-navy text-sm font-bold text-white"
+        className="flex size-9 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-brand to-inverse text-sm font-bold text-white"
         aria-hidden="true"
       >
         {user.name.trim().slice(0, 1).toUpperCase() || "·"}
@@ -123,7 +123,7 @@ function NavList({
       <Link
         href={`/${locale}/auth/logout`}
         onClick={onNavigate}
-        className="flex min-h-11 items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-rose-700 transition-colors hover:bg-rose-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/40"
+        className="flex min-h-11 items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-rose-700 dark:text-rose-200 transition-colors hover:bg-rose-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/40"
       >
         <LogOut className="h-4.5 w-4.5 shrink-0" aria-hidden="true" />
         <span className="truncate">{nav.logout}</span>
@@ -246,7 +246,7 @@ export function AccountShell({
             >
               <Bell className="h-5 w-5" aria-hidden="true" />
               {unread > 0 && (
-                <span className="absolute -top-0.5 -end-0.5 grid size-4 place-items-center rounded-full bg-skydrop text-[10px] font-bold text-navy">
+                <span className="absolute -top-0.5 -end-0.5 grid size-4 place-items-center rounded-full bg-skydrop text-[10px] font-bold text-inverse">
                   {unread > 9 ? "9+" : unread}
                 </span>
               )}
@@ -257,7 +257,7 @@ export function AccountShell({
           {!user.emailVerified && (
             <div
               role="alert"
-              className="mb-6 flex items-start gap-3 rounded-2xl border border-amber-200 bg-amber-50 p-4 text-sm leading-7 text-amber-900"
+              className="mb-6 flex items-start gap-3 rounded-2xl border border-amber-200 bg-amber-50 dark:bg-amber-950 p-4 text-sm leading-7 text-amber-900 dark:text-amber-200"
             >
               <ShieldCheck className="mt-0.5 h-5 w-5 shrink-0" aria-hidden="true" />
               <div>

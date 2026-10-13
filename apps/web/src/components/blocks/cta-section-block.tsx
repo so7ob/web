@@ -10,10 +10,10 @@ export type CtaSectionBlockProps = z.input<typeof blockSchemas.ctaSection>["prop
 /** أنماط الأزرار على الخلفية الكحلية الداكنة (من الأصل FinalCta) */
 const VARIANT_CLASSES: Record<string, string> = {
   primary:
-    "inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-full bg-skydrop px-7 text-base font-bold text-navy transition-colors hover:bg-sky-300 sm:w-auto",
+    "inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-full bg-skydrop px-7 text-base font-bold text-inverse transition-colors hover:bg-sky-300 sm:w-auto",
   outline:
     "inline-flex min-h-12 w-full items-center justify-center rounded-full border-2 border-white/25 px-7 text-base font-semibold text-white transition-colors hover:border-skydrop hover:text-skydrop sm:w-auto",
-  navy: "inline-flex min-h-12 w-full items-center justify-center rounded-full bg-white px-7 text-base font-semibold text-navy transition-colors hover:bg-white/90 sm:w-auto",
+  navy: "inline-flex min-h-12 w-full items-center justify-center rounded-full bg-card px-7 text-base font-semibold text-navy transition-colors hover:bg-card/90 sm:w-auto",
 };
 
 /** الدعوة الختامية «ما الذي تريد إنجازه؟» — شريط كحلي برسمة زخرفية (الأصل FinalCta) */
@@ -21,7 +21,7 @@ export function CtaSectionBlock({ props, locale }: { props: CtaSectionBlockProps
   const notes = [props.discussNote, props.quoteNote].filter(Boolean).join(" · ");
 
   return (
-    <section className="relative overflow-hidden bg-navy py-16 sm:py-20 lg:py-24">
+    <section className="relative overflow-hidden bg-inverse py-16 sm:py-20 lg:py-24">
       {/* زخارف خفيفة */}
       <div className="pointer-events-none absolute inset-0" aria-hidden="true">
         <div className="absolute -top-20 start-[10%] h-64 w-64 rounded-full bg-skydrop/10 blur-3xl" />

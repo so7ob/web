@@ -198,8 +198,8 @@ export function RequestDetailView({
 
   if (phase === "error" || !request) {
     return (
-      <div className="rounded-2xl border border-border bg-white p-8 text-center sm:p-12" role="alert">
-        <span className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-rose-100 text-rose-800">
+      <div className="rounded-2xl border border-border bg-card p-8 text-center sm:p-12" role="alert">
+        <span className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-rose-100 dark:bg-rose-950 text-rose-800 dark:text-rose-200">
           <ShieldX className="h-7 w-7" aria-hidden="true" />
         </span>
         <ErrorFeedback error={failure??new ApiError(404,errorCode??"not_found")} locale={locale} operation={t.title} onRefresh={load}/>
@@ -249,7 +249,7 @@ export function RequestDetailView({
       <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_18rem] print:block print:space-y-6">
         {/* المحادثة */}
         <div className="min-w-0 space-y-4">
-          <section className="rounded-2xl border border-border bg-white p-4 sm:p-6">
+          <section className="rounded-2xl border border-border bg-card p-4 sm:p-6">
             <div className="flex items-center justify-between gap-3">
               <h2 className="flex items-center gap-2 text-lg font-bold text-navy">
                 <MessageSquare className="h-5 w-5 text-brand" aria-hidden="true" />
@@ -289,7 +289,7 @@ export function RequestDetailView({
                           "max-w-[85%] rounded-2xl border px-4 py-3 text-sm leading-7 shadow-sm sm:max-w-[75%] print:border-border print:bg-transparent print:text-foreground print:shadow-none",
                           message.authorType === "client"
                             ? "rounded-se-sm border-brand/10 bg-accent/60 text-foreground"
-                            : "rounded-ss-sm border-navy bg-navy text-white shadow-navy/10"
+                            : "rounded-ss-sm border-navy bg-inverse text-white shadow-navy/10"
                         )}
                       >
                         <p
@@ -318,7 +318,7 @@ export function RequestDetailView({
           </section>
 
           {/* ملحن الرد — مخفي عند الطباعة */}
-          <section className="rounded-2xl border border-border bg-white p-4 sm:p-6 print:hidden">
+          <section className="rounded-2xl border border-border bg-card p-4 sm:p-6 print:hidden">
             {conversationLocked ? (
               <div role="status" className="flex flex-col gap-2 rounded-xl bg-muted/40 px-4 py-6 text-center text-sm text-muted-foreground">
                 <p className="font-semibold text-foreground">{statusLabel}</p>
@@ -369,7 +369,7 @@ export function RequestDetailView({
 
         {/* العمود الجانبي: بيانات الطلب + المرفقات + المسار */}
         <div className="space-y-4">
-          <section className="rounded-2xl border border-border bg-white p-4 sm:p-6">
+          <section className="rounded-2xl border border-border bg-card p-4 sm:p-6">
             <h2 className="text-lg font-bold text-navy">{d.requestInfo}</h2>
             <dl className="mt-4 space-y-3 text-sm">
               <InfoRow label={t.status} value={<StatusBadge status={request.status} label={statusLabel} className="print:border print:border-border print:break-inside-avoid" />} />
@@ -404,7 +404,7 @@ export function RequestDetailView({
             {canCancel && (
               <Button
                 variant="outline"
-                className="mt-5 h-11 w-full rounded-full font-semibold text-red-700 hover:border-red-300 hover:bg-red-50 hover:text-red-800 print:hidden"
+                className="mt-5 h-11 w-full rounded-full font-semibold text-red-700 dark:text-red-200 hover:border-red-300 hover:bg-red-50 hover:text-red-800 print:hidden"
                 onClick={() => setCancelOpen(true)}
               >
                 {t.cancelEdit} · {statusLabel}
@@ -413,7 +413,7 @@ export function RequestDetailView({
           </section>
 
           {request.attachments.length > 0 && (
-            <section className="rounded-2xl border border-border bg-white p-4 sm:p-6">
+            <section className="rounded-2xl border border-border bg-card p-4 sm:p-6">
               <h2 className="text-lg font-bold text-navy">{d.attachments}</h2>
               <ul className="mt-4 space-y-2">
                 {request.attachments.map((file) => (
@@ -434,7 +434,7 @@ export function RequestDetailView({
             </section>
           )}
 
-          <section className="rounded-2xl border border-border bg-white p-4 sm:p-6">
+          <section className="rounded-2xl border border-border bg-card p-4 sm:p-6">
             <h2 className="text-lg font-bold text-navy">{d.statusTimeline}</h2>
             <ol className="mt-4 space-y-5">
               {request.statusHistory.map((event, index) => {
@@ -467,7 +467,7 @@ export function RequestDetailView({
               })}
               {request.statusHistory.length === 0 && (
                 <li className="flex items-center gap-2 text-sm text-muted-foreground">
-                  <CheckCircle2 className="h-4 w-4 text-green-600" aria-hidden="true" />
+                  <CheckCircle2 className="h-4 w-4 text-green-600 dark:text-green-200" aria-hidden="true" />
                   {statusLabel} · {formatDate(request.createdAt, locale)}
                 </li>
               )}

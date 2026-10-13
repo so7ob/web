@@ -140,8 +140,8 @@ export function InquiryDetailView({
 
   if (phase === "notFound" || !inquiry) {
     return (
-      <div className="rounded-2xl border border-border bg-white p-8 text-center sm:p-12" role="alert">
-        <span className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-rose-100 text-rose-800">
+      <div className="rounded-2xl border border-border bg-card p-8 text-center sm:p-12" role="alert">
+        <span className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-rose-100 dark:bg-rose-950 text-rose-800 dark:text-rose-200">
           <SearchX className="h-7 w-7" aria-hidden="true" />
         </span>
         <p className="mt-4 font-semibold text-navy">{t.notFound}</p>
@@ -208,7 +208,7 @@ export function InquiryDetailView({
       <div className="grid items-start gap-5 lg:grid-cols-[minmax(0,1fr)_320px] print:block print:space-y-6">
         {/* المحادثة + ملحن الرد */}
         <div className="min-w-0 space-y-4">
-          <section className="rounded-2xl border border-border bg-white p-4 sm:p-6">
+          <section className="rounded-2xl border border-border bg-card p-4 sm:p-6">
             <h2 className="flex items-center gap-2 text-lg font-bold text-navy">
               <MessageSquare className="h-5 w-5 text-brand" aria-hidden="true" />
               {t.conversation}
@@ -235,7 +235,7 @@ export function InquiryDetailView({
                           "max-w-[85%] rounded-2xl border px-4 py-3 text-sm leading-7 shadow-sm sm:max-w-[75%] print:border-border print:bg-transparent print:text-foreground print:shadow-none",
                           message.authorType === "client"
                             ? "rounded-se-sm border-brand/10 bg-accent/60 text-foreground"
-                            : "rounded-ss-sm border-navy bg-navy text-white shadow-navy/10"
+                            : "rounded-ss-sm border-navy bg-inverse text-white shadow-navy/10"
                         )}
                       >
                         <p
@@ -264,11 +264,11 @@ export function InquiryDetailView({
           </section>
 
           {/* ملحن الرد — مخفي عند الطباعة */}
-          <section className="rounded-2xl border border-border bg-white p-4 sm:p-6 print:hidden">
+          <section className="rounded-2xl border border-border bg-card p-4 sm:p-6 print:hidden">
             {conversationLocked ? (
               <div
                 role="status"
-                className="flex items-start gap-3 rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm leading-7 text-amber-900"
+                className="flex items-start gap-3 rounded-xl border border-amber-200 bg-amber-50 dark:bg-amber-950 px-4 py-3 text-sm leading-7 text-amber-900 dark:text-amber-200"
               >
                 <Lock className="mt-1 h-4 w-4 shrink-0" aria-hidden="true" />
                 <p>{t.closedNote}</p>
@@ -302,7 +302,7 @@ export function InquiryDetailView({
 
         {/* العمود الجانبي: بيانات الاستفسار + المرفقات */}
         <div className="space-y-4">
-          <section className="rounded-2xl border border-border bg-white p-4 sm:p-6">
+          <section className="rounded-2xl border border-border bg-card p-4 sm:p-6">
             <h2 className="text-lg font-bold text-navy">{t.meta}</h2>
             <dl className="mt-4 space-y-3 text-sm">
               <InfoRow
@@ -340,7 +340,7 @@ export function InquiryDetailView({
           </section>
 
           {inquiry.attachments.length > 0 && (
-            <section className="rounded-2xl border border-border bg-white p-4 sm:p-6">
+            <section className="rounded-2xl border border-border bg-card p-4 sm:p-6">
               <h2 className="text-lg font-bold text-navy">{t.attachments}</h2>
               <ul className="mt-4 space-y-2">
                 {inquiry.attachments.map((file) => {

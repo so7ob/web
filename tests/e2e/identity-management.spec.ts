@@ -168,10 +168,24 @@ for (const locale of ["ar", "en"] as const)
           );
         }
         const firstLogin = await clientContext.newPage();
-        await firstLogin.goto(`/${locale}/admin/users`);
-        await expect(firstLogin).toHaveURL(
-          new RegExp(`/${locale}/auth/change-password`),
-        );
+        let releaseHydration!: () => void;
+        const hydrationGate = new Promise<void>((resolve) => { releaseHydration = resolve; });
+        let intercepted = 0;
+        await firstLogin.route("**/assets/auth-*.js", async (route) => {
+          intercepted++;
+          await hydrationGate;
+          await route.continue();
+        });
+        try {
+          await firstLogin.goto(`/${locale}/admin/users`, { waitUntil: "commit" });
+          await expect(firstLogin).toHaveURL(new RegExp(`/${locale}/auth/change-password`));
+          await expect(firstLogin.getByLabel(t.currentPassword, { exact: true })).toBeDisabled();
+          await expect(firstLogin.getByLabel(t.newPassword, { exact: true })).toBeDisabled();
+          await expect(firstLogin.getByRole("button", { name: t.change, exact: true })).toBeDisabled();
+          await expect.poll(() => intercepted).toBeGreaterThan(0);
+        } finally {
+          releaseHydration();
+        }
         await firstLogin
           .getByLabel(t.currentPassword, { exact: true })
           .fill(created.temporaryPassword);
@@ -181,9 +195,13 @@ for (const locale of ["ar", "en"] as const)
         expect(
           (await new AxeBuilder({ page: firstLogin }).analyze()).violations,
         ).toEqual([]);
+        const changedPassword = firstLogin.waitForResponse((response) =>
+          response.url().endsWith("/api/auth/change-password") && response.request().method() === "POST"
+        );
         await firstLogin
           .getByRole("button", { name: t.change, exact: true })
           .click();
+        expect((await changedPassword).status()).toBe(200);
         await expect(firstLogin).toHaveURL(new RegExp(`/${locale}/auth/login`));
         await login(client, email, password);
         expect((await client.get("/api/admin/users")).status()).toBe(200);

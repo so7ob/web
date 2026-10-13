@@ -46,7 +46,7 @@ function Line({ w, tone = "muted", className }: { w: string; tone?: "muted" | "s
 
 /** بطاقة مجردة صغيرة */
 function Card({ className, children }: { className?: string; children?: React.ReactNode }) {
-  return <span aria-hidden="true" className={cn("block rounded-[3px] border border-slate-200/90 bg-white shadow-[0_1px_2px_rgba(11,31,58,0.06)]", className)}>{children}</span>;
+  return <span aria-hidden="true" className={cn("block rounded-[3px] border border-slate-200/90 bg-card shadow-[0_1px_2px_rgba(11,31,58,0.06)]", className)}>{children}</span>;
 }
 
 /** بلاطة صورة مجردة — بتدرج رمادي فاتح وأيقونة زاوية */
@@ -67,7 +67,7 @@ function Tile({ className }: { className?: string }) {
 const PATTERNS: Record<string, () => React.ReactNode> = {
   // hero — navy gradient, two inline title lines
   hero: () => (
-    <span className="flex h-full items-center gap-1.5 rounded-[4px] bg-gradient-to-l from-navy via-navy-soft to-brand/80 px-2">
+    <span className="flex h-full items-center gap-1.5 rounded-[4px] bg-gradient-to-l from-inverse via-inverse-soft to-brand/80 px-2">
       <Line w="w-2/5" tone="white" className="h-1.5" />
       <Line w="w-1/5" tone="brand" className="h-1.5 !bg-skydrop/90" />
       <Line w="w-1/6" tone="white" className="ms-auto opacity-40" />
@@ -75,7 +75,7 @@ const PATTERNS: Record<string, () => React.ReactNode> = {
   ),
   // pageHeader — slim navy bar
   pageHeader: () => (
-    <span className="flex h-full items-center gap-1.5 rounded-[4px] bg-gradient-to-l from-navy to-navy-soft px-2">
+    <span className="flex h-full items-center gap-1.5 rounded-[4px] bg-gradient-to-l from-inverse to-inverse-soft px-2">
       <Line w="w-1/3" tone="white" className="h-1.5" />
       <span className="ms-auto flex gap-1">
         <Line w="w-3" tone="white" className="opacity-50" />
@@ -138,7 +138,7 @@ const PATTERNS: Record<string, () => React.ReactNode> = {
     <span className="relative flex h-full items-center justify-between px-1">
       <span aria-hidden="true" className="absolute inset-x-2 top-1/2 h-px -translate-y-1/2 bg-brand/30" />
       {[0, 1, 2, 3].map((i) => (
-        <span key={i} aria-hidden="true" className="relative z-10 flex size-3 items-center justify-center rounded-full border-2 border-brand bg-white text-[5px] font-bold text-brand">
+        <span key={i} aria-hidden="true" className="relative z-10 flex size-3 items-center justify-center rounded-full border-2 border-brand bg-card text-[5px] font-bold text-brand">
           {i + 1}
         </span>
       ))}
@@ -169,7 +169,7 @@ const PATTERNS: Record<string, () => React.ReactNode> = {
   ctaSection: () => (
     <span className="flex h-full items-center justify-between gap-2 rounded-[4px] bg-gradient-to-l from-brand to-skydrop/80 px-2">
       <Line w="w-1/3" tone="white" className="h-1.5" />
-      <span aria-hidden="true" className="block h-2.5 w-8 rounded-full bg-white/90" />
+      <span aria-hidden="true" className="block h-2.5 w-8 rounded-full bg-card/90" />
     </span>
   ),
   navCtaBanner: () => (
@@ -182,8 +182,8 @@ const PATTERNS: Record<string, () => React.ReactNode> = {
   requestForm: () => (
     <span className="flex h-full items-center gap-2">
       <Card className="flex h-full flex-1 items-center gap-1 px-1.5">
-        <span className="h-2 flex-1 rounded-[2px] border border-slate-200 bg-slate-50" />
-        <span className="h-2 flex-1 rounded-[2px] border border-slate-200 bg-slate-50" />
+        <span className="h-2 flex-1 rounded-[2px] border border-slate-200 bg-slate-50 dark:bg-slate-950" />
+        <span className="h-2 flex-1 rounded-[2px] border border-slate-200 bg-slate-50 dark:bg-slate-950" />
       </Card>
       <span aria-hidden="true" className="block h-3 w-9 shrink-0 rounded-full bg-brand shadow-sm" />
     </span>
@@ -225,7 +225,7 @@ const PATTERNS: Record<string, () => React.ReactNode> = {
     <span className="flex h-full flex-col justify-center gap-[3px]">
       {[1, 2, 3].map((n) => (
         <span key={n} className="flex items-center gap-1.5">
-          <span className="flex size-2.5 shrink-0 items-center justify-center rounded-[2px] bg-navy/20 text-[5px] font-bold text-navy">{n}</span>
+          <span className="flex size-2.5 shrink-0 items-center justify-center rounded-[2px] bg-inverse/20 text-[5px] font-bold text-navy">{n}</span>
           <Line w={n === 1 ? "w-3/5" : n === 2 ? "w-1/2" : "w-2/5"} tone="strong" />
         </span>
       ))}
@@ -282,7 +282,7 @@ const PATTERNS: Record<string, () => React.ReactNode> = {
   simpleTable: () => (
     <span className="grid h-full grid-cols-3 grid-rows-2 gap-px overflow-hidden rounded-[3px] border border-slate-200 bg-slate-200">
       {Array.from({ length: 6 }).map((_, i) => (
-        <span key={i} aria-hidden="true" className={cn("block", i < 3 ? "bg-brand-soft/70" : "bg-white")} />
+        <span key={i} aria-hidden="true" className={cn("block", i < 3 ? "bg-brand-soft/70" : "bg-card")} />
       ))}
     </span>
   ),
@@ -303,7 +303,7 @@ const PATTERNS: Record<string, () => React.ReactNode> = {
 /** لون شارة النوع غير المعروف — رمادي محايد */
 function Unknown() {
   return (
-    <span className="flex h-full items-center gap-1.5 rounded-[4px] border border-slate-200 bg-slate-50 px-2">
+    <span className="flex h-full items-center gap-1.5 rounded-[4px] border border-slate-200 bg-slate-50 dark:bg-slate-950 px-2">
       <span className="size-1.5 rounded-full bg-slate-300" />
       <Line w="w-1/3" tone="muted" />
     </span>
@@ -316,7 +316,7 @@ export function TemplatePreview({ types, label, className }: TemplatePreviewProp
       <div
         role="img"
         aria-label={label}
-        className={cn("flex items-center justify-center rounded-lg border border-dashed border-border/80 bg-slate-50/60", FRAME, className)}
+        className={cn("flex items-center justify-center rounded-lg border border-dashed border-border/80 bg-slate-50/60 dark:bg-slate-950/60", FRAME, className)}
       >
         <span className="text-[10px] font-medium text-muted-foreground/60">—</span>
       </div>

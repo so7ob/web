@@ -22,7 +22,7 @@ export function SectionHeading({
     <div className={`max-w-2xl ${align === "center" ? "mx-auto text-center" : ""}`}>
       <p
         className={`mb-3 inline-flex items-center gap-2 rounded-full px-3.5 py-1.5 text-sm font-semibold ${
-          isDark ? "bg-white/10 text-skydrop" : "bg-accent text-brand-strong"
+          isDark ? "bg-card/10 text-skydrop" : "bg-accent text-brand-strong"
         }`}
       >
         <KickerDot />

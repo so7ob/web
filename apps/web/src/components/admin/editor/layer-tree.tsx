@@ -269,7 +269,7 @@ export function LayerTree({
               <div
                 data-editor-drag-overlay="layers"
                 dir={uiLocale === "ar" ? "rtl" : "ltr"}
-                className="flex items-center gap-2 rounded-xl border border-brand bg-white px-3 py-1.5 shadow-lg"
+                className="flex items-center gap-2 rounded-xl border border-brand bg-card px-3 py-1.5 shadow-lg"
               >
                 <GripVertical className="size-3.5 text-brand" aria-hidden="true" />
                 {(() => {
@@ -488,7 +488,7 @@ function LayerRow({
                     aria-pressed={!visible}
                     className={cn(
                       "flex size-5 cursor-pointer items-center justify-center rounded transition-colors hover:bg-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand",
-                      visible ? "text-muted-foreground hover:text-navy" : "text-amber-600 hover:text-amber-700"
+                      visible ? "text-muted-foreground hover:text-navy" : "text-amber-600 dark:text-amber-200 hover:text-amber-700"
                     )}
                   >
                     {visible ? (

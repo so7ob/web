@@ -1,3 +1,4 @@
+import { PRESENTATION_KEYS } from '@so7ob/contracts';
 import { Injectable, NotFoundException } from "@nestjs/common";
 import {
   database,
@@ -25,6 +26,7 @@ import {
   type PublicView,
 } from "@so7ob/contracts";
 const settingsKeys = [
+  ...PRESENTATION_KEYS,
   "contact.email",
   "contact.phone",
   "contact.address",
@@ -238,9 +240,10 @@ export class PublicService {
         visibility: string;
         allowedRoles: string;
         publishedSettings: string | null;
+        ogMediaId: string | null;
       }
     > = await db.query(
-      "SELECT id,slug,titleAr,titleEn,seoTitleAr,seoTitleEn,seoDescAr,seoDescEn,publishedBlocksAr,publishedBlocksEn,visibility,allowedRoles,publishedSettings FROM Page WHERE slug=? AND status=? LIMIT 1",
+      "SELECT id,slug,titleAr,titleEn,seoTitleAr,seoTitleEn,seoDescAr,seoDescEn,publishedBlocksAr,publishedBlocksEn,visibility,allowedRoles,publishedSettings,ogMediaId FROM Page WHERE slug=? AND status=? LIMIT 1",
       [slug, "published"],
     );
     const stored = pages[0];
@@ -260,7 +263,9 @@ export class PublicService {
         redirect: `/${locale}/auth/login?next=/${locale}${slug ? "/" + slug : ""}`,
       };
     if (!canAccessPage(viewer, stored)) throw new NotFoundException();
-    const { visibility, allowedRoles, publishedSettings, ...published } = stored;
+    const { visibility, allowedRoles, publishedSettings, ogMediaId, ...published } = stored;
+    let publishedImage: string | null = null;
+    try { const snapshot=JSON.parse(publishedSettings||"{}");publishedImage=Object.keys(snapshot).length===0?ogMediaId:typeof snapshot.ogMediaId==="string"?snapshot.ogMediaId:null; } catch { publishedImage=ogMediaId; }
     const settings = parsePageSettings(publishedSettings, stored);
     void allowedRoles; // Authorization-only metadata is deliberately omitted from the DTO.
     const page: PublicPage = {
@@ -268,6 +273,7 @@ export class PublicService {
       titleAr: settings.titleAr, titleEn: settings.titleEn,
       seoTitleAr: settings.seoTitleAr, seoTitleEn: settings.seoTitleEn,
       seoDescAr: settings.seoDescAr, seoDescEn: settings.seoDescEn,
+      ogImage: publishedImage && /^[a-zA-Z0-9_-]+$/.test(publishedImage) ? `/api/media/${publishedImage}` : null,
       restricted: visibility !== "public",
     };
     const blocks =

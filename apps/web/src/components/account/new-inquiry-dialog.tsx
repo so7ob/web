@@ -98,14 +98,14 @@ export function NewInquiryDialog({
         {created ? (
           <div className="space-y-4 text-center">
             <DialogHeader>
-              <span className="mx-auto flex size-14 items-center justify-center rounded-full bg-emerald-100 text-emerald-700">
+              <span className="mx-auto flex size-14 items-center justify-center rounded-full bg-emerald-100 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-200">
                 <CheckCircle2 className="size-7" aria-hidden="true" />
               </span>
               <DialogTitle className="text-lg font-bold text-navy">{t.createdOk}</DialogTitle>
               <DialogDescription className="leading-7 text-muted-foreground">{t.createdOkBody}</DialogDescription>
             </DialogHeader>
             <p
-              className="mx-auto inline-flex max-w-full items-center rounded-xl bg-emerald-50 px-5 py-3 font-mono text-lg font-bold tracking-wide text-emerald-900 ltr-isolate select-all"
+              className="mx-auto inline-flex max-w-full items-center rounded-xl bg-emerald-50 dark:bg-emerald-950 px-5 py-3 font-mono text-lg font-bold tracking-wide text-emerald-900 dark:text-emerald-200 ltr-isolate select-all"
               dir="ltr"
             >
               {created.ref}

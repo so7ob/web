@@ -120,7 +120,7 @@ export function ScheduleDialog({ open, onOpenChange, locale, page, onApplied }: 
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2 text-navy">
-            <span className="flex size-8 shrink-0 items-center justify-center rounded-full bg-violet-100 text-violet-700">
+            <span className="flex size-8 shrink-0 items-center justify-center rounded-full bg-violet-100 dark:bg-violet-950 text-violet-700 dark:text-violet-200">
               <CalendarClock className="size-4" aria-hidden="true" />
             </span>
             {te.schedule}
@@ -131,16 +131,16 @@ export function ScheduleDialog({ open, onOpenChange, locale, page, onApplied }: 
         <div className="space-y-3">
           {/* الجدولة القائمة */}
           {page.scheduledPublishAt && (
-            <div className="flex items-center justify-between gap-2 rounded-xl border border-violet-200 bg-violet-50/60 p-3">
+            <div className="flex items-center justify-between gap-2 rounded-xl border border-violet-200 bg-violet-50/60 dark:bg-violet-950/60 p-3">
               <div className="min-w-0">
-                <p className="text-xs font-bold text-violet-800">{te.scheduleCurrent}</p>
+                <p className="text-xs font-bold text-violet-800 dark:text-violet-200">{te.scheduleCurrent}</p>
                 <p className="text-sm font-semibold text-navy">{fmtDateTime(page.scheduledPublishAt, locale)}</p>
               </div>
               <Button
                 type="button"
                 variant="outline"
                 size="sm"
-                className="shrink-0 border-violet-300 text-violet-700 hover:bg-violet-100 hover:text-violet-800"
+                className="shrink-0 border-violet-300 text-violet-700 dark:text-violet-200 hover:bg-violet-100 hover:text-violet-800"
                 onClick={() => void cancelSchedule()}
                 disabled={busy}
               >

@@ -16,7 +16,7 @@ export function PageHeaderBlock({ props, locale }: { props: PageHeaderBlockProps
   const quickLinks = props.quickLinks ?? [];
 
   return (
-    <header className="relative overflow-hidden border-b border-border bg-white">
+    <header className="relative overflow-hidden border-b border-border bg-card">
       <div className="pointer-events-none absolute inset-0" aria-hidden="true">
         <div className="absolute -top-16 end-[8%] h-56 w-56 rounded-full bg-brand-soft blur-3xl opacity-70" />
         <span className="absolute bottom-4 start-[4%] hidden select-none font-mono text-6xl font-bold text-navy/5 lg:block">{"{ }"}</span>

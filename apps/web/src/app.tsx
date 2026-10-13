@@ -1,3 +1,4 @@
+import {AppearanceProvider} from './components/appearance/provider';
 import {useEffect,useMemo} from 'react';
 import {ClientErrors} from './components/errors/client-errors';
 import {ErrorFeedback} from './components/errors/error-feedback';
@@ -78,7 +79,7 @@ function presentation(data: PublicView) {
 }
 export function App() {
   const data = useLoaderData<PublicView>();
-  return <AppDirectionProvider dir={data.locale === "ar" ? "rtl" : "ltr"}><ClientErrors locale={data.locale}/><AppContent /></AppDirectionProvider>;
+  return <AppDirectionProvider dir={data.locale === "ar" ? "rtl" : "ltr"}><ClientErrors locale={data.locale}/><AppearanceProvider><AppContent /></AppearanceProvider></AppDirectionProvider>;
 }
 function AppContent() {
   const data = useLoaderData<PublicView>();
@@ -88,7 +89,7 @@ function AppContent() {
       <>
         <a
           href="#main-content"
-          className="sr-only focus:not-sr-only focus:fixed focus:start-4 focus:top-4 focus:z-[100] focus:rounded-md focus:bg-navy focus:px-4 focus:py-2 focus:text-white"
+          className="sr-only focus:not-sr-only focus:fixed focus:start-4 focus:top-4 focus:z-[100] focus:rounded-md focus:bg-inverse focus:px-4 focus:py-2 focus:text-white"
         >
           {(data.locale === "ar" ? ar : en).common.skipToContent}
         </a>
@@ -110,7 +111,7 @@ function AppContent() {
       />
       <a
         href="#main-content"
-        className="sr-only focus:not-sr-only focus:fixed focus:start-4 focus:top-4 focus:z-[100] focus:rounded-md focus:bg-navy focus:px-4 focus:py-2 focus:text-white"
+        className="sr-only focus:not-sr-only focus:fixed focus:start-4 focus:top-4 focus:z-[100] focus:rounded-md focus:bg-inverse focus:px-4 focus:py-2 focus:text-white"
       >
         {content.common.skipToContent}
       </a>
@@ -160,7 +161,7 @@ export const routes = (loader: LoaderFunction): RouteObject[] => [
     id: "root",
     path: "/",
     loader,
-    shouldRevalidate: () => true,
+    shouldRevalidate: ({currentUrl,nextUrl}) => !(currentUrl.pathname===nextUrl.pathname && /\/admin\/settings\/?$/.test(nextUrl.pathname) && currentUrl.search!==nextUrl.search),
     Component: App,
     ErrorBoundary: RouteError,
     children: [

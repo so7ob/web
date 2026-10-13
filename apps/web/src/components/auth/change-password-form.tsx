@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { apiSend } from "@/components/admin/helpers";
@@ -12,7 +12,9 @@ export function ChangePasswordForm({ locale }: { locale: Locale }) {
     [newPassword, setNew] = useState(""),
     [error, setError] = useState(""),
     [busy, setBusy] = useState(false),
+    [interactive, setInteractive] = useState(false),
     pending = useRef(false);
+  useEffect(() => { setInteractive(true); }, []);
   async function submit(e: React.FormEvent) {
     e.preventDefault();
     if (pending.current) return;
@@ -48,6 +50,7 @@ export function ChangePasswordForm({ locale }: { locale: Locale }) {
           {t.currentPassword}
           <Input
             required
+            disabled={!interactive}
             autoComplete="current-password"
             type="password"
             value={currentPassword}
@@ -58,6 +61,7 @@ export function ChangePasswordForm({ locale }: { locale: Locale }) {
           {t.newPassword}
           <Input
             required
+            disabled={!interactive}
             autoComplete="new-password"
             type="password"
             value={newPassword}
@@ -70,7 +74,7 @@ export function ChangePasswordForm({ locale }: { locale: Locale }) {
             {error}
           </p>
         ) : null}
-        <Button type="submit" disabled={busy}>
+        <Button type="submit" disabled={!interactive || busy}>
           {busy ? t.loading : t.change}
         </Button>
       </form>

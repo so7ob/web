@@ -29,13 +29,13 @@ import type { AccountNotification, NotificationsResponse } from "./types";
 
 const TYPE_META: Record<string, { icon: React.ComponentType<{ className?: string }>; chip: string }> = {
   new_request: { icon: FilePlus2, chip: "bg-skydrop/20 text-brand-strong" },
-  new_inquiry: { icon: MessageCircleQuestion, chip: "bg-teal-100 text-teal-800" },
-  request_assigned: { icon: UserCheck, chip: "bg-navy/10 text-navy" },
-  reply_received: { icon: MessageSquare, chip: "bg-emerald-100 text-emerald-800" },
-  info_requested: { icon: Info, chip: "bg-amber-100 text-amber-800" },
-  status_changed: { icon: Bell, chip: "bg-violet-100 text-violet-800" },
-  content_published: { icon: FileText, chip: "bg-emerald-100 text-emerald-800" },
-  account: { icon: User, chip: "bg-navy/10 text-navy" },
+  new_inquiry: { icon: MessageCircleQuestion, chip: "bg-teal-100 dark:bg-teal-950 text-teal-800 dark:text-teal-200" },
+  request_assigned: { icon: UserCheck, chip: "bg-inverse/10 text-navy" },
+  reply_received: { icon: MessageSquare, chip: "bg-emerald-100 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-200" },
+  info_requested: { icon: Info, chip: "bg-amber-100 dark:bg-amber-950 text-amber-800 dark:text-amber-200" },
+  status_changed: { icon: Bell, chip: "bg-violet-100 dark:bg-violet-950 text-violet-800 dark:text-violet-200" },
+  content_published: { icon: FileText, chip: "bg-emerald-100 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-200" },
+  account: { icon: User, chip: "bg-inverse/10 text-navy" },
 };
 
 /** إشعارات العميل: تُقرأ بالنقر وتنتقل لرابطها، مع تعليم الكل وتحميل المزيد */
@@ -147,7 +147,7 @@ export function NotificationsView({
       </header>
 
       <ErrorFeedback error={failure} locale={locale} operation={t.title} onRefresh={async()=>{setPage(1);await load(1,false);}}/>
-      <section className="rounded-2xl border border-border bg-white p-4 sm:p-6">
+      <section className="rounded-2xl border border-border bg-card p-4 sm:p-6">
         {loading && items.length === 0 ? (
           <div className="space-y-3" role="status" aria-busy="true" aria-label={t.title}>
             {[...Array(5)].map((_, i) => (

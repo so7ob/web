@@ -142,7 +142,7 @@ export function SecurityView({
 
       <div className="grid gap-6 lg:grid-cols-2">
         {/* تغيير كلمة المرور */}
-        <section className="rounded-2xl border border-border bg-white p-6">
+        <section className="rounded-2xl border border-border bg-card p-6">
           <h2 className="flex items-center gap-2.5 text-base font-semibold text-navy">
             <span className="flex size-9 shrink-0 items-center justify-center rounded-xl bg-accent text-brand-strong">
               <KeyRound className="size-4" aria-hidden="true" />
@@ -187,7 +187,7 @@ export function SecurityView({
         </section>
 
         {/* الجلسات النشطة */}
-        <section className="rounded-2xl border border-border bg-white p-6">
+        <section className="rounded-2xl border border-border bg-card p-6">
           <div className="flex flex-wrap items-center justify-between gap-3">
             <h2 className="flex items-center gap-2.5 text-base font-semibold text-navy">
               <span className="flex size-9 shrink-0 items-center justify-center rounded-xl bg-accent text-brand-strong">
@@ -198,7 +198,7 @@ export function SecurityView({
             {others.length > 0 && (
               <Button
                 variant="outline"
-                className="h-10 rounded-full px-4 text-sm font-semibold text-rose-700 hover:border-rose-300 hover:bg-rose-50 hover:text-rose-800 focus-visible:ring-2 focus-visible:ring-ring/40"
+                className="h-10 rounded-full px-4 text-sm font-semibold text-rose-700 dark:text-rose-200 hover:border-rose-300 hover:bg-rose-50 hover:text-rose-800 focus-visible:ring-2 focus-visible:ring-ring/40"
                 onClick={revokeAll}
                 disabled={revokingAll}
               >
@@ -259,7 +259,7 @@ export function SecurityView({
                   <Button
                     variant="outline"
                     size="sm"
-                    className="h-9 rounded-full px-4 text-xs font-semibold text-rose-700 hover:border-rose-300 hover:bg-rose-50 hover:text-rose-800 focus-visible:ring-2 focus-visible:ring-ring/40"
+                    className="h-9 rounded-full px-4 text-xs font-semibold text-rose-700 dark:text-rose-200 hover:border-rose-300 hover:bg-rose-50 hover:text-rose-800 focus-visible:ring-2 focus-visible:ring-ring/40"
                     onClick={() => void revoke(session.id)}
                     disabled={revokingId === session.id}
                   >
@@ -311,7 +311,7 @@ function PasswordField({
         className={`min-h-11 focus-visible:ring-2 focus-visible:ring-ring/40 ${error ? "border-rose-400" : ""}`}
       />
       {error && (
-        <p id={`${id}-error`} role="alert" className="text-xs font-medium text-rose-700">
+        <p id={`${id}-error`} role="alert" className="text-xs font-medium text-rose-700 dark:text-rose-200">
           {error}
         </p>
       )}

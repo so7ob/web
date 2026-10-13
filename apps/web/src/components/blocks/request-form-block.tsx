@@ -35,7 +35,7 @@ export function RequestFormBlock({ props, locale }: { props: RequestFormBlockPro
 
           <aside className="space-y-8">
             {showNextSteps && (
-              <div className="rounded-3xl border border-border bg-white p-7">
+              <div className="rounded-3xl border border-border bg-card p-7">
                 <h2 className="text-lg font-bold text-navy">{c.nextTitle}</h2>
                 <ol className="mt-5 space-y-5">
                   {c.nextSteps.map((step, i) => {
@@ -57,7 +57,7 @@ export function RequestFormBlock({ props, locale }: { props: RequestFormBlockPro
             )}
 
             {showPrivacy && (
-              <div className="rounded-3xl bg-navy p-7 text-white">
+              <div className="rounded-3xl bg-inverse p-7 text-white">
                 <h2 className="flex items-center gap-2 text-lg font-bold">{c.privacyTitle}</h2>
                 <p className="mt-3 text-sm leading-7 text-white/70">{c.privacyBody}</p>
                 <ul className="mt-4 space-y-2.5">

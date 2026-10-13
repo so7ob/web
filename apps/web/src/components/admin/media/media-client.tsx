@@ -224,6 +224,7 @@ export function MediaClient({ me, locale }: MediaClientProps) {
 
   const media = data?.media ?? [];
   const usageKindLabel = (kind: MediaUsageLocationView["kind"]) => {
+    if(kind==="site_setting") return locale==="ar"?"إعدادات الموقع":"Site settings";
     if (kind === "page_published") return tmed.usagePagePublished;
     if (kind === "page_draft") return tmed.usagePageDraft;
     if (kind === "page_og") return tmed.usagePageOg;
@@ -244,7 +245,7 @@ export function MediaClient({ me, locale }: MediaClientProps) {
 
       {/* بطاقة الرفع */}
       {mayUpload ? (
-        <section className="rounded-2xl border border-dashed border-border bg-white p-5 transition-colors hover:border-brand hover:bg-accent/30">
+        <section className="rounded-2xl border border-dashed border-border bg-card p-5 transition-colors hover:border-brand hover:bg-accent/30">
           <div className="flex items-center gap-3">
             <span className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-accent text-brand-strong">
               <Upload className="size-5" aria-hidden="true" />
@@ -317,8 +318,8 @@ export function MediaClient({ me, locale }: MediaClientProps) {
               className={cn(
                 "inline-flex min-h-9 items-center gap-1.5 rounded-full border px-3.5 text-xs font-medium transition-colors",
                 folder === ""
-                  ? "border-brand bg-brand text-white shadow-sm"
-                  : "border-border bg-white text-muted-foreground hover:border-brand/40 hover:text-brand-strong"
+                  ? "border-brand bg-brand text-on-brand shadow-sm"
+                  : "border-border bg-card text-muted-foreground hover:border-brand/40 hover:text-brand-strong"
               )}
             >
               <Layers className="size-3.5" aria-hidden="true" />
@@ -334,8 +335,8 @@ export function MediaClient({ me, locale }: MediaClientProps) {
                 className={cn(
                   "inline-flex min-h-9 items-center gap-1.5 rounded-full border px-3.5 text-xs font-medium transition-colors",
                   folder === f
-                    ? "border-brand bg-brand text-white shadow-sm"
-                    : "border-border bg-white text-muted-foreground hover:border-brand/40 hover:text-brand-strong"
+                    ? "border-brand bg-brand text-on-brand shadow-sm"
+                    : "border-border bg-card text-muted-foreground hover:border-brand/40 hover:text-brand-strong"
                 )}
               >
                 <FolderOpen className="size-3.5" aria-hidden="true" />
@@ -361,10 +362,10 @@ export function MediaClient({ me, locale }: MediaClientProps) {
                 usage === key
                   ? key === "unused"
                     ? "border-amber-600 bg-amber-600 text-white shadow-sm"
-                    : "border-brand bg-brand text-white shadow-sm"
+                    : "border-brand bg-brand text-on-brand shadow-sm"
                   : key === "unused" && count > 0
-                    ? "border-amber-300 bg-amber-50 text-amber-800 hover:border-amber-500"
-                    : "border-border bg-white text-muted-foreground hover:border-brand/40 hover:text-brand-strong"
+                    ? "border-amber-300 bg-amber-50 dark:bg-amber-950 text-amber-800 dark:text-amber-200 hover:border-amber-500"
+                    : "border-border bg-card text-muted-foreground hover:border-brand/40 hover:text-brand-strong"
               )}
             >
               <Icon className="size-3.5" aria-hidden="true" />
@@ -373,7 +374,7 @@ export function MediaClient({ me, locale }: MediaClientProps) {
                 <span
                   className={cn(
                     "rounded-full px-1.5 py-px text-[10px] font-bold tabular-nums",
-                    usage === "unused" ? "bg-white/25 text-white" : "bg-amber-200/80 text-amber-900"
+                    usage === "unused" ? "bg-card/25 text-white" : "bg-amber-200/80 text-amber-900 dark:text-amber-200"
                   )}
                 >
                   {count}
@@ -401,7 +402,7 @@ export function MediaClient({ me, locale }: MediaClientProps) {
           ))}
         </div>
       ) : media.length === 0 ? (
-        <div className="rounded-2xl border border-dashed border-border bg-white">
+        <div className="rounded-2xl border border-dashed border-border bg-card">
           <EmptyState
             icon={Images}
             title={search || folder || usage !== "all" ? tmed.noResults : tmed.empty}
@@ -410,7 +411,7 @@ export function MediaClient({ me, locale }: MediaClientProps) {
       ) : (
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           {media.map((item) => (
-            <article key={item.id} className="group flex flex-col overflow-hidden rounded-2xl border border-border bg-white transition-all hover:border-brand/40 hover:shadow-sm">
+            <article key={item.id} className="group flex flex-col overflow-hidden rounded-2xl border border-border bg-card transition-all hover:border-brand/40 hover:shadow-sm">
               <div className="relative m-3 mb-0 aspect-video overflow-hidden rounded-xl border border-border bg-muted">
                 <img
                   src={item.url}
@@ -422,7 +423,7 @@ export function MediaClient({ me, locale }: MediaClientProps) {
                 <span
                   className={cn(
                     "absolute end-2 top-2 inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[10px] font-semibold shadow-sm backdrop-blur",
-                    item.usageCount > 0 ? "bg-emerald-600/90 text-white" : "bg-white/90 text-muted-foreground"
+                    item.usageCount > 0 ? "bg-emerald-600/90 text-white" : "bg-card/90 text-muted-foreground"
                   )}
                 >
                   {item.usageCount > 0 ? (
@@ -435,17 +436,17 @@ export function MediaClient({ me, locale }: MediaClientProps) {
                   )}
                 </span>
                 {/* طبقة الإجراءات عند التحويم — تبقى ظاهرة على الشاشات الصغيرة (اللمس) */}
-                <div className="absolute inset-0 flex items-center justify-center gap-2 bg-navy/60 opacity-100 transition-opacity duration-300 sm:opacity-0 sm:group-hover:opacity-100 sm:group-focus-within:opacity-100">
+                <div className="absolute inset-0 flex items-center justify-center gap-2 bg-inverse/60 opacity-100 transition-opacity duration-300 sm:opacity-0 sm:group-hover:opacity-100 sm:group-focus-within:opacity-100">
                   <Button
                     variant="ghost"
                     size="icon"
-                    className="size-11 rounded-full bg-white/90 text-navy shadow-sm backdrop-blur transition-colors hover:bg-white hover:text-navy"
+                    className="size-11 rounded-full bg-card/90 text-navy shadow-sm backdrop-blur transition-colors hover:bg-card hover:text-navy"
                     onClick={() => void copyUrl(item)}
                     aria-label={tmed.copyUrl}
                     title={tmed.copyUrl}
                   >
                     {copiedId === item.id ? (
-                      <Check className="size-4 text-emerald-600" aria-hidden="true" />
+                      <Check className="size-4 text-emerald-600 dark:text-emerald-200" aria-hidden="true" />
                     ) : (
                       <Link2 className="size-4" aria-hidden="true" />
                     )}
@@ -454,7 +455,7 @@ export function MediaClient({ me, locale }: MediaClientProps) {
                     <Button
                       variant="ghost"
                       size="icon"
-                      className="size-11 rounded-full bg-white/90 text-destructive shadow-sm backdrop-blur transition-colors hover:bg-white hover:text-destructive"
+                      className="size-11 rounded-full bg-card/90 text-destructive shadow-sm backdrop-blur transition-colors hover:bg-card hover:text-destructive"
                       onClick={() => requestDelete(item)}
                       aria-label={tmed.delete}
                       title={tmed.delete}
@@ -541,7 +542,7 @@ export function MediaClient({ me, locale }: MediaClientProps) {
         <AlertDialogContent className="max-h-[85vh] overflow-y-auto sm:max-w-lg">
           <AlertDialogHeader>
             <AlertDialogTitle className="flex items-center gap-2 text-navy">
-              <span className="flex size-8 shrink-0 items-center justify-center rounded-full bg-amber-100 text-amber-700">
+              <span className="flex size-8 shrink-0 items-center justify-center rounded-full bg-amber-100 dark:bg-amber-950 text-amber-700 dark:text-amber-200">
                 <ShieldAlert className="size-4" aria-hidden="true" />
               </span>
               {tmed.deleteBlockedTitle}
@@ -567,7 +568,7 @@ export function MediaClient({ me, locale }: MediaClientProps) {
               ))}
             </ul>
           ) : blockedUsage ? (
-            <p className="rounded-xl border border-amber-200 bg-amber-50 px-3 py-2 text-sm text-amber-800">
+            <p className="rounded-xl border border-amber-200 bg-amber-50 dark:bg-amber-950 px-3 py-2 text-sm text-amber-800 dark:text-amber-200">
               {tmed.inUse} · {blockedUsage.item.usageCount}
             </p>
           ) : null}

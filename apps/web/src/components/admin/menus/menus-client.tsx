@@ -396,7 +396,7 @@ export function MenusClient({ me, locale }: { me: Me; locale: Locale }) {
                 key={key}
                 value={key}
                 disabled={saving || refreshing}
-                className="min-h-14 min-w-0 flex-wrap gap-2 rounded-xl px-3 py-3 text-sm data-[state=active]:bg-white data-[state=active]:text-navy data-[state=active]:shadow-sm"
+                className="min-h-14 min-w-0 flex-wrap gap-2 rounded-xl px-3 py-3 text-sm data-[state=active]:bg-card data-[state=active]:text-navy data-[state=active]:shadow-sm"
               >
                 {key === "header" ? (
                   <PanelTop
@@ -460,7 +460,7 @@ export function MenusClient({ me, locale }: { me: Me; locale: Locale }) {
             <div className="grid items-start gap-5 xl:grid-cols-[minmax(0,1fr)_20rem]">
               <section
                 aria-labelledby="menu-items-title"
-                className="min-w-0 rounded-2xl border border-border bg-white"
+                className="min-w-0 rounded-2xl border border-border bg-card"
               >
                 <div className="flex flex-wrap items-start justify-between gap-3 border-b border-border p-4 sm:p-5">
                   <div>
@@ -513,7 +513,7 @@ export function MenusClient({ me, locale }: { me: Me; locale: Locale }) {
                           className={`min-w-0 overflow-hidden rounded-xl border ${validation[item.key] ? "border-destructive" : "border-border"}`}
                         >
                           <div className="flex flex-wrap items-center gap-2 bg-muted/20 p-3">
-                            <span className="flex size-8 shrink-0 items-center justify-center rounded-lg border border-border bg-white text-sm tabular-nums text-muted-foreground">
+                            <span className="flex size-8 shrink-0 items-center justify-center rounded-lg border border-border bg-card text-sm tabular-nums text-muted-foreground">
                               {index + 1}
                             </span>
                             <button
@@ -787,7 +787,7 @@ export function MenusClient({ me, locale }: { me: Me; locale: Locale }) {
               </section>
               <aside
                 aria-labelledby="menu-preview-title"
-                className="min-w-0 rounded-2xl border border-border bg-white p-5 xl:sticky xl:top-24"
+                className="min-w-0 rounded-2xl border border-border bg-card p-5 xl:sticky xl:top-24"
               >
                 <h2
                   id="menu-preview-title"
@@ -846,7 +846,7 @@ export function MenusClient({ me, locale }: { me: Me; locale: Locale }) {
                           <li
                             key={item.key}
                             title={destination(item)}
-                            className="max-w-full break-words rounded-lg border border-border bg-white px-3 py-2 text-sm text-navy"
+                            className="max-w-full break-words rounded-lg border border-border bg-card px-3 py-2 text-sm text-navy"
                           >
                             {(previewLocale === "ar"
                               ? item.labelAr
@@ -873,7 +873,7 @@ export function MenusClient({ me, locale }: { me: Me; locale: Locale }) {
                         ).map((key) => (
                           <li
                             key={key}
-                            className="rounded-lg border border-border bg-white px-3 py-2 text-sm text-navy"
+                            className="rounded-lg border border-border bg-card px-3 py-2 text-sm text-navy"
                           >
                             {
                               (previewLocale === "ar" ? siteAr : siteEn).nav[

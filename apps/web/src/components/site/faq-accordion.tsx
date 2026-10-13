@@ -16,7 +16,7 @@ export function FaqAccordion({ items, selected }: { items: { q: string; a: strin
         <Accordion.Item
           key={item.q}
           value={item.q}
-          className="overflow-hidden rounded-xl border border-border bg-white transition-colors data-[state=open]:border-brand/40"
+          className="overflow-hidden rounded-xl border border-border bg-card transition-colors data-[state=open]:border-brand/40"
         >
           <Accordion.Header>
             <Accordion.Trigger className="group flex w-full items-center justify-between gap-4 px-5 py-4 text-start text-[15px] font-bold text-navy transition-colors hover:text-brand sm:px-6 sm:py-5">

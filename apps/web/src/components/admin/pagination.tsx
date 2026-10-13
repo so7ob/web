@@ -93,7 +93,7 @@ export function AdminPagination({
               className={cn(
                 "size-10 rounded-full text-sm font-medium tabular-nums transition-colors",
                 item === page
-                  ? "border-transparent bg-navy text-white hover:bg-navy hover:text-white"
+                  ? "border-transparent bg-inverse text-white hover:bg-inverse hover:text-white"
                   : "hover:bg-muted",
               )}
               onClick={() => onPage(item)}

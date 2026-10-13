@@ -209,14 +209,14 @@ export function UserDetailClient({ locale, userId }: UserDetailClientProps) {
           icon={FileText}
           label={tud.totalRequests}
           value={String(stats.totalRequests)}
-          chip="bg-emerald-100 text-emerald-800"
+          chip="bg-emerald-100 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-200"
           bar="bg-gradient-to-r from-emerald-400 to-emerald-300"
         />
         <StatCard
           icon={FileClock}
           label={tud.openRequests}
           value={String(stats.openRequests)}
-          chip="bg-amber-100 text-amber-800"
+          chip="bg-amber-100 dark:bg-amber-950 text-amber-800 dark:text-amber-200"
           bar="bg-gradient-to-r from-amber-400 to-amber-300"
         />
         <StatCard
@@ -224,13 +224,13 @@ export function UserDetailClient({ locale, userId }: UserDetailClientProps) {
           label={tud.sessionsCount}
           value={String(sessions.activeCount)}
           chip="bg-skydrop/20 text-brand-strong"
-          bar="bg-gradient-to-r from-navy to-skydrop"
+          bar="bg-gradient-to-r from-inverse to-skydrop"
         />
       </div>
 
       <div className="grid items-start gap-6 lg:grid-cols-[minmax(0,1fr)_360px]">
         {/* طلبات المستخدم */}
-        <section className="overflow-hidden rounded-2xl border border-border bg-white">
+        <section className="overflow-hidden rounded-2xl border border-border bg-card">
           <div className="border-b border-border px-4 py-3">
             <h2 className="text-sm font-semibold text-navy">
               {tud.userRequests}
@@ -310,7 +310,7 @@ export function UserDetailClient({ locale, userId }: UserDetailClientProps) {
 
         <aside className="space-y-4">
           {/* بيانات الحساب */}
-          <section className="rounded-2xl border border-border bg-white p-4">
+          <section className="rounded-2xl border border-border bg-card p-4">
             <h2 className="mb-3 text-sm font-semibold text-navy">
               {tud.accountInfo}
             </h2>
@@ -346,7 +346,7 @@ export function UserDetailClient({ locale, userId }: UserDetailClientProps) {
                 <dt className="flex items-center gap-1.5 text-xs text-muted-foreground">
                   {user.emailVerified ? (
                     <CheckCircle2
-                      className="size-3.5 text-emerald-600"
+                      className="size-3.5 text-emerald-600 dark:text-emerald-200"
                       aria-hidden="true"
                     />
                   ) : (
@@ -395,7 +395,7 @@ export function UserDetailClient({ locale, userId }: UserDetailClientProps) {
           </section>
 
           {/* آخر الأنشطة */}
-          <section className="rounded-2xl border border-border bg-white p-4">
+          <section className="rounded-2xl border border-border bg-card p-4">
             <h2 className="mb-3 text-sm font-semibold text-navy">
               {tud.activityLog}
             </h2>
@@ -444,7 +444,7 @@ function StatCard({
   bar: string;
 }) {
   return (
-    <div className="relative overflow-hidden rounded-2xl border border-border bg-white p-5 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-navy/10">
+    <div className="relative overflow-hidden rounded-2xl border border-border bg-card p-5 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-navy/10">
       <span
         aria-hidden="true"
         className={cn("absolute inset-x-0 top-0 h-1 rounded-t-2xl", bar)}

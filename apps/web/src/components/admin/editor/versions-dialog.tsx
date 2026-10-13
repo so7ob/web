@@ -155,7 +155,7 @@ export function VersionsDialog({ open, onOpenChange, pageId, locale, me, baseRev
                 <li
                   key={version.id}
                   className={cn(
-                    "flex items-center gap-3 rounded-xl border border-border/70 bg-white p-3 transition-colors hover:bg-muted/50",
+                    "flex items-center gap-3 rounded-xl border border-border/70 bg-card p-3 transition-colors hover:bg-muted/50",
                     version.version === Math.max(...versions.map((v) => v.version)) && "border-brand/40"
                   )}
                 >

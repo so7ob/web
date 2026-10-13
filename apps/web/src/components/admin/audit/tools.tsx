@@ -21,7 +21,7 @@ interface ToolData {
 }
 const control =
   "mt-1 min-h-11 w-full rounded-lg border border-border bg-background px-3 py-2 text-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-ring";
-const card = "space-y-4 rounded-2xl border bg-white p-5";
+const card = "space-y-4 rounded-2xl border bg-card p-5";
 export function AuditTools({
   tab,
   refreshRevision,

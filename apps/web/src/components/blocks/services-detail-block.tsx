@@ -25,12 +25,12 @@ export function ServicesDetailBlock({ props, locale }: { props: ServicesDetailBl
           <article
             key={item.service}
             id={item.service}
-            className="scroll-mt-24 overflow-hidden rounded-3xl border border-border bg-white"
+            className="scroll-mt-24 overflow-hidden rounded-3xl border border-border bg-card"
           >
             <div className={`grid lg:grid-cols-[0.9fr_1.1fr] ${i % 2 === 1 ? "lg:[&>*:first-child]:order-2" : ""}`}>
               {/* رأس الخدمة */}
-              <div className="relative bg-gradient-to-br from-navy to-navy-soft p-8 text-white sm:p-10">
-                <span className="inline-flex h-12 w-12 items-center justify-center rounded-xl bg-white/10 text-skydrop">
+              <div className="relative bg-gradient-to-br from-inverse to-inverse-soft p-8 text-white sm:p-10">
+                <span className="inline-flex h-12 w-12 items-center justify-center rounded-xl bg-card/10 text-skydrop">
                   <ServiceIcon service={item.service as ServiceType} />
                 </span>
                 <h2 className="mt-5 text-balance text-2xl font-bold leading-snug">{item.name}</h2>
