@@ -174,8 +174,6 @@ export function UserDetailClient({ locale, userId }: UserDetailClientProps) {
 
   return (
     <div className="space-y-5">
-      <IdentityNav me={me} locale={locale}/>
-      <UserSecurity me={me} locale={locale} data={data} onChanged={reload}/>
       {/* الترويسة */}
       <PageHeader className="flex flex-wrap items-center gap-3">
         <Button
@@ -204,6 +202,8 @@ export function UserDetailClient({ locale, userId }: UserDetailClientProps) {
           />
         </div>
       </PageHeader>
+      <IdentityNav me={me} locale={locale}/>
+      <UserSecurity me={me} locale={locale} data={data} onChanged={reload}/>
 
       {/* بطاقات الإحصاءات */}
       <div className="grid gap-4 sm:grid-cols-3">
@@ -230,7 +230,7 @@ export function UserDetailClient({ locale, userId }: UserDetailClientProps) {
         />
       </div>
 
-      <div className="grid items-start gap-6 lg:grid-cols-[minmax(0,1fr)_360px]">
+      <div className="grid grid-cols-1 min-w-0 items-start gap-6 lg:grid-cols-[minmax(0,1fr)_360px]">
         {/* طلبات المستخدم */}
         <section className="overflow-hidden rounded-2xl border border-border bg-card">
           <div className="border-b border-border px-4 py-3">
@@ -310,7 +310,7 @@ export function UserDetailClient({ locale, userId }: UserDetailClientProps) {
           </div>
         </section>
 
-        <aside className="space-y-4">
+        <aside className="min-w-0 space-y-4">
           {/* بيانات الحساب */}
           <section className="rounded-2xl border border-border bg-card p-4">
             <h2 className="mb-3 text-sm font-semibold text-navy">

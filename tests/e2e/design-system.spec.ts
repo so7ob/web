@@ -12,6 +12,7 @@ const palette = {
   'appearance.primaryLight':'#9d174d', 'appearance.accentLight':'#0f766e',
   'appearance.primaryDark':'#f9a8d4', 'appearance.accentDark':'#5eead4',
 };
+const rgb=(hex:string)=>'rgb('+[1,3,5].map(i=>parseInt(hex.slice(i,i+2),16)).join(', ')+')';
 test.use({contextOptions:{reducedMotion:'reduce'}});
 async function audit(page: Page, label: string) {
   await page.evaluate(()=>document.fonts.ready);
@@ -32,7 +33,7 @@ async function audit(page: Page, label: string) {
 }
 for(const locale of ['ar','en'] as const)for(const mode of ['light','dark'] as const)
  test(`${locale}/${mode}: every platform workspace follows the design system`,async({page},info)=>{
-  test.setTimeout(480000);
+  test.setTimeout(480000);page.setDefaultTimeout(10000);
   const {prefix,password}=JSON.parse(readFileSync('.migration/e2e/run.json','utf8'));
   const db=await createDataSource().initialize(),id=prefix+'design'+randomBytes(4).toString('hex');
   const keys=Object.keys(palette),saved=await db.query('SELECT * FROM SiteSetting WHERE `key` IN (?,?,?,?)',keys);
@@ -52,8 +53,9 @@ for(const locale of ['ar','en'] as const)for(const mode of ['light','dark'] as c
   }
   async function captureTabs(name:string, scope=page.locator('main')){
     const tabs=scope.getByRole('tab').filter({visible:true});
+    await expect(tabs.first()).toBeVisible();
     const count=await tabs.count();
-    for(let i=0;i<count;i++){await tabs.nth(i).click();await capture(`${name}-tab-${i+1}`);}
+    for(let i=0;i<count;i++){await tabs.nth(i).click();await expect(tabs.nth(i)).toHaveCSS('color',rgb(appearanceTokens(palette,mode).primary));await capture(`${name}-tab-${i+1}`);}
   }
   async function visit(path:string,name=path.replaceAll('/','-').replaceAll('?','-').replaceAll('=','-')){
     const response=await page.goto(`/${locale}${path}`);
@@ -64,15 +66,16 @@ for(const locale of ['ar','en'] as const)for(const mode of ['light','dark'] as c
       const t=getPortalContent(locale),te=t.admin.editor;
       for(const lang of ['en','ar']){await page.locator(`#editor-language-${lang}-${pageId}`).click();await capture('editor-language-'+lang);}
       if(info.project.name==='desktop')await captureTabs('editor-library',page.locator('aside').filter({has:page.getByRole('tab')}));
-      await page.locator('[data-editor-node="surface"]').locator('button[aria-label^="'+te.selectedBlock+':"]').first().click();
+      await page.locator('[data-editor-node="surface"]').locator('button[aria-label^="'+te.selectedBlock+':"]').first().focus();
+      await page.keyboard.press('Enter');
       const sheet=page.getByRole('dialog',{name:te.properties,exact:true});
       await captureTabs('editor-properties',info.project.name==='mobile'?sheet:page.locator('aside').filter({has:page.getByRole('tab',{name:te.style,exact:true})}));
       if(await sheet.isVisible())await page.keyboard.press('Escape');
       for(const [name,label] of [['versions',t.admin.pages.versions],['templates',t.admin.templates.title]]){
-        await page.getByRole('button',{name:label,exact:true}).click();
+        const trigger=page.getByRole('button',{name:label,exact:true});await trigger.click();
         const dialog=page.getByRole('dialog').filter({visible:true});
         await captureTabs('editor-'+name,dialog);
-        await page.keyboard.press('Escape');await expect(dialog).not.toBeVisible();
+        await page.keyboard.press('Escape');await expect(dialog).not.toBeVisible();await expect(trigger).toBeFocused();
       }
     }
   }
@@ -109,7 +112,6 @@ for(const locale of ['ar','en'] as const)for(const mode of ['light','dark'] as c
     const expected=appearanceTokens(palette,mode);
     const surface=page.locator('.surface-card').first(),emphasis=page.locator('.surface-emphasis').first();
     async function colorOf(selector:string){return page.evaluate(selector=>getComputedStyle(document.querySelector(selector)!).backgroundColor,selector);}
-    const rgb=(hex:string)=>'rgb('+[1,3,5].map(i=>parseInt(hex.slice(i,i+2),16)).join(', ')+')';
     await expect(surface).toHaveCSS('background-color',rgb(expected.card));
     await expect(emphasis).toHaveCSS('background-color',rgb(expected.emphasis));
     // Responsive surface overrides use the same generated classes as editor and publication.
@@ -147,11 +149,11 @@ test('theme preference survives client navigation when browser storage is unavai
   const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));page.on('console',m=>{if(m.type()==='error'&&/hydration|did not match|server rendered/i.test(m.text()))errors.push(m.text());});
   await page.addInitScript(()=>{for(const key of ['getItem','setItem','removeItem'])Object.defineProperty(Storage.prototype,key,{value(){throw new DOMException('Storage unavailable','SecurityError');}});});
   await page.goto('/en');
-  await page.getByLabel('Color mode',{exact:true}).selectOption('dark');
+  await page.getByLabel('Color mode',{exact:true}).filter({visible:true}).selectOption('dark');
   await expect(page.locator('html')).toHaveAttribute('data-color-mode','dark');
   await page.locator('a[href="/en/contact"]').filter({visible:true}).first().click();
   await expect(page.locator('html')).toHaveAttribute('data-color-mode','dark');
-  await page.getByLabel('Color mode',{exact:true}).selectOption('system');
+  await page.getByLabel('Color mode',{exact:true}).filter({visible:true}).selectOption('system');
   await page.emulateMedia({colorScheme:'light'});await expect(page.locator('html')).toHaveAttribute('data-color-mode','light');
   await page.emulateMedia({colorScheme:'dark'});await expect(page.locator('html')).toHaveAttribute('data-color-mode','dark');
   expect(errors).toEqual([]);

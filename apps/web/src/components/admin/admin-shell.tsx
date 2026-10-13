@@ -115,7 +115,7 @@ export function AdminShell({
     { href: `/${locale}/admin`, label: t.dashboard, icon: LayoutDashboard },
     {
       href: identityHref,
-      label: t.users,
+      label: locale === "ar" ? "الهوية والمستخدمون" : "Identity & users",
       icon: Users,
       permission: identitySection === 'users' ? 'users.view' : identitySection === 'roles' ? 'roles.view' : 'invitations.manage',
     },
