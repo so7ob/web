@@ -359,7 +359,7 @@ async function main() {
           kind: "not-found",
           locale: req.path.startsWith("/en") ? "en" : "ar",
           menus: [],
-          settings: {},
+          settings: (await app.get(PublicService).shell(req.path.startsWith("/en") ? "en" : "ar", null)).settings,
           canonicalOrigin: process.env.SITE_URL!,
           viewer: null,
         };

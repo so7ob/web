@@ -129,6 +129,7 @@ for(const locale of ['ar','en'] as const)for(const mode of ['light','dark'] as c
     await page.setViewportSize(viewport);await expect(surface).toHaveCSS('background-color',rgb(expected.card));
     const taken=new Set<string>();
     const blocks=(Object.keys(BLOCK_REGISTRY) as BlockType[]).map(type=>defaultNode(type,taken));
+    const missingLink=blocks.find(b=>b.type==='buttonLink')!;missingLink.props={...missingLink.props,href:`/${locale}/design-system-missing-page`};
     const allBlocks=JSON.stringify({schemaVersion:1,blocks},(key,value)=>value===''?(key==='src'?'/icon-192.png':'Synthetic — اصطناعي'):value);
     expect(validateContent(allBlocks).ok).toBe(true);
     const current=(await(await page.request.get('/api/admin/pages/'+pageId)).json()).page;
@@ -136,6 +137,9 @@ for(const locale of ['ar','en'] as const)for(const mode of ['light','dark'] as c
     const revised=(await(await page.request.get('/api/admin/pages/'+pageId)).json()).page;
     expect((await page.request.post('/api/admin/pages/'+pageId+'/publish',{headers,data:{baseRevision:revised.draftRevision}})).status()).toBe(200);
     await visit('/'+id,'published-all-block-types');
+    await page.locator(`a[href="/${locale}/design-system-missing-page"]`).click();
+    await capture('not-found-client-navigation');
+    await expect(page.locator('a.bg-primary')).toHaveCSS('background-color',rgb(expected.primary));
     await page.goto(`/${locale}/admin`);
     if(info.project.name==='desktop')await expect(page.locator('aside')).toHaveCSS('background-color',rgb(expected.sidebar));
     const primary=page.locator('[data-slot="button"].bg-primary').first();if(await primary.count())await expect(primary).toHaveCSS('background-color',rgb(expected.primary));
@@ -143,6 +147,7 @@ for(const locale of ['ar','en'] as const)for(const mode of ['light','dark'] as c
     await page.context().clearCookies();
     for(const name of ['login','register','forgot-password','reset-password','invite','verified'])await visit('/auth/'+name,'auth-'+name);
     await visit('/design-system-missing-page','not-found');
+    await expect(page.locator('a.bg-primary')).toHaveCSS('background-color',rgb(expected.primary));
     expect(errors).toEqual([]);
   }finally{
     writeFileSync(`${folder}/coverage.json`,JSON.stringify({locale,mode,viewport:info.project.name,visited,errors,assertionErrors:info.errors.map(e=>e.message),blockTypes:Object.keys(BLOCK_REGISTRY)},null,2)+'\n');
