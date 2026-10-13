@@ -28,6 +28,8 @@ All databases and assets used in acceptance are synthetic. Local databases: `so7
 
 The contracts cover extreme colors, contrast, executable/invalid setting values and safe URL/media references. MariaDB coverage includes independent revisions, conflicting writes, final merged announcement dates, authorization, in-use deletion and deletion-winning races. Browser coverage includes independent drafts, isolated previews, actual local font loading, preserved failed writes, no post-save root fetch, media selection/favicon/sharing precedence, system-mode changes, and Arabic/English 375/1280 keyboard/axe checks across settings and representative public/account/admin surfaces.
 
+An initial full browser run exposed two test-harness assumptions: axe asynchronous frame timers cannot reliably execute inside the script-disabled preview, and a file-cleanup assertion assumed its job was the only queued deletion. The host and the exact preview document are now both audited, with the preview copied to an isolated test page so the production sandbox stays intact. The cleanup test processes the FIFO through its own job and asserts both completion and byte removal. No accessibility rule or deletion assertion was removed.
+
 Delivery gate outcomes and the final SHA/CI run are recorded in the PR. Required commands: lint, typecheck, test, build, test:independence, test:e2e, test:infra, and git diff --check. CI preserves `.migration/settings/*.png` as `settings-90-synthetic-interfaces`.
 
 ## Rollback and boundaries

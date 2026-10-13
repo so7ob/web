@@ -186,10 +186,20 @@ test("multipart uploads retain bytes, legacy errors and server file authorizatio
     expect(await readFile(join(dataDir, "uploads", record.storedName))).toEqual(
       image,
     );
-    await new FileCleanupQueue(
+    const cleanup = new FileCleanupQueue(
       db,
       new FileStore({ DATA_DIR: dataDir, NODE_ENV: "production" }),
-    ).processOne();
+    );
+    // Other browser cases can enqueue legitimate earlier deletions. Process the
+    // FIFO queue through this job instead of assuming it is the only queued job.
+    const [{ pending }] = await db.query("SELECT COUNT(*) AS pending FROM FileCleanupJob WHERE status='queued'");
+    for (let i = 0; i < Number(pending); i++) {
+      expect(await cleanup.processOne()).toBe(true);
+      const [job] = await db.query("SELECT status FROM FileCleanupJob WHERE storedName=?", [record.storedName]);
+      if (job?.status === "done") break;
+    }
+    const [completed] = await db.query("SELECT status FROM FileCleanupJob WHERE storedName=?", [record.storedName]);
+    expect(completed?.status).toBe("done");
     await expect(
       readFile(join(dataDir, "uploads", record.storedName)),
     ).rejects.toMatchObject({ code: "ENOENT" });

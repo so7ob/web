@@ -46,6 +46,25 @@ async function save(page: Page, locale: "ar" | "en") {
     }),
   ).toBeDisabled();
 }
+// The preview intentionally disables scripts. Run axe against its exact document in
+// a separate test page, since axe's asynchronous frame scan needs script timers.
+async function auditSettings(page: Page) {
+  const tags = ["wcag2a", "wcag2aa", "wcag21aa", "wcag22aa"];
+  await expect(page.locator("iframe")).toHaveAttribute("title", /.+/);
+  await expect(page.locator("iframe")).toHaveAttribute("sandbox", "allow-same-origin");
+  expect((await new AxeBuilder({ page }).exclude("iframe").withTags(tags).analyze()).violations).toEqual([]);
+  const preview = await page.context().newPage();
+  try {
+    await preview.goto(new URL("/api/health/ready", page.url()).href);
+    const markup = await page.locator("iframe").getAttribute("srcdoc");
+    expect(markup).toBeTruthy();
+    await preview.setContent(markup!);
+    await preview.evaluate(() => document.fonts.ready);
+    expect((await new AxeBuilder({ page: preview }).withTags(tags).analyze()).violations).toEqual([]);
+  } finally {
+    await preview.close();
+  }
+}
 test.use({ contextOptions: { reducedMotion: "reduce" } });
 for (const locale of ["ar", "en"] as const)
   test(`${locale}: independent settings drafts, safe writes and site-wide appearance`, async ({
@@ -219,13 +238,7 @@ for (const locale of ["ar", "en"] as const)
             () => document.documentElement.scrollWidth <= window.innerWidth,
           ),
         ).toBe(true);
-        expect(
-          (
-            await new AxeBuilder({ page })
-              .withTags(["wcag2a", "wcag2aa", "wcag21aa", "wcag22aa"])
-              .analyze()
-          ).violations,
-        ).toEqual([]);
+        await auditSettings(page);
         mkdirSync(".migration/settings", { recursive: true });
         await page.screenshot({
           path: `.migration/settings/${locale}-${info.project.name}-${mode}.png`,
