@@ -120,9 +120,10 @@ are committed.
   transitions, independent drafts, failed uploads and a public reply processed
   by the real engine. CI uploads the synthetic conversation/editor screenshots.
 
-Local unit/integration result: 925 passing tests across 52 files. Lint, TypeScript,
+Local unit/integration result: 926 passing tests across 52 files. Lint, TypeScript,
 build, independence and infrastructure checks passed during implementation. The
-full browser run and final PR-head CI results are recorded in the PR.
+full local browser run passed 252 cases; final refinements also receive focused
+browser checks. Exact PR-head CI results are recorded in the PR.
 No pending command or CI job is counted as passing.
 
 During development, real MariaDB revealed an initial FK collation mismatch;
@@ -130,7 +131,13 @@ this was corrected before successful fresh migrations. Browser checks exposed
 native-select accessible-name duplication and mobile detail/table overflow;
 these were fixed and rechecked. A worker-smoke assertion compared a MariaDB count
 string to a number; the assertion now normalizes the count. These failed runs
-remain in ignored local logs and are not reported as passing evidence.
+remain in ignored local logs and are not reported as passing evidence. The first
+PR CI run (38430543999) also caught the v1 upgrade smoke's explicit migration list
+missing the new migration. Its expected ordered list was extended, and the v1
+and identity upgrade rehearsals passed on new isolated databases. Final review
+also corrected an early revision increment on compatibility-route assignment and
+added scope-view checks to transfer previews/confirmation and assignment; tests
+cover both assignment routes and permission revocation after preview.
 
 ## Recovery and boundaries
 

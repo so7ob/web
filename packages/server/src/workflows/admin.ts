@@ -357,6 +357,10 @@ export class WorkflowAdministration {
   ) {
     requirePermission(
       actor,
+      scope === "requests" ? "requests.view.all" : "inquiries.view.all",
+    );
+    requirePermission(
+      actor,
       scope === "requests" ? "requests.assign" : "inquiries.assign",
     );
     const data = parse(
@@ -449,6 +453,10 @@ export class WorkflowAdministration {
         .strict(),
       input,
     );
+    requirePermission(
+      actor,
+      data.scope === "requests" ? "requests.view.all" : "inquiries.view.all",
+    );
     return transaction(this.db, async (r) => {
       const [version] = await r.query(
         "SELECT * FROM WorkflowVersion WHERE id=?",
@@ -527,11 +535,17 @@ export class WorkflowAdministration {
         "SELECT * FROM WorkflowTransfer WHERE id=? AND actorId=? FOR UPDATE",
         [data.previewId, actor.id],
       );
-      if (preview?.usedAt) return { ok: true };
-      if (!preview || preview.expiresAt < new Date())
-        throw new AuthFault(409, "workflow_preview_expired");
-      if (preview.usedAt) return { ok: true };
+      if (!preview) throw new AuthFault(409, "workflow_preview_expired");
       const payload = JSON.parse(preview.payload);
+      requirePermission(
+        actor,
+        payload.scope === "requests"
+          ? "requests.view.all"
+          : "inquiries.view.all",
+      );
+      if (preview.usedAt) return { ok: true };
+      if (preview.expiresAt < new Date())
+        throw new AuthFault(409, "workflow_preview_expired");
       const [version] = await r.query(
         "SELECT * FROM WorkflowVersion WHERE id=?",
         [payload.versionId],

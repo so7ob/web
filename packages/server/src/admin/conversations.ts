@@ -310,8 +310,7 @@ export class AdminConversationService {
           actor,
           request ? "requests.assign" : "inquiries.assign",
         );
-        await r.query('UPDATE ConversationWorkflow SET revision=revision+1 WHERE scope=? AND recordId=?',[kind,id]);
-    const engine=new WorkflowEngine(this.db),state=await engine.instance(r,kind,id,true);
+        const engine=new WorkflowEngine(this.db),state=await engine.instance(r,kind,id,true);
         if(state&&((!state.legacy&&body.expectedRevision===undefined)||(body.expectedRevision!==undefined&&body.expectedRevision!==state.revision)))throw new AuthFault(409,"workflow_conflict");
         const assigneeId =
           body.assigneeId === null || body.assigneeId === ""

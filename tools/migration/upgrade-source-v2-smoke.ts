@@ -42,7 +42,7 @@ try {
   assert.deepEqual(applied.map(m=>m.name), [
     'SourceV21791072000000', 'AdminRevisions1791676800000',
     'WorkerHeartbeat1791676801000', 'Diagnostics1791763200000', 'Audit1791849600000',
-    'IdentityManagement1792022400000',
+    'IdentityManagement1792022400000', 'Workflows1792108800000',
   ]);
   await assertSchema(db);
   for (const [table, rows] of Object.entries(before)) {

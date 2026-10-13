@@ -229,7 +229,9 @@ beforeAll(async () => {
 });
 afterAll(async () => {
   if (!db.isInitialized) return;
-  await db.query("DELETE FROM WorkflowTransfer WHERE actorId=?", [root.id]);
+  await db.query("DELETE FROM WorkflowTransfer WHERE actorId LIKE ?", [
+    prefix + "%",
+  ]);
   for (const id of records) {
     for (const table of [
       "WorkflowEvent",
@@ -451,11 +453,16 @@ it("atomically claims a team queue and retains queued reply events across assign
   const id = await record(),
     state = (await engine.state(a, "requests", id))!;
   const replies = await Promise.allSettled(
-    [a, b].map((person) =>
-      admin.assign(person, "requests", id, {
-        assigneeId: person.id,
-        expectedRevision: state.revision,
-      }),
+    [a, b].map((person, index) =>
+      (index === 0 ? admin.assign.bind(admin) : threads.patch.bind(threads))(
+        person,
+        "requests",
+        id,
+        {
+          assigneeId: person.id,
+          expectedRevision: state.revision,
+        },
+      ),
     ),
   );
   expect(replies.filter((r) => r.status === "fulfilled")).toHaveLength(1);
@@ -680,7 +687,7 @@ it("allows inquiry-only staff to manage replies, assign and upload without reque
       status: 403,
     });
     const state = (await engine.state(restricted, "inquiries", id))!;
-    await admin.assign(restricted, "inquiries", id, {
+    await threads.patch(restricted, "inquiries", id, {
       assigneeId: outside.id,
       expectedRevision: state.revision,
     });
@@ -765,4 +772,37 @@ it("uses the site reply policy for both original workflows and stops it on archi
       );
     else await db.query("DELETE FROM SiteSetting WHERE `key`='response.hours'");
   }
+});
+
+it("keeps transfer and assignment scoped when viewing permission is missing or revoked", async () => {
+  const id = await record();
+  const transferOnly: AuthUser = {
+    ...a,
+    permissions: ["workflows.transfer", "requests.assign"],
+  };
+  const payload = {
+    scope: "requests",
+    ids: [id],
+    versionId,
+    mapping: { intake: "review" },
+  };
+  await expect(
+    admin.previewTransfer(transferOnly, payload),
+  ).rejects.toMatchObject({ status: 403 });
+  const state = (await engine.state(a, "requests", id))!;
+  await expect(
+    admin.assign(transferOnly, "requests", id, {
+      assigneeId: a.id,
+      expectedRevision: state.revision,
+    }),
+  ).rejects.toMatchObject({ status: 403 });
+  const permitted: AuthUser = {
+    ...a,
+    permissions: [...permissions, "workflows.transfer"],
+  };
+  const preview = await admin.previewTransfer(permitted, payload);
+  await expect(
+    admin.transfer(transferOnly, { previewId: preview.previewId }),
+  ).rejects.toMatchObject({ status: 403 });
+  expect((await engine.state(a, "requests", id))?.stage.id).toBe("intake");
 });

@@ -322,6 +322,24 @@ for (const locale of ["ar", "en"] as const)
         });
       }
       await page.goto(`/${locale}/admin/inquiries/${id}`);
+      const assigned = page.waitForResponse(
+        (r) =>
+          r.url().endsWith(`/admin/inquiries/${id}`) &&
+          r.request().method() === "PATCH",
+      );
+      await page
+        .getByRole("button", {
+          name: portal.admin.requests.assignToMe,
+          exact: true,
+        })
+        .click();
+      expect((await assigned).status()).toBe(200);
+      await expect(
+        page.getByRole("combobox", {
+          name: portal.admin.requests.filterAssignee,
+          exact: true,
+        }),
+      ).toContainText("Synthetic admin");
       const stage = page.getByRole("combobox", {
         name: portal.admin.requests.changeStatus,
         exact: true,
