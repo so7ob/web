@@ -33,10 +33,10 @@ function Line({ w, tone = "muted", className }: { w: string; tone?: "muted" | "s
       aria-hidden="true"
       className={cn(
         "block h-1 rounded-full",
-        tone === "muted" && "bg-slate-300/80",
-        tone === "strong" && "bg-slate-400/80",
+        tone === "muted" && "bg-muted/80",
+        tone === "strong" && "bg-muted/80",
         tone === "brand" && "bg-brand/70",
-        tone === "white" && "bg-white/70",
+        tone === "white" && "bg-card/70",
         w,
         className
       )}
@@ -46,7 +46,7 @@ function Line({ w, tone = "muted", className }: { w: string; tone?: "muted" | "s
 
 /** بطاقة مجردة صغيرة */
 function Card({ className, children }: { className?: string; children?: React.ReactNode }) {
-  return <span aria-hidden="true" className={cn("block rounded-[3px] border border-slate-200/90 bg-card shadow-[0_1px_2px_rgba(11,31,58,0.06)]", className)}>{children}</span>;
+  return <span aria-hidden="true" className={cn("block rounded-[3px] border border-border/90 bg-card shadow-sm", className)}>{children}</span>;
 }
 
 /** بلاطة صورة مجردة — بتدرج رمادي فاتح وأيقونة زاوية */
@@ -55,8 +55,8 @@ function Tile({ className }: { className?: string }) {
     <span
       aria-hidden="true"
       className={cn(
-        "relative block overflow-hidden rounded-[3px] bg-gradient-to-br from-slate-200 via-slate-100 to-slate-300",
-        "after:absolute after:end-[2px] after:top-[2px] after:size-1 after:rounded-full after:bg-white/90",
+        "relative block overflow-hidden rounded-[3px] bg-gradient-to-br from-muted via-muted to-muted",
+        "after:absolute after:end-[2px] after:top-[2px] after:size-1 after:rounded-full after:bg-card/90",
         className
       )}
     />
@@ -182,8 +182,8 @@ const PATTERNS: Record<string, () => React.ReactNode> = {
   requestForm: () => (
     <span className="flex h-full items-center gap-2">
       <Card className="flex h-full flex-1 items-center gap-1 px-1.5">
-        <span className="h-2 flex-1 rounded-[2px] border border-slate-200 bg-slate-50 dark:bg-slate-950" />
-        <span className="h-2 flex-1 rounded-[2px] border border-slate-200 bg-slate-50 dark:bg-slate-950" />
+        <span className="h-2 flex-1 rounded-[2px] border border-border bg-muted" />
+        <span className="h-2 flex-1 rounded-[2px] border border-border bg-muted" />
       </Card>
       <span aria-hidden="true" className="block h-3 w-9 shrink-0 rounded-full bg-brand shadow-sm" />
     </span>
@@ -193,7 +193,7 @@ const PATTERNS: Record<string, () => React.ReactNode> = {
     <span className="flex h-full flex-col justify-center gap-[3px]">
       {[0, 1, 2].map((i) => (
         <span key={i} className="flex items-center gap-1.5">
-          <span className={cn("size-2 shrink-0 rounded-[2px]", i === 0 ? "bg-brand/60" : i === 1 ? "bg-emerald-500/50" : "bg-amber-500/50")} />
+          <span className={cn("size-2 shrink-0 rounded-[2px]", i === 0 ? "bg-brand/60" : i === 1 ? "bg-success/50" : "bg-warning/50")} />
           <Line w={i % 2 ? "w-2/5" : "w-1/2"} tone="strong" />
         </span>
       ))}
@@ -272,7 +272,7 @@ const PATTERNS: Record<string, () => React.ReactNode> = {
   columns: () => (
     <span className="flex h-full items-stretch gap-1.5">
       {[0, 1].map((i) => (
-        <span key={i} className="flex flex-1 items-center gap-1 rounded-[3px] border border-slate-200/90 px-1.5">
+        <span key={i} className="flex flex-1 items-center gap-1 rounded-[3px] border border-border/90 px-1.5">
           <Line w={i === 0 ? "w-1/2" : "w-2/3"} tone="strong" />
         </span>
       ))}
@@ -280,7 +280,7 @@ const PATTERNS: Record<string, () => React.ReactNode> = {
   ),
   // table — grid lines
   simpleTable: () => (
-    <span className="grid h-full grid-cols-3 grid-rows-2 gap-px overflow-hidden rounded-[3px] border border-slate-200 bg-slate-200">
+    <span className="grid h-full grid-cols-3 grid-rows-2 gap-px overflow-hidden rounded-[3px] border border-border bg-muted">
       {Array.from({ length: 6 }).map((_, i) => (
         <span key={i} aria-hidden="true" className={cn("block", i < 3 ? "bg-brand-soft/70" : "bg-card")} />
       ))}
@@ -289,13 +289,13 @@ const PATTERNS: Record<string, () => React.ReactNode> = {
   // divider
   divider: () => (
     <span className="flex h-full items-center">
-      <span aria-hidden="true" className="block h-px w-full bg-slate-200" />
+      <span aria-hidden="true" className="block h-px w-full bg-muted" />
     </span>
   ),
   // spacer — dashed gap
   spacer: () => (
     <span className="flex h-full items-center">
-      <span aria-hidden="true" className="block h-2 w-full rounded-[2px] border border-dashed border-slate-200" />
+      <span aria-hidden="true" className="block h-2 w-full rounded-[2px] border border-dashed border-border" />
     </span>
   ),
 };
@@ -303,8 +303,8 @@ const PATTERNS: Record<string, () => React.ReactNode> = {
 /** لون شارة النوع غير المعروف — رمادي محايد */
 function Unknown() {
   return (
-    <span className="flex h-full items-center gap-1.5 rounded-[4px] border border-slate-200 bg-slate-50 dark:bg-slate-950 px-2">
-      <span className="size-1.5 rounded-full bg-slate-300" />
+    <span className="flex h-full items-center gap-1.5 rounded-[4px] border border-border bg-muted px-2">
+      <span className="size-1.5 rounded-full bg-muted" />
       <Line w="w-1/3" tone="muted" />
     </span>
   );
@@ -316,9 +316,9 @@ export function TemplatePreview({ types, label, className }: TemplatePreviewProp
       <div
         role="img"
         aria-label={label}
-        className={cn("flex items-center justify-center rounded-lg border border-dashed border-border/80 bg-slate-50/60 dark:bg-slate-950/60", FRAME, className)}
+        className={cn("flex items-center justify-center rounded-lg border border-dashed border-border/80 bg-muted/60", FRAME, className)}
       >
-        <span className="text-[10px] font-medium text-muted-foreground/60">—</span>
+        <span className="text-[10px] font-medium text-muted-foreground">—</span>
       </div>
     );
   }
@@ -326,7 +326,7 @@ export function TemplatePreview({ types, label, className }: TemplatePreviewProp
     <div
       role="img"
       aria-label={label}
-      className={cn("relative overflow-hidden rounded-lg border border-border/80 bg-gradient-to-b from-slate-50/80 to-white p-1.5", FRAME, className)}
+      className={cn("relative overflow-hidden rounded-lg border border-border/80 bg-gradient-to-b from-muted/80 to-card p-1.5", FRAME, className)}
     >
       {/* صفوف بارتفاع طبيعي ثابت — القوالب الأطول تُقص بتلاشٍ سفلي */}
       <div className="flex flex-col gap-1 [mask-image:linear-gradient(to_bottom,black_75%,transparent_96%)]">

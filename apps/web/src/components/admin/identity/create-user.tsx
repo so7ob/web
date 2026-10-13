@@ -1,3 +1,4 @@
+import { NativeSelect } from "@/components/ui/native-select";
 import { useRef, useState } from "react";
 import { can } from "@so7ob/contracts";
 import { Button } from "@/components/ui/button";
@@ -156,7 +157,7 @@ export function CreateUser({
               ))}
               <label className="block">
                 {t.locale}
-                <select
+                <NativeSelect
                   className="block min-h-11 w-full border rounded-lg"
                   aria-label={t.locale}
                   value={form.locale}
@@ -164,11 +165,11 @@ export function CreateUser({
                 >
                   <option value="ar">العربية</option>
                   <option value="en">English</option>
-                </select>
+                </NativeSelect>
               </label>
               <label className="block">
                 {t.role}
-                <select
+                <NativeSelect
                   className="block min-h-11 w-full border rounded-lg"
                   aria-label={t.role}
                   value={form.roleKey}
@@ -186,11 +187,11 @@ export function CreateUser({
                         {locale === "ar" ? r.nameAr : r.nameEn}
                       </option>
                     ))}
-                </select>
+                </NativeSelect>
               </label>
               <label className="block">
                 {t.status}
-                <select
+                <NativeSelect
                   className="block min-h-11 w-full border rounded-lg"
                   aria-label={t.status}
                   value={form.status}
@@ -198,11 +199,11 @@ export function CreateUser({
                 >
                   <option value="active">{t.active}</option>
                   <option value="suspended">{t.suspended}</option>
-                </select>
+                </NativeSelect>
               </label>
               <label className="block">
                 {t.method}
-                <select
+                <NativeSelect
                   className="block min-h-11 w-full border rounded-lg"
                   aria-label={t.method}
                   value={form.method}
@@ -210,7 +211,7 @@ export function CreateUser({
                 >
                   <option value="temporary">{t.temporary}</option>
                   <option value="link">{t.link}</option>
-                </select>
+                </NativeSelect>
               </label>
               {form.roleKey === "super_admin" ? (
                 <label className="block">

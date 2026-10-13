@@ -1,5 +1,7 @@
 "use client";
 
+import { PageTitle, Toolbar } from "@/components/ui/workspace";
+
 /**
  * محرر الصفحات — قلب لوحة المحتوى:
  * - شريط علوي: عودة، عنوان (حوار إعدادات)، تبويب لغة المسودة، مؤشر حالة الحفظ،
@@ -1161,8 +1163,8 @@ export function PageEditor({ me, locale, pageId }: PageEditorProps) {
     : null;
   const statusIndicator =
     saveStatus === "saved" ? (
-      <span className="flex items-center gap-1.5 rounded-full bg-emerald-50 dark:bg-emerald-950 px-2.5 py-1 text-xs font-semibold text-emerald-700 dark:text-emerald-200">
-        <span className="size-1.5 rounded-full bg-emerald-500" aria-hidden="true" />
+      <span className="flex items-center gap-1.5 rounded-full bg-success-soft px-2.5 py-1 text-xs font-semibold text-success-foreground">
+        <span className="size-1.5 rounded-full bg-success" aria-hidden="true" />
         {te.saved}
       </span>
     ) : saveStatus === "saving" ? (
@@ -1174,19 +1176,19 @@ export function PageEditor({ me, locale, pageId }: PageEditorProps) {
       <button
         type="button"
         onClick={() => setConflictOpen(true)}
-        className="flex min-h-7 cursor-pointer items-center gap-1.5 rounded-full bg-orange-50 dark:bg-orange-950 px-2.5 py-1 text-xs font-semibold text-orange-700 dark:text-orange-200 transition-colors hover:bg-orange-100"
+        className="flex min-h-7 cursor-pointer items-center gap-1.5 rounded-full bg-warning-soft px-2.5 py-1 text-xs font-semibold text-warning-foreground transition-colors hover:bg-warning-soft"
       >
         <AlertTriangle className="size-3.5" aria-hidden="true" />
         {te.conflictTitle}
       </button>
     ) : saveStatus === "error" ? (
-      <span className="flex items-center gap-1.5 rounded-full bg-red-50 dark:bg-red-950 px-2.5 py-1 text-xs font-semibold text-destructive">
+      <span className="flex items-center gap-1.5 rounded-full bg-danger-soft px-2.5 py-1 text-xs font-semibold text-destructive">
         <span className="size-1.5 rounded-full bg-destructive" aria-hidden="true" />
         {te.saveFailed}
       </span>
     ) : (
-      <span className="flex items-center gap-1.5 rounded-full bg-amber-50 dark:bg-amber-950 px-2.5 py-1 text-xs font-semibold text-amber-700 dark:text-amber-200">
-        <span className="size-1.5 rounded-full bg-amber-500" aria-hidden="true" />
+      <span className="flex items-center gap-1.5 rounded-full bg-warning-soft px-2.5 py-1 text-xs font-semibold text-warning-foreground">
+        <span className="size-1.5 rounded-full bg-warning" aria-hidden="true" />
         {te.unsaved}
       </span>
     );
@@ -1194,7 +1196,7 @@ export function PageEditor({ me, locale, pageId }: PageEditorProps) {
   return (
     <TooltipProvider delayDuration={300}>
       <div className="flex flex-col gap-3">
-        <h1 className="sr-only">{pageTitle}</h1>
+        <PageTitle>{pageTitle}</PageTitle>
         {/* ——— الشريط العلوي ——— */}
         <div className="flex flex-wrap items-center gap-2 rounded-2xl border border-border bg-card p-2 shadow-sm">
           <Button
@@ -1243,7 +1245,7 @@ export function PageEditor({ me, locale, pageId }: PageEditorProps) {
           {statusIndicator}
 
           {/* شريط معلومات الجلسة: آخر حفظ + آخر محرر + لغة التحرير + تعديلات غير منشورة */}
-          <div className="hidden items-center gap-2 text-[11px] text-muted-foreground xl:flex">
+          <div className="hidden items-center gap-2 text-xs text-muted-foreground xl:flex">
             {lastSavedLabel && (
               <span title={te.lastSaved}>
                 {te.lastSaved}: {lastSavedLabel}
@@ -1255,13 +1257,13 @@ export function PageEditor({ me, locale, pageId }: PageEditorProps) {
               </span>
             )}
             {page?.hasUnpublishedChanges && (
-              <span className="rounded-full bg-amber-50 dark:bg-amber-950 px-2 py-0.5 font-semibold text-amber-700 dark:text-amber-200" title={te.unpublishedHint}>
+              <span className="rounded-full bg-warning-soft px-2 py-0.5 font-semibold text-warning-foreground" title={te.unpublishedHint}>
                 {te.unpublishedChanges}
               </span>
             )}
             {page?.scheduledPublishAt && (
               <span
-                className="inline-flex items-center gap-1 rounded-full bg-violet-50 dark:bg-violet-950 px-2 py-0.5 font-semibold text-violet-700 dark:text-violet-200"
+                className="inline-flex items-center gap-1 rounded-full bg-highlight-soft px-2 py-0.5 font-semibold text-highlight-foreground"
                 title={te.scheduleBindHint.replace("{rev}", `#${page.scheduledRevision ?? page.draftRevision}`)}
               >
                 <CalendarClock className="size-3" aria-hidden="true" />
@@ -1298,7 +1300,7 @@ export function PageEditor({ me, locale, pageId }: PageEditorProps) {
             </Button>
 
             {/* تراجع/إعادة/الأجهزة/المعاينة/الإصدارات/الإعدادات — مقطع واحد */}
-            <div className="flex flex-wrap items-center gap-1 rounded-full bg-muted/60 p-1">
+            <Toolbar className="flex flex-wrap items-center gap-1 rounded-full bg-muted/60 p-1">
               <Button
                 type="button"
                 variant="ghost"
@@ -1370,7 +1372,7 @@ export function PageEditor({ me, locale, pageId }: PageEditorProps) {
               >
                 <FlaskConical className="size-4" aria-hidden="true" />
               </Button>
-            </div>
+            </Toolbar>
 
             {/* معاينة iframe بعرض جهاز حقيقي */}
             <Button
@@ -1437,7 +1439,7 @@ export function PageEditor({ me, locale, pageId }: PageEditorProps) {
                     type="button"
                     variant="ghost"
                     size="icon"
-                    className={cn("size-9", page?.scheduledPublishAt && "text-violet-700 dark:text-violet-200")}
+                    className={cn("size-9", page?.scheduledPublishAt && "text-highlight-foreground")}
                     onClick={() => setScheduleOpen(true)}
                     aria-label={te.schedule}
                     title={te.schedule}
@@ -1486,7 +1488,7 @@ export function PageEditor({ me, locale, pageId }: PageEditorProps) {
                 type="button"
                 variant="outline"
                 size="sm"
-                className="min-h-9 rounded-full border-amber-300 text-amber-700 dark:text-amber-200 hover:bg-amber-50 hover:text-amber-800"
+                className="min-h-9 rounded-full border-warning-border text-warning-foreground hover:bg-warning-soft hover:text-warning-foreground"
                 onClick={() => setDiscardOpen(true)}
                 disabled={discarding}
                 aria-label={te.discard}
@@ -1541,7 +1543,7 @@ export function PageEditor({ me, locale, pageId }: PageEditorProps) {
             <header className="flex items-start justify-between gap-2 border-b border-border px-3 py-2.5">
               <div className="min-w-0">
                 <h2 className="text-sm font-bold text-navy">{te.library}</h2>
-                <p className="text-[11px] text-muted-foreground">{te.autosaveOn}</p>
+                <p className="text-xs text-muted-foreground">{te.autosaveOn}</p>
               </div>
               {/* إضافة سريعة — Ctrl+/ */}
               <button
@@ -1594,13 +1596,13 @@ export function PageEditor({ me, locale, pageId }: PageEditorProps) {
           <section role="tabpanel" id={`editor-draft-${pageId}`} aria-labelledby={`editor-language-${draftLocale}-${pageId}`} tabIndex={0} className="flex min-h-[24rem] min-w-0 flex-col overflow-hidden rounded-2xl border border-border bg-card shadow-sm">
             <header className="flex items-center justify-between border-b border-border px-3 py-2">
               <h2 className="text-sm font-bold text-navy">{te.canvas}</h2>
-              <p className="text-[11px] text-muted-foreground">
+              <p className="text-xs text-muted-foreground">
                 {draftLocale === "ar" ? te.ar : te.en} · {countNodes(nodes)} {te.blocks}
               </p>
             </header>
             {/* شريط تنبيه وضع الاختبار — الإرسال محاكى */}
             {testMode && !iframeMode && (
-              <div className="flex items-center gap-2 border-b border-amber-200 bg-amber-50 dark:bg-amber-950 px-3 py-1.5 text-[11px] font-semibold text-amber-800 dark:text-amber-200" dir={locale === "ar" ? "rtl" : "ltr"}>
+              <div className="flex items-center gap-2 border-b border-warning-border bg-warning-soft px-3 py-1.5 text-xs font-semibold text-warning-foreground" dir={locale === "ar" ? "rtl" : "ltr"}>
                 <FlaskConical className="size-3.5 shrink-0" aria-hidden="true" />
                 {te.testModeBanner}
               </div>
@@ -1749,7 +1751,7 @@ export function PageEditor({ me, locale, pageId }: PageEditorProps) {
           <AlertDialogFooter>
             <AlertDialogCancel>{t.admin.users.cancel}</AlertDialogCancel>
             <AlertDialogAction
-              className="bg-destructive text-white hover:bg-destructive/90"
+              className="bg-destructive text-inverse-foreground hover:bg-destructive/90"
               onClick={(e) => {
                 e.preventDefault();
                 if (confirmDelete) deleteNode(confirmDelete.id);
@@ -1766,7 +1768,7 @@ export function PageEditor({ me, locale, pageId }: PageEditorProps) {
         <AlertDialogContent>
           <AlertDialogHeader>
             <AlertDialogTitle className="flex items-center gap-2 text-navy">
-              <span className="flex size-8 shrink-0 items-center justify-center rounded-full bg-amber-100 dark:bg-amber-950 text-amber-700 dark:text-amber-200">
+              <span className="flex size-8 shrink-0 items-center justify-center rounded-full bg-warning-soft text-warning-foreground">
                 <Eraser className="size-4" aria-hidden="true" />
               </span>
               {te.discard}
@@ -1778,7 +1780,7 @@ export function PageEditor({ me, locale, pageId }: PageEditorProps) {
               {t.admin.users.cancel}
             </AlertDialogCancel>
             <AlertDialogAction
-              className="min-h-11 rounded-full bg-amber-600 text-white hover:bg-amber-700"
+              className="min-h-11 rounded-full bg-warning text-on-warning hover:bg-warning"
               onClick={(e) => {
                 e.preventDefault();
                 void discardDraft();
@@ -1845,7 +1847,7 @@ export function PageEditor({ me, locale, pageId }: PageEditorProps) {
                       AR: {conflictInfo.serverArCount} · EN: {conflictInfo.serverEnCount}
                     </p>
                     {conflictInfo.serverUpdatedByName && (
-                      <p className="mt-0.5 text-[11px] text-muted-foreground">
+                      <p className="mt-0.5 text-xs text-muted-foreground">
                         {te.lastEditor}: {conflictInfo.serverUpdatedByName}
                       </p>
                     )}
@@ -1881,7 +1883,7 @@ export function PageEditor({ me, locale, pageId }: PageEditorProps) {
         <DialogContent className="sm:max-w-md">
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2">
-              <AlertTriangle className="size-5 text-amber-600 dark:text-amber-200" aria-hidden="true" />
+              <AlertTriangle className="size-5 text-warning-foreground" aria-hidden="true" />
               {te.leaveTitle}
             </DialogTitle>
             <DialogDescription>{te.leaveBody}</DialogDescription>
@@ -2018,11 +2020,11 @@ function IframePreview({ pageId, uiLocale, draftLocale, device, fullWidth }: Ifr
   return (
     <div className="flex h-full flex-col" dir={uiLocale === "ar" ? "rtl" : "ltr"}>
       {/* شريط التحكم: عرض مخصص + تكبير + تحديث (شاشات واسعة) */}
-      <div className="flex flex-wrap items-center gap-3 border-b border-border px-3 py-2">
+      <Toolbar className="flex flex-wrap items-center gap-3 border-b border-border px-3 py-2">
         {!fullWidth && (
           <>
             <div className="flex items-center gap-1.5">
-              <label htmlFor="iframe-width" className="whitespace-nowrap text-[11px] font-semibold text-navy">
+              <label htmlFor="iframe-width" className="whitespace-nowrap text-xs font-semibold text-navy">
                 {te.previewWidth}
               </label>
               <Input
@@ -2036,10 +2038,10 @@ function IframePreview({ pageId, uiLocale, draftLocale, device, fullWidth }: Ifr
                 className="h-8 w-20 text-xs"
                 dir="ltr"
               />
-              <span className="text-[11px] text-muted-foreground">px</span>
+              <span className="text-xs text-muted-foreground">px</span>
             </div>
             <div className="flex items-center gap-1.5">
-              <span className="whitespace-nowrap text-[11px] font-semibold text-navy">{te.previewZoom}</span>
+              <span className="whitespace-nowrap text-xs font-semibold text-navy">{te.previewZoom}</span>
               <Slider
                 value={[zoom]}
                 min={25}
@@ -2049,7 +2051,7 @@ function IframePreview({ pageId, uiLocale, draftLocale, device, fullWidth }: Ifr
                 className="w-28"
                 aria-label={te.previewZoom}
               />
-              <span className="w-9 text-end text-[11px] tabular-nums text-muted-foreground">{zoom}%</span>
+              <span className="w-9 text-end text-xs tabular-nums text-muted-foreground">{zoom}%</span>
             </div>
           </>
         )}
@@ -2057,11 +2059,11 @@ function IframePreview({ pageId, uiLocale, draftLocale, device, fullWidth }: Ifr
           <RefreshCw className="size-3.5" aria-hidden="true" />
           {te.refreshPreview}
         </Button>
-        <span className="ms-auto flex items-center gap-1 text-[11px] text-muted-foreground">
+        <span className="ms-auto flex items-center gap-1 text-xs text-muted-foreground">
           <Info className="size-3.5 shrink-0" aria-hidden="true" />
           {te.previewSavedNote}
         </span>
-      </div>
+      </Toolbar>
 
       {/* إطار بعرض حقيقي — استعلامات الوسوم تستجيب لعرض iframe الفعلي */}
       <div className="min-h-0 flex-1 overflow-auto bg-muted/50 p-3">

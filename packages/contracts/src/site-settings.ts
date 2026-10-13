@@ -129,6 +129,7 @@ export const PALETTE_PRESETS = {
     accentDark: "#5eead4",
   },
 } as const;
+export const APPEARANCE_MOTION = { fast: 150, normal: 200, panel: 250 } as const;
 export type ColorMode = "light" | "dark";
 export type ThemeMode = ColorMode | "system";
 export function isThemeMode(v: unknown): v is ThemeMode {
@@ -205,7 +206,51 @@ export function appearanceTokens(
   const muted = dark ? "#a9b8cd" : "#475569",
     surface = dark ? "#1c2b40" : "#f1f5f9",
     soft = mix(primary, card, 0.9);
+  // Semantic pairs are shared by SSR, the live UI and sandboxed previews.
+  const emphasis = mix(primary, "#08121d", 0.72);
+  const tones: Record<string, string> = {};
+  for (const [name, color] of Object.entries({
+    success: dark ? "#86efac" : "#15803d",
+    warning: dark ? "#fcd34d" : "#92400e",
+    info: dark ? "#93c5fd" : "#1d4ed8",
+    danger: dark ? "#fca5a5" : "#b91c1c",
+    highlight: accent,
+  })) {
+    const solid = readable(color, card);
+    const subtle = mix(solid, card, dark ? 0.88 : 0.94);
+    tones[name] = solid;
+    tones[name + "-soft"] = subtle;
+    tones[name + "-foreground"] = readable(solid, subtle);
+    tones[name + "-border"] = mix(solid, card, dark ? 0.48 : 0.66);
+    tones["on-" + name] = contrast(solid, "#ffffff") >= 4.5 ? "#ffffff" : "#0b1220";
+  }
   return {
+    ...tones,
+    "overlay": "#020617",
+    "selection": soft,
+    "selection-foreground": readable(primary, soft),
+    "shimmer": dark ? "#ffffff" : primary,
+    "shadow-color": dark ? "#000000" : "#0b1f3a",
+    "primary-hover": readable(mix(primary, fg, 0.12), card),
+    "primary-hover-foreground": contrast(readable(mix(primary, fg, 0.12), card), "#ffffff") >= 4.5 ? "#ffffff" : "#0b1220",
+    "emphasis": emphasis,
+    "emphasis-foreground": "#ffffff",
+    "emphasis-muted": mix("#ffffff", emphasis, 0.16),
+    "emphasis-border": mix("#ffffff", emphasis, 0.65),
+    "emphasis-action": mix(primary, "#ffffff", 0.78),
+    "emphasis-action-foreground": readable(emphasis, mix(primary, "#ffffff", 0.78)),
+    "duration-fast": APPEARANCE_MOTION.fast + "ms",
+    "duration-normal": APPEARANCE_MOTION.normal + "ms",
+    "duration-panel": APPEARANCE_MOTION.panel + "ms",
+    "ease-standard": "cubic-bezier(0.2, 0, 0, 1)",
+    "space-panel": s["appearance.density"] === "compact" ? "1rem" : "1.5rem",
+    "space-section": s["appearance.density"] === "compact" ? "1.25rem" : "2rem",
+    "base-foreground": fg,
+    "base-muted-foreground": muted,
+    "base-primary": primary,
+    "base-primary-foreground": onPrimary,
+    "base-brand-strong": readable(mix(primary, fg, 0.15), card),
+    "base-border": dark ? "#35465e" : "#e2e8f0",
     background: bg,
     foreground: fg,
     card: card,
@@ -231,10 +276,10 @@ export function appearanceTokens(
     digital: accent,
     navy: fg,
     "navy-soft": dark ? "#cbd5e1" : "#16305a",
-    skydrop: dark ? "#7dd3fc" : "#38bdf8",
+    skydrop: mix(primary, "#ffffff", 0.7),
     "on-brand": onPrimary,
-    inverse: "#0b1f3a",
-    "inverse-soft": "#16305a",
+    inverse: emphasis,
+    "inverse-soft": mix(emphasis, primary, 0.2),
     "inverse-foreground": "#ffffff",
     radius:
       s["appearance.radius"] === "square"
@@ -268,7 +313,7 @@ export function appearanceTokens(
     "sidebar-ring": primary,
     "chart-1": primary,
     "chart-2": accent,
-    "chart-3": dark ? "#c4b5fd" : "#6d28d9",
+    "chart-3": tones.success,
     "chart-4": primary,
     "chart-5": muted,
   };

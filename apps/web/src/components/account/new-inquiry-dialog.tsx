@@ -98,14 +98,14 @@ export function NewInquiryDialog({
         {created ? (
           <div className="space-y-4 text-center">
             <DialogHeader>
-              <span className="mx-auto flex size-14 items-center justify-center rounded-full bg-emerald-100 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-200">
+              <span className="mx-auto flex size-14 items-center justify-center rounded-full bg-success-soft text-success-foreground">
                 <CheckCircle2 className="size-7" aria-hidden="true" />
               </span>
               <DialogTitle className="text-lg font-bold text-navy">{t.createdOk}</DialogTitle>
               <DialogDescription className="leading-7 text-muted-foreground">{t.createdOkBody}</DialogDescription>
             </DialogHeader>
             <p
-              className="mx-auto inline-flex max-w-full items-center rounded-xl bg-emerald-50 dark:bg-emerald-950 px-5 py-3 font-mono text-lg font-bold tracking-wide text-emerald-900 dark:text-emerald-200 ltr-isolate select-all"
+              className="mx-auto inline-flex max-w-full items-center rounded-xl bg-success-soft px-5 py-3 font-mono text-lg font-bold tracking-wide text-success-foreground ltr-isolate select-all"
               dir="ltr"
             >
               {created.ref}
@@ -113,7 +113,7 @@ export function NewInquiryDialog({
             <div className="flex flex-col items-center justify-center gap-3 sm:flex-row">
               <Button
                 onClick={openConversation}
-                className="h-11 min-w-40 rounded-full bg-primary px-6 font-bold text-primary-foreground shadow-md shadow-brand/20 transition-all hover:bg-brand-strong focus-visible:ring-2 focus-visible:ring-ring/40"
+                className="h-11 min-w-40 rounded-full bg-primary px-6 font-bold text-primary-foreground shadow-md shadow-brand/20 transition-[color,background-color,border-color,box-shadow,opacity,transform] hover:bg-primary-hover hover:text-primary-hover-foreground focus-visible:ring-2 focus-visible:ring-ring/40"
               >
                 {t.createdOkOpen}
               </Button>
@@ -201,7 +201,7 @@ export function NewInquiryDialog({
               <Button
                 type="submit"
                 disabled={!canSubmit}
-                className="h-11 rounded-full bg-primary px-6 font-bold text-primary-foreground shadow-md shadow-brand/20 transition-all hover:bg-brand-strong focus-visible:ring-2 focus-visible:ring-ring/40"
+                className="h-11 rounded-full bg-primary px-6 font-bold text-primary-foreground shadow-md shadow-brand/20 transition-[color,background-color,border-color,box-shadow,opacity,transform] hover:bg-primary-hover hover:text-primary-hover-foreground focus-visible:ring-2 focus-visible:ring-ring/40"
               >
                 {sending ? <Loader2 className="h-4 w-4 animate-spin" aria-hidden="true" /> : <Send className="h-4 w-4" aria-hidden="true" />}
                 {t.formSubmit}

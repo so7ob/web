@@ -1,4 +1,6 @@
 "use client";
+
+import { PageHeader, PageTitle } from "@/components/ui/workspace";
 import { TrackPanel } from "@/components/admin/track/track-panel";
 import { ErrorFeedback } from "@/components/errors/error-feedback";
 import { asApiError } from "@/lib/errors/transport";
@@ -283,7 +285,7 @@ export function InquiryDetailClient({
       </div>
 
       {/* الترويسة */}
-      <div className="flex flex-wrap items-center gap-3">
+      <PageHeader className="flex flex-wrap items-center gap-3">
         <Button
           asChild
           variant="ghost"
@@ -296,9 +298,9 @@ export function InquiryDetailClient({
             {ti.title}
           </Link>
         </Button>
-        <h1 className="font-mono text-xl font-bold text-navy ltr-isolate">
+        <PageTitle>
           {detail.refCode}
-        </h1>
+        </PageTitle>
         <div className="flex min-w-0 flex-wrap items-center gap-2">
           <StatusBadge
             status={detail.status}
@@ -329,7 +331,7 @@ export function InquiryDetailClient({
           <Printer className="size-4" aria-hidden="true" />
           {ti.print}
         </Button>
-      </div>
+      </PageHeader>
 
       <h2 className="text-lg font-semibold break-words text-navy">
         {detail.subject}

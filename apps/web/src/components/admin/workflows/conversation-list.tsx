@@ -1,3 +1,5 @@
+import { NativeSelect } from "@/components/ui/native-select";
+import { PageHeader, PageTitle, Toolbar } from "@/components/ui/workspace";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
 import Link from "@/routing/link";
@@ -258,7 +260,7 @@ export function ConversationList({
     choices: Array<[string, string]>,
   ) => (
     <Field title={name}>
-      <select
+      <NativeSelect
         className={wfControl}
         value={value}
         onChange={(e) => onChange(e.target.value)}
@@ -268,7 +270,7 @@ export function ConversationList({
             {n}
           </option>
         ))}
-      </select>
+      </NativeSelect>
     </Field>
   );
   const all = (
@@ -288,7 +290,7 @@ export function ConversationList({
         }
       />
       {row.responseOverdue ? (
-        <span className="inline-flex items-center gap-1 rounded-full border border-amber-300 bg-amber-50 dark:bg-amber-950 px-2 py-1 text-xs text-amber-950 dark:text-amber-200">
+        <span className="inline-flex items-center gap-1 rounded-full border border-warning-border bg-warning-soft px-2 py-1 text-xs text-warning-foreground">
           <Timer aria-hidden="true" className="size-3" />
           {tr.overdueReply}
         </span>
@@ -363,9 +365,9 @@ export function ConversationList({
   );
   return (
     <div className="space-y-5">
-      <header className="flex flex-wrap items-start justify-between gap-4">
+      <PageHeader className="flex flex-wrap items-start justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-navy">{labels.title}</h1>
+          <PageTitle>{labels.title}</PageTitle>
           <p className="mt-1 text-sm text-muted-foreground">
             {labels.subtitle}
           </p>
@@ -405,7 +407,7 @@ export function ConversationList({
             </Button>
           ) : null}
         </div>
-      </header>
+      </PageHeader>
       <SavedRepliesDialog
         locale={locale}
         open={repliesOpen}
@@ -519,7 +521,7 @@ export function ConversationList({
             ],
           )}
         </div>
-        <div className="flex flex-wrap items-center gap-3">
+        <Toolbar className="flex flex-wrap items-center gap-3">
           <label className="flex min-h-11 items-center gap-2">
             <input
               type="checkbox"
@@ -542,7 +544,7 @@ export function ConversationList({
           <Button variant="ghost" onClick={() => update(defaults)}>
             {t("مسح التصفية", "Clear filters")}
           </Button>
-        </div>
+        </Toolbar>
         {presets.length ? (
           <div className="flex flex-wrap gap-2">
             {presets.map((p) => (
@@ -588,7 +590,7 @@ export function ConversationList({
         {loading ? t("جارٍ التحميل…", "Loading…") : notice}
       </p>
       {mayArchive && selected.length ? (
-        <div className="flex flex-wrap items-center gap-3 rounded-xl border bg-accent p-3">
+        <Toolbar className="flex flex-wrap items-center gap-3 rounded-xl border bg-accent p-3">
           <strong>
             {selected.length} {tr.selected}
           </strong>
@@ -606,7 +608,7 @@ export function ConversationList({
           <Button variant="ghost" onClick={() => setSelected([])}>
             {content.admin.users.cancel}
           </Button>
-        </div>
+        </Toolbar>
       ) : null}
       {!loading && !rows.length ? (
         <section className={wfCard}>
@@ -623,7 +625,7 @@ export function ConversationList({
             : "hidden"
         }
       >
-        <Table className="table-fixed [&_td]:whitespace-normal [&_td]:break-words [&_td]:[overflow-wrap:anywhere]">
+        <Table className="min-w-[64rem] table-fixed [&_td]:whitespace-normal [&_td]:break-words [&_td]:[overflow-wrap:anywhere]">
           <TableHeader>
             <TableRow>
               {mayArchive ? (
@@ -659,10 +661,10 @@ export function ConversationList({
                 {mayArchive ? <TableCell>{check(row)}</TableCell> : null}
                 <TableCell>
                   <Link
-                    className="inline-flex min-h-11 items-center font-mono text-sm font-semibold underline-offset-4 hover:underline"
+                    className="inline-flex min-h-11 min-w-0 max-w-full items-center font-mono text-sm font-semibold underline-offset-4 hover:underline"
                     href={`/${locale}/admin/${scope}/${row.id}`}
                   >
-                    <bdi>{row.refCode}</bdi>
+                    <bdi className="min-w-0 break-all">{row.refCode}</bdi>
                   </Link>
                 </TableCell>
                 <TableCell>
@@ -740,10 +742,10 @@ export function ConversationList({
             <div className="flex items-center justify-between gap-2">
               {mayArchive ? check(row) : null}
               <Link
-                className="inline-flex min-h-11 items-center font-mono font-semibold"
+                className="inline-flex min-h-11 min-w-0 max-w-full items-center font-mono font-semibold"
                 href={`/${locale}/admin/${scope}/${row.id}`}
               >
-                <bdi>{row.refCode}</bdi>
+                <bdi className="min-w-0 break-all">{row.refCode}</bdi>
               </Link>
               {actions(row)}
             </div>

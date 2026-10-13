@@ -1,3 +1,4 @@
+import { PageTitle } from "@/components/ui/workspace";
 /** بطاقة المصادقة المشتركة — هوية بصرية موحدة لكل صفحات الدخول والحساب */
 export function AuthCard({
   icon,
@@ -15,7 +16,7 @@ export function AuthCard({
 }) {
   const heading = (
     <>
-      <h1 className="text-xl font-bold text-navy sm:text-2xl">{title}</h1>
+      <PageTitle>{title}</PageTitle>
       {subtitle && <p className="mt-2 text-sm leading-7 text-muted-foreground">{subtitle}</p>}
     </>
   );

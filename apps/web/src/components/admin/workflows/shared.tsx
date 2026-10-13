@@ -6,10 +6,8 @@ import {
 } from "react";
 import type { Locale } from "@/lib/i18n";
 import { apiSend } from "../helpers";
-export const wfControl =
-  "min-h-11 w-full min-w-0 rounded-xl border border-border bg-card px-3 py-2 text-sm text-foreground focus-visible:outline-2 focus-visible:outline-brand disabled:opacity-60";
-export const wfCard =
-  "min-w-0 space-y-4 rounded-2xl border border-border bg-card p-4 sm:p-5";
+export const wfControl = "ds-control disabled:opacity-60";
+export const wfCard = "ds-panel space-y-4";
 export const words = (locale: Locale) => (ar: string, en: string) =>
   locale === "ar" ? ar : en;
 export function Field({
@@ -20,7 +18,7 @@ export function Field({
   children: ReactNode;
 }) {
   return (
-    <label className="block min-w-0 space-y-2 text-sm font-medium">
+    <label className="ds-field">
       <span>{title}</span>
       {isValidElement(children) && children.type !== "div"
         ? cloneElement(children as ReactElement<Record<string, unknown>>, {

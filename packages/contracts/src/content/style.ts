@@ -130,9 +130,9 @@ const BORDER_WIDTH: Record<BorderWidthToken, string> = {
 
 const BACKGROUND: Record<BackgroundToken, string> = {
   default: "",
-  white: "bg-white",
+  white: "bg-card surface-card",
   accent: "bg-accent/50",
-  navy: "bg-navy",
+  navy: "bg-emphasis surface-emphasis",
   soft: "bg-brand-soft/30",
   muted: "bg-muted/40",
 };
@@ -198,7 +198,7 @@ function emitFor(
 
 function join(emits: Emit[]): string {
   return emits
-    .map((e) => (e.prefix ? `${e.prefix}${e.cls}` : e.cls))
+    .flatMap((e) => e.cls.split(" ").map((cls) => e.prefix ? `${e.prefix}${cls}` : cls))
     .filter((c, i, arr) => arr.indexOf(c) === i)
     .join(" ");
 }

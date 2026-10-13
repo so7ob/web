@@ -51,7 +51,7 @@ for (const locale of ["ar", "en"] as const)
     try {
       await page.goto(`/${locale}/admin/workflows`);
       await page
-        .getByRole("button", { name: t("فرق العمل", "Teams"), exact: true })
+        .getByRole("tab", { name: t("فرق العمل", "Teams"), exact: true })
         .click();
       await page
         .getByLabel(t("اسم الفريق بالعربية", "Team Arabic name"), {
@@ -80,7 +80,7 @@ for (const locale of ["ar", "en"] as const)
       teamId = (await (await teamResponse).json()).id;
       expect(teamId).toBeTruthy();
       await page
-        .getByRole("button", {
+        .getByRole("tab", {
           name: t("ساعات العمل", "Business hours"),
           exact: true,
         })

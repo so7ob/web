@@ -1,5 +1,7 @@
 "use client";
 
+import { PageTitle } from "@/components/ui/workspace";
+
 /**
  * مكتبة الوسائط (§7): رفع بمجلد، بحث فوري، تصفية بمجلدات، شارة استخدام
  * لكل عنصر (عدد المواضع)، نقل بين المجلدات، وحذف محمي بحاجز الاستخدام —
@@ -238,7 +240,7 @@ export function MediaClient({ me, locale }: MediaClientProps) {
           <Images className="size-5" aria-hidden="true" />
         </span>
         <div>
-          <h1 className="text-2xl font-bold text-navy">{tmed.title}</h1>
+          <PageTitle>{tmed.title}</PageTitle>
           <p className="mt-1 text-sm text-muted-foreground">{tmed.subtitle}</p>
         </div>
       </div>
@@ -361,10 +363,10 @@ export function MediaClient({ me, locale }: MediaClientProps) {
                 "inline-flex min-h-9 items-center gap-1.5 rounded-full border px-3.5 text-xs font-medium transition-colors",
                 usage === key
                   ? key === "unused"
-                    ? "border-amber-600 bg-amber-600 text-white shadow-sm"
+                    ? "border-warning-border bg-warning text-on-warning shadow-sm"
                     : "border-brand bg-brand text-on-brand shadow-sm"
                   : key === "unused" && count > 0
-                    ? "border-amber-300 bg-amber-50 dark:bg-amber-950 text-amber-800 dark:text-amber-200 hover:border-amber-500"
+                    ? "border-warning-border bg-warning-soft text-warning-foreground hover:border-warning-border"
                     : "border-border bg-card text-muted-foreground hover:border-brand/40 hover:text-brand-strong"
               )}
             >
@@ -374,7 +376,7 @@ export function MediaClient({ me, locale }: MediaClientProps) {
                 <span
                   className={cn(
                     "rounded-full px-1.5 py-px text-[10px] font-bold tabular-nums",
-                    usage === "unused" ? "bg-card/25 text-white" : "bg-amber-200/80 text-amber-900 dark:text-amber-200"
+                    usage === "unused" ? "bg-card/25 text-inverse-foreground" : "bg-warning-soft/80 text-warning-foreground"
                   )}
                 >
                   {count}
@@ -411,19 +413,19 @@ export function MediaClient({ me, locale }: MediaClientProps) {
       ) : (
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           {media.map((item) => (
-            <article key={item.id} className="group flex flex-col overflow-hidden rounded-2xl border border-border bg-card transition-all hover:border-brand/40 hover:shadow-sm">
+            <article key={item.id} className="group flex flex-col overflow-hidden rounded-2xl border border-border bg-card transition-[color,background-color,border-color,box-shadow,opacity,transform] hover:border-brand/40 hover:shadow-sm">
               <div className="relative m-3 mb-0 aspect-video overflow-hidden rounded-xl border border-border bg-muted">
                 <img
                   src={item.url}
                   alt={item.altText ?? item.filename}
                   loading="lazy"
-                  className="size-full object-cover transition-transform duration-300 group-hover:scale-[1.03]"
+                  className="size-full object-cover transition-transform duration-(--duration-panel) group-hover:scale-[1.03]"
                 />
                 {/* شارة الاستخدام — أعلى الزاوية دائمًا ظاهرة */}
                 <span
                   className={cn(
                     "absolute end-2 top-2 inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[10px] font-semibold shadow-sm backdrop-blur",
-                    item.usageCount > 0 ? "bg-emerald-600/90 text-white" : "bg-card/90 text-muted-foreground"
+                    item.usageCount > 0 ? "bg-success/90 text-on-success" : "bg-card/90 text-muted-foreground"
                   )}
                 >
                   {item.usageCount > 0 ? (
@@ -436,7 +438,7 @@ export function MediaClient({ me, locale }: MediaClientProps) {
                   )}
                 </span>
                 {/* طبقة الإجراءات عند التحويم — تبقى ظاهرة على الشاشات الصغيرة (اللمس) */}
-                <div className="absolute inset-0 flex items-center justify-center gap-2 bg-inverse/60 opacity-100 transition-opacity duration-300 sm:opacity-0 sm:group-hover:opacity-100 sm:group-focus-within:opacity-100">
+                <div className="absolute inset-0 flex items-center justify-center gap-2 bg-inverse/60 opacity-100 transition-opacity duration-(--duration-panel) sm:opacity-0 sm:group-hover:opacity-100 sm:group-focus-within:opacity-100">
                   <Button
                     variant="ghost"
                     size="icon"
@@ -446,7 +448,7 @@ export function MediaClient({ me, locale }: MediaClientProps) {
                     title={tmed.copyUrl}
                   >
                     {copiedId === item.id ? (
-                      <Check className="size-4 text-emerald-600 dark:text-emerald-200" aria-hidden="true" />
+                      <Check className="size-4 text-success-foreground" aria-hidden="true" />
                     ) : (
                       <Link2 className="size-4" aria-hidden="true" />
                     )}
@@ -542,7 +544,7 @@ export function MediaClient({ me, locale }: MediaClientProps) {
         <AlertDialogContent className="max-h-[85vh] overflow-y-auto sm:max-w-lg">
           <AlertDialogHeader>
             <AlertDialogTitle className="flex items-center gap-2 text-navy">
-              <span className="flex size-8 shrink-0 items-center justify-center rounded-full bg-amber-100 dark:bg-amber-950 text-amber-700 dark:text-amber-200">
+              <span className="flex size-8 shrink-0 items-center justify-center rounded-full bg-warning-soft text-warning-foreground">
                 <ShieldAlert className="size-4" aria-hidden="true" />
               </span>
               {tmed.deleteBlockedTitle}
@@ -568,7 +570,7 @@ export function MediaClient({ me, locale }: MediaClientProps) {
               ))}
             </ul>
           ) : blockedUsage ? (
-            <p className="rounded-xl border border-amber-200 bg-amber-50 dark:bg-amber-950 px-3 py-2 text-sm text-amber-800 dark:text-amber-200">
+            <p className="rounded-xl border border-warning-border bg-warning-soft px-3 py-2 text-sm text-warning-foreground">
               {tmed.inUse} · {blockedUsage.item.usageCount}
             </p>
           ) : null}

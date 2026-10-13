@@ -25,24 +25,24 @@ interface AnnouncementBarProps {
 
 const VARIANTS: Record<AnnouncementVariant, { strip: string; icon: LucideIcon; cta: string }> = {
   info: {
-    strip: "bg-skydrop/15 text-navy border-b border-skydrop/30",
+    strip: "bg-info-soft text-info-foreground border-b border-info-border",
     icon: Info,
-    cta: "bg-inverse text-white hover:bg-inverse-soft",
+    cta: "bg-inverse text-inverse-foreground hover:bg-inverse-soft",
   },
   warning: {
-    strip: "bg-amber-100 dark:bg-amber-950 text-amber-900 dark:text-amber-200 border-b border-amber-300",
+    strip: "bg-warning-soft text-warning-foreground border-b border-warning-border",
     icon: TriangleAlert,
-    cta: "bg-amber-900 text-white hover:bg-amber-800",
+    cta: "bg-warning text-on-warning hover:bg-warning",
   },
   success: {
-    strip: "bg-emerald-100 dark:bg-emerald-950 text-emerald-900 dark:text-emerald-200 border-b border-emerald-300",
+    strip: "bg-success-soft text-success-foreground border-b border-success-border",
     icon: CircleCheck,
-    cta: "bg-emerald-900 text-white hover:bg-emerald-800",
+    cta: "bg-success text-on-success hover:bg-success",
   },
   brand: {
-    strip: "bg-inverse text-white border-b border-navy-soft",
+    strip: "bg-inverse text-inverse-foreground border-b border-navy-soft",
     icon: Megaphone,
-    cta: "bg-skydrop text-navy hover:bg-skydrop/85",
+    cta: "bg-emphasis-action text-emphasis-action-foreground hover:bg-emphasis-action/90",
   },
 };
 
@@ -89,7 +89,7 @@ export function AnnouncementBar({ announcement, locale, labels }: AnnouncementBa
   const variant = VARIANTS[announcement.variant];
   const Icon = variant.icon;
   const ctaClasses = cn(
-    "inline-flex min-h-9 shrink-0 items-center rounded-full px-3 py-1 text-sm font-semibold transition-colors",
+    "inline-flex min-h-11 shrink-0 items-center rounded-lg px-3 py-1 text-sm font-semibold transition-colors",
     variant.cta
   );
 

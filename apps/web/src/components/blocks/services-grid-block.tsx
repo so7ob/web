@@ -36,14 +36,14 @@ export function ServicesGridBlock({ props, locale }: { props: ServicesGridBlockP
             key={card.service}
             href={`${localePath(locale, "services")}#${card.service}`}
             locale={locale}
-            className="group relative block overflow-hidden rounded-2xl border border-border bg-gradient-to-br from-inverse to-inverse-soft p-7 text-white transition-transform hover:-translate-y-1"
+            className="group relative block overflow-hidden rounded-2xl border border-border bg-gradient-to-br from-inverse to-inverse-soft p-7 text-inverse-foreground transition-transform hover:-translate-y-1"
           >
             <div className="absolute -end-10 -top-10 h-36 w-36 rounded-full bg-skydrop/10 blur-2xl" aria-hidden="true" />
             <span className="inline-flex h-12 w-12 items-center justify-center rounded-xl bg-card/10 text-skydrop">
               <ServiceIcon service={card.service as ServiceType} />
             </span>
             <h3 className="mt-5 text-xl font-bold">{card.name}</h3>
-            <p className="mt-3 text-sm leading-7 text-white/75">{card.blurb}</p>
+            <p className="mt-3 text-sm leading-7 text-emphasis-muted">{card.blurb}</p>
             <span className="mt-5 inline-flex items-center gap-1.5 text-sm font-semibold text-skydrop">
               {learnMore}
               <Chevron />
@@ -55,7 +55,7 @@ export function ServicesGridBlock({ props, locale }: { props: ServicesGridBlockP
             key={card.service}
             href={`${localePath(locale, "services")}#${card.service}`}
             locale={locale}
-            className="group block rounded-2xl border border-border bg-background p-6 transition-all hover:border-brand/40 hover:shadow-md"
+            className="group block rounded-2xl border border-border bg-background p-6 transition-[color,background-color,border-color,box-shadow,opacity,transform] hover:border-brand/40 hover:shadow-md"
           >
             <span className="inline-flex h-11 w-11 items-center justify-center rounded-xl bg-accent text-brand-strong">
               <ServiceIcon service={card.service as ServiceType} />
@@ -73,7 +73,7 @@ export function ServicesGridBlock({ props, locale }: { props: ServicesGridBlockP
         <BlockLink
           href={viewAllHref}
           locale={locale}
-          className="inline-flex min-h-11 items-center gap-2 rounded-full border border-border bg-card px-5 text-sm font-semibold text-navy transition-colors hover:border-brand hover:text-brand"
+          className="inline-flex min-h-11 items-center gap-2 rounded-lg border border-border bg-card px-5 text-sm font-semibold text-navy transition-colors hover:border-brand hover:text-brand"
         >
           {viewAllLabel}
         </BlockLink>

@@ -1,3 +1,6 @@
+import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
+import { NativeSelect } from "@/components/ui/native-select";
+import { PageTitle, PageHeader, Toolbar } from "@/components/ui/workspace";
 import { useCallback, useEffect, useRef, useState } from "react";
 import {
   can,
@@ -208,7 +211,7 @@ export function WorkflowWorkspace({ locale, me }: { locale: Locale; me: Me }) {
     teamId: t("الفريق", "Team"),
   };
   const selectStages = (value: string, onChange: (v: string) => void) => (
-    <select
+    <NativeSelect
       className={wfControl}
       value={value}
       onChange={(e) => onChange(e.target.value)}
@@ -218,12 +221,12 @@ export function WorkflowWorkspace({ locale, me }: { locale: Locale; me: Me }) {
           {label(s)}
         </option>
       ))}
-    </select>
+    </NativeSelect>
   );
   if (!data)
     return (
       <div className={wfCard}>
-        <h1 className="text-2xl font-bold">{t("مسارات العمل", "Workflows")}</h1>
+        <PageTitle>{t("مسارات العمل", "Workflows")}</PageTitle>
         {error ? (
           <ErrorFeedback error={error} locale={locale} onRefresh={load} />
         ) : (
@@ -232,20 +235,20 @@ export function WorkflowWorkspace({ locale, me }: { locale: Locale; me: Me }) {
       </div>
     );
   return (
-    <div className="min-w-0 space-y-5">
-      <header>
-        <h1 className="text-2xl font-bold text-navy">
+    <Tabs value={tab} onValueChange={setTab} className="min-w-0 space-y-5">
+      <PageHeader>
+        <PageTitle>
           {t("مسارات العمل", "Workflows")}
-        </h1>
+        </PageTitle>
         <p className="mt-2 text-sm text-muted-foreground">
           {t(
             "اضبط مراحل المعاملة والإحالة والظهور والمهل. النشر يطبق على المعاملات الجديدة.",
             "Configure stages, routing, visibility and deadlines. Publishing applies to new conversations.",
           )}
         </p>
-      </header>
-      <nav
-        className="flex flex-wrap gap-2"
+      </PageHeader>
+      <TabsList
+        className="w-full justify-start"
         aria-label={t(
           "أقسام إدارة المسارات",
           "Workflow administration sections",
@@ -257,16 +260,14 @@ export function WorkflowWorkspace({ locale, me }: { locale: Locale; me: Me }) {
           ["calendar", t("ساعات العمل", "Business hours")],
           ["transfer", t("نقل المعاملات", "Transfer conversations")],
         ].map(([key, name]) => (
-          <Button
+          <TabsTrigger value={key}
             key={key}
-            variant={tab === key ? "default" : "outline"}
-            aria-pressed={tab === key}
-            onClick={() => setTab(key)}
           >
             {name}
-          </Button>
+          </TabsTrigger>
         ))}
-      </nav>
+      </TabsList>
+      <TabsContent value={tab} className="space-y-6">
       {error ? (
         <ErrorFeedback
           error={error}
@@ -287,7 +288,7 @@ export function WorkflowWorkspace({ locale, me }: { locale: Locale; me: Me }) {
             <section className={wfCard}>
               <div className="grid gap-4 sm:grid-cols-2">
                 <Field title={t("المسار", "Workflow")}>
-                  <select
+                  <NativeSelect
                     className={wfControl}
                     value={active?.id ?? ""}
                     onChange={(e) => {
@@ -303,10 +304,10 @@ export function WorkflowWorkspace({ locale, me }: { locale: Locale; me: Me }) {
                         {label(f.draft)}
                       </option>
                     ))}
-                  </select>
+                  </NativeSelect>
                 </Field>
                 <Field title={t("نوع المعاملة", "Conversation type")}>
-                  <select
+                  <NativeSelect
                     className={wfControl}
                     value={definition.scope}
                     disabled={!!active}
@@ -323,7 +324,7 @@ export function WorkflowWorkspace({ locale, me }: { locale: Locale; me: Me }) {
                     <option value="inquiries">
                       {portal.admin.inquiries.title}
                     </option>
-                  </select>
+                  </NativeSelect>
                 </Field>
               </div>
               <div className="flex flex-wrap gap-2">
@@ -381,7 +382,7 @@ export function WorkflowWorkspace({ locale, me }: { locale: Locale; me: Me }) {
                 <Field
                   title={t("إصدار تقويم الدوام", "Business calendar version")}
                 >
-                  <select
+                  <NativeSelect
                     className={wfControl}
                     value={definition.calendarVersionId ?? ""}
                     onChange={(e) =>
@@ -402,7 +403,7 @@ export function WorkflowWorkspace({ locale, me }: { locale: Locale; me: Me }) {
                         {c.definition.timezone} · {data.calendars.length - i}
                       </option>
                     ))}
-                  </select>
+                  </NativeSelect>
                 </Field>
               </div>
               <WorkflowGraph
@@ -476,7 +477,7 @@ export function WorkflowWorkspace({ locale, me }: { locale: Locale; me: Me }) {
                       />
                     </Field>
                     <Field title={t("الحالة التشغيلية", "Operational status")}>
-                      <select
+                      <NativeSelect
                         className={wfControl}
                         value={stage.status}
                         onChange={(e) =>
@@ -490,12 +491,12 @@ export function WorkflowWorkspace({ locale, me }: { locale: Locale; me: Me }) {
                             {statusLabels[s]}
                           </option>
                         ))}
-                      </select>
+                      </NativeSelect>
                     </Field>
                     <Field
                       title={t("ظهور المعاملة", "Conversation visibility")}
                     >
-                      <select
+                      <NativeSelect
                         className={wfControl}
                         value={stage.visibility}
                         onChange={(e) =>
@@ -517,7 +518,7 @@ export function WorkflowWorkspace({ locale, me }: { locale: Locale; me: Me }) {
                             "Team, assignee and supervisors",
                           )}
                         </option>
-                      </select>
+                      </NativeSelect>
                     </Field>
                     <Field
                       title={t(
@@ -525,7 +526,7 @@ export function WorkflowWorkspace({ locale, me }: { locale: Locale; me: Me }) {
                         "Routing on stage entry",
                       )}
                     >
-                      <select
+                      <NativeSelect
                         className={wfControl}
                         value={stage.routing.mode}
                         onChange={(e) =>
@@ -543,10 +544,10 @@ export function WorkflowWorkspace({ locale, me }: { locale: Locale; me: Me }) {
                             {name}
                           </option>
                         ))}
-                      </select>
+                      </NativeSelect>
                     </Field>
                     <Field title={t("الفريق", "Team")}>
-                      <select
+                      <NativeSelect
                         className={wfControl}
                         value={stage.routing.teamId ?? ""}
                         onChange={(e) =>
@@ -566,11 +567,11 @@ export function WorkflowWorkspace({ locale, me }: { locale: Locale; me: Me }) {
                               {label(team)}
                             </option>
                           ))}
-                      </select>
+                      </NativeSelect>
                     </Field>
                     {stage.routing.mode === "person" ? (
                       <Field title={t("الموظف المسؤول", "Assignee")}>
-                        <select
+                        <NativeSelect
                           className={wfControl}
                           value={stage.routing.userId ?? ""}
                           onChange={(e) =>
@@ -590,7 +591,7 @@ export function WorkflowWorkspace({ locale, me }: { locale: Locale; me: Me }) {
                               {person.name}
                             </option>
                           ))}
-                        </select>
+                        </NativeSelect>
                       </Field>
                     ) : null}
                     <Field
@@ -689,7 +690,7 @@ export function WorkflowWorkspace({ locale, me }: { locale: Locale; me: Me }) {
                   "Rule — in execution order",
                 )}
               >
-                <select
+                <NativeSelect
                   className={wfControl}
                   value={transitionId}
                   onChange={(e) => setTransitionId(e.target.value)}
@@ -704,7 +705,7 @@ export function WorkflowWorkspace({ locale, me }: { locale: Locale; me: Me }) {
                       → {label(definition.stages.find((s) => s.id === tr.to)!)}
                     </option>
                   ))}
-                </select>
+                </NativeSelect>
               </Field>
               <Button
                 variant="outline"
@@ -771,7 +772,7 @@ export function WorkflowWorkspace({ locale, me }: { locale: Locale; me: Me }) {
                       )}
                     </Field>
                     <Field title={t("المحفز", "Trigger")}>
-                      <select
+                      <NativeSelect
                         className={wfControl}
                         value={transition.trigger}
                         onChange={(e) =>
@@ -788,10 +789,10 @@ export function WorkflowWorkspace({ locale, me }: { locale: Locale; me: Me }) {
                             {triggerLabels[k]}
                           </option>
                         ))}
-                      </select>
+                      </NativeSelect>
                     </Field>
                     <Field title={t("الإجراء", "Action")}>
-                      <select
+                      <NativeSelect
                         className={wfControl}
                         value={transition.action}
                         onChange={(e) =>
@@ -811,7 +812,7 @@ export function WorkflowWorkspace({ locale, me }: { locale: Locale; me: Me }) {
                             {t("تنبيه داخلي فقط", "Internal notification only")}
                           </option>
                         ) : null}
-                      </select>
+                      </NativeSelect>
                     </Field>
                     <Field
                       title={t(
@@ -819,7 +820,7 @@ export function WorkflowWorkspace({ locale, me }: { locale: Locale; me: Me }) {
                         "Who can perform this action",
                       )}
                     >
-                      <select
+                      <NativeSelect
                         className={wfControl}
                         value={transition.actors[0]}
                         onChange={(e) =>
@@ -843,7 +844,7 @@ export function WorkflowWorkspace({ locale, me }: { locale: Locale; me: Me }) {
                         <option value="team">
                           {t("أعضاء الفريق الحالي", "Current team members")}
                         </option>
-                      </select>
+                      </NativeSelect>
                     </Field>
                     <label className="flex min-h-11 items-center gap-2">
                       <input
@@ -858,7 +859,7 @@ export function WorkflowWorkspace({ locale, me }: { locale: Locale; me: Me }) {
                     </label>
                   </div>
                   <Field title={t("مطابقة الشروط", "Condition matching")}>
-                    <select
+                    <NativeSelect
                       className={wfControl}
                       value={transition.match}
                       onChange={(e) =>
@@ -873,7 +874,7 @@ export function WorkflowWorkspace({ locale, me }: { locale: Locale; me: Me }) {
                       <option value="any">
                         {t("أي شرط", "Any condition")}
                       </option>
-                    </select>
+                    </NativeSelect>
                   </Field>
                   {transition.conditions.map((c, i) => (
                     <div
@@ -881,7 +882,7 @@ export function WorkflowWorkspace({ locale, me }: { locale: Locale; me: Me }) {
                       className="grid gap-3 rounded-xl bg-muted/40 p-3 sm:grid-cols-4"
                     >
                       <Field title={t("الحقل", "Field")}>
-                        <select
+                        <NativeSelect
                           className={wfControl}
                           value={c.field}
                           onChange={(e) =>
@@ -912,10 +913,10 @@ export function WorkflowWorkspace({ locale, me }: { locale: Locale; me: Me }) {
                                 {fieldLabels[f]}
                               </option>
                             ))}
-                        </select>
+                        </NativeSelect>
                       </Field>
                       <Field title={t("المقارنة", "Comparison")}>
-                        <select
+                        <NativeSelect
                           className={wfControl}
                           value={c.op}
                           onChange={(e) =>
@@ -940,7 +941,7 @@ export function WorkflowWorkspace({ locale, me }: { locale: Locale; me: Me }) {
                               {n}
                             </option>
                           ))}
-                        </select>
+                        </NativeSelect>
                       </Field>
                       <Field
                         title={t(
@@ -1030,7 +1031,7 @@ export function WorkflowWorkspace({ locale, me }: { locale: Locale; me: Me }) {
                   {selectStages(stageId, setStageId)}
                 </Field>
                 <Field title={t("حدث المحاكاة", "Simulation event")}>
-                  <select
+                  <NativeSelect
                     className={wfControl}
                     value={trigger}
                     onChange={(e) =>
@@ -1042,7 +1043,7 @@ export function WorkflowWorkspace({ locale, me }: { locale: Locale; me: Me }) {
                         {triggerLabels[k]}
                       </option>
                     ))}
-                  </select>
+                  </NativeSelect>
                 </Field>
                 {conditionFields.map((f) => (
                   <Field key={f} title={fieldLabels[f]}>
@@ -1105,7 +1106,7 @@ export function WorkflowWorkspace({ locale, me }: { locale: Locale; me: Me }) {
                   "Apply workflow to new conversations",
                 )}
               >
-                <select
+                <NativeSelect
                   className={wfControl}
                   value={selector}
                   onChange={(e) => setSelector(e.target.value)}
@@ -1122,7 +1123,7 @@ export function WorkflowWorkspace({ locale, me }: { locale: Locale; me: Me }) {
                       {name}
                     </option>
                   ))}
-                </select>
+                </NativeSelect>
               </Field>
               <Button
                 disabled={
@@ -1375,7 +1376,7 @@ export function WorkflowWorkspace({ locale, me }: { locale: Locale; me: Me }) {
               {t("نقل المعاملات الحالية", "Transfer existing conversations")}
             </h2>
             <Field title={t("نوع المعاملة", "Conversation type")}>
-              <select
+              <NativeSelect
                 className={wfControl}
                 value={transferScope}
                 onChange={(e) => {
@@ -1389,7 +1390,7 @@ export function WorkflowWorkspace({ locale, me }: { locale: Locale; me: Me }) {
                 <option value="inquiries">
                   {portal.admin.inquiries.title}
                 </option>
-              </select>
+              </NativeSelect>
             </Field>
             <Field title={t("البحث عن معاملة", "Find conversation")}>
               <Input
@@ -1403,7 +1404,7 @@ export function WorkflowWorkspace({ locale, me }: { locale: Locale; me: Me }) {
             >
               {t("تحميل المعاملات", "Load conversations")}
             </Button>
-            <div className="flex flex-wrap items-center gap-2">
+            <Toolbar className="flex flex-wrap items-center gap-2">
               <Button
                 variant="outline"
                 disabled={transferPage <= 1}
@@ -1421,7 +1422,7 @@ export function WorkflowWorkspace({ locale, me }: { locale: Locale; me: Me }) {
               >
                 {t("التالي", "Next")}
               </Button>
-            </div>
+            </Toolbar>
             <fieldset className="grid max-h-72 gap-2 overflow-auto sm:grid-cols-2">
               <legend>
                 {t("اختر حتى 50 معاملة", "Select up to 50 conversations")}
@@ -1448,7 +1449,7 @@ export function WorkflowWorkspace({ locale, me }: { locale: Locale; me: Me }) {
               ))}
             </fieldset>
             <Field title={t("الإصدار الهدف", "Target version")}>
-              <select
+              <NativeSelect
                 className={wfControl}
                 value={target}
                 onChange={(e) => {
@@ -1468,7 +1469,7 @@ export function WorkflowWorkspace({ locale, me }: { locale: Locale; me: Me }) {
                       {label(v.definition)} · {i + 1}
                     </option>
                   ))}
-              </select>
+              </NativeSelect>
             </Field>
             {[
               ...new Set(
@@ -1479,7 +1480,7 @@ export function WorkflowWorkspace({ locale, me }: { locale: Locale; me: Me }) {
                 key={source}
                 title={t("ربط المرحلة", "Map stage") + " " + source}
               >
-                <select
+                <NativeSelect
                   className={wfControl}
                   value={mapping[source] ?? ""}
                   onChange={(e) => {
@@ -1497,7 +1498,7 @@ export function WorkflowWorkspace({ locale, me }: { locale: Locale; me: Me }) {
                         {label(s)}
                       </option>
                     ))}
-                </select>
+                </NativeSelect>
               </Field>
             ))}
             <Button
@@ -1588,7 +1589,8 @@ export function WorkflowWorkspace({ locale, me }: { locale: Locale; me: Me }) {
           </section>
         ) : null}
       </fieldset>
-    </div>
+    </TabsContent>
+</Tabs>
   );
 }
 function Intervals({
@@ -1695,7 +1697,7 @@ function Validation({ errors, locale }: { errors: string[]; locale: Locale }) {
   return errors.length ? (
     <ul
       role="alert"
-      className="list-inside list-disc rounded-xl bg-amber-50 dark:bg-amber-950 p-4 text-sm text-amber-950 dark:text-amber-200"
+      className="list-inside list-disc rounded-xl bg-warning-soft p-4 text-sm text-warning-foreground"
     >
       {errors.map((e) => (
         <li key={e}>

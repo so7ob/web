@@ -414,7 +414,7 @@ function LayerRow({
           aria-roledescription="sortable"
           disabled={dragDisabled}
           className={cn(
-            "flex size-6 shrink-0 touch-none items-center justify-center rounded text-muted-foreground/50 transition-colors hover:bg-accent hover:text-navy focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand",
+            "flex size-6 shrink-0 touch-none items-center justify-center rounded text-muted-foreground transition-colors hover:bg-accent hover:text-navy focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand",
             dragDisabled ? "cursor-not-allowed opacity-30" : "cursor-grab active:cursor-grabbing"
           )}
         >
@@ -462,7 +462,7 @@ function LayerRow({
           {locked && (
             <Tooltip>
               <TooltipTrigger asChild>
-                <Lock className="size-3 shrink-0 text-muted-foreground/70" aria-hidden="true" />
+                <Lock className="size-3 shrink-0 text-muted-foreground" aria-hidden="true" />
               </TooltipTrigger>
               <TooltipContent side="top">{te.maxDepthHint}</TooltipContent>
             </Tooltip>
@@ -488,7 +488,7 @@ function LayerRow({
                     aria-pressed={!visible}
                     className={cn(
                       "flex size-5 cursor-pointer items-center justify-center rounded transition-colors hover:bg-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand",
-                      visible ? "text-muted-foreground hover:text-navy" : "text-amber-600 dark:text-amber-200 hover:text-amber-700"
+                      visible ? "text-muted-foreground hover:text-navy" : "text-warning-foreground hover:text-warning-foreground"
                     )}
                   >
                     {visible ? (
@@ -517,7 +517,7 @@ function LayerRow({
             onClick={() => onDelete(node.id)}
             title={te.delete}
             aria-label={te.delete}
-            className="flex size-5 cursor-pointer items-center justify-center rounded text-muted-foreground transition-colors hover:bg-red-50 hover:text-destructive focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-destructive"
+            className="flex size-5 cursor-pointer items-center justify-center rounded text-muted-foreground transition-colors hover:bg-danger-soft hover:text-destructive focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-destructive"
           >
             <Trash2 className="size-3.5" aria-hidden="true" />
           </button>

@@ -1,3 +1,5 @@
+import { NativeSelect } from "@/components/ui/native-select";
+import { Panel, PageTitle, Toolbar } from "@/components/ui/workspace";
 import { siteConfig } from "@/config/site";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useBlocker, useSearchParams } from "react-router-dom";
@@ -71,7 +73,7 @@ function previewHtml(
       `identity.logo${ar ? "Ar" : "En"}${mode === "light" ? "Light" : "Dark"}`
     ] || (mode === "light" ? "/logo.png" : "/logo-white.png");
   const description = s[ar ? "sharing.descriptionAr" : "sharing.descriptionEn"];
-  const announcementColors:Record<string,string[]>={info:mode==='light'?['#e0f2fe','#075985']:['#082f49','#bae6fd'],warning:mode==='light'?['#fef3c7','#78350f']:['#451a03','#fde68a'],success:mode==='light'?['#dcfce7','#166534']:['#052e16','#bbf7d0'],brand:['var(--primary)','var(--primary-foreground)']};
+  const announcementColors:Record<string,string[]>={info:['var(--info-soft)','var(--info-foreground)'],warning:['var(--warning-soft)','var(--warning-foreground)'],success:['var(--success-soft)','var(--success-foreground)'],brand:['var(--primary)','var(--primary-foreground)']};
   const announcementColorsSelected=announcementColors[s['announcement.variant']]??announcementColors.info;
   return `<!doctype html><html lang="${lang}" dir="${ar ? "rtl" : "ltr"}" data-color-mode="${mode}"><head><title>${ar ? "معاينة الإعدادات" : "Settings preview"}</title><meta name="viewport" content="width=device-width,initial-scale=1"><style>${themeStyles(s)}*{box-sizing:border-box}body{margin:0;background:var(--background);color:var(--foreground);font-family:var(--site-font);font-size:15px;line-height:1.7}header{display:flex;align-items:center;gap:12px;padding:20px;background:var(--card);border-bottom:1px solid var(--border)}img{max-width:100%;object-fit:contain}main{padding:20px}h1{font-size:22px;margin:0}h2{font-size:18px}p{color:var(--muted-foreground)}article{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:20px;margin-bottom:16px}button,input{font:inherit;border-radius:var(--radius);min-height:44px;padding:var(--control-padding) 12px}button{background:var(--primary);color:var(--primary-foreground);border:0}input{width:100%;border:1px solid var(--input);background:var(--card);color:var(--foreground);margin:8px 0 16px}table{border-collapse:collapse;width:100%}td,th{text-align:start;border-bottom:1px solid var(--border);padding:var(--row-padding) 4px}a{color:var(--primary)}.tag{background:var(--accent);color:var(--accent-foreground);padding:3px 8px;border-radius:var(--radius)}</style></head><body><header><img src="${esc(image)}" alt="${esc(name)}" width="48" height="48">${s["identity.showName"] === "false" ? "" : `<strong>${esc(name)}</strong>`}</header><main>${section === "sharing" ? `<article><small>example.invalid</small><h1><a>${esc(name)}</a></h1><p>${esc(description || (ar ? "وصف الموقع في نتائج البحث والمشاركة" : "Site description in search and sharing"))}</p>${s["sharing.image"] ? `<img src="${esc(s["sharing.image"])}" alt="" width="320">` : ""}</article>` : section === "announcement" ? `<article style="background:${announcementColorsSelected[0]};color:${announcementColorsSelected[1]}"><span class="tag">${s["announcement.enabled"] === "true" ? (ar ? "مفعّل — يخضع للجدولة" : "Enabled — subject to schedule") : ar ? "غير مفعّل" : "Disabled"}</span><p style="color:inherit">${esc(s[ar ? "announcement.messageAr" : "announcement.messageEn"])}</p><a style="color:inherit">${esc(s[ar ? "announcement.ctaLabelAr" : "announcement.ctaLabelEn"])}</a></article>` : `<article><span class="tag">${ar ? "معاينة" : "Preview"}</span><h1>${ar ? "تفاصيل واضحة وتجربة مريحة" : "Clear details, comfortable experience"}</h1><p>${ar ? "معاينة محلية للتعديلات قبل حفظها." : "A local preview of your changes before saving."}</p><label>${ar ? "عنوان الطلب" : "Request title"}<input value="${ar ? "تطوير الموقع" : "Website development"}" readonly></label><button type="button">${ar ? "إرسال الطلب" : "Send request"}</button> <button type="button" style="background:transparent;color:var(--digital);border:1px solid var(--digital)">${ar ? "عرض التفاصيل" : "View details"}</button></article><article><h2>${ar ? "آخر الطلبات" : "Recent requests"}</h2><table><thead><tr><th>${ar ? "الموضوع" : "Subject"}</th><th>${ar ? "الحالة" : "Status"}</th></tr></thead><tbody><tr><td>${ar ? "تصميم واجهة" : "Interface design"}</td><td><span class="tag">${ar ? "جديد" : "New"}</span></td></tr><tr><td>${ar ? "استفسار عام" : "General inquiry"}</td><td>${ar ? "تم الرد" : "Replied"}</td></tr></tbody></table></article>`}</main></body></html>`;
 }
@@ -318,19 +320,19 @@ export function SettingsClient({ me, locale }: { me: Me; locale: Locale }) {
   };
   if (loading)
     return (
-      <div role="status" className="rounded-2xl border bg-card p-8">
+      <Panel role="status" className="rounded-2xl border bg-card p-8">
         <Loader2 className="mb-3 size-6 animate-spin" />
         {ar ? "جارٍ تحميل الإعدادات…" : "Loading settings…"}
-      </div>
+      </Panel>
     );
   if (loadError && !Object.keys(revisions).length)
     return (
-      <div role="alert" className="space-y-4 rounded-2xl border bg-card p-6">
+      <Panel role="alert" className="space-y-4 rounded-2xl border bg-card p-6">
         <p>{loadError}</p>
         <Button onClick={() => void load()}>
           {ar ? "إعادة المحاولة" : "Retry"}
         </Button>
-      </div>
+      </Panel>
     );
   const booleanKeys = [
     "identity.showName",
@@ -363,7 +365,7 @@ export function SettingsClient({ me, locale }: { me: Me; locale: Locale }) {
               <img
                 src={value}
                 alt={label(key)}
-                className="h-20 max-w-full rounded bg-white p-2 object-contain"
+                className="h-20 max-w-full rounded bg-card p-2 object-contain"
               />
             ) : (
               <div className="flex h-20 items-center gap-2 text-sm text-muted-foreground">
@@ -419,7 +421,7 @@ export function SettingsClient({ me, locale }: { me: Me; locale: Locale }) {
             </span>
           </div>
         ) : settingOptions[key] ? (
-          <select
+          <NativeSelect
             id={id}
             className="min-h-11 w-full rounded-lg border border-input bg-card px-3 text-sm"
             value={value}
@@ -431,14 +433,14 @@ export function SettingsClient({ me, locale }: { me: Me; locale: Locale }) {
                 {ar ? arabic : english}
               </option>
             ))}
-          </select>
+          </NativeSelect>
         ) : (
           <div className="flex items-center gap-2">
             {color && (
               <input
                 type="color"
                 aria-label={(ar ? "منتقي " : "Picker: ") + label(key)}
-                value={/^#[\da-f]{6}$/i.test(value) ? value : "#000000"}
+                value={/^#[\da-f]{6}$/i.test(value) ? value : PALETTE_PRESETS.blue.primaryLight}
                 disabled={saving}
                 onChange={(e) => set(key, e.target.value)}
                 className="size-11 shrink-0 cursor-pointer rounded-lg border bg-card p-1"
@@ -490,13 +492,13 @@ export function SettingsClient({ me, locale }: { me: Me; locale: Locale }) {
   };
   return (
     <div className="space-y-6">
-      <div className="flex flex-wrap items-center justify-between gap-4">
+      <div className="ds-page-header">
         <div className="flex items-center gap-3">
           <span className="rounded-2xl bg-accent p-3 text-primary">
             <Settings aria-hidden="true" />
           </span>
           <div>
-            <h1 className="text-2xl font-bold">{ts.title}</h1>
+            <PageTitle>{ts.title}</PageTitle>
             <p className="mt-1 max-w-2xl text-sm text-muted-foreground">
               {ar
                 ? "هوية متناسقة، ومظهر يناسبك، وإعدادات واضحة في مكان واحد."
@@ -523,7 +525,7 @@ export function SettingsClient({ me, locale }: { me: Me; locale: Locale }) {
           aria-label={ar ? "أقسام الإعدادات" : "Settings sections"}
           className="lg:sticky lg:top-24"
         >
-          <div className="grid grid-cols-2 gap-1 rounded-2xl border bg-card p-2 sm:grid-cols-3 lg:grid-cols-1">
+          <div className="ds-section-nav grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-1">
             {SETTING_SECTIONS.map((s) => (
               <a
                 key={s}
@@ -539,7 +541,7 @@ export function SettingsClient({ me, locale }: { me: Me; locale: Locale }) {
                 className={cn(
                   "flex min-h-12 items-center justify-between gap-2 rounded-xl px-3 text-sm font-medium",
                   s === section
-                    ? "bg-primary text-primary-foreground"
+                    ? "bg-card text-primary"
                     : "text-muted-foreground hover:bg-muted",
                 )}
               >
@@ -773,7 +775,7 @@ export function SettingsClient({ me, locale }: { me: Me; locale: Locale }) {
                   {ar ? "معاينة قبل الحفظ" : "Preview before saving"}
                 </div>
                 <div className="flex flex-wrap gap-2">
-                  <select
+                  <NativeSelect
                     aria-label={ar ? "لغة المعاينة" : "Preview language"}
                     value={previewLocale}
                     onChange={(e) => setPreviewLocale(e.target.value as Locale)}
@@ -781,8 +783,8 @@ export function SettingsClient({ me, locale }: { me: Me; locale: Locale }) {
                   >
                     <option value="ar">العربية</option>
                     <option value="en">English</option>
-                  </select>
-                  <select
+                  </NativeSelect>
+                  <NativeSelect
                     aria-label={ar ? "وضع المعاينة" : "Preview color mode"}
                     value={previewMode}
                     onChange={(e) =>
@@ -792,7 +794,7 @@ export function SettingsClient({ me, locale }: { me: Me; locale: Locale }) {
                   >
                     <option value="light">{ar ? "فاتح" : "Light"}</option>
                     <option value="dark">{ar ? "داكن" : "Dark"}</option>
-                  </select>
+                  </NativeSelect>
                 </div>
                 <iframe
                   title={ar ? "معاينة الإعدادات" : "Settings preview"}
@@ -813,7 +815,7 @@ export function SettingsClient({ me, locale }: { me: Me; locale: Locale }) {
               </aside>
             )}
           </div>
-          <div className="sticky bottom-3 z-20 flex flex-wrap items-center justify-between gap-3 rounded-2xl border bg-card p-3 shadow-lg">
+          <Toolbar className="sticky bottom-3 z-20 flex flex-wrap items-center justify-between gap-3 rounded-2xl border bg-card p-3 shadow-lg">
             <div className="flex flex-wrap gap-2">
               <Button
                 variant="ghost"
@@ -851,7 +853,7 @@ export function SettingsClient({ me, locale }: { me: Me; locale: Locale }) {
               )}
               {ts.save}
             </Button>
-          </div>
+          </Toolbar>
         </div>
       </div>
       <MediaPicker

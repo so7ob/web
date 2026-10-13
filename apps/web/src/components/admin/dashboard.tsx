@@ -1,3 +1,4 @@
+import { PageTitle, PageHeader } from "@/components/ui/workspace";
 /**
  * لوحة الإدارة الرئيسية: البيانات وتسميات الوقت تأتي من الخادم، مع الحفاظ
  * على العرض الأصلي دون استيراد قاعدة البيانات في المتصفح. كل الأرقام حقيقية.
@@ -41,17 +42,17 @@ interface StatDef {
 
 /** فئات بطاقات المؤشرات — البطاقة نفسها بلا تغيير بصري، والرابط يضيف حلقة تركيز فقط */
 const STAT_CARD_CLASS =
-  "relative overflow-hidden rounded-2xl border border-border bg-card p-5 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-navy/10";
+  "relative overflow-hidden rounded-2xl border border-border bg-card p-5 transition-[color,background-color,border-color,box-shadow,opacity,transform] duration-(--duration-panel) hover:-translate-y-0.5 hover:shadow-lg hover:shadow-navy/10";
 
 /** تدرجات أشرطة الحالة — نفس عائلات ألوان شارات الحالة */
 const STATUS_BAR: Record<string, string> = {
   new: "bg-gradient-to-r from-skydrop to-brand",
-  in_review: "bg-gradient-to-r from-slate-400 to-slate-500",
-  awaiting_info: "bg-gradient-to-r from-amber-300 to-amber-500",
+  in_review: "bg-gradient-to-r from-muted to-muted",
+  awaiting_info: "bg-gradient-to-r from-warning to-warning",
   in_progress: "bg-gradient-to-r from-brand to-brand-strong",
-  responded: "bg-gradient-to-r from-emerald-400 to-emerald-500",
-  closed: "bg-gradient-to-r from-slate-300 to-slate-400",
-  cancelled: "bg-gradient-to-r from-rose-300 to-rose-500",
+  responded: "bg-gradient-to-r from-success to-success",
+  closed: "bg-gradient-to-r from-muted to-muted",
+  cancelled: "bg-gradient-to-r from-danger to-danger",
 };
 
 export function AdminDashboard({
@@ -113,8 +114,8 @@ export function AdminDashboard({
       value: pendingUsers,
       label: t.pendingUsers,
       href: `/${locale}/admin/users?status=pending_verification`,
-      chip: "bg-purple-100 dark:bg-purple-950 text-purple-800 dark:text-purple-200",
-      bar: "bg-gradient-to-r from-purple-400 to-purple-500",
+      chip: "bg-highlight-soft text-highlight-foreground",
+      bar: "bg-gradient-to-r from-highlight to-highlight",
     },
     {
       icon: Inbox,
@@ -132,8 +133,8 @@ export function AdminDashboard({
       value: awaitingInfo,
       label: t.awaitingInfo,
       href: `/${locale}/admin/requests?status=awaiting_info`,
-      chip: "bg-amber-100 dark:bg-amber-950 text-amber-800 dark:text-amber-200",
-      bar: "bg-gradient-to-r from-amber-400 to-amber-300",
+      chip: "bg-warning-soft text-warning-foreground",
+      bar: "bg-gradient-to-r from-warning to-warning",
     },
     {
       icon: Timer,
@@ -142,8 +143,8 @@ export function AdminDashboard({
       label: t.overdueReplies,
       hint: t.overdueHint,
       href: `/${locale}/admin/requests?overdue=1`,
-      chip: "bg-rose-100 dark:bg-rose-950 text-rose-800 dark:text-rose-200",
-      bar: "bg-gradient-to-r from-rose-300 to-rose-500",
+      chip: "bg-danger-soft text-danger-foreground",
+      bar: "bg-gradient-to-r from-danger to-danger",
     },
     {
       icon: MessageSquareText,
@@ -153,8 +154,8 @@ export function AdminDashboard({
       // «open» مرشّح مركّب في واجهة الاستفسارات: الحالات غير المغلقة وغير المؤرشفة —
       // يطابق هذا المؤشر تمامًا (أُضيف في تكامل الجولة 19)
       href: `/${locale}/admin/inquiries?status=open`,
-      chip: "bg-emerald-100 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-200",
-      bar: "bg-gradient-to-r from-emerald-400 to-emerald-300",
+      chip: "bg-success-soft text-success-foreground",
+      bar: "bg-gradient-to-r from-success to-success",
     },
     {
       icon: FileText,
@@ -169,12 +170,12 @@ export function AdminDashboard({
 
   return (
     <div className="space-y-6">
-      <div className="flex flex-wrap items-center justify-between gap-3">
+      <PageHeader className="flex flex-wrap items-center justify-between gap-3">
         <div className="flex min-w-0 items-center gap-3">
           <span className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-accent text-brand-strong">
             <LayoutDashboard className="size-5" aria-hidden="true" />
           </span>
-          <h1 className="text-2xl font-bold text-navy">{t.title}</h1>
+          <PageTitle>{t.title}</PageTitle>
         </div>
         {/* مبدّل المدى الزمني — تنقل خادمي يعيد رسم اللوحة والمخطط
             (حبوب بحدود بلغة مرشّحات القوائم — تُخفى عند الطباعة) */}
@@ -205,7 +206,7 @@ export function AdminDashboard({
             })}
           </div>
         )}
-      </div>
+      </PageHeader>
 
       {/* بطاقات المؤشرات — 7 بطاقات: صف 4+3 على الشاشات الواسعة؛
           ذات الرابط تفتح القائمة المفلترة المقابلة (روابط اللوحة العميقة) */}
@@ -239,7 +240,7 @@ export function AdminDashboard({
                   {stat.label}
                 </p>
                 {stat.hint ? (
-                  <p className="mt-0.5 text-[11px] tabular-nums text-muted-foreground">
+                  <p className="mt-0.5 text-xs tabular-nums text-muted-foreground">
                     {stat.hint}
                   </p>
                 ) : null}
@@ -295,7 +296,7 @@ export function AdminDashboard({
                         <div
                           title={`${requestLabels.statuses[row.status] ?? row.status}: ${row.count}`}
                           className={cn(
-                            "animate-shimmer h-full rounded-full transition-all duration-300",
+                            "animate-shimmer h-full rounded-full transition-[color,background-color,border-color,box-shadow,opacity,transform] duration-(--duration-panel)",
                             STATUS_BAR[row.status] ??
                               "bg-gradient-to-r from-brand to-brand-strong",
                           )}
@@ -304,7 +305,7 @@ export function AdminDashboard({
                           }}
                         />
                       </div>
-                      <span className="inline-flex min-w-8 shrink-0 items-center justify-center rounded-full bg-muted px-2 py-0.5 text-[11px] font-bold tabular-nums text-navy">
+                      <span className="inline-flex min-w-8 shrink-0 items-center justify-center rounded-full bg-muted px-2 py-0.5 text-xs font-bold tabular-nums text-navy">
                         {row.count}
                       </span>
                     </Link>
@@ -345,7 +346,7 @@ export function AdminDashboard({
                     <div
                       title={bar.title}
                       className={cn(
-                        "rounded-full transition-all duration-300 hover:brightness-125",
+                        "rounded-full transition-[color,background-color,border-color,box-shadow,opacity,transform] duration-(--duration-panel) hover:brightness-125",
                         rangeDays === 30 ? "w-full" : "w-full max-w-10",
                         bar.count === 0
                           ? "bg-muted hover:brightness-100"

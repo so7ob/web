@@ -16,6 +16,10 @@ const Toaster = ({ ...props }: ToasterProps) => {
           "--normal-bg": "var(--popover)",
           "--normal-text": "var(--popover-foreground)",
           "--normal-border": "var(--border)",
+          ...Object.fromEntries(["success", "warning", "info", "error"].flatMap(name => {
+            const tone = name === "error" ? "danger" : name;
+            return [[`--${name}-bg`, `var(--${tone}-soft)`], [`--${name}-text`, `var(--${tone}-foreground)`], [`--${name}-border`, `var(--${tone}-border)`]];
+          })),
         } as React.CSSProperties
       }
       {...props}

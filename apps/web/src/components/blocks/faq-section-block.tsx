@@ -26,7 +26,7 @@ export function FaqSectionBlock({ props, locale }: { props: FaqSectionBlockProps
           <BlockLink
             href={ctaHref}
             locale={locale}
-            className="mt-6 inline-flex min-h-11 items-center gap-2 rounded-full border border-border bg-background px-5 text-sm font-semibold text-navy transition-colors hover:border-brand hover:text-brand"
+            className="mt-6 inline-flex min-h-11 items-center gap-2 rounded-lg border border-border bg-background px-5 text-sm font-semibold text-navy transition-colors hover:border-brand hover:text-brand"
           >
             {ctaLabel}
           </BlockLink>

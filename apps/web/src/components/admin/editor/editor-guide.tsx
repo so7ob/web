@@ -52,10 +52,10 @@ const SECTION_ICONS: LucideIcon[] = [
 const SECTION_ICON_STYLES = [
   "bg-brand-soft text-brand-strong",
   "bg-skydrop/20 text-brand-strong",
-  "bg-violet-100 dark:bg-violet-950 text-violet-700 dark:text-violet-200",
-  "bg-emerald-100 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-200",
-  "bg-amber-100 dark:bg-amber-950 text-amber-700 dark:text-amber-200",
-  "bg-rose-100 dark:bg-rose-950 text-rose-700 dark:text-rose-200",
+  "bg-highlight-soft text-highlight-foreground",
+  "bg-success-soft text-success-foreground",
+  "bg-warning-soft text-warning-foreground",
+  "bg-danger-soft text-danger-foreground",
 ];
 
 export function EditorGuide({ open, onOpenChange, locale }: EditorGuideProps) {

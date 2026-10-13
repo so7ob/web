@@ -1,3 +1,4 @@
+import { PageHeader, PageTitle } from "@/components/ui/workspace";
 import { useEffect, useRef, useState } from "react";
 import { can, PERMISSION_CATALOG, type Permission } from "@so7ob/contracts";
 import { Button } from "@/components/ui/button";
@@ -320,9 +321,8 @@ export function IdentityWorkspace({
       !can(me, "roles.update"));
   return (
     <div className="space-y-6">
-      <IdentityNav me={me} locale={locale} />
-      <header className="flex flex-wrap justify-between gap-3">
-        <h1 className="text-2xl font-bold">{t[screen]}</h1>
+      <PageHeader className="flex flex-wrap justify-between gap-3">
+        <PageTitle>{t[screen]}</PageTitle>
         {screen === "roles" && can(me, "roles.create") ? (
           <Button
             disabled={loading}
@@ -337,7 +337,8 @@ export function IdentityWorkspace({
             {t.createRole}
           </Button>
         ) : null}
-      </header>
+      </PageHeader>
+      <IdentityNav me={me} locale={locale} />
       {screen === "permissions" ? (
         <PermissionEditor
           value={PERMISSION_CATALOG.filter(p=>can(me,p.key)).map(p=>p.key)}

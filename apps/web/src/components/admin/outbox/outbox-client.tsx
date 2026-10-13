@@ -1,5 +1,7 @@
 "use client";
 
+import { PageHeader, PageTitle } from "@/components/ui/workspace";
+
 /**
  * صندوق صادر البريد: سجل الرسائل المرسلة/المسجلة/الفاشلة مع نص الخطأ.
  * وضع التطوير يسجل بلا إرسال فعلي — يوضحه نص الحالة والفراغ.
@@ -80,15 +82,15 @@ export function OutboxClient({ me, locale }: OutboxClientProps) {
 
   return (
     <div className="space-y-5">
-      <header className="flex items-center gap-3">
+      <PageHeader className="flex items-center gap-3">
         <span className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-accent text-brand-strong">
           <Send className="size-5" aria-hidden="true" />
         </span>
         <div>
-          <h1 className="text-2xl font-bold text-navy">{to.title}</h1>
+          <PageTitle>{to.title}</PageTitle>
           <p className="mt-1 text-sm text-muted-foreground">{to.subtitle}</p>
         </div>
-      </header>
+      </PageHeader>
 
       <div className="overflow-hidden rounded-2xl border border-border bg-card">
         <div className="overflow-x-auto">

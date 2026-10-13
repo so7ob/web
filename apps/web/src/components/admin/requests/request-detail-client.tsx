@@ -1,4 +1,6 @@
 "use client";
+
+import { PageHeader, PageTitle, Toolbar } from "@/components/ui/workspace";
 import { TrackPanel } from "@/components/admin/track/track-panel";
 import { ErrorFeedback } from "@/components/errors/error-feedback";
 import { asApiError } from "@/lib/errors/transport";
@@ -380,7 +382,7 @@ export function RequestDetailClient({
         </p>
       </div>
       {/* الترويسة */}
-      <div className="flex flex-wrap items-center gap-3">
+      <PageHeader className="flex flex-wrap items-center gap-3">
         <Button
           asChild
           variant="ghost"
@@ -393,9 +395,9 @@ export function RequestDetailClient({
             {tr.title}
           </Link>
         </Button>
-        <h1 className="font-mono text-xl font-bold text-navy ltr-isolate">
+        <PageTitle>
           {detail.refCode}
-        </h1>
+        </PageTitle>
         <div className="flex flex-wrap items-center gap-2">
           <StatusBadge
             status={detail.status}
@@ -417,7 +419,7 @@ export function RequestDetailClient({
             </span>
           ) : null}
         </div>
-        <div className="ms-auto flex flex-wrap items-center gap-2 print:hidden">
+        <Toolbar className="ms-auto flex flex-wrap items-center gap-2 print:hidden">
           <Button
             variant="outline"
             size="sm"
@@ -442,8 +444,8 @@ export function RequestDetailClient({
             )}
             {tr.clientView}
           </Button>
-        </div>
-      </div>
+        </Toolbar>
+      </PageHeader>
 
       <div className="grid grid-cols-1 items-start gap-6 lg:grid-cols-[minmax(0,1fr)_360px] print:block print:space-y-6">
         {/* المحادثة + الملحن */}
@@ -757,7 +759,7 @@ export function RequestDetailClient({
                         : ""}
                       {tr.statuses[event.toStatus] ?? event.toStatus}
                     </p>
-                    <p className="mt-0.5 text-[11px] text-muted-foreground">
+                    <p className="mt-0.5 text-xs text-muted-foreground">
                       {event.changedBy?.name ?? "—"} ·{" "}
                       {fmtDateTime(event.createdAt, locale)}
                     </p>

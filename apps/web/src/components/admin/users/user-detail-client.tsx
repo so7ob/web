@@ -1,4 +1,6 @@
 "use client";
+
+import { PageHeader, PageTitle, Panel } from "@/components/ui/workspace";
 import { UserSecurity } from '../identity/user-security';
 import { IdentityNav } from '../identity/shared';
 import { useAdmin } from '@/screens/admin/data';
@@ -175,7 +177,7 @@ export function UserDetailClient({ locale, userId }: UserDetailClientProps) {
       <IdentityNav me={me} locale={locale}/>
       <UserSecurity me={me} locale={locale} data={data} onChanged={reload}/>
       {/* الترويسة */}
-      <div className="flex flex-wrap items-center gap-3">
+      <PageHeader className="flex flex-wrap items-center gap-3">
         <Button
           asChild
           variant="ghost"
@@ -188,8 +190,8 @@ export function UserDetailClient({ locale, userId }: UserDetailClientProps) {
             {tud.back}
           </Link>
         </Button>
-        <div className="min-w-0">
-          <h1 className="truncate text-2xl font-bold text-navy">{user.name}</h1>
+        <div className="min-w-0 max-w-full">
+          <PageTitle>{user.name}</PageTitle>
           <p className="truncate text-sm text-muted-foreground ltr-isolate">
             {user.email}
           </p>
@@ -201,7 +203,7 @@ export function UserDetailClient({ locale, userId }: UserDetailClientProps) {
             label={statusLabel(user.status)}
           />
         </div>
-      </div>
+      </PageHeader>
 
       {/* بطاقات الإحصاءات */}
       <div className="grid gap-4 sm:grid-cols-3">
@@ -209,15 +211,15 @@ export function UserDetailClient({ locale, userId }: UserDetailClientProps) {
           icon={FileText}
           label={tud.totalRequests}
           value={String(stats.totalRequests)}
-          chip="bg-emerald-100 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-200"
-          bar="bg-gradient-to-r from-emerald-400 to-emerald-300"
+          chip="bg-success-soft text-success-foreground"
+          bar="bg-gradient-to-r from-success to-success"
         />
         <StatCard
           icon={FileClock}
           label={tud.openRequests}
           value={String(stats.openRequests)}
-          chip="bg-amber-100 dark:bg-amber-950 text-amber-800 dark:text-amber-200"
-          bar="bg-gradient-to-r from-amber-400 to-amber-300"
+          chip="bg-warning-soft text-warning-foreground"
+          bar="bg-gradient-to-r from-warning to-warning"
         />
         <StatCard
           icon={MonitorSmartphone}
@@ -295,7 +297,7 @@ export function UserDetailClient({ locale, userId }: UserDetailClientProps) {
                       </TableCell>
                       <TableCell className="text-sm text-muted-foreground">
                         {r.assigneeName ?? (
-                          <span className="text-muted-foreground/60">
+                          <span className="text-muted-foreground">
                             {t.admin.requests.unassigned}
                           </span>
                         )}
@@ -346,7 +348,7 @@ export function UserDetailClient({ locale, userId }: UserDetailClientProps) {
                 <dt className="flex items-center gap-1.5 text-xs text-muted-foreground">
                   {user.emailVerified ? (
                     <CheckCircle2
-                      className="size-3.5 text-emerald-600 dark:text-emerald-200"
+                      className="size-3.5 text-success-foreground"
                       aria-hidden="true"
                     />
                   ) : (
@@ -444,7 +446,7 @@ function StatCard({
   bar: string;
 }) {
   return (
-    <div className="relative overflow-hidden rounded-2xl border border-border bg-card p-5 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-navy/10">
+    <Panel className="relative overflow-hidden rounded-2xl border border-border bg-card p-5 transition-[color,background-color,border-color,box-shadow,opacity,transform] duration-(--duration-panel) hover:-translate-y-0.5 hover:shadow-lg hover:shadow-navy/10">
       <span
         aria-hidden="true"
         className={cn("absolute inset-x-0 top-0 h-1 rounded-t-2xl", bar)}
@@ -465,7 +467,7 @@ function StatCard({
           <p className="text-2xl font-bold tabular-nums text-navy">{value}</p>
         </div>
       </div>
-    </div>
+    </Panel>
   );
 }
 

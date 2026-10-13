@@ -1,3 +1,5 @@
+import { NativeSelect } from "@/components/ui/native-select";
+import { PageHeader, PageTitle } from "@/components/ui/workspace";
 import {useCallback,useEffect,useRef,useState} from 'react';
 import {can,type AuthUser,type DiagnosticList} from '@so7ob/contracts';
 import {apiGet,apiSend} from '../helpers';
@@ -17,11 +19,11 @@ export function DiagnosticsClient({locale,me}:{locale:'ar'|'en';me:Pick<AuthUser
  useEffect(()=>{const c=new AbortController();void load(c.signal);return()=>c.abort();},[load]);
  const update=async(fingerprint:string,state:string)=>{if(mutating.current)return;mutating.current=true;setBusy(true);setNotice('');setError(null);try{await apiSend('/api/admin/diagnostics/'+fingerprint,'PATCH',{state});if(!await load())setNotice(t.saved);}catch(e){setError(asApiError(e));}finally{mutating.current=false;setBusy(false);}};
  return <div className="space-y-5">
-  <header><h1 className="text-2xl font-semibold text-navy">{t.title}</h1><p className="mt-2 text-sm text-muted-foreground">{t.description}</p></header>
+  <PageHeader><PageTitle>{t.title}</PageTitle><p className="mt-2 text-sm text-muted-foreground">{t.description}</p></PageHeader>
   <form className="grid gap-4 rounded-2xl border border-border bg-card p-4 sm:grid-cols-2 lg:grid-cols-4" onSubmit={event=>{event.preventDefault();setPage(1);setNotice('');setFilters({...draft});}}>
    {filterKeys.map(key=><div key={key} className="space-y-2 text-sm font-medium"><label htmlFor={'diagnostic-'+key}>{t[key]}</label>
-    {key==='level'||key==='component'?<select id={'diagnostic-'+key} className="min-h-11 w-full rounded-md border border-input bg-card px-3" value={draft[key]??''} onChange={e=>setDraft({...draft,[key]:e.target.value})}>
-     <option value="">{t.all}</option>{(key==='level'?['warn','error','fatal']:['API','Web','Worker']).map(v=><option key={v} value={v}>{v==='warn'||v==='error'||v==='fatal'?t[v]:v}</option>)}</select>:
+    {key==='level'||key==='component'?<NativeSelect id={'diagnostic-'+key} className="min-h-11 w-full rounded-md border border-input bg-card px-3" value={draft[key]??''} onChange={e=>setDraft({...draft,[key]:e.target.value})}>
+     <option value="">{t.all}</option>{(key==='level'?['warn','error','fatal']:['API','Web','Worker']).map(v=><option key={v} value={v}>{v==='warn'||v==='error'||v==='fatal'?t[v]:v}</option>)}</NativeSelect>:
     <Input aria-describedby={error?.body?.errors&&Object.hasOwn(error.body.errors as object,key)?'diagnostic-error-'+key:undefined} aria-invalid={!!error?.body?.errors&&Object.hasOwn(error.body.errors as object,key)} id={'diagnostic-'+key} type={key==='from'||key==='to'?'datetime-local':'text'} value={draft[key]?.replace(/Z$/,'')??''} maxLength={101} dir="ltr" onChange={e=>setDraft({...draft,[key]:e.target.value&&(key==='from'||key==='to')?e.target.value+'Z':e.target.value})}/>}
    <FieldError error={error} name={key} id={'diagnostic-error-'+key} locale={locale}/>
    </div>)}

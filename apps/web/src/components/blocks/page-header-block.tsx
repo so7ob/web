@@ -19,7 +19,6 @@ export function PageHeaderBlock({ props, locale }: { props: PageHeaderBlockProps
     <header className="relative overflow-hidden border-b border-border bg-card">
       <div className="pointer-events-none absolute inset-0" aria-hidden="true">
         <div className="absolute -top-16 end-[8%] h-56 w-56 rounded-full bg-brand-soft blur-3xl opacity-70" />
-        <span className="absolute bottom-4 start-[4%] hidden select-none font-mono text-6xl font-bold text-navy/5 lg:block">{"{ }"}</span>
       </div>
       <div className="relative mx-auto max-w-4xl px-4 py-14 text-center sm:px-6 sm:py-20">
         <p className="mb-4 inline-block rounded-full bg-accent px-4 py-1.5 text-sm font-semibold text-brand-strong">
@@ -42,7 +41,7 @@ export function PageHeaderBlock({ props, locale }: { props: PageHeaderBlockProps
                 key={`${i}-${l.label}`}
                 href={l.href}
                 locale={locale}
-                className="inline-flex min-h-9 items-center rounded-full border border-border bg-background px-3.5 text-xs font-semibold text-muted-foreground transition-colors hover:border-brand hover:text-brand"
+                className="inline-flex min-h-11 items-center rounded-lg border border-border bg-background px-3.5 text-xs font-semibold text-muted-foreground transition-colors hover:border-brand hover:text-brand"
               >
                 {l.label}
               </BlockLink>

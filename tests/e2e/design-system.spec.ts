@@ -1,0 +1,182 @@
+import { expect, type Page } from '@playwright/test';
+import { test } from './quota-fixture';
+import AxeBuilder from '@axe-core/playwright';
+import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
+import { randomBytes } from 'node:crypto';
+import { createDataSource } from '@so7ob/server';
+import { SETTING_SECTIONS, appearanceTokens, BLOCK_REGISTRY, defaultNode, validateContent, type BlockType } from '@so7ob/contracts';
+import { getPortalContent } from '../../apps/web/src/content/portal';
+import { auditCopy } from '../../apps/web/src/components/admin/audit/copy';
+
+const palette = {
+  'appearance.primaryLight':'#9d174d', 'appearance.accentLight':'#0f766e',
+  'appearance.primaryDark':'#f9a8d4', 'appearance.accentDark':'#5eead4',
+};
+test.use({contextOptions:{reducedMotion:'reduce'}});
+async function audit(page: Page, label: string) {
+  await page.evaluate(()=>document.fonts.ready);
+  expect.soft(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),label+' overflow').toBe(true);
+  const result=await new AxeBuilder({page}).exclude('iframe').withTags(['wcag2a','wcag2aa','wcag21aa','wcag22aa']).analyze();
+  // Sandboxed editor/settings frames are independently measured below when present.
+  expect.soft(result.violations.map(v=>({id:v.id,nodes:v.nodes.map(n=>({target:n.target,summary:n.failureSummary}))})),label).toEqual([]);
+  for(const frame of await page.locator('iframe[srcdoc]').all()){
+    await expect(frame).toHaveAttribute('title',/.+/);
+    const preview=await page.context().newPage();
+    try {
+      await preview.goto(new URL('/api/health/ready',page.url()).href);
+      await preview.setContent((await frame.getAttribute('srcdoc'))!);
+      await preview.evaluate(()=>document.fonts.ready);
+      expect.soft((await new AxeBuilder({page:preview}).withTags(['wcag2a','wcag2aa','wcag21aa','wcag22aa']).analyze()).violations,label+' preview').toEqual([]);
+    } finally {await preview.close();}
+  }
+}
+for(const locale of ['ar','en'] as const)for(const mode of ['light','dark'] as const)
+ test(`${locale}/${mode}: every platform workspace follows the design system`,async({page},info)=>{
+  test.setTimeout(480000);
+  const {prefix,password}=JSON.parse(readFileSync('.migration/e2e/run.json','utf8'));
+  const db=await createDataSource().initialize(),id=prefix+'design'+randomBytes(4).toString('hex');
+  const keys=Object.keys(palette),saved=await db.query('SELECT * FROM SiteSetting WHERE `key` IN (?,?,?,?)',keys);
+  const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));page.on('console',m=>{if(m.type()==='error'&&/hydration|did not match|server rendered/i.test(m.text()))errors.push(m.text());});
+  const {csrfToken}=await(await page.request.get('/api/auth/csrf')).json();
+  expect((await page.request.post('/api/auth/callback/credentials',{form:{email:prefix+'admin@example.invalid',password,csrfToken,json:'true'}})).status()).toBe(200);
+  const headers={'x-csrf-token':csrfToken};let pageId='';
+  const visited:string[]=[];
+  const folder=`.migration/design-system/screenshots/${locale}-${info.project.name}-${mode}`;
+  mkdirSync(folder,{recursive:true});
+  async function capture(name:string){
+    await page.waitForLoadState('networkidle');
+    await expect(page.locator('html')).toHaveAttribute('data-color-mode',mode);
+    await expect(page.locator('html')).toHaveAttribute('dir',locale==='ar'?'rtl':'ltr');
+    await audit(page,name);
+    await page.screenshot({path:`${folder}/${name}.png`,fullPage:true});visited.push(name);
+  }
+  async function captureTabs(name:string, scope=page.locator('main')){
+    const tabs=scope.getByRole('tab').filter({visible:true});
+    const count=await tabs.count();
+    for(let i=0;i<count;i++){await tabs.nth(i).click();await capture(`${name}-tab-${i+1}`);}
+  }
+  async function visit(path:string,name=path.replaceAll('/','-').replaceAll('?','-').replaceAll('=','-')){
+    const response=await page.goto(`/${locale}${path}`);
+    expect(response?.status()).toBe(path==='/design-system-missing-page'?404:200);
+    await capture(name||'home');
+    if(['/admin/menus','/account/requests','/account/inquiries',`/admin/requests/${id}`,`/admin/inquiries/${id}`].includes(path))await captureTabs(name);
+    if(path===`/admin/pages/${pageId}/edit`){
+      const t=getPortalContent(locale),te=t.admin.editor;
+      for(const lang of ['en','ar']){await page.locator(`#editor-language-${lang}-${pageId}`).click();await capture('editor-language-'+lang);}
+      if(info.project.name==='desktop')await captureTabs('editor-library',page.locator('aside').filter({has:page.getByRole('tab')}));
+      await page.locator('[data-editor-node="surface"]').locator('button[aria-label^="'+te.selectedBlock+':"]').first().click();
+      const sheet=page.getByRole('dialog',{name:te.properties,exact:true});
+      await captureTabs('editor-properties',info.project.name==='mobile'?sheet:page.locator('aside').filter({has:page.getByRole('tab',{name:te.style,exact:true})}));
+      if(await sheet.isVisible())await page.keyboard.press('Escape');
+      for(const [name,label] of [['versions',t.admin.pages.versions],['templates',t.admin.templates.title]]){
+        await page.getByRole('button',{name:label,exact:true}).click();
+        const dialog=page.getByRole('dialog').filter({visible:true});
+        await captureTabs('editor-'+name,dialog);
+        await page.keyboard.press('Escape');await expect(dialog).not.toBeVisible();
+      }
+    }
+  }
+  try{
+    expect((await page.request.patch('/api/admin/settings',{headers,data:palette})).status()).toBe(200);
+    await page.addInitScript(mode=>localStorage.setItem('so7ob-appearance-mode',mode),mode);
+    await db.query("INSERT INTO ProjectRequest(id,refCode,requestType,serviceType,description,descriptionHash,budget,timeline,name,email,preferredContact,locale,clientId) VALUES(?,?,'quote','web','Synthetic design review','synthetic','unspecified','flexible','Synthetic',?,'email',?,?)",[id,id,prefix+'admin@example.invalid',locale,prefix+'admin']);
+    await db.query("INSERT INTO Inquiry(id,refCode,subject,name,email,category,locale,clientId,assigneeId) VALUES(?,?,'Synthetic design review','Synthetic',?,'general',?,?,?)",[id,id,prefix+'admin@example.invalid',locale,prefix+'admin',prefix+'admin']);
+    const created=await page.request.post('/api/admin/pages',{headers,data:{slug:id,titleAr:'معاينة نظام التصميم',titleEn:'Design system preview'}});
+    expect(created.status()).toBe(201);pageId=(await created.json()).page.id;
+    const tree=JSON.stringify({schemaVersion:1,blocks:[
+      {id:'surface',type:'section',props:{},style:{base:{background:'white',paddingY:'sm'},tablet:{background:'navy'},desktop:{background:'white'}},children:[{id:'surface-title',type:'heading',props:{text:'Synthetic surface — سطح متكيف',level:2}}]},
+      {id:'emphasis',type:'section',props:{},style:{base:{background:'navy',paddingY:'sm'}},children:[{id:'emphasis-title',type:'heading',props:{text:'Synthetic emphasis — سطح بارز',level:2}}]},
+    ]});
+    expect((await page.request.patch('/api/admin/pages/'+pageId,{headers,data:{baseRevision:0,draftBlocksAr:tree,draftBlocksEn:tree}})).status()).toBe(200);
+    const detail=(await(await page.request.get('/api/admin/pages/'+pageId)).json()).page;
+    expect((await page.request.post('/api/admin/pages/'+pageId+'/publish',{headers,data:{baseRevision:detail.draftRevision}})).status()).toBe(200);
+    for(const path of ['', 'users','roles','permissions','invitations','requests','inquiries','notifications','pages','media','menus','workflows','settings','diagnostics','audit','outbox'])await visit('/admin'+(path?'/'+path:''),'admin-'+(path||'dashboard'));
+    for(const section of SETTING_SECTIONS)await visit('/admin/settings?section='+section,'settings-'+section);
+    await page.goto(`/${locale}/admin/audit`);
+    const t=auditCopy[locale];
+    for(const key of ['events','reports','reviews','alerts','rules','health'] as const){await page.getByRole('tab',{name:t[key],exact:true}).click();await capture('audit-'+key);}
+    await page.goto(`/${locale}/admin/workflows`);
+    for(const [ar,en] of [['المسارات','Workflows'],['فرق العمل','Teams'],['ساعات العمل','Business hours'],['نقل المعاملات','Transfer conversations']]){await page.getByRole('tab',{name:locale==='ar'?ar:en,exact:true}).click();await capture('workflows-'+en.toLowerCase().replaceAll(' ','-'));}
+    const tabs=page.getByRole('tablist').first();await tabs.getByRole('tab').first().focus();await page.keyboard.press('End');await expect(tabs.getByRole('tab').last()).toBeFocused();
+    for(const [path,name] of [
+      [`/admin/users/${prefix}owner`,'admin-user-detail'],[`/admin/requests/${id}`,'admin-request-detail'],[`/admin/inquiries/${id}`,'admin-inquiry-detail'],
+      [`/admin/pages/${pageId}/edit`,'editor'],[`/admin/pages/${pageId}/preview`,'editor-preview'],
+      ['/account','account-dashboard'],...['requests','requests/new','inquiries','profile','security','notifications'].map(p=>['/account/'+p,'account-'+p.replaceAll('/','-')]),
+      [`/account/requests/${id}`,'account-request-detail'],[`/account/inquiries/${id}`,'account-inquiry-detail'],
+      ...['','about','services','works','process','faq','contact','track'].map(p=>[p?'/'+p:'','public-'+(p||'home')]),
+      ['/'+id,'published-surfaces'],
+    ])await visit(path,name);
+    const expected=appearanceTokens(palette,mode);
+    const surface=page.locator('.surface-card').first(),emphasis=page.locator('.surface-emphasis').first();
+    async function colorOf(selector:string){return page.evaluate(selector=>getComputedStyle(document.querySelector(selector)!).backgroundColor,selector);}
+    const rgb=(hex:string)=>'rgb('+[1,3,5].map(i=>parseInt(hex.slice(i,i+2),16)).join(', ')+')';
+    await expect(surface).toHaveCSS('background-color',rgb(expected.card));
+    await expect(emphasis).toHaveCSS('background-color',rgb(expected.emphasis));
+    // Responsive surface overrides use the same generated classes as editor and publication.
+    const viewport=page.viewportSize()!;await page.setViewportSize({width:768,height:900});
+    await expect(surface).toHaveCSS('background-color',rgb(expected.emphasis));
+    await page.setViewportSize(viewport);await expect(surface).toHaveCSS('background-color',rgb(expected.card));
+    const taken=new Set<string>();
+    const blocks=(Object.keys(BLOCK_REGISTRY) as BlockType[]).map(type=>defaultNode(type,taken));
+    const allBlocks=JSON.stringify({schemaVersion:1,blocks},(key,value)=>value===''?(key==='src'?'/icon-192.png':'Synthetic — اصطناعي'):value);
+    expect(validateContent(allBlocks).ok).toBe(true);
+    const current=(await(await page.request.get('/api/admin/pages/'+pageId)).json()).page;
+    expect((await page.request.patch('/api/admin/pages/'+pageId,{headers,data:{baseRevision:current.draftRevision,draftBlocksAr:allBlocks,draftBlocksEn:allBlocks}})).status()).toBe(200);
+    const revised=(await(await page.request.get('/api/admin/pages/'+pageId)).json()).page;
+    expect((await page.request.post('/api/admin/pages/'+pageId+'/publish',{headers,data:{baseRevision:revised.draftRevision}})).status()).toBe(200);
+    await visit('/'+id,'published-all-block-types');
+    await page.goto(`/${locale}/admin`);
+    if(info.project.name==='desktop')await expect(page.locator('aside')).toHaveCSS('background-color',rgb(expected.sidebar));
+    const primary=page.locator('[data-slot="button"].bg-primary').first();if(await primary.count())await expect(primary).toHaveCSS('background-color',rgb(expected.primary));
+    expect(await colorOf('body')).toBe(rgb(expected.background));
+    await page.context().clearCookies();
+    for(const name of ['login','register','forgot-password','reset-password','invite','verified'])await visit('/auth/'+name,'auth-'+name);
+    await visit('/design-system-missing-page','not-found');
+    expect(errors).toEqual([]);
+  }finally{
+    writeFileSync(`${folder}/coverage.json`,JSON.stringify({locale,mode,viewport:info.project.name,visited,errors,assertionErrors:info.errors.map(e=>e.message),blockTypes:Object.keys(BLOCK_REGISTRY)},null,2)+'\n');
+    if(pageId){await db.query('DELETE FROM PageVersion WHERE pageId=?',[pageId]);await db.query('DELETE FROM Page WHERE id=?',[pageId]);await db.query('DELETE FROM AuditLog WHERE entityId=?',[pageId]);}
+    await db.query('DELETE FROM ProjectRequest WHERE id=?',[id]);await db.query('DELETE FROM Inquiry WHERE id=?',[id]);
+    for(const key of keys)await db.query('DELETE FROM SiteSetting WHERE `key`=?',[key]);
+    for(const row of saved){const cols=Object.keys(row);await db.query('INSERT INTO SiteSetting ('+cols.map(k=>'`'+k+'`').join(',')+') VALUES ('+cols.map(()=>'?').join(',')+')',cols.map(k=>row[k]));}
+    await db.destroy();
+  }
+ });
+
+test('theme preference survives client navigation when browser storage is unavailable',async({page})=>{
+  const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));page.on('console',m=>{if(m.type()==='error'&&/hydration|did not match|server rendered/i.test(m.text()))errors.push(m.text());});
+  await page.addInitScript(()=>{for(const key of ['getItem','setItem','removeItem'])Object.defineProperty(Storage.prototype,key,{value(){throw new DOMException('Storage unavailable','SecurityError');}});});
+  await page.goto('/en');
+  await page.getByLabel('Color mode',{exact:true}).selectOption('dark');
+  await expect(page.locator('html')).toHaveAttribute('data-color-mode','dark');
+  await page.locator('a[href="/en/contact"]').filter({visible:true}).first().click();
+  await expect(page.locator('html')).toHaveAttribute('data-color-mode','dark');
+  await page.getByLabel('Color mode',{exact:true}).selectOption('system');
+  await page.emulateMedia({colorScheme:'light'});await expect(page.locator('html')).toHaveAttribute('data-color-mode','light');
+  await page.emulateMedia({colorScheme:'dark'});await expect(page.locator('html')).toHaveAttribute('data-color-mode','dark');
+  expect(errors).toEqual([]);
+});
+
+test('saved density and geometry reach shared and native controls without reducing targets',async({page})=>{
+  test.setTimeout(90000);
+  const {prefix,password}=JSON.parse(readFileSync('.migration/e2e/run.json','utf8'));
+  const {csrfToken}=await(await page.request.get('/api/auth/csrf')).json();
+  expect((await page.request.post('/api/auth/callback/credentials',{form:{email:prefix+'admin@example.invalid',password,csrfToken,json:'true'}})).status()).toBe(200);
+  const db=await createDataSource().initialize(),keys=['appearance.radius','appearance.density'];
+  const saved=await db.query('SELECT * FROM SiteSetting WHERE `key` IN (?,?)',keys);
+  try{
+    for(const radius of ['square','soft','round'])for(const density of ['comfortable','compact']){
+      expect((await page.request.patch('/api/admin/settings',{headers:{'x-csrf-token':csrfToken},data:{'appearance.radius':radius,'appearance.density':density}})).status()).toBe(200);
+      await page.goto('/en/admin/settings?section=appearance');
+      const input=page.locator('#appearance-primary-light'),select=page.locator('#appearance-radius');
+      const px=radius==='square'?'0px':radius==='soft'?'12px':'20px';
+      await expect(input).toHaveCSS('border-radius',px);await expect(select).toHaveCSS('border-radius',px);
+      await expect(select).toHaveCSS('padding-top',density==='compact'?'6px':'10px');
+      for(const control of [input,select])expect((await control.boundingBox())!.height).toBeGreaterThanOrEqual(44);
+    }
+  }finally{
+    for(const key of keys)await db.query('DELETE FROM SiteSetting WHERE `key`=?',[key]);
+    for(const row of saved){const cols=Object.keys(row);await db.query('INSERT INTO SiteSetting ('+cols.map(k=>'`'+k+'`').join(',')+') VALUES ('+cols.map(()=>'?').join(',')+')',cols.map(k=>row[k]));}
+    await db.destroy();
+  }
+});

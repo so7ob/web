@@ -1,3 +1,5 @@
+import { Textarea } from "@/components/ui/textarea";
+import { NativeSelect } from "@/components/ui/native-select";
 import type { AuditReport as Report, AuditReviewCase as ReviewCase, AuditRule as Rule, AuditAlert as Alert, AuditHealth as Health, AuditCaseDetail as CaseDetail } from "@so7ob/contracts";
 import { useEffect, useState, useCallback } from "react";
 import { can, type AuditFilter } from "@so7ob/contracts";
@@ -238,7 +240,7 @@ export function AuditTools({
             <div className="grid gap-4 sm:grid-cols-3">
               <label className="text-sm">
                 {t.scope}
-                <select
+                <NativeSelect
                   className={control}
                   value={reportScope}
                   onChange={(e) => setReportScope(e.target.value)}
@@ -250,11 +252,11 @@ export function AuditTools({
                   <option value="selected">
                     {t.selectedScope} ({selected.length})
                   </option>
-                </select>
+                </NativeSelect>
               </label>
               <label className="text-sm">
                 {t.format}
-                <select
+                <NativeSelect
                   className={control}
                   value={reportFormat}
                   onChange={(e) => setReportFormat(e.target.value)}
@@ -262,7 +264,7 @@ export function AuditTools({
                   <option value="json">JSON</option>
                   <option value="csv">CSV</option>
                   <option value="html">{t.print} / PDF</option>
-                </select>
+                </NativeSelect>
               </label>
               <Button
                 className="self-end"
@@ -409,7 +411,7 @@ export function AuditTools({
                 </label>
                 <label className="text-sm">
                   {t.caseOwner}
-                  <select
+                  <NativeSelect
                     name="ownerId"
                     className={control}
                     defaultValue={me.id}
@@ -419,7 +421,7 @@ export function AuditTools({
                         {u.name}
                       </option>
                     ))}
-                  </select>
+                  </NativeSelect>
                 </label>
               </div>
               <Button disabled={busy || !selected.length}>
@@ -489,7 +491,7 @@ export function AuditTools({
                   >
                     <label className="block text-sm">
                       {t.caseState}
-                      <select
+                      <NativeSelect
                         name="state"
                         defaultValue={caseDetail.case.state}
                         className={control}
@@ -499,11 +501,11 @@ export function AuditTools({
                             {word(t, s)}
                           </option>
                         ))}
-                      </select>
+                      </NativeSelect>
                     </label>
                     <label className="block text-sm">
                       {t.closureReason}
-                      <textarea
+                      <Textarea
                         className={control}
                         name="closureReason"
                         maxLength={2000}
@@ -555,7 +557,7 @@ export function AuditTools({
                 >
                   <label className="block text-sm">
                     {t.note}
-                    <textarea
+                    <Textarea
                       name="note"
                       className={control}
                       required
@@ -675,7 +677,7 @@ export function AuditTools({
                   ))}
                 <label className="text-xs">
                   {t.severity}
-                  <select
+                  <NativeSelect
                     className={control}
                     name="severity"
                     defaultValue={rule.severity}
@@ -685,11 +687,11 @@ export function AuditTools({
                         {word(t, s)}
                       </option>
                     ))}
-                  </select>
+                  </NativeSelect>
                 </label>
                 <label className="text-xs">
                   {t.scope}
-                  <select
+                  <NativeSelect
                     className={control}
                     name="scope"
                     defaultValue={rule.scope}
@@ -707,12 +709,12 @@ export function AuditTools({
                         {word(t, s)}
                       </option>
                     ))}
-                  </select>
+                  </NativeSelect>
                 </label>
               </div>
               <label className="block text-sm">
                 {t.rationale}
-                <textarea
+                <Textarea
                   name="rationale"
                   className={control}
                   maxLength={500}

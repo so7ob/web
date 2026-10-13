@@ -1,4 +1,6 @@
 "use client";
+
+import { PageHeader, PageTitle } from "@/components/ui/workspace";
 import {ErrorFeedback} from "@/components/errors/error-feedback";
 import {ApiError} from "@/lib/errors/transport";
 
@@ -29,12 +31,12 @@ import type { AccountNotification, NotificationsResponse } from "./types";
 
 const TYPE_META: Record<string, { icon: React.ComponentType<{ className?: string }>; chip: string }> = {
   new_request: { icon: FilePlus2, chip: "bg-skydrop/20 text-brand-strong" },
-  new_inquiry: { icon: MessageCircleQuestion, chip: "bg-teal-100 dark:bg-teal-950 text-teal-800 dark:text-teal-200" },
+  new_inquiry: { icon: MessageCircleQuestion, chip: "bg-success-soft text-success-foreground" },
   request_assigned: { icon: UserCheck, chip: "bg-inverse/10 text-navy" },
-  reply_received: { icon: MessageSquare, chip: "bg-emerald-100 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-200" },
-  info_requested: { icon: Info, chip: "bg-amber-100 dark:bg-amber-950 text-amber-800 dark:text-amber-200" },
-  status_changed: { icon: Bell, chip: "bg-violet-100 dark:bg-violet-950 text-violet-800 dark:text-violet-200" },
-  content_published: { icon: FileText, chip: "bg-emerald-100 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-200" },
+  reply_received: { icon: MessageSquare, chip: "bg-success-soft text-success-foreground" },
+  info_requested: { icon: Info, chip: "bg-warning-soft text-warning-foreground" },
+  status_changed: { icon: Bell, chip: "bg-highlight-soft text-highlight-foreground" },
+  content_published: { icon: FileText, chip: "bg-success-soft text-success-foreground" },
   account: { icon: User, chip: "bg-inverse/10 text-navy" },
 };
 
@@ -122,12 +124,12 @@ export function NotificationsView({
 
   return (
     <div className="space-y-6">
-      <header className="flex flex-wrap items-center justify-between gap-4">
+      <PageHeader className="flex flex-wrap items-center justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-navy">{t.title}</h1>
+          <PageTitle>{t.title}</PageTitle>
           {unread > 0 && (
             <p className="mt-1 inline-flex items-center gap-2 text-sm font-semibold text-brand-strong">
-              <span className="inline-flex h-5 min-w-5 items-center justify-center rounded-full bg-red-600 px-1 text-[11px] font-bold text-white">
+              <span className="inline-flex h-5 min-w-5 items-center justify-center rounded-full bg-danger px-1 text-xs font-bold text-on-danger">
                 {unread > 99 ? "99+" : unread}
               </span>
             </p>
@@ -144,7 +146,7 @@ export function NotificationsView({
             {t.markAllRead}
           </Button>
         )}
-      </header>
+      </PageHeader>
 
       <ErrorFeedback error={failure} locale={locale} operation={t.title} onRefresh={async()=>{setPage(1);await load(1,false);}}/>
       <section className="rounded-2xl border border-border bg-card p-4 sm:p-6">

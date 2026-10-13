@@ -1,5 +1,7 @@
 "use client";
 
+import { PageHeader, PageTitle } from "@/components/ui/workspace";
+
 /**
  * جدول إدارة المستخدمين: بحث مؤجل + تصفية (دور/حالة) + ترتيب + ترقيم صفحات،
  * وإجراءات محمية بالصلاحيات: تعديل بيانات، تغيير دور، إيقاف/تفعيل، دعوة،
@@ -295,17 +297,17 @@ export function UsersClient({
 
   return (
     <div className="space-y-5">
-      <IdentityNav me={me} locale={locale}/>
-      <div className="flex flex-wrap items-end justify-between gap-3">
-        <header className="flex items-center gap-3">
+      <PageHeader className="flex flex-wrap items-end justify-between gap-3">
+        <div className="flex items-center gap-3">
           <span className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-accent text-brand-strong">
             <Users className="size-5" aria-hidden="true" />
           </span>
           <div>
-            <h1 className="text-2xl font-bold text-navy">{tu.title}</h1>
+            <PageTitle>{tu.title}</PageTitle>
             <p className="mt-1 text-sm text-muted-foreground">{tu.subtitle}</p>
           </div>
-        </header>
+        </div>
+        <div className="ms-auto flex flex-wrap items-center gap-2">
         <CreateUser me={me} locale={locale} roles={roles} onCreated={reload}/>
         {mayInvite ? (
           <Button
@@ -319,7 +321,9 @@ export function UsersClient({
             {tu.invite}
           </Button>
         ) : null}
-      </div>
+        </div>
+      </PageHeader>
+      <IdentityNav me={me} locale={locale}/>
 
       {/* أدوات التصفية */}
       <div className="flex flex-wrap items-center gap-3">
@@ -488,12 +492,12 @@ export function UsersClient({
                     </TableCell>
                     <TableCell>
                       {user.emailVerified ? (
-                        <span className="inline-flex items-center gap-1 rounded-full bg-emerald-100 dark:bg-emerald-950 px-2 py-0.5 text-[11px] font-medium text-emerald-800 dark:text-emerald-200">
+                        <span className="inline-flex items-center gap-1 rounded-full bg-success-soft px-2 py-0.5 text-xs font-medium text-success-foreground">
                           <CheckCircle2 className="size-3" aria-hidden="true" />
                           <span className="sr-only">{tu.emailVerified}</span>
                         </span>
                       ) : (
-                        <span className="inline-flex items-center gap-1 rounded-full bg-muted px-2 py-0.5 text-[11px] font-medium text-muted-foreground">
+                        <span className="inline-flex items-center gap-1 rounded-full bg-muted px-2 py-0.5 text-xs font-medium text-muted-foreground">
                           <CircleX className="size-3" aria-hidden="true" />
                           <span className="sr-only">{tu.notVerified}</span>
                         </span>

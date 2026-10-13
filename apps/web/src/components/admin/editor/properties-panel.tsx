@@ -64,9 +64,9 @@ const L = (ar: string, en: string): Bi => ({ ar, en });
 
 const BACKGROUND_LABELS: Record<(typeof BACKGROUND_TOKENS)[number], Bi> = {
   default: L("افتراضي", "Default"),
-  white: L("أبيض", "White"),
+  white: L("سطح", "Surface"),
   accent: L("لمسة", "Accent"),
-  navy: L("كحلي", "Navy"),
+  navy: L("سطح بارز", "Emphasis"),
   soft: L("ناعم", "Soft"),
   muted: L("هادئ", "Muted"),
 };
@@ -75,7 +75,7 @@ const BACKGROUND_SWATCH: Record<(typeof BACKGROUND_TOKENS)[number], string> = {
   default: "bg-transparent border border-dashed border-border",
   white: "bg-card border border-border",
   accent: "bg-accent/60 border border-border",
-  navy: "bg-inverse border border-navy",
+  navy: "bg-emphasis border border-emphasis-border",
   soft: "bg-brand-soft/40 border border-border",
   muted: "bg-muted border border-border",
 };
@@ -315,7 +315,7 @@ function AppearanceEditor({ node, locale, onStyleChange }: AppearanceEditorProps
               onClick={() => setDevice(tab.key)}
               aria-pressed={device === tab.key}
               className={cn(
-                "min-h-7 cursor-pointer rounded-lg px-1 text-[11px] font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand",
+                "min-h-7 cursor-pointer rounded-lg px-1 text-xs font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand",
                 device === tab.key ? "bg-card text-navy shadow-sm" : "text-muted-foreground hover:text-navy"
               )}
             >
@@ -386,13 +386,13 @@ function AppearanceEditor({ node, locale, onStyleChange }: AppearanceEditorProps
                 type="button"
                 onClick={() => applyPreset(preset.base)}
                 title={locale === "en" ? preset.en : preset.ar}
-                className="cursor-pointer rounded-full border border-border/70 bg-card px-2.5 py-1 text-[11px] font-medium text-navy transition-colors hover:border-brand hover:bg-accent/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
+                className="cursor-pointer rounded-full border border-border/70 bg-card px-2.5 py-1 text-xs font-medium text-navy transition-colors hover:border-brand hover:bg-accent/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
               >
                 {locale === "en" ? preset.en : preset.ar}
               </button>
             ))}
           </div>
-          <p className="text-[11px] leading-4 text-muted-foreground">{te.presetScopeNote}</p>
+          <p className="text-xs leading-4 text-muted-foreground">{te.presetScopeNote}</p>
         </div>
       )}
     </div>
@@ -427,7 +427,7 @@ export function PropertiesPanel({
       <div className="border-b border-border px-3 py-2.5">
         <nav
           aria-label={te.pageRoot}
-          className="mb-1.5 flex items-center gap-0.5 overflow-x-auto whitespace-nowrap text-[11px] leading-5"
+          className="mb-1.5 flex items-center gap-0.5 overflow-x-auto whitespace-nowrap text-xs leading-5"
           dir={locale === "ar" ? "rtl" : "ltr"}
         >
           <span className="shrink-0 font-semibold text-muted-foreground">{te.pageRoot}:</span>
@@ -481,7 +481,7 @@ export function PropertiesPanel({
             type="button"
             variant="ghost"
             size="icon"
-            className="size-8 shrink-0 text-destructive hover:bg-red-50 hover:text-destructive"
+            className="size-8 shrink-0 text-destructive hover:bg-danger-soft hover:text-destructive"
             onClick={() => onDelete(node.id)}
             title={te.delete}
             aria-label={te.delete}
@@ -563,7 +563,7 @@ export function PropertiesPanel({
                   dir="ltr"
                   className="min-h-9 font-mono text-xs"
                 />
-                <p className={cn("text-[11px] leading-5 text-muted-foreground", node.anchorId && !/^[a-zA-Z][\w-]{0,60}$/.test(node.anchorId) && "text-destructive")}>
+                <p className={cn("text-xs leading-5 text-muted-foreground", node.anchorId && !/^[a-zA-Z][\w-]{0,60}$/.test(node.anchorId) && "text-destructive")}>
                   a-z A-Z 0-9 _ -
                 </p>
               </div>

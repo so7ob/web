@@ -57,12 +57,12 @@ export function RequestFormBlock({ props, locale }: { props: RequestFormBlockPro
             )}
 
             {showPrivacy && (
-              <div className="rounded-3xl bg-inverse p-7 text-white">
+              <div className="rounded-3xl bg-inverse p-7 text-inverse-foreground">
                 <h2 className="flex items-center gap-2 text-lg font-bold">{c.privacyTitle}</h2>
-                <p className="mt-3 text-sm leading-7 text-white/70">{c.privacyBody}</p>
+                <p className="mt-3 text-sm leading-7 text-emphasis-muted">{c.privacyBody}</p>
                 <ul className="mt-4 space-y-2.5">
                   {c.privacyItems.map((item) => (
-                    <li key={item} className="flex items-start gap-2.5 text-sm leading-7 text-white/80">
+                    <li key={item} className="flex items-start gap-2.5 text-sm leading-7 text-emphasis-muted">
                       <span className="mt-2.5 h-1.5 w-1.5 shrink-0 rounded-full bg-skydrop" aria-hidden="true" />
                       {item}
                     </li>

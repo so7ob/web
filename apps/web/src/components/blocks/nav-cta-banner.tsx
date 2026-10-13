@@ -12,10 +12,10 @@ export type NavCtaBannerBlockProps = z.input<typeof blockSchemas.navCtaBanner>["
 /** أنماط الروابط على خلفية فاتحة (من بطاقات الانتقال في AboutPage) */
 const VARIANT_CLASSES: Record<string, string> = {
   primary:
-    "inline-flex min-h-11 items-center rounded-full bg-primary px-5 text-sm font-semibold text-primary-foreground transition-colors hover:bg-brand-strong",
+    "inline-flex min-h-11 items-center rounded-lg bg-primary px-5 text-sm font-semibold text-primary-foreground transition-colors hover:bg-primary-hover hover:text-primary-hover-foreground",
   outline:
-    "inline-flex min-h-11 items-center rounded-full border border-brand/30 bg-card px-5 text-sm font-semibold text-brand transition-colors hover:border-brand",
-  navy: "inline-flex min-h-11 items-center rounded-full bg-inverse px-5 text-sm font-semibold text-white transition-colors hover:bg-inverse-soft",
+    "inline-flex min-h-11 items-center rounded-lg border border-brand/30 bg-card px-5 text-sm font-semibold text-brand transition-colors hover:border-brand",
+  navy: "inline-flex min-h-11 items-center rounded-lg bg-inverse px-5 text-sm font-semibold text-inverse-foreground transition-colors hover:bg-inverse-soft",
 };
 
 /** شريط دعوة للانتقال بين الصفحات (من AboutPage) */

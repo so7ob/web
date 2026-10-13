@@ -47,7 +47,7 @@ export function SiteHeader({ locale, content, items, auth }: SiteHeaderProps) {
   const accountLink = (
     <Link
       href={auth.loggedIn ? `/${locale}/account` : `/${locale}/auth/login`}
-      className="inline-flex min-h-11 items-center gap-2 rounded-full border border-border bg-card px-4 text-sm font-semibold text-navy transition-colors hover:border-brand hover:text-brand"
+      className="inline-flex min-h-11 items-center gap-2 rounded-lg border border-border bg-card px-4 text-sm font-semibold text-navy transition-colors hover:border-brand hover:text-brand"
     >
       {auth.loggedIn ? (
         <UserCircle className="h-4 w-4" aria-hidden="true" />
@@ -94,7 +94,7 @@ export function SiteHeader({ locale, content, items, auth }: SiteHeaderProps) {
           {auth.loggedIn && auth.isStaff && (
             <Link
               href={`/${locale}/admin`}
-              className="inline-flex min-h-11 items-center gap-2 rounded-full bg-primary px-4 text-sm font-semibold text-primary-foreground shadow-sm transition-colors hover:bg-brand-strong"
+              className="inline-flex min-h-11 items-center gap-2 rounded-lg bg-primary px-4 text-sm font-semibold text-primary-foreground shadow-sm transition-colors hover:bg-primary-hover hover:text-primary-hover-foreground"
             >
               <LayoutDashboard className="h-4 w-4" aria-hidden="true" />
               <span className="hidden xl:inline">{auth.adminLabel}</span>
@@ -103,7 +103,7 @@ export function SiteHeader({ locale, content, items, auth }: SiteHeaderProps) {
           {!auth.loggedIn && (
             <Link
               href={`${localePath(locale, "contact")}?type=quote`}
-              className="inline-flex min-h-11 items-center rounded-full bg-primary px-5 text-sm font-semibold text-primary-foreground shadow-sm transition-colors hover:bg-brand-strong"
+              className="inline-flex min-h-11 items-center rounded-lg bg-primary px-5 text-sm font-semibold text-primary-foreground shadow-sm transition-colors hover:bg-primary-hover hover:text-primary-hover-foreground"
             >
               {content.actions.quote}
             </Link>
@@ -152,7 +152,7 @@ export function SiteHeader({ locale, content, items, auth }: SiteHeaderProps) {
                 <Link
                   href={`/${locale}/admin`}
                   onClick={() => setOpen(false)}
-                  className="inline-flex min-h-12 items-center justify-center gap-2 rounded-full bg-primary px-5 text-sm font-semibold text-primary-foreground"
+                  className="inline-flex min-h-12 items-center justify-center gap-2 rounded-lg bg-primary px-5 text-sm font-semibold text-primary-foreground"
                 >
                   <LayoutDashboard className="h-4 w-4" aria-hidden="true" />
                   {auth.adminLabel}
@@ -161,14 +161,14 @@ export function SiteHeader({ locale, content, items, auth }: SiteHeaderProps) {
               <Link
                 href={`${localePath(locale, "contact")}?type=discussion`}
                 onClick={() => setOpen(false)}
-                className="inline-flex min-h-12 items-center justify-center rounded-full border border-brand px-5 text-sm font-semibold text-brand"
+                className="inline-flex min-h-12 items-center justify-center rounded-lg border border-brand px-5 text-sm font-semibold text-brand"
               >
                 {content.actions.discuss}
               </Link>
               <Link
                 href={`${localePath(locale, "contact")}?type=quote`}
                 onClick={() => setOpen(false)}
-                className="inline-flex min-h-12 items-center justify-center rounded-full bg-primary px-5 text-sm font-semibold text-primary-foreground"
+                className="inline-flex min-h-12 items-center justify-center rounded-lg bg-primary px-5 text-sm font-semibold text-primary-foreground"
               >
                 {content.actions.quote}
               </Link>

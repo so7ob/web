@@ -1,5 +1,7 @@
 "use client";
 
+import { Panel, Toolbar } from "@/components/ui/workspace";
+
 /**
  * عناصر المحادثة المشتركة بين الطلبات والاستفسارات:
  * فقاعة رسالة (عميل/طاقم/ملاحظة داخلية/نظامية) + ملحن الرد بتبويبين.
@@ -81,17 +83,17 @@ export function MessageBubble({
   if (message.kind === "internal_note") {
     return (
       <div className="flex flex-col gap-1 py-1.5">
-        <div className="flex items-center gap-1.5 text-[11px] font-medium text-amber-700 dark:text-amber-200">
+        <div className="flex items-center gap-1.5 text-xs font-medium text-warning-foreground">
           <Lock className="size-3" aria-hidden="true" />
           <span className="truncate">{labels.internalHint}</span>
-          <span className="text-amber-700 dark:text-amber-200">· {author}</span>
+          <span className="text-warning-foreground">· {author}</span>
         </div>
-        <div className="rounded-2xl border border-amber-200 bg-amber-50 dark:bg-amber-950 px-4 py-3">
-          <p className="whitespace-pre-wrap break-words [overflow-wrap:anywhere] text-sm leading-relaxed text-amber-900 dark:text-amber-200">
+        <div className="rounded-2xl border border-warning-border bg-warning-soft px-4 py-3">
+          <p className="whitespace-pre-wrap break-words [overflow-wrap:anywhere] text-sm leading-relaxed text-warning-foreground">
             {message.body}
           </p>
         </div>
-        <p className="text-[11px] text-muted-foreground">
+        <p className="text-xs text-muted-foreground">
           {fmtDateTime(message.createdAt, locale)}
         </p>
       </div>
@@ -106,22 +108,22 @@ export function MessageBubble({
         staff ? "items-end" : "items-start",
       )}
     >
-      <p className="px-1 text-[11px] font-medium text-muted-foreground">
+      <p className="px-1 text-xs font-medium text-muted-foreground">
         {author} · {authorRole}
       </p>
       <div
         className={cn(
           "max-w-[85%] rounded-2xl border px-4 py-3 shadow-sm sm:max-w-[75%]",
           staff
-            ? "rounded-se-sm border-navy bg-inverse text-white shadow-navy/10"
-            : "rounded-ss-sm border-sky-200/70 bg-accent/60 text-foreground",
+            ? "rounded-se-sm border-navy bg-inverse text-inverse-foreground shadow-navy/10"
+            : "rounded-ss-sm border-info-border/70 bg-accent/60 text-foreground",
         )}
       >
         <p className="whitespace-pre-wrap break-words [overflow-wrap:anywhere] text-sm leading-relaxed">
           {message.body}
         </p>
       </div>
-      <p className="px-1 text-[11px] text-muted-foreground">
+      <p className="px-1 text-xs text-muted-foreground">
         {fmtDateTime(message.createdAt, locale)}
       </p>
     </div>
@@ -312,7 +314,7 @@ export function ReplyComposer({
   const composer = (
     <>
       {currentTab === "internal_note" ? (
-        <p className="mt-2 flex items-center gap-1.5 text-xs text-amber-700 dark:text-amber-200">
+        <p className="mt-2 flex items-center gap-1.5 text-xs text-warning-foreground">
           <Lock className="size-3" aria-hidden="true" />
           {labels.internalHint}
         </p>
@@ -350,7 +352,7 @@ export function ReplyComposer({
           ) : null}
         </p>
       ) : null}
-      <div className="mt-3 flex flex-wrap items-center gap-2">
+      <Toolbar className="mt-3 flex flex-wrap items-center gap-2">
         {savedReplies && currentTab === "message" ? (
           <SavedReplyPicker labels={savedReplies} onPick={insertReply} />
         ) : null}
@@ -394,12 +396,12 @@ export function ReplyComposer({
           )}
           {sending ? labels.sending : labels.send}
         </Button>
-      </div>
+      </Toolbar>
     </>
   );
 
   return (
-    <div className="rounded-2xl border border-border bg-card p-4 transition-all focus-within:border-brand/40 focus-within:ring-2 focus-within:ring-ring/40">
+    <Panel className="rounded-2xl border border-border bg-card p-4 transition-[color,background-color,border-color,box-shadow,opacity,transform] focus-within:border-brand/40 focus-within:ring-2 focus-within:ring-ring/40">
       <Tabs
         value={currentTab}
         onValueChange={(v) => setTab(v as "message" | "internal_note")}
@@ -431,6 +433,6 @@ export function ReplyComposer({
           </TabsContent>
         ))}
       </Tabs>
-    </div>
+    </Panel>
   );
 }

@@ -1,5 +1,7 @@
 "use client";
 
+import { PageTitle, PageHeader, Toolbar } from "@/components/ui/workspace";
+
 /**
  * قائمة صفحات المحتوى — بحث وتصفية حالة، جدول بالعنوانين والمسار والحالة
  * (منشورة/مسودة/قيد المراجعة/مؤرشفة) ونقطة «تغييرات غير منشورة» والترتيب
@@ -104,16 +106,16 @@ interface PagesClientProps {
 }
 
 const STATUS_TONES: Record<string, string> = {
-  published: "border-transparent bg-emerald-100 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-200",
+  published: "border-transparent bg-success-soft text-success-foreground",
   draft: "border-transparent bg-secondary text-secondary-foreground",
-  in_review: "border-transparent bg-amber-100 dark:bg-amber-950 text-amber-800 dark:text-amber-200",
-  archived: "border-transparent bg-slate-200 text-slate-500",
+  in_review: "border-transparent bg-warning-soft text-warning-foreground",
+  archived: "border-transparent bg-muted text-muted-foreground",
 };
 
 /** شارة أيقونة ملونة حسب حالة الصفحة (تشخيص بصرية بجانب الشارة النصية) */
 const STATUS_CHIP_TONES: Record<string, string> = {
-  published: "bg-emerald-100 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-200",
-  draft: "bg-amber-100 dark:bg-amber-950 text-amber-800 dark:text-amber-200",
+  published: "bg-success-soft text-success-foreground",
+  draft: "bg-warning-soft text-warning-foreground",
   in_review: "bg-skydrop/20 text-brand-strong",
   archived: "bg-muted text-muted-foreground",
 };
@@ -296,12 +298,12 @@ export function PagesClient({ me, locale }: PagesClientProps) {
   return (
     <div className="space-y-4">
       {/* الترويسة */}
-      <div className="flex flex-wrap items-end justify-between gap-3">
+      <PageHeader className="flex flex-wrap items-end justify-between gap-3">
         <div>
-          <h1 className="text-xl font-bold text-navy">{tp.title}</h1>
+          <PageTitle>{tp.title}</PageTitle>
           <p className="mt-1 text-sm text-muted-foreground">{tp.subtitle}</p>
         </div>
-        <div className="flex flex-wrap items-center gap-2">
+        <Toolbar className="flex flex-wrap items-center gap-2">
           <Button
             type="button"
             variant="outline"
@@ -323,8 +325,8 @@ export function PagesClient({ me, locale }: PagesClientProps) {
               {tp.createPage}
             </Button>
           )}
-        </div>
-      </div>
+        </Toolbar>
+      </PageHeader>
 
       {/* البحث والتصفية */}
       <div className="flex flex-wrap items-center gap-2">
@@ -366,7 +368,7 @@ export function PagesClient({ me, locale }: PagesClientProps) {
           ))}
         </div>
       ) : error ? (
-        <p className="rounded-xl border border-destructive/30 bg-red-50 dark:bg-red-950 p-4 text-sm text-destructive">
+        <p className="rounded-xl border border-destructive/30 bg-danger-soft p-4 text-sm text-destructive">
           {error}
         </p>
       ) : rows.length === 0 ? (
@@ -412,7 +414,7 @@ export function PagesClient({ me, locale }: PagesClientProps) {
                         </span>
                         {row.isHome ? (
                           <Star
-                            className="size-4 shrink-0 fill-amber-400 text-amber-500"
+                            className="size-4 shrink-0 fill-warning text-warning-foreground"
                             aria-hidden="true"
                           />
                         ) : null}
@@ -452,12 +454,12 @@ export function PagesClient({ me, locale }: PagesClientProps) {
                         </Badge>
                         {row.hasUnpublishedChanges && (
                           <span
-                            className="size-2 shrink-0 rounded-full bg-amber-500"
+                            className="size-2 shrink-0 rounded-full bg-warning"
                             title={te.unpublishedChanges}
-                            aria-label={te.unpublishedChanges}
+                            role="img" aria-label={te.unpublishedChanges}
                           />
                         )}
-                      {row.scheduledPublishAt && <span className="inline-flex items-center gap-1 rounded-full bg-violet-100 dark:bg-violet-950 px-1.5 py-0.5 text-[10px] font-bold text-violet-800 dark:text-violet-200" title={tp.scheduledFor.replace("{time}", fmtDateTime(row.scheduledPublishAt, locale))}><CalendarClock className="size-3" aria-hidden="true" />{fmtRelative(row.scheduledPublishAt, locale)}</span>}
+                      {row.scheduledPublishAt && <span className="inline-flex items-center gap-1 rounded-full bg-highlight-soft px-1.5 py-0.5 text-[10px] font-bold text-highlight-foreground" title={tp.scheduledFor.replace("{time}", fmtDateTime(row.scheduledPublishAt, locale))}><CalendarClock className="size-3" aria-hidden="true" />{fmtRelative(row.scheduledPublishAt, locale)}</span>}
                         </div>
                     </TableCell>
                     <TableCell className="text-center text-sm tabular-nums text-foreground">
@@ -468,7 +470,7 @@ export function PagesClient({ me, locale }: PagesClientProps) {
                         {fmtRelative(row.draftUpdatedAt, locale)}
                       </p>
                       {row.publishedAt && (
-                        <p className="text-[11px] text-muted-foreground/70">
+                        <p className="text-xs text-muted-foreground">
                           {tp.published} ·{" "}
                           {fmtRelative(row.publishedAt, locale)}
                         </p>
@@ -611,7 +613,7 @@ export function PagesClient({ me, locale }: PagesClientProps) {
               />
               <p
                 className={cn(
-                  "text-[11px] leading-5",
+                  "text-xs leading-5",
                   newSlug !== "" && !slugOk
                     ? "text-destructive"
                     : "text-muted-foreground",
@@ -634,7 +636,7 @@ export function PagesClient({ me, locale }: PagesClientProps) {
                         <span>
                           {locale === "en" ? opt.label.en : opt.label.ar}
                         </span>
-                        <span className="text-[11px] text-muted-foreground">
+                        <span className="text-xs text-muted-foreground">
                           {locale === "en" ? opt.note.en : opt.note.ar}
                         </span>
                       </div>
@@ -698,7 +700,7 @@ export function PagesClient({ me, locale }: PagesClientProps) {
               {t.admin.users.cancel}
             </AlertDialogCancel>
             <AlertDialogAction
-              className="bg-destructive text-white hover:bg-destructive/90"
+              className="bg-destructive text-inverse-foreground hover:bg-destructive/90"
               disabled={archiving}
               onClick={(e) => {
                 e.preventDefault();

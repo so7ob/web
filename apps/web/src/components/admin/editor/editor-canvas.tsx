@@ -287,7 +287,7 @@ export function EditorCanvas({
         <div
           dir={locale === "ar" ? "rtl" : "ltr"}
           className={cn(
-            "mx-auto w-full flex-1 overflow-y-auto bg-muted/50 p-3 transition-[max-width] duration-300 sm:p-5",
+            "mx-auto w-full flex-1 overflow-y-auto bg-muted/50 p-3 transition-[max-width] duration-(--duration-panel) sm:p-5",
             DEVICE_WIDTHS[device]
           )}
         >
@@ -534,7 +534,7 @@ function NodeWrapper({
           selected ? "opacity-100" : "pointer-events-none opacity-0"
         )}
       >
-        <span className="hidden max-w-36 truncate px-1.5 text-[11px] font-semibold text-muted-foreground sm:block">
+        <span className="hidden max-w-36 truncate px-1.5 text-xs font-semibold text-muted-foreground sm:block">
           {label}
         </span>
         <button
@@ -611,7 +611,7 @@ function NodeWrapper({
           onClick={() => onDelete(node.id)}
           title={te.delete}
           aria-label={te.delete}
-          className="flex size-8 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:bg-red-50 hover:text-destructive focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-destructive"
+          className="flex size-8 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:bg-danger-soft hover:text-destructive focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-destructive"
         >
           <Trash2 className="size-4" aria-hidden="true" />
         </button>
@@ -670,7 +670,7 @@ function ContainerBody({
   const renderChildren = () => {
     if (!canNest) {
       return (
-        <p className="rounded-lg border border-dashed border-border p-3 text-center text-[11px] text-muted-foreground">
+        <p className="rounded-lg border border-dashed border-border p-3 text-center text-xs text-muted-foreground">
           {te.maxDepthHint}
         </p>
       );

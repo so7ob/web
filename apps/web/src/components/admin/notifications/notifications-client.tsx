@@ -1,4 +1,6 @@
 "use client";
+
+import { PageTitle, PageHeader } from "@/components/ui/workspace";
 import { can } from "@so7ob/contracts";
 
 /**
@@ -174,9 +176,9 @@ export function NotificationsClient({
 
   return (
     <div className="space-y-5">
-      <div className="flex flex-wrap items-end justify-between gap-3">
+      <PageHeader className="flex flex-wrap items-end justify-between gap-3">
         <div>
-          <h1 className="text-2xl font-bold text-navy">{tn.title}</h1>
+          <PageTitle>{tn.title}</PageTitle>
           <p className="mt-1 text-sm text-muted-foreground">{tn.subtitle}</p>
         </div>
         {unread > 0 && (
@@ -194,7 +196,7 @@ export function NotificationsClient({
             {tn.markAllRead}
           </Button>
         )}
-      </div>
+      </PageHeader>
 
       {error ? (
         <div className="flex items-center justify-between gap-3 rounded-2xl border border-destructive/30 bg-destructive/5 px-4 py-3">
@@ -272,7 +274,7 @@ export function NotificationsClient({
                         </span>
                         {unreadRow && (
                           <span
-                            className="inline-flex h-2 w-2 rounded-full bg-red-600"
+                            className="inline-flex h-2 w-2 rounded-full bg-danger"
                             aria-hidden="true"
                           />
                         )}

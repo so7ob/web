@@ -274,7 +274,7 @@ describe("الأنماط المدركة للأجهزة", () => {
       desktop: { paddingY: "lg" },
     });
     expect(classes).toContain("py-12");
-    expect(classes).toContain("bg-navy");
+    expect(classes).toContain("bg-emphasis");
     expect(classes).toContain("md:py-6");
     expect(classes).toContain("lg:py-20");
   });

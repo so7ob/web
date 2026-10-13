@@ -1,4 +1,8 @@
 "use client";
+
+import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
+import { NativeSelect } from "@/components/ui/native-select";
+import { PageHeader, PageTitle, Panel, TableScroll, Toolbar } from "@/components/ui/workspace";
 import type { AuditPreference, AuditSavedView } from "@so7ob/contracts";
 import { useEffect, useState, useCallback, useRef } from "react";
 import { useSearchParams } from "react-router-dom";
@@ -69,10 +73,10 @@ export function Outcome({ value, t }: { value: string; t: AuditCopy }) {
       className={
         "inline-flex whitespace-nowrap rounded-full border px-2.5 py-1 text-xs font-medium " +
         (value === "success"
-          ? "border-emerald-200 bg-emerald-50 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-200"
+          ? "border-success-border bg-success-soft text-success-foreground"
           : value === "denied" || value === "failure"
-            ? "border-amber-200 bg-amber-50 dark:bg-amber-950 text-amber-900 dark:text-amber-200"
-            : "border-slate-200 bg-slate-50 dark:bg-slate-950 text-slate-700 dark:text-slate-200")
+            ? "border-warning-border bg-warning-soft text-warning-foreground"
+            : "border-border bg-muted text-foreground text-muted-foreground")
       }
     >
       {word(t, value)}
@@ -298,17 +302,17 @@ export function AuditClient({ me, locale }: { me: Me; locale: "ar" | "en" }) {
   }
   if (!can(me, "audit.view")) return <p role="alert">{t.noAccess}</p>;
   return (
-    <div
+    <Tabs value={tab} onValueChange={setTab}
       className="min-w-0 space-y-6 [&_button]:transition-none"
       dir={locale === "ar" ? "rtl" : "ltr"}
     >
-      <header className="flex flex-wrap items-start justify-between gap-4">
+      <PageHeader className="flex flex-wrap items-start justify-between gap-4">
         <div className="flex min-w-0 gap-3">
           <span className="flex size-12 shrink-0 items-center justify-center rounded-2xl bg-accent text-brand-strong">
             <ScrollText aria-hidden="true" />
           </span>
           <div>
-            <h1 className="text-2xl font-bold text-navy">{t.title}</h1>
+            <PageTitle>{t.title}</PageTitle>
             <p className="mt-1 text-sm text-muted-foreground">{t.subtitle}</p>
             <p className="mt-2 text-xs text-muted-foreground">
               {t.lastUpdated}:{" "}
@@ -335,8 +339,8 @@ export function AuditClient({ me, locale }: { me: Me; locale: "ar" | "en" }) {
             </Button>
           )}
         </div>
-      </header>
-      <nav aria-label={t.title} className="flex flex-wrap gap-2 border-b pb-3">
+      </PageHeader>
+      <TabsList aria-label={t.title} className="w-full justify-start">
         {[
           "events",
           ...(can(me, "audit.export") ? ["reports"] : []),
@@ -347,16 +351,14 @@ export function AuditClient({ me, locale }: { me: Me; locale: "ar" | "en" }) {
             ? ["health"]
             : []),
         ].map((key) => (
-          <Button
+          <TabsTrigger value={key}
             key={key}
-            variant={tab === key ? "default" : "ghost"}
-            aria-current={tab === key ? "page" : undefined}
-            onClick={() => setTab(key)}
           >
             {word(t, key)}
-          </Button>
+          </TabsTrigger>
         ))}
-      </nav>
+      </TabsList>
+      <TabsContent value={tab} className="space-y-6">
       {notice && (
         <p
           role="status"
@@ -397,7 +399,7 @@ export function AuditClient({ me, locale }: { me: Me; locale: "ar" | "en" }) {
             ].map(([label, count, Icon], i) => {
               const MetricIcon = Icon as typeof ScrollText;
               return (
-                <div key={i} className="rounded-2xl border bg-card p-4">
+                <Panel key={i} className="rounded-2xl border bg-card p-4">
                   <div className="flex items-center justify-between gap-2 text-xs text-muted-foreground">
                     <span>{String(label)}</span>
                     <MetricIcon
@@ -410,7 +412,7 @@ export function AuditClient({ me, locale }: { me: Me; locale: "ar" | "en" }) {
                       ? "…"
                       : Number(count).toLocaleString(locale)}
                   </p>
-                </div>
+                </Panel>
               );
             })}
           </section>
@@ -458,7 +460,7 @@ export function AuditClient({ me, locale }: { me: Me; locale: "ar" | "en" }) {
                 {t.reset}
               </Button>
             </div>
-            <div className="flex flex-wrap items-center gap-2">
+            <Toolbar className="flex flex-wrap items-center gap-2">
               {[1, 7, 30].map((days, i) => (
                 <Button
                   key={days}
@@ -479,7 +481,7 @@ export function AuditClient({ me, locale }: { me: Me; locale: "ar" | "en" }) {
               ))}
               <label className="flex min-w-0 items-center gap-2 text-xs">
                 {t.views}
-                <select
+                <NativeSelect
                   className={control}
                   value=""
                   onChange={(e) => {
@@ -496,9 +498,9 @@ export function AuditClient({ me, locale }: { me: Me; locale: "ar" | "en" }) {
                       {v.name}
                     </option>
                   ))}
-                </select>
+                </NativeSelect>
               </label>
-            </div>
+            </Toolbar>
             {advanced && (
               <div className="grid gap-3 border-t pt-4 sm:grid-cols-2 xl:grid-cols-3">
                 {(
@@ -570,7 +572,7 @@ export function AuditClient({ me, locale }: { me: Me; locale: "ar" | "en" }) {
                 ).map((key) => (
                   <label key={key} className="space-y-1 text-xs">
                     <span>{word(t, key)}</span>
-                    <select
+                    <NativeSelect
                       className={control}
                       value={filter[key] ?? ""}
                       onChange={(e) =>
@@ -614,7 +616,7 @@ export function AuditClient({ me, locale }: { me: Me; locale: "ar" | "en" }) {
                               )}
                         </option>
                       ))}
-                    </select>
+                    </NativeSelect>
                   </label>
                 ))}
                 <label className="flex min-h-11 items-center gap-2 text-sm">
@@ -730,7 +732,7 @@ export function AuditClient({ me, locale }: { me: Me; locale: "ar" | "en" }) {
                 ))}
                 <label>
                   {t.timezone}
-                  <select
+                  <NativeSelect
                     className={control}
                     value={timezone}
                     onChange={(e) =>
@@ -749,11 +751,11 @@ export function AuditClient({ me, locale }: { me: Me; locale: "ar" | "en" }) {
                     ].map((z) => (
                       <option key={z}>{z}</option>
                     ))}
-                  </select>
+                  </NativeSelect>
                 </label>
                 <label>
                   {t.density}
-                  <select
+                  <NativeSelect
                     className={control}
                     value={density}
                     onChange={(e) =>
@@ -765,7 +767,7 @@ export function AuditClient({ me, locale }: { me: Me; locale: "ar" | "en" }) {
                         {word(t, v)}
                       </option>
                     ))}
-                  </select>
+                  </NativeSelect>
                 </label>
                 <div className="flex flex-wrap gap-3">
                   {[
@@ -852,7 +854,7 @@ export function AuditClient({ me, locale }: { me: Me; locale: "ar" | "en" }) {
                 className="overflow-hidden rounded-2xl border bg-card"
                 aria-busy={loading}
               >
-                <div className="hidden overflow-x-auto md:block">
+                <TableScroll className="hidden overflow-x-auto md:block">
                   <table className="w-full text-start text-sm">
                     <thead className="bg-muted/60 text-xs text-muted-foreground">
                       <tr>
@@ -973,7 +975,7 @@ export function AuditClient({ me, locale }: { me: Me; locale: "ar" | "en" }) {
                       ))}
                     </tbody>
                   </table>
-                </div>
+                </TableScroll>
                 <div className="divide-y md:hidden">
                   {rows.map((row) => (
                     <article key={row.id} className="space-y-3 p-4">
@@ -1022,7 +1024,7 @@ export function AuditClient({ me, locale }: { me: Me; locale: "ar" | "en" }) {
               </div>
             )
           )}
-          <div className="flex flex-wrap items-center justify-between gap-3 text-sm">
+          <Toolbar className="flex flex-wrap items-center justify-between gap-3 text-sm">
             <span>
               {t.selected}: {selected.length}
             </span>
@@ -1048,7 +1050,7 @@ export function AuditClient({ me, locale }: { me: Me; locale: "ar" | "en" }) {
                 {t.next}
               </Button>
             </div>
-          </div>
+          </Toolbar>
         </>
       )}
       <Sheet
@@ -1187,7 +1189,7 @@ export function AuditClient({ me, locale }: { me: Me; locale: "ar" | "en" }) {
                               </p>
                               <bdi>{auditValue(change.before, t)}</bdi>
                             </div>
-                            <div className="rounded-lg border border-emerald-200 bg-emerald-50 dark:bg-emerald-950 p-2 text-emerald-950 dark:text-emerald-200">
+                            <div className="rounded-lg border border-success-border bg-success-soft p-2 text-success-foreground">
                               <p className="mb-1 text-xs">{t.after}</p>
                               <bdi>{auditValue(change.after, t)}</bdi>
                             </div>
@@ -1265,7 +1267,7 @@ export function AuditClient({ me, locale }: { me: Me; locale: "ar" | "en" }) {
                 <section className="space-y-3 border-t pt-4">
                   <label className="text-sm">
                     {t.resourceTimeline}
-                    <select
+                    <NativeSelect
                       className={control}
                       value={relation}
                       onChange={(e) =>
@@ -1281,7 +1283,7 @@ export function AuditClient({ me, locale }: { me: Me; locale: "ar" | "en" }) {
                           {t.correlationTimeline}
                         </option>
                       )}
-                    </select>
+                    </NativeSelect>
                   </label>
                   <RelatedTimeline
                     key={event.id + relation}
@@ -1323,7 +1325,8 @@ export function AuditClient({ me, locale }: { me: Me; locale: "ar" | "en" }) {
           </div>
         </SheetContent>
       </Sheet>
-    </div>
+    </TabsContent>
+</Tabs>
   );
 }
 function ChangeSummary({ event, t }: { event: AuditEventV1; t: AuditCopy }) {

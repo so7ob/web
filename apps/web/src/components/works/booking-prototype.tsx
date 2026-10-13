@@ -104,13 +104,13 @@ export function BookingPrototype({ locale }: { locale: "ar" | "en" }) {
             <li key={name} className="flex items-center gap-2">
               <span
                 className={`flex h-6 w-6 items-center justify-center rounded-full text-[11px] font-bold ${
-                  i < step ? "bg-green-700 text-white" : i === step ? "bg-brand text-on-brand" : "bg-slate-100 dark:bg-slate-950 text-slate-400"
+                  i < step ? "bg-green-700 text-white" : i === step ? "bg-brand text-on-brand" : "bg-slate-100 dark:bg-slate-950 text-muted-foreground"
                 }`}
                 aria-current={i === step ? "step" : undefined}
               >
                 {i < step ? <Check className="h-3 w-3" strokeWidth={3} aria-hidden="true" /> : i + 1}
               </span>
-              <span className={`hidden text-xs font-semibold sm:inline ${i === step ? "text-navy" : "text-slate-400"}`}>{name}</span>
+              <span className={`hidden text-xs font-semibold sm:inline ${i === step ? "text-navy" : "text-muted-foreground"}`}>{name}</span>
               {i < 2 && <span className="h-px w-4 bg-slate-200" aria-hidden="true" />}
             </li>
           ))}
@@ -186,7 +186,7 @@ export function BookingPrototype({ locale }: { locale: "ar" | "en" }) {
                   {slot?.day} — <span className="ltr-isolate">{slot?.time}</span>
                 </span>
               </p>
-              <p className="text-xs leading-6 text-slate-400">{t.note}</p>
+              <p className="text-xs leading-6 text-muted-foreground">{t.note}</p>
             </div>
           )}
         </div>
@@ -206,7 +206,7 @@ export function BookingPrototype({ locale }: { locale: "ar" | "en" }) {
               type="button"
               onClick={() => setStep((s) => s + 1)}
               disabled={(step === 0 && !service) || (step === 1 && !slot)}
-              className="inline-flex min-h-10 items-center rounded-full bg-primary px-5 text-sm font-semibold text-primary-foreground enabled:hover:bg-brand-strong disabled:opacity-40"
+              className="inline-flex min-h-10 items-center rounded-full bg-primary px-5 text-sm font-semibold text-primary-foreground enabled:hover:bg-primary-hover enabled:hover:text-primary-hover-foreground disabled:opacity-40"
             >
               {t.stepNames[step + 1]}
             </button>

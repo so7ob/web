@@ -23,12 +23,12 @@ export function WorksFullBlock({ props, locale }: { props: WorksFullBlockProps; 
 
       {/* إخلاء المسؤولية الظاهر — شرط أساسي للصدق */}
       {disclaimer && (
-        <div className={`${props.intro ? "mt-6" : ""} rounded-2xl border-2 border-amber-300 bg-amber-50 dark:bg-amber-950 p-6 sm:p-8`}>
-          <p className="flex items-start gap-3 text-base font-bold leading-8 text-amber-900 dark:text-amber-200">
+        <div className={`${props.intro ? "mt-6" : ""} rounded-2xl border-2 border-warning-border bg-warning-soft bg-warning-soft p-6 sm:p-8`}>
+          <p className="flex items-start gap-3 text-base font-bold leading-8 text-warning-foreground">
             <Info className="mt-1.5 h-5 w-5 shrink-0" aria-hidden="true" />
             {disclaimer.title}
           </p>
-          <p className="mt-3 ps-8 text-sm leading-8 text-amber-800 dark:text-amber-200">{disclaimer.body}</p>
+          <p className="mt-3 ps-8 text-sm leading-8 text-warning-foreground">{disclaimer.body}</p>
         </div>
       )}
 
@@ -64,9 +64,9 @@ export function WorksFullBlock({ props, locale }: { props: WorksFullBlockProps; 
                 <span
                   className={`inline-flex items-center rounded-full px-3.5 py-1.5 text-xs font-bold ${
                     c.kind === "interactive"
-                      ? "bg-green-100 dark:bg-green-950 text-green-800 dark:text-green-200"
+                      ? "bg-success-soft text-success-foreground"
                       : c.kind === "flow"
-                        ? "bg-violet-100 dark:bg-violet-950 text-violet-800 dark:text-violet-200"
+                        ? "bg-highlight-soft text-highlight-foreground"
                         : "bg-accent text-brand-strong"
                   }`}
                 >

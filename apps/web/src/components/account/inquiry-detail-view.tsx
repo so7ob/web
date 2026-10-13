@@ -1,4 +1,6 @@
 "use client";
+
+import { Panel, PageHeader, PageTitle, Toolbar } from "@/components/ui/workspace";
 import {ErrorFeedback} from '@/components/errors/error-feedback';
 import {ApiError} from '@/lib/errors/transport';
 
@@ -140,8 +142,8 @@ export function InquiryDetailView({
 
   if (phase === "notFound" || !inquiry) {
     return (
-      <div className="rounded-2xl border border-border bg-card p-8 text-center sm:p-12" role="alert">
-        <span className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-rose-100 dark:bg-rose-950 text-rose-800 dark:text-rose-200">
+      <Panel className="rounded-2xl border border-border bg-card p-8 text-center sm:p-12" role="alert">
+        <span className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-danger-soft text-danger-foreground">
           <SearchX className="h-7 w-7" aria-hidden="true" />
         </span>
         <p className="mt-4 font-semibold text-navy">{t.notFound}</p>
@@ -152,7 +154,7 @@ export function InquiryDetailView({
         >
           <Link href={`/${locale}/account/inquiries`}>{t.back}</Link>
         </Button>
-      </div>
+      </Panel>
     );
   }
 
@@ -168,7 +170,7 @@ export function InquiryDetailView({
           {siteName} · {new Date().toLocaleDateString(locale)}
         </p>
       </div>
-      <header className="flex flex-wrap items-center gap-3">
+      <PageHeader className="flex flex-wrap items-center gap-3">
         <Button
           asChild
           variant="ghost"
@@ -179,9 +181,9 @@ export function InquiryDetailView({
             {t.back}
           </Link>
         </Button>
-        <h1 className="font-mono text-lg font-bold text-navy ltr-isolate" dir="ltr">
+        <PageTitle  dir="ltr">
           {inquiry.refCode}
-        </h1>
+        </PageTitle>
         <div className="flex flex-wrap items-center gap-2">
           <StatusBadge
             status={inquiry.status}
@@ -201,7 +203,7 @@ export function InquiryDetailView({
           <Printer className="h-4 w-4" aria-hidden="true" />
           {t.print}
         </Button>
-      </header>
+      </PageHeader>
 
       <h2 className="text-lg font-semibold text-navy">{inquiry.subject}</h2>
 
@@ -235,7 +237,7 @@ export function InquiryDetailView({
                           "max-w-[85%] rounded-2xl border px-4 py-3 text-sm leading-7 shadow-sm sm:max-w-[75%] print:border-border print:bg-transparent print:text-foreground print:shadow-none",
                           message.authorType === "client"
                             ? "rounded-se-sm border-brand/10 bg-accent/60 text-foreground"
-                            : "rounded-ss-sm border-navy bg-inverse text-white shadow-navy/10"
+                            : "rounded-ss-sm border-navy bg-inverse text-inverse-foreground shadow-navy/10"
                         )}
                       >
                         <p
@@ -248,7 +250,7 @@ export function InquiryDetailView({
                           <span
                             className={cn(
                               "ms-2 font-normal",
-                              message.authorType === "client" ? "text-muted-foreground" : "text-white/60 print:text-muted-foreground"
+                              message.authorType === "client" ? "text-muted-foreground" : "text-emphasis-muted print:text-muted-foreground"
                             )}
                           >
                             {formatRelative(message.createdAt, locale)}
@@ -268,7 +270,7 @@ export function InquiryDetailView({
             {conversationLocked ? (
               <div
                 role="status"
-                className="flex items-start gap-3 rounded-xl border border-amber-200 bg-amber-50 dark:bg-amber-950 px-4 py-3 text-sm leading-7 text-amber-900 dark:text-amber-200"
+                className="flex items-start gap-3 rounded-xl border border-warning-border bg-warning-soft px-4 py-3 text-sm leading-7 text-warning-foreground"
               >
                 <Lock className="mt-1 h-4 w-4 shrink-0" aria-hidden="true" />
                 <p>{t.closedNote}</p>
@@ -285,16 +287,16 @@ export function InquiryDetailView({
                   className="min-h-24 resize-y leading-8 focus-visible:ring-2 focus-visible:ring-ring/40"
                   disabled={sending}
                 />
-                <div className="flex flex-wrap items-center gap-3">
+                <Toolbar className="flex flex-wrap items-center gap-3">
                   <Button
                     type="submit"
                     disabled={sending || reply.trim().length === 0}
-                    className="ms-auto h-11 rounded-full bg-primary px-8 font-bold text-primary-foreground shadow-md shadow-brand/20 transition-all hover:bg-brand-strong focus-visible:ring-2 focus-visible:ring-ring/40"
+                    className="ms-auto h-11 rounded-full bg-primary px-8 font-bold text-primary-foreground shadow-md shadow-brand/20 transition-[color,background-color,border-color,box-shadow,opacity,transform] hover:bg-primary-hover hover:text-primary-hover-foreground focus-visible:ring-2 focus-visible:ring-ring/40"
                   >
                     {sending ? <Loader2 className="h-4 w-4 animate-spin" aria-hidden="true" /> : <Send className="h-4 w-4" aria-hidden="true" />}
                     {sending ? t.sending : t.send}
                   </Button>
-                </div>
+                </Toolbar>
               </form>
             )}
           </section>

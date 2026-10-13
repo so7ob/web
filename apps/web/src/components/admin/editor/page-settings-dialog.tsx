@@ -147,7 +147,7 @@ export function PageSettingsDialog({ open, onOpenChange, page, locale, me, baseR
         </DialogHeader>
 
         {willApplyAtPublish && (
-          <div className="flex items-start gap-2 rounded-xl border border-amber-200 bg-amber-50 dark:bg-amber-950 p-3 text-xs leading-5 text-amber-800 dark:text-amber-200">
+          <div className="flex items-start gap-2 rounded-xl border border-warning-border bg-warning-soft p-3 text-xs leading-5 text-warning-foreground">
             <Info className="mt-0.5 size-4 shrink-0" aria-hidden="true" />
             {te.settingsDraftOnly}
           </div>
@@ -190,7 +190,7 @@ export function PageSettingsDialog({ open, onOpenChange, page, locale, me, baseR
                 className={cn("min-h-9 font-mono text-xs focus-visible:ring-2 focus-visible:ring-ring/40", !slugValid && "border-destructive focus-visible:ring-destructive")}
                 placeholder="about"
               />
-              <p className={cn("text-[11px] leading-5", slugValid ? "text-muted-foreground" : "text-destructive")}>
+              <p className={cn("text-xs leading-5", slugValid ? "text-muted-foreground" : "text-destructive")}>
                 {page.isHome ? tp.homeSlugHint : slugChanged ? te.slugDraftHint : tp.slugHint}
               </p>
             </div>

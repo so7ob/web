@@ -1,5 +1,7 @@
 "use client";
 
+import { Panel, PageTitle, Toolbar } from "@/components/ui/workspace";
+
 import { useCallback, useEffect, useRef, useState } from "react";
 import Link from "@/routing/link";
 import { useRouter } from "@/routing/navigation";
@@ -104,10 +106,10 @@ type FailurePhase = "invalid" | "expired" | "revoked" | "policy_denied" | "login
 /** ألوان شريحة الحالة — أزواج ناعمة بهوية العلامة (بلا نيلي) */
 const STATUS_CHIP_CLASSES: Record<string, string> = {
   new: "bg-brand-soft text-brand-strong",
-  in_review: "bg-amber-100 dark:bg-amber-950 text-amber-800 dark:text-amber-200",
-  awaiting_info: "bg-amber-100 dark:bg-amber-950 text-amber-800 dark:text-amber-200",
-  in_progress: "bg-amber-100 dark:bg-amber-950 text-amber-800 dark:text-amber-200",
-  responded: "bg-green-100 dark:bg-green-950 text-green-800 dark:text-green-200",
+  in_review: "bg-warning-soft text-warning-foreground",
+  awaiting_info: "bg-warning-soft text-warning-foreground",
+  in_progress: "bg-warning-soft text-warning-foreground",
+  responded: "bg-success-soft text-success-foreground",
   closed: "bg-muted text-muted-foreground",
   cancelled: "bg-muted text-muted-foreground",
 };
@@ -116,12 +118,12 @@ const STATUS_CHIP_FALLBACK = "bg-muted text-muted-foreground";
 
 /** أيقونة ودائرة لون لكل حالة فشل */
 const FAILURE_META: Record<FailurePhase, { icon: LucideIcon; circle: string }> = {
-  invalid: { icon: XCircle, circle: "bg-rose-100 dark:bg-rose-950 text-rose-700 dark:text-rose-200" },
-  expired: { icon: Hourglass, circle: "bg-amber-100 dark:bg-amber-950 text-amber-800 dark:text-amber-200" },
-  revoked: { icon: ShieldAlert, circle: "bg-rose-100 dark:bg-rose-950 text-rose-700 dark:text-rose-200" },
-  policy_denied: { icon: ShieldAlert, circle: "bg-amber-100 dark:bg-amber-950 text-amber-800 dark:text-amber-200" },
+  invalid: { icon: XCircle, circle: "bg-danger-soft text-danger-foreground" },
+  expired: { icon: Hourglass, circle: "bg-warning-soft text-warning-foreground" },
+  revoked: { icon: ShieldAlert, circle: "bg-danger-soft text-danger-foreground" },
+  policy_denied: { icon: ShieldAlert, circle: "bg-warning-soft text-warning-foreground" },
   login_required: { icon: LogIn, circle: "bg-brand-soft text-brand-strong" },
-  rate_limited: { icon: Hourglass, circle: "bg-amber-100 dark:bg-amber-950 text-amber-800 dark:text-amber-200" },
+  rate_limited: { icon: Hourglass, circle: "bg-warning-soft text-warning-foreground" },
 };
 
 /** تحليل معامل card بصيغة scope:id — يقبل "?card=..." أو القيمة المجردة */
@@ -399,16 +401,16 @@ export function TrackClient({
 
     return (
       <div className="flex w-full flex-col">
-        <div className="rounded-3xl border border-border bg-card p-8 text-center sm:p-12" role="alert">
+        <Panel className="rounded-3xl border border-border bg-card p-8 text-center sm:p-12" role="alert">
           <span className={cn("mx-auto flex size-16 items-center justify-center rounded-full", meta.circle)}>
             <FailureIcon className="size-8" aria-hidden="true" />
           </span>
-          <h1 className="mt-5 text-2xl font-bold text-navy">{text.title}</h1>
+          <PageTitle>{text.title}</PageTitle>
           {text.body && <p className="mx-auto mt-3 max-w-md leading-8 text-muted-foreground">{text.body}</p>}
           {needsSignIn && (
             <Button
               asChild
-              className="mt-6 h-11 rounded-full bg-primary px-8 font-bold text-primary-foreground shadow-md shadow-brand/20 transition-all hover:bg-brand-strong"
+              className="mt-6 h-11 rounded-full bg-primary px-8 font-bold text-primary-foreground shadow-md shadow-brand/20 transition-[color,background-color,border-color,box-shadow,opacity,transform] hover:bg-primary-hover hover:text-primary-hover-foreground"
             >
               <Link href={`/${locale}/auth/login?next=${encodeURIComponent(`/${locale}/track?card=${cardKey}`)}`}>
                 <LogIn className="size-4" aria-hidden="true" />
@@ -424,7 +426,7 @@ export function TrackClient({
               {t.backHome}
             </Link>
           </div>
-        </div>
+        </Panel>
         <p className="mt-10 text-center text-xs text-muted-foreground">{siteName}</p>
       </div>
     );
@@ -466,7 +468,7 @@ export function TrackClient({
           {card.refCode}
         </p>
 
-        <h1 className="mt-3 break-words text-xl font-bold text-navy">{card.subject}</h1>
+        <PageTitle>{card.subject}</PageTitle>
         {card.description ? (
           <p className="mt-3 whitespace-pre-line break-words text-sm leading-7 text-muted-foreground">{card.description}</p>
         ) : null}
@@ -499,7 +501,7 @@ export function TrackClient({
             className="h-11 shrink-0 rounded-full border-border px-5 font-semibold text-navy hover:border-brand hover:text-brand"
           >
             {copied ? (
-              <Check className="size-4 text-green-700 dark:text-green-200" aria-hidden="true" />
+              <Check className="size-4 text-success-foreground" aria-hidden="true" />
             ) : (
               <Copy className="size-4" aria-hidden="true" />
             )}
@@ -634,14 +636,14 @@ export function TrackClient({
               aria-describedby="track-reply-count"
               className="min-h-28 resize-y leading-7"
             />
-            <div className="flex flex-wrap items-center justify-between gap-3">
+            <Toolbar className="flex flex-wrap items-center justify-between gap-3">
               <span id="track-reply-count" dir="ltr" className="font-mono text-xs text-muted-foreground">
                 {reply.length} / 5000
               </span>
               <Button
                 type="submit"
                 disabled={sending || reply.trim().length === 0}
-                className="h-11 rounded-full bg-primary px-8 font-bold text-primary-foreground shadow-md shadow-brand/20 transition-all hover:bg-brand-strong"
+                className="h-11 rounded-full bg-primary px-8 font-bold text-primary-foreground shadow-md shadow-brand/20 transition-[color,background-color,border-color,box-shadow,opacity,transform] hover:bg-primary-hover hover:text-primary-hover-foreground"
               >
                 {sending ? (
                   <Loader2 className="size-4 animate-spin" aria-hidden="true" />
@@ -650,7 +652,7 @@ export function TrackClient({
                 )}
                 {sending ? t.sending : t.send}
               </Button>
-            </div>
+            </Toolbar>
           </form>
         ) : (
           <div
