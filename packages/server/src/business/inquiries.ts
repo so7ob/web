@@ -1,3 +1,5 @@
+import {WorkflowEngine} from '../workflows/engine.js';
+import {assertWorkflowAccess,workflowAccessSql,publicWorkflowStage,publicStageSql} from '../workflows/access.js';
 import { can } from "@so7ob/contracts";
 import type { DataSource } from "typeorm";
 import type { AuthUser } from "@so7ob/contracts";
@@ -25,6 +27,7 @@ export class InquiryService {
     let where =
       (!can(actor, "inquiries.view.all") ? "i.clientId" : "i.assigneeId") +
       "=? AND i.archivedAt IS NULL";
+    if(can(actor,'inquiries.view.all'))where += ' AND ('+workflowAccessSql(actor,'inquiries','i')+')';
     if (query.status === "open")
       where +=
         " AND i.status IN ('new','in_review','awaiting_info','responded')";
@@ -46,7 +49,7 @@ export class InquiryService {
     const [[count], rows] = await Promise.all([
       this.db.query("SELECT COUNT(*) n FROM Inquiry i WHERE " + where, values),
       this.db.query(
-        `SELECT i.id,i.refCode,i.subject,i.category,i.status,i.locale,i.createdAt,i.lastActivityAt,i.closedAt,u.name assigneeName,(SELECT COUNT(*) FROM InquiryMessage m WHERE m.inquiryId=i.id AND m.kind='message') messageCount FROM Inquiry i LEFT JOIN User u ON u.id=i.assigneeId WHERE ${where} ORDER BY i.lastActivityAt DESC LIMIT ? OFFSET ?`,
+        `SELECT ${publicStageSql('inquiries','i')} workflowStage,i.id,i.refCode,i.subject,i.category,i.status,i.locale,i.createdAt,i.lastActivityAt,i.closedAt,u.name assigneeName,(SELECT COUNT(*) FROM InquiryMessage m WHERE m.inquiryId=i.id AND m.kind='message') messageCount FROM Inquiry i LEFT JOIN User u ON u.id=i.assigneeId WHERE ${where} ORDER BY i.lastActivityAt DESC LIMIT ? OFFSET ?`,
         [...values, pageSize, (page - 1) * pageSize],
       ),
     ]);
@@ -57,11 +60,13 @@ export class InquiryService {
       pageSize,
       inquiries: rows.map((r: Record<string, unknown>) => ({
         ...r,
+        workflowStage:r.workflowStage ? JSON.parse(String(r.workflowStage)) : null,
         messageCount: Number(r.messageCount),
       })),
     };
   }
   async detail(actor: AuthUser, id: string) {
+    await assertWorkflowAccess(this.db,actor,'inquiries',id,true);
     const [inquiry]: Inquiry[] = await this.db.query(
       "SELECT * FROM Inquiry WHERE id=?",
       [id],
@@ -85,6 +90,7 @@ export class InquiryService {
     return {
       ok: true,
       inquiry: {
+        workflowStage: await publicWorkflowStage(this.db,'inquiries',id),
         ...inquiry,
         messages: messages.map((m: Record<string, unknown>) => {
           const { authorName, authorRole, ...row } = m;
@@ -103,6 +109,7 @@ export class InquiryService {
   }
   async message(actor: AuthUser, id: string, body: unknown) {
     return transaction(this.db, async (r) => {
+      await assertWorkflowAccess(r,actor,'inquiries',id,true);
       const [inquiry]: Inquiry[] = await r.query(
         "SELECT * FROM Inquiry WHERE id=? FOR UPDATE",
         [id],
@@ -129,8 +136,9 @@ export class InquiryService {
         kind: "message",
         body: text,
       });
+      const customWorkflow=await new WorkflowEngine(this.db).reply(r,'inquiries',id,'client',messageId);
       await r.query(
-        "UPDATE Inquiry SET lastActivityAt=UTC_TIMESTAMP(3),status='in_review',updatedAt=UTC_TIMESTAMP(3) WHERE id=?",
+        `UPDATE Inquiry SET lastActivityAt=UTC_TIMESTAMP(3),${customWorkflow?'':"status='in_review',"}updatedAt=UTC_TIMESTAMP(3) WHERE id=?`,
         [id],
       );
       await audit(

@@ -182,6 +182,8 @@ export interface RequestClientInfo {
   status: string;
 }
 export interface RequestDetail {
+  workflow?:import("@so7ob/contracts").WorkflowState|null;
+  workflowStage?:import("@so7ob/contracts").WorkflowPublicStage|null;
   id: string;
   refCode: string;
   requestType: string;
@@ -261,6 +263,9 @@ export interface InquiriesResponse {
   pageSize: number;
 }
 export interface InquiryDetail {
+  workflow?:import("@so7ob/contracts").WorkflowState|null;
+  workflowStage?:import("@so7ob/contracts").WorkflowPublicStage|null;
+  attachments:AttachmentRow[];
   id: string;
   refCode: string;
   subject: string;

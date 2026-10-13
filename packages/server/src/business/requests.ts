@@ -1,3 +1,5 @@
+import {WorkflowEngine} from '../workflows/engine.js';
+import {assertWorkflowAccess,workflowAccessSql,publicWorkflowStage,publicStageSql} from '../workflows/access.js';
 import { enqueueTrackStaffReply } from "../track/notify.js";
 import type { DataSource, QueryRunner } from "typeorm";
 import {
@@ -43,6 +45,7 @@ export class RequestService {
     const params: unknown[] = [actor.id];
     let where =
       (!can(actor, "requests.view.all") ? "r.clientId" : "r.assigneeId") + "=?";
+    if(can(actor,'requests.view.all'))where += ' AND ('+workflowAccessSql(actor,'requests','r')+')';
     if (query.awaiting === "you")
       where +=
         " AND r.archivedAt IS NULL AND r.lastStaffReplyAt IS NOT NULL AND (r.lastClientReplyAt IS NULL OR r.lastStaffReplyAt>r.lastClientReplyAt)";
@@ -70,7 +73,7 @@ export class RequestService {
         params,
       ),
       this.db.query(
-        `SELECT r.id,r.refCode,r.serviceType,r.requestType,r.status,r.priority,r.createdAt,r.lastActivityAt,r.lastClientReplyAt,r.lastStaffReplyAt,r.archivedAt,u.name assigneeName,(SELECT COUNT(*) FROM RequestMessage m WHERE m.requestId=r.id AND m.kind='message') messageCount FROM ProjectRequest r LEFT JOIN User u ON u.id=r.assigneeId WHERE ${where} ORDER BY r.lastActivityAt DESC LIMIT ? OFFSET ?`,
+        `SELECT ${publicStageSql('requests','r')} workflowStage,r.id,r.refCode,r.serviceType,r.requestType,r.status,r.priority,r.createdAt,r.lastActivityAt,r.lastClientReplyAt,r.lastStaffReplyAt,r.archivedAt,u.name assigneeName,(SELECT COUNT(*) FROM RequestMessage m WHERE m.requestId=r.id AND m.kind='message') messageCount FROM ProjectRequest r LEFT JOIN User u ON u.id=r.assigneeId WHERE ${where} ORDER BY r.lastActivityAt DESC LIMIT ? OFFSET ?`,
         [...params, pageSize, (page - 1) * pageSize],
       ),
     ]);
@@ -83,6 +86,7 @@ export class RequestService {
         const { assigneeName, ...row } = r;
         return {
           ...row,
+          workflowStage:r.workflowStage ? JSON.parse(String(r.workflowStage)) : null,
           messageCount: Number(r.messageCount),
           assignee: assigneeName === null ? null : { name: assigneeName },
           awaitingClientReply:
@@ -94,6 +98,7 @@ export class RequestService {
     };
   }
   async detail(actor: AuthUser, id: string) {
+    await assertWorkflowAccess(this.db,actor,'requests',id,true);
     const [request]: ProjectRequest[] = await this.db.query(
       "SELECT * FROM ProjectRequest WHERE id=?",
       [id],
@@ -132,6 +137,8 @@ export class RequestService {
           : Promise.resolve([]),
       ]);
     const data = {
+      ...(can(actor,"requests.view.all")?{workflow:await new WorkflowEngine(this.db).state(actor,"requests",id)}:{}),
+      workflowStage: await publicWorkflowStage(this.db,'requests',id),
       ...request,
       messages: staff
         ? messages.map((m: Record<string, unknown>) => {
@@ -172,6 +179,7 @@ export class RequestService {
   }
   async patch(actor: AuthUser, id: string, body: Record<string, unknown>) {
     return transaction(this.db, async (r) => {
+      await assertWorkflowAccess(r,actor,'requests',id,true);
       const [request]: ProjectRequest[] = await r.query(
         "SELECT * FROM ProjectRequest WHERE id=? FOR UPDATE",
         [id],
@@ -183,6 +191,7 @@ export class RequestService {
           throw new AuthFault(403, "forbidden");
         if (side === "client" && !canAccessRequest(actor, request))
           throw new AuthFault(403, "forbidden");
+        if(await new WorkflowEngine(this.db).legacyPatch(r,actor,'requests',id,'cancelled',body.note))return {ok:true};
         if (!canTransition(request.status, "cancelled", side))
           throw new AuthFault(409, "invalid_transition");
         const note = String(body.note ?? "").slice(0, 500) || null;
@@ -205,6 +214,7 @@ export class RequestService {
           kind: "system",
           body: note ?? "",
         });
+        await r.query("UPDATE ConversationWorkflow SET stageId='cancelled',revision=revision+1 WHERE scope='requests' AND recordId=?",[id]);
         await audit(r, "request.cancelled", actor, { ref:request.refCode }, "request", id,undefined,{before:{status:request.status},after:{status:"cancelled"}});
         return { ok: true };
       }
@@ -263,6 +273,7 @@ export class RequestService {
       kind = input.kind === "internal_note" ? "internal_note" : "message";
     if (!text) throw new AuthFault(400, "empty");
     return transaction(this.db, async (r) => {
+      await assertWorkflowAccess(r,actor,'requests',id,true);
       const [request]: ProjectRequest[] = await r.query(
         "SELECT * FROM ProjectRequest WHERE id=? FOR UPDATE",
         [id],
@@ -286,7 +297,7 @@ export class RequestService {
         "SELECT * FROM RequestMessage WHERE requestId=? AND authorId=? AND createdAt>=DATE_SUB(UTC_TIMESTAMP(3),INTERVAL 5 MINUTE) ORDER BY createdAt DESC LIMIT 1",
         [id, actor.id],
       );
-      if (recent && fingerprint(recent.body) === fingerprint(text))
+      if (recent && recent.kind===kind && fingerprint(recent.body) === fingerprint(text))
         return { ok: true, message: recent };
       const messageId = newId();
       await insertRecord(r, "RequestMessage", {
@@ -304,7 +315,8 @@ export class RequestService {
       if (client) columns.push("lastClientReplyAt=UTC_TIMESTAMP(3)");
       if (!client && kind === "message")
         columns.push("lastStaffReplyAt=UTC_TIMESTAMP(3)");
-      if (client && request.status === "awaiting_info") {
+      const customWorkflow = kind==='message' && await new WorkflowEngine(this.db).reply(r,'requests',id,client?'client':'staff',messageId);
+      if (!customWorkflow && client && request.status === "awaiting_info") {
         columns.push("status='in_review'");
         await insertRecord(r, "RequestStatusEvent", {
           id: newId(),

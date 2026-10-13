@@ -376,7 +376,7 @@ export function RequestsView({
                       </td>
                       <td className="px-3 py-3.5">
                         <div className="flex flex-wrap items-center gap-2">
-                          <StatusBadge status={r.status} label={t.statuses[r.status] ?? r.status} />
+                          <StatusBadge status={r.status} label={r.workflowStage?.[locale === "ar" ? "nameAr" : "nameEn"] ?? t.statuses[r.status] ?? r.status} />
                           {r.awaitingClientReply && (
                             <AwaitingYouChip
                               since={r.lastStaffReplyAt}

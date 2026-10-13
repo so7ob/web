@@ -1,5 +1,5 @@
-import type{DataSource}from'typeorm';
-export async function responsePolicy(db:DataSource){
+import type{DataSource,QueryRunner}from'typeorm';
+export async function responsePolicy(db:DataSource|QueryRunner){
  const rows:Array<{key:string;value:string}>=await db.query("SELECT `key`,value FROM SiteSetting WHERE `key` IN ('response.hours','response.effectiveAt')");
  const values=Object.fromEntries(rows.map(r=>[r.key,r.value]));const hours=Number(values['response.hours']??24);
  return {hours:Number.isInteger(hours)&&hours>=1&&hours<=720?hours:24,effectiveAt:values['response.effectiveAt']??null};

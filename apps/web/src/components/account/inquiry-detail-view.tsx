@@ -157,7 +157,7 @@ export function InquiryDetailView({
   }
 
   const BackIcon = locale === "ar" ? ArrowRight : ArrowLeft;
-  const statusLabel = t.statuses[inquiry.status] ?? inquiry.status;
+  const statusLabel = inquiry.workflowStage?.[locale==='ar'?'nameAr':'nameEn']??t.statuses[inquiry.status]??inquiry.status;
 
   return (
     <div className="space-y-5">

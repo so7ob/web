@@ -1,4 +1,7 @@
-import {responsePolicy,responseDueSql,responseDeadline} from "./response-policy.js";
+import {WorkflowEngine} from '../workflows/engine.js';
+import {assertWorkflowAccess,workflowAccessSql,publicWorkflowStage} from '../workflows/access.js';
+import {conversationDueSql} from '../workflows/deadlines.js';
+import {responsePolicy,responseDeadline} from "./response-policy.js";
 import { mkdtemp, open, rm } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
@@ -31,6 +34,9 @@ type Query = {
   from?: string;
   overdue?: string;
   category?: string;
+  team?: string;
+  stage?: string;
+  version?: string;
   page?: string;
 };
 const tableFor = (kind: Kind) =>
@@ -48,7 +54,7 @@ const inquiryStatuses = [
 ];
 export class AdminConversationService {
   constructor(private readonly db: DataSource, private readonly env: NodeJS.ProcessEnv = process.env) {}
-  private filters(kind: Kind, query: Query, hours=24) {
+  private filters(kind: Kind, query: Query, hours=24, actor?:AuthUser) {
     const request = kind === "requests",
       conditions = [
         query.archived === "1"
@@ -81,7 +87,7 @@ export class AdminConversationService {
         conditions.push("p.`" + column + "`=?");
         values.push(query[param]);
       }
-    if (request && query.assignee) {
+    if (query.assignee) {
       conditions.push(
         query.assignee === "none" ? "p.assigneeId IS NULL" : "p.assigneeId=?",
       );
@@ -93,7 +99,9 @@ export class AdminConversationService {
       conditions.push("p.createdAt>=?");
       values.push(date);
     }
-    if (request && query.overdue === "1") {conditions.push(responseDueSql('p')+'<UTC_TIMESTAMP(3)');values.push(hours);}
+    if(query.overdue==='1'){conditions.push(conversationDueSql(kind,'p',hours)+'<UTC_TIMESTAMP(3)');}
+    if(actor)conditions.push(workflowAccessSql(actor,kind,'p'));
+    for(const [key,column]of [['team','teamId'],['stage','stageId'],['version','versionId']] as const)if(query[key]){conditions.push(`EXISTS(SELECT 1 FROM ConversationWorkflow f WHERE f.scope=? AND f.recordId=p.id AND f.${column}=?)`);values.push(kind,query[key]);}
     if (q) {
       const terms = (
         request
@@ -115,7 +123,7 @@ export class AdminConversationService {
       kind === "requests" ? "requests.view.all" : "inquiries.view.all",
     );
     const policy=await responsePolicy(this.db);
-    const { where, values } = this.filters(kind, query,policy.hours),
+    const { where, values } = this.filters(kind, query,policy.hours,actor),
       table = tableFor(kind),
       mt = messageFor(kind),
       fk = keyFor(kind),
@@ -127,7 +135,7 @@ export class AdminConversationService {
     const [count, rows, staff] = await Promise.all([
       this.db.query(`SELECT COUNT(*) n FROM ${table} p WHERE ${where}`, values),
       this.db.query(
-        `SELECT ${columns},u.name assigneeName,(SELECT COUNT(*) FROM ${mt} m WHERE m.${fk}=p.id) messageCount FROM ${table} p LEFT JOIN User u ON u.id=p.assigneeId ${request ? "LEFT JOIN User c ON c.id=p.clientId" : ""} WHERE ${where} ORDER BY p.lastActivityAt DESC LIMIT 20 OFFSET ?`,
+        `SELECT ${columns},${conversationDueSql(kind,'p',policy.hours)} workflowDueAt,u.name assigneeName,(SELECT COUNT(*) FROM ${mt} m WHERE m.${fk}=p.id) messageCount FROM ${table} p LEFT JOIN User u ON u.id=p.assigneeId ${request ? "LEFT JOIN User c ON c.id=p.clientId" : ""} WHERE ${where} ORDER BY p.lastActivityAt DESC LIMIT 20 OFFSET ?`,
         [...values, (page - 1) * 20],
       ),
       request
@@ -177,6 +185,9 @@ export class AdminConversationService {
           ...row,
           messageCount: Number(row.messageCount),
           awaitingSince,
+          needsStaffReply:!!(row as typeof row & {workflowDueAt?:Date}).workflowDueAt,
+          responseDueAt:(row as typeof row & {workflowDueAt?:Date}).workflowDueAt?.toISOString()??null,
+          responseOverdue:!!(row as typeof row & {workflowDueAt?:Date}).workflowDueAt && (row as typeof row & {workflowDueAt:Date}).workflowDueAt<new Date(),
           ...(request
             ? {
                 ...responseDeadline(row,policy.hours),
@@ -185,6 +196,11 @@ export class AdminConversationService {
         };
       },
     );
+    if(result.length){
+      const states=await this.db.query(`SELECT w.*,v.definition FROM ConversationWorkflow w JOIN WorkflowVersion v ON v.id=w.versionId WHERE w.scope=? AND w.recordId IN (${result.map(()=>'?').join(',')}) AND v.legacy=0`,[kind,...result.map((row:{id:string})=>row.id)]);
+      const byId=new Map(states.map((state:{recordId:string})=>[state.recordId,state]));
+      for(const row of result){const state=byId.get(row.id) as {definition:string;stageId:string;teamId:string|null;revision:number;responseDueAt:Date|null}|undefined;if(!state)continue;const stage=(JSON.parse(state.definition) as import('@so7ob/contracts').WorkflowDefinition).stages.find(s=>s.id===state.stageId);Object.assign(row,{workflowStage:stage?{id:stage.id,nameAr:stage.nameAr,nameEn:stage.nameEn,status:stage.status}:null,teamId:state.teamId,workflowRevision:state.revision,responseDueAt:state.responseDueAt?.toISOString()??null,responseOverdue:!!state.responseDueAt&&state.responseDueAt<new Date(),needsStaffReply:!!state.responseDueAt});}
+    }
     return {
       ok: true,
       total: Number(count[0].n),
@@ -202,6 +218,7 @@ export class AdminConversationService {
       actor,
       kind === "requests" ? "requests.view.all" : "inquiries.view.all",
     );
+    await assertWorkflowAccess(this.db,actor,kind,id);
     if (kind === "requests")
       return new RequestService(this.db).detail(actor, id);
     const [inquiry]: Inquiry[] = await this.db.query(
@@ -225,6 +242,8 @@ export class AdminConversationService {
     return {
       ok: true,
       inquiry: {
+        workflow:await new WorkflowEngine(this.db).state(actor,"inquiries",id),
+        workflowStage:await publicWorkflowStage(this.db,'inquiries',id),
         ...inquiry,
         messages: messages.map((m: Record<string, unknown>) => {
           const { authorName, authorRole, ...safe } = m;
@@ -278,6 +297,7 @@ export class AdminConversationService {
         (body.note !== undefined && body.note !== null && typeof body.note !== "string"))
       throw new AuthFault(400, "invalid");
     return transaction(this.db, async (r) => {
+      await assertWorkflowAccess(r,actor,kind,id);
       const [record]: Array<ProjectRequest & Inquiry> = await r.query(
         `SELECT * FROM ${table} WHERE id=? FOR UPDATE`,
         [id],
@@ -290,10 +310,14 @@ export class AdminConversationService {
           actor,
           request ? "requests.assign" : "inquiries.assign",
         );
+        await r.query('UPDATE ConversationWorkflow SET revision=revision+1 WHERE scope=? AND recordId=?',[kind,id]);
+    const engine=new WorkflowEngine(this.db),state=await engine.instance(r,kind,id,true);
+        if(state&&((!state.legacy&&body.expectedRevision===undefined)||(body.expectedRevision!==undefined&&body.expectedRevision!==state.revision)))throw new AuthFault(409,"workflow_conflict");
         const assigneeId =
           body.assigneeId === null || body.assigneeId === ""
             ? null
             : String(body.assigneeId);
+        if(state?.teamId&&assigneeId){const eligible=await engine.eligible(r,kind,state.teamId);if(!eligible.some((p:{id:string})=>p.id===assigneeId))throw new AuthFault(400,"invalid_assignee");}
         if (assigneeId) {
           const [assignee] = await r.query(
             "SELECT u.status,u.roleKey,r.permissions,r.status roleStatus FROM User u JOIN Role r ON r.`key`=u.roleKey WHERE u.id=?",
@@ -318,6 +342,7 @@ export class AdminConversationService {
           `UPDATE ${table} SET assigneeId=?,lastActivityAt=UTC_TIMESTAMP(3),updatedAt=UTC_TIMESTAMP(3) WHERE id=?`,
           [assigneeId, id],
         );
+        if(state){await r.query("UPDATE ConversationWorkflow SET revision=revision+1 WHERE scope=? AND recordId=?",[kind,id]);if(!state.legacy)await engine.timers(r,{...state,revision:state.revision+1},state.definition.stages.find(s=>s.id===state.stageId)!,record as unknown as Record<string,unknown>);}
         await audit(
           r,
           request ? "request.assigned" : "inquiry.assigned",
@@ -332,6 +357,8 @@ export class AdminConversationService {
       }
       if (request && Object.hasOwn(body, "priority") && body.priority !== undefined) {
         requirePermission(actor, "requests.status");
+        const workflow=await new WorkflowEngine(this.db).instance(r,kind,id,true);
+        if(workflow&&body.expectedRevision!==undefined&&workflow.revision!==body.expectedRevision)throw new AuthFault(409,'workflow_conflict');
         const priority = String(body.priority);
         if (!(REQUEST_PRIORITIES as readonly string[]).includes(priority))
           throw new AuthFault(400, "invalid");
@@ -339,6 +366,7 @@ export class AdminConversationService {
           "UPDATE ProjectRequest SET priority=?,lastActivityAt=UTC_TIMESTAMP(3),updatedAt=UTC_TIMESTAMP(3) WHERE id=?",
           [priority, id],
         );
+        await r.query("UPDATE ConversationWorkflow SET revision=revision+1 WHERE scope='requests' AND recordId=?",[id]);
         await audit(
           r,
           "request.priority_changed",
@@ -357,6 +385,7 @@ export class AdminConversationService {
           request ? "requests.status" : "inquiries.status",
         );
         const to = String(body.status);
+        if(await new WorkflowEngine(this.db).legacyPatch(r,actor,kind,id,to,body.note))return {ok:true};
         if (
           !(
             request ? (REQUEST_STATUSES as readonly string[]) : inquiryStatuses
@@ -407,6 +436,7 @@ export class AdminConversationService {
             body: "status:" + to,
           });
         }
+        await r.query("UPDATE ConversationWorkflow SET stageId=?,revision=revision+1 WHERE scope=? AND recordId=?",[to,kind,id]);
         await audit(
           r,
           request ? "request.status_changed" : "inquiry.status_changed",
@@ -443,12 +473,16 @@ export class AdminConversationService {
       actor,
       kind === "requests" ? "requests.archive" : "inquiries.archive",
     );
+    await assertWorkflowAccess(r,actor,kind,id);
     const [before] = await r.query(`SELECT archivedAt,refCode FROM ${tableFor(kind)} WHERE id=? FOR UPDATE`,[id]);
     if(!before)throw new AuthFault(404,'not_found');
     const after=action==='archive'?(before.archivedAt??new Date()):null;
     const unchanged=Boolean(before.archivedAt)===Boolean(after);
     if(!unchanged)await r.query(`UPDATE ${tableFor(kind)} SET archivedAt=?,updatedAt=UTC_TIMESTAMP(3) WHERE id=?`,[after,id]);
     await audit(r,`${kind==='requests'?'request':'inquiry'}.${action==='archive'?'archived':'restored'}`,actor,{ref:before.refCode},kind==='requests'?'request':'inquiry',id,undefined,{before:{archivedAt:before.archivedAt},after:{archivedAt:after},...(unchanged?{reasonCode:'no_change'}:{})});
+    await r.query('UPDATE ConversationWorkflow SET revision=revision+1 WHERE scope=? AND recordId=?',[kind,id]);
+    const engine=new WorkflowEngine(this.db),state=await engine.instance(r,kind,id,true);
+    if(state&&!state.legacy){const [record]=await r.query(`SELECT * FROM ${tableFor(kind)} WHERE id=?`,[id]);await engine.timers(r,state,state.definition.stages.find(s=>s.id===state.stageId)!,record);}
     return { ok: true };
   }
   async bulk(actor: AuthUser, kind: Kind, body: Record<string, unknown>) {
@@ -463,15 +497,18 @@ export class AdminConversationService {
     if (!ids.length || !["archive", "restore"].includes(action))
       throw new AuthFault(400, "invalid");
     return transaction(this.db, async (r) => {
+
       const table = tableFor(kind),
         where = `id IN (${ids.map(() => "?").join(",")}) AND archivedAt IS ${action === "archive" ? "" : "NOT "}NULL`;
       const rows = await r.query(
         `SELECT id,refCode,archivedAt FROM ${table} WHERE ${where} ORDER BY id FOR UPDATE`,
         ids,
       );
+      for(const row of rows)await assertWorkflowAccess(r,actor,kind,row.id);
       const batchId=newId(),after=action==='archive'?new Date():null;
       if(rows.length)await r.query(`UPDATE ${table} SET archivedAt=?,updatedAt=UTC_TIMESTAMP(3) WHERE ${where}`,[after,...ids]);
       for(const row of rows)await audit(r,`${kind==='requests'?'request':'inquiry'}.${action==='archive'?'archived':'restored'}`,actor,{ref:row.refCode},kind==='requests'?'request':'inquiry',row.id,undefined,{batchId,before:{archivedAt:row.archivedAt},after:{archivedAt:after}});
+      for(const row of rows){await r.query('UPDATE ConversationWorkflow SET revision=revision+1 WHERE scope=? AND recordId=?',[kind,row.id]);const engine=new WorkflowEngine(this.db),state=await engine.instance(r,kind,row.id,true);if(state&&!state.legacy){const [record]=await r.query(`SELECT * FROM ${table} WHERE id=?`,[row.id]);await engine.timers(r,state,state.definition.stages.find(s=>s.id===state.stageId)!,record);}}
       await audit(r,'batch.completed',actor,{count:rows.length,requested:ids.length,unchanged:ids.length-rows.length,operation:action},'batch',batchId,undefined,{batchId});
       return { ok: true, count: rows.length };
     });
@@ -488,6 +525,7 @@ export class AdminConversationService {
       kind = input.kind === "internal_note" ? "internal_note" : "message";
     if (!text) throw new AuthFault(400, "empty");
     return transaction(this.db, async (r) => {
+      await assertWorkflowAccess(r,actor,'inquiries',id);
       const [inquiry]: Inquiry[] = await r.query(
         "SELECT * FROM Inquiry WHERE id=? FOR UPDATE",
         [id],
@@ -497,7 +535,7 @@ export class AdminConversationService {
         "SELECT * FROM InquiryMessage WHERE inquiryId=? AND authorId=? AND createdAt>=DATE_SUB(UTC_TIMESTAMP(3),INTERVAL 5 MINUTE) ORDER BY createdAt DESC LIMIT 1",
         [id, actor.id],
       );
-      if (recent && fingerprint(recent.body) === fingerprint(text))
+      if (recent && recent.kind===kind && fingerprint(recent.body) === fingerprint(text))
         return { ok: true, message: recent };
       const messageId = newId();
       await insertRecord(r, "InquiryMessage", {
@@ -508,8 +546,9 @@ export class AdminConversationService {
         kind,
         body: text,
       });
+      const customWorkflow=kind==='message'&&await new WorkflowEngine(this.db).reply(r,'inquiries',id,'staff',messageId);
       await r.query(
-        `UPDATE Inquiry SET lastActivityAt=UTC_TIMESTAMP(3),updatedAt=UTC_TIMESTAMP(3)${kind === "message" ? ",status='responded'" : ""} WHERE id=?`,
+        `UPDATE Inquiry SET lastActivityAt=UTC_TIMESTAMP(3),updatedAt=UTC_TIMESTAMP(3)${!customWorkflow && kind === "message" ? ",status='responded'" : ""} WHERE id=?`,
         [id],
       );
       await audit(
@@ -542,7 +581,7 @@ export class AdminConversationService {
       kind === "requests" ? "requests.export" : "inquiries.export",
     );
     const policy=await responsePolicy(this.db);
-    const { where, values } = this.filters(kind, query,policy.hours),
+    const { where, values } = this.filters(kind, query,policy.hours,actor),
       request = kind === "requests";
     const columns = request
       ? [

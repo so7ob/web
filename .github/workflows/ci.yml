@@ -86,6 +86,16 @@ jobs:
           DATABASE_NAME: so7ob_identity_upgrade_test
           DATABASE_USER: root
           DATABASE_PASSWORD: synthetic-ci-root-only
+      - name: Prepare isolated workflow upgrade and crash-recovery rehearsal
+        run: mariadb --no-defaults --protocol=TCP --host=127.0.0.1 --port=3306 --user=root -e 'CREATE DATABASE so7ob_workflow_upgrade_test'
+        env:
+          MYSQL_PWD: synthetic-ci-root-only
+      - name: Preserve legacy workflows and recover a killed workflow worker
+        run: node --import tsx tools/migration/workflow-smoke.ts
+        env:
+          DATABASE_NAME: so7ob_workflow_upgrade_test
+          DATABASE_USER: root
+          DATABASE_PASSWORD: synthetic-ci-root-only
       - run: npm run test:restore
         env:
           DATABASE_USER: root
@@ -102,6 +112,15 @@ jobs:
             .migration/iam/users-*.png
             .migration/iam/roles-*.png
             .migration/iam/permissions-*.png
+          if-no-files-found: error
+          retention-days: 30
+      - name: Preserve synthetic bilingual workflow and conversation screenshots
+        uses: actions/upload-artifact@v4
+        with:
+          name: workflows-86-synthetic-interfaces
+          path: |
+            .migration/workflows/*.png
+            test-results/**/synthetic-request-details.png
           if-no-files-found: error
           retention-days: 30
       - uses: actions/upload-artifact@v4

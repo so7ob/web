@@ -4,6 +4,12 @@
  */
 
 export const PERMISSIONS = {
+  "workflows.view": "عرض مسارات العمل",
+  "workflows.manage": "تحرير مسارات العمل والتقويم",
+  "workflows.publish": "نشر إصدارات مسارات العمل",
+  "workflows.transfer": "نقل المعاملات بين المسارات",
+  "workflows.supervise": "عرض المعاملات المقيدة والإشراف عليها",
+  "teams.manage": "إدارة فرق العمل",
   // لوحة الإدارة
   "admin.dashboard": "عرض لوحة الإدارة ومؤشراتها",
   // المستخدمون

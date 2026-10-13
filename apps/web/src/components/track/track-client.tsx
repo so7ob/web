@@ -57,6 +57,7 @@ interface TrackMessage {
 }
 
 interface TrackCard {
+  workflowStage?:import("@so7ob/contracts").WorkflowPublicStage | null;
   scope: Scope;
   id: string;
   refCode: string;
@@ -432,7 +433,7 @@ export function TrackClient({
   /* ----- عرض البطاقة ----- */
   const { card, policy, access } = data;
   const viaLink = access.via === "link";
-  const statusLabel = (t.statusLabels as Record<string, string>)[card.status] ?? card.status;
+  const statusLabel = card.workflowStage?.[locale==='ar'?'nameAr':'nameEn']??(t.statusLabels as Record<string, string>)[card.status]??card.status;
   const statusChip = STATUS_CHIP_CLASSES[card.status] ?? STATUS_CHIP_FALLBACK;
   const typeLabel = t.cardType[card.scope] ?? card.typeLabel;
   const clientAuthorLabel = viaLink ? t.guestAuthor : t.ownerAuthor;

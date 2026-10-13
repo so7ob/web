@@ -1,3 +1,4 @@
+import {workflowAccessSql,auditWorkflowAccessSql} from "../workflows/access.js";
 import { currentIdentity, manageableTarget, assignableRole } from './identity-policy.js';
 import {project} from '../audit/reader.js';
 import { randomBytes } from "node:crypto";
@@ -89,7 +90,7 @@ export class UserAdministrationService {
     const [[count], rows] = await Promise.all([
       this.db.query(`SELECT COUNT(*) n FROM User u WHERE ${where}`, values),
       this.db.query<UserListRecord[]>(
-        `SELECT u.id,u.name,u.email,u.phone,u.company,u.roleKey,u.status,u.emailVerifiedAt,u.createdAt,u.lastLoginAt,IF(? OR u.id=?,(SELECT COUNT(*) FROM ProjectRequest r WHERE r.clientId=u.id),0) requestsCount,IF(? OR u.id=?,(SELECT COUNT(*) FROM ProjectRequest r WHERE r.assigneeId=u.id),0) assignedCount FROM User u WHERE ${where} ORDER BY u.\`${sort}\` ${dir} LIMIT ? OFFSET ?`,
+        `SELECT u.id,u.name,u.email,u.phone,u.company,u.roleKey,u.status,u.emailVerifiedAt,u.createdAt,u.lastLoginAt,IF(? OR u.id=?,(SELECT COUNT(*) FROM ProjectRequest r WHERE r.clientId=u.id AND (${workflowAccessSql(actor,'requests','r')})),0) requestsCount,IF(? OR u.id=?,(SELECT COUNT(*) FROM ProjectRequest r WHERE r.assigneeId=u.id AND (${workflowAccessSql(actor,'requests','r')})),0) assignedCount FROM User u WHERE ${where} ORDER BY u.\`${sort}\` ${dir} LIMIT ? OFFSET ?`,
         [can(actor,"requests.view.all"),actor.id,can(actor,"requests.view.all"),actor.id,...values, pageSize, (page - 1) * pageSize],
       ),
     ]);
@@ -124,14 +125,14 @@ export class UserAdministrationService {
           [id],
         ) : [],
         mayRequests ? this.db.query(
-          "SELECT COUNT(*) totalRequests,COALESCE(SUM(status NOT IN ('closed','cancelled')),0) openRequests FROM ProjectRequest WHERE clientId=?",
+          `SELECT COUNT(*) totalRequests,COALESCE(SUM(status NOT IN ('closed','cancelled')),0) openRequests FROM ProjectRequest WHERE clientId=? AND (${actor.id===id?'1=1':workflowAccessSql(actor,'requests','ProjectRequest')})`,
           [id],
         ) : [{totalRequests:0,openRequests:0}],
         mayRequests ? this.db.query(
-          "SELECT r.id,r.refCode,r.status,r.serviceType,r.createdAt,r.lastActivityAt,u.name assigneeName FROM ProjectRequest r LEFT JOIN User u ON u.id=r.assigneeId WHERE r.clientId=? ORDER BY r.createdAt DESC LIMIT 20",
+          `SELECT r.id,r.refCode,r.status,r.serviceType,r.createdAt,r.lastActivityAt,u.name assigneeName FROM ProjectRequest r LEFT JOIN User u ON u.id=r.assigneeId WHERE r.clientId=? AND (${actor.id===id?'1=1':workflowAccessSql(actor,'requests','r')}) ORDER BY r.createdAt DESC LIMIT 20`,
           [id],
         ) : [],
-        can(actor,"audit.view") ? this.db.query("SELECT * FROM AuditLog WHERE actorId=? OR (entityType='user' AND entityId=?) ORDER BY createdAt DESC,id DESC LIMIT 10",[id,id]) : [],
+        can(actor,"audit.view") ? this.db.query(`SELECT a.* FROM AuditLog a WHERE (actorId=? OR (entityType='user' AND entityId=?)) AND (${auditWorkflowAccessSql(actor)}) ORDER BY createdAt DESC,id DESC LIMIT 10`,[id,id]) : [],
         this.db.query(
           "SELECT createdAt FROM AuditLog WHERE action='user.suspended' AND entityType='user' AND entityId=? ORDER BY createdAt DESC LIMIT 1",
           [id],

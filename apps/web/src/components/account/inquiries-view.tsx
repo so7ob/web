@@ -247,7 +247,7 @@ export function InquiriesView({
                         </span>
                       </td>
                       <td className="px-3 py-3.5">
-                        <StatusBadge status={inquiry.status} label={t.statuses[inquiry.status] ?? inquiry.status} />
+                        <StatusBadge status={inquiry.status} label={inquiry.workflowStage?.[locale === "ar" ? "nameAr" : "nameEn"] ?? t.statuses[inquiry.status] ?? inquiry.status} />
                       </td>
                       <td className="px-3 py-3.5 text-muted-foreground">
                         <span className="inline-flex items-center gap-1.5">

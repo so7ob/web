@@ -130,6 +130,7 @@ export function AdminShell({
       icon: MessageSquareText,
       permission: "inquiries.view.all",
     },
+    {href:`/${locale}/admin/workflows`,label:locale==='ar'?'مسارات العمل':'Workflows',icon:ListTree,permission:'workflows.view'},
     {
       href: `/${locale}/admin/notifications`,
       label: t.notifications,
@@ -201,6 +202,7 @@ export function AdminShell({
       media: t.media,
       menus: t.menus,
       settings: t.settings,
+      workflows: locale==='ar'?'مسارات العمل':'Workflows',
       diagnostics: diagnosticsCopy[locale].title,
       audit: t.audit,
       outbox: t.outbox,

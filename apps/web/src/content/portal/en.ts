@@ -293,6 +293,9 @@ export const portalEn: PortalContent = {
       types: {
         new_request: "New request",
         new_inquiry: "New inquiry",
+        workflow_assigned: "Conversation assigned",
+        workflow_overdue: "Conversation deadline exceeded",
+        workflow_blocked: "Workflow execution blocked",
         request_assigned: "Request assigned",
         reply_received: "New reply",
         info_requested: "Info requested",
@@ -603,6 +606,9 @@ export const portalEn: PortalContent = {
       types: {
         new_request: "New request",
         new_inquiry: "New inquiry",
+        workflow_assigned: "Conversation assigned",
+        workflow_overdue: "Conversation deadline exceeded",
+        workflow_blocked: "Workflow execution blocked",
         request_assigned: "Request assigned",
         reply_received: "New reply",
         info_requested: "Info requested",

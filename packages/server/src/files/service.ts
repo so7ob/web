@@ -1,3 +1,5 @@
+import {assertWorkflowAccess} from '../workflows/access.js';
+import type {WorkflowScope} from '@so7ob/contracts';
 import type { DataSource } from "typeorm";
 import {
   can,
@@ -51,31 +53,33 @@ export class FileService {
       throw error;
     }
   }
-  async uploadAttachment(user: AuthUser, requestId: string, file: File) {
+  async uploadAttachment(user: AuthUser, requestId: string, file: File, scope:WorkflowScope='requests') {
+    await assertWorkflowAccess(this.db,user,scope,requestId,true);
     const [request]: ProjectRequest[] = await this.db.query(
-      "SELECT * FROM ProjectRequest WHERE id=?",
+      `SELECT * FROM ${scope==='requests'?'ProjectRequest':'Inquiry'} WHERE id=?`,
       [requestId],
     );
-    this.canUpload(user, request);
+    this.canUpload(user, request,scope);
     const stored = await this.files.store(file, "attachment");
     if ("error" in stored) throw new AuthFault(400, stored.error);
     return this.persisted(stored, () =>
       transaction(this.db, async (r) => {
+        await assertWorkflowAccess(r,user,scope,requestId,true);
         const [locked]: ProjectRequest[] = await r.query(
-          "SELECT * FROM ProjectRequest WHERE id=? FOR UPDATE",
+          `SELECT * FROM ${scope==='requests'?'ProjectRequest':'Inquiry'} WHERE id=? FOR UPDATE`,
           [requestId],
         );
-        this.canUpload(user, locked);
+        this.canUpload(user, locked,scope);
         const id = newId();
         await insertRecord(r, "Attachment", {
           id,
           ...stored,
-          kind: "request_attachment",
+          kind: scope==='requests'?"request_attachment":"inquiry_attachment",
           uploaderId: user.id,
-          requestId,
+          [scope==='requests'?'requestId':'inquiryId']:requestId,
         });
         await r.query(
-          "UPDATE ProjectRequest SET lastActivityAt=UTC_TIMESTAMP(3),updatedAt=UTC_TIMESTAMP(3) WHERE id=?",
+          `UPDATE ${scope==='requests'?'ProjectRequest':'Inquiry'} SET lastActivityAt=UTC_TIMESTAMP(3),updatedAt=UTC_TIMESTAMP(3) WHERE id=?`,
           [requestId],
         );
         await audit(
@@ -87,21 +91,21 @@ export class FileService {
           id,
         );
         const payload = { ref: locked.refCode, attachment: stored.filename };
-        if (!can(user, "requests.view.all")) {
+        if (!can(user, scope==='requests'?"requests.view.all":"inquiries.view.all")) {
           if (locked.assigneeId)
             await insertRecord(r, "Notification", {
               id: newId(),
               userId: locked.assigneeId,
               type: "reply_received",
               payload: JSON.stringify(payload),
-              link: "/ar/admin/requests/" + requestId,
+              link: `/ar/admin/${scope}/` + requestId,
             });
           else
             await notifyStaff(
               r,
               "reply_received",
               payload,
-              "/ar/admin/requests/" + requestId,
+              `/ar/admin/${scope}/` + requestId,
             );
         } else if (locked.clientId)
           await insertRecord(r, "Notification", {
@@ -109,7 +113,7 @@ export class FileService {
             userId: locked.clientId,
             type: "reply_received",
             payload: JSON.stringify(payload),
-            link: "/ar/account/requests/" + requestId,
+            link: `/ar/account/${scope}/` + requestId,
           });
         return {
           ok: true,
@@ -123,8 +127,9 @@ export class FileService {
       }),
     );
   }
-  private canUpload(user: AuthUser, request: ProjectRequest | undefined) {
+  private canUpload(user: AuthUser, request: ProjectRequest | undefined, scope:WorkflowScope='requests') {
     if (!request) throw new AuthFault(404, "not_found");
+    if(scope==='inquiries'){if(!canAccessInquiry(user,request)||request.clientId!==user.id&&!can(user,'inquiries.reply'))throw new AuthFault(403,'forbidden');if(request.clientId===user.id&&request.status==='closed')throw new AuthFault(409,'locked');return;}
     if (!canAccessRequest(user, request)) throw new AuthFault(403, "forbidden");
     if (
       !can(user, "requests.view.all") &&
@@ -139,6 +144,7 @@ export class FileService {
     );
     if (!record) throw new AuthFault(404, "not_found");
     let allowed = false;
+    if(record.requestId||record.inquiryId)await assertWorkflowAccess(this.db,user,record.requestId?'requests':'inquiries',(record.requestId??record.inquiryId)!,true);
     if (record.requestId) {
       const [request]: ProjectRequest[] = await this.db.query(
         "SELECT clientId,assigneeId FROM ProjectRequest WHERE id=?",
@@ -153,7 +159,7 @@ export class FileService {
       allowed = !!inquiry && canAccessInquiry(user, inquiry);
     } else allowed = record.uploaderId === user.id;
     if (!allowed) throw new AuthFault(403, "forbidden");
-    if (!can(user, "requests.internal_notes") && record.messageId) {
+    if (!can(user, record.inquiryId ? "inquiries.reply" : "requests.internal_notes") && record.messageId) {
       const internal = await this.db.query(
         "SELECT id FROM RequestMessage WHERE id=? AND kind='internal_note' UNION ALL SELECT id FROM InquiryMessage WHERE id=? AND kind='internal_note' LIMIT 1",
         [record.messageId, record.messageId],

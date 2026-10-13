@@ -1,94 +1,70 @@
 "use client";
-import {ErrorFeedback} from '@/components/errors/error-feedback';
-import {asApiError} from '@/lib/errors/transport';
 import { TrackPanel } from "@/components/admin/track/track-panel";
+import { ErrorFeedback } from "@/components/errors/error-feedback";
+import { asApiError } from "@/lib/errors/transport";
+import {
+  ConversationAttachments,
+  ConversationManagement,
+  ReplyWorkflowHint,
+} from "../workflows/management";
 
 /**
  * تفاصيل الطلب (طاقم): المحادثة الكاملة بالملاحظات الداخلية + معاينة ما يراه
  * العميل، وعمود إدارة (تعيين/أولوية/حالة/أرشفة) وبيانات الطلب والمرفقات
  * والخط الزمني. تحديث دوري كل 20 ثانية.
  */
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import Link from "@/routing/link";
-import { toast } from "sonner";
 import {
-  ArrowLeft,
-  ArrowRight,
-  Eye,
-  EyeOff,
-  UserPlus,
-  Paperclip,
-  Download,
-  Archive,
-  ArchiveRestore,
-  Inbox,
-  Loader2,
-  Printer,
-  RotateCcw,
-  History,
-  Building2,
-} from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { Skeleton } from "@/components/ui/skeleton";
-import { getPortalContent } from "@/content/portal";
-import { ar as siteAr } from "@/content/ar";
-import { en as siteEn } from "@/content/en";
-import { can } from "@/lib/auth/permissions";
-import { localeMeta, type Locale } from "@/lib/i18n";
-import {
-  StatusBadge,
   PriorityBadge,
+  StatusBadge,
   UserStatusBadge,
 } from "@/components/admin/badges";
-import { EmptyState } from "@/components/admin/empty-state";
 import { MessageBubble, ReplyComposer } from "@/components/admin/conversation";
+import { EmptyState } from "@/components/admin/empty-state";
 import {
+  ApiError,
+  apiErrorMessage,
   apiGet,
   apiSend,
   apiUpload,
-  ApiError,
-  apiErrorMessage,
   buildQuery,
   fmtDate,
   fmtDateTime,
-  formatBytes,
 } from "@/components/admin/helpers";
+import { Button } from "@/components/ui/button";
+import { Skeleton } from "@/components/ui/skeleton";
+import { ar as siteAr } from "@/content/ar";
+import { en as siteEn } from "@/content/en";
+import { getPortalContent } from "@/content/portal";
+import { can } from "@/lib/auth/permissions";
+import { localeMeta, type Locale } from "@/lib/i18n";
+import { cn } from "@/lib/utils";
+import Link from "@/routing/link";
+import {
+  Archive,
+  ArrowLeft,
+  ArrowRight,
+  Building2,
+  Eye,
+  EyeOff,
+  History,
+  Inbox,
+  Printer,
+  RotateCcw,
+} from "lucide-react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { toast } from "sonner";
 import type {
-  AttachmentRow,
   Me,
   MessageRow,
   RequestDetail,
   RequestDetailResponse,
-  RequestsResponse,
-  StaffOption,
 } from "../types";
-import { cn } from "@/lib/utils";
 
 interface RequestDetailClientProps {
   me: Me;
   locale: Locale;
   requestId: string;
 }
-
-const STATUS_KEYS = [
-  "new",
-  "in_review",
-  "awaiting_info",
-  "in_progress",
-  "responded",
-  "closed",
-  "cancelled",
-];
-const PRIORITY_KEYS = ["low", "normal", "high", "urgent"];
 
 export function RequestDetailClient({
   me,
@@ -103,11 +79,15 @@ export function RequestDetailClient({
   const siteMeta = locale === "en" ? siteEn.meta : siteAr.meta;
 
   const [detail, setDetail] = useState<RequestDetail | null>(null);
-  const [staffOptions, setStaffOptions] = useState<StaffOption[]>([]);
   const [loading, setLoading] = useState(true);
   const [notFound, setNotFound] = useState(false);
-  const [failure,setFailure]=useState<{error:ApiError;operation:string}|null>(null);
-  const needsReview=!!failure&&["network","timeout","invalid_response"].includes(failure.error.code);
+  const [failure, setFailure] = useState<{
+    error: ApiError;
+    operation: string;
+  } | null>(null);
+  const needsReview =
+    !!failure &&
+    ["network", "timeout", "invalid_response"].includes(failure.error.code);
   const [error, setError] = useState<string | null>(null);
   const [reloadToken, setReloadToken] = useState(0);
   const [refreshFailed, setRefreshFailed] = useState(false);
@@ -116,11 +96,6 @@ export function RequestDetailClient({
   const [clientView, setClientView] = useState(false);
   const [sending, setSending] = useState(false);
 
-  // إدارة الحالة/الأولوية/التعيين
-  const [statusTarget, setStatusTarget] = useState("");
-  const [statusNote, setStatusNote] = useState("");
-  const [closeReason, setCloseReason] = useState("");
-  const [applying, setApplying] = useState(false);
   const [busy, setBusy] = useState(false);
 
   const busyRef = useRef(false);
@@ -130,13 +105,13 @@ export function RequestDetailClient({
       if (!quiet) setLoading(true);
       try {
         const res = await apiGet<RequestDetailResponse>(
-          `/api/admin/requests/${requestId}`,signal,
+          `/api/admin/requests/${requestId}`,
+          signal,
         );
         if (!signal.aborted) {
           setDetail(res.request);
           setNotFound(false);
           setError(null);
-          setStatusTarget((prev) => prev || res.request.status);
           setRefreshFailed(false);
           return true;
         }
@@ -164,19 +139,6 @@ export function RequestDetailClient({
     return () => controller.abort();
   }, [load, reloadToken]);
 
-  // قائمة الطاقم القابلة للتعيين (تأتي مع استجابة قائمة الطلبات)
-  useEffect(() => {
-    const controller = new AbortController();
-    apiGet<RequestsResponse>("/api/admin/requests?page=1")
-      .then((res) => {
-        if (!controller.signal.aborted) setStaffOptions(res.staff);
-      })
-      .catch(() => {
-        // قائمة الطاقم تحسّن فقط — الفشل غير حرج
-      });
-    return () => controller.abort();
-  }, []);
-
   // تحديث دوري كل 20 ثانية (يتوقف أثناء الإرسال أو حين تكون الصفحة مخفية)
   useEffect(() => {
     const timer = setInterval(() => {
@@ -192,9 +154,6 @@ export function RequestDetailClient({
   // ——— الأذونات ———
   const mayReply = can(me, "requests.reply");
   const mayNote = can(me, "requests.internal_notes");
-  const mayAssign = can(me, "requests.assign");
-  const mayStatus = can(me, "requests.status");
-  const mayArchive = can(me, "requests.archive");
 
   // ——— الإجراءات ———
   const patch = async (body: Record<string, unknown>, successMsg?: string) => {
@@ -209,7 +168,15 @@ export function RequestDetailClient({
       else if (successMsg) toast.success(successMsg);
       return true;
     } catch (err) {
-      setFailure({error:asApiError(err),operation:body.priority!==undefined?tr.priority:body.status!==undefined?tr.changeStatus:tr.filterAssignee});
+      setFailure({
+        error: asApiError(err),
+        operation:
+          body.priority !== undefined
+            ? tr.priority
+            : body.status !== undefined
+              ? tr.changeStatus
+              : tr.filterAssignee,
+      });
       return false;
     } finally {
       setBusy(false);
@@ -221,7 +188,7 @@ export function RequestDetailClient({
     kind: "message" | "internal_note",
     body: string,
   ) => {
-    if(needsReview)return false;
+    if (needsReview) return false;
     setFailure(null);
     setSending(true);
     busyRef.current = true;
@@ -248,10 +215,14 @@ export function RequestDetailClient({
       );
       toast.success(kind === "internal_note" ? tr.sentNote : tr.sentReply);
       const controller = new AbortController();
-      if(!await load(controller.signal,true))setFailure({error:new ApiError(0,"network"),operation:t.admin.requests.savedRefreshFailed});
+      if (!(await load(controller.signal, true)))
+        setFailure({
+          error: new ApiError(0, "network"),
+          operation: t.admin.requests.savedRefreshFailed,
+        });
       return true;
     } catch (err) {
-      setFailure({error:asApiError(err),operation:t.admin.requests.reply});
+      setFailure({ error: asApiError(err), operation: t.admin.requests.reply });
       return false;
     } finally {
       setSending(false);
@@ -260,6 +231,7 @@ export function RequestDetailClient({
   };
 
   const attachFile = async (file: File) => {
+    if (needsReview || busyRef.current) throw new ApiError(409, "conflict");
     busyRef.current = true;
     try {
       const form = new FormData();
@@ -267,7 +239,8 @@ export function RequestDetailClient({
       form.append("requestId", requestId);
       await apiUpload("/api/attachments", form);
       toast.success(t.admin.media.uploadedOk);
-      reload();
+      if (!(await load(new AbortController().signal, true)))
+        setRefreshFailed(true);
     } catch (err) {
       if (
         err instanceof ApiError &&
@@ -282,33 +255,10 @@ export function RequestDetailClient({
       } else {
         toast.error(apiErrorMessage(err, t.auth.errors));
       }
+      setFailure({ error: asApiError(err), operation: td.attachments });
+      throw err;
     } finally {
       busyRef.current = false;
-    }
-  };
-
-  const applyStatus = async () => {
-    if (!statusTarget) return;
-    const isClosure = statusTarget === "closed" || statusTarget === "cancelled";
-    if (isClosure && closeReason.trim().length === 0) {
-      toast.error(t.auth.errors.required);
-      return;
-    }
-    setApplying(true);
-    try {
-      const saved = await patch(
-        {
-          status: statusTarget,
-          note: isClosure ? closeReason.trim() : statusNote.trim() || undefined,
-        },
-        tr.statuses[statusTarget],
-      );
-      if (saved) {
-        setStatusNote("");
-        setCloseReason("");
-      }
-    } finally {
-      setApplying(false);
     }
   };
 
@@ -326,11 +276,11 @@ export function RequestDetailClient({
   if (loading && !detail) {
     return (
       <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_360px]">
-        <div className="space-y-4">
+        <div className="min-w-0 space-y-4">
           <Skeleton className="h-9 w-64 rounded-xl" />
           <Skeleton className="h-96 rounded-2xl" />
         </div>
-        <div className="space-y-4">
+        <div className="min-w-0 space-y-4">
           <Skeleton className="h-40 rounded-2xl" />
           <Skeleton className="h-56 rounded-2xl" />
           <Skeleton className="h-40 rounded-2xl" />
@@ -369,8 +319,6 @@ export function RequestDetailClient({
 
   const BackIcon = locale === "ar" ? ArrowRight : ArrowLeft;
   const statusLabel = tr.statuses[detail.status] ?? detail.status;
-  const isClosureTarget =
-    statusTarget === "closed" || statusTarget === "cancelled";
   const contactPrefLabel =
     detail.preferredContact === "email"
       ? siteForm.contactMethods.email
@@ -390,16 +338,39 @@ export function RequestDetailClient({
     detail.timeline;
 
   return (
-    <div className="space-y-5">
-      {failure?<ErrorFeedback error={failure.error} operation={failure.operation} locale={locale} onRefresh={async()=>{if(await load(new AbortController().signal,true))setFailure(null);}}/>:null}
+    <div className="min-w-0 space-y-5">
+      {failure ? (
+        <ErrorFeedback
+          error={failure.error}
+          operation={failure.operation}
+          locale={locale}
+          onRefresh={async () => {
+            if (await load(new AbortController().signal, true))
+              setFailure(null);
+          }}
+        />
+      ) : null}
       {refreshFailed ? (
-        <div role="alert" className="rounded-2xl border border-border bg-muted p-4 text-sm">
+        <div
+          role="alert"
+          className="rounded-2xl border border-border bg-muted p-4 text-sm"
+        >
           <p>{tr.savedRefreshFailed}</p>
-          <Button variant="outline" disabled={refreshing} className="mt-2 min-h-11" onClick={async () => {
-            setRefreshing(true);
-            try { await load(new AbortController().signal, true); }
-            finally { setRefreshing(false); }
-          }}>{tr.refreshData}</Button>
+          <Button
+            variant="outline"
+            disabled={refreshing}
+            className="mt-2 min-h-11"
+            onClick={async () => {
+              setRefreshing(true);
+              try {
+                await load(new AbortController().signal, true);
+              } finally {
+                setRefreshing(false);
+              }
+            }}
+          >
+            {tr.refreshData}
+          </Button>
         </div>
       ) : null}
       {/* ترويسة الطباعة — تظهر على الورق فقط: العلامة + التاريخ */}
@@ -428,7 +399,10 @@ export function RequestDetailClient({
         <div className="flex flex-wrap items-center gap-2">
           <StatusBadge
             status={detail.status}
-            label={statusLabel}
+            label={
+              detail.workflowStage?.[locale === "ar" ? "nameAr" : "nameEn"] ??
+              statusLabel
+            }
             className="print:break-inside-avoid print:border-border"
           />
           <PriorityBadge
@@ -471,9 +445,9 @@ export function RequestDetailClient({
         </div>
       </div>
 
-      <div className="grid items-start gap-6 lg:grid-cols-[minmax(0,1fr)_360px] print:block print:space-y-6">
+      <div className="grid grid-cols-1 items-start gap-6 lg:grid-cols-[minmax(0,1fr)_360px] print:block print:space-y-6">
         {/* المحادثة + الملحن */}
-        <div className="space-y-4">
+        <div className="min-w-0 space-y-4">
           <section
             aria-label={tr.conversation}
             className="rounded-2xl border border-border bg-muted/30 p-4 sm:p-5 print:bg-transparent"
@@ -538,6 +512,11 @@ export function RequestDetailClient({
 
           {/* الملحن — مخفي عند الطباعة */}
           <div className="print:hidden">
+            <ReplyWorkflowHint
+              scope="requests"
+              locale={locale}
+              workflow={detail.workflow}
+            />
             <ReplyComposer
               canReply={mayReply}
               canNote={!clientView && mayNote}
@@ -567,7 +546,7 @@ export function RequestDetailClient({
         </div>
 
         {/* عمود المعلومات */}
-        <aside className="space-y-4">
+        <aside className="min-w-0 space-y-4">
           {/* العميل */}
           <section className="rounded-2xl border border-border bg-white p-4">
             <h2 className="text-sm font-semibold text-navy">{tr.client}</h2>
@@ -726,197 +705,27 @@ export function RequestDetailClient({
           </section>
 
           {/* الإدارة: تعيين/أولوية/حالة/أرشفة — مخفية عند الطباعة (المعيَّن يظهر في بيانات الطلب) */}
-          <section className="space-y-4 rounded-2xl border border-border bg-white p-4 print:hidden">
-            {mayAssign ? (
-              <div className="space-y-2">
-                <Label htmlFor="request-assignee">{tr.filterAssignee}</Label>
-                <div className="flex items-center gap-2">
-                  <Select
-                    value={detail.assigneeId ?? "none"}
-                    onValueChange={(v) =>
-                      patch(
-                        { assigneeId: v === "none" ? null : v },
-                        v === "none" ? tr.unassigned : undefined,
-                      )
-                    }
-                    disabled={busy || refreshFailed}
-                  >
-                    <SelectTrigger id="request-assignee" className="min-h-11 flex-1">
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="none">{tr.unassigned}</SelectItem>
-                      {staffOptions.map((s) => (
-                        <SelectItem key={s.id} value={s.id}>
-                          {s.name}
-                          {s.id === me.id ? ` (${tr.assignToMe})` : ""}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                  <Button
-                    variant="outline"
-                    size="icon"
-                    className="size-11 shrink-0"
-                    disabled={busy || detail.assigneeId === me.id}
-                    onClick={() => patch({ assigneeId: me.id }, me.name)}
-                    aria-label={tr.assignToMe}
-                    title={tr.assignToMe}
-                  >
-                    <UserPlus className="size-4" aria-hidden="true" />
-                  </Button>
-                </div>
-              </div>
-            ) : null}
-
-            {mayStatus ? (
-              <div className="space-y-2">
-                <Label htmlFor="request-priority">{tr.priority}</Label>
-                <Select
-                  value={detail.priority}
-                  onValueChange={(v) =>
-                    patch({ priority: v }, tr.priorities[v] ?? v)
-                  }
-                  disabled={busy || refreshFailed}
-                >
-                  <SelectTrigger id="request-priority" className="min-h-11">
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {PRIORITY_KEYS.map((p) => (
-                      <SelectItem key={p} value={p}>
-                        {tr.priorities[p]}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
-            ) : null}
-
-            {mayStatus ? (
-              <div className="space-y-2">
-                <Label htmlFor="request-status">{tr.changeStatus}</Label>
-                <Select
-                  value={statusTarget || detail.status}
-                  onValueChange={setStatusTarget}
-                  disabled={busy || refreshFailed}
-                >
-                  <SelectTrigger id="request-status" className="min-h-11">
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {STATUS_KEYS.map((s) => (
-                      <SelectItem key={s} value={s}>
-                        {tr.statuses[s]}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-                {isClosureTarget ? (
-                  <div className="space-y-1.5">
-                    <Label htmlFor="close-reason" className="text-destructive">
-                      {tr.closeReason}
-                    </Label>
-                    <Input
-                      id="close-reason"
-                      disabled={busy || refreshFailed}
-                      value={closeReason}
-                      onChange={(e) => setCloseReason(e.target.value)}
-                      placeholder={tr.closeReasonPlaceholder}
-                      maxLength={500}
-                      className="min-h-11"
-                    />
-                  </div>
-                ) : (
-                  <Input
-                    disabled={busy || refreshFailed}
-                    value={statusNote}
-                    onChange={(e) => setStatusNote(e.target.value)}
-                    placeholder={tr.statusNotePlaceholder}
-                    maxLength={500}
-                    className="min-h-11"
-                    aria-label={tr.changeStatus}
-                  />
-                )}
-                <Button
-                  onClick={applyStatus}
-                  disabled={
-                    applying ||
-                    busy || refreshFailed ||
-                    (statusTarget || detail.status) === detail.status
-                  }
-                  className="min-h-11 w-full rounded-full"
-                >
-                  {applying ? (
-                    <Loader2
-                      className="size-4 animate-spin"
-                      aria-hidden="true"
-                    />
-                  ) : null}
-                  {tr.applyStatus}
-                </Button>
-              </div>
-            ) : null}
-
-            {mayArchive ? (
-              <Button
-                variant={detail.archivedAt ? "outline" : "destructive"}
-                onClick={() =>
-                  patch(
-                    { action: detail.archivedAt ? "restore" : "archive" },
-                    detail.archivedAt ? tr.restore : tr.archived,
-                  )
-                }
-                disabled={busy || refreshFailed}
-                className="min-h-11 w-full rounded-full"
-              >
-                {detail.archivedAt ? (
-                  <ArchiveRestore className="size-4" aria-hidden="true" />
-                ) : (
-                  <Archive className="size-4" aria-hidden="true" />
-                )}
-                {detail.archivedAt ? tr.restore : tr.archive}
-              </Button>
-            ) : null}
-          </section>
-
-          <div className="print:hidden"><TrackPanel scope="request" cardId={detail.id} locale={locale} t={t.admin.track} /></div>
-          {/* المرفقات */}
-          <section className="rounded-2xl border border-border bg-white p-4">
-            <h2 className="text-sm font-semibold text-navy">
-              {td.attachments}
-            </h2>
-            {detail.attachments.length === 0 ? (
-              <p className="mt-2 text-xs text-muted-foreground">{tr.none}</p>
-            ) : (
-              <ul className="mt-3 space-y-1.5">
-                {detail.attachments.map((file: AttachmentRow) => (
-                  <li key={file.id} className="print:break-inside-avoid">
-                    <a
-                      href={`/api/attachments/${file.id}`}
-                      className="flex items-center gap-2 rounded-xl border border-border px-3 py-2 text-sm transition-colors hover:border-brand hover:bg-accent/40"
-                    >
-                      <Paperclip
-                        className="size-3.5 shrink-0 text-brand"
-                        aria-hidden="true"
-                      />
-                      <span className="min-w-0 flex-1 truncate ltr-isolate">
-                        {file.filename}
-                      </span>
-                      <span className="shrink-0 text-xs tabular-nums text-muted-foreground">
-                        {formatBytes(file.size)}
-                      </span>
-                      <Download
-                        className="size-3.5 shrink-0 text-muted-foreground print:hidden"
-                        aria-hidden="true"
-                      />
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            )}
-          </section>
-
+          <ConversationManagement
+            scope="requests"
+            locale={locale}
+            me={me}
+            detail={detail}
+            patch={patch}
+            onChanged={reload}
+            disabled={busy || sending || needsReview || refreshFailed}
+          />
+          <div className="print:hidden">
+            <TrackPanel
+              scope="request"
+              cardId={detail.id}
+              locale={locale}
+              t={t.admin.track}
+            />
+          </div>
+          <ConversationAttachments
+            attachments={detail.attachments}
+            locale={locale}
+          />
           {/* الخط الزمني للحالة */}
           <section className="rounded-2xl border border-border bg-white p-4">
             <h2 className="flex items-center gap-2 text-sm font-semibold text-navy">

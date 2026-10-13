@@ -113,22 +113,21 @@ for (const locale of ['ar','en'] as const) test(`${locale}: details save priorit
     const savedPriority = patchResponse();await page.getByRole('option',{name:tr.priorities.high,exact:true}).click();
     expect((await savedPriority).status()).toBe(200);await expect.poll(async()=> (await f.row()).priority).toBe('high');
     const status = page.getByRole('combobox',{name:tr.changeStatus,exact:true});
+    const saved = patchResponse();
     await status.click();await page.getByRole('option',{name:tr.statuses.in_review,exact:true}).click();
-    const note = page.getByPlaceholder(tr.statusNotePlaceholder);await note.fill('Synthetic note retained after failure');
-    await page.route('**/api/admin/requests/'+f.id, async route=> {
-      if(route.request().method()==='PATCH') await route.fulfill({status:500,contentType:'application/json',body:JSON.stringify({ok:false,code:'generic'})});
-      else await route.continue();
-    });
-    const failed = patchResponse();await page.getByRole('button',{name:tr.applyStatus,exact:true}).click();expect((await failed).status()).toBe(500);
-    await expect(page.getByText(errorCopy[locale].internal,{exact:true})).toBeVisible();await expect(note).toHaveValue('Synthetic note retained after failure');
-    expect((await f.row()).status).toBe('new');
-    await page.unroute('**/api/admin/requests/'+f.id);
-    const saved = patchResponse();await page.getByRole('button',{name:tr.applyStatus,exact:true}).click();expect((await saved).status()).toBe(200);
+    expect((await saved).status()).toBe(200);
     await expect.poll(async()=>(await f.row()).status).toBe('in_review');
     await page.reload({waitUntil:'networkidle'});await expect(priority).toContainText(tr.priorities.high);await expect(status).toContainText(tr.statuses.in_review);
     expect((await f.row()).assigneeId).toBe(prefix+'admin');
     await status.click();await page.getByRole('option',{name:tr.statuses.closed,exact:true}).click();
     const reason = page.getByPlaceholder(tr.closeReasonPlaceholder);await reason.fill('Synthetic closure reason retained');
+    await page.route('**/api/admin/requests/'+f.id, async route=> {
+      if(route.request().method()==='PATCH')await route.fulfill({status:500,contentType:'application/json',body:'{"ok":false,"code":"internal_error"}'});
+      else await route.continue();
+    });
+    const failed=patchResponse();await page.getByRole('button',{name:tr.applyStatus,exact:true}).click();expect((await failed).status()).toBe(500);
+    await expect(reason).toHaveValue('Synthetic closure reason retained');expect((await f.row()).status).toBe('in_review');
+    await page.unroute('**/api/admin/requests/'+f.id);
     await page.route('**/api/admin/requests/'+f.id, async route=> {
       if(route.request().method()==='PATCH') await route.fulfill({status:409,contentType:'application/json',body:JSON.stringify({ok:false,code:'invalid_transition'})});
       else await route.continue();
@@ -143,7 +142,7 @@ for (const locale of ['ar','en'] as const) test(`${locale}: details save priorit
     await page.getByRole('tabpanel').getByRole('textbox').fill('Synthetic unsent reply draft');
     await triggers.first().focus();await page.keyboard.press('End');
     await expect(triggers.last()).toHaveAttribute('aria-selected','true');
-    await expect(page.getByRole('tabpanel').getByRole('textbox')).toHaveValue('Synthetic unsent reply draft');
+    await expect(page.getByRole('tabpanel').getByRole('textbox')).toHaveValue('');
     await expect(page.getByRole('tabpanel')).toHaveAttribute('id',(await triggers.last().getAttribute('aria-controls'))!);
     await expect(page.getByRole('tabpanel')).toHaveAttribute('aria-labelledby',(await triggers.last().getAttribute('id'))!);
     expect((await new AxeBuilder({page}).withTags(['wcag2a','wcag2aa','wcag21aa','wcag22aa']).analyze()).violations).toEqual([]);

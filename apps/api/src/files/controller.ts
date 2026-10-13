@@ -101,10 +101,11 @@ export class FileController {
   @ApiBody({
     schema: {
       type: "object",
-      required: ["file", "requestId"],
+      required: ["file"],
       properties: {
         file: { type: "string", format: "binary" },
         requestId: { type: "string" },
+        inquiryId: { type: "string" },
       },
     },
   })
@@ -112,12 +113,14 @@ export class FileController {
     @Req() req: FileRequest,
     @UploadedFile() file: MultipartFile | undefined,
     @Body("requestId") requestId: unknown,
+    @Body("inquiryId") inquiryId: unknown,
   ) {
-    if (!file || !requestId) throw new AuthFault(400, "invalid");
+    if (!file || (!!requestId === !!inquiryId) || typeof (requestId??inquiryId)!=='string') throw new AuthFault(400, "invalid");
     return this.files.uploadAttachment(
       req.actor,
-      String(requestId),
+      String(requestId??inquiryId),
       asFile(file),
+      requestId?'requests':'inquiries',
     );
   }
   @Get("attachments/:id") async attachment(

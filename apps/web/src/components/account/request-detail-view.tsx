@@ -210,7 +210,7 @@ export function RequestDetailView({
     );
   }
 
-  const statusLabel = t.statuses[request.status] ?? request.status;
+  const statusLabel = request.workflowStage?.[locale==='ar'?'nameAr':'nameEn']??t.statuses[request.status]??request.status;
   const canCancel = CANCELLABLE.includes(request.status) && !request.archivedAt;
 
   return (

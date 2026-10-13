@@ -254,7 +254,7 @@ export class AdminOperationsService {
     };
   }
   async savedReplies(actor: AuthUser) {
-    requirePermission(actor, "requests.view.all");
+    if(!can(actor,'requests.view.all')&&!can(actor,'inquiries.view.all'))throw new AuthFault(403,'forbidden');
     return {
       ok: true,
       replies: await this.db.query(
@@ -268,7 +268,7 @@ export class AdminOperationsService {
     id?: string,
     remove = false,
   ) {
-    requirePermission(actor, "requests.reply");
+    if(!can(actor,'requests.reply')&&!can(actor,'inquiries.reply'))throw new AuthFault(403,'forbidden');
     const values: Record<string, string> = {};
     for (const [key, max] of [
       ["name", 80],

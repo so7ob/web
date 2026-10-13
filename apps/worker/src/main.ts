@@ -1,3 +1,4 @@
+import {WorkflowEngine} from '@so7ob/server';
 import {AuditReports,AuditOperations,auditContext} from '@so7ob/server';
 import {resolve} from 'node:path';
 import {DiagnosticLogger,RotatingDiagnosticFile,DiagnosticStore} from '@so7ob/server';
@@ -13,6 +14,7 @@ process.once('SIGTERM', () => { stopping = true; }); process.once('SIGINT', () =
 const queue = new MailQueue(db, new PayloadCipher());
 const transport = smtpTransport();
 const webhooks = new WebhookQueue(db);
+const workflow = new WorkflowEngine(db);
 const publication = new PagePublicationService(db);
 let lastScheduleCheck = 0,lastAuditProbe=0;
 const auditReports=new AuditReports(db),auditOperations=new AuditOperations(db);
@@ -30,6 +32,7 @@ try {
       const webhook = stopping ? null : await webhooks.claim();
       if (webhook) { await processWebhook(webhooks, webhook); process.stdout.write(JSON.stringify({ event: 'webhook_attempt_finished', jobId: webhook.id })+'\n'); }
       let activity=!!job||!!webhook;
+      if(!stopping) activity=await workflow.processOne()||activity;
       if(!stopping){try{activity=await auditReports.processOne()||activity;for(let n=0;n<25&&!stopping;n++){if(!await auditOperations.processOne())break;activity=true;}}catch(error){diagnostics.record({component:'Worker',event:'worker_failed',code:'internal_error',operation:'audit_processing'},error);}}
       if(!stopping&&Date.now()-lastAuditProbe>60000){lastAuditProbe=Date.now();try{await auditOperations.probe();await auditReports.cleanup();}catch(error){diagnostics.record({component:'Worker',event:'worker_failed',code:'internal_error',operation:'audit_probe'},error);}}
       if (!stopping && Date.now() - lastScheduleCheck >= 1000) { const result=await publication.runDue();activity ||= result.published+result.skipped>0; lastScheduleCheck = Date.now(); }
