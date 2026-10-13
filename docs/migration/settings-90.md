@@ -32,7 +32,9 @@ An initial full browser run exposed two test-harness assumptions: axe asynchrono
 
 CI also exposed a pre-existing account submission race: the child form displayed success before the parent had deleted the server draft, and an outstanding autosave could recreate it. Account autosaves are now serialized and drained before deletion; the parent owns completion feedback. The existing bilingual portal journey deliberately holds an autosave through request creation to verify ordering and final draft removal.
 
-Delivery gate outcomes and the final SHA/CI run are recorded in the PR. Required commands: lint, typecheck, test, build, test:independence, test:e2e, test:infra, and git diff --check. CI preserves `.migration/settings/*.png` as `settings-90-synthetic-interfaces`.
+Local acceptance on product head `d54470423afaf8747264d9134006ec8ed7962f55`: lint, typecheck, 933 tests in 54 files, build, independence, infrastructure and diff checks all exited 0. The final full browser run passed 270/270 in 18.5 minutes; the four deterministic delayed-autosave portal cases also passed separately. Eight synthetic screenshots cover Arabic/English × 375/1280 × light/dark. Logs and screenshots are retained locally under `.migration/settings/` and the CI artifact below.
+
+Final CI status and its exact head are recorded in PR #91. Earlier incomplete or cancelled CI attempts are not acceptance evidence. No merge, deployment, release, production migration or change to the user's saved settings was performed. Required commands: lint, typecheck, test, build, test:independence, test:e2e, test:infra, and git diff --check. CI preserves `.migration/settings/*.png` as `settings-90-synthetic-interfaces`.
 
 ## Rollback and boundaries
 
