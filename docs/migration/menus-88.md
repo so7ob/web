@@ -44,12 +44,17 @@ Nested menus, extra placement locations and drag-and-drop are outside this chang
 - Isolated MariaDB 10.11.18 databases: `so7ob_menus88_unit_test` and
   `so7ob_menus88_browser_test`; fresh migrations, synthetic users/content only.
 - Local unit/integration suite: 52 files, 926 tests passed, exit 0.
+- Full local browser suite at `4b86cda`: 260 passed in 18.4 minutes, exit 0.
+  A subsequent positioning-only correction moves the sticky preview below the
+  64px admin header; its final focused results and full exact-head CI are linked
+  in the PR rather than inferred from that earlier full run.
 - Focused browser run: 16 cases passed, exit 0, including the existing public
   HTML/audit save and concurrent-editor conflict journeys.
 - New `tests/e2e/menus-editor.spec.ts`: independent header/footer drafts, real
   checked saves, reorder by keyboard, page/home links, visibility preview,
   incomplete-item validation, cancel/confirm removal, retained failed drafts,
-  blocked uncertain retries, loading failure recovery and long-label overflow.
+  blocked uncertain retries, loading failure recovery, long-label overflow and
+  keeping the desktop preview below the sticky admin header during scrolling.
 - AR/EN, RTL/LTR, 375/1280, keyboard and axe WCAG 2 A/AA, 2.1 AA and 2.2 AA.
 - Required delivery gates: lint, typecheck, test, build, independence, full E2E,
   infra and `git diff --check`. Final full-suite results and exact tested SHA are

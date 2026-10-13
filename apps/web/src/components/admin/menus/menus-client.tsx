@@ -787,7 +787,7 @@ export function MenusClient({ me, locale }: { me: Me; locale: Locale }) {
               </section>
               <aside
                 aria-labelledby="menu-preview-title"
-                className="min-w-0 rounded-2xl border border-border bg-white p-5 xl:sticky xl:top-6"
+                className="min-w-0 rounded-2xl border border-border bg-white p-5 xl:sticky xl:top-24"
               >
                 <h2
                   id="menu-preview-title"

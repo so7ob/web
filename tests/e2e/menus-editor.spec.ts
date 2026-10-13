@@ -137,6 +137,21 @@ for (const locale of ["ar", "en"] as const) {
       ]);
       expect(persisted.footer[1].enabled).toBe(false);
       expect(persisted.footer[2].pageSlug).toBe("");
+      if (info.project.name === "desktop") {
+        for (const toggle of await page
+          .locator('button[aria-controls^="details-"]')
+          .all()) {
+          if ((await toggle.getAttribute("aria-expanded")) === "false")
+            await toggle.click();
+        }
+        await page.evaluate(() => window.scrollTo(0, 500));
+        const preview = await page
+          .getByRole("complementary", { name: tm.preview })
+          .boundingBox();
+        const header = await page.locator("header.sticky").boundingBox();
+        expect(preview!.y).toBeGreaterThanOrEqual(header!.y + header!.height);
+      }
+
       expect(
         await page.evaluate(
           () => document.documentElement.scrollWidth <= window.innerWidth,
