@@ -32,6 +32,7 @@ export function NewRequestView({
 
   const saveTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const finishedRef = useRef(false);
+  const pendingDraftSave = useRef<Promise<unknown>>(Promise.resolve());
 
   // استعادة مسودة الخادم مرة واحدة عند التحميل
   useEffect(() => {
@@ -63,7 +64,9 @@ export function NewRequestView({
     if (finishedRef.current) return;
     if (saveTimer.current) clearTimeout(saveTimer.current);
     saveTimer.current = setTimeout(() => {
-      void apiFetch("/api/account/drafts", { method: "PUT", body: JSON.stringify(values) });
+      pendingDraftSave.current = pendingDraftSave.current.then(() =>
+        finishedRef.current ? undefined : apiFetch("/api/account/drafts", { method: "PUT", body: JSON.stringify(values) })
+      );
     }, 3000);
   }, []);
 
@@ -72,6 +75,8 @@ export function NewRequestView({
     async (refCode: string) => {
       finishedRef.current = true;
       if (saveTimer.current) clearTimeout(saveTimer.current);
+      // Finish an already-sent autosave before deleting; otherwise it can recreate the draft.
+      await pendingDraftSave.current;
       await apiFetch("/api/account/drafts", { method: "DELETE" });
       toast.success(t.submitSuccess);
 

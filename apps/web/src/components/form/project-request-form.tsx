@@ -196,8 +196,9 @@ export function ProjectRequestForm({
         }
         setRefCode(body.ref);
         setTrackUrl(typeof body.trackUrl === "string" ? body.trackUrl : null);
-        setStatus("success");
-        onSubmitted?.(body.ref);
+        // The account parent owns its success state after draft cleanup completes.
+        if (onSubmitted) onSubmitted(body.ref);
+        else setStatus("success");
         document.getElementById("form-top")?.scrollIntoView({ behavior: "smooth", block: "start" });
         return;
       }

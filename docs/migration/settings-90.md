@@ -30,6 +30,8 @@ The contracts cover extreme colors, contrast, executable/invalid setting values 
 
 An initial full browser run exposed two test-harness assumptions: axe asynchronous frame timers cannot reliably execute inside the script-disabled preview, and a file-cleanup assertion assumed its job was the only queued deletion. The host and the exact preview document are now both audited, with the preview copied to an isolated test page so the production sandbox stays intact. The cleanup test processes the FIFO through its own job and asserts both completion and byte removal. No accessibility rule or deletion assertion was removed.
 
+CI also exposed a pre-existing account submission race: the child form displayed success before the parent had deleted the server draft, and an outstanding autosave could recreate it. Account autosaves are now serialized and drained before deletion; the parent owns completion feedback. The existing bilingual portal journey deliberately holds an autosave through request creation to verify ordering and final draft removal.
+
 Delivery gate outcomes and the final SHA/CI run are recorded in the PR. Required commands: lint, typecheck, test, build, test:independence, test:e2e, test:infra, and git diff --check. CI preserves `.migration/settings/*.png` as `settings-90-synthetic-interfaces`.
 
 ## Rollback and boundaries
