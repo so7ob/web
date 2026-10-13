@@ -123,6 +123,13 @@ jobs:
             test-results/**/synthetic-request-details.png
           if-no-files-found: error
           retention-days: 30
+      - name: Preserve synthetic bilingual menu screenshots
+        uses: actions/upload-artifact@v4
+        with:
+          name: menus-88-synthetic-interfaces
+          path: .migration/menus/*.png
+          if-no-files-found: error
+          retention-days: 30
       - uses: actions/upload-artifact@v4
         if: failure()
         with:
