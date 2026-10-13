@@ -70,6 +70,11 @@ for(const locale of ['ar','en'] as const)for(const mode of ['light','dark'] as c
       const t=getPortalContent(locale),te=t.admin.editor;
       for(const lang of ['en','ar']){await page.locator(`#editor-language-${lang}-${pageId}`).click();await capture('editor-language-'+lang);}
       if(info.project.name==='desktop')await captureTabs('editor-library',page.locator('aside').filter({has:page.getByRole('tab')}));
+      else {
+        const libraryTrigger=page.getByRole('button',{name:te.library,exact:true});await libraryTrigger.click();
+        const library=page.getByRole('dialog',{name:te.library,exact:true});await captureTabs('editor-library',library);
+        await page.keyboard.press('Escape');await expect(library).not.toBeVisible();await expect.soft(libraryTrigger).toBeFocused();
+      }
       await page.locator('[data-editor-node="surface"]').locator('button[aria-label^="'+te.selectedBlock+':"]').first().focus();
       await page.keyboard.press('Enter');
       const sheet=page.getByRole('dialog',{name:te.properties,exact:true});
