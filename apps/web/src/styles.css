@@ -39,22 +39,29 @@
   --color-popover: var(--popover);
   --color-card-foreground: var(--card-foreground);
   --color-card: var(--card);
+  --radius-2xl: var(--panel-radius, 1rem);
+  --radius-3xl: var(--panel-radius-large, 1.5rem);
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
 
+  --color-inverse: var(--inverse);
+  --color-inverse-soft: var(--inverse-soft);
+  --color-on-brand: var(--on-brand);
   /* ألوان الهوية — سُحُب التقنية */
-  --color-navy: #0b1f3a;
-  --color-navy-soft: #16305a;
-  --color-brand: #0369a1;
-  --color-brand-strong: #075985;
-  --color-brand-soft: #e0f2fe;
-  --color-skydrop: #38bdf8;
-  --color-digital: #6d28d9;
+  --color-navy: var(--navy);
+  --color-navy-soft: var(--navy-soft);
+  --color-brand: var(--brand);
+  --color-brand-strong: var(--brand-strong);
+  --color-brand-soft: var(--brand-soft);
+  --color-skydrop: var(--skydrop);
+  --color-digital: var(--digital);
 }
 
 :root {
+  --navy:#0b1f3a;--navy-soft:#16305a;--brand:#0369a1;--brand-strong:#075985;--brand-soft:#e0f2fe;--skydrop:#38bdf8;--digital:#6d28d9;--inverse:#0b1f3a;--inverse-soft:#16305a;--on-brand:#ffffff;
+  --control-padding:0.625rem;--row-padding:0.875rem;
   --radius: 0.75rem;
   --background: #f8fafc;
   --foreground: #0b1f3a;
@@ -105,10 +112,10 @@
   }
   /* الخطوط: IBM Plex Sans Arabic للعربية و IBM Plex Sans للإنجليزية */
   html[lang="ar"] body {
-    font-family: "IBM Plex Sans Arabic", "IBM Plex Sans", system-ui, -apple-system, sans-serif;
+    font-family: var(--site-font,"IBM Plex Sans Arabic",system-ui,sans-serif);
   }
   html[lang="en"] body {
-    font-family: "IBM Plex Sans", "IBM Plex Sans Arabic", system-ui, -apple-system, sans-serif;
+    font-family: var(--site-font,"IBM Plex Sans",system-ui,sans-serif);
   }
   ::selection {
     background: #bae6fd;
@@ -198,3 +205,16 @@
   /* Source info text was 4.35:1; keep its hue/background at 5.71:1. */
   --info-text: hsl(210 92% 38%);
 }
+
+/* Shared controls use the configured geometry without reducing pointer targets. */
+[data-slot="input"], [data-slot="textarea"], [data-slot="select-trigger"], [data-slot="button"] { border-radius:var(--radius); }
+[data-slot="input"], [data-slot="select-trigger"] { min-height:2.75rem; padding-block:var(--control-padding); height:auto; }
+[data-slot="table-cell"], [data-slot="table-head"] { padding-block:var(--row-padding); }
+[data-color-mode="dark"] .logo-for-light { display:none; }
+[data-color-mode="light"] .logo-for-dark { display:none; }
+@media print {
+ :root[data-color-mode] { color-scheme:light; --background:#fff;--foreground:#0b1f3a;--card:#fff;--card-foreground:#0b1f3a;--navy:#0b1f3a;--muted:#f1f5f9;--muted-foreground:#475569;--border:#cbd5e1;--primary:#0369a1;--brand:#0369a1;--primary-foreground:#fff; }
+}
+
+html { scroll-padding-block: 6rem; }
+#admin-shell table td, #admin-shell table th { padding-block:var(--row-padding); }

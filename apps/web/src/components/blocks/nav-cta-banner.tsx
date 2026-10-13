@@ -14,8 +14,8 @@ const VARIANT_CLASSES: Record<string, string> = {
   primary:
     "inline-flex min-h-11 items-center rounded-full bg-primary px-5 text-sm font-semibold text-primary-foreground transition-colors hover:bg-brand-strong",
   outline:
-    "inline-flex min-h-11 items-center rounded-full border border-brand/30 bg-white px-5 text-sm font-semibold text-brand transition-colors hover:border-brand",
-  navy: "inline-flex min-h-11 items-center rounded-full bg-navy px-5 text-sm font-semibold text-white transition-colors hover:bg-navy-soft",
+    "inline-flex min-h-11 items-center rounded-full border border-brand/30 bg-card px-5 text-sm font-semibold text-brand transition-colors hover:border-brand",
+  navy: "inline-flex min-h-11 items-center rounded-full bg-inverse px-5 text-sm font-semibold text-white transition-colors hover:bg-inverse-soft",
 };
 
 /** شريط دعوة للانتقال بين الصفحات (من AboutPage) */

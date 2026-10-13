@@ -307,7 +307,7 @@ export function TemplatesDialog({
                       onChange={(e) => setNameAr(e.target.value)}
                       placeholder={tt.formNameAr}
                       maxLength={120}
-                      className="min-h-10 rounded-lg bg-white"
+                      className="min-h-10 rounded-lg bg-card"
                       aria-label={tt.formNameAr}
                     />
                     <Input
@@ -315,7 +315,7 @@ export function TemplatesDialog({
                       onChange={(e) => setNameEn(e.target.value)}
                       placeholder={tt.formNameEn}
                       maxLength={120}
-                      className="min-h-10 rounded-lg bg-white"
+                      className="min-h-10 rounded-lg bg-card"
                       aria-label={tt.formNameEn}
                     />
                     <Textarea
@@ -324,7 +324,7 @@ export function TemplatesDialog({
                       placeholder={tt.formDescAr}
                       maxLength={400}
                       rows={2}
-                      className="resize-none rounded-lg bg-white"
+                      className="resize-none rounded-lg bg-card"
                       aria-label={tt.formDescAr}
                     />
                     <Textarea
@@ -333,7 +333,7 @@ export function TemplatesDialog({
                       placeholder={tt.formDescEn}
                       maxLength={400}
                       rows={2}
-                      className="resize-none rounded-lg bg-white"
+                      className="resize-none rounded-lg bg-card"
                       aria-label={tt.formDescEn}
                     />
                   </div>
@@ -371,7 +371,7 @@ export function TemplatesDialog({
                   onClick={() => setShowSaveForm(true)}
                 >
                   <span className="flex items-center gap-2 text-sm font-semibold text-navy">
-                    <span className="flex size-9 shrink-0 items-center justify-center rounded-lg bg-brand text-white shadow-sm">
+                    <span className="flex size-9 shrink-0 items-center justify-center rounded-lg bg-brand text-on-brand shadow-sm">
                       <Sparkles className="size-4.5" aria-hidden="true" />
                     </span>
                     {tt.saveFromCurrent}
@@ -422,13 +422,13 @@ export function TemplatesDialog({
               return (
                 <article
                   key={tpl.id}
-                  className="group relative flex gap-3.5 rounded-2xl border border-border/70 bg-white p-4 shadow-sm transition-all hover:-translate-y-0.5 hover:border-brand/40 hover:shadow-md"
+                  className="group relative flex gap-3.5 rounded-2xl border border-border/70 bg-card p-4 shadow-sm transition-all hover:-translate-y-0.5 hover:border-brand/40 hover:shadow-md"
                 >
                   {/* شعار النوع */}
                   <span
                     className={cn(
                       "mt-0.5 flex size-11 shrink-0 items-center justify-center rounded-xl shadow-inner",
-                      tpl.kind === "builtin" ? "bg-navy text-white" : "bg-accent text-brand-strong"
+                      tpl.kind === "builtin" ? "bg-inverse text-white" : "bg-accent text-brand-strong"
                     )}
                     aria-hidden="true"
                   >
@@ -441,13 +441,13 @@ export function TemplatesDialog({
                       <span
                         className={cn(
                           "rounded-full px-2 py-0.5 text-[10px] font-bold leading-none",
-                          tpl.kind === "builtin" ? "bg-navy/10 text-navy" : "bg-brand/10 text-brand"
+                          tpl.kind === "builtin" ? "bg-inverse/10 text-navy" : "bg-brand/10 text-brand"
                         )}
                       >
                         {tpl.kind === "builtin" ? tt.builtin : tt.custom}
                       </span>
                       {!hasLocaleContent && (
-                        <span className="rounded-full bg-amber-100 px-2 py-0.5 text-[10px] font-semibold leading-none text-amber-700">
+                        <span className="rounded-full bg-amber-100 dark:bg-amber-950 px-2 py-0.5 text-[10px] font-semibold leading-none text-amber-700 dark:text-amber-200">
                           {tt.missingLocale}
                         </span>
                       )}
@@ -531,7 +531,7 @@ export function TemplatesDialog({
               <span className="block rounded-lg bg-accent px-3 py-2 text-xs font-semibold text-navy">
                 {tt.applyLocaleNote}
               </span>
-              <span className="block rounded-lg bg-emerald-50 px-3 py-2 text-xs font-semibold text-emerald-700">
+              <span className="block rounded-lg bg-emerald-50 dark:bg-emerald-950 px-3 py-2 text-xs font-semibold text-emerald-700 dark:text-emerald-200">
                 {tt.applyBackupNote}
               </span>
             </AlertDialogDescription>

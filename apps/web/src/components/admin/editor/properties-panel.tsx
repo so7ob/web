@@ -73,9 +73,9 @@ const BACKGROUND_LABELS: Record<(typeof BACKGROUND_TOKENS)[number], Bi> = {
 
 const BACKGROUND_SWATCH: Record<(typeof BACKGROUND_TOKENS)[number], string> = {
   default: "bg-transparent border border-dashed border-border",
-  white: "bg-white border border-border",
+  white: "bg-card border border-border",
   accent: "bg-accent/60 border border-border",
-  navy: "bg-navy border border-navy",
+  navy: "bg-inverse border border-navy",
   soft: "bg-brand-soft/40 border border-border",
   muted: "bg-muted border border-border",
 };
@@ -316,7 +316,7 @@ function AppearanceEditor({ node, locale, onStyleChange }: AppearanceEditorProps
               aria-pressed={device === tab.key}
               className={cn(
                 "min-h-7 cursor-pointer rounded-lg px-1 text-[11px] font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand",
-                device === tab.key ? "bg-white text-navy shadow-sm" : "text-muted-foreground hover:text-navy"
+                device === tab.key ? "bg-card text-navy shadow-sm" : "text-muted-foreground hover:text-navy"
               )}
             >
               {tab.label}
@@ -386,7 +386,7 @@ function AppearanceEditor({ node, locale, onStyleChange }: AppearanceEditorProps
                 type="button"
                 onClick={() => applyPreset(preset.base)}
                 title={locale === "en" ? preset.en : preset.ar}
-                className="cursor-pointer rounded-full border border-border/70 bg-white px-2.5 py-1 text-[11px] font-medium text-navy transition-colors hover:border-brand hover:bg-accent/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
+                className="cursor-pointer rounded-full border border-border/70 bg-card px-2.5 py-1 text-[11px] font-medium text-navy transition-colors hover:border-brand hover:bg-accent/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
               >
                 {locale === "en" ? preset.en : preset.ar}
               </button>

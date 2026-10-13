@@ -548,7 +548,7 @@ export function RequestDetailClient({
         {/* عمود المعلومات */}
         <aside className="min-w-0 space-y-4">
           {/* العميل */}
-          <section className="rounded-2xl border border-border bg-white p-4">
+          <section className="rounded-2xl border border-border bg-card p-4">
             <h2 className="text-sm font-semibold text-navy">{tr.client}</h2>
             <dl className="mt-3 space-y-2 text-sm">
               <div className="flex items-start justify-between gap-3">
@@ -627,7 +627,7 @@ export function RequestDetailClient({
           </section>
 
           {/* بيانات الطلب */}
-          <section className="rounded-2xl border border-border bg-white p-4">
+          <section className="rounded-2xl border border-border bg-card p-4">
             <h2 className="text-sm font-semibold text-navy">
               {td.requestInfo}
             </h2>
@@ -727,7 +727,7 @@ export function RequestDetailClient({
             locale={locale}
           />
           {/* الخط الزمني للحالة */}
-          <section className="rounded-2xl border border-border bg-white p-4">
+          <section className="rounded-2xl border border-border bg-card p-4">
             <h2 className="flex items-center gap-2 text-sm font-semibold text-navy">
               <History className="size-4 text-brand" aria-hidden="true" />
               {td.statusTimeline}

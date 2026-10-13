@@ -291,7 +291,7 @@ export function EditorCanvas({
             DEVICE_WIDTHS[device]
           )}
         >
-          <div className="min-h-full rounded-2xl border border-border bg-white shadow-sm">
+          <div className="min-h-full rounded-2xl border border-border bg-card shadow-sm">
             {nodes.length === 0 ? (
               <div className="flex min-h-64 flex-col items-center justify-center gap-3 p-8 text-center">
                 <span className="flex size-12 items-center justify-center rounded-2xl bg-accent text-brand-strong">
@@ -338,7 +338,7 @@ export function EditorCanvas({
             <div
               data-editor-drag-overlay="canvas"
               dir={uiLocale === "ar" ? "rtl" : "ltr"}
-              className="flex items-center gap-2 rounded-xl border border-brand bg-white px-4 py-2.5 shadow-lg"
+              className="flex items-center gap-2 rounded-xl border border-brand bg-card px-4 py-2.5 shadow-lg"
             >
               <GripVertical className="size-4 text-brand" aria-hidden="true" />
               <span className="text-sm font-semibold text-navy">{nodeLabel(draggingNode.type, uiLocale)}</span>
@@ -445,7 +445,7 @@ function NodeWrapper({
             onClick={() => onSelect(node.id)}
             aria-label={`${te.selectedBlock}: ${label}`}
             title={`${te.selectedBlock}: ${label}`}
-            className="absolute end-1 top-1 z-30 flex size-7 cursor-pointer items-center justify-center rounded-lg border border-border bg-white/90 text-muted-foreground shadow-sm transition-colors hover:bg-accent hover:text-navy focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
+            className="absolute end-1 top-1 z-30 flex size-7 cursor-pointer items-center justify-center rounded-lg border border-border bg-card/90 text-muted-foreground shadow-sm transition-colors hover:bg-accent hover:text-navy focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
           >
             <MousePointerClick className="size-3.5" aria-hidden="true" />
           </button>
@@ -517,7 +517,7 @@ function NodeWrapper({
         {inlineEditing && (
           <span
             dir={uiLocale === "ar" ? "rtl" : "ltr"}
-            className="pointer-events-none absolute -top-2.5 start-3 z-30 inline-flex items-center gap-1 rounded-full bg-brand px-2 py-0.5 text-[10px] font-bold leading-4 text-white shadow-sm"
+            className="pointer-events-none absolute -top-2.5 start-3 z-30 inline-flex items-center gap-1 rounded-full bg-brand px-2 py-0.5 text-[10px] font-bold leading-4 text-on-brand shadow-sm"
           >
             <Pencil className="size-2.5" aria-hidden="true" />
             {te.inlineEditingBadge}
@@ -530,7 +530,7 @@ function NodeWrapper({
         dir={uiLocale === "ar" ? "rtl" : "ltr"}
         inert={!selected}
         className={cn(
-          "absolute top-2 start-2 z-20 flex items-center gap-0.5 rounded-xl border border-border bg-white/95 p-1 shadow-md backdrop-blur transition-opacity",
+          "absolute top-2 start-2 z-20 flex items-center gap-0.5 rounded-xl border border-border bg-card/95 p-1 shadow-md backdrop-blur transition-opacity",
           selected ? "opacity-100" : "pointer-events-none opacity-0"
         )}
       >
@@ -569,7 +569,7 @@ function NodeWrapper({
             className={cn(
               "flex size-8 items-center justify-center rounded-lg transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand",
               inlineEditing
-                ? "bg-brand text-white"
+                ? "bg-brand text-on-brand"
                 : "text-muted-foreground hover:bg-accent hover:text-brand-strong"
             )}
           >

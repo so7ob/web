@@ -27,20 +27,20 @@ const VARIANTS: Record<AnnouncementVariant, { strip: string; icon: LucideIcon; c
   info: {
     strip: "bg-skydrop/15 text-navy border-b border-skydrop/30",
     icon: Info,
-    cta: "bg-navy text-white hover:bg-navy-soft",
+    cta: "bg-inverse text-white hover:bg-inverse-soft",
   },
   warning: {
-    strip: "bg-amber-100 text-amber-900 border-b border-amber-300",
+    strip: "bg-amber-100 dark:bg-amber-950 text-amber-900 dark:text-amber-200 border-b border-amber-300",
     icon: TriangleAlert,
     cta: "bg-amber-900 text-white hover:bg-amber-800",
   },
   success: {
-    strip: "bg-emerald-100 text-emerald-900 border-b border-emerald-300",
+    strip: "bg-emerald-100 dark:bg-emerald-950 text-emerald-900 dark:text-emerald-200 border-b border-emerald-300",
     icon: CircleCheck,
     cta: "bg-emerald-900 text-white hover:bg-emerald-800",
   },
   brand: {
-    strip: "bg-navy text-white border-b border-navy-soft",
+    strip: "bg-inverse text-white border-b border-navy-soft",
     icon: Megaphone,
     cta: "bg-skydrop text-navy hover:bg-skydrop/85",
   },
@@ -125,7 +125,7 @@ export function AnnouncementBar({ announcement, locale, labels }: AnnouncementBa
           type="button"
           onClick={dismiss}
           aria-label={labels.dismiss}
-          className="grid size-11 shrink-0 place-items-center self-center rounded-full transition-colors hover:bg-white/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-current"
+          className="grid size-11 shrink-0 place-items-center self-center rounded-full transition-colors hover:bg-card/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-current"
         >
           <X className="size-4" aria-hidden="true" />
         </button>

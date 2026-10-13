@@ -26,7 +26,7 @@ export function LanguageSwitcher({ locale, common }: { locale: Locale; common: S
       onClick={() => {
         document.cookie = `${LOCALE_COOKIE}=${other}; path=/; max-age=31536000; samesite=Lax`;
       }}
-      className="inline-flex min-h-11 items-center gap-2 rounded-full border border-border bg-white/80 px-4 text-sm font-semibold text-navy transition-colors hover:border-brand hover:text-brand"
+      className="inline-flex min-h-11 items-center gap-2 rounded-full border border-border bg-card/80 px-4 text-sm font-semibold text-navy transition-colors hover:border-brand hover:text-brand"
       aria-label={common.switchLanguage}
       lang={other}
       dir="ltr"

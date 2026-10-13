@@ -390,7 +390,7 @@ export function UsersClient({
       </div>
 
       {/* الجدول */}
-      <div className="overflow-hidden rounded-2xl border border-border bg-white">
+      <div className="overflow-hidden rounded-2xl border border-border bg-card">
         <div className="overflow-x-auto">
           <Table>
             <TableHeader>
@@ -488,7 +488,7 @@ export function UsersClient({
                     </TableCell>
                     <TableCell>
                       {user.emailVerified ? (
-                        <span className="inline-flex items-center gap-1 rounded-full bg-emerald-100 px-2 py-0.5 text-[11px] font-medium text-emerald-800">
+                        <span className="inline-flex items-center gap-1 rounded-full bg-emerald-100 dark:bg-emerald-950 px-2 py-0.5 text-[11px] font-medium text-emerald-800 dark:text-emerald-200">
                           <CheckCircle2 className="size-3" aria-hidden="true" />
                           <span className="sr-only">{tu.emailVerified}</span>
                         </span>
@@ -685,7 +685,7 @@ export function UsersClient({
                 </p>
                 <div className="mt-2 flex items-center gap-2">
                   <code
-                    className="min-w-0 flex-1 truncate rounded-md bg-white px-2 py-1.5 text-xs ltr-isolate"
+                    className="min-w-0 flex-1 truncate rounded-md bg-card px-2 py-1.5 text-xs ltr-isolate"
                     dir="ltr"
                   >
                     {inviteUrl}

@@ -30,7 +30,7 @@ const AWAITING_YOU = "awaiting_you";
 
 /** لغة حبوب التبويب — مشتركة بين «الكل» وحالات الطلب (كحلي عند التفعيل) */
 const TAB_PILL_CLASS =
-  "min-h-9 rounded-full px-4 text-sm font-medium transition-colors focus-visible:ring-2 focus-visible:ring-ring/40 data-[state=inactive]:hover:bg-muted data-[state=active]:bg-navy data-[state=active]:text-white data-[state=active]:shadow-none";
+  "min-h-9 rounded-full px-4 text-sm font-medium transition-colors focus-visible:ring-2 focus-visible:ring-ring/40 data-[state=inactive]:hover:bg-muted data-[state=active]:bg-inverse data-[state=active]:text-white data-[state=active]:shadow-none";
 
 /** تبويب «بانتظار ردك» — تفعيل كهرماني بدل الكحلي ليُقرأ عرضًا خاصًّا لا حالة،
  *  بنفس لغة شارة الانتظار ومؤشر لوحة الحساب (amber-300 على amber-100) */
@@ -65,7 +65,7 @@ function AwaitingYouChip({
   const hours = Math.max(0, Math.floor(ageMs / 3_600_000));
   if (days >= 1) {
     return (
-      <span className="inline-flex items-center gap-1.5 rounded-full border border-amber-300 bg-amber-100 px-2.5 py-0.5 text-[11px] font-medium tabular-nums text-amber-900">
+      <span className="inline-flex items-center gap-1.5 rounded-full border border-amber-300 bg-amber-100 dark:bg-amber-950 px-2.5 py-0.5 text-[11px] font-medium tabular-nums text-amber-900 dark:text-amber-200">
         {label} · {daysLabel.replace("{n}", String(days))}
       </span>
     );
@@ -242,15 +242,15 @@ export function RequestsView({
           role="status"
           className={`flex flex-wrap items-center gap-3 rounded-2xl border p-4 text-sm font-medium ${
             banner.kind === "ok"
-              ? "border-emerald-200 bg-emerald-50 text-emerald-900"
+              ? "border-emerald-200 bg-emerald-50 dark:bg-emerald-950 text-emerald-900 dark:text-emerald-200"
               : banner.kind === "invalid"
-                ? "border-rose-200 bg-rose-50 text-rose-700"
-                : "border-amber-200 bg-amber-50 text-amber-900"
+                ? "border-rose-200 bg-rose-50 dark:bg-rose-950 text-rose-700 dark:text-rose-200"
+                : "border-amber-200 bg-amber-50 dark:bg-amber-950 text-amber-900 dark:text-amber-200"
           }`}
         >
           {banner.kind === "ok" ? t.claimVerifyOk : banner.kind === "invalid" ? authErrors.invalid : authErrors.generic}
           {banner.ref && (
-            <span className="rounded-full bg-white/70 px-2.5 py-0.5 font-mono text-xs font-bold" dir="ltr">
+            <span className="rounded-full bg-card/70 px-2.5 py-0.5 font-mono text-xs font-bold" dir="ltr">
               {banner.ref}
             </span>
           )}
@@ -305,7 +305,7 @@ export function RequestsView({
         </div>
       </div>
 
-      <section className="rounded-2xl border border-border bg-white p-4 sm:p-6">
+      <section className="rounded-2xl border border-border bg-card p-4 sm:p-6">
         {loading ? (
           <div className="space-y-3" role="status" aria-busy="true" aria-label={t.title}>
             {[...Array(5)].map((_, i) => (
@@ -447,7 +447,7 @@ export function RequestsView({
 
           {claimResult?.sent ? (
             <div className="space-y-4">
-              <p role="status" className="rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm font-medium text-emerald-800">
+              <p role="status" className="rounded-xl border border-emerald-200 bg-emerald-50 dark:bg-emerald-950 px-4 py-3 text-sm font-medium text-emerald-800 dark:text-emerald-200">
                 {t.claimSent}
               </p>
               {claimResult.devVerifyUrl && <DevLink url={claimResult.devVerifyUrl} hint={t.claimVerifyTitle} />}

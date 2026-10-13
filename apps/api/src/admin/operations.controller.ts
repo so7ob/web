@@ -58,6 +58,32 @@ class OperationBody {
   @ApiPropertyOptional() @Allow() items?: unknown;
 }
 class SettingsBody {
+  @Allow() "identity.showName"?: unknown;
+  @Allow() "identity.logoArLight"?: unknown;
+  @Allow() "identity.logoEnLight"?: unknown;
+  @Allow() "identity.logoArDark"?: unknown;
+  @Allow() "identity.logoEnDark"?: unknown;
+  @Allow() "identity.icon"?: unknown;
+  @Allow() "sharing.image"?: unknown;
+  @Allow() "sharing.descriptionAr"?: unknown;
+  @Allow() "sharing.descriptionEn"?: unknown;
+  @Allow() "appearance.mode"?: unknown;
+  @Allow() "appearance.primaryLight"?: unknown;
+  @Allow() "appearance.accentLight"?: unknown;
+  @Allow() "appearance.primaryDark"?: unknown;
+  @Allow() "appearance.accentDark"?: unknown;
+  @Allow() "appearance.fontAr"?: unknown;
+  @Allow() "appearance.fontEn"?: unknown;
+  @Allow() "appearance.radius"?: unknown;
+  @Allow() "appearance.density"?: unknown;
+  @Allow() "social.linkedin"?: unknown;
+  @Allow() "social.x"?: unknown;
+  @Allow() "social.facebook"?: unknown;
+  @Allow() "social.instagram"?: unknown;
+  @Allow() "social.youtube"?: unknown;
+  @Allow() "social.telegram"?: unknown;
+  @Allow() "social.whatsapp"?: unknown;
+
   @Allow() "response.hours"?: unknown;
   @Allow() "response.applyToExisting"?: unknown;
   @Allow() baseRevisions?: unknown;

@@ -130,6 +130,13 @@ jobs:
           path: .migration/menus/*.png
           if-no-files-found: error
           retention-days: 30
+      - name: Preserve synthetic bilingual settings and appearance screenshots
+        uses: actions/upload-artifact@v4
+        with:
+          name: settings-90-synthetic-interfaces
+          path: .migration/settings/*.png
+          if-no-files-found: error
+          retention-days: 30
       - uses: actions/upload-artifact@v4
         if: failure()
         with:

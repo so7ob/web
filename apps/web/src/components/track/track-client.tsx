@@ -104,10 +104,10 @@ type FailurePhase = "invalid" | "expired" | "revoked" | "policy_denied" | "login
 /** ألوان شريحة الحالة — أزواج ناعمة بهوية العلامة (بلا نيلي) */
 const STATUS_CHIP_CLASSES: Record<string, string> = {
   new: "bg-brand-soft text-brand-strong",
-  in_review: "bg-amber-100 text-amber-800",
-  awaiting_info: "bg-amber-100 text-amber-800",
-  in_progress: "bg-amber-100 text-amber-800",
-  responded: "bg-green-100 text-green-800",
+  in_review: "bg-amber-100 dark:bg-amber-950 text-amber-800 dark:text-amber-200",
+  awaiting_info: "bg-amber-100 dark:bg-amber-950 text-amber-800 dark:text-amber-200",
+  in_progress: "bg-amber-100 dark:bg-amber-950 text-amber-800 dark:text-amber-200",
+  responded: "bg-green-100 dark:bg-green-950 text-green-800 dark:text-green-200",
   closed: "bg-muted text-muted-foreground",
   cancelled: "bg-muted text-muted-foreground",
 };
@@ -116,12 +116,12 @@ const STATUS_CHIP_FALLBACK = "bg-muted text-muted-foreground";
 
 /** أيقونة ودائرة لون لكل حالة فشل */
 const FAILURE_META: Record<FailurePhase, { icon: LucideIcon; circle: string }> = {
-  invalid: { icon: XCircle, circle: "bg-rose-100 text-rose-700" },
-  expired: { icon: Hourglass, circle: "bg-amber-100 text-amber-800" },
-  revoked: { icon: ShieldAlert, circle: "bg-rose-100 text-rose-700" },
-  policy_denied: { icon: ShieldAlert, circle: "bg-amber-100 text-amber-800" },
+  invalid: { icon: XCircle, circle: "bg-rose-100 dark:bg-rose-950 text-rose-700 dark:text-rose-200" },
+  expired: { icon: Hourglass, circle: "bg-amber-100 dark:bg-amber-950 text-amber-800 dark:text-amber-200" },
+  revoked: { icon: ShieldAlert, circle: "bg-rose-100 dark:bg-rose-950 text-rose-700 dark:text-rose-200" },
+  policy_denied: { icon: ShieldAlert, circle: "bg-amber-100 dark:bg-amber-950 text-amber-800 dark:text-amber-200" },
   login_required: { icon: LogIn, circle: "bg-brand-soft text-brand-strong" },
-  rate_limited: { icon: Hourglass, circle: "bg-amber-100 text-amber-800" },
+  rate_limited: { icon: Hourglass, circle: "bg-amber-100 dark:bg-amber-950 text-amber-800 dark:text-amber-200" },
 };
 
 /** تحليل معامل card بصيغة scope:id — يقبل "?card=..." أو القيمة المجردة */
@@ -399,7 +399,7 @@ export function TrackClient({
 
     return (
       <div className="flex w-full flex-col">
-        <div className="rounded-3xl border border-border bg-white p-8 text-center sm:p-12" role="alert">
+        <div className="rounded-3xl border border-border bg-card p-8 text-center sm:p-12" role="alert">
           <span className={cn("mx-auto flex size-16 items-center justify-center rounded-full", meta.circle)}>
             <FailureIcon className="size-8" aria-hidden="true" />
           </span>
@@ -455,7 +455,7 @@ export function TrackClient({
   return (
     <div className="w-full space-y-5">
       {/* ترويسة البطاقة: النوع والحالة، الرقم المرجعي، الموضوع والوصف، التواريخ */}
-      <section className="rounded-2xl border border-border bg-white p-5 sm:p-6">
+      <section className="rounded-2xl border border-border bg-card p-5 sm:p-6">
         <div className="flex flex-wrap items-center gap-2">
           <span className="rounded-full bg-accent px-2.5 py-1 text-xs font-semibold text-brand-strong">{typeLabel}</span>
           <span className={cn("rounded-full px-2.5 py-1 text-xs font-semibold", statusChip)}>{statusLabel}</span>
@@ -499,7 +499,7 @@ export function TrackClient({
             className="h-11 shrink-0 rounded-full border-border px-5 font-semibold text-navy hover:border-brand hover:text-brand"
           >
             {copied ? (
-              <Check className="size-4 text-green-700" aria-hidden="true" />
+              <Check className="size-4 text-green-700 dark:text-green-200" aria-hidden="true" />
             ) : (
               <Copy className="size-4" aria-hidden="true" />
             )}
@@ -510,7 +510,7 @@ export function TrackClient({
 
       {/* تسلسل الحالة — يُخفى إن لم توجد أحداث */}
       {timeline.length > 0 && (
-        <section className="rounded-2xl border border-border bg-white p-5 sm:p-6">
+        <section className="rounded-2xl border border-border bg-card p-5 sm:p-6">
           <h2 className="flex items-center gap-2 text-lg font-bold text-navy">
             <History className="size-5 text-brand" aria-hidden="true" />
             {t.timeline}
@@ -539,7 +539,7 @@ export function TrackClient({
       )}
 
       {/* المحادثة */}
-      <section className="rounded-2xl border border-border bg-white p-5 sm:p-6">
+      <section className="rounded-2xl border border-border bg-card p-5 sm:p-6">
         <h2 className="flex items-center gap-2 text-lg font-bold text-navy">
           <MessageSquare className="size-5 text-brand" aria-hidden="true" />
           {t.conversation}
@@ -617,7 +617,7 @@ export function TrackClient({
       </section>
 
       {/* الرد أو سبب تعطيله */}
-      <section className="rounded-2xl border border-border bg-white p-5 sm:p-6">
+      <section className="rounded-2xl border border-border bg-card p-5 sm:p-6">
         {canReply ? (
           <form onSubmit={submitReply} noValidate className="space-y-3">
             <label htmlFor="track-reply" className="block text-sm font-bold text-navy">

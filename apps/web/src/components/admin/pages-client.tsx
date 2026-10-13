@@ -104,16 +104,16 @@ interface PagesClientProps {
 }
 
 const STATUS_TONES: Record<string, string> = {
-  published: "border-transparent bg-emerald-100 text-emerald-800",
+  published: "border-transparent bg-emerald-100 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-200",
   draft: "border-transparent bg-secondary text-secondary-foreground",
-  in_review: "border-transparent bg-amber-100 text-amber-800",
+  in_review: "border-transparent bg-amber-100 dark:bg-amber-950 text-amber-800 dark:text-amber-200",
   archived: "border-transparent bg-slate-200 text-slate-500",
 };
 
 /** شارة أيقونة ملونة حسب حالة الصفحة (تشخيص بصرية بجانب الشارة النصية) */
 const STATUS_CHIP_TONES: Record<string, string> = {
-  published: "bg-emerald-100 text-emerald-800",
-  draft: "bg-amber-100 text-amber-800",
+  published: "bg-emerald-100 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-200",
+  draft: "bg-amber-100 dark:bg-amber-950 text-amber-800 dark:text-amber-200",
   in_review: "bg-skydrop/20 text-brand-strong",
   archived: "bg-muted text-muted-foreground",
 };
@@ -366,13 +366,13 @@ export function PagesClient({ me, locale }: PagesClientProps) {
           ))}
         </div>
       ) : error ? (
-        <p className="rounded-xl border border-destructive/30 bg-red-50 p-4 text-sm text-destructive">
+        <p className="rounded-xl border border-destructive/30 bg-red-50 dark:bg-red-950 p-4 text-sm text-destructive">
           {error}
         </p>
       ) : rows.length === 0 ? (
         <EmptyState icon={FileText} title={tp.empty} body={tp.emptyBody} />
       ) : (
-        <div className="overflow-x-auto rounded-2xl border border-border bg-white shadow-sm">
+        <div className="overflow-x-auto rounded-2xl border border-border bg-card shadow-sm">
           <Table>
             <TableHeader>
               <TableRow className="bg-muted/50 hover:bg-muted/50 [&_th]:text-xs [&_th]:font-medium [&_th]:uppercase [&_th]:tracking-wide [&_th]:text-muted-foreground">
@@ -457,7 +457,7 @@ export function PagesClient({ me, locale }: PagesClientProps) {
                             aria-label={te.unpublishedChanges}
                           />
                         )}
-                      {row.scheduledPublishAt && <span className="inline-flex items-center gap-1 rounded-full bg-violet-100 px-1.5 py-0.5 text-[10px] font-bold text-violet-800" title={tp.scheduledFor.replace("{time}", fmtDateTime(row.scheduledPublishAt, locale))}><CalendarClock className="size-3" aria-hidden="true" />{fmtRelative(row.scheduledPublishAt, locale)}</span>}
+                      {row.scheduledPublishAt && <span className="inline-flex items-center gap-1 rounded-full bg-violet-100 dark:bg-violet-950 px-1.5 py-0.5 text-[10px] font-bold text-violet-800 dark:text-violet-200" title={tp.scheduledFor.replace("{time}", fmtDateTime(row.scheduledPublishAt, locale))}><CalendarClock className="size-3" aria-hidden="true" />{fmtRelative(row.scheduledPublishAt, locale)}</span>}
                         </div>
                     </TableCell>
                     <TableCell className="text-center text-sm tabular-nums text-foreground">

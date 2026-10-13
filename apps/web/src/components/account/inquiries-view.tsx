@@ -27,7 +27,7 @@ const OPEN_SHORTCUT = "open";
 
 /** لغة حبوب التبويب — منسوخة من قائمة الطلبات (كحلي عند التفعيل) */
 const TAB_PILL_CLASS =
-  "min-h-9 rounded-full px-4 text-sm font-medium transition-colors focus-visible:ring-2 focus-visible:ring-ring/40 data-[state=inactive]:hover:bg-muted data-[state=active]:bg-navy data-[state=active]:text-white data-[state=active]:shadow-none";
+  "min-h-9 rounded-full px-4 text-sm font-medium transition-colors focus-visible:ring-2 focus-visible:ring-ring/40 data-[state=inactive]:hover:bg-muted data-[state=active]:bg-inverse data-[state=active]:text-white data-[state=active]:shadow-none";
 
 /** قائمة استفسارات العميل: تبويبات حالة (URL) + بحث مؤجل + جدول + حوار استفسار جديد */
 export function InquiriesView({
@@ -175,7 +175,7 @@ export function InquiriesView({
         </div>
       </div>
 
-      <section className="rounded-2xl border border-border bg-white p-4 sm:p-6">
+      <section className="rounded-2xl border border-border bg-card p-4 sm:p-6">
         {loading ? (
           <div className="space-y-3" role="status" aria-busy="true" aria-label={t.title}>
             {[...Array(5)].map((_, i) => (

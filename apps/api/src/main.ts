@@ -166,7 +166,7 @@ type Renderer = {
   render(
     url: string,
     data: PublicView,
-  ): Promise<{ html: string; head: string; lang: string; dir: string }>;
+  ): Promise<{ html: string; head: string; lang: string; dir: string; colorMode: string }>;
 };
 async function main() {
   console.log(styleText("cyan", "[سُحُب] STARTING / جارٍ تشغيل الخادم — checking database and schema…"));
@@ -396,6 +396,7 @@ async function main() {
           template
             .replace("__LANG__", rendered.lang)
             .replace("__DIR__", rendered.dir)
+            .replace("__MODE__", rendered.colorMode)
             .replace("<!--head-->", rendered.head)
             .replace("<!--app-->", rendered.html)
             .replace(

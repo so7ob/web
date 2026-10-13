@@ -19,7 +19,7 @@ export function FaqSectionBlock({ props, locale }: { props: FaqSectionBlockProps
   const ctaHref = props.ctaHref || localePath(locale, "faq");
 
   return (
-    <Section className="bg-white">
+    <Section className="bg-card">
       <div className="grid gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:gap-16">
         <div>
           <SectionHeading kicker={props.kicker} title={props.title} description={props.description} />

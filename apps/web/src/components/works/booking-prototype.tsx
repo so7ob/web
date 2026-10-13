@@ -69,12 +69,12 @@ export function BookingPrototype({ locale }: { locale: "ar" | "en" }) {
 
   if (confirmed) {
     return (
-      <div className="rounded-xl border border-green-200 bg-green-50 p-8 text-center" dir={locale === "ar" ? "rtl" : "ltr"}>
-        <span className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-green-600 text-white">
+      <div className="rounded-xl border border-green-200 bg-green-50 dark:bg-green-950 p-8 text-center" dir={locale === "ar" ? "rtl" : "ltr"}>
+        <span className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-green-700 text-white">
           <Check className="h-6 w-6" strokeWidth={2.5} aria-hidden="true" />
         </span>
-        <p className="mt-4 text-lg font-bold text-green-900">{t.done}</p>
-        <p className="mt-2 text-sm leading-7 text-green-800">{t.doneBody}</p>
+        <p className="mt-4 text-lg font-bold text-green-900 dark:text-green-200">{t.done}</p>
+        <p className="mt-2 text-sm leading-7 text-green-800 dark:text-green-200">{t.doneBody}</p>
         <button
           type="button"
           onClick={() => {
@@ -83,7 +83,7 @@ export function BookingPrototype({ locale }: { locale: "ar" | "en" }) {
             setService(null);
             setSlot(null);
           }}
-          className="mt-5 inline-flex min-h-10 items-center gap-2 rounded-full border border-green-300 bg-white px-4 text-sm font-semibold text-green-800 hover:bg-green-100"
+          className="mt-5 inline-flex min-h-10 items-center gap-2 rounded-full border border-green-300 bg-card px-4 text-sm font-semibold text-green-800 dark:text-green-200 hover:bg-green-100"
         >
           <RotateCcw className="h-4 w-4" aria-hidden="true" />
           {t.again}
@@ -94,7 +94,7 @@ export function BookingPrototype({ locale }: { locale: "ar" | "en" }) {
 
   return (
     <div className="flex justify-center py-2" dir={locale === "ar" ? "rtl" : "ltr"}>
-      <div className="w-full max-w-md rounded-2xl border-4 border-navy/90 bg-white p-5 shadow-lg">
+      <div className="w-full max-w-md rounded-2xl border-4 border-navy/90 bg-card p-5 shadow-lg">
         <div className="mx-auto mb-3 h-1 w-10 rounded-full bg-slate-200" aria-hidden="true" />
         <p className="text-center text-sm font-bold text-navy">{t.title}</p>
 
@@ -104,7 +104,7 @@ export function BookingPrototype({ locale }: { locale: "ar" | "en" }) {
             <li key={name} className="flex items-center gap-2">
               <span
                 className={`flex h-6 w-6 items-center justify-center rounded-full text-[11px] font-bold ${
-                  i < step ? "bg-green-600 text-white" : i === step ? "bg-brand text-white" : "bg-slate-100 text-slate-400"
+                  i < step ? "bg-green-700 text-white" : i === step ? "bg-brand text-on-brand" : "bg-slate-100 dark:bg-slate-950 text-slate-400"
                 }`}
                 aria-current={i === step ? "step" : undefined}
               >
@@ -127,7 +127,7 @@ export function BookingPrototype({ locale }: { locale: "ar" | "en" }) {
                   aria-checked={service === s}
                   onClick={() => setService(s)}
                   className={`flex min-h-11 w-full items-center justify-between rounded-lg border px-4 text-sm font-medium transition-colors ${
-                    service === s ? "border-brand bg-accent text-brand-strong" : "border-border bg-white text-foreground hover:border-brand/50"
+                    service === s ? "border-brand bg-accent text-brand-strong" : "border-border bg-card text-foreground hover:border-brand/50"
                   }`}
                 >
                   {s}
@@ -158,10 +158,10 @@ export function BookingPrototype({ locale }: { locale: "ar" | "en" }) {
                           onClick={() => setSlot({ day, time })}
                           className={`ltr-isolate min-h-9 rounded-md border px-3 text-xs font-semibold transition-colors ${
                             selected
-                              ? "border-brand bg-brand text-white"
+                              ? "border-brand bg-brand text-on-brand"
                               : ok
-                                ? "border-border bg-white text-foreground hover:border-brand/60"
-                                : "cursor-not-allowed border-slate-100 bg-slate-50 text-slate-300 line-through"
+                                ? "border-border bg-card text-foreground hover:border-brand/60"
+                                : "cursor-not-allowed border-slate-100 bg-slate-50 dark:bg-slate-950 text-slate-300 line-through"
                           }`}
                         >
                           {time}
@@ -214,7 +214,7 @@ export function BookingPrototype({ locale }: { locale: "ar" | "en" }) {
             <button
               type="button"
               onClick={() => setConfirmed(true)}
-              className="inline-flex min-h-10 items-center gap-2 rounded-full bg-green-600 px-5 text-sm font-semibold text-white hover:bg-green-700"
+              className="inline-flex min-h-10 items-center gap-2 rounded-full bg-green-700 px-5 text-sm font-semibold text-white hover:bg-green-700"
             >
               <Check className="h-4 w-4" strokeWidth={2.5} aria-hidden="true" />
               {t.confirm}

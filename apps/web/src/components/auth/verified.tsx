@@ -10,10 +10,10 @@ export function Verified({ locale, value }: { locale: Locale; value: string }) {
   const body = status === "invalid" ? t.verifyInvalidBody : t.verifyOkBody;
 
   return (
-    <section className="rounded-2xl border border-border bg-white p-6 text-center shadow-sm sm:p-10" role="status">
+    <section className="rounded-2xl border border-border bg-card p-6 text-center shadow-sm sm:p-10" role="status">
       <span
         className={`mx-auto flex h-16 w-16 items-center justify-center rounded-full ${
-          status === "invalid" ? "bg-red-100 text-red-700" : "bg-green-100 text-green-700"
+          status === "invalid" ? "bg-red-100 dark:bg-red-950 text-red-700 dark:text-red-200" : "bg-green-100 dark:bg-green-950 text-green-700 dark:text-green-200"
         }`}
       >
         {status === "ok" ? (

@@ -358,7 +358,7 @@ export interface MediaResponse {
 }
 /** موضع استخدام وسيلة — يرد من حاجز الحذف (409) */
 export interface MediaUsageLocationView {
-  kind: "page_published" | "page_draft" | "page_og" | "template";
+  kind: "page_published" | "page_draft" | "page_og" | "template" | "site_setting";
   entityId: string;
   titleAr: string;
   titleEn: string;

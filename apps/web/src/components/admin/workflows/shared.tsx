@@ -7,9 +7,9 @@ import {
 import type { Locale } from "@/lib/i18n";
 import { apiSend } from "../helpers";
 export const wfControl =
-  "min-h-11 w-full min-w-0 rounded-xl border border-border bg-white px-3 py-2 text-sm text-foreground focus-visible:outline-2 focus-visible:outline-brand disabled:opacity-60";
+  "min-h-11 w-full min-w-0 rounded-xl border border-border bg-card px-3 py-2 text-sm text-foreground focus-visible:outline-2 focus-visible:outline-brand disabled:opacity-60";
 export const wfCard =
-  "min-w-0 space-y-4 rounded-2xl border border-border bg-white p-4 sm:p-5";
+  "min-w-0 space-y-4 rounded-2xl border border-border bg-card p-4 sm:p-5";
 export const words = (locale: Locale) => (ar: string, en: string) =>
   locale === "ar" ? ar : en;
 export function Field({

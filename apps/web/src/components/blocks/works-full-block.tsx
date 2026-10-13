@@ -23,12 +23,12 @@ export function WorksFullBlock({ props, locale }: { props: WorksFullBlockProps; 
 
       {/* إخلاء المسؤولية الظاهر — شرط أساسي للصدق */}
       {disclaimer && (
-        <div className={`${props.intro ? "mt-6" : ""} rounded-2xl border-2 border-amber-300 bg-amber-50 p-6 sm:p-8`}>
-          <p className="flex items-start gap-3 text-base font-bold leading-8 text-amber-900">
+        <div className={`${props.intro ? "mt-6" : ""} rounded-2xl border-2 border-amber-300 bg-amber-50 dark:bg-amber-950 p-6 sm:p-8`}>
+          <p className="flex items-start gap-3 text-base font-bold leading-8 text-amber-900 dark:text-amber-200">
             <Info className="mt-1.5 h-5 w-5 shrink-0" aria-hidden="true" />
             {disclaimer.title}
           </p>
-          <p className="mt-3 ps-8 text-sm leading-8 text-amber-800">{disclaimer.body}</p>
+          <p className="mt-3 ps-8 text-sm leading-8 text-amber-800 dark:text-amber-200">{disclaimer.body}</p>
         </div>
       )}
 
@@ -37,7 +37,7 @@ export function WorksFullBlock({ props, locale }: { props: WorksFullBlockProps; 
           <article
             key={c.key}
             id={c.key}
-            className="scroll-mt-24 overflow-hidden rounded-3xl border border-border bg-white"
+            className="scroll-mt-24 overflow-hidden rounded-3xl border border-border bg-card"
           >
             <div className={`grid lg:grid-cols-2 ${i % 2 === 1 ? "lg:[&>div:first-child]:order-2" : ""}`}>
               {/* المرئيات */}
@@ -64,9 +64,9 @@ export function WorksFullBlock({ props, locale }: { props: WorksFullBlockProps; 
                 <span
                   className={`inline-flex items-center rounded-full px-3.5 py-1.5 text-xs font-bold ${
                     c.kind === "interactive"
-                      ? "bg-green-100 text-green-800"
+                      ? "bg-green-100 dark:bg-green-950 text-green-800 dark:text-green-200"
                       : c.kind === "flow"
-                        ? "bg-violet-100 text-violet-800"
+                        ? "bg-violet-100 dark:bg-violet-950 text-violet-800 dark:text-violet-200"
                         : "bg-accent text-brand-strong"
                   }`}
                 >

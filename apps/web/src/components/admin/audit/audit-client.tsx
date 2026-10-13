@@ -69,10 +69,10 @@ export function Outcome({ value, t }: { value: string; t: AuditCopy }) {
       className={
         "inline-flex whitespace-nowrap rounded-full border px-2.5 py-1 text-xs font-medium " +
         (value === "success"
-          ? "border-emerald-200 bg-emerald-50 text-emerald-800"
+          ? "border-emerald-200 bg-emerald-50 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-200"
           : value === "denied" || value === "failure"
-            ? "border-amber-200 bg-amber-50 text-amber-900"
-            : "border-slate-200 bg-slate-50 text-slate-700")
+            ? "border-amber-200 bg-amber-50 dark:bg-amber-950 text-amber-900 dark:text-amber-200"
+            : "border-slate-200 bg-slate-50 dark:bg-slate-950 text-slate-700 dark:text-slate-200")
       }
     >
       {word(t, value)}
@@ -397,7 +397,7 @@ export function AuditClient({ me, locale }: { me: Me; locale: "ar" | "en" }) {
             ].map(([label, count, Icon], i) => {
               const MetricIcon = Icon as typeof ScrollText;
               return (
-                <div key={i} className="rounded-2xl border bg-white p-4">
+                <div key={i} className="rounded-2xl border bg-card p-4">
                   <div className="flex items-center justify-between gap-2 text-xs text-muted-foreground">
                     <span>{String(label)}</span>
                     <MetricIcon
@@ -421,7 +421,7 @@ export function AuditClient({ me, locale }: { me: Me; locale: "ar" | "en" }) {
               : ""}
           </p>
           <section
-            className="space-y-4 rounded-2xl border bg-white p-4"
+            className="space-y-4 rounded-2xl border bg-card p-4"
             aria-label={t.filters}
           >
             <div className="flex flex-wrap gap-3">
@@ -832,12 +832,12 @@ export function AuditClient({ me, locale }: { me: Me; locale: "ar" | "en" }) {
           {loading && !current ? (
             <div
               role="status"
-              className="rounded-2xl border bg-white p-12 text-center"
+              className="rounded-2xl border bg-card p-12 text-center"
             >
               {t.loading}
             </div>
           ) : !rows.length && !error ? (
-            <div className="rounded-2xl border bg-white px-6 py-16 text-center">
+            <div className="rounded-2xl border bg-card px-6 py-16 text-center">
               <ScrollText
                 aria-hidden="true"
                 className="mx-auto mb-4 size-10 text-muted-foreground"
@@ -849,7 +849,7 @@ export function AuditClient({ me, locale }: { me: Me; locale: "ar" | "en" }) {
           ) : (
             rows.length > 0 && (
               <div
-                className="overflow-hidden rounded-2xl border bg-white"
+                className="overflow-hidden rounded-2xl border bg-card"
                 aria-busy={loading}
               >
                 <div className="hidden overflow-x-auto md:block">
@@ -1187,7 +1187,7 @@ export function AuditClient({ me, locale }: { me: Me; locale: "ar" | "en" }) {
                               </p>
                               <bdi>{auditValue(change.before, t)}</bdi>
                             </div>
-                            <div className="rounded-lg border border-emerald-200 bg-emerald-50 p-2 text-emerald-950">
+                            <div className="rounded-lg border border-emerald-200 bg-emerald-50 dark:bg-emerald-950 p-2 text-emerald-950 dark:text-emerald-200">
                               <p className="mb-1 text-xs">{t.after}</p>
                               <bdi>{auditValue(change.after, t)}</bdi>
                             </div>

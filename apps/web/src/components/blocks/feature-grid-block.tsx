@@ -19,10 +19,10 @@ export function FeatureGridBlock({ props }: { props: FeatureGridBlockProps; loca
         {items.map((item, i) => (
           <li
             key={`${i}-${item.title}`}
-            className="relative rounded-2xl border border-border bg-white p-7 sm:p-9 md:ms-16"
+            className="relative rounded-2xl border border-border bg-card p-7 sm:p-9 md:ms-16"
           >
             <span
-              className="absolute -start-16 top-7 hidden h-12 w-12 select-none items-center justify-center rounded-xl bg-navy font-mono text-2xl font-bold text-skydrop md:flex"
+              className="absolute -start-16 top-7 hidden h-12 w-12 select-none items-center justify-center rounded-xl bg-inverse font-mono text-2xl font-bold text-skydrop md:flex"
               aria-hidden="true"
             >
               {String(i + 1).padStart(2, "0")}

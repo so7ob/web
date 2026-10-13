@@ -98,9 +98,9 @@ const GROUP_ORDER = ["structure", "home", "pages", "generic", "layout"] as const
 const GROUP_CHIPS: Record<(typeof GROUP_ORDER)[number], string> = {
   structure: "bg-brand/15 text-navy",
   home: "bg-skydrop/20 text-brand-strong",
-  pages: "bg-emerald-100 text-emerald-800",
-  generic: "bg-amber-100 text-amber-800",
-  layout: "bg-navy/10 text-navy",
+  pages: "bg-emerald-100 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-200",
+  generic: "bg-amber-100 dark:bg-amber-950 text-amber-800 dark:text-amber-200",
+  layout: "bg-inverse/10 text-navy",
 };
 
 function groupChip(group: string): string {
@@ -136,7 +136,7 @@ export function BlockLibrary({ locale, onAdd, className }: BlockLibraryProps) {
                         type="button"
                         onClick={() => onAdd(entry.type)}
                         title={t.addBlock}
-                        className="flex w-full min-h-11 cursor-pointer items-center gap-3 rounded-xl border border-border/70 bg-white px-3 text-start text-sm font-medium text-navy transition-all hover:border-brand hover:bg-accent/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
+                        className="flex w-full min-h-11 cursor-pointer items-center gap-3 rounded-xl border border-border/70 bg-card px-3 text-start text-sm font-medium text-navy transition-all hover:border-brand hover:bg-accent/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
                       >
                         <span
                           className={cn(

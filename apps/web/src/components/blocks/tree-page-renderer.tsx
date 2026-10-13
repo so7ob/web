@@ -56,9 +56,9 @@ function visibilityClasses(visibility: ContentNode["visibility"]): string {
 
 const LEGACY_BACKGROUND: Record<string, string> = {
   default: "",
-  white: "bg-white",
+  white: "bg-card",
   accent: "bg-accent/50",
-  navy: "bg-navy",
+  navy: "bg-inverse",
   soft: "bg-brand-soft/30",
 };
 

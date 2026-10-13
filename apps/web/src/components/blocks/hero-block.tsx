@@ -55,7 +55,7 @@ export function HeroBlock({
                 transition: { duration: 0.6, ease: "easeOut" },
               })}
         >
-          <p className="mb-5 inline-flex items-center gap-2 rounded-full border border-skydrop/40 bg-white px-4 py-2 text-sm font-semibold text-brand-strong shadow-sm">
+          <p className="mb-5 inline-flex items-center gap-2 rounded-full border border-skydrop/40 bg-card px-4 py-2 text-sm font-semibold text-brand-strong shadow-sm">
             <span
               className="inline-block h-2 w-2 rounded-full bg-skydrop"
               aria-hidden="true"
@@ -97,7 +97,7 @@ export function HeroBlock({
             </Link>
             <Link
               href={`${localePath(locale, "contact")}?type=quote`}
-              className="inline-flex min-h-12 items-center justify-center gap-2 rounded-full border-2 border-navy/15 bg-white px-7 text-base font-semibold text-navy transition-colors hover:border-brand hover:text-brand"
+              className="inline-flex min-h-12 items-center justify-center gap-2 rounded-full border-2 border-navy/15 bg-card px-7 text-base font-semibold text-navy transition-colors hover:border-brand hover:text-brand"
             >
               {t.actions.quote}
             </Link>

@@ -288,7 +288,7 @@ export function ConversationList({
         }
       />
       {row.responseOverdue ? (
-        <span className="inline-flex items-center gap-1 rounded-full border border-amber-300 bg-amber-50 px-2 py-1 text-xs text-amber-950">
+        <span className="inline-flex items-center gap-1 rounded-full border border-amber-300 bg-amber-50 dark:bg-amber-950 px-2 py-1 text-xs text-amber-950 dark:text-amber-200">
           <Timer aria-hidden="true" className="size-3" />
           {tr.overdueReply}
         </span>
@@ -619,7 +619,7 @@ export function ConversationList({
       <div
         className={
           rows.length
-            ? "hidden overflow-hidden rounded-2xl border bg-white md:block"
+            ? "hidden overflow-hidden rounded-2xl border bg-card md:block"
             : "hidden"
         }
       >

@@ -55,7 +55,7 @@ export function ForgotForm({ locale, t }: { locale: Locale; t: PortalContent["au
     return (
       <AuthCard title={t.forgotTitle}>
         <div className="mt-2 flex flex-col items-center text-center">
-          <span className="flex h-14 w-14 items-center justify-center rounded-full bg-emerald-100 text-emerald-800">
+          <span className="flex h-14 w-14 items-center justify-center rounded-full bg-emerald-100 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-200">
             <MailCheck className="h-7 w-7" aria-hidden="true" />
           </span>
           <p className="mt-4 max-w-md leading-8 text-muted-foreground">{t.forgotSent}</p>

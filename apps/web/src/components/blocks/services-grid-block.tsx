@@ -28,7 +28,7 @@ export function ServicesGridBlock({ props, locale }: { props: ServicesGridBlockP
   const featured = second ? [first, second] : first ? [first] : [];
 
   return (
-    <Section className="bg-white">
+    <Section className="bg-card">
       <SectionHeading kicker={props.kicker} title={props.title} description={props.description} />
       <div className="mt-12 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
         {featured.map((card) => (
@@ -36,10 +36,10 @@ export function ServicesGridBlock({ props, locale }: { props: ServicesGridBlockP
             key={card.service}
             href={`${localePath(locale, "services")}#${card.service}`}
             locale={locale}
-            className="group relative block overflow-hidden rounded-2xl border border-border bg-gradient-to-br from-navy to-navy-soft p-7 text-white transition-transform hover:-translate-y-1"
+            className="group relative block overflow-hidden rounded-2xl border border-border bg-gradient-to-br from-inverse to-inverse-soft p-7 text-white transition-transform hover:-translate-y-1"
           >
             <div className="absolute -end-10 -top-10 h-36 w-36 rounded-full bg-skydrop/10 blur-2xl" aria-hidden="true" />
-            <span className="inline-flex h-12 w-12 items-center justify-center rounded-xl bg-white/10 text-skydrop">
+            <span className="inline-flex h-12 w-12 items-center justify-center rounded-xl bg-card/10 text-skydrop">
               <ServiceIcon service={card.service as ServiceType} />
             </span>
             <h3 className="mt-5 text-xl font-bold">{card.name}</h3>
@@ -73,7 +73,7 @@ export function ServicesGridBlock({ props, locale }: { props: ServicesGridBlockP
         <BlockLink
           href={viewAllHref}
           locale={locale}
-          className="inline-flex min-h-11 items-center gap-2 rounded-full border border-border bg-white px-5 text-sm font-semibold text-navy transition-colors hover:border-brand hover:text-brand"
+          className="inline-flex min-h-11 items-center gap-2 rounded-full border border-border bg-card px-5 text-sm font-semibold text-navy transition-colors hover:border-brand hover:text-brand"
         >
           {viewAllLabel}
         </BlockLink>

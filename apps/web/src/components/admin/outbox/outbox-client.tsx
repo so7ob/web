@@ -90,7 +90,7 @@ export function OutboxClient({ me, locale }: OutboxClientProps) {
         </div>
       </header>
 
-      <div className="overflow-hidden rounded-2xl border border-border bg-white">
+      <div className="overflow-hidden rounded-2xl border border-border bg-card">
         <div className="overflow-x-auto">
           <Table tabIndex={0} aria-label={to.title} className="focus-visible:outline-2 focus-visible:outline-brand">
             <TableHeader>

@@ -110,7 +110,7 @@ export function ProfileForm({
         <h1 className="text-2xl font-bold text-navy">{t.title}</h1>
       </header>
 
-      <section className="max-w-2xl rounded-2xl border border-border bg-white p-6">
+      <section className="max-w-2xl rounded-2xl border border-border bg-card p-6">
         <ErrorFeedback error={formError} locale={locale} operation={t.title}/>
         <form onSubmit={onSubmit} noValidate className="space-y-5">
           <fieldset
@@ -137,8 +137,8 @@ export function ProfileForm({
                 <span
                   className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-semibold ${
                     initial.emailVerified
-                      ? "bg-green-100 text-green-800"
-                      : "bg-amber-100 text-amber-800"
+                      ? "bg-green-100 dark:bg-green-950 text-green-800 dark:text-green-200"
+                      : "bg-amber-100 dark:bg-amber-950 text-amber-800 dark:text-amber-200"
                   }`}
                 >
                   {initial.emailVerified ? (
@@ -181,7 +181,7 @@ export function ProfileForm({
                 <p
                   id="profile-name-error"
                   role="alert"
-                  className="text-xs font-medium text-red-700"
+                  className="text-xs font-medium text-red-700 dark:text-red-200"
                 >
                   {fieldErrors.name}
                 </p>
@@ -214,7 +214,7 @@ export function ProfileForm({
                   <p
                     id="profile-phone-error"
                     role="alert"
-                    className="text-xs font-medium text-red-700"
+                    className="text-xs font-medium text-red-700 dark:text-red-200"
                   >
                     {fieldErrors.phone}
                   </p>

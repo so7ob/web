@@ -18,7 +18,7 @@ interface StatDef {
 
 /** فئات بطاقة المؤشر — البطاقة نفسها بلا تغيير بصري، والرابط يضيف حلقة تركيز فقط */
 const STAT_CARD_CLASS =
-  "relative overflow-hidden rounded-2xl border border-border bg-white p-4 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-navy/10 sm:p-6";
+  "relative overflow-hidden rounded-2xl border border-border bg-card p-4 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-navy/10 sm:p-6";
 
 /** لوحة حساب العميل — مؤشرات وآخر التحديثات من قاعدة البيانات مباشرة */
 export function AccountDashboard({locale,user,data}:{locale:Locale;user:{name:string};data:AccountDashboardData}) {
@@ -29,11 +29,11 @@ export function AccountDashboard({locale,user,data}:{locale:Locale;user:{name:st
   const stats: StatDef[] = [
     { label: t.openRequests, value: openRequests, icon: FolderOpen, tone: "bg-brand-soft text-brand-strong", bar: "bg-gradient-to-r from-brand to-skydrop", href: `/${locale}/account/requests` },
     // «بانتظار ردك» — التصفية الدقيقة (آخر ردٍّ من الطاقم) عبر معامل awaiting=you
-    { label: t.awaitingReply, value: awaitingReply, icon: MessageCircle, tone: "bg-amber-100 text-amber-800", bar: "bg-gradient-to-r from-amber-400 to-amber-300", href: `/${locale}/account/requests?awaiting=you` },
-    { label: t.unreadNotifications, value: unreadNotifications, icon: Bell, tone: "bg-violet-100 text-violet-800", bar: "bg-gradient-to-r from-violet-400 to-purple-400", href: `/${locale}/account/notifications` },
-    { label: t.openInquiries, value: openInquiries, icon: MessageCircleQuestion, tone: "bg-teal-100 text-teal-800", bar: "bg-gradient-to-r from-teal-500 to-emerald-400", href: `/${locale}/account/inquiries?status=open` },
+    { label: t.awaitingReply, value: awaitingReply, icon: MessageCircle, tone: "bg-amber-100 dark:bg-amber-950 text-amber-800 dark:text-amber-200", bar: "bg-gradient-to-r from-amber-400 to-amber-300", href: `/${locale}/account/requests?awaiting=you` },
+    { label: t.unreadNotifications, value: unreadNotifications, icon: Bell, tone: "bg-violet-100 dark:bg-violet-950 text-violet-800 dark:text-violet-200", bar: "bg-gradient-to-r from-violet-400 to-purple-400", href: `/${locale}/account/notifications` },
+    { label: t.openInquiries, value: openInquiries, icon: MessageCircleQuestion, tone: "bg-teal-100 dark:bg-teal-950 text-teal-800 dark:text-teal-200", bar: "bg-gradient-to-r from-teal-500 to-emerald-400", href: `/${locale}/account/inquiries?status=open` },
     { label: t.totalInquiries, value: totalInquiries, icon: Inbox, tone: "bg-muted text-muted-foreground", bar: "bg-gradient-to-r from-slate-400 to-teal-300", href: `/${locale}/account/inquiries` },
-    { label: t.totalRequests, value: totalRequests, icon: Layers, tone: "bg-muted text-muted-foreground", bar: "bg-gradient-to-r from-navy/60 to-slate-400", href: `/${locale}/account/requests` },
+    { label: t.totalRequests, value: totalRequests, icon: Layers, tone: "bg-muted text-muted-foreground", bar: "bg-gradient-to-r from-inverse/60 to-slate-400", href: `/${locale}/account/requests` },
   ];
 
   return (
@@ -93,7 +93,7 @@ export function AccountDashboard({locale,user,data}:{locale:Locale;user:{name:st
       </section>
 
       {isEmpty ? (
-        <section className="rounded-3xl border border-border bg-white p-8 text-center sm:p-12">
+        <section className="rounded-3xl border border-border bg-card p-8 text-center sm:p-12">
           <span className="mx-auto flex size-14 items-center justify-center rounded-full bg-accent text-brand-strong ring-8 ring-accent/50">
             <FolderOpen className="size-7" aria-hidden="true" />
           </span>
@@ -112,7 +112,7 @@ export function AccountDashboard({locale,user,data}:{locale:Locale;user:{name:st
           </div>
         </section>
       ) : (
-        <section className="rounded-2xl border border-border bg-white p-4 sm:p-6">
+        <section className="rounded-2xl border border-border bg-card p-4 sm:p-6">
           <div className="flex items-center justify-between gap-4">
             <h2 className="text-lg font-bold text-navy">{t.recentUpdates}</h2>
             <Link

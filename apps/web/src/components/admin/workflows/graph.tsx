@@ -44,7 +44,7 @@ function Node({
           ? `translate(${transform.x}px,${transform.y}px)`
           : undefined,
       }}
-      className={`rounded-2xl border-2 bg-white p-3 text-start text-sm shadow-sm focus-visible:outline-4 focus-visible:outline-brand ${selected ? "border-brand" : "border-border"}`}
+      className={`rounded-2xl border-2 bg-card p-3 text-start text-sm shadow-sm focus-visible:outline-4 focus-visible:outline-brand ${selected ? "border-brand" : "border-border"}`}
     >
       <strong className="block break-words">
         {locale === "ar" ? stage.nameAr : stage.nameEn}

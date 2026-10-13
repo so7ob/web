@@ -1,3 +1,5 @@
+import {themeStyles} from './lib/appearance';
+import {PRESENTATION_DEFAULTS,mediaSettingId} from '@so7ob/contracts';
 import type { PublicView } from "@so7ob/contracts";
 import { ar } from "./content/ar";
 import { en } from "./content/en";
@@ -12,10 +14,13 @@ const escape = (value: string) =>
   );
 export function headMarkup(data: PublicView): string {
   const isAr = data.locale === "ar";
-  const meta = (isAr ? ar : en).meta;
+  const meta = {...(isAr ? ar : en).meta};
+  const name=data.settings[isAr?"site.nameAr":"site.nameEn"]||PRESENTATION_DEFAULTS[isAr?"site.nameAr":"site.nameEn"];
+  meta.shortName=name;meta.siteName=name;
+  const defaultDescription=data.settings[isAr?"sharing.descriptionAr":"sharing.descriptionEn"]||meta.pages.home.description;
   const auth = getPortalContent(data.locale).auth;
   let title = meta.pages.home.title,
-    description = meta.pages.home.description,
+    description = defaultDescription,
     ogTitle = title,
     robots = "index, follow",
     alternates = "",
@@ -27,7 +32,7 @@ export function headMarkup(data: PublicView): string {
       (isAr ? page.titleAr : page.titleEn);
     title = ogTitle + " | " + meta.shortName;
     description =
-      (isAr ? page.seoDescAr : page.seoDescEn) ?? meta.pages.home.description;
+      (isAr ? page.seoDescAr : page.seoDescEn) ?? defaultDescription;
     robots = page.restricted ? "noindex, nofollow" : "index, follow";
     const path = (locale: string) =>
       data.canonicalOrigin + "/" + locale + (page.slug ? "/" + page.slug : "");
@@ -80,7 +85,12 @@ export function headMarkup(data: PublicView): string {
   } else robots = "noindex, nofollow";
   const tag = (name: string, value: string, property = false) =>
     `<meta data-so7ob-meta ${property ? "property" : "name"}="${name}" content="${escape(value)}">`;
+  const image=(data.kind==="cms"?data.page.ogImage:null)||data.settings["sharing.image"];
+  const icon=data.settings["identity.icon"];
   return (
+    `<style data-so7ob-meta>${themeStyles(data.settings)}</style>`+
+    `<link data-so7ob-meta rel="icon" href="${escape(icon&&mediaSettingId(icon)?icon:"/icon.png")}" type="image/png"><link data-so7ob-meta rel="apple-touch-icon" href="${escape(icon&&mediaSettingId(icon)?icon:"/apple-icon.png")}">`+
+    (image&&mediaSettingId(image)?tag("og:image",data.canonicalOrigin+image,true)+tag("twitter:image",data.canonicalOrigin+image):"")+
     `<title data-so7ob-meta>${escape(title)}</title>` +
     tag("description", description) +
     tag("application-name", meta.siteName) +
@@ -89,10 +99,7 @@ export function headMarkup(data: PublicView): string {
     tag("og:title", ogTitle, true) +
     tag("og:description", description, true) +
     ogUrl +
-    (data.kind === "cms"
-      ? ""
-      : tag("og:site_name", meta.siteName, true) +
-        tag("og:type", "website", true)) +
+    tag("og:site_name", meta.siteName, true) + tag("og:type", "website", true) +
     tag("og:locale", isAr ? "ar_SA" : "en_US", true) +
     tag("og:locale:alternate", isAr ? "en_US" : "ar_SA", true) +
     tag("twitter:card", "summary") +

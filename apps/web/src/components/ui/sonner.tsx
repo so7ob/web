@@ -1,10 +1,11 @@
 "use client"
 
-import { useTheme } from "next-themes"
+import {useSyncExternalStore} from "react"
+const subscribe=(notify:()=>void)=>{const observer=new MutationObserver(notify);observer.observe(document.documentElement,{attributes:true,attributeFilter:["data-color-mode"]});return()=>observer.disconnect();};
 import { Toaster as Sonner, ToasterProps } from "sonner"
 
 const Toaster = ({ ...props }: ToasterProps) => {
-  const { theme = "system" } = useTheme()
+  const theme=useSyncExternalStore(subscribe,()=>document.documentElement.dataset.colorMode==="dark"?"dark":"light",()=>"light")
 
   return (
     <Sonner

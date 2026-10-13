@@ -60,7 +60,7 @@ export function ClipboardMenu({ entries, uiLocale, onPaste, onClear }: Clipboard
               {count > 0 && (
                 <span
                   aria-hidden="true"
-                  className="absolute -end-0.5 -top-0.5 grid size-4 place-items-center rounded-full bg-brand text-[9px] font-bold leading-none text-white tabular-nums"
+                  className="absolute -end-0.5 -top-0.5 grid size-4 place-items-center rounded-full bg-brand text-[9px] font-bold leading-none text-on-brand tabular-nums"
                 >
                   {count}
                 </span>

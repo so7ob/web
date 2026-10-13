@@ -34,9 +34,9 @@ import { SpacerBlock, type SpacerBlockProps } from "./spacer-block";
 /** خلفيات الأقسام حسب block.style.background */
 const BACKGROUND_CLASSES: Record<string, string> = {
   default: "",
-  white: "bg-white",
+  white: "bg-card",
   accent: "bg-accent/50",
-  navy: "bg-navy",
+  navy: "bg-inverse",
   soft: "bg-brand-soft/30",
 };
 

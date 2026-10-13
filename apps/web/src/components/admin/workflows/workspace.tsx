@@ -1695,7 +1695,7 @@ function Validation({ errors, locale }: { errors: string[]; locale: Locale }) {
   return errors.length ? (
     <ul
       role="alert"
-      className="list-inside list-disc rounded-xl bg-amber-50 p-4 text-sm text-amber-950"
+      className="list-inside list-disc rounded-xl bg-amber-50 dark:bg-amber-950 p-4 text-sm text-amber-950 dark:text-amber-200"
     >
       {errors.map((e) => (
         <li key={e}>

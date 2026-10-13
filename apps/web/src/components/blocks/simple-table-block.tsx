@@ -23,7 +23,7 @@ export function SimpleTableBlock({ props }: { props: SimpleTableBlockProps; loca
   return (
     <BlockContainer>
       {props.caption && <p className="mb-3 text-sm font-semibold text-muted-foreground">{props.caption}</p>}
-      <div className="overflow-hidden rounded-2xl border border-border bg-white">
+      <div className="overflow-hidden rounded-2xl border border-border bg-card">
         <Table>
           <TableHeader className="bg-muted/50">
             <TableRow>

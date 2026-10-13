@@ -147,7 +147,7 @@ export function PageSettingsDialog({ open, onOpenChange, page, locale, me, baseR
         </DialogHeader>
 
         {willApplyAtPublish && (
-          <div className="flex items-start gap-2 rounded-xl border border-amber-200 bg-amber-50 p-3 text-xs leading-5 text-amber-800">
+          <div className="flex items-start gap-2 rounded-xl border border-amber-200 bg-amber-50 dark:bg-amber-950 p-3 text-xs leading-5 text-amber-800 dark:text-amber-200">
             <Info className="mt-0.5 size-4 shrink-0" aria-hidden="true" />
             {te.settingsDraftOnly}
           </div>

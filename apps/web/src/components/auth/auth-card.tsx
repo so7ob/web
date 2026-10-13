@@ -20,7 +20,7 @@ export function AuthCard({
     </>
   );
   return (
-    <section className="rounded-2xl border border-border bg-white p-6 shadow-sm sm:p-8">
+    <section className="rounded-2xl border border-border bg-card p-6 shadow-sm sm:p-8">
       {icon ? (
         <div className="flex items-center gap-3">
           {icon}

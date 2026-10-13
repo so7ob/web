@@ -49,7 +49,7 @@ export function PreviewShell({
     <div className="-mx-4 pb-20 sm:-mx-6 lg:-mx-8">
       <div
         dir={locale === "ar" ? "rtl" : "ltr"}
-        className="mx-auto w-full max-w-7xl bg-white shadow-sm transition-[max-width] duration-300"
+        className="mx-auto w-full max-w-7xl bg-card shadow-sm transition-[max-width] duration-300"
       >
         <div className={cn("mx-auto w-full", DEVICE_WIDTHS[device])}>
           {(nodes ? nodes.length === 0 : blocks.length === 0) ? (
@@ -68,9 +68,9 @@ export function PreviewShell({
       {/* الشريط العائم */}
       <div
         dir={uiLocale === "ar" ? "rtl" : "ltr"}
-        className="fixed bottom-5 left-1/2 z-40 flex -translate-x-1/2 items-center gap-2 rounded-full border border-border bg-white/95 px-3 py-2 shadow-lg backdrop-blur"
+        className="fixed bottom-5 left-1/2 z-40 flex -translate-x-1/2 items-center gap-2 rounded-full border border-border bg-card/95 px-3 py-2 shadow-lg backdrop-blur"
       >
-        <span className="flex items-center gap-1.5 rounded-full bg-amber-50 px-2.5 py-1 text-xs font-semibold text-amber-700">
+        <span className="flex items-center gap-1.5 rounded-full bg-amber-50 dark:bg-amber-950 px-2.5 py-1 text-xs font-semibold text-amber-700 dark:text-amber-200">
           <span
             className="size-1.5 rounded-full bg-amber-500"
             aria-hidden="true"

@@ -1,5 +1,7 @@
+import {SOCIAL_CHANNELS} from '@so7ob/contracts';
+import {useSitePresentation} from '@/components/appearance/provider';
 import Link from "@/routing/link";
-import { Github } from "lucide-react";
+import { ExternalLink } from "lucide-react";
 import { Logo } from "./logo";
 import { localePath, type Locale, type RouteName } from "@/lib/i18n";
 import type { SiteContent } from "@/content/types";
@@ -19,6 +21,8 @@ export function SiteFooter({
   settings: SiteSettings;
   items: NavLink[];
 }) {
+  const presentation=useSitePresentation();
+  const socials=SOCIAL_CHANNELS.map(key=>({key,url:Object.hasOwn(presentation,"social."+key)?presentation["social."+key]:key==="github"?settings.socialGithub:""})).filter(item=>!!item.url);
   const year = new Date().getFullYear();
   const channels: { label: string; value: string; href: string }[] = [];
   if (settings.contactEmail) {
@@ -33,7 +37,7 @@ export function SiteFooter({
   }
 
   return (
-    <footer className="mt-auto bg-navy text-white">
+    <footer className="mt-auto bg-inverse text-white">
       <div className="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8">
         <div className="grid gap-10 md:grid-cols-2 lg:grid-cols-[1.4fr_1fr_1fr]">
           <div className="space-y-4">
@@ -94,19 +98,11 @@ export function SiteFooter({
 
         <div className="mt-12 flex flex-col gap-4 border-t border-white/15 pt-6 text-xs text-white/50 sm:flex-row sm:items-center sm:justify-between">
           <p>
-            © {year} {content.meta.siteName} — {content.footer.rights}
+            © {year} {locale==='ar'?settings.nameAr:settings.nameEn} — {content.footer.rights}
           </p>
           <div className="flex flex-col gap-1.5 sm:flex-row sm:items-center sm:gap-5">
             <span>{content.footer.illustrativeNote}</span>
-            <a
-              href={settings.socialGithub}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex min-h-6 min-w-6 items-center gap-1.5 text-white/70 underline-offset-4 transition-colors hover:text-skydrop hover:underline hover:decoration-skydrop/40"
-            >
-              <Github className="h-3.5 w-3.5" aria-hidden="true" />
-              {content.footer.repoLink}
-            </a>
+            <nav aria-label={locale==='ar'?'روابط التواصل':'Social links'} className="flex flex-wrap gap-3">{socials.map(item=><a key={item.key} href={item.url} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-11 items-center gap-1.5 text-white/80 underline-offset-4 hover:underline"><ExternalLink className="size-3.5" aria-hidden="true"/>{item.key==='x'?'X':item.key.charAt(0).toUpperCase()+item.key.slice(1)}</a>)}</nav>
           </div>
         </div>
       </div>

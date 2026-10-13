@@ -99,13 +99,13 @@ export function NewRequestView({
       </header>
 
       {submitted ? (
-        <div className="rounded-3xl border border-emerald-200 bg-white p-8 text-center sm:p-12" role="status">
-          <span className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-emerald-100 text-emerald-700">
+        <div className="rounded-3xl border border-emerald-200 bg-card p-8 text-center sm:p-12" role="status">
+          <span className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-emerald-100 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-200">
             <CheckCircle2 className="h-8 w-8" aria-hidden="true" />
           </span>
           <h2 className="mt-5 text-2xl font-bold text-navy">{t.submitSuccess}</h2>
           <p className="mx-auto mt-3 max-w-md leading-8 text-muted-foreground">{t.submitSuccessBody}</p>
-          <p className="mt-6 inline-flex items-center gap-3 rounded-xl bg-emerald-50 px-5 py-3 text-emerald-900">
+          <p className="mt-6 inline-flex items-center gap-3 rounded-xl bg-emerald-50 dark:bg-emerald-950 px-5 py-3 text-emerald-900 dark:text-emerald-200">
             <span className="font-mono text-lg font-bold tracking-wide ltr-isolate" dir="ltr">
               {submitted.refCode}
             </span>
@@ -129,7 +129,7 @@ export function NewRequestView({
           </div>
         </div>
       ) : phase === "loading" ? (
-        <div role="status" aria-busy="true" className="flex items-center justify-center gap-3 rounded-3xl border border-border bg-white p-12 text-sm font-medium text-muted-foreground">
+        <div role="status" aria-busy="true" className="flex items-center justify-center gap-3 rounded-3xl border border-border bg-card p-12 text-sm font-medium text-muted-foreground">
           <Loader2 className="h-5 w-5 animate-spin text-brand" aria-hidden="true" />
           {heading}
         </div>

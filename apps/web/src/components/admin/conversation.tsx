@@ -81,13 +81,13 @@ export function MessageBubble({
   if (message.kind === "internal_note") {
     return (
       <div className="flex flex-col gap-1 py-1.5">
-        <div className="flex items-center gap-1.5 text-[11px] font-medium text-amber-700">
+        <div className="flex items-center gap-1.5 text-[11px] font-medium text-amber-700 dark:text-amber-200">
           <Lock className="size-3" aria-hidden="true" />
           <span className="truncate">{labels.internalHint}</span>
-          <span className="text-amber-700">· {author}</span>
+          <span className="text-amber-700 dark:text-amber-200">· {author}</span>
         </div>
-        <div className="rounded-2xl border border-amber-200 bg-amber-50 px-4 py-3">
-          <p className="whitespace-pre-wrap break-words [overflow-wrap:anywhere] text-sm leading-relaxed text-amber-900">
+        <div className="rounded-2xl border border-amber-200 bg-amber-50 dark:bg-amber-950 px-4 py-3">
+          <p className="whitespace-pre-wrap break-words [overflow-wrap:anywhere] text-sm leading-relaxed text-amber-900 dark:text-amber-200">
             {message.body}
           </p>
         </div>
@@ -113,7 +113,7 @@ export function MessageBubble({
         className={cn(
           "max-w-[85%] rounded-2xl border px-4 py-3 shadow-sm sm:max-w-[75%]",
           staff
-            ? "rounded-se-sm border-navy bg-navy text-white shadow-navy/10"
+            ? "rounded-se-sm border-navy bg-inverse text-white shadow-navy/10"
             : "rounded-ss-sm border-sky-200/70 bg-accent/60 text-foreground",
         )}
       >
@@ -312,7 +312,7 @@ export function ReplyComposer({
   const composer = (
     <>
       {currentTab === "internal_note" ? (
-        <p className="mt-2 flex items-center gap-1.5 text-xs text-amber-700">
+        <p className="mt-2 flex items-center gap-1.5 text-xs text-amber-700 dark:text-amber-200">
           <Lock className="size-3" aria-hidden="true" />
           {labels.internalHint}
         </p>
@@ -399,7 +399,7 @@ export function ReplyComposer({
   );
 
   return (
-    <div className="rounded-2xl border border-border bg-white p-4 transition-all focus-within:border-brand/40 focus-within:ring-2 focus-within:ring-ring/40">
+    <div className="rounded-2xl border border-border bg-card p-4 transition-all focus-within:border-brand/40 focus-within:ring-2 focus-within:ring-ring/40">
       <Tabs
         value={currentTab}
         onValueChange={(v) => setTab(v as "message" | "internal_note")}

@@ -38,7 +38,7 @@ export function TextField({
     <div className="space-y-2">
       <Label htmlFor={id} className="text-sm font-semibold text-navy">
         {label}
-        {required && <span className="ms-0.5 text-rose-600" aria-hidden="true">*</span>}
+        {required && <span className="ms-0.5 text-rose-600 dark:text-rose-200" aria-hidden="true">*</span>}
       </Label>
       <Input
         id={id}
@@ -64,7 +64,7 @@ export function TextField({
         </p>
       )}
       {error && (
-        <p id={errorId} role="alert" className="text-xs font-medium leading-6 text-rose-700">
+        <p id={errorId} role="alert" className="text-xs font-medium leading-6 text-rose-700 dark:text-rose-200">
           {error}
         </p>
       )}
