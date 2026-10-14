@@ -53,7 +53,7 @@ export function AdminPagination({
   return (
     <nav
       className={cn(
-        "flex flex-wrap items-center justify-between gap-3 pt-2",
+        "ds-pagination flex flex-wrap items-center justify-between gap-3",
         className,
       )}
     >
@@ -68,7 +68,7 @@ export function AdminPagination({
           type="button"
           variant="outline"
           size="icon"
-          className="size-10 rounded-full text-muted-foreground transition-colors hover:bg-muted hover:text-foreground disabled:opacity-100 disabled:text-muted-foreground/50"
+          className="size-10 rounded-full text-muted-foreground transition-colors hover:bg-muted hover:text-foreground disabled:opacity-100 disabled:text-muted-foreground"
           disabled={page <= 1}
           onClick={() => onPage(page - 1)}
           aria-label={String(page - 1)}
@@ -79,7 +79,7 @@ export function AdminPagination({
           item === "gap" ? (
             <span
               key={`gap-${i}`}
-              className="flex h-10 w-5 select-none items-center justify-center text-xs text-muted-foreground/60"
+              className="flex h-10 w-5 select-none items-center justify-center text-xs text-muted-foreground"
               aria-hidden="true"
             >
               …
@@ -93,7 +93,7 @@ export function AdminPagination({
               className={cn(
                 "size-10 rounded-full text-sm font-medium tabular-nums transition-colors",
                 item === page
-                  ? "border-transparent bg-inverse text-white hover:bg-inverse hover:text-white"
+                  ? "border-primary bg-primary text-primary-foreground hover:bg-primary-hover hover:text-primary-hover-foreground"
                   : "hover:bg-muted",
               )}
               onClick={() => onPage(item)}
@@ -108,7 +108,7 @@ export function AdminPagination({
           type="button"
           variant="outline"
           size="icon"
-          className="size-10 rounded-full text-muted-foreground transition-colors hover:bg-muted hover:text-foreground disabled:opacity-100 disabled:text-muted-foreground/50"
+          className="size-10 rounded-full text-muted-foreground transition-colors hover:bg-muted hover:text-foreground disabled:opacity-100 disabled:text-muted-foreground"
           disabled={page >= pages}
           onClick={() => onPage(page + 1)}
           aria-label={String(page + 1)}

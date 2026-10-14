@@ -11,7 +11,7 @@
  * - وضع الاختبار (test): بلا غلاف مانع — أزرار تحديد صغيرة بالأركان حتى
  *   يعمل التفاعل الحقيقي (روابط/نماذج — الإرسال محاكى في العارض).
  */
-import { memo, useMemo, useState } from "react";
+import { memo, useContext, useMemo, useState } from "react";
 import {
   DndContext,
   DragOverlay,
@@ -64,7 +64,7 @@ import { InlineEditSessionContext, type InlineEditSession } from "@/components/b
 import type { ContentBlockType as BlockType } from "@so7ob/contracts";
 import type { Locale } from "@/lib/i18n";
 import { TreePageRenderer as PageRenderer } from "@/components/blocks/tree-page-renderer";
-import type { RenderMode } from "@/components/blocks/nested-context";
+import { PreviewDeviceContext, type RenderMode } from "@/components/blocks/nested-context";
 import { cn } from "@/lib/utils";
 import { TYPE_ICONS } from "./block-library";
 import { CopyToClipboardButton } from "./clipboard-menu";
@@ -91,7 +91,8 @@ function nodeLabel(type: BlockType, locale: Locale): string {
 }
 
 /** صنف إخفاء حسب الجهاز (نسخة المحرر من سلوك العارض) */
-function visibilityClasses(visibility: ContentNode["visibility"]): string {
+function visibilityClasses(visibility: ContentNode["visibility"], device?: PreviewDevice): string {
+  if (device) return visibility?.[device] === false ? "hidden" : "";
   return [
     visibility?.mobile === false ? "max-md:hidden" : "",
     visibility?.tablet === false ? "md:max-lg:hidden" : "",
@@ -146,15 +147,17 @@ const LeafBody = memo(function LeafBody({
   locale,
   mode,
   session,
+  nested,
 }: {
   node: ContentNode;
   locale: Locale;
   mode: RenderMode;
   session: InlineEditSession | null;
+  nested: boolean;
 }) {
   return (
     <InlineEditSessionContext.Provider value={session}>
-      <PageRenderer nodes={[node]} locale={locale} mode={mode} />
+      <PageRenderer nodes={[node]} locale={locale} mode={mode} nested={nested} />
     </InlineEditSessionContext.Provider>
   );
 });
@@ -276,6 +279,7 @@ export function EditorCanvas({
   const draggingNode = draggingId ? findNode(nodes, draggingId)?.node ?? null : null;
 
   return (
+    <PreviewDeviceContext.Provider value={device}>
     <div className="flex h-full flex-col">
       <DndContext
         sensors={sensors}
@@ -287,7 +291,7 @@ export function EditorCanvas({
         <div
           dir={locale === "ar" ? "rtl" : "ltr"}
           className={cn(
-            "mx-auto w-full flex-1 overflow-y-auto bg-muted/50 p-3 transition-[max-width] duration-300 sm:p-5",
+            "mx-auto w-full flex-1 overflow-y-auto bg-muted/50 p-3 transition-[max-width] duration-(--duration-panel) sm:p-5",
             DEVICE_WIDTHS[device]
           )}
         >
@@ -347,6 +351,7 @@ export function EditorCanvas({
         </DragOverlay>
       </DndContext>
     </div>
+    </PreviewDeviceContext.Provider>
   );
 }
 
@@ -429,7 +434,100 @@ function NodeWrapper({
         parentId !== null && "min-w-0"
       )}
     >
+      {/* The selected toolbar owns layout space so touch targets never cover editable content. */}
       <div
+        dir={uiLocale === "ar" ? "rtl" : "ltr"}
+        inert={!selected}
+        data-editor-toolbar=""
+        className={cn(
+          "relative z-20 mx-2 mb-2 flex-wrap items-center gap-0.5 rounded-xl border border-border bg-card p-1 shadow-sm",
+          selected ? "flex" : "hidden"
+        )}
+      >
+        <span className="hidden max-w-36 truncate px-1.5 text-xs font-semibold text-muted-foreground sm:block">
+          {label}
+        </span>
+        <button
+          type="button"
+          ref={setActivatorNodeRef}
+          {...attributes}
+          {...listeners}
+          title={te.blocks}
+          aria-label={te.blocks}
+          className="flex size-11 cursor-grab touch-none items-center justify-center rounded-lg text-muted-foreground transition-colors hover:bg-accent hover:text-brand-strong focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand active:cursor-grabbing"
+        >
+          <GripVertical className="size-4" aria-hidden="true" />
+        </button>
+        {isContainer && (
+          <AddChildMenu parentId={node.id} allowed={allowedChildrenFor(node.type)} uiLocale={uiLocale} onAddChild={onAddChild}>
+            <button
+              type="button"
+              title={te.addChild}
+              aria-label={te.addChild}
+              className="flex size-11 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:bg-accent hover:text-brand-strong focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
+            >
+              <Plus className="size-4" aria-hidden="true" />
+            </button>
+          </AddChildMenu>
+        )}
+        {!isContainer && inlineEditable && !testMode && (
+          <button
+            type="button"
+            onClick={() => onInlineEditBegin(node.id)}
+            title={te.inlineEdit}
+            aria-label={te.inlineEdit}
+            className={cn(
+              "flex size-11 items-center justify-center rounded-lg transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand",
+              inlineEditing
+                ? "bg-brand text-on-brand"
+                : "text-muted-foreground hover:bg-accent hover:text-brand-strong"
+            )}
+          >
+            <Pencil className="size-4" aria-hidden="true" />
+          </button>
+        )}
+        <button
+          type="button"
+          onClick={() => onMove(node.id, -1)}
+          disabled={index === 0}
+          title={te.moveUp}
+          aria-label={te.moveUp}
+          className="flex size-11 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:bg-accent hover:text-brand-strong focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand disabled:pointer-events-none disabled:opacity-40"
+        >
+          <ArrowUp className="size-4" aria-hidden="true" />
+        </button>
+        <button
+          type="button"
+          onClick={() => onMove(node.id, 1)}
+          disabled={index === total - 1}
+          title={te.moveDown}
+          aria-label={te.moveDown}
+          className="flex size-11 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:bg-accent hover:text-brand-strong focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand disabled:pointer-events-none disabled:opacity-40"
+        >
+          <ArrowDown className="size-4" aria-hidden="true" />
+        </button>
+        <CopyToClipboardButton node={node} uiLocale={uiLocale} onCopy={onCopy} />
+        <button
+          type="button"
+          onClick={() => onDuplicate(node.id)}
+          title={te.duplicate}
+          aria-label={te.duplicate}
+          className="flex size-11 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:bg-accent hover:text-brand-strong focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
+        >
+          <Copy className="size-4" aria-hidden="true" />
+        </button>
+        <button
+          type="button"
+          onClick={() => onDelete(node.id)}
+          title={te.delete}
+          aria-label={te.delete}
+          className="flex size-11 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:bg-danger-soft hover:text-destructive focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-destructive"
+        >
+          <Trash2 className="size-4" aria-hidden="true" />
+        </button>
+      </div>
+      <div
+        data-editor-content=""
         className={cn(
           "relative rounded-sm",
           isContainer && !testMode && "outline outline-1 outline-dashed outline-border/40 group-hover:outline-brand/40",
@@ -445,7 +543,7 @@ function NodeWrapper({
             onClick={() => onSelect(node.id)}
             aria-label={`${te.selectedBlock}: ${label}`}
             title={`${te.selectedBlock}: ${label}`}
-            className="absolute end-1 top-1 z-30 flex size-7 cursor-pointer items-center justify-center rounded-lg border border-border bg-card/90 text-muted-foreground shadow-sm transition-colors hover:bg-accent hover:text-navy focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
+            className="absolute end-1 top-1 z-30 flex size-11 cursor-pointer items-center justify-center rounded-lg border border-border bg-card/90 text-muted-foreground shadow-sm transition-colors hover:bg-accent hover:text-navy focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
           >
             <MousePointerClick className="size-3.5" aria-hidden="true" />
           </button>
@@ -489,7 +587,7 @@ function NodeWrapper({
           </>
         ) : (
           <>
-            <LeafBody node={node} locale={locale} mode={mode} session={session} />
+            <LeafBody node={node} locale={locale} mode={mode} session={session} nested={parentId !== null} />
             {/* طبقة شفافة تمنع تفاعل الروابط/النماذج وتلتقط النقر للتحديد —
                 والنقر المزدوج يفتح التحرير المباشر للأنواع النصية.
                 أثناء الجلسة تُزال الطبقة كي يعمل caret داخل النص */}
@@ -523,98 +621,6 @@ function NodeWrapper({
             {te.inlineEditingBadge}
           </span>
         )}
-      </div>
-
-      {/* One active toolbar prevents nested ancestor toolbars from covering each other. */}
-      <div
-        dir={uiLocale === "ar" ? "rtl" : "ltr"}
-        inert={!selected}
-        className={cn(
-          "absolute top-2 start-2 z-20 flex items-center gap-0.5 rounded-xl border border-border bg-card/95 p-1 shadow-md backdrop-blur transition-opacity",
-          selected ? "opacity-100" : "pointer-events-none opacity-0"
-        )}
-      >
-        <span className="hidden max-w-36 truncate px-1.5 text-[11px] font-semibold text-muted-foreground sm:block">
-          {label}
-        </span>
-        <button
-          type="button"
-          ref={setActivatorNodeRef}
-          {...attributes}
-          {...listeners}
-          title={te.blocks}
-          aria-label={te.blocks}
-          className="flex size-8 cursor-grab touch-none items-center justify-center rounded-lg text-muted-foreground transition-colors hover:bg-accent hover:text-brand-strong focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand active:cursor-grabbing"
-        >
-          <GripVertical className="size-4" aria-hidden="true" />
-        </button>
-        {isContainer && (
-          <AddChildMenu parentId={node.id} allowed={allowedChildrenFor(node.type)} uiLocale={uiLocale} onAddChild={onAddChild}>
-            <button
-              type="button"
-              title={te.addChild}
-              aria-label={te.addChild}
-              className="flex size-8 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:bg-accent hover:text-brand-strong focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
-            >
-              <Plus className="size-4" aria-hidden="true" />
-            </button>
-          </AddChildMenu>
-        )}
-        {!isContainer && inlineEditable && !testMode && (
-          <button
-            type="button"
-            onClick={() => onInlineEditBegin(node.id)}
-            title={te.inlineEdit}
-            aria-label={te.inlineEdit}
-            className={cn(
-              "flex size-8 items-center justify-center rounded-lg transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand",
-              inlineEditing
-                ? "bg-brand text-on-brand"
-                : "text-muted-foreground hover:bg-accent hover:text-brand-strong"
-            )}
-          >
-            <Pencil className="size-4" aria-hidden="true" />
-          </button>
-        )}
-        <button
-          type="button"
-          onClick={() => onMove(node.id, -1)}
-          disabled={index === 0}
-          title={te.moveUp}
-          aria-label={te.moveUp}
-          className="flex size-8 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:bg-accent hover:text-brand-strong focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand disabled:pointer-events-none disabled:opacity-40"
-        >
-          <ArrowUp className="size-4" aria-hidden="true" />
-        </button>
-        <button
-          type="button"
-          onClick={() => onMove(node.id, 1)}
-          disabled={index === total - 1}
-          title={te.moveDown}
-          aria-label={te.moveDown}
-          className="flex size-8 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:bg-accent hover:text-brand-strong focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand disabled:pointer-events-none disabled:opacity-40"
-        >
-          <ArrowDown className="size-4" aria-hidden="true" />
-        </button>
-        <CopyToClipboardButton node={node} uiLocale={uiLocale} onCopy={onCopy} />
-        <button
-          type="button"
-          onClick={() => onDuplicate(node.id)}
-          title={te.duplicate}
-          aria-label={te.duplicate}
-          className="flex size-8 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:bg-accent hover:text-brand-strong focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
-        >
-          <Copy className="size-4" aria-hidden="true" />
-        </button>
-        <button
-          type="button"
-          onClick={() => onDelete(node.id)}
-          title={te.delete}
-          aria-label={te.delete}
-          className="flex size-8 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:bg-red-50 hover:text-destructive focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-destructive"
-        >
-          <Trash2 className="size-4" aria-hidden="true" />
-        </button>
       </div>
     </div>
   );
@@ -661,8 +667,9 @@ function ContainerBody({
 }: ContainerBodyProps) {
   const te = getPortalContent(uiLocale).admin.editor;
   const type = node.type;
-  const styleClasses = nodeStyleClasses(node.style);
-  const visClass = visibilityClasses(node.visibility);
+  const device = useContext(PreviewDeviceContext);
+  const styleClasses = nodeStyleClasses(node.style, device);
+  const visClass = visibilityClasses(node.visibility, device);
   const children = node.children ?? [];
   const canNest = depth < MAX_TREE_DEPTH;
   const allowed = allowedChildrenFor(node.type);
@@ -670,7 +677,7 @@ function ContainerBody({
   const renderChildren = () => {
     if (!canNest) {
       return (
-        <p className="rounded-lg border border-dashed border-border p-3 text-center text-[11px] text-muted-foreground">
+        <p className="rounded-lg border border-dashed border-border p-3 text-center text-xs text-muted-foreground">
           {te.maxDepthHint}
         </p>
       );
@@ -737,7 +744,7 @@ function ContainerBody({
     const gap = GAP_CLASS[asStringProp(node.props, "gap", "md")] ?? "gap-6";
     return (
       <div
-        className={`grid grid-cols-1 ${ROW_GRID_TABLET[tabletCount]} ${ROW_GRID_DESKTOP[desktopCount]} ${gap} ${styleClasses} ${visClass}`.trim()}
+        className={`grid ${device ? (device === "desktop" ? ROW_GRID_DESKTOP[desktopCount].replace("lg:", "") : device === "tablet" ? ROW_GRID_TABLET[tabletCount].replace("md:", "") : "grid-cols-1") : `grid-cols-1 ${ROW_GRID_TABLET[tabletCount]} ${ROW_GRID_DESKTOP[desktopCount]}`} ${gap} ${styleClasses} ${visClass}`.trim()}
       >
         {renderChildren()}
       </div>
@@ -746,8 +753,9 @@ function ContainerBody({
 
   if (type === "column") {
     const gap = GAP_CLASS[asStringProp(node.props, "gap", "md")] ?? "gap-6";
-    const span = COLUMN_SPAN[asStringProp(node.props, "span", "auto")] ?? "";
-    const align = nodeAlignClasses(node.style);
+    const responsiveSpan = COLUMN_SPAN[asStringProp(node.props, "span", "auto")] ?? "";
+    const span = device ? device === "desktop" ? responsiveSpan.replace("lg:", "") : "" : responsiveSpan;
+    const align = nodeAlignClasses(node.style, device);
     return (
       <div className={`flex flex-col ${gap} ${align} ${span} ${styleClasses} ${visClass}`.trim()}>{renderChildren()}</div>
     );

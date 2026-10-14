@@ -2,18 +2,26 @@ import {requestJson,ApiError,asApiError} from './lib/errors/transport';
 import {errorCopy} from './lib/errors/messages';
 import { hydrateRoot } from 'react-dom/client';
 import { createBrowserRouter, RouterProvider, redirect, matchRoutes } from 'react-router-dom';
-import type { PublicView } from '@so7ob/contracts';
+import { PRESENTATION_KEYS, type PublicView } from '@so7ob/contracts';
 import { updateMetadata } from './metadata';
 import { routes } from './app';
 import './styles.css';
 declare global { interface Window { __SO7OB__: PublicView } }
+// Retain the current public presentation on a client-side 404; its error API
+// response deliberately remains unchanged and contains no page/settings payload.
+let currentPresentation = window.__SO7OB__.settings;
+window.addEventListener('so7ob-presentation-saved', event => {
+  const values = (event as CustomEvent<Record<string,string>>).detail;
+  currentPresentation = {...currentPresentation,...Object.fromEntries(Object.entries(values ?? {}).filter(([key,value])=>PRESENTATION_KEYS.includes(key)&&typeof value==='string'))};
+});
 const definitions = routes(async ({ request }) => {
   const url = new URL(request.url);
   let data:PublicView|{redirect:string};
   try{data=(await requestJson<PublicView|{redirect:string}>(`/api/v1/public/view?path=${encodeURIComponent(url.pathname+url.search)}`,{signal:request.signal,credentials:'same-origin'})).data;}
   catch(error){if(!(error instanceof ApiError)||error.status!==404)throw error;
-    const missing:PublicView={kind:'not-found',locale:url.pathname.startsWith('/en')?'en':'ar',menus:[],settings:{},canonicalOrigin:url.origin,viewer:null};updateMetadata(missing);return missing;}
+    const missing:PublicView={kind:'not-found',locale:url.pathname.startsWith('/en')?'en':'ar',menus:[],settings:currentPresentation,canonicalOrigin:url.origin,viewer:null};updateMetadata(missing);return missing;}
   if('redirect' in data)return redirect(data.redirect);
+  currentPresentation = data.settings;
   updateMetadata(data);
   return data;
 });
@@ -27,7 +35,7 @@ hydrateRoot(document.getElementById('root')!, <RouterProvider router={router} />
 
 }catch(error){
  const failure=asApiError(error),locale=window.location.pathname.startsWith('/en')?'en':'ar',t=errorCopy[locale];
- const notice=document.createElement('section');notice.setAttribute('role','alert');notice.dir=locale==='ar'?'rtl':'ltr';notice.className='m-4 rounded-xl border border-rose-200 bg-rose-50 dark:bg-rose-950 p-4 text-rose-950 dark:text-rose-200';
+ const notice=document.createElement('section');notice.setAttribute('role','alert');notice.dir=locale==='ar'?'rtl':'ltr';notice.className='m-4 rounded-xl border border-danger-border bg-danger-soft p-4 text-danger-foreground';
  const message=document.createElement('p');message.textContent=`${t.failed}. ${t.internal} ${t.local}: ${failure.localId??failure.errorId??failure.requestId}. `+(locale==='ar'?'احتفظ بنسخة من المدخلات قبل إعادة تحميل الصفحة.':'Keep a copy of your input before reloading the page.');notice.append(message);
  const button=document.createElement('button');button.textContent=t.reload;button.className='min-h-11 underline';button.onclick=()=>window.location.reload();notice.append(button);document.getElementById('root')?.before(notice);
  console.error(JSON.stringify({at:new Date().toISOString(),component:'Web',level:'error',event:'bootstrap_failed',revision:import.meta.env.VITE_BUILD_SHA??'unavailable',localId:failure.localId,requestId:failure.requestId,errorId:failure.errorId}));

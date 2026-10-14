@@ -98,8 +98,8 @@ const GROUP_ORDER = ["structure", "home", "pages", "generic", "layout"] as const
 const GROUP_CHIPS: Record<(typeof GROUP_ORDER)[number], string> = {
   structure: "bg-brand/15 text-navy",
   home: "bg-skydrop/20 text-brand-strong",
-  pages: "bg-emerald-100 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-200",
-  generic: "bg-amber-100 dark:bg-amber-950 text-amber-800 dark:text-amber-200",
+  pages: "bg-success-soft text-success-foreground",
+  generic: "bg-warning-soft text-warning-foreground",
   layout: "bg-inverse/10 text-navy",
 };
 
@@ -124,7 +124,7 @@ export function BlockLibrary({ locale, onAdd, className }: BlockLibraryProps) {
           if (items.length === 0) return null;
           return (
             <section key={group} aria-labelledby={`lib-group-${group}`}>
-              <h3 id={`lib-group-${group}`} className="mb-2 px-1 text-[11px] font-bold uppercase tracking-wider text-muted-foreground">
+              <h3 id={`lib-group-${group}`} className="mb-2 px-1 text-xs font-bold uppercase tracking-wider text-muted-foreground">
                 {t.groups[group]}
               </h3>
               <ul className="space-y-1">
@@ -136,7 +136,7 @@ export function BlockLibrary({ locale, onAdd, className }: BlockLibraryProps) {
                         type="button"
                         onClick={() => onAdd(entry.type)}
                         title={t.addBlock}
-                        className="flex w-full min-h-11 cursor-pointer items-center gap-3 rounded-xl border border-border/70 bg-card px-3 text-start text-sm font-medium text-navy transition-all hover:border-brand hover:bg-accent/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
+                        className="flex w-full min-h-11 cursor-pointer items-center gap-3 rounded-xl border border-border/70 bg-card px-3 text-start text-sm font-medium text-navy transition-[color,background-color,border-color,box-shadow,opacity,transform] hover:border-brand hover:bg-accent/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
                       >
                         <span
                           className={cn(

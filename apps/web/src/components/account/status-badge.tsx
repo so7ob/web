@@ -4,12 +4,12 @@
  */
 const STATUS_CLASSES: Record<string, string> = {
   new: "bg-brand-soft text-brand-strong",
-  in_review: "bg-amber-100 dark:bg-amber-950 text-amber-800 dark:text-amber-200",
-  awaiting_info: "bg-violet-100 dark:bg-violet-950 text-violet-800 dark:text-violet-200",
-  in_progress: "bg-sky-100 dark:bg-sky-950 text-sky-800 dark:text-sky-200",
-  responded: "bg-green-100 dark:bg-green-950 text-green-800 dark:text-green-200",
+  in_review: "bg-warning-soft text-warning-foreground",
+  awaiting_info: "bg-highlight-soft text-highlight-foreground",
+  in_progress: "bg-info-soft text-info-foreground",
+  responded: "bg-success-soft text-success-foreground",
   closed: "bg-muted text-muted-foreground",
-  cancelled: "bg-red-100 dark:bg-red-950 text-red-800 dark:text-red-200",
+  cancelled: "bg-danger-soft text-danger-foreground",
 };
 
 const FALLBACK = "bg-muted text-muted-foreground";

@@ -1,51 +1,21 @@
 import Link from "@/routing/link";
-import { localePath } from "@/lib/i18n";
+import { localePath, type Locale } from "@/lib/i18n";
+import { Button } from "@/components/ui/button";
+import { PageTitle, Panel, Toolbar } from "@/components/ui/workspace";
 
-/**
- * صفحة 404 العامة — تُستخدم لكل المسارات غير المطابقة.
- * بما أن الموقع يعتمد جذر تخطيط لكل مجموعة مسارات، توفر هذه الصفحة
- * <html> و<body> بنفسها مع توجيه ثنائي اللغة.
- */
-export function NotFound() {
+export function NotFound({ locale = "ar" }: { locale?: Locale }) {
+  const ar = locale === "ar";
   return (
-    <div lang="ar" dir="rtl" style={{ margin: 0, background: "var(--background)", fontFamily: "var(--site-font, system-ui)" }}>
-        <main style={{ minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", padding: "1.5rem" }}>
-          <div style={{ maxWidth: "32rem", textAlign: "center" }}>
-            <p style={{ fontFamily: "monospace", fontSize: "5rem", fontWeight: 700, color: "var(--foreground)", opacity: 0.12, margin: 0 }} aria-hidden="true">
-              {"{ 404 }"}
-            </p>
-            <h1 style={{ fontSize: "1.75rem", fontWeight: 700, color: "var(--foreground)", margin: "0.5rem 0 1rem" }}>
-              الصفحة غير موجودة — Page not found
-            </h1>
-            <p style={{ color: "var(--muted-foreground)", lineHeight: 2, margin: "0 0 1.75rem" }}>
-              الرابط الذي طلبته غير متاح أو تغيّر. يمكنك العودة إلى الموقع واختيار اللغة المناسبة.
-              <br />
-              The page you requested is unavailable or has moved.
-            </p>
-            <div style={{ display: "flex", gap: "0.75rem", justifyContent: "center", flexWrap: "wrap" }}>
-              <Link
-                href={localePath("ar")}
-                style={{
-                  background: "var(--primary)", color: "var(--primary-foreground)", borderRadius: "999px", padding: "0.7rem 1.6rem",
-                  fontWeight: 600, textDecoration: "none", display: "inline-block",
-                }}
-                lang="ar"
-              >
-                العربية
-              </Link>
-              <Link
-                href={localePath("en")}
-                style={{
-                  border: "2px solid var(--border)", color: "var(--foreground)", borderRadius: "999px", padding: "0.7rem 1.6rem",
-                  fontWeight: 600, textDecoration: "none", display: "inline-block",
-                }}
-                lang="en"
-              >
-                English
-              </Link>
-            </div>
-          </div>
-        </main>
-    </div>
+    <main id="main-content" lang={locale} dir={ar ? "rtl" : "ltr"} className="grid min-h-dvh place-items-center bg-background px-4 py-12">
+      <Panel className="w-full max-w-lg text-center sm:p-10">
+        <p className="mb-4 font-mono text-6xl font-bold text-primary" aria-hidden="true">404</p>
+        <PageTitle>{ar ? "الصفحة غير موجودة" : "Page not found"}</PageTitle>
+        <p className="my-6 text-sm leading-7 text-muted-foreground">{ar ? "الرابط الذي طلبته غير متاح أو تغيّر. يمكنك العودة إلى الموقع واختيار اللغة المناسبة." : "The page you requested is unavailable or has moved. Return to the site in your preferred language."}</p>
+        <Toolbar className="justify-center">
+          <Button asChild><Link href={localePath("ar")} lang="ar">العربية</Link></Button>
+          <Button asChild variant="outline"><Link href={localePath("en")} lang="en">English</Link></Button>
+        </Toolbar>
+      </Panel>
+    </main>
   );
 }

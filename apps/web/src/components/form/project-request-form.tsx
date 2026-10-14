@@ -1,4 +1,8 @@
 "use client";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+
+import { NativeSelect } from "@/components/ui/native-select";
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useSearchParams } from "@/routing/navigation";
@@ -276,13 +280,13 @@ export function ProjectRequestForm({
 
   if (status === "success") {
     return (
-      <div className="rounded-3xl border border-green-200 bg-card p-8 text-center sm:p-12" role="status">
-        <span className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-green-100 dark:bg-green-950 text-green-700 dark:text-green-200">
+      <div className="rounded-3xl border border-success-border bg-card p-8 text-center sm:p-12" role="status">
+        <span className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-success-soft text-success-foreground">
           <CheckCircle2 className="h-8 w-8" aria-hidden="true" />
         </span>
         <h2 className="mt-5 text-2xl font-bold text-navy">{t.success.title}</h2>
         <p className="mx-auto mt-3 max-w-md leading-8 text-muted-foreground">{t.success.body}</p>
-        <p className="mt-6 inline-flex items-center gap-3 rounded-xl bg-green-50 dark:bg-green-950 px-5 py-3 text-green-900 dark:text-green-200" dir={locale === "ar" ? "rtl" : "ltr"}>
+        <p className="mt-6 inline-flex items-center gap-3 rounded-xl bg-success-soft px-5 py-3 text-success-foreground" dir={locale === "ar" ? "rtl" : "ltr"}>
           <span className="text-sm font-semibold">{t.success.refLabel}:</span>
           <span className="ltr-isolate font-mono text-lg font-bold tracking-wide">{refCode}</span>
         </p>
@@ -293,7 +297,7 @@ export function ProjectRequestForm({
               <button
                 type="button"
                 onClick={openTracking}
-                className="inline-flex min-h-11 items-center gap-2 rounded-full bg-primary px-5 text-sm font-semibold text-primary-foreground shadow-md shadow-brand/20 transition-colors hover:bg-brand-strong"
+                className="inline-flex min-h-11 items-center gap-2 rounded-full bg-primary px-5 text-sm font-semibold text-primary-foreground shadow-md shadow-brand/20 transition-colors hover:bg-primary-hover hover:text-primary-hover-foreground"
               >
                 <ExternalLink className="h-4 w-4" aria-hidden="true" />
                 {trackT.openTracking}
@@ -342,10 +346,10 @@ export function ProjectRequestForm({
             role="alert"
             className={`mt-5 flex items-start gap-3 rounded-xl p-4 text-sm font-medium leading-7 ${
               serverError.kind === "duplicate"
-                ? "bg-amber-50 dark:bg-amber-950 text-amber-900 dark:text-amber-200"
+                ? "bg-warning-soft text-warning-foreground"
                 : serverError.kind === "rateLimited"
-                  ? "bg-amber-50 dark:bg-amber-950 text-amber-900 dark:text-amber-200"
-                  : "bg-red-50 dark:bg-red-950 text-red-800 dark:text-red-200"
+                  ? "bg-warning-soft text-warning-foreground"
+                  : "bg-danger-soft text-danger-foreground"
             }`}
           >
             <TriangleAlert className="mt-0.5 h-5 w-5 shrink-0" aria-hidden="true" />
@@ -354,7 +358,7 @@ export function ProjectRequestForm({
         )}
 
         {errorCount > 0 && (
-          <p role="alert" className="mt-5 rounded-xl bg-red-50 dark:bg-red-950 px-4 py-3 text-sm font-medium text-red-800 dark:text-red-200">
+          <p role="alert" className="mt-5 rounded-xl bg-danger-soft px-4 py-3 text-sm font-medium text-danger-foreground">
             {locale === "ar"
               ? `يوجد ${errorCount} حقل يحتاج مراجعة — الحقول المعنية معلَّمة بالأسفل.`
               : `${errorCount} field${errorCount > 1 ? "s" : ""} need attention — highlighted below.`}
@@ -386,7 +390,7 @@ export function ProjectRequestForm({
 
           {/* نوع الخدمة */}
           <Field label={t.serviceLabel} htmlFor="serviceType" required error={errorFor("serviceType")} errorId="serviceType-error">
-            <select
+            <NativeSelect
               id="serviceType"
               value={data.serviceType}
               onChange={(e) => set("serviceType", e.target.value as FormState["serviceType"])}
@@ -397,12 +401,12 @@ export function ProjectRequestForm({
               {SERVICE_TYPES.map((s) => (
                 <option key={s} value={s}>{t.services[s]}</option>
               ))}
-            </select>
+            </NativeSelect>
           </Field>
 
           {/* وصف الاحتياج */}
           <Field label={t.descriptionLabel} htmlFor="description" required error={errorFor("description")} errorId="description-error" hint={t.descriptionHint} full>
-            <textarea
+            <Textarea
               id="description"
               rows={5}
               maxLength={LIMIT_MAX}
@@ -419,7 +423,7 @@ export function ProjectRequestForm({
 
           {/* الميزانية والعملة */}
           <Field label={t.budgetLabel} htmlFor="budget" required error={errorFor("budget")} errorId="budget-error">
-            <select
+            <NativeSelect
               id="budget"
               value={data.budget}
               onChange={(e) => {
@@ -434,12 +438,12 @@ export function ProjectRequestForm({
               {BUDGET_TIERS.map((b) => (
                 <option key={b} value={b}>{t.budgets[b]}</option>
               ))}
-            </select>
+            </NativeSelect>
           </Field>
 
           {currencyNeeded ? (
             <Field label={t.currencyLabel} htmlFor="currency" required error={errorFor("currency")} errorId="currency-error">
-              <select
+              <NativeSelect
                 id="currency"
                 value={data.currency}
                 onChange={(e) => set("currency", e.target.value as FormState["currency"])}
@@ -451,7 +455,7 @@ export function ProjectRequestForm({
                 {CURRENCIES.map((c) => (
                   <option key={c} value={c}>{t.currencies[c]}</option>
                 ))}
-              </select>
+              </NativeSelect>
             </Field>
           ) : (
             <div className="hidden sm:block" aria-hidden="true" />
@@ -459,7 +463,7 @@ export function ProjectRequestForm({
 
           {/* الموعد المستهدف */}
           <Field label={t.timelineLabel} htmlFor="timeline" required error={errorFor("timeline")} errorId="timeline-error">
-            <select
+            <NativeSelect
               id="timeline"
               value={data.timeline}
               onChange={(e) => set("timeline", e.target.value as FormState["timeline"])}
@@ -470,12 +474,12 @@ export function ProjectRequestForm({
               {TIMELINES.map((tl) => (
                 <option key={tl} value={tl}>{t.timelines[tl]}</option>
               ))}
-            </select>
+            </NativeSelect>
           </Field>
 
           {/* الاسم */}
           <Field label={t.nameLabel} htmlFor="name" required error={errorFor("name")} errorId="name-error">
-            <input
+            <Input
               id="name"
               type="text"
               autoComplete="name"
@@ -489,7 +493,7 @@ export function ProjectRequestForm({
 
           {/* الشركة */}
           <Field label={t.companyLabel} htmlFor="company" optional optionalLabel={t.optional}>
-            <input
+            <Input
               id="company"
               type="text"
               autoComplete="organization"
@@ -501,7 +505,7 @@ export function ProjectRequestForm({
 
           {/* البريد */}
           <Field label={t.emailLabel} htmlFor="email" required error={errorFor("email")} errorId="email-error">
-            <input
+            <Input
               id="email"
               type="email"
               inputMode="email"
@@ -517,7 +521,7 @@ export function ProjectRequestForm({
 
           {/* الهاتف */}
           <Field label={t.phoneLabel} htmlFor="phone" optional optionalLabel={t.optional} error={errorFor("phone")} errorId="phone-error">
-            <input
+            <Input
               id="phone"
               type="tel"
               inputMode="tel"
@@ -533,7 +537,7 @@ export function ProjectRequestForm({
 
           {/* وسيلة التواصل المفضلة */}
           <Field label={t.preferredContactLabel} htmlFor="preferredContact" required error={errorFor("preferredContact")} errorId="preferredContact-error">
-            <select
+            <NativeSelect
               id="preferredContact"
               value={data.preferredContact}
               onChange={(e) => set("preferredContact", e.target.value as FormState["preferredContact"])}
@@ -544,12 +548,12 @@ export function ProjectRequestForm({
               {CONTACT_METHODS.map((m) => (
                 <option key={m} value={m}>{t.contactMethods[m]}</option>
               ))}
-            </select>
+            </NativeSelect>
           </Field>
 
           {/* رابط مرجعي */}
           <Field label={t.referenceUrlLabel} htmlFor="referenceUrl" optional optionalLabel={t.optional} error={errorFor("referenceUrl")} errorId="referenceUrl-error">
-            <input
+            <Input
               id="referenceUrl"
               type="url"
               inputMode="url"
@@ -567,14 +571,14 @@ export function ProjectRequestForm({
         {/* حقل العسل — مخفي عن المستخدمين */}
         <div className="absolute h-0 w-0 overflow-hidden opacity-0" aria-hidden="true">
           <label htmlFor="website">{t.honeyLabel}</label>
-          <input id="website" type="text" tabIndex={-1} autoComplete="off" value={data.website} onChange={(e) => set("website", e.target.value)} />
+          <Input id="website" type="text" tabIndex={-1} autoComplete="off" value={data.website} onChange={(e) => set("website", e.target.value)} />
         </div>
 
         <div className="mt-9 flex flex-col items-start gap-5 border-t border-border pt-7 sm:flex-row sm:items-center sm:justify-between">
           <button
             type="submit"
             disabled={status === "submitting"}
-            className="inline-flex min-h-13 items-center justify-center gap-2.5 rounded-full bg-primary px-8 text-base font-bold text-primary-foreground shadow-md shadow-brand/20 transition-all hover:bg-brand-strong disabled:cursor-not-allowed disabled:opacity-60"
+            className="inline-flex min-h-13 items-center justify-center gap-2.5 rounded-full bg-primary px-8 text-base font-bold text-primary-foreground shadow-md shadow-brand/20 transition-[color,background-color,border-color,box-shadow,opacity,transform] hover:bg-primary-hover hover:text-primary-hover-foreground disabled:cursor-not-allowed disabled:opacity-60"
           >
             {status === "submitting" ? (
               <>
@@ -599,7 +603,7 @@ const LIMIT_MAX = 5000;
 
 const selectClass = (invalid: boolean) =>
   `w-full rounded-xl border bg-card px-4 py-3 text-[15px] text-foreground shadow-sm transition-colors placeholder:text-muted-foreground ${
-    invalid ? "border-red-400 focus:border-red-500" : "border-input focus:border-brand"
+    invalid ? "border-danger-border focus:border-danger-border" : "border-input focus:border-brand"
   } min-h-11`;
 
 function Field({
@@ -628,13 +632,13 @@ function Field({
   return (
     <div className={full ? "sm:col-span-2" : ""}>
       <label htmlFor={htmlFor} className="mb-2 block text-sm font-semibold text-navy">
-        {label} {required && <span className="text-red-600 dark:text-red-200" aria-hidden="true">*</span>}
+        {label} {required && <span className="text-danger-foreground" aria-hidden="true">*</span>}
         {optional && <span className="ms-1 text-xs font-normal text-muted-foreground">({optionalLabel})</span>}
       </label>
       {children}
       {hint && !error && <p className="mt-1.5 text-xs leading-6 text-muted-foreground">{hint}</p>}
       {error && (
-        <p id={errorId} role="alert" className="mt-1.5 flex items-start gap-1.5 text-xs font-medium leading-6 text-red-700 dark:text-red-200">
+        <p id={errorId} role="alert" className="mt-1.5 flex items-start gap-1.5 text-xs font-medium leading-6 text-danger-foreground">
           <TriangleAlert className="mt-1 h-3.5 w-3.5 shrink-0" aria-hidden="true" />
           {error}
         </p>
@@ -646,12 +650,12 @@ function Field({
 export function SuspenseFallback() {
   return (
     <div className="animate-pulse rounded-3xl border border-border bg-card p-9">
-      <div className="h-6 w-40 rounded bg-slate-100 dark:bg-slate-950" />
+      <div className="h-6 w-40 rounded bg-muted" />
       <div className="mt-8 grid gap-6 sm:grid-cols-2">
         {[...Array(8)].map((_, i) => (
           <div key={i} className="space-y-2">
-            <div className="h-4 w-24 rounded bg-slate-100 dark:bg-slate-950" />
-            <div className="h-11 rounded-xl bg-slate-50 dark:bg-slate-950" />
+            <div className="h-4 w-24 rounded bg-muted" />
+            <div className="h-11 rounded-xl bg-muted" />
           </div>
         ))}
       </div>

@@ -1,3 +1,5 @@
+import { NativeSelect } from "@/components/ui/native-select";
+import { SectionNav } from "@/components/ui/workspace";
 import { can } from "@so7ob/contracts";
 import Link from "@/routing/link";
 import { usePathname } from "@/routing/navigation";
@@ -34,9 +36,8 @@ export function IdentityNav({ me, locale }: { me: Me; locale: Locale }) {
   const t = identityCopy[locale],
     path = usePathname();
   return (
-    <nav
+    <SectionNav
       aria-label={locale === "ar" ? "إدارة الهوية" : "Identity management"}
-      className="flex flex-wrap gap-2"
     >
       {(["users", "roles", "permissions", "invitations"] as const)
         .filter((key) =>
@@ -50,21 +51,14 @@ export function IdentityNav({ me, locale }: { me: Me; locale: Locale }) {
           ),
         )
         .map((key) => (
-          <Button
-            key={key}
-            asChild
-            variant={path?.endsWith("/" + key) ? "default" : "outline"}
-            className="min-h-11"
-          >
-            <Link
+          <Link key={key}
               aria-current={path?.endsWith("/" + key) ? "page" : undefined}
               href={`/${locale}/admin/${key}`}
             >
               {t[key]}
             </Link>
-          </Button>
         ))}
-    </nav>
+    </SectionNav>
   );
 }
 export function Secret({ value, locale }: { value: string; locale: Locale }) {
@@ -98,7 +92,7 @@ export function Reason({
   return (
     <label className="block space-y-2">
       {t.reason}
-      <select
+      <NativeSelect
         className="block min-h-11 w-full rounded-lg border bg-background px-3"
         value={value}
         onChange={(e) => onChange(e.target.value)}
@@ -115,7 +109,7 @@ export function Reason({
             {t[key]}
           </option>
         ))}
-      </select>
+      </NativeSelect>
     </label>
   );
 }

@@ -58,12 +58,12 @@ export function Logo({
       {displayName && (
         <span className="flex min-w-0 max-w-40 flex-col leading-tight sm:max-w-64">
           <span
-            className={`truncate text-lg font-bold ${variant === "light" ? "text-white" : "text-foreground"}`}
+            className={`truncate text-lg font-bold ${variant === "light" ? "text-inverse-foreground" : "text-foreground"}`}
           >
             {name}
           </span>
           <span
-            className={`truncate text-xs ${variant === "light" ? "text-white/80" : "text-muted-foreground"}`}
+            className={`truncate text-xs ${variant === "light" ? "text-emphasis-muted" : "text-muted-foreground"}`}
           >
             {secondary}
           </span>

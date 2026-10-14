@@ -28,11 +28,11 @@ export function SectionHeading({
         <KickerDot />
         {kicker}
       </p>
-      <h2 className={`text-balance text-3xl font-bold leading-snug sm:text-4xl ${isDark ? "text-white" : "text-navy"}`}>
+      <h2 className={`text-balance text-3xl font-bold leading-snug sm:text-4xl ${isDark ? "text-inverse-foreground" : "text-navy"}`}>
         {title}
       </h2>
       {description && (
-        <p className={`mt-4 text-pretty text-base leading-8 ${isDark ? "text-white/70" : "text-muted-foreground"}`}>
+        <p className={`mt-4 text-pretty text-base leading-8 ${isDark ? "text-emphasis-muted" : "text-muted-foreground"}`}>
           {description}
         </p>
       )}

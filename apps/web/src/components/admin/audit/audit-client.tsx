@@ -1,4 +1,13 @@
 "use client";
+
+import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
+import { NativeSelect } from "@/components/ui/native-select";
+import {
+  PageHeading,
+  Panel,
+  TableScroll,
+  Toolbar,
+} from "@/components/ui/workspace";
 import type { AuditPreference, AuditSavedView } from "@so7ob/contracts";
 import { useEffect, useState, useCallback, useRef } from "react";
 import { useSearchParams } from "react-router-dom";
@@ -69,10 +78,10 @@ export function Outcome({ value, t }: { value: string; t: AuditCopy }) {
       className={
         "inline-flex whitespace-nowrap rounded-full border px-2.5 py-1 text-xs font-medium " +
         (value === "success"
-          ? "border-emerald-200 bg-emerald-50 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-200"
+          ? "border-success-border bg-success-soft text-success-foreground"
           : value === "denied" || value === "failure"
-            ? "border-amber-200 bg-amber-50 dark:bg-amber-950 text-amber-900 dark:text-amber-200"
-            : "border-slate-200 bg-slate-50 dark:bg-slate-950 text-slate-700 dark:text-slate-200")
+            ? "border-warning-border bg-warning-soft text-warning-foreground"
+            : "border-border bg-muted text-foreground text-muted-foreground")
       }
     >
       {word(t, value)}
@@ -177,8 +186,8 @@ export function AuditClient({ me, locale }: { me: Me; locale: "ar" | "en" }) {
         setColumns(r.preferences.columns);
       })
       .catch((e) => {
-        if (!controller.signal.aborted) setNotice(fail(e));
-      });
+          if (!controller.signal.aborted) setNotice(fail(e));
+        });
     void auditApi<{ views: typeof views }>(
       "/views",
       undefined,
@@ -187,8 +196,8 @@ export function AuditClient({ me, locale }: { me: Me; locale: "ar" | "en" }) {
     )
       .then((r) => setViews(r.views))
       .catch((e) => {
-        if (!controller.signal.aborted) setNotice(fail(e));
-      });
+          if (!controller.signal.aborted) setNotice(fail(e));
+        });
     if (can(me, "audit.review"))
       void auditApi<{ bookmarks: { eventId: string }[] }>(
         "/bookmarks",
@@ -298,28 +307,24 @@ export function AuditClient({ me, locale }: { me: Me; locale: "ar" | "en" }) {
   }
   if (!can(me, "audit.view")) return <p role="alert">{t.noAccess}</p>;
   return (
-    <div
+    <Tabs value={tab} onValueChange={setTab}
       className="min-w-0 space-y-6 [&_button]:transition-none"
       dir={locale === "ar" ? "rtl" : "ltr"}
     >
-      <header className="flex flex-wrap items-start justify-between gap-4">
-        <div className="flex min-w-0 gap-3">
-          <span className="flex size-12 shrink-0 items-center justify-center rounded-2xl bg-accent text-brand-strong">
-            <ScrollText aria-hidden="true" />
-          </span>
-          <div>
-            <h1 className="text-2xl font-bold text-navy">{t.title}</h1>
-            <p className="mt-1 text-sm text-muted-foreground">{t.subtitle}</p>
-            <p className="mt-2 text-xs text-muted-foreground">
-              {t.lastUpdated}:{" "}
-              {current
+      <PageHeading
+        title={t.title}
+        description={t.subtitle}
+        metadata={
+          <span>
+            {t.lastUpdated}:{" "}
+            {current
                 ? auditTime(current.measuredAt, locale, timezone)
                 : t.unrecorded}{" "}
-              · <bdi>{timezone}</bdi>
-            </p>
-          </div>
-        </div>
-        <div className="flex flex-wrap gap-2">
+            · <bdi>{timezone}</bdi>
+          </span>
+        }
+        actions={
+          <div className="flex flex-wrap gap-2">
           <Button
             variant="outline"
             onClick={() => setRefresh((n) => n + 1)}
@@ -335,8 +340,9 @@ export function AuditClient({ me, locale }: { me: Me; locale: "ar" | "en" }) {
             </Button>
           )}
         </div>
-      </header>
-      <nav aria-label={t.title} className="flex flex-wrap gap-2 border-b pb-3">
+        }
+      />
+      <TabsList aria-label={t.title} className="w-full justify-start">
         {[
           "events",
           ...(can(me, "audit.export") ? ["reports"] : []),
@@ -347,17 +353,15 @@ export function AuditClient({ me, locale }: { me: Me; locale: "ar" | "en" }) {
             ? ["health"]
             : []),
         ].map((key) => (
-          <Button
+          <TabsTrigger value={key}
             key={key}
-            variant={tab === key ? "default" : "ghost"}
-            aria-current={tab === key ? "page" : undefined}
-            onClick={() => setTab(key)}
           >
             {word(t, key)}
-          </Button>
+          </TabsTrigger>
         ))}
-      </nav>
-      {notice && (
+      </TabsList>
+      <TabsContent value={tab} className="space-y-6">
+        {notice && (
         <p
           role="status"
           className="rounded-xl border bg-muted/40 p-3 text-sm [overflow-wrap:anywhere]"
@@ -365,7 +369,7 @@ export function AuditClient({ me, locale }: { me: Me; locale: "ar" | "en" }) {
           {notice}
         </p>
       )}
-      {tab !== "events" ? (
+        {tab !== "events" ? (
         <AuditTools
           tab={tab}
           refreshRevision={refresh}
@@ -378,8 +382,8 @@ export function AuditClient({ me, locale }: { me: Me; locale: "ar" | "en" }) {
           onEvent={openEvent}
         />
       ) : (
-        <>
-          <section
+          <>
+            <section
             aria-label={t.matched}
             className="grid grid-cols-2 gap-3 xl:grid-cols-4"
           >
@@ -397,7 +401,7 @@ export function AuditClient({ me, locale }: { me: Me; locale: "ar" | "en" }) {
             ].map(([label, count, Icon], i) => {
               const MetricIcon = Icon as typeof ScrollText;
               return (
-                <div key={i} className="rounded-2xl border bg-card p-4">
+                <Panel key={i} className="rounded-2xl border bg-card p-4">
                   <div className="flex items-center justify-between gap-2 text-xs text-muted-foreground">
                     <span>{String(label)}</span>
                     <MetricIcon
@@ -410,21 +414,21 @@ export function AuditClient({ me, locale }: { me: Me; locale: "ar" | "en" }) {
                       ? "…"
                       : Number(count).toLocaleString(locale)}
                   </p>
-                </div>
+                </Panel>
               );
             })}
           </section>
-          <p className="text-xs text-muted-foreground">
+            <p className="text-xs text-muted-foreground">
             {t.filterHelp}
             {current && current.stats.unknown > 0
               ? ` · ${t.unknown}: ${current.stats.unknown}`
               : ""}
           </p>
-          <section
+            <section
             className="space-y-4 rounded-2xl border bg-card p-4"
             aria-label={t.filters}
           >
-            <div className="flex flex-wrap gap-3">
+              <div className="flex flex-wrap gap-3">
               <label className="min-w-0 flex-1 basis-64">
                 <span className="sr-only">{t.search}</span>
                 <div className="relative">
@@ -458,7 +462,7 @@ export function AuditClient({ me, locale }: { me: Me; locale: "ar" | "en" }) {
                 {t.reset}
               </Button>
             </div>
-            <div className="flex flex-wrap items-center gap-2">
+              <Toolbar className="flex flex-wrap items-center gap-2">
               {[1, 7, 30].map((days, i) => (
                 <Button
                   key={days}
@@ -479,7 +483,7 @@ export function AuditClient({ me, locale }: { me: Me; locale: "ar" | "en" }) {
               ))}
               <label className="flex min-w-0 items-center gap-2 text-xs">
                 {t.views}
-                <select
+                <NativeSelect
                   className={control}
                   value=""
                   onChange={(e) => {
@@ -496,12 +500,12 @@ export function AuditClient({ me, locale }: { me: Me; locale: "ar" | "en" }) {
                       {v.name}
                     </option>
                   ))}
-                </select>
+                </NativeSelect>
               </label>
-            </div>
-            {advanced && (
-              <div className="grid gap-3 border-t pt-4 sm:grid-cols-2 xl:grid-cols-3">
-                {(
+            </Toolbar>
+              {advanced && (
+                <div className="grid gap-3 border-t pt-4 sm:grid-cols-2 xl:grid-cols-3">
+                  {(
                   [
                     "from",
                     "to",
@@ -559,7 +563,7 @@ export function AuditClient({ me, locale }: { me: Me; locale: "ar" | "en" }) {
                     />
                   </label>
                 ))}
-                {(
+                  {(
                   [
                     "resourceType",
                     "action",
@@ -568,17 +572,20 @@ export function AuditClient({ me, locale }: { me: Me; locale: "ar" | "en" }) {
                     "source",
                   ] as const
                 ).map((key) => (
-                  <label key={key} className="space-y-1 text-xs">
-                    <span>{word(t, key)}</span>
-                    <select
-                      className={control}
-                      value={filter[key] ?? ""}
-                      onChange={(e) =>
-                        apply({ ...filter, [key]: e.target.value || undefined })
-                      }
-                    >
-                      <option value="">{t.all}</option>
-                      {(key === "resourceType"
+                    <label key={key} className="space-y-1 text-xs">
+                      <span>{word(t, key)}</span>
+                      <NativeSelect
+                        className={control}
+                        value={filter[key] ?? ""}
+                        onChange={(e) =>
+                          apply({
+                            ...filter,
+                            [key]: e.target.value || undefined,
+                          })
+                        }
+                      >
+                        <option value="">{t.all}</option>
+                        {(key === "resourceType"
                         ? [
                             "request",
                             "inquiry",
@@ -614,10 +621,10 @@ export function AuditClient({ me, locale }: { me: Me; locale: "ar" | "en" }) {
                               )}
                         </option>
                       ))}
-                    </select>
-                  </label>
-                ))}
-                <label className="flex min-h-11 items-center gap-2 text-sm">
+                      </NativeSelect>
+                    </label>
+                  ))}
+                  <label className="flex min-h-11 items-center gap-2 text-sm">
                   <input
                     type="checkbox"
                     checked={filter.hasChanges ?? false}
@@ -630,7 +637,7 @@ export function AuditClient({ me, locale }: { me: Me; locale: "ar" | "en" }) {
                   />
                   {t.hasChanges}
                 </label>
-                <label className="flex min-h-11 items-center gap-2 text-sm">
+                  <label className="flex min-h-11 items-center gap-2 text-sm">
                   <input
                     type="checkbox"
                     checked={filter.includeAccess ?? false}
@@ -640,9 +647,9 @@ export function AuditClient({ me, locale }: { me: Me; locale: "ar" | "en" }) {
                   />
                   {t.access}
                 </label>
-              </div>
-            )}
-            <div className="flex flex-wrap gap-2">
+                </div>
+              )}
+              <div className="flex flex-wrap gap-2">
               {Object.entries(filter)
                 .filter(([, v]) => v !== undefined && v !== false && v !== "")
                 .map(([key, value]) => (
@@ -671,12 +678,12 @@ export function AuditClient({ me, locale }: { me: Me; locale: "ar" | "en" }) {
                   </Button>
                 ))}
             </div>
-            <details className="text-sm">
-              <summary className="cursor-pointer py-2">
+              <details className="text-sm">
+                <summary className="cursor-pointer py-2">
                 {t.views} · {t.columns} · {t.timezone}
               </summary>
-              <div className="mt-3 grid gap-3 sm:grid-cols-2">
-                <label>
+                <div className="mt-3 grid gap-3 sm:grid-cols-2">
+                  <label>
                   {t.viewName}
                   <Input
                     className="min-h-11"
@@ -685,7 +692,7 @@ export function AuditClient({ me, locale }: { me: Me; locale: "ar" | "en" }) {
                     onChange={(e) => setViewName(e.target.value)}
                   />
                 </label>
-                <Button
+                  <Button
                   disabled={!viewName.trim() || actionBusy}
                   variant="outline"
                   onClick={() =>
@@ -709,28 +716,32 @@ export function AuditClient({ me, locale }: { me: Me; locale: "ar" | "en" }) {
                 >
                   {t.saveView}
                 </Button>
-                {views.map((v) => (
-                  <div key={v.id} className="flex justify-between gap-2">
-                    <span>{v.name}</span>
-                    <Button
-                      size="sm"
-                      variant="ghost"
-                      onClick={() =>
-                        void perform(async () => {
-                          await auditApi("/views/" + v.id, undefined, "DELETE");
-                          setViews((items) =>
+                  {views.map((v) => (
+                    <div key={v.id} className="flex justify-between gap-2">
+                      <span>{v.name}</span>
+                      <Button
+                        size="sm"
+                        variant="ghost"
+                        onClick={() =>
+                          void perform(async () => {
+                            await auditApi(
+                              "/views/" + v.id,
+                              undefined,
+                              "DELETE",
+                            );
+                            setViews((items) =>
                             items.filter((i) => i.id !== v.id),
                           );
-                        })
-                      }
-                    >
-                      {t.delete}
-                    </Button>
-                  </div>
-                ))}
-                <label>
+                          })
+                        }
+                      >
+                        {t.delete}
+                      </Button>
+                    </div>
+                  ))}
+                  <label>
                   {t.timezone}
-                  <select
+                  <NativeSelect
                     className={control}
                     value={timezone}
                     onChange={(e) =>
@@ -749,25 +760,27 @@ export function AuditClient({ me, locale }: { me: Me; locale: "ar" | "en" }) {
                     ].map((z) => (
                       <option key={z}>{z}</option>
                     ))}
-                  </select>
+                  </NativeSelect>
                 </label>
-                <label>
-                  {t.density}
-                  <select
-                    className={control}
-                    value={density}
-                    onChange={(e) =>
-                      void perform(() => preferences(timezone, e.target.value))
-                    }
-                  >
-                    {["comfortable", "compact"].map((v) => (
+                  <label>
+                    {t.density}
+                    <NativeSelect
+                      className={control}
+                      value={density}
+                      onChange={(e) =>
+                        void perform(() =>
+                          preferences(timezone, e.target.value),
+                        )
+                      }
+                    >
+                      {["comfortable", "compact"].map((v) => (
                       <option value={v} key={v}>
                         {word(t, v)}
                       </option>
                     ))}
-                  </select>
-                </label>
-                <div className="flex flex-wrap gap-3">
+                    </NativeSelect>
+                  </label>
+                  <div className="flex flex-wrap gap-3">
                   {[
                     "time",
                     "actor",
@@ -799,10 +812,10 @@ export function AuditClient({ me, locale }: { me: Me; locale: "ar" | "en" }) {
                     </label>
                   ))}
                 </div>
-              </div>
-            </details>
-          </section>
-          {newEvents && (
+                </div>
+              </details>
+            </section>
+            {newEvents && (
             <Button
               variant="outline"
               onClick={() => {
@@ -814,7 +827,7 @@ export function AuditClient({ me, locale }: { me: Me; locale: "ar" | "en" }) {
               {t.newEvents}
             </Button>
           )}
-          {error && (
+            {error && (
             <div
               role="alert"
               className="rounded-xl border border-destructive/30 bg-destructive/5 p-4"
@@ -829,7 +842,7 @@ export function AuditClient({ me, locale }: { me: Me; locale: "ar" | "en" }) {
               </Button>
             </div>
           )}
-          {loading && !current ? (
+            {loading && !current ? (
             <div
               role="status"
               className="rounded-2xl border bg-card p-12 text-center"
@@ -847,14 +860,14 @@ export function AuditClient({ me, locale }: { me: Me; locale: "ar" | "en" }) {
               </h2>
             </div>
           ) : (
-            rows.length > 0 && (
-              <div
+              rows.length > 0 && (
+                <div
                 className="overflow-hidden rounded-2xl border bg-card"
                 aria-busy={loading}
               >
-                <div className="hidden overflow-x-auto md:block">
-                  <table className="w-full text-start text-sm">
-                    <thead className="bg-muted/60 text-xs text-muted-foreground">
+                  <TableScroll className="hidden overflow-x-auto md:block">
+                    <table className="w-full text-start text-sm">
+                      <thead className="bg-muted/60 text-xs text-muted-foreground">
                       <tr>
                         <th className="p-3">
                           <span className="sr-only">{t.select}</span>
@@ -871,13 +884,13 @@ export function AuditClient({ me, locale }: { me: Me; locale: "ar" | "en" }) {
                         <th className="p-3 text-start">{t.details}</th>
                       </tr>
                     </thead>
-                    <tbody>
-                      {rows.map((row) => (
-                        <tr
+                      <tbody>
+                        {rows.map((row) => (
+                          <tr
                           key={row.id}
                           className="border-t align-top hover:bg-muted/30"
                         >
-                          <td className="p-3">
+                            <td className="p-3">
                             <input
                               aria-label={`${t.select} ${row.id}`}
                               type="checkbox"
@@ -891,19 +904,23 @@ export function AuditClient({ me, locale }: { me: Me; locale: "ar" | "en" }) {
                               }
                             />
                           </td>
-                          {columns.map((c) => (
-                            <td
+                            {columns.map((c) => (
+                              <td
                               key={c}
                               className={
                                 (density === "compact" ? "px-3 py-2" : "p-3") +
                                 " max-w-64 [overflow-wrap:anywhere]"
                               }
                             >
-                              {c === "time" ? (
-                                <span className="text-xs">
-                                  {auditTime(row.occurredAt, locale, timezone)}
-                                </span>
-                              ) : c === "actor" ? (
+                                {c === "time" ? (
+                                  <span className="text-xs">
+                                    {auditTime(
+                                      row.occurredAt,
+                                      locale,
+                                      timezone,
+                                    )}
+                                  </span>
+                                ) : c === "actor" ? (
                                 <>
                                   <p className="font-medium">
                                     {row.actor.name ??
@@ -951,9 +968,9 @@ export function AuditClient({ me, locale }: { me: Me; locale: "ar" | "en" }) {
                                   {row.correlationId ?? t.unrecorded}
                                 </bdi>
                               )}
-                            </td>
-                          ))}
-                          <td className="p-2">
+                              </td>
+                            ))}
+                            <td className="p-2">
                             <Button
                               variant="ghost"
                               size="sm"
@@ -969,12 +986,12 @@ export function AuditClient({ me, locale }: { me: Me; locale: "ar" | "en" }) {
                               {t.details}
                             </Button>
                           </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
-                <div className="divide-y md:hidden">
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </TableScroll>
+                  <div className="divide-y md:hidden">
                   {rows.map((row) => (
                     <article key={row.id} className="space-y-3 p-4">
                       <div className="flex items-center justify-between gap-3">
@@ -1019,10 +1036,10 @@ export function AuditClient({ me, locale }: { me: Me; locale: "ar" | "en" }) {
                     </article>
                   ))}
                 </div>
-              </div>
-            )
-          )}
-          <div className="flex flex-wrap items-center justify-between gap-3 text-sm">
+                </div>
+              )
+            )}
+            <Toolbar className="flex flex-wrap items-center justify-between gap-3 text-sm">
             <span>
               {t.selected}: {selected.length}
             </span>
@@ -1048,16 +1065,16 @@ export function AuditClient({ me, locale }: { me: Me; locale: "ar" | "en" }) {
                 {t.next}
               </Button>
             </div>
-          </div>
-        </>
-      )}
-      <Sheet
+          </Toolbar>
+          </>
+        )}
+        <Sheet
         open={!!eventId}
         onOpenChange={(open) => {
           if (!open) closeEvent();
         }}
       >
-        <SheetContent
+          <SheetContent
           side={locale === "ar" ? "left" : "right"}
           className="w-full overflow-y-auto sm:max-w-2xl motion-reduce:animate-none"
           dir={locale === "ar" ? "rtl" : "ltr"}
@@ -1066,34 +1083,34 @@ export function AuditClient({ me, locale }: { me: Me; locale: "ar" | "en" }) {
             focusOrigin.current?.focus();
           }}
         >
-          <SheetHeader>
+            <SheetHeader>
             <SheetTitle>{t.details}</SheetTitle>
             <SheetDescription>
               {event ? auditLabel(event.action, locale) : t.loading}
             </SheetDescription>
           </SheetHeader>
-          <div className="space-y-5 px-5 pb-8 [overflow-wrap:anywhere]">
-            {detailLoading && <p role="status">{t.loading}</p>}
-            {detailError && <p role="alert">{detailError}</p>}
-            {event && (
-              <>
-                <div className="flex flex-wrap items-center gap-2">
+            <div className="space-y-5 px-5 pb-8 [overflow-wrap:anywhere]">
+              {detailLoading && <p role="status">{t.loading}</p>}
+              {detailError && <p role="alert">{detailError}</p>}
+              {event && (
+                <>
+                  <div className="flex flex-wrap items-center gap-2">
                   <Outcome value={event.outcome} t={t} />
                   {event.historical && (
                     <span className="text-xs">{t.historical}</span>
                   )}
                 </div>
-                {event.resourceState === "deleted" && (
+                  {event.resourceState === "deleted" && (
                   <p className="rounded-lg bg-muted p-3 text-sm">
                     {t.deletedResource}
                   </p>
                 )}
-                {event.historical && (
+                  {event.historical && (
                   <p className="rounded-lg bg-muted p-3 text-sm">
                     {t.historicalHelp}
                   </p>
                 )}
-                <dl className="grid grid-cols-2 gap-4 text-sm">
+                  <dl className="grid grid-cols-2 gap-4 text-sm">
                   {[
                     [t.actor, event.actor.name ?? word(t, event.actor.type)],
                     [t.roleKey, event.actor.roleKey ?? t.unrecorded],
@@ -1118,7 +1135,7 @@ export function AuditClient({ me, locale }: { me: Me; locale: "ar" | "en" }) {
                     </div>
                   ))}
                 </dl>
-                <div className="flex flex-wrap gap-2">
+                  <div className="flex flex-wrap gap-2">
                   <Button
                     size="sm"
                     variant="outline"
@@ -1161,7 +1178,7 @@ export function AuditClient({ me, locale }: { me: Me; locale: "ar" | "en" }) {
                     </Button>
                   )}
                 </div>
-                <section>
+                  <section>
                   <h3 className="mb-3 font-semibold">{t.changes}</h3>
                   {event.changesTruncated && (
                     <p className="text-sm">{word(t, "truncated")}</p>
@@ -1187,7 +1204,7 @@ export function AuditClient({ me, locale }: { me: Me; locale: "ar" | "en" }) {
                               </p>
                               <bdi>{auditValue(change.before, t)}</bdi>
                             </div>
-                            <div className="rounded-lg border border-emerald-200 bg-emerald-50 dark:bg-emerald-950 p-2 text-emerald-950 dark:text-emerald-200">
+                            <div className="rounded-lg border border-success-border bg-success-soft p-2 text-success-foreground">
                               <p className="mb-1 text-xs">{t.after}</p>
                               <bdi>{auditValue(change.after, t)}</bdi>
                             </div>
@@ -1197,13 +1214,14 @@ export function AuditClient({ me, locale }: { me: Me; locale: "ar" | "en" }) {
                     </div>
                   )}
                 </section>
-                {!!Object.keys(event.safeFields).length && (
-                  <details>
-                    <summary className="cursor-pointer py-2 text-sm">
+                  {!!Object.keys(event.safeFields).length && (
+                    <details>
+                      <summary className="cursor-pointer py-2 text-sm">
                       {t.allFields}
                     </summary>
-                    <dl>
-                      {Object.entries(event.safeFields).map(([key, value]) => (
+                      <dl>
+                        {Object.entries(event.safeFields).map(
+                          ([key, value]) => (
                         <div
                           key={key}
                           className="flex justify-between gap-3 border-b py-2 text-sm"
@@ -1211,11 +1229,12 @@ export function AuditClient({ me, locale }: { me: Me; locale: "ar" | "en" }) {
                           <dt>{word(t, key)}</dt>
                           <dd>{auditValue(value, t)}</dd>
                         </div>
-                      ))}
-                    </dl>
-                  </details>
-                )}
-                <div className="flex flex-wrap gap-2">
+                      ),
+                        )}
+                      </dl>
+                    </details>
+                  )}
+                  <div className="flex flex-wrap gap-2">
                   {can(me, "audit.review") && (
                     <Button
                       variant="outline"
@@ -1262,10 +1281,10 @@ export function AuditClient({ me, locale }: { me: Me; locale: "ar" | "en" }) {
                     </Button>
                   )}
                 </div>
-                <section className="space-y-3 border-t pt-4">
+                  <section className="space-y-3 border-t pt-4">
                   <label className="text-sm">
                     {t.resourceTimeline}
-                    <select
+                    <NativeSelect
                       className={control}
                       value={relation}
                       onChange={(e) =>
@@ -1281,7 +1300,7 @@ export function AuditClient({ me, locale }: { me: Me; locale: "ar" | "en" }) {
                           {t.correlationTimeline}
                         </option>
                       )}
-                    </select>
+                    </NativeSelect>
                   </label>
                   <RelatedTimeline
                     key={event.id + relation}
@@ -1293,7 +1312,7 @@ export function AuditClient({ me, locale }: { me: Me; locale: "ar" | "en" }) {
                     fail={fail}
                   />
                 </section>
-                <details>
+                  <details>
                   <summary className="cursor-pointer py-2 text-sm">
                     {t.technical}
                   </summary>
@@ -1318,12 +1337,13 @@ export function AuditClient({ me, locale }: { me: Me; locale: "ar" | "en" }) {
                     )}
                   </pre>
                 </details>
-              </>
-            )}
-          </div>
-        </SheetContent>
-      </Sheet>
-    </div>
+                </>
+              )}
+            </div>
+          </SheetContent>
+        </Sheet>
+      </TabsContent>
+    </Tabs>
   );
 }
 function ChangeSummary({ event, t }: { event: AuditEventV1; t: AuditCopy }) {

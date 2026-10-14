@@ -1,4 +1,6 @@
 "use client";
+
+import { PageHeading, TableScroll, Toolbar } from "@/components/ui/workspace";
 import {ErrorFeedback} from "@/components/errors/error-feedback";
 import {ApiError} from "@/lib/errors/transport";
 
@@ -28,14 +30,8 @@ const STATUS_KEYS = ["new", "in_review", "awaiting_info", "in_progress", "respon
 /** قيمة وسمية لتبويب «بانتظار ردك» — عرضٌ حصري (awaiting=you) وليس حالة طلب */
 const AWAITING_YOU = "awaiting_you";
 
-/** لغة حبوب التبويب — مشتركة بين «الكل» وحالات الطلب (كحلي عند التفعيل) */
-const TAB_PILL_CLASS =
-  "min-h-9 rounded-full px-4 text-sm font-medium transition-colors focus-visible:ring-2 focus-visible:ring-ring/40 data-[state=inactive]:hover:bg-muted data-[state=active]:bg-inverse data-[state=active]:text-white data-[state=active]:shadow-none";
-
-/** تبويب «بانتظار ردك» — تفعيل كهرماني بدل الكحلي ليُقرأ عرضًا خاصًّا لا حالة،
- *  بنفس لغة شارة الانتظار ومؤشر لوحة الحساب (amber-300 على amber-100) */
-const AWAITING_TAB_PILL_CLASS =
-  "min-h-9 rounded-full border border-transparent px-4 text-sm font-medium transition-colors focus-visible:ring-2 focus-visible:ring-ring/40 data-[state=inactive]:hover:bg-muted data-[state=active]:border-amber-300 data-[state=active]:bg-amber-100 data-[state=active]:text-amber-900 data-[state=active]:shadow-none";
+/** التحديد يتبع اللون الأساسي؛ تبقى ألوان الحالة في الشارات. */
+const TAB_PILL_CLASS = "min-h-11 px-4";
 
 type ClaimBanner = { kind: "ok" | "invalid" | "login_required"; ref?: string };
 
@@ -55,7 +51,7 @@ function AwaitingYouChip({
 }) {
   if (since === null) {
     return (
-      <span className="inline-flex items-center gap-1.5 rounded-full border border-border bg-muted px-2.5 py-0.5 text-[11px] font-medium text-muted-foreground">
+      <span className="inline-flex items-center gap-1.5 rounded-full border border-border bg-muted px-2.5 py-0.5 text-xs font-medium text-muted-foreground">
         {plainLabel}
       </span>
     );
@@ -65,13 +61,13 @@ function AwaitingYouChip({
   const hours = Math.max(0, Math.floor(ageMs / 3_600_000));
   if (days >= 1) {
     return (
-      <span className="inline-flex items-center gap-1.5 rounded-full border border-amber-300 bg-amber-100 dark:bg-amber-950 px-2.5 py-0.5 text-[11px] font-medium tabular-nums text-amber-900 dark:text-amber-200">
+      <span className="inline-flex items-center gap-1.5 rounded-full border border-warning-border bg-warning-soft px-2.5 py-0.5 text-xs font-medium tabular-nums text-warning-foreground">
         {label} · {daysLabel.replace("{n}", String(days))}
       </span>
     );
   }
   return (
-    <span className="inline-flex items-center gap-1.5 rounded-full border border-border bg-muted px-2.5 py-0.5 text-[11px] font-medium tabular-nums text-muted-foreground">
+    <span className="inline-flex items-center gap-1.5 rounded-full border border-border bg-muted px-2.5 py-0.5 text-xs font-medium tabular-nums text-muted-foreground">
       {label} · {hoursLabel.replace("{n}", String(hours))}
     </span>
   );
@@ -203,17 +199,7 @@ export function RequestsView({
 
   return (
     <div className="space-y-6">
-      <header className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-        <div className="flex items-center gap-3">
-          <span className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-accent text-brand-strong">
-            <Inbox className="size-5" aria-hidden="true" />
-          </span>
-          <div className="min-w-0">
-            <h1 className="text-2xl font-bold text-navy">{t.title}</h1>
-            <p className="mt-1 text-sm text-muted-foreground">{t.subtitle}</p>
-          </div>
-        </div>
-        <div className="flex flex-wrap items-center gap-3">
+      <PageHeading title={t.title} description={t.subtitle} actions={<Toolbar className="flex flex-wrap items-center gap-3">
           <Button
             variant="outline"
             className="h-11 rounded-full px-5 font-semibold focus-visible:ring-2 focus-visible:ring-ring/40"
@@ -227,25 +213,24 @@ export function RequestsView({
           </Button>
           <Button
             asChild
-            className="h-11 rounded-full bg-primary px-6 font-bold text-primary-foreground shadow-md shadow-brand/20 transition-all hover:bg-brand-strong focus-visible:ring-2 focus-visible:ring-ring/40"
+            className="h-11 rounded-full bg-primary px-6 font-bold text-primary-foreground shadow-md shadow-brand/20 transition-[color,background-color,border-color,box-shadow,opacity,transform] hover:bg-primary-hover hover:text-primary-hover-foreground focus-visible:ring-2 focus-visible:ring-ring/40"
           >
             <Link href={`/${locale}/account/requests/new`}>
               <Plus className="h-4 w-4" aria-hidden="true" />
               {t.create}
             </Link>
           </Button>
-        </div>
-      </header>
+        </Toolbar>} />
 
       {banner && (
         <div
           role="status"
           className={`flex flex-wrap items-center gap-3 rounded-2xl border p-4 text-sm font-medium ${
             banner.kind === "ok"
-              ? "border-emerald-200 bg-emerald-50 dark:bg-emerald-950 text-emerald-900 dark:text-emerald-200"
+              ? "border-success-border bg-success-soft text-success-foreground"
               : banner.kind === "invalid"
-                ? "border-rose-200 bg-rose-50 dark:bg-rose-950 text-rose-700 dark:text-rose-200"
-                : "border-amber-200 bg-amber-50 dark:bg-amber-950 text-amber-900 dark:text-amber-200"
+                ? "border-danger-border bg-danger-soft text-danger-foreground"
+                : "border-warning-border bg-warning-soft text-warning-foreground"
           }`}
         >
           {banner.kind === "ok" ? t.claimVerifyOk : banner.kind === "invalid" ? authErrors.invalid : authErrors.generic}
@@ -259,7 +244,7 @@ export function RequestsView({
 
       <Tabs value={status} onValueChange={onStatusChange} dir={locale === "ar" ? "rtl" : "ltr"} className="space-y-5">
         <div className="overflow-x-auto pb-1">
-          <TabsList className="h-auto w-max flex-wrap gap-1 rounded-full bg-muted/60 p-1">
+          <TabsList className="w-max max-w-full justify-start gap-1">
             <TabsTrigger value="all" className={TAB_PILL_CLASS}>
               {allLabel}
             </TabsTrigger>
@@ -270,7 +255,7 @@ export function RequestsView({
                 </TabsTrigger>
                 {/* «بانتظار ردك» — عرضٌ حصري بعد «تم الرد» وقبل الحالات الختامية */}
                 {key === "responded" && (
-                  <TabsTrigger value={AWAITING_YOU} className={AWAITING_TAB_PILL_CLASS}>
+                  <TabsTrigger value={AWAITING_YOU} className={TAB_PILL_CLASS}>
                     {t.awaitingYou}
                   </TabsTrigger>
                 )}
@@ -333,7 +318,7 @@ export function RequestsView({
               <div className="mt-6 flex justify-center">
                 <Button
                   asChild
-                  className="h-11 rounded-full bg-primary px-6 font-bold text-primary-foreground shadow-md shadow-brand/20 transition-all hover:bg-brand-strong focus-visible:ring-2 focus-visible:ring-ring/40"
+                  className="h-11 rounded-full bg-primary px-6 font-bold text-primary-foreground shadow-md shadow-brand/20 transition-[color,background-color,border-color,box-shadow,opacity,transform] hover:bg-primary-hover hover:text-primary-hover-foreground focus-visible:ring-2 focus-visible:ring-ring/40"
                 >
                   <Link href={`/${locale}/account/requests/new`}>{t.create}</Link>
                 </Button>
@@ -342,7 +327,7 @@ export function RequestsView({
           )
         ) : (
           <>
-            <div className="overflow-x-auto">
+            <TableScroll className="overflow-x-auto">
               <table className="w-full min-w-[44rem] text-sm">
                 <thead>
                   <tr className="border-b border-border text-xs font-semibold uppercase tracking-wide text-muted-foreground">
@@ -368,7 +353,7 @@ export function RequestsView({
                       <td className="px-3 py-3.5 text-muted-foreground">
                         <span>{t.services[r.serviceType] ?? r.serviceType}</span>
                         {r.messageCount > 0 && (
-                          <span className="ms-2 inline-flex items-center gap-1 text-xs text-muted-foreground/80">
+                          <span className="ms-2 inline-flex items-center gap-1 text-xs text-muted-foreground">
                             <MessageCircle className="h-3.5 w-3.5" aria-hidden="true" />
                             <span className="tabular-nums">{r.messageCount}</span>
                           </span>
@@ -402,7 +387,7 @@ export function RequestsView({
                   ))}
                 </tbody>
               </table>
-            </div>
+            </TableScroll>
 
             {totalPages > 1 && (
               <div className="mt-4 flex items-center justify-end gap-2">
@@ -447,13 +432,13 @@ export function RequestsView({
 
           {claimResult?.sent ? (
             <div className="space-y-4">
-              <p role="status" className="rounded-xl border border-emerald-200 bg-emerald-50 dark:bg-emerald-950 px-4 py-3 text-sm font-medium text-emerald-800 dark:text-emerald-200">
+              <p role="status" className="rounded-xl border border-success-border bg-success-soft px-4 py-3 text-sm font-medium text-success-foreground">
                 {t.claimSent}
               </p>
               {claimResult.devVerifyUrl && <DevLink url={claimResult.devVerifyUrl} hint={t.claimVerifyTitle} />}
               <Button
                 onClick={resetClaim}
-                className="h-11 w-full rounded-full bg-primary font-bold text-primary-foreground hover:bg-brand-strong focus-visible:ring-2 focus-visible:ring-ring/40"
+                className="h-11 w-full rounded-full bg-primary font-bold text-primary-foreground hover:bg-primary-hover hover:text-primary-hover-foreground focus-visible:ring-2 focus-visible:ring-ring/40"
               >
                 {t.cancelEdit}
               </Button>
@@ -480,7 +465,7 @@ export function RequestsView({
               <Button
                 type="submit"
                 disabled={claimSending}
-                className="h-11 w-full rounded-full bg-primary font-bold text-primary-foreground shadow-md shadow-brand/20 transition-all hover:bg-brand-strong focus-visible:ring-2 focus-visible:ring-ring/40"
+                className="h-11 w-full rounded-full bg-primary font-bold text-primary-foreground shadow-md shadow-brand/20 transition-[color,background-color,border-color,box-shadow,opacity,transform] hover:bg-primary-hover hover:text-primary-hover-foreground focus-visible:ring-2 focus-visible:ring-ring/40"
               >
                 {claimSending ? <Loader2 className="h-4 w-4 animate-spin" aria-hidden="true" /> : <Send className="h-4 w-4" aria-hidden="true" />}
                 {t.claimButton}

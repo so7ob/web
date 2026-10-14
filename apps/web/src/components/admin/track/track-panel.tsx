@@ -43,9 +43,9 @@ interface TrackPanelProps {
 
 /** شارات حالة الرابط — لغة النقاط الناعمة نفسها في لوحة الإدارة */
 const STATE_CHIPS: Record<"valid" | "expired" | "revoked", string> = {
-  valid: "border border-emerald-200 bg-emerald-50 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-200",
-  expired: "border border-amber-300 bg-amber-100 dark:bg-amber-950 text-amber-900 dark:text-amber-200",
-  revoked: "border border-rose-200 bg-rose-50 dark:bg-rose-950 text-rose-800 dark:text-rose-200",
+  valid: "border border-success-border bg-success-soft text-success-foreground",
+  expired: "border border-warning-border bg-warning-soft text-warning-foreground",
+  revoked: "border border-danger-border bg-danger-soft text-danger-foreground",
 };
 
 /** تاريخ ووقت بصيغة Intl للغتين — نمط نسخة المحرر */
@@ -211,7 +211,7 @@ export function TrackPanel({ scope, cardId, locale, t }: TrackPanelProps) {
 
           {/* فرض تسجيل الدخول يتغلب على أي استثناء — تحذير كهرماني مستقل */}
           {data.settings.forceLogin ? (
-            <p className="flex items-start gap-2 rounded-xl bg-amber-50 dark:bg-amber-950 px-3 py-2 text-sm text-amber-800 dark:text-amber-200">
+            <p className="flex items-start gap-2 rounded-xl bg-warning-soft px-3 py-2 text-sm text-warning-foreground">
               <TriangleAlert className="mt-0.5 size-4 shrink-0" aria-hidden="true" />
               {t.forceLoginActive}
             </p>
@@ -238,8 +238,8 @@ export function TrackPanel({ scope, cardId, locale, t }: TrackPanelProps) {
 
           {/* صندوق كشف الرمز مرة واحدة بعد التجديد — يحل محل الأزرار */}
           {renewedPath ? (
-            <div className="space-y-2 rounded-xl border border-emerald-200 bg-emerald-50 dark:bg-emerald-950 p-3">
-              <p className="text-sm font-medium text-emerald-700 dark:text-emerald-200">{t.renewed}</p>
+            <div className="space-y-2 rounded-xl border border-success-border bg-success-soft p-3">
+              <p className="text-sm font-medium text-success-foreground">{t.renewed}</p>
               <div className="flex items-center gap-2">
                 <Input
                   readOnly
@@ -261,7 +261,7 @@ export function TrackPanel({ scope, cardId, locale, t }: TrackPanelProps) {
               </div>
               <p className="text-xs text-muted-foreground">{t.renewHint}</p>
               {renewedEmailedTo ? (
-                <p className="flex items-center gap-1.5 text-xs font-medium text-emerald-700 dark:text-emerald-200">
+                <p className="flex items-center gap-1.5 text-xs font-medium text-success-foreground">
                   <MailCheck className="size-3.5" aria-hidden="true" />
                   {t.renewEmailedTo} <span dir="ltr" className="ltr-isolate">{renewedEmailedTo}</span>
                 </p>

@@ -36,8 +36,8 @@ for (const locale of ["ar", "en"] as const)
         waitUntil: "networkidle",
       });
       await page
-        .getByRole("navigation", { name: t.title, exact: true })
-        .getByRole("button", { name: t.rules, exact: true })
+        .getByRole("tablist", { name: t.title, exact: true })
+        .getByRole("tab", { name: t.rules, exact: true })
         .click();
       const form = page.locator("form").filter({
         has: page.getByRole("heading", { name: t.privilege, exact: true }),
@@ -79,8 +79,8 @@ for (const locale of ["ar", "en"] as const)
       );
       expect(alert).toBeTruthy();
       await page
-        .getByRole("navigation", { name: t.title, exact: true })
-        .getByRole("button", { name: t.alerts, exact: true })
+        .getByRole("tablist", { name: t.title, exact: true })
+        .getByRole("tab", { name: t.alerts, exact: true })
         .click();
       await expect(page.getByText(alert.reason, { exact: true })).toBeVisible();
       await page

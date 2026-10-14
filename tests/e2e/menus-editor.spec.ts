@@ -266,6 +266,10 @@ for (const locale of ["ar", "en"] as const) {
     await expect(
       page.getByRole("textbox", { name: tm.unsaved, exact: true }),
     ).toHaveValue(/Preserved failure draft/);
+    const reviewBounds = await page.getByRole("alertdialog").boundingBox();
+    expect(reviewBounds).not.toBeNull();
+    expect(reviewBounds!.y).toBeGreaterThanOrEqual(0);
+    expect(reviewBounds!.y + reviewBounds!.height).toBeLessThanOrEqual(page.viewportSize()!.height);
     await page.getByRole("button", { name: tm.cancel, exact: true }).click();
     expect(writes).toBe(1);
     await expect(page.locator("#label-en-0")).toHaveValue(

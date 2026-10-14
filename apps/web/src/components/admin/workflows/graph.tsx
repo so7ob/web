@@ -1,3 +1,4 @@
+import { Toolbar } from "@/components/ui/workspace";
 import { useState } from "react";
 import {
   DndContext,
@@ -118,7 +119,7 @@ export function WorkflowGraph({
       className="min-w-0 space-y-3"
       aria-label={t("مخطط المسار", "Workflow diagram")}
     >
-      <div className="flex flex-wrap items-center gap-2">
+      <Toolbar className="flex flex-wrap items-center gap-2">
         <Button
           variant="outline"
           onClick={() => setZoom((z) => Math.max(0.4, z - 0.1))}
@@ -158,7 +159,7 @@ export function WorkflowGraph({
             "All stages and connections are also editable in the forms below.",
           )}
         </p>
-      </div>
+      </Toolbar>
       <div
         className="overflow-auto rounded-xl border bg-muted/30"
         style={{ maxHeight: 500 }}

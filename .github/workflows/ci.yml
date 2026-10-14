@@ -137,6 +137,16 @@ jobs:
           path: .migration/settings/*.png
           if-no-files-found: error
           retention-days: 30
+      - name: Preserve design system coverage and synthetic screenshots
+        uses: actions/upload-artifact@v4
+        with:
+          name: design-system-92-synthetic-interfaces
+          path: |
+            .migration/design-system/screenshots/**/*.png
+            .migration/design-system/screenshots/**/coverage.json
+            .migration/design-system/refined/**/*.png
+          if-no-files-found: error
+          retention-days: 30
       - uses: actions/upload-artifact@v4
         if: failure()
         with:

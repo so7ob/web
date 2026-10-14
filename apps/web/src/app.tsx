@@ -83,13 +83,13 @@ export function App() {
 }
 function AppContent() {
   const data = useLoaderData<PublicView>();
-  if (data.kind === "not-found") return <NotFound />;
+  if (data.kind === "not-found") return <NotFound locale={data.locale} />;
   if (data.kind === "admin")
     return (
       <>
         <a
           href="#main-content"
-          className="sr-only focus:not-sr-only focus:fixed focus:start-4 focus:top-4 focus:z-[100] focus:rounded-md focus:bg-inverse focus:px-4 focus:py-2 focus:text-white"
+          className="sr-only focus:not-sr-only focus:fixed focus:start-4 focus:top-4 focus:z-[100] focus:rounded-md focus:bg-inverse focus:px-4 focus:py-2 focus:text-inverse-foreground"
         >
           {(data.locale === "ar" ? ar : en).common.skipToContent}
         </a>
@@ -111,7 +111,7 @@ function AppContent() {
       />
       <a
         href="#main-content"
-        className="sr-only focus:not-sr-only focus:fixed focus:start-4 focus:top-4 focus:z-[100] focus:rounded-md focus:bg-inverse focus:px-4 focus:py-2 focus:text-white"
+        className="sr-only focus:not-sr-only focus:fixed focus:start-4 focus:top-4 focus:z-[100] focus:rounded-md focus:bg-inverse focus:px-4 focus:py-2 focus:text-inverse-foreground"
       >
         {content.common.skipToContent}
       </a>
@@ -147,7 +147,7 @@ function RouteError() {
   const locale=useLocation().pathname.startsWith('/en')?'en':'ar';
   const status = isRouteErrorResponse(error) ? error.status : error instanceof ApiError?error.status:500;
   return status === 404 ? (
-    <NotFound />
+    <NotFound locale={locale} />
   ) : (
     <main id="main-content" className="p-12">
       <h1>{locale==='ar'?'تعذر عرض الصفحة':'Unable to display the page'}</h1>

@@ -1,5 +1,7 @@
 "use client";
 
+import { ListWorkspace, PageHeading } from "@/components/ui/workspace";
+
 /**
  * صندوق صادر البريد: سجل الرسائل المرسلة/المسجلة/الفاشلة مع نص الخطأ.
  * وضع التطوير يسجل بلا إرسال فعلي — يوضحه نص الحالة والفراغ.
@@ -73,117 +75,124 @@ export function OutboxClient({ me, locale }: OutboxClientProps) {
   const reload = () => setReloadToken((v) => v + 1);
   const emails = data?.emails ?? [];
   const statusLabel = (s: string) => {
-    const labels: Record<string, string> = { queued:to.queued,retry:to.retry,leased:to.leased,sending:to.sending,
-      sent:to.sent,failed:to.failed,uncertain:to.uncertain,dev_logged:to.devLogged };
-    return Object.hasOwn(labels,s) ? labels[s] : to.unknown;
+    const labels: Record<string, string> = {
+      queued: to.queued,
+      retry: to.retry,
+      leased: to.leased,
+      sending: to.sending,
+      sent: to.sent,
+      failed: to.failed,
+      uncertain: to.uncertain,
+      dev_logged: to.devLogged,
+    };
+    return Object.hasOwn(labels, s) ? labels[s] : to.unknown;
   };
 
   return (
     <div className="space-y-5">
-      <header className="flex items-center gap-3">
-        <span className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-accent text-brand-strong">
-          <Send className="size-5" aria-hidden="true" />
-        </span>
-        <div>
-          <h1 className="text-2xl font-bold text-navy">{to.title}</h1>
-          <p className="mt-1 text-sm text-muted-foreground">{to.subtitle}</p>
-        </div>
-      </header>
+      <PageHeading title={to.title} description={to.subtitle} />
 
-      <div className="overflow-hidden rounded-2xl border border-border bg-card">
-        <div className="overflow-x-auto">
-          <Table tabIndex={0} aria-label={to.title} className="focus-visible:outline-2 focus-visible:outline-brand">
-            <TableHeader>
-              <TableRow className="bg-muted/50 hover:bg-muted/50 [&_th]:text-xs [&_th]:font-medium [&_th]:uppercase [&_th]:tracking-wide [&_th]:text-muted-foreground">
-                <TableHead className="min-w-40">{to.date}</TableHead>
-                <TableHead className="min-w-52">{to.to}</TableHead>
-                <TableHead className="min-w-64">{to.subject}</TableHead>
-                <TableHead className="min-w-28">{to.status}</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {loading && !data ? (
-                Array.from({ length: 10 }).map((_, i) => (
-                  <TableRow key={`sk-${i}`}>
-                    {Array.from({ length: 4 }).map((__, j) => (
-                      <TableCell key={j}>
-                        <Skeleton className="h-5 w-full" />
-                      </TableCell>
-                    ))}
+      <ListWorkspace>
+        <div className="min-w-0">
+          <div className="overflow-x-auto">
+            {data && !loading && emails.length === 0 ? (
+              <EmptyState icon={Send} title={to.empty} body={to.emptyBody} />
+            ) : (
+              <Table
+                tabIndex={0}
+                aria-label={to.title}
+                className="min-w-[48rem] table-fixed focus-visible:outline-2 focus-visible:outline-brand [&_td]:whitespace-normal [&_td]:break-words"
+              >
+                <TableHeader>
+                  <TableRow className="bg-muted/50 hover:bg-muted/50">
+                    <TableHead className="w-[18%]">{to.date}</TableHead>
+                    <TableHead className="w-[22%]">{to.to}</TableHead>
+                    <TableHead className="w-[36%]">{to.subject}</TableHead>
+                    <TableHead className="w-[24%]">{to.status}</TableHead>
                   </TableRow>
-                ))
-              ) : emails.length === 0 ? (
-                <TableRow>
-                  <TableCell colSpan={4} className="p-0">
-                    <EmptyState
-                      icon={Send}
-                      title={to.empty}
-                      body={to.emptyBody}
-                    />
-                  </TableCell>
-                </TableRow>
-              ) : (
-                emails.map((email) => (
-                  <TableRow
-                    key={email.id}
-                    className="align-top transition-colors hover:bg-muted/50"
-                  >
-                    <TableCell className="whitespace-nowrap text-xs tabular-nums text-muted-foreground">
-                      {fmtDateTime(email.createdAt, locale)}
-                    </TableCell>
-                    <TableCell className="max-w-56 truncate font-mono text-xs text-navy ltr-isolate">
-                      {email.to}
-                    </TableCell>
-                    <TableCell>
-                      <p className="max-w-96 truncate text-sm text-foreground">
-                        {email.subject}
-                      </p>
-                      {email.errorCode ? (
-                        <p className="max-w-96 truncate text-xs text-destructive">
-                          {to.errorCode}: {email.errorCode}
-                        </p>
-                      ) : null}
-                    </TableCell>
-                    <TableCell>
-                      <OutboxStatusBadge
-                        status={email.status}
-                        label={statusLabel(email.status)}
-                      />
-                      {email.attempts !== null && <p className="mt-1 text-xs text-muted-foreground">{to.attempts}: {email.attempts}</p>}
-                      {email.nextAttemptAt && <p className="mt-1 text-xs text-muted-foreground">{to.nextAttempt}: {fmtDateTime(email.nextAttemptAt, locale)}</p>}
-                    </TableCell>
-                  </TableRow>
-                ))
-              )}
-            </TableBody>
-          </Table>
+                </TableHeader>
+                <TableBody>
+                  {loading && !data
+                    ? Array.from({ length: 10 }).map((_, i) => (
+                        <TableRow key={`sk-${i}`}>
+                          {Array.from({ length: 4 }).map((__, j) => (
+                            <TableCell key={j}>
+                              <Skeleton className="h-5 w-full" />
+                            </TableCell>
+                          ))}
+                        </TableRow>
+                      ))
+                    : emails.map((email) => (
+                        <TableRow
+                          key={email.id}
+                          className="align-top transition-colors hover:bg-muted/50"
+                        >
+                          <TableCell className="whitespace-nowrap text-xs tabular-nums text-muted-foreground">
+                            {fmtDateTime(email.createdAt, locale)}
+                          </TableCell>
+                          <TableCell className="font-mono text-xs text-foreground ltr-isolate [overflow-wrap:anywhere]">
+                            {email.to}
+                          </TableCell>
+                          <TableCell>
+                            <p className="text-sm text-foreground">
+                              {email.subject}
+                            </p>
+                            {email.errorCode ? (
+                              <p className="text-xs text-destructive">
+                                {to.errorCode}: {email.errorCode}
+                              </p>
+                            ) : null}
+                          </TableCell>
+                          <TableCell>
+                            <OutboxStatusBadge
+                              status={email.status}
+                              label={statusLabel(email.status)}
+                            />
+                            {email.attempts !== null && (
+                              <p className="mt-1 text-xs text-muted-foreground">
+                                {to.attempts}: {email.attempts}
+                              </p>
+                            )}
+                            {email.nextAttemptAt && (
+                              <p className="mt-1 text-xs text-muted-foreground">
+                                {to.nextAttempt}:{" "}
+                                {fmtDateTime(email.nextAttemptAt, locale)}
+                              </p>
+                            )}
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                </TableBody>
+              </Table>
+            )}
+          </div>
         </div>
-      </div>
 
-      {error ? (
-        <div className="flex items-center justify-between gap-3 rounded-2xl border border-destructive/30 bg-destructive/5 px-4 py-3">
-          <p className="text-sm text-destructive">{error}</p>
-          <Button
-            variant="outline"
-            size="icon"
-            onClick={reload}
-            className="size-10 shrink-0"
-            aria-label={to.title}
-          >
-            <RotateCcw className="size-4" aria-hidden="true" />
-          </Button>
-        </div>
-      ) : null}
+        {error ? (
+          <div className="flex items-center justify-between gap-3 rounded-2xl border border-destructive/30 bg-destructive/5 px-4 py-3">
+            <p className="text-sm text-destructive">{error}</p>
+            <Button
+              variant="outline"
+              size="icon"
+              onClick={reload}
+              className="size-10 shrink-0"
+              aria-label={to.title}
+            >
+              <RotateCcw className="size-4" aria-hidden="true" />
+            </Button>
+          </div>
+        ) : null}
 
-      {data ? (
-        <AdminPagination
-          page={page}
-          total={data.total}
-          pageSize={data.pageSize}
-          locale={locale}
-          onPage={setPage}
-        />
-      ) : null}
+        {data ? (
+          <AdminPagination
+            page={page}
+            total={data.total}
+            pageSize={data.pageSize}
+            locale={locale}
+            onPage={setPage}
+          />
+        ) : null}
+      </ListWorkspace>
 
       {loading && data ? (
         <Loader2

@@ -39,7 +39,7 @@ export function ContactInfoBlock({ props, locale }: { props: ContactInfoBlockPro
             </>
           );
           const className = ch.href
-            ? "block rounded-2xl border border-border bg-card p-6 transition-all hover:border-brand/40 hover:shadow-md"
+            ? "block rounded-2xl border border-border bg-card p-6 transition-[color,background-color,border-color,box-shadow,opacity,transform] hover:border-brand/40 hover:shadow-md"
             : "rounded-2xl border border-border bg-card p-6";
           return ch.href ? (
             <BlockLink key={`${i}-${ch.label}`} href={ch.href} locale={locale} className={className}>

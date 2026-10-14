@@ -24,6 +24,7 @@ import {
   closestCenter,
   pointerWithin,
   useDroppable,
+  useDndContext,
   useSensor,
   useSensors,
   type DragEndEvent,
@@ -365,6 +366,7 @@ function LayerRow({
   const hasChildren = Boolean(node.children?.length);
   const expanded = searching || forceOpen.has(node.id) || !collapsed.has(node.id);
   const selected = selectedId === node.id;
+  const { active } = useDndContext();
 
   const {
     attributes,
@@ -399,7 +401,7 @@ function LayerRow({
           transition,
         }}
         className={cn(
-          "group/row flex min-h-8 items-center gap-0 rounded-lg pe-1 transition-colors",
+          "group/row flex flex-wrap min-h-11 items-center gap-0 rounded-lg pe-1 transition-colors",
           selected ? "bg-accent/70" : "hover:bg-muted/60",
           isDragging && "opacity-40"
         )}
@@ -414,7 +416,7 @@ function LayerRow({
           aria-roledescription="sortable"
           disabled={dragDisabled}
           className={cn(
-            "flex size-6 shrink-0 touch-none items-center justify-center rounded text-muted-foreground/50 transition-colors hover:bg-accent hover:text-navy focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand",
+            "flex size-11 shrink-0 touch-none items-center justify-center rounded text-muted-foreground transition-colors hover:bg-accent hover:text-navy focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand",
             dragDisabled ? "cursor-not-allowed opacity-30" : "cursor-grab active:cursor-grabbing"
           )}
         >
@@ -428,7 +430,7 @@ function LayerRow({
             onClick={() => onToggle(node.id)}
             aria-label={`${label} ${expanded ? "−" : "+"}`}
             aria-expanded={expanded}
-            className="flex size-6 shrink-0 cursor-pointer items-center justify-center rounded text-muted-foreground hover:bg-accent hover:text-navy focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
+            className="flex size-11 shrink-0 cursor-pointer items-center justify-center rounded text-muted-foreground hover:bg-accent hover:text-navy focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
           >
             {expanded ? (
               <ChevronDown className="size-3.5" aria-hidden="true" />
@@ -439,7 +441,7 @@ function LayerRow({
             )}
           </button>
         ) : (
-          <span className="size-6 shrink-0" aria-hidden="true" />
+          <span className="size-11 shrink-0" aria-hidden="true" />
         )}
 
         {/* الصف: أيقونة + تسمية */}
@@ -449,7 +451,7 @@ function LayerRow({
           title={label}
           aria-current={selected ? "true" : undefined}
           className={cn(
-            "flex min-w-0 flex-1 cursor-pointer items-center gap-1.5 rounded py-1 text-start focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand",
+            "flex min-h-11 min-w-0 flex-1 cursor-pointer items-center gap-1.5 rounded py-1 text-start focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand",
             selected ? "text-navy" : "text-foreground/80"
           )}
         >
@@ -462,7 +464,7 @@ function LayerRow({
           {locked && (
             <Tooltip>
               <TooltipTrigger asChild>
-                <Lock className="size-3 shrink-0 text-muted-foreground/70" aria-hidden="true" />
+                <Lock className="size-3 shrink-0 text-muted-foreground" aria-hidden="true" />
               </TooltipTrigger>
               <TooltipContent side="top">{te.maxDepthHint}</TooltipContent>
             </Tooltip>
@@ -472,8 +474,9 @@ function LayerRow({
         {/* أزرار الصف — تظهر عند التحويم أو التحديد */}
         <div
           className={cn(
-            "flex shrink-0 items-center gap-0.5 opacity-0 transition-opacity group-hover/row:opacity-100",
-            selected && "opacity-100"
+            "hidden basis-full flex-wrap items-center justify-end gap-1 py-1",
+            !active && "group-hover/row:flex group-focus-within/row:flex",
+            !active && selected && "flex"
           )}
         >
           {deviceButtons.map((d) => {
@@ -487,8 +490,8 @@ function LayerRow({
                     aria-label={d.title}
                     aria-pressed={!visible}
                     className={cn(
-                      "flex size-5 cursor-pointer items-center justify-center rounded transition-colors hover:bg-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand",
-                      visible ? "text-muted-foreground hover:text-navy" : "text-amber-600 dark:text-amber-200 hover:text-amber-700"
+                      "flex size-11 cursor-pointer items-center justify-center rounded transition-colors hover:bg-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand",
+                      visible ? "text-muted-foreground hover:text-navy" : "text-warning-foreground hover:text-warning-foreground"
                     )}
                   >
                     {visible ? (
@@ -508,7 +511,7 @@ function LayerRow({
             onClick={() => onDuplicate(node.id)}
             title={te.duplicate}
             aria-label={te.duplicate}
-            className="flex size-5 cursor-pointer items-center justify-center rounded text-muted-foreground transition-colors hover:bg-accent hover:text-navy focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
+            className="flex size-11 cursor-pointer items-center justify-center rounded text-muted-foreground transition-colors hover:bg-accent hover:text-navy focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
           >
             <Copy className="size-3.5" aria-hidden="true" />
           </button>
@@ -517,7 +520,7 @@ function LayerRow({
             onClick={() => onDelete(node.id)}
             title={te.delete}
             aria-label={te.delete}
-            className="flex size-5 cursor-pointer items-center justify-center rounded text-muted-foreground transition-colors hover:bg-red-50 hover:text-destructive focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-destructive"
+            className="flex size-11 cursor-pointer items-center justify-center rounded text-muted-foreground transition-colors hover:bg-danger-soft hover:text-destructive focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-destructive"
           >
             <Trash2 className="size-3.5" aria-hidden="true" />
           </button>

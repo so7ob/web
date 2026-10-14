@@ -120,7 +120,7 @@ export function ScheduleDialog({ open, onOpenChange, locale, page, onApplied }: 
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2 text-navy">
-            <span className="flex size-8 shrink-0 items-center justify-center rounded-full bg-violet-100 dark:bg-violet-950 text-violet-700 dark:text-violet-200">
+            <span className="flex size-8 shrink-0 items-center justify-center rounded-full bg-highlight-soft text-highlight-foreground">
               <CalendarClock className="size-4" aria-hidden="true" />
             </span>
             {te.schedule}
@@ -131,16 +131,16 @@ export function ScheduleDialog({ open, onOpenChange, locale, page, onApplied }: 
         <div className="space-y-3">
           {/* الجدولة القائمة */}
           {page.scheduledPublishAt && (
-            <div className="flex items-center justify-between gap-2 rounded-xl border border-violet-200 bg-violet-50/60 dark:bg-violet-950/60 p-3">
+            <div className="flex items-center justify-between gap-2 rounded-xl border border-highlight-border bg-highlight-soft/60 p-3">
               <div className="min-w-0">
-                <p className="text-xs font-bold text-violet-800 dark:text-violet-200">{te.scheduleCurrent}</p>
+                <p className="text-xs font-bold text-highlight-foreground">{te.scheduleCurrent}</p>
                 <p className="text-sm font-semibold text-navy">{fmtDateTime(page.scheduledPublishAt, locale)}</p>
               </div>
               <Button
                 type="button"
                 variant="outline"
                 size="sm"
-                className="shrink-0 border-violet-300 text-violet-700 dark:text-violet-200 hover:bg-violet-100 hover:text-violet-800"
+                className="shrink-0 border-highlight-border text-highlight-foreground hover:bg-highlight-soft hover:text-highlight-foreground"
                 onClick={() => void cancelSchedule()}
                 disabled={busy}
               >
@@ -179,7 +179,7 @@ export function ScheduleDialog({ open, onOpenChange, locale, page, onApplied }: 
           </Button>
           <Button
             type="button"
-            className="min-h-11 rounded-full bg-violet-700 text-white hover:bg-violet-800"
+            className="min-h-11 rounded-full bg-highlight text-on-highlight hover:bg-highlight"
             onClick={() => void schedule()}
             disabled={busy || !dateValue}
           >

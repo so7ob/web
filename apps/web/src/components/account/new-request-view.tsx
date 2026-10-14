@@ -1,5 +1,7 @@
 "use client";
 
+import { PageHeading, Panel } from "@/components/ui/workspace";
+
 import { Suspense, useCallback, useEffect, useRef, useState } from "react";
 import Link from "@/routing/link";
 import { CheckCircle2, FilePlus2, Loader2 } from "lucide-react";
@@ -96,21 +98,16 @@ export function NewRequestView({
 
   return (
     <div className="space-y-6">
-      <header className="flex items-center gap-3">
-        <span className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-accent text-brand-strong">
-          <FilePlus2 className="size-5" aria-hidden="true" />
-        </span>
-        <h1 className="text-2xl font-bold text-navy">{heading}</h1>
-      </header>
+      <PageHeading title={heading} />
 
       {submitted ? (
-        <div className="rounded-3xl border border-emerald-200 bg-card p-8 text-center sm:p-12" role="status">
-          <span className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-emerald-100 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-200">
+        <Panel className="rounded-3xl border border-success-border bg-card p-8 text-center sm:p-12" role="status">
+          <span className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-success-soft text-success-foreground">
             <CheckCircle2 className="h-8 w-8" aria-hidden="true" />
           </span>
           <h2 className="mt-5 text-2xl font-bold text-navy">{t.submitSuccess}</h2>
           <p className="mx-auto mt-3 max-w-md leading-8 text-muted-foreground">{t.submitSuccessBody}</p>
-          <p className="mt-6 inline-flex items-center gap-3 rounded-xl bg-emerald-50 dark:bg-emerald-950 px-5 py-3 text-emerald-900 dark:text-emerald-200">
+          <p className="mt-6 inline-flex items-center gap-3 rounded-xl bg-success-soft px-5 py-3 text-success-foreground">
             <span className="font-mono text-lg font-bold tracking-wide ltr-isolate" dir="ltr">
               {submitted.refCode}
             </span>
@@ -119,7 +116,7 @@ export function NewRequestView({
             {submitted.id && (
               <Button
                 asChild
-                className="h-12 rounded-full bg-primary px-6 font-bold text-primary-foreground shadow-md shadow-brand/20 transition-all hover:bg-brand-strong"
+                className="h-12 rounded-full bg-primary px-6 font-bold text-primary-foreground shadow-md shadow-brand/20 transition-[color,background-color,border-color,box-shadow,opacity,transform] hover:bg-primary-hover hover:text-primary-hover-foreground"
               >
                 <Link href={`/${locale}/account/requests/${submitted.id}`}>{t.viewDetails}</Link>
               </Button>
@@ -132,7 +129,7 @@ export function NewRequestView({
               <Link href={`/${locale}/account`}>{t.cancelEdit}</Link>
             </Button>
           </div>
-        </div>
+        </Panel>
       ) : phase === "loading" ? (
         <div role="status" aria-busy="true" className="flex items-center justify-center gap-3 rounded-3xl border border-border bg-card p-12 text-sm font-medium text-muted-foreground">
           <Loader2 className="h-5 w-5 animate-spin text-brand" aria-hidden="true" />

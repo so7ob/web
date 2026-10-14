@@ -1,3 +1,5 @@
+import { NativeSelect } from "@/components/ui/native-select";
+import { ListWorkspace, PageHeading, Toolbar } from "@/components/ui/workspace";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
 import Link from "@/routing/link";
@@ -258,7 +260,7 @@ export function ConversationList({
     choices: Array<[string, string]>,
   ) => (
     <Field title={name}>
-      <select
+      <NativeSelect
         className={wfControl}
         value={value}
         onChange={(e) => onChange(e.target.value)}
@@ -268,7 +270,7 @@ export function ConversationList({
             {n}
           </option>
         ))}
-      </select>
+      </NativeSelect>
     </Field>
   );
   const all = (
@@ -288,7 +290,7 @@ export function ConversationList({
         }
       />
       {row.responseOverdue ? (
-        <span className="inline-flex items-center gap-1 rounded-full border border-amber-300 bg-amber-50 dark:bg-amber-950 px-2 py-1 text-xs text-amber-950 dark:text-amber-200">
+        <span className="inline-flex items-center gap-1 rounded-full border border-warning-border bg-warning-soft px-2 py-1 text-xs text-warning-foreground">
           <Timer aria-hidden="true" className="size-3" />
           {tr.overdueReply}
         </span>
@@ -363,14 +365,11 @@ export function ConversationList({
   );
   return (
     <div className="space-y-5">
-      <header className="flex flex-wrap items-start justify-between gap-4">
-        <div>
-          <h1 className="text-2xl font-bold text-navy">{labels.title}</h1>
-          <p className="mt-1 text-sm text-muted-foreground">
-            {labels.subtitle}
-          </p>
-        </div>
-        <div className="flex flex-wrap gap-2">
+      <PageHeading
+        title={labels.title}
+        description={labels.subtitle}
+        actions={
+          <div className="flex flex-wrap gap-2">
           {mayReplies ? (
             <Button variant="outline" onClick={() => setRepliesOpen(true)}>
               <BookMarked className="size-4" aria-hidden="true" />
@@ -405,17 +404,19 @@ export function ConversationList({
             </Button>
           ) : null}
         </div>
-      </header>
+        }
+      />
       <SavedRepliesDialog
         locale={locale}
         open={repliesOpen}
         onOpenChange={setRepliesOpen}
       />
-      <section
-        className={wfCard}
-        aria-label={t("البحث والتصفية", "Search and filters")}
-      >
-        <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+      <ListWorkspace>
+        <section
+          className="ds-list-filters space-y-4"
+          aria-label={t("البحث والتصفية", "Search and filters")}
+        >
+          <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
           <Field title={t("البحث", "Search")}>
             <div className="relative">
               <Search
@@ -519,8 +520,8 @@ export function ConversationList({
             ],
           )}
         </div>
-        <div className="flex flex-wrap items-center gap-3">
-          <label className="flex min-h-11 items-center gap-2">
+          <Toolbar className="ds-list-filters flex flex-wrap items-center gap-3">
+            <label className="flex min-h-11 items-center gap-2">
             <input
               type="checkbox"
               checked={filters.archived}
@@ -528,7 +529,7 @@ export function ConversationList({
             />
             {tr.archived}
           </label>
-          <Button
+            <Button
             variant={filters.overdue ? "default" : "outline"}
             aria-pressed={filters.overdue}
             onClick={() => update({ overdue: !filters.overdue })}
@@ -536,14 +537,14 @@ export function ConversationList({
             <Timer className="size-4" aria-hidden="true" />
             {tr.filterOverdue}
           </Button>
-          <Button variant="outline" onClick={() => setPresetOpen(true)}>
+            <Button variant="outline" onClick={() => setPresetOpen(true)}>
             {tr.presetSave}
           </Button>
-          <Button variant="ghost" onClick={() => update(defaults)}>
+            <Button variant="ghost" onClick={() => update(defaults)}>
             {t("مسح التصفية", "Clear filters")}
           </Button>
-        </div>
-        {presets.length ? (
+          </Toolbar>
+          {presets.length ? (
           <div className="flex flex-wrap gap-2">
             {presets.map((p) => (
               <div key={p.id} className="flex items-center rounded-xl border">
@@ -573,8 +574,8 @@ export function ConversationList({
             ))}
           </div>
         ) : null}
-      </section>
-      {error ? (
+        </section>
+        {error ? (
         <ErrorFeedback
           error={error}
           locale={locale}
@@ -584,11 +585,11 @@ export function ConversationList({
           }}
         />
       ) : null}
-      <p role="status" className="text-sm">
-        {loading ? t("جارٍ التحميل…", "Loading…") : notice}
-      </p>
-      {mayArchive && selected.length ? (
-        <div className="flex flex-wrap items-center gap-3 rounded-xl border bg-accent p-3">
+        <p role="status" className="px-4 text-sm empty:hidden">
+          {loading ? t("جارٍ التحميل…", "Loading…") : notice}
+        </p>
+        {mayArchive && selected.length ? (
+        <Toolbar className="flex flex-wrap items-center gap-3 rounded-xl border bg-accent p-3">
           <strong>
             {selected.length} {tr.selected}
           </strong>
@@ -606,9 +607,9 @@ export function ConversationList({
           <Button variant="ghost" onClick={() => setSelected([])}>
             {content.admin.users.cancel}
           </Button>
-        </div>
+        </Toolbar>
       ) : null}
-      {!loading && !rows.length ? (
+        {!loading && !rows.length ? (
         <section className={wfCard}>
           <p>{labels.empty}</p>
           <Button variant="outline" onClick={() => update(defaults)}>
@@ -616,15 +617,9 @@ export function ConversationList({
           </Button>
         </section>
       ) : null}
-      <div
-        className={
-          rows.length
-            ? "hidden overflow-hidden rounded-2xl border bg-card md:block"
-            : "hidden"
-        }
-      >
-        <Table className="table-fixed [&_td]:whitespace-normal [&_td]:break-words [&_td]:[overflow-wrap:anywhere]">
-          <TableHeader>
+        <div className={rows.length ? "hidden min-w-0 md:block" : "hidden"}>
+          <Table className="min-w-[64rem] table-fixed [&_td]:whitespace-normal [&_td]:break-words [&_td]:[overflow-wrap:anywhere]">
+            <TableHeader>
             <TableRow>
               {mayArchive ? (
                 <TableHead className="w-10">
@@ -653,19 +648,19 @@ export function ConversationList({
               </TableHead>
             </TableRow>
           </TableHeader>
-          <TableBody>
-            {rows.map((row) => (
-              <TableRow key={row.id}>
-                {mayArchive ? <TableCell>{check(row)}</TableCell> : null}
-                <TableCell>
+            <TableBody>
+              {rows.map((row) => (
+                <TableRow key={row.id}>
+                  {mayArchive ? <TableCell>{check(row)}</TableCell> : null}
+                  <TableCell>
                   <Link
-                    className="inline-flex min-h-11 items-center font-mono text-sm font-semibold underline-offset-4 hover:underline"
+                    className="inline-flex min-h-11 min-w-0 max-w-full items-center font-mono text-sm font-semibold underline-offset-4 hover:underline"
                     href={`/${locale}/admin/${scope}/${row.id}`}
                   >
-                    <bdi>{row.refCode}</bdi>
+                    <bdi className="min-w-0 break-all">{row.refCode}</bdi>
                   </Link>
                 </TableCell>
-                <TableCell>
+                  <TableCell>
                   <p
                     className="line-clamp-2 font-medium"
                     title={request ? row.name : row.subject}
@@ -676,12 +671,12 @@ export function ConversationList({
                     {request ? <bdi>{row.email}</bdi> : row.name}
                   </p>
                 </TableCell>
-                <TableCell>
+                  <TableCell>
                   {request
                     ? (tr.services[row.serviceType ?? ""] ?? tr.none)
                     : ti.categories[row.category ?? ""]}
                 </TableCell>
-                <TableCell>
+                  <TableCell>
                   {status(row)}
                   {row.responseDueAt ? (
                     <p className="mt-1 text-xs text-muted-foreground">
@@ -689,7 +684,7 @@ export function ConversationList({
                     </p>
                   ) : null}
                 </TableCell>
-                {request ? (
+                  {request ? (
                   <TableCell>
                     <PriorityBadge
                       priority={row.priority ?? "normal"}
@@ -697,33 +692,33 @@ export function ConversationList({
                     />
                   </TableCell>
                 ) : null}
-                <TableCell>
-                  {row.assigneeName ?? tr.unassigned}
-                  {row.teamId ? (
-                    <p className="mt-1 text-xs text-muted-foreground">
-                      {
-                        options.teams.find((team) => team.id === row.teamId)?.[
-                          locale === "ar" ? "nameAr" : "nameEn"
-                        ]
-                      }
-                    </p>
-                  ) : null}
-                </TableCell>
-                <TableCell>
+                  <TableCell>
+                    {row.assigneeName ?? tr.unassigned}
+                    {row.teamId ? (
+                      <p className="mt-1 text-xs text-muted-foreground">
+                        {
+                          options.teams.find(
+                            (team) => team.id === row.teamId,
+                          )?.[locale === "ar" ? "nameAr" : "nameEn"]
+                        }
+                      </p>
+                    ) : null}
+                  </TableCell>
+                  <TableCell>
                   <p>{fmtRelative(row.lastActivityAt ?? "", locale)}</p>
                   <span className="mt-1 inline-flex items-center gap-1 text-xs text-muted-foreground">
                     <MessageSquare className="size-3" aria-hidden="true" />
                     {row.messageCount} {tr.messages}
                   </span>
                 </TableCell>
-                <TableCell>{actions(row)}</TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </div>
-      <div className="space-y-3 md:hidden">
-        {mayArchive && rows.length ? (
+                  <TableCell>{actions(row)}</TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </div>
+        <div className="space-y-3 p-4 md:hidden">
+          {mayArchive && rows.length ? (
           <label className="flex min-h-11 items-center gap-2 text-sm">
             <Checkbox
               aria-label={t("تحديد كل الصفحة", "Select current page")}
@@ -735,15 +730,15 @@ export function ConversationList({
             {t("تحديد كل الصفحة", "Select current page")}
           </label>
         ) : null}
-        {rows.map((row) => (
+          {rows.map((row) => (
           <article key={row.id} className={wfCard}>
             <div className="flex items-center justify-between gap-2">
               {mayArchive ? check(row) : null}
               <Link
-                className="inline-flex min-h-11 items-center font-mono font-semibold"
+                className="inline-flex min-h-11 min-w-0 max-w-full items-center font-mono font-semibold"
                 href={`/${locale}/admin/${scope}/${row.id}`}
               >
-                <bdi>{row.refCode}</bdi>
+                <bdi className="min-w-0 break-all">{row.refCode}</bdi>
               </Link>
               {actions(row)}
             </div>
@@ -796,14 +791,15 @@ export function ConversationList({
             </Link>
           </article>
         ))}
-      </div>
-      <AdminPagination
+        </div>
+        <AdminPagination
         page={page}
         total={total}
         pageSize={20}
         locale={locale}
         onPage={setPage}
       />
+      </ListWorkspace>
       <Dialog open={presetOpen} onOpenChange={setPresetOpen}>
         <DialogContent aria-describedby={undefined}>
           <DialogHeader>
@@ -822,8 +818,8 @@ export function ConversationList({
                 setPresetOpen(false);
                 setPresetName("");
               } catch (e) {
-                setError(e);
-              }
+                      setError(e);
+                    }
             }}
           >
             <Field title={tr.presetName}>

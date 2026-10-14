@@ -1,4 +1,6 @@
 "use client";
+
+import { Panel, PageHeading, Toolbar } from "@/components/ui/workspace";
 import {ErrorFeedback} from '@/components/errors/error-feedback';
 import {ApiError} from '@/lib/errors/transport';
 
@@ -198,15 +200,15 @@ export function RequestDetailView({
 
   if (phase === "error" || !request) {
     return (
-      <div className="rounded-2xl border border-border bg-card p-8 text-center sm:p-12" role="alert">
-        <span className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-rose-100 dark:bg-rose-950 text-rose-800 dark:text-rose-200">
+      <Panel className="rounded-2xl border border-border bg-card p-8 text-center sm:p-12" role="alert">
+        <span className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-danger-soft text-danger-foreground">
           <ShieldX className="h-7 w-7" aria-hidden="true" />
         </span>
         <ErrorFeedback error={failure??new ApiError(404,errorCode??"not_found")} locale={locale} operation={t.title} onRefresh={load}/>
         <Button asChild variant="outline" className="mt-6 h-11 rounded-full px-6 font-semibold">
           <Link href={`/${locale}/account/requests`}>{t.title}</Link>
         </Button>
-      </div>
+      </Panel>
     );
   }
 
@@ -222,20 +224,14 @@ export function RequestDetailView({
           {content.meta.siteName} · {new Date().toLocaleDateString(locale)}
         </p>
       </div>
-      <header className="flex flex-wrap items-center gap-3">
-        <Button asChild variant="ghost" className="h-11 rounded-full px-4 font-semibold text-muted-foreground print:hidden">
+      <PageHeading title={<bdi dir="ltr">{request.refCode}</bdi>} back={<Button asChild variant="ghost" className="h-11 rounded-full px-4 font-semibold text-muted-foreground print:hidden">
           <Link href={`/${locale}/account/requests`}>
             {locale === "ar" ? <ChevronRight className="h-4 w-4" aria-hidden="true" /> : <ChevronLeft className="h-4 w-4" aria-hidden="true" />}
             {t.title}
           </Link>
-        </Button>
-        <h1 className="font-mono text-xl font-bold text-navy" dir="ltr">
-          {request.refCode}
-        </h1>
-        <div className="flex flex-wrap items-center gap-2">
+        </Button>} metadata={<div className="flex flex-wrap items-center gap-2">
           <StatusBadge status={request.status} label={statusLabel} className="text-sm print:border print:border-border print:break-inside-avoid" />
-        </div>
-        <Button
+        </div>} actions={<Button
           variant="outline"
           onClick={() => window.print()}
           aria-label={d.print}
@@ -243,8 +239,7 @@ export function RequestDetailView({
         >
           <Printer className="h-4 w-4" aria-hidden="true" />
           {d.print}
-        </Button>
-      </header>
+        </Button>} />
 
       <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_18rem] print:block print:space-y-6">
         {/* المحادثة */}
@@ -275,7 +270,7 @@ export function RequestDetailView({
                       <div className="min-w-0">
                         <p className="text-sm font-medium text-muted-foreground">
                           {d.system}
-                          <span className="ms-2 text-xs font-normal text-muted-foreground/70">
+                          <span className="ms-2 text-xs font-normal text-muted-foreground">
                             {formatRelative(message.createdAt, locale)}
                           </span>
                         </p>
@@ -289,7 +284,7 @@ export function RequestDetailView({
                           "max-w-[85%] rounded-2xl border px-4 py-3 text-sm leading-7 shadow-sm sm:max-w-[75%] print:border-border print:bg-transparent print:text-foreground print:shadow-none",
                           message.authorType === "client"
                             ? "rounded-se-sm border-brand/10 bg-accent/60 text-foreground"
-                            : "rounded-ss-sm border-navy bg-inverse text-white shadow-navy/10"
+                            : "rounded-ss-sm border-navy bg-inverse text-inverse-foreground shadow-navy/10"
                         )}
                       >
                         <p
@@ -302,7 +297,7 @@ export function RequestDetailView({
                           <span
                             className={cn(
                               "ms-2 font-normal",
-                              message.authorType === "client" ? "text-muted-foreground" : "text-white/60 print:text-muted-foreground"
+                              message.authorType === "client" ? "text-muted-foreground" : "text-emphasis-muted print:text-muted-foreground"
                             )}
                           >
                             {formatRelative(message.createdAt, locale)}
@@ -341,7 +336,7 @@ export function RequestDetailView({
                   className="min-h-24 resize-y leading-8 focus-visible:ring-2 focus-visible:ring-ring/40"
                   disabled={sending}
                 />
-                <div className="flex flex-wrap items-center gap-3">
+                <Toolbar className="flex flex-wrap items-center gap-3">
                   <input ref={fileInputRef} type="file" className="hidden" onChange={onFileSelected} aria-hidden="true" tabIndex={-1} />
                   <Button
                     type="button"
@@ -356,12 +351,12 @@ export function RequestDetailView({
                   <Button
                     type="submit"
                     disabled={sending || uploading}
-                    className="ms-auto h-11 rounded-full bg-primary px-8 font-bold text-primary-foreground shadow-md shadow-brand/20 transition-all hover:bg-brand-strong"
+                    className="ms-auto h-11 rounded-full bg-primary px-8 font-bold text-primary-foreground shadow-md shadow-brand/20 transition-[color,background-color,border-color,box-shadow,opacity,transform] hover:bg-primary-hover hover:text-primary-hover-foreground"
                   >
                     {sending ? <Loader2 className="h-4 w-4 animate-spin" aria-hidden="true" /> : <Send className="h-4 w-4" aria-hidden="true" />}
                     {sending ? d.sending : d.send}
                   </Button>
-                </div>
+                </Toolbar>
               </form>
             )}
           </section>
@@ -404,7 +399,7 @@ export function RequestDetailView({
             {canCancel && (
               <Button
                 variant="outline"
-                className="mt-5 h-11 w-full rounded-full font-semibold text-red-700 dark:text-red-200 hover:border-red-300 hover:bg-red-50 hover:text-red-800 print:hidden"
+                className="mt-5 h-11 w-full rounded-full font-semibold text-danger-foreground hover:border-danger-border hover:bg-danger-soft hover:text-danger-foreground print:hidden"
                 onClick={() => setCancelOpen(true)}
               >
                 {t.cancelEdit} · {statusLabel}
@@ -446,7 +441,7 @@ export function RequestDetailView({
                     )}
                     <span
                       className={cn(
-                        "absolute start-0 top-1.5 size-2.5 rounded-full transition-all duration-300",
+                        "absolute start-0 top-1.5 size-2.5 rounded-full transition-[color,background-color,border-color,box-shadow,opacity,transform] duration-(--duration-panel)",
                         latest ? "bg-brand ring-4 ring-brand/15" : "bg-border"
                       )}
                       aria-hidden="true"
@@ -467,7 +462,7 @@ export function RequestDetailView({
               })}
               {request.statusHistory.length === 0 && (
                 <li className="flex items-center gap-2 text-sm text-muted-foreground">
-                  <CheckCircle2 className="h-4 w-4 text-green-600 dark:text-green-200" aria-hidden="true" />
+                  <CheckCircle2 className="h-4 w-4 text-success-foreground" aria-hidden="true" />
                   {statusLabel} · {formatDate(request.createdAt, locale)}
                 </li>
               )}
@@ -498,7 +493,7 @@ export function RequestDetailView({
             <Button
               onClick={confirmCancel}
               disabled={cancelling||!!cancelFailure?.uncertain||!canCancel}
-              className="h-11 w-full rounded-full bg-red-600 font-bold text-white hover:bg-red-700"
+              className="h-11 w-full rounded-full bg-danger font-bold text-on-danger hover:bg-danger"
             >
               {cancelling ? <Loader2 className="h-4 w-4 animate-spin" aria-hidden="true" /> : null}
               {t.cancelEdit} · {t.statuses.cancelled}

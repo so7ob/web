@@ -161,8 +161,8 @@ for (const locale of ["ar", "en"] as const)
         }),
       ).toBeVisible();
       await page
-        .getByRole("navigation", { name: t.title, exact: true })
-        .getByRole("button", { name: t.events, exact: true })
+        .getByRole("tablist", { name: t.title, exact: true })
+        .getByRole("tab", { name: t.events, exact: true })
         .click();
       await page.getByRole("textbox", { name: t.search }).fill(ref);
       await expect(page.locator("main")).toContainText(ref);
@@ -208,16 +208,16 @@ for (const locale of ["ar", "en"] as const)
       expect(JSON.parse(body.toString()).events).toHaveLength(2);
       expect(manifest.eventCount).toBe(2);
       await page
-        .getByRole("navigation", { name: t.title, exact: true })
-        .getByRole("button", { name: t.reports, exact: true })
+        .getByRole("tablist", { name: t.title, exact: true })
+        .getByRole("tab", { name: t.reports, exact: true })
         .click();
       await expect(
         page.getByRole("link", { name: /JSON/ }).first(),
       ).toBeVisible();
       await new AuditOperations(db).probe("e2e");
       await page
-        .getByRole("navigation", { name: t.title, exact: true })
-        .getByRole("button", { name: t.health, exact: true })
+        .getByRole("tablist", { name: t.title, exact: true })
+        .getByRole("tab", { name: t.health, exact: true })
         .click();
       await expect(page.getByText(t.probeHelp)).toBeVisible();
       await expect(
@@ -248,8 +248,8 @@ for (const locale of ["ar", "en"] as const)
         await denied.close();
       }
       await page
-        .getByRole("navigation", { name: t.title, exact: true })
-        .getByRole("button", { name: t.events, exact: true })
+        .getByRole("tablist", { name: t.title, exact: true })
+        .getByRole("tab", { name: t.events, exact: true })
         .click();
       await page.getByRole("textbox", { name: t.search }).fill(ref);
       await expect(page.locator("main")).toContainText(ref);

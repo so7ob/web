@@ -21,7 +21,7 @@ for (const locale of ["ar", "en"] as const)
       });
       await page.goto(`/${locale}/admin/audit`, { waitUntil: "networkidle" });
       const response = page.waitForResponse(r => r.url().endsWith("/api/v1/admin/audit/health"));
-      await page.getByRole("navigation", { name: t.title, exact: true }).getByRole("button", { name: t.health, exact: true }).click();
+      await page.getByRole("tablist", { name: t.title, exact: true }).getByRole("tab", { name: t.health, exact: true }).click();
       expect((await response).status()).toBe(200);
       const body = await (await response).json();
       expect(body.ok).toBe(true);

@@ -65,7 +65,7 @@ for (const locale of ['ar','en'] as const) test(`${locale}: tree editor template
   await expect(page.getByRole('button',{name:tt.title,exact:true})).toBeVisible();
   // Select the section using its real outer hit area; children remain independently interactive.
   const section=page.locator('[data-editor-node]').first();
-  const sectionSelect=section.locator(':scope > div > button').first();
+  const sectionSelect=section.locator(':scope > [data-editor-content] > button').first();
   await sectionSelect.click({position:{x:4,y:20}});
   if(info.project.name==='mobile'){
    const properties=page.getByRole('dialog',{name:te.properties,exact:true});await expect(properties).toBeVisible();await page.keyboard.press('Escape');await expect(properties).not.toBeVisible();

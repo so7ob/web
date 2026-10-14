@@ -70,7 +70,7 @@ export function ResetForm({ locale, t, token }: { locale: Locale; t: PortalConte
     return (
       <AuthCard title={t.resetTitle}>
         <div className="mt-2 flex flex-col items-center text-center">
-          <span className="flex h-14 w-14 items-center justify-center rounded-full bg-rose-100 dark:bg-rose-950 text-rose-800 dark:text-rose-200">
+          <span className="flex h-14 w-14 items-center justify-center rounded-full bg-danger-soft text-danger-foreground">
             <ShieldX className="h-7 w-7" aria-hidden="true" />
           </span>
           <p className="mt-4 font-semibold text-navy">{t.verifyInvalid}</p>
@@ -103,7 +103,7 @@ export function ResetForm({ locale, t, token }: { locale: Locale; t: PortalConte
       <form onSubmit={onSubmit} noValidate className="mt-6 space-y-5">
         <ErrorFeedback focusOnError error={failure} locale={locale} operation={t.resetTitle}/>
         {formError && (
-          <div role="alert" className="rounded-2xl border border-rose-200 bg-rose-50 dark:bg-rose-950 px-4 py-3 text-sm font-medium text-rose-700 dark:text-rose-200">
+          <div role="alert" className="rounded-2xl border border-danger-border bg-danger-soft px-4 py-3 text-sm font-medium text-danger-foreground">
             {formError}
           </div>
         )}
@@ -129,7 +129,7 @@ export function ResetForm({ locale, t, token }: { locale: Locale; t: PortalConte
         <Button
           type="submit"
           disabled={submitting}
-          className="h-12 w-full rounded-full bg-primary text-base font-bold text-primary-foreground shadow-md shadow-brand/20 transition-all hover:bg-brand-strong"
+          className="h-12 w-full rounded-full bg-primary text-base font-bold text-primary-foreground shadow-md shadow-brand/20 transition-[color,background-color,border-color,box-shadow,opacity,transform] hover:bg-primary-hover hover:text-primary-hover-foreground"
         >
           {submitting ? <Loader2 className="h-5 w-5 animate-spin" aria-hidden="true" /> : <KeyRound className="h-5 w-5" aria-hidden="true" />}
           {t.resetButton}

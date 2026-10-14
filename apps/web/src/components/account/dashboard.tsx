@@ -1,3 +1,4 @@
+import { PageHeading, TableScroll } from "@/components/ui/workspace";
 import Link from '@/routing/link';
 import { Bell,FilePlus2,FolderOpen,Inbox,Layers,LayoutDashboard,MessageCircle,MessageCircleQuestion } from 'lucide-react';
 import type { AccountDashboardData } from '@so7ob/contracts';
@@ -18,7 +19,7 @@ interface StatDef {
 
 /** فئات بطاقة المؤشر — البطاقة نفسها بلا تغيير بصري، والرابط يضيف حلقة تركيز فقط */
 const STAT_CARD_CLASS =
-  "relative overflow-hidden rounded-2xl border border-border bg-card p-4 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-navy/10 sm:p-6";
+  "relative overflow-hidden rounded-2xl border border-border bg-card p-4 transition-[color,background-color,border-color,box-shadow,opacity,transform] duration-(--duration-panel) hover:-translate-y-0.5 hover:shadow-lg hover:shadow-navy/10 sm:p-6";
 
 /** لوحة حساب العميل — مؤشرات وآخر التحديثات من قاعدة البيانات مباشرة */
 export function AccountDashboard({locale,user,data}:{locale:Locale;user:{name:string};data:AccountDashboardData}) {
@@ -29,37 +30,24 @@ export function AccountDashboard({locale,user,data}:{locale:Locale;user:{name:st
   const stats: StatDef[] = [
     { label: t.openRequests, value: openRequests, icon: FolderOpen, tone: "bg-brand-soft text-brand-strong", bar: "bg-gradient-to-r from-brand to-skydrop", href: `/${locale}/account/requests` },
     // «بانتظار ردك» — التصفية الدقيقة (آخر ردٍّ من الطاقم) عبر معامل awaiting=you
-    { label: t.awaitingReply, value: awaitingReply, icon: MessageCircle, tone: "bg-amber-100 dark:bg-amber-950 text-amber-800 dark:text-amber-200", bar: "bg-gradient-to-r from-amber-400 to-amber-300", href: `/${locale}/account/requests?awaiting=you` },
-    { label: t.unreadNotifications, value: unreadNotifications, icon: Bell, tone: "bg-violet-100 dark:bg-violet-950 text-violet-800 dark:text-violet-200", bar: "bg-gradient-to-r from-violet-400 to-purple-400", href: `/${locale}/account/notifications` },
-    { label: t.openInquiries, value: openInquiries, icon: MessageCircleQuestion, tone: "bg-teal-100 dark:bg-teal-950 text-teal-800 dark:text-teal-200", bar: "bg-gradient-to-r from-teal-500 to-emerald-400", href: `/${locale}/account/inquiries?status=open` },
-    { label: t.totalInquiries, value: totalInquiries, icon: Inbox, tone: "bg-muted text-muted-foreground", bar: "bg-gradient-to-r from-slate-400 to-teal-300", href: `/${locale}/account/inquiries` },
-    { label: t.totalRequests, value: totalRequests, icon: Layers, tone: "bg-muted text-muted-foreground", bar: "bg-gradient-to-r from-inverse/60 to-slate-400", href: `/${locale}/account/requests` },
+    { label: t.awaitingReply, value: awaitingReply, icon: MessageCircle, tone: "bg-warning-soft text-warning-foreground", bar: "bg-gradient-to-r from-warning to-warning", href: `/${locale}/account/requests?awaiting=you` },
+    { label: t.unreadNotifications, value: unreadNotifications, icon: Bell, tone: "bg-highlight-soft text-highlight-foreground", bar: "bg-gradient-to-r from-highlight to-highlight", href: `/${locale}/account/notifications` },
+    { label: t.openInquiries, value: openInquiries, icon: MessageCircleQuestion, tone: "bg-success-soft text-success-foreground", bar: "bg-gradient-to-r from-success to-success", href: `/${locale}/account/inquiries?status=open` },
+    { label: t.totalInquiries, value: totalInquiries, icon: Inbox, tone: "bg-muted text-muted-foreground", bar: "bg-gradient-to-r from-muted to-success", href: `/${locale}/account/inquiries` },
+    { label: t.totalRequests, value: totalRequests, icon: Layers, tone: "bg-muted text-muted-foreground", bar: "bg-gradient-to-r from-inverse/60 to-muted", href: `/${locale}/account/requests` },
   ];
 
   return (
     <div className="space-y-8">
-      <header className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-        <div className="flex min-w-0 items-center gap-3">
-          <span className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-accent text-brand-strong">
-            <LayoutDashboard className="size-5" aria-hidden="true" />
-          </span>
-          <div className="min-w-0">
-            <h1 className="text-2xl font-bold text-navy">{t.title}</h1>
-            <p className="mt-1 text-sm text-muted-foreground">
-              {t.welcomeWithName.replace("{name}", user.name)}
-            </p>
-          </div>
-        </div>
-        <Button
+      <PageHeading title={t.title} description={t.welcomeWithName.replace("{name}", user.name)} actions={<Button
           asChild
-          className="h-12 rounded-full bg-primary px-6 text-base font-bold text-primary-foreground shadow-md shadow-brand/20 transition-all hover:bg-brand-strong print:hidden"
+          className="h-12 rounded-full bg-primary px-6 text-base font-bold text-primary-foreground shadow-md shadow-brand/20 transition-[color,background-color,border-color,box-shadow,opacity,transform] hover:bg-primary-hover hover:text-primary-hover-foreground print:hidden"
         >
           <Link href={`/${locale}/account/requests/new`}>
             <FilePlus2 className="h-5 w-5" aria-hidden="true" />
             {t.createRequest}
           </Link>
-        </Button>
-      </header>
+        </Button>} />
 
       {/* بطاقات المؤشرات — ذات الرابط تفتح القائمة المقابلة (روابط عميقة بلغة لوحة الإدارة) */}
       <section aria-label={t.title} className="grid grid-cols-2 gap-4 lg:grid-cols-3 xl:grid-cols-6">
@@ -102,7 +90,7 @@ export function AccountDashboard({locale,user,data}:{locale:Locale;user:{name:st
           <div className="mt-6 flex flex-col items-center justify-center gap-3 sm:flex-row print:hidden">
             <Button
               asChild
-              className="h-12 rounded-full bg-primary px-6 font-bold text-primary-foreground shadow-md shadow-brand/20 transition-all hover:bg-brand-strong"
+              className="h-12 rounded-full bg-primary px-6 font-bold text-primary-foreground shadow-md shadow-brand/20 transition-[color,background-color,border-color,box-shadow,opacity,transform] hover:bg-primary-hover hover:text-primary-hover-foreground"
             >
               <Link href={`/${locale}/account/requests/new`}>{t.createRequest}</Link>
             </Button>
@@ -122,7 +110,7 @@ export function AccountDashboard({locale,user,data}:{locale:Locale;user:{name:st
               {t.viewAll}
             </Link>
           </div>
-          <div className="mt-4 overflow-x-auto">
+          <TableScroll className="mt-4 overflow-x-auto">
             <table className="w-full min-w-[40rem] text-sm">
               <thead>
                 <tr className="border-b border-border text-start text-xs font-semibold uppercase tracking-wide text-muted-foreground">
@@ -154,7 +142,7 @@ export function AccountDashboard({locale,user,data}:{locale:Locale;user:{name:st
                 ))}
               </tbody>
             </table>
-          </div>
+          </TableScroll>
         </section>
       )}
     </div>

@@ -35,7 +35,7 @@ export function RequestFormShell({ locale, preselectService }: { locale: Locale;
   if (simulate) {
     return (
       <div className="space-y-3">
-        <p className="flex items-center gap-2 rounded-xl border border-amber-200 bg-amber-50 dark:bg-amber-950 px-4 py-2.5 text-xs font-semibold text-amber-800 dark:text-amber-200">
+        <p className="flex items-center gap-2 rounded-xl border border-warning-border bg-warning-soft px-4 py-2.5 text-xs font-semibold text-warning-foreground">
           <FlaskConical className="size-4 shrink-0" aria-hidden="true" />
           {locale === "en"
             ? "Interaction test — submission is simulated, no real request is sent."

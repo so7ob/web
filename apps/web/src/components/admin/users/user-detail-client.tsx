@@ -1,7 +1,9 @@
 "use client";
-import { UserSecurity } from '../identity/user-security';
-import { IdentityNav } from '../identity/shared';
-import { useAdmin } from '@/screens/admin/data';
+
+import { PageHeading, Panel } from "@/components/ui/workspace";
+import { UserSecurity } from "../identity/user-security";
+import { IdentityNav } from "../identity/shared";
+import { useAdmin } from "@/screens/admin/data";
 
 /**
  * ملف المستخدم الموسّع (إدارة): بيانات الحساب + إحصاءات + آخر الطلبات (روابط مباشرة
@@ -63,7 +65,7 @@ interface UserDetailClientProps {
 }
 
 export function UserDetailClient({ locale, userId }: UserDetailClientProps) {
-  const {user:me}=useAdmin();
+  const { user: me } = useAdmin();
   const t = getPortalContent(locale);
   const tud = t.admin.users.detail;
 
@@ -172,11 +174,12 @@ export function UserDetailClient({ locale, userId }: UserDetailClientProps) {
 
   return (
     <div className="space-y-5">
-      <IdentityNav me={me} locale={locale}/>
-      <UserSecurity me={me} locale={locale} data={data} onChanged={reload}/>
       {/* الترويسة */}
-      <div className="flex flex-wrap items-center gap-3">
-        <Button
+      <PageHeading
+        title={user.name}
+        description={<bdi>{user.email}</bdi>}
+        back={
+          <Button
           asChild
           variant="ghost"
           size="sm"
@@ -188,20 +191,19 @@ export function UserDetailClient({ locale, userId }: UserDetailClientProps) {
             {tud.back}
           </Link>
         </Button>
-        <div className="min-w-0">
-          <h1 className="truncate text-2xl font-bold text-navy">{user.name}</h1>
-          <p className="truncate text-sm text-muted-foreground ltr-isolate">
-            {user.email}
-          </p>
-        </div>
-        <div className="ms-auto flex flex-wrap items-center gap-2">
+        }
+        metadata={
+          <div className="ms-auto flex flex-wrap items-center gap-2">
           <RoleBadge roleKey={user.roleKey} role={data.role} locale={locale} />
           <UserStatusBadge
             status={user.status}
             label={statusLabel(user.status)}
           />
         </div>
-      </div>
+        }
+      />
+      <IdentityNav me={me} locale={locale} />
+      <UserSecurity me={me} locale={locale} data={data} onChanged={reload}/>
 
       {/* بطاقات الإحصاءات */}
       <div className="grid gap-4 sm:grid-cols-3">
@@ -209,15 +211,15 @@ export function UserDetailClient({ locale, userId }: UserDetailClientProps) {
           icon={FileText}
           label={tud.totalRequests}
           value={String(stats.totalRequests)}
-          chip="bg-emerald-100 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-200"
-          bar="bg-gradient-to-r from-emerald-400 to-emerald-300"
+          chip="bg-success-soft text-success-foreground"
+          bar="bg-gradient-to-r from-success to-success"
         />
         <StatCard
           icon={FileClock}
           label={tud.openRequests}
           value={String(stats.openRequests)}
-          chip="bg-amber-100 dark:bg-amber-950 text-amber-800 dark:text-amber-200"
-          bar="bg-gradient-to-r from-amber-400 to-amber-300"
+          chip="bg-warning-soft text-warning-foreground"
+          bar="bg-gradient-to-r from-warning to-warning"
         />
         <StatCard
           icon={MonitorSmartphone}
@@ -228,7 +230,7 @@ export function UserDetailClient({ locale, userId }: UserDetailClientProps) {
         />
       </div>
 
-      <div className="grid items-start gap-6 lg:grid-cols-[minmax(0,1fr)_360px]">
+      <div className="grid grid-cols-1 min-w-0 items-start gap-6 lg:grid-cols-[minmax(0,1fr)_360px]">
         {/* طلبات المستخدم */}
         <section className="overflow-hidden rounded-2xl border border-border bg-card">
           <div className="border-b border-border px-4 py-3">
@@ -236,6 +238,9 @@ export function UserDetailClient({ locale, userId }: UserDetailClientProps) {
               {tud.userRequests}
             </h2>
           </div>
+          {requests.length === 0 ? (
+            <EmptyState icon={Inbox} title={tud.noRequests} />
+          ) : (
           <div className="overflow-x-auto">
             <Table>
               <TableHeader>
@@ -258,14 +263,7 @@ export function UserDetailClient({ locale, userId }: UserDetailClientProps) {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {requests.length === 0 ? (
-                  <TableRow>
-                    <TableCell colSpan={5} className="p-0">
-                      <EmptyState icon={Inbox} title={tud.noRequests} />
-                    </TableCell>
-                  </TableRow>
-                ) : (
-                  requests.map((r) => (
+                {requests.map((r) => (
                     <TableRow
                       key={r.id}
                       className="transition-colors hover:bg-muted/50"
@@ -295,20 +293,20 @@ export function UserDetailClient({ locale, userId }: UserDetailClientProps) {
                       </TableCell>
                       <TableCell className="text-sm text-muted-foreground">
                         {r.assigneeName ?? (
-                          <span className="text-muted-foreground/60">
+                          <span className="text-muted-foreground">
                             {t.admin.requests.unassigned}
                           </span>
                         )}
                       </TableCell>
                     </TableRow>
-                  ))
-                )}
+                  ))}
               </TableBody>
             </Table>
           </div>
+          )}
         </section>
 
-        <aside className="space-y-4">
+        <aside className="min-w-0 space-y-4">
           {/* بيانات الحساب */}
           <section className="rounded-2xl border border-border bg-card p-4">
             <h2 className="mb-3 text-sm font-semibold text-navy">
@@ -346,7 +344,7 @@ export function UserDetailClient({ locale, userId }: UserDetailClientProps) {
                 <dt className="flex items-center gap-1.5 text-xs text-muted-foreground">
                   {user.emailVerified ? (
                     <CheckCircle2
-                      className="size-3.5 text-emerald-600 dark:text-emerald-200"
+                      className="size-3.5 text-success-foreground"
                       aria-hidden="true"
                     />
                   ) : (
@@ -444,7 +442,7 @@ function StatCard({
   bar: string;
 }) {
   return (
-    <div className="relative overflow-hidden rounded-2xl border border-border bg-card p-5 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-navy/10">
+    <Panel className="relative overflow-hidden rounded-2xl border border-border bg-card p-5 transition-[color,background-color,border-color,box-shadow,opacity,transform] duration-(--duration-panel) hover:-translate-y-0.5 hover:shadow-lg hover:shadow-navy/10">
       <span
         aria-hidden="true"
         className={cn("absolute inset-x-0 top-0 h-1 rounded-t-2xl", bar)}
@@ -465,7 +463,7 @@ function StatCard({
           <p className="text-2xl font-bold tabular-nums text-navy">{value}</p>
         </div>
       </div>
-    </div>
+    </Panel>
   );
 }
 
