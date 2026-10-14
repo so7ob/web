@@ -47,6 +47,21 @@ Observed before the initial PR commit (all successful commands exited 0):
 
 The complete `npm run test:e2e` run and GitHub CI are additional gates: their final outcomes belong in the PR's validation summary and checks for the exact commit, not an assumption based on the focused tests above. Local logs are under `.migration/issue-107/`, including `e2e-full.log`. Commands use explicitly selected isolated test databases; no production environment file is loaded for the test server. No checks were disabled or weakened.
 
+### Complete local browser run: failed gate
+
+On the final code revision `9c39b537859eb5e920564213d7d04133a966f539`, a complete unfiltered run against a newly migrated `so7ob_issue107_full_test` finished with **292 passed, 2 failed, 0 skipped, 0 flaky**, exit **1**, in 39.9 minutes. All four new #107 browser journeys passed within that run. The local server was built before committing; its embedded revision is `d09aaf2+dirty`, with the fixed production code matching `9c39b53`.
+
+Both failures are in the existing `design-system.spec.ts` English/dark workspace sweep:
+
+- Desktop, line 137: workflow tabs cannot appear because GET `/api/admin/workflows` returned 500. Diagnostic reference `26e41269-121c-4ff9-85c1-3708cd0a2814`, `QueryFailedError`, frame `packages/server/dist/workflows/admin.js:35:69`.
+- Mobile, line 172: publishing the synthetic design-system page returned 500 instead of 200. Diagnostic reference `113107ea-3cad-43c9-b2a5-a6b271a5260c`, `QueryFailedError`, frame `packages/server/dist/admin/publication.js:136:13`.
+
+These failing query paths are unchanged by this PR; their underlying database error is not established, so they are **unresolved validation limitations**, not claimed inherited defects or fixed failures. Ten later direct reads of the workflow overview succeeded on the same isolated database; that observation does not erase the failed browser gate. No assertion was weakened, no test was disabled, and no successful full local E2E run is claimed.
+
+Evidence: `.migration/issue-107/e2e-full.log`, `test-results/e2e.json`, and the screenshot/trace/error-context files in `test-results/design-system-en-dark-ever-b23a0-e-follows-the-design-system-{desktop,mobile}/`. Earlier local runs were interrupted to isolate the new account fixture and then replace the reused test database after an interrupted settings mutation; neither interrupted run counts as a pass. The complete result above uses a fresh database.
+
+CI for the code revision is tracked separately at [run 38645921669](https://github.com/so7ob/web/actions/runs/38645921669). Its final outcome and any subsequent documentation-only head checks must be stated explicitly in PR #122; passing a prior revision must not be presented as passing a newer head.
+
 ## Manual retest
 
 1. In an isolated environment, publish a custom **requests** workflow for a service, with distinct Arabic and English public stage names.
