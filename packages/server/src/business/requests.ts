@@ -1,5 +1,5 @@
 import {WorkflowEngine} from '../workflows/engine.js';
-import {assertWorkflowAccess,workflowAccessSql,publicWorkflowStage,publicStageSql} from '../workflows/access.js';
+import {assertWorkflowAccess,workflowAccessSql,publicWorkflowStage,publicStageSql,decodePublicStage} from '../workflows/access.js';
 import { enqueueTrackStaffReply } from "../track/notify.js";
 import type { DataSource, QueryRunner } from "typeorm";
 import {
@@ -86,7 +86,7 @@ export class RequestService {
         const { assigneeName, ...row } = r;
         return {
           ...row,
-          workflowStage:r.workflowStage ? JSON.parse(String(r.workflowStage)) : null,
+          workflowStage:decodePublicStage(r.workflowStage),
           messageCount: Number(r.messageCount),
           assignee: assigneeName === null ? null : { name: assigneeName },
           awaitingClientReply:
