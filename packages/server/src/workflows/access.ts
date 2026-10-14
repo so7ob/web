@@ -1,4 +1,5 @@
 import type { DataSource, QueryRunner } from "typeorm";
+import { z } from "zod";
 import {
   can,
   type AuthUser,
@@ -81,6 +82,17 @@ export function publicStageSql(scope: WorkflowScope, alias: string) {
   if (!/^[A-Za-z][A-Za-z0-9_]*$/.test(alias))
     throw new Error("Invalid static alias");
   return `(SELECT JSON_OBJECT('nameAr',ws.nameAr,'nameEn',ws.nameEn,'status',ws.status) FROM ConversationWorkflow cw JOIN WorkflowVersion v ON v.id=cw.versionId JOIN JSON_TABLE(v.definition,'$.stages[*]' COLUMNS(id VARCHAR(80) PATH '$.id',nameAr VARCHAR(120) PATH '$.nameAr',nameEn VARCHAR(120) PATH '$.nameEn',status VARCHAR(32) PATH '$.status')) ws ON ws.id=cw.stageId WHERE cw.scope='${scope}' AND cw.recordId=${alias}.id AND v.legacy=0 LIMIT 1)`;
+}
+
+const publicStageSchema = z.object({
+  nameAr: z.string(),
+  nameEn: z.string(),
+  status: z.string(),
+});
+/** mysql2 can return a JSON expression as text or an already decoded object. */
+export function decodePublicStage(value: unknown): WorkflowPublicStage | null {
+  if (value === null) return null;
+  return publicStageSchema.parse(typeof value === "string" ? JSON.parse(value) : value);
 }
 
 /** Audit views retain their own permissions but do not disclose a hidden conversation. */
