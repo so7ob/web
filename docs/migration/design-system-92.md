@@ -46,7 +46,7 @@ The revised implementation uses mandatory `PageHeading` slots throughout adminis
 
 The previous `34e1ef1` CI run finished with 278 passing and four failing browser tests. All four were the same stale tree-editor DOM selector after the separate canvas toolbar row was introduced. The selector now targets `data-editor-content`; it still performs the real pointer interaction. That historical CI run and the interrupted local run are not final acceptance.
 
-Populated outbox review additionally revealed that long addresses and retry metadata forced a four-column table to scroll on desktop. Fixed column proportions and wrapping now keep it within the desktop workspace while retaining local mobile scrolling. The composition regression test asserts that desktop fit.
+Populated outbox review additionally revealed that long addresses and retry metadata forced a four-column table to scroll on desktop. Fixed column proportions and wrapping now keep it within the desktop workspace while retaining local mobile scrolling. The composition regression test asserts that desktop fit. Users/outbox empty feedback now lives outside the wide scrolling table, so its message remains centered and visible on mobile; the regression test exercises a real no-match user search and measures its bounds.
 
 ## Validation
 

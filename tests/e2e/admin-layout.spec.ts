@@ -1,13 +1,14 @@
 import { expect } from "@playwright/test";
 import { test } from "./quota-fixture";
 import AxeBuilder from "@axe-core/playwright";
+import { getPortalContent } from "../../apps/web/src/content/portal";
 import { createDataSource } from "@so7ob/server";
 import { readFileSync, mkdirSync } from "node:fs";
 
 // The reported regression was structural: one page separated its title from
 // its description, while other pages independently positioned their controls.
 // Assert the shared alignment in both writing directions and screen widths.
-for (const locale of ["ar", "en"])
+for (const locale of ["ar", "en"] as const)
   for (const mode of ["light", "dark"]) {
     test(`${locale}/${mode}: admin pages share heading and list geometry`, async ({
       page,
@@ -109,6 +110,25 @@ for (const locale of ["ar", "en"])
             path: `${folder}/${path || "dashboard"}.png`,
             fullPage: true,
           });
+          if (path === "users") {
+            const search = page.getByRole("textbox", {
+              name: getPortalContent(locale).admin.users.search,
+              exact: true,
+            });
+            await search.fill(prefix + "-no-matching-layout-user");
+            const empty = page.locator('[data-slot="empty-state"]');
+            await expect(empty).toBeVisible();
+            const box = (await empty.boundingBox())!;
+            expect(
+              box.x,
+              "empty feedback stays inside the viewport",
+            ).toBeGreaterThanOrEqual(0);
+            expect(box.x + box.width).toBeLessThanOrEqual(
+              page.viewportSize()!.width,
+            );
+            await search.fill("");
+            await expect(page.locator('[data-slot="table"]')).toBeVisible();
+          }
         }
       } finally {
         await db.query("DELETE FROM EmailLog WHERE id=?", [emailId]);

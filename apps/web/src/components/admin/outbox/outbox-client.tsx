@@ -95,84 +95,76 @@ export function OutboxClient({ me, locale }: OutboxClientProps) {
       <ListWorkspace>
         <div className="min-w-0">
           <div className="overflow-x-auto">
-            <Table
-              tabIndex={0}
-              aria-label={to.title}
-              className="min-w-[48rem] table-fixed focus-visible:outline-2 focus-visible:outline-brand [&_td]:whitespace-normal [&_td]:break-words"
-            >
-              <TableHeader>
-                <TableRow className="bg-muted/50 hover:bg-muted/50">
-                  <TableHead className="w-[18%]">{to.date}</TableHead>
-                  <TableHead className="w-[22%]">{to.to}</TableHead>
-                  <TableHead className="w-[36%]">{to.subject}</TableHead>
-                  <TableHead className="w-[24%]">{to.status}</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {loading && !data ? (
-                  Array.from({ length: 10 }).map((_, i) => (
-                    <TableRow key={`sk-${i}`}>
-                      {Array.from({ length: 4 }).map((__, j) => (
-                        <TableCell key={j}>
-                          <Skeleton className="h-5 w-full" />
-                        </TableCell>
-                      ))}
-                    </TableRow>
-                  ))
-                ) : emails.length === 0 ? (
-                  <TableRow>
-                    <TableCell colSpan={4} className="p-0">
-                      <EmptyState
-                        icon={Send}
-                        title={to.empty}
-                        body={to.emptyBody}
-                      />
-                    </TableCell>
+            {data && !loading && emails.length === 0 ? (
+              <EmptyState icon={Send} title={to.empty} body={to.emptyBody} />
+            ) : (
+              <Table
+                tabIndex={0}
+                aria-label={to.title}
+                className="min-w-[48rem] table-fixed focus-visible:outline-2 focus-visible:outline-brand [&_td]:whitespace-normal [&_td]:break-words"
+              >
+                <TableHeader>
+                  <TableRow className="bg-muted/50 hover:bg-muted/50">
+                    <TableHead className="w-[18%]">{to.date}</TableHead>
+                    <TableHead className="w-[22%]">{to.to}</TableHead>
+                    <TableHead className="w-[36%]">{to.subject}</TableHead>
+                    <TableHead className="w-[24%]">{to.status}</TableHead>
                   </TableRow>
-                ) : (
-                  emails.map((email) => (
-                    <TableRow
-                      key={email.id}
-                      className="align-top transition-colors hover:bg-muted/50"
-                    >
-                      <TableCell className="whitespace-nowrap text-xs tabular-nums text-muted-foreground">
-                        {fmtDateTime(email.createdAt, locale)}
-                      </TableCell>
-                      <TableCell className="font-mono text-xs text-foreground ltr-isolate [overflow-wrap:anywhere]">
-                        {email.to}
-                      </TableCell>
-                      <TableCell>
-                        <p className="text-sm text-foreground">
-                          {email.subject}
-                        </p>
-                        {email.errorCode ? (
-                          <p className="text-xs text-destructive">
-                            {to.errorCode}: {email.errorCode}
-                          </p>
-                        ) : null}
-                      </TableCell>
-                      <TableCell>
-                        <OutboxStatusBadge
-                          status={email.status}
-                          label={statusLabel(email.status)}
-                        />
-                        {email.attempts !== null && (
-                          <p className="mt-1 text-xs text-muted-foreground">
-                            {to.attempts}: {email.attempts}
-                          </p>
-                        )}
-                        {email.nextAttemptAt && (
-                          <p className="mt-1 text-xs text-muted-foreground">
-                            {to.nextAttempt}:{" "}
-                            {fmtDateTime(email.nextAttemptAt, locale)}
-                          </p>
-                        )}
-                      </TableCell>
-                    </TableRow>
-                  ))
-                )}
-              </TableBody>
-            </Table>
+                </TableHeader>
+                <TableBody>
+                  {loading && !data
+                    ? Array.from({ length: 10 }).map((_, i) => (
+                        <TableRow key={`sk-${i}`}>
+                          {Array.from({ length: 4 }).map((__, j) => (
+                            <TableCell key={j}>
+                              <Skeleton className="h-5 w-full" />
+                            </TableCell>
+                          ))}
+                        </TableRow>
+                      ))
+                    : emails.map((email) => (
+                        <TableRow
+                          key={email.id}
+                          className="align-top transition-colors hover:bg-muted/50"
+                        >
+                          <TableCell className="whitespace-nowrap text-xs tabular-nums text-muted-foreground">
+                            {fmtDateTime(email.createdAt, locale)}
+                          </TableCell>
+                          <TableCell className="font-mono text-xs text-foreground ltr-isolate [overflow-wrap:anywhere]">
+                            {email.to}
+                          </TableCell>
+                          <TableCell>
+                            <p className="text-sm text-foreground">
+                              {email.subject}
+                            </p>
+                            {email.errorCode ? (
+                              <p className="text-xs text-destructive">
+                                {to.errorCode}: {email.errorCode}
+                              </p>
+                            ) : null}
+                          </TableCell>
+                          <TableCell>
+                            <OutboxStatusBadge
+                              status={email.status}
+                              label={statusLabel(email.status)}
+                            />
+                            {email.attempts !== null && (
+                              <p className="mt-1 text-xs text-muted-foreground">
+                                {to.attempts}: {email.attempts}
+                              </p>
+                            )}
+                            {email.nextAttemptAt && (
+                              <p className="mt-1 text-xs text-muted-foreground">
+                                {to.nextAttempt}:{" "}
+                                {fmtDateTime(email.nextAttemptAt, locale)}
+                              </p>
+                            )}
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                </TableBody>
+              </Table>
+            )}
           </div>
         </div>
 

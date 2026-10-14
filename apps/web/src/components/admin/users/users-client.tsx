@@ -429,7 +429,7 @@ export function UsersClient({
         {/* الجدول */}
         <div className="min-w-0">
           <div className="overflow-x-auto">
-            <Table>
+            {data && !loading && users.length === 0 ? (<EmptyState icon={Users} title={t.admin.dashboard.noData} />) : (<Table>
               <TableHeader>
                 <TableRow className="bg-muted/50 hover:bg-muted/50">
                   <TableHead className="min-w-52">
@@ -489,12 +489,6 @@ export function UsersClient({
                     ))}
                   </TableRow>
                 ))
-              ) : users.length === 0 ? (
-                <TableRow>
-                  <TableCell colSpan={8} className="p-0">
-                    <EmptyState icon={Users} title={t.admin.dashboard.noData} />
-                  </TableCell>
-                </TableRow>
               ) : (
                   users.map((user) => (
                     <TableRow
@@ -641,7 +635,7 @@ export function UsersClient({
                   ))
                 )}
               </TableBody>
-            </Table>
+            </Table>)}
           </div>
         </div>
 
