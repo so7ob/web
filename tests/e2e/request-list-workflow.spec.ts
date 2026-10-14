@@ -2,6 +2,7 @@ import { expect } from "@playwright/test";
 import { test } from "./quota-fixture";
 import AxeBuilder from "@axe-core/playwright";
 import { readFileSync } from "node:fs";
+import bcrypt from "bcryptjs";
 import { createDataSource, WorkflowAdministration, sha256 } from "@so7ob/server";
 import { legacyWorkflow, type AuthUser } from "@so7ob/contracts";
 
@@ -9,7 +10,7 @@ test.use({ contextOptions: { reducedMotion: "reduce" } });
 for (const locale of ["ar", "en"] as const)
   test(`${locale}: customer creates a workflow request, reads and refreshes the list, then opens details`, async ({ page }, info) => {
     const { prefix, password } = JSON.parse(readFileSync(".migration/e2e/run.json", "utf8"));
-    const actorId = prefix + "portal" + info.project.name + locale;
+    const actorId = prefix + "list107" + info.project.name + locale;
     const email = actorId + "@example.invalid";
     const stage = { nameAr: "مرحلة اختبار القائمة", nameEn: "List acceptance stage" };
     const db = await createDataSource().initialize();
@@ -18,6 +19,8 @@ for (const locale of ["ar", "en"] as const)
     const [binding] = await db.query("SELECT versionId FROM WorkflowBinding WHERE scope='requests' AND selector='web'");
     let flowId = "", calendarId = "", requestId = "";
     try {
+      // This account belongs to this scenario; portal acceptance changes its own passwords.
+      await db.query("INSERT INTO User(id,email,name,passwordHash,roleKey,status,emailVerifiedAt,locale) VALUES(?,?,?,?,'client','active',UTC_TIMESTAMP(3),?)", [actorId, email, "Synthetic list client", await bcrypt.hash(password, 12), locale]);
       calendarId = (await admin.calendar(root, { timezone: "Asia/Aden", week: Array.from({ length: 7 }, () => [{ start: "00:00", end: "24:00" }]), exceptions: [] })).id;
       const definition = legacyWorkflow("requests");
       definition.nameEn = "Synthetic request list acceptance";
