@@ -6,9 +6,28 @@ export const sha256 = (value: string): string => createHash('sha256').update(val
 // Existing source paths accept alphanumeric IDs; don't introduce hyphens into domain IDs.
 export const newId = (): string => 'c'+randomBytes(15).toString('hex');
 export async function transaction<T>(db: DataSource, work: (r: QueryRunner) => Promise<T>): Promise<T> {
-  const r = db.createQueryRunner(); await r.connect(); await r.startTransaction('READ COMMITTED');
-  try { const result = await work(r); await r.commitTransaction(); return result; }
-  catch (error) { await r.rollbackTransaction(); throw error; } finally { await r.release(); }
+  const r = db.createQueryRunner();
+  let failed = false;
+  let failure: unknown;
+  let result!: T;
+  try {
+    await r.connect();
+    await r.startTransaction('READ COMMITTED');
+    result = await work(r);
+    await r.commitTransaction();
+  } catch (error) {
+    failed = true;
+    failure = error;
+    if (r.isTransactionActive) {
+      try { await r.rollbackTransaction(); }
+      catch { /* Preserve the operation/start/commit failure for its caller. */ }
+    }
+  }
+  // Cleanup must not replace the original failure, even when it was undefined.
+  try { await r.release(); }
+  catch (error) { if (!failed) throw error; }
+  if (failed) throw failure;
+  return result;
 }
 export async function consumeRateLimit(db: DataSource, key: string, limits?: { shortMax: number; shortWindowMs: number; dailyMax: number; dailyWindowMs: number }): Promise<RateLimitResult> {
   return transaction(db, async r => {
