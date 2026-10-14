@@ -60,7 +60,7 @@ export function ClipboardMenu({ entries, uiLocale, onPaste, onClear }: Clipboard
               {count > 0 && (
                 <span
                   aria-hidden="true"
-                  className="absolute -end-0.5 -top-0.5 grid size-4 place-items-center rounded-full bg-brand text-[9px] font-bold leading-none text-white tabular-nums"
+                  className="absolute -end-0.5 -top-0.5 grid size-4 place-items-center rounded-full bg-brand text-[9px] font-bold leading-none text-on-brand tabular-nums"
                 >
                   {count}
                 </span>
@@ -139,10 +139,10 @@ export function CopyToClipboardButton({
   const te = getPortalContent(uiLocale).admin.editor;
   const cls =
     size === "xs"
-      ? "flex size-5 items-center justify-center rounded text-muted-foreground transition-colors hover:bg-accent hover:text-navy focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
+      ? "flex size-11 items-center justify-center rounded text-muted-foreground transition-colors hover:bg-accent hover:text-navy focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
       : size === "sm"
-      ? "size-6 rounded text-muted-foreground transition-colors hover:bg-accent hover:text-navy focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
-      : "flex size-8 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:bg-accent hover:text-brand-strong focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand";
+      ? "size-11 rounded text-muted-foreground transition-colors hover:bg-accent hover:text-navy focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
+      : "flex size-11 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:bg-accent hover:text-brand-strong focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand";
   return (
     <button
       type="button"

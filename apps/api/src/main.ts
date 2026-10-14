@@ -1,3 +1,7 @@
+import { WorkflowController } from './admin/workflows.controller.js';
+import { WorkflowAdministration } from '@so7ob/server';
+import { IdentityAdministrationController, identityAttemptMiddleware, restrictedCredentialMiddleware } from './admin/identity.controller.js';
+import { IdentityAdministrationService } from '@so7ob/server';
 import {AuditController} from './admin/audit.controller.js';
 import {AuditReader,AuditReviews,AuditReports,AuditOperations} from '@so7ob/server';
 import {DiagnosticController} from './admin/diagnostics.controller.js';
@@ -61,6 +65,7 @@ import express, {
 import { readFile } from "node:fs/promises";
 import { resolve } from "node:path";
 import { pathToFileURL } from "node:url";
+import { styleText } from "node:util";
 import { database, assertSchema } from "@so7ob/server";
 import type { PublicView } from "@so7ob/contracts";
 import { PublicController } from "./public.controller.js";
@@ -75,12 +80,13 @@ class HealthController {
   }
 }
 @Module({
-  controllers: [AuditController,DiagnosticController,
+  controllers: [WorkflowController,AuditController,DiagnosticController,
     TrackController, AdminTrackController,
     AdminOperationsController,
     PageAdministrationController,
     PageTemplateController,
     UserAdministrationController,
+    IdentityAdministrationController,
     HealthController,
     PublicController,
     AuthController,
@@ -91,7 +97,7 @@ class HealthController {
     MediaController,
     ClaimController,
   ],
-  providers: [
+  providers: [{provide:WorkflowAdministration,useFactory:async()=>new WorkflowAdministration(await database())},
     ...[AuditReader,AuditReviews,AuditReports,AuditOperations].map(service=>({provide:service,useFactory:async()=>new service(await database())})),{provide:DiagnosticAdministration,useFactory:async()=>new DiagnosticAdministration(await database())},
     { provide: TrackService, useFactory: async () => { const db = await database(); return new TrackService(db, new MailQueue(db, new PayloadCipher()), process.env.SITE_URL!); } },
     { provide: PagePublicationService, useFactory: async () => new PagePublicationService(await database()) },
@@ -111,6 +117,10 @@ class HealthController {
     {
       provide: PageAdministrationService,
       useFactory: async () => new PageAdministrationService(await database()),
+    },
+    {
+      provide: IdentityAdministrationService,
+      useFactory: async () => new IdentityAdministrationService(await database()),
     },
     {
       provide: UserAdministrationService,
@@ -156,11 +166,13 @@ type Renderer = {
   render(
     url: string,
     data: PublicView,
-  ): Promise<{ html: string; head: string; lang: string; dir: string }>;
+  ): Promise<{ html: string; head: string; lang: string; dir: string; colorMode: string }>;
 };
 async function main() {
+  console.log(styleText("cyan", "[سُحُب] STARTING / جارٍ تشغيل الخادم — checking database and schema…"));
   const db = await database();
   await assertSchema(db);
+  console.log(styleText("cyan", "[سُحُب] Database and schema verified / قاعدة البيانات والمخطط جاهزان"));
   initializeDiagnostics(db);
   const app = await NestFactory.create<NestExpressApplication>(
     ApplicationModule,
@@ -179,6 +191,7 @@ async function main() {
     methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
     exposedHeaders: ["X-Request-Id", "X-Error-Id", "Retry-After"],
   });
+  app.use(restrictedCredentialMiddleware(app.get(AuthenticationService),app.get(AuthHttpPolicy)));
   app.use(
     authAttemptMiddleware(
       app.get(AuthenticationService),
@@ -192,6 +205,7 @@ async function main() {
       app.get(AuthHttpPolicy),
     ),
   );
+  app.use(identityAttemptMiddleware(app.get(AuthenticationService),app.get(IdentityAdministrationService),app.get(AuthHttpPolicy)));
   app.use(
     invitationAttemptMiddleware(
       app.get(AuthenticationService),
@@ -345,7 +359,7 @@ async function main() {
           kind: "not-found",
           locale: req.path.startsWith("/en") ? "en" : "ar",
           menus: [],
-          settings: {},
+          settings: (await app.get(PublicService).shell(req.path.startsWith("/en") ? "en" : "ar", null)).settings,
           canonicalOrigin: process.env.SITE_URL!,
           viewer: null,
         };
@@ -382,6 +396,7 @@ async function main() {
           template
             .replace("__LANG__", rendered.lang)
             .replace("__DIR__", rendered.dir)
+            .replace("__MODE__", rendered.colorMode)
             .replace("<!--head-->", rendered.head)
             .replace("<!--app-->", rendered.html)
             .replace(
@@ -410,8 +425,20 @@ async function main() {
     Number(process.env.PORT ?? 3000),
     process.env.BIND_HOST ?? "127.0.0.1",
   );
+  const url = await app.getUrl();
+  console.log(styleText("green", [
+    "",
+    "================================================================",
+    "  سُحُب — READY / الخادم جاهز",
+    `  HTTP:   ${url}`,
+    `  Health: ${url}/api/health/ready`,
+    "  Stop / إيقاف: Ctrl+C",
+    "================================================================",
+    "",
+  ].join("\n")));
 }
 main().catch((error) => {
-  diagnostics.record({component:"API",event:"startup_failed",code:"internal_error",operation:"startup",level:"fatal"},error);
+  const event = diagnostics.record({component:"API",event:"startup_failed",code:"internal_error",operation:"startup",level:"fatal"},error);
+  console.error(styleText("red", `[سُحُب] STARTUP FAILED / تعذر تشغيل الخادم — reference / المرجع: ${event.errorId}`, { stream: process.stderr }));
   process.exitCode = 1;
 });

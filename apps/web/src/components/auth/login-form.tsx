@@ -102,7 +102,7 @@ export function LoginForm({ locale, t, next }: { locale: Locale; t: PortalConten
       <form onSubmit={onSubmit} noValidate className="mt-6 space-y-5">
         {failure?<ErrorFeedback error={failure} locale={locale} operation={t.loginTitle}/>:null}
       {error && (
-          <div role="alert" className="rounded-2xl border border-rose-200 bg-rose-50 px-4 py-3 text-sm font-medium text-rose-700">
+          <div role="alert" className="rounded-2xl border border-danger-border bg-danger-soft px-4 py-3 text-sm font-medium text-danger-foreground">
             {error}
           </div>
         )}
@@ -128,7 +128,7 @@ export function LoginForm({ locale, t, next }: { locale: Locale; t: PortalConten
         <Button
           type="submit"
           disabled={!interactive || submitting}
-          className="h-12 w-full rounded-full bg-primary text-base font-bold text-primary-foreground shadow-md shadow-brand/20 transition-all hover:bg-brand-strong"
+          className="h-12 w-full rounded-full bg-primary text-base font-bold text-primary-foreground shadow-md shadow-brand/20 transition-[color,background-color,border-color,box-shadow,opacity,transform] hover:bg-primary-hover hover:text-primary-hover-foreground"
         >
           {submitting ? <Loader2 className="h-5 w-5 animate-spin" aria-hidden="true" /> : <LogIn className="h-5 w-5" aria-hidden="true" />}
           {t.loginButton}

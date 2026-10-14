@@ -55,7 +55,7 @@ export function ForgotForm({ locale, t }: { locale: Locale; t: PortalContent["au
     return (
       <AuthCard title={t.forgotTitle}>
         <div className="mt-2 flex flex-col items-center text-center">
-          <span className="flex h-14 w-14 items-center justify-center rounded-full bg-emerald-100 text-emerald-800">
+          <span className="flex h-14 w-14 items-center justify-center rounded-full bg-success-soft text-success-foreground">
             <MailCheck className="h-7 w-7" aria-hidden="true" />
           </span>
           <p className="mt-4 max-w-md leading-8 text-muted-foreground">{t.forgotSent}</p>
@@ -102,7 +102,7 @@ export function ForgotForm({ locale, t }: { locale: Locale; t: PortalContent["au
         <Button
           type="submit"
           disabled={submitting}
-          className="h-12 w-full rounded-full bg-primary text-base font-bold text-primary-foreground shadow-md shadow-brand/20 transition-all hover:bg-brand-strong"
+          className="h-12 w-full rounded-full bg-primary text-base font-bold text-primary-foreground shadow-md shadow-brand/20 transition-[color,background-color,border-color,box-shadow,opacity,transform] hover:bg-primary-hover hover:text-primary-hover-foreground"
         >
           {submitting ? <Loader2 className="h-5 w-5 animate-spin" aria-hidden="true" /> : <Send className="h-5 w-5" aria-hidden="true" />}
           {t.forgotButton}

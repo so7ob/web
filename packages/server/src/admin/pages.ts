@@ -414,7 +414,7 @@ export class PageAdministrationService {
         undefined,{before:{...p},after:(await r.query("SELECT status,slug,visibility,draftRevision,publishedRevision,titleAr,titleEn,scheduledPublishAt,scheduledRevision FROM Page WHERE id=?",[id]))[0]},
       );
       const recipients: Array<{ id: string }> = await r.query(
-        "SELECT id FROM User WHERE status='active' AND roleKey IN ('super_admin','content_editor','ops_manager') AND id<>?",
+        "SELECT id FROM User WHERE status='active' AND roleKey IN (SELECT `key` FROM Role WHERE status='active' AND (`key`='super_admin' OR JSON_CONTAINS(permissions, '\"pages.view\"'))) AND id<>?",
         [actor.id],
       );
       if (recipients.length)

@@ -1,10 +1,12 @@
+import {workflowAccessSql,auditWorkflowAccessSql} from "../workflows/access.js";
+import { currentIdentity, manageableTarget, assignableRole } from './identity-policy.js';
 import {project} from '../audit/reader.js';
 import { randomBytes } from "node:crypto";
 import type { DataSource, QueryRunner } from "typeorm";
 import {
   can,
+  PERMISSIONS,
   AUDIT_SENSITIVE_PERMISSIONS,
-  ROLE_KEYS,
   type AuthUser,
   type Permission,
 } from "@so7ob/contracts";
@@ -67,7 +69,7 @@ export class UserAdministrationService {
       clauses.push(`(${a.sql} OR ${b.sql})`);
       values.push(a.value, b.value);
     }
-    if (query.role && ROLE_KEYS.includes(query.role)) {
+    if (query.role && (await this.db.query("SELECT `key` FROM Role WHERE `key`=?",[query.role])).length) {
       clauses.push("u.roleKey=?");
       values.push(query.role);
     }
@@ -88,8 +90,8 @@ export class UserAdministrationService {
     const [[count], rows] = await Promise.all([
       this.db.query(`SELECT COUNT(*) n FROM User u WHERE ${where}`, values),
       this.db.query<UserListRecord[]>(
-        `SELECT u.id,u.name,u.email,u.phone,u.company,u.roleKey,u.status,u.emailVerifiedAt,u.createdAt,u.lastLoginAt,(SELECT COUNT(*) FROM ProjectRequest r WHERE r.clientId=u.id) requestsCount,(SELECT COUNT(*) FROM ProjectRequest r WHERE r.assigneeId=u.id) assignedCount FROM User u WHERE ${where} ORDER BY u.\`${sort}\` ${dir} LIMIT ? OFFSET ?`,
-        [...values, pageSize, (page - 1) * pageSize],
+        `SELECT u.id,u.name,u.email,u.phone,u.company,u.roleKey,u.status,u.emailVerifiedAt,u.createdAt,u.lastLoginAt,IF(? OR u.id=?,(SELECT COUNT(*) FROM ProjectRequest r WHERE r.clientId=u.id AND (${workflowAccessSql(actor,'requests','r')})),0) requestsCount,IF(? OR u.id=?,(SELECT COUNT(*) FROM ProjectRequest r WHERE r.assigneeId=u.id AND (${workflowAccessSql(actor,'requests','r')})),0) assignedCount FROM User u WHERE ${where} ORDER BY u.\`${sort}\` ${dir} LIMIT ? OFFSET ?`,
+        [can(actor,"requests.view.all"),actor.id,can(actor,"requests.view.all"),actor.id,...values, pageSize, (page - 1) * pageSize],
       ),
     ]);
     return {
@@ -111,30 +113,32 @@ export class UserAdministrationService {
   async detail(actor: AuthUser, id: string) {
     requirePermission(actor, "users.view");
     const [user]: User[] = await this.db.query(
-      "SELECT id,email,name,phone,company,locale,roleKey,status,emailVerifiedAt,createdAt,updatedAt,lastLoginAt FROM User WHERE id=?",
+      "SELECT id,email,name,phone,company,locale,roleKey,status,credentialState,credentialExpiresAt,emailVerifiedAt,createdAt,updatedAt,lastLoginAt FROM User WHERE id=?",
       [id],
     );
     if (!user) throw new AuthFault(404, "not_found");
+    const mayRequests=can(actor,"requests.view.all")||actor.id===id;
     const [sessions, [counts], requests, auditLogs, [suspendedEvent]] =
       await Promise.all([
-        this.db.query(
-          "SELECT s.createdAt,s.lastSeenAt,s.userAgent,s.ipHash FROM AuthSession s JOIN User u ON u.id=s.userId WHERE s.userId=? AND s.fingerprint LIKE 'opaque-v1:%' AND s.revokedAt IS NULL AND s.expiresAt>UTC_TIMESTAMP(3) AND (u.sessionsRevokedAt IS NULL OR s.createdAt>u.sessionsRevokedAt) ORDER BY s.lastSeenAt DESC",
+        can(actor,"users.sessions.manage") ? this.db.query(
+          "SELECT s.createdAt,s.lastSeenAt,s.userAgent FROM AuthSession s JOIN User u ON u.id=s.userId WHERE s.userId=? AND s.fingerprint LIKE 'opaque-v1:%' AND s.revokedAt IS NULL AND s.expiresAt>UTC_TIMESTAMP(3) AND (u.sessionsRevokedAt IS NULL OR s.createdAt>u.sessionsRevokedAt) ORDER BY s.lastSeenAt DESC LIMIT 100",
           [id],
-        ),
-        this.db.query(
-          "SELECT COUNT(*) totalRequests,COALESCE(SUM(status NOT IN ('closed','cancelled')),0) openRequests FROM ProjectRequest WHERE clientId=?",
+        ) : [],
+        mayRequests ? this.db.query(
+          `SELECT COUNT(*) totalRequests,COALESCE(SUM(status NOT IN ('closed','cancelled')),0) openRequests FROM ProjectRequest WHERE clientId=? AND (${actor.id===id?'1=1':workflowAccessSql(actor,'requests','ProjectRequest')})`,
           [id],
-        ),
-        this.db.query(
-          "SELECT r.id,r.refCode,r.status,r.serviceType,r.createdAt,r.lastActivityAt,u.name assigneeName FROM ProjectRequest r LEFT JOIN User u ON u.id=r.assigneeId WHERE r.clientId=? ORDER BY r.createdAt DESC LIMIT 20",
+        ) : [{totalRequests:0,openRequests:0}],
+        mayRequests ? this.db.query(
+          `SELECT r.id,r.refCode,r.status,r.serviceType,r.createdAt,r.lastActivityAt,u.name assigneeName FROM ProjectRequest r LEFT JOIN User u ON u.id=r.assigneeId WHERE r.clientId=? AND (${actor.id===id?'1=1':workflowAccessSql(actor,'requests','r')}) ORDER BY r.createdAt DESC LIMIT 20`,
           [id],
-        ),
-        can(actor,"audit.view") ? this.db.query("SELECT * FROM AuditLog WHERE actorId=? ORDER BY createdAt DESC,id DESC LIMIT 10",[id]) : [],
+        ) : [],
+        can(actor,"audit.view") ? this.db.query(`SELECT a.* FROM AuditLog a WHERE (actorId=? OR (entityType='user' AND entityId=?)) AND (${auditWorkflowAccessSql(actor)}) ORDER BY createdAt DESC,id DESC LIMIT 10`,[id,id]) : [],
         this.db.query(
           "SELECT createdAt FROM AuditLog WHERE action='user.suspended' AND entityType='user' AND entityId=? ORDER BY createdAt DESC LIMIT 1",
           [id],
         ),
       ]);
+    const [role] = await this.db.query("SELECT nameAr,nameEn,permissions,status FROM Role WHERE `key`=?",[user.roleKey]);
     const { emailVerifiedAt, ...safe } = user;
     return {
       ok: true,
@@ -147,6 +151,8 @@ export class UserAdministrationService {
         locale: safe.locale,
         roleKey: safe.roleKey,
         status: safe.status,
+        credentialState:safe.credentialState,
+        credentialExpiresAt:safe.credentialExpiresAt,
         createdAt: safe.createdAt,
         updatedAt: safe.updatedAt,
         lastLoginAt: safe.lastLoginAt,
@@ -154,6 +160,7 @@ export class UserAdministrationService {
         suspendedAt: suspendedEvent?.createdAt ?? null,
         lastSeen: sessions[0]?.lastSeenAt ?? user.lastLoginAt,
       },
+      role: {...role, permissions:user.roleKey === "super_admin" ? Object.keys(PERMISSIONS) : JSON.parse(role.permissions)},
       stats: {
         totalRequests: Number(counts.totalRequests),
         openRequests: Number(counts.openRequests),
@@ -167,23 +174,10 @@ export class UserAdministrationService {
     r: QueryRunner,
     actor: AuthUser,
     permission: Permission,
-  ): Promise<AuthUser> {
-    // Role/status changes serialize on the same lock, then permissions are read again.
-    const [row] = await r.query(
-      "SELECT u.roleKey,u.status,r.permissions FROM User u JOIN Role r ON r.`key`=u.roleKey WHERE u.id=?",
-      [actor.id],
-    );
-    if (!row || row.status === "suspended")
-      throw new AuthFault(401, "unauthorized");
-    const current = {
-      ...actor,
-      roleKey: row.roleKey,
-      status: row.status,
-      permissions: JSON.parse(row.permissions),
-    };
-    requirePermission(current, permission);
-    return current;
+  ) {
+    return currentIdentity(r,actor,permission);
   }
+
   async update(actor: AuthUser, id: string, body: Record<string, unknown>) {
     requirePermission(actor, "users.update");
     return transaction(this.db, async (r) => {
@@ -194,6 +188,10 @@ export class UserAdministrationService {
         [id],
       );
       if (!target) throw new AuthFault(404, "not_found");
+      await manageableTarget(r,current,target,body.currentPassword);
+      if ((body.roleKey !== undefined && body.roleKey !== target.roleKey) && id === current.id) throw new AuthFault(403,"self_change_denied");
+      if (body.status !== undefined) requirePermission(current,"users.suspend");
+      if (body.status !== undefined && body.status !== target.status && !['account_support','security_response','staff_change','requested_by_user'].includes(String(body.reason))) throw new AuthFault(400,"invalid",{errors:{reason:'required'}});
       const updates: Record<string, unknown> = {},
         details: Record<string, unknown> = {};
       if (typeof body.name === "string") {
@@ -206,10 +204,7 @@ export class UserAdministrationService {
         updates.company = body.company.trim().slice(0, 120) || null;
       if (typeof body.roleKey === "string" && body.roleKey !== target.roleKey) {
         requirePermission(current, "users.roles");
-        const [role] = await r.query("SELECT `key`,permissions FROM Role WHERE `key`=?", [
-          body.roleKey,
-        ]);
-        if (!role) throw new AuthFault(400, "invalid");
+        const role = await assignableRole(r,current,body.roleKey,body.currentPassword);
         updates.roleKey = role.key;
         details.fromRole = target.roleKey;
         details.toRole = role.key;
@@ -239,7 +234,7 @@ export class UserAdministrationService {
           (updates.status && updates.status !== "active"))
       ) {
         const [{ n }] = await r.query(
-          "SELECT COUNT(*) n FROM User WHERE roleKey='super_admin' AND status='active' AND id<>?",
+          "SELECT COUNT(*) n FROM User WHERE roleKey='super_admin' AND status='active' AND credentialState='ready' AND id<>?",
           [id],
         );
         if (Number(n) === 0) throw new AuthFault(409, "last_admin");
@@ -274,7 +269,7 @@ export class UserAdministrationService {
               ? "user.role_changed"
               : "user.updated",
         current,
-        { ...details, fields: Object.keys(updates) },
+        { ...details, reason:body.reason, fields: Object.keys(updates) },
         "user",
         id,
         undefined, {before:{...target},after:{...target,...updated}},
@@ -314,20 +309,21 @@ export class UserAdministrationService {
         .slice(0, 200),
       roleKey = String(body.roleKey ?? "client");
     if (
-      !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email) ||
-      !ROLE_KEYS.includes(roleKey)
+      !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)
     )
       throw new AuthFault(400, "invalid");
+    if(!(await this.db.query("SELECT `key` FROM Role WHERE `key`=?",[roleKey])).length)throw new AuthFault(400,"invalid");
     return transaction(this.db, async (r) => {
       await lockOperation(r, "user-administration");
       const current = await this.currentActor(r, actor, "users.create");
       if (roleKey !== "client") requirePermission(current, "users.roles");
-      if ((await r.query("SELECT id FROM User WHERE email=?", [email])).length)
+      await assignableRole(r,current,roleKey,body.currentPassword);
+      if ((await r.query("SELECT id FROM User WHERE normalizedEmail=?", [email])).length)
         throw new AuthFault(409, "email_taken");
       if (
         (
           await r.query(
-            "SELECT id FROM UserInvite WHERE email=? AND acceptedAt IS NULL AND expiresAt>UTC_TIMESTAMP(3)",
+            "SELECT id FROM UserInvite WHERE LOWER(TRIM(email))=? AND acceptedAt IS NULL AND cancelledAt IS NULL AND expiresAt>UTC_TIMESTAMP(3)",
             [email],
           )
         ).length

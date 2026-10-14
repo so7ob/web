@@ -1,3 +1,4 @@
+import { PRESENTATION_KEYS, IDENTITY_MEDIA_KEYS, SECTION_KEYS, SETTINGS_DEFAULTS, validateSiteSettings, mediaSettingId } from '@so7ob/contracts';
 import {AuditReader} from '../audit/reader.js';
 import {workerHealth} from '../queue/monitor.js';
 import {snapshot,revisions,advance} from "./revisions.js";
@@ -7,6 +8,7 @@ import { can, isTrackMode, type AuthUser, type Permission } from "@so7ob/contrac
 import { AuthFault, audit, newId, transaction } from "../auth/persistence.js";
 import { insertRecord, lockOperation } from "../business/persistence.js";
 const allowedSettings = [
+  ...PRESENTATION_KEYS,
   "response.hours",
   "track.forceLogin",
   "track.requestsMode",
@@ -52,9 +54,10 @@ export class AdminOperationsService {
   async updateSettings(actor: AuthUser, body: Record<string, unknown>, checked=false) {
     requirePermission(actor, "settings.manage");
     const updates: Array<{ key: string; value: string }> = [];
-    for (const key of allowedSettings)
+    for (const key of new Set(allowedSettings))
       if (body[key] !== undefined) {
-        const value = String(body[key] ?? "").slice(0, 300);
+        const value = String(body[key] ?? "");
+        if(value.length>300) throw new AuthFault(400,"invalid");
         if (
           key === "contact.email" &&
           value &&
@@ -109,6 +112,20 @@ export class AdminOperationsService {
     if (!updates.length) throw new AuthFault(400, "invalid");
     return transaction(this.db, async (r) => {
       await lockOperation(r, "site-settings");
+      // Same lock as media deletion: a saved brand image can never become a dangling reference.
+      await lockOperation(r, "cms-pages");
+      const currentRows:Array<{key:string;value:string}>=await r.query("SELECT `key`,value FROM SiteSetting");
+      const merged={...SETTINGS_DEFAULTS,...Object.fromEntries(currentRows.map(row=>[row.key,row.value])),...Object.fromEntries(updates.map(u=>[u.key,u.value]))};
+      const affected=new Set(Object.values(SECTION_KEYS).filter(keys=>updates.some(u=>keys.includes(u.key))).flat());
+      const fields=Object.fromEntries(Object.entries(validateSiteSettings(merged)).filter(([key])=>affected.has(key)));
+      if(Object.keys(fields).length)throw new AuthFault(400,"invalid_settings",{fields});
+      for(const update of updates){
+        if(!(IDENTITY_MEDIA_KEYS as readonly string[]).includes(update.key)||!update.value)continue;
+        requirePermission(actor,"media.manage");
+        const [media]=await r.query("SELECT id,mimeType FROM MediaItem WHERE id=?",[mediaSettingId(update.value)]);
+        if(!media)throw new AuthFault(409,"media_not_found");
+        if(update.key==='identity.icon'&&media.mimeType!=='image/png')throw new AuthFault(400,"invalid_settings",{fields:{[update.key]:"png"}});
+      }
       const bases=body.baseRevisions && typeof body.baseRevisions==='object' ? body.baseRevisions as Record<string,unknown> : {};
       for(const update of updates) await advance(r,'setting:'+update.key,Object.hasOwn(bases,update.key)?bases[update.key]:undefined,checked);
       if(updates.some(u=>u.key==='response.hours')){
@@ -134,7 +151,7 @@ export class AdminOperationsService {
         "settings",
         null,
       );
-      return { ok: true };
+      return { ok: true, settings:Object.fromEntries(updates.map(u=>[u.key,u.value])), revisions:await revisions(r) .then(v=>Object.fromEntries(updates.map(u=>[u.key,v["setting:"+u.key]??"0"]))) };
     });
   }
   async menus(actor: AuthUser) {
@@ -254,7 +271,7 @@ export class AdminOperationsService {
     };
   }
   async savedReplies(actor: AuthUser) {
-    requirePermission(actor, "requests.view.all");
+    if(!can(actor,'requests.view.all')&&!can(actor,'inquiries.view.all'))throw new AuthFault(403,'forbidden');
     return {
       ok: true,
       replies: await this.db.query(
@@ -268,7 +285,7 @@ export class AdminOperationsService {
     id?: string,
     remove = false,
   ) {
-    requirePermission(actor, "requests.reply");
+    if(!can(actor,'requests.reply')&&!can(actor,'inquiries.reply'))throw new AuthFault(403,'forbidden');
     const values: Record<string, string> = {};
     for (const [key, max] of [
       ["name", 80],

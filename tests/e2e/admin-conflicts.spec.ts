@@ -16,7 +16,7 @@ for(const locale of ['ar','en'] as const)test(`${locale}: stale settings and men
  const menuSnapshot=await db.query("SELECT * FROM MenuItem WHERE location='header'");
  try{
   for(const kind of ['settings','menus'] as const){
-   const path=`/${locale}/admin/${kind}`,field=kind==='settings'?'#contact-address':'#label-en-0';
+   const path=`/${locale}/admin/${kind}${kind==='settings'?'?section=contact':''}`,field=kind==='settings'?'#contact-address':'#label-en-0';
    await page.goto(path,{waitUntil:'networkidle'});await other.goto(path,{waitUntil:'networkidle'});
    await page.locator(field).fill('Synthetic winner');await other.locator(field).fill('Synthetic preserved draft');
    const first=page.waitForResponse(r=>r.url().endsWith(`/api/v1/admin/${kind}/checked`)&&r.request().method()!=='GET');

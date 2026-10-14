@@ -1,5 +1,7 @@
 "use client";
 
+import { Panel, Toolbar } from "@/components/ui/workspace";
+
 /**
  * عناصر المحادثة المشتركة بين الطلبات والاستفسارات:
  * فقاعة رسالة (عميل/طاقم/ملاحظة داخلية/نظامية) + ملحن الرد بتبويبين.
@@ -39,6 +41,7 @@ export interface MessageLabels {
 function isStaffMessage(
   message: Pick<MessageRow, "authorType" | "author">,
 ): boolean {
+  if (message.authorType === "client") return false;
   if (message.authorType === "staff") return true;
   if (message.authorType === "system") return false;
   const role = message.author?.roleKey;
@@ -80,17 +83,17 @@ export function MessageBubble({
   if (message.kind === "internal_note") {
     return (
       <div className="flex flex-col gap-1 py-1.5">
-        <div className="flex items-center gap-1.5 text-[11px] font-medium text-amber-700">
+        <div className="flex items-center gap-1.5 text-xs font-medium text-warning-foreground">
           <Lock className="size-3" aria-hidden="true" />
           <span className="truncate">{labels.internalHint}</span>
-          <span className="text-amber-700">· {author}</span>
+          <span className="text-warning-foreground">· {author}</span>
         </div>
-        <div className="rounded-2xl border border-amber-200 bg-amber-50 px-4 py-3">
-          <p className="whitespace-pre-wrap break-words text-sm leading-relaxed text-amber-900">
+        <div className="rounded-2xl border border-warning-border bg-warning-soft px-4 py-3">
+          <p className="whitespace-pre-wrap break-words [overflow-wrap:anywhere] text-sm leading-relaxed text-warning-foreground">
             {message.body}
           </p>
         </div>
-        <p className="text-[11px] text-muted-foreground">
+        <p className="text-xs text-muted-foreground">
           {fmtDateTime(message.createdAt, locale)}
         </p>
       </div>
@@ -105,22 +108,22 @@ export function MessageBubble({
         staff ? "items-end" : "items-start",
       )}
     >
-      <p className="px-1 text-[11px] font-medium text-muted-foreground">
+      <p className="px-1 text-xs font-medium text-muted-foreground">
         {author} · {authorRole}
       </p>
       <div
         className={cn(
           "max-w-[85%] rounded-2xl border px-4 py-3 shadow-sm sm:max-w-[75%]",
           staff
-            ? "rounded-se-sm border-navy bg-navy text-white shadow-navy/10"
-            : "rounded-ss-sm border-sky-200/70 bg-accent/60 text-foreground",
+            ? "rounded-se-sm border-navy bg-inverse text-inverse-foreground shadow-navy/10"
+            : "rounded-ss-sm border-info-border/70 bg-accent/60 text-foreground",
         )}
       >
-        <p className="whitespace-pre-wrap break-words text-sm leading-relaxed">
+        <p className="whitespace-pre-wrap break-words [overflow-wrap:anywhere] text-sm leading-relaxed">
           {message.body}
         </p>
       </div>
-      <p className="px-1 text-[11px] text-muted-foreground">
+      <p className="px-1 text-xs text-muted-foreground">
         {fmtDateTime(message.createdAt, locale)}
       </p>
     </div>
@@ -228,7 +231,7 @@ function SavedReplyPicker({
                 <span className="block truncate text-sm font-medium text-navy">
                   {reply.name}
                 </span>
-                <span className="mt-0.5 block line-clamp-1 whitespace-pre-wrap break-words text-xs text-muted-foreground">
+                <span className="mt-0.5 block line-clamp-1 whitespace-pre-wrap break-words [overflow-wrap:anywhere] text-xs text-muted-foreground">
                   {reply.content}
                 </span>
                 <span className="sr-only">{labels.insert}</span>
@@ -254,7 +257,9 @@ export function ReplyComposer({
   const [tab, setTab] = useState<"message" | "internal_note">(
     canReply ? "message" : "internal_note",
   );
-  const [body, setBody] = useState("");
+  const [drafts, setDrafts] = useState({ message: "", internal_note: "" });
+  const [pendingFile, setPendingFile] = useState<File | null>(null);
+  const [uploadFailed, setUploadFailed] = useState(false);
   const fileRef = useRef<HTMLInputElement>(null);
   const [attaching, setAttaching] = useState(false);
   const submitting = useRef(false);
@@ -264,14 +269,21 @@ export function ReplyComposer({
     ? tab
     : "internal_note";
 
+  const body = drafts[currentTab];
+  const setBody = (value: string | ((s: string) => string)) =>
+    setDrafts((old) => ({
+      ...old,
+      [currentTab]:
+        typeof value === "function" ? value(old[currentTab]) : value,
+    }));
   const submit = async () => {
     const text = body.trim();
-    if (!text || sending || submitting.current) return;
+    if (!text || sending || attaching || submitting.current) return;
     submitting.current = true;
     try {
       if (await onSend(currentTab, text)) {
         // An edit made while the request was in flight belongs to the next draft.
-        setBody(current => current === body ? "" : current);
+        setBody((current) => (current === body ? "" : current));
       }
     } finally {
       submitting.current = false;
@@ -280,12 +292,17 @@ export function ReplyComposer({
 
   const pickFile = async (file: File | undefined) => {
     if (!file || !onAttach) return;
+    setPendingFile(file);
+    setUploadFailed(false);
     setAttaching(true);
     try {
       await onAttach(file);
+      setPendingFile(null);
+      if (fileRef.current) fileRef.current.value = "";
+    } catch {
+      setUploadFailed(true);
     } finally {
       setAttaching(false);
-      if (fileRef.current) fileRef.current.value = "";
     }
   };
 
@@ -297,7 +314,7 @@ export function ReplyComposer({
   const composer = (
     <>
       {currentTab === "internal_note" ? (
-        <p className="mt-2 flex items-center gap-1.5 text-xs text-amber-700">
+        <p className="mt-2 flex items-center gap-1.5 text-xs text-warning-foreground">
           <Lock className="size-3" aria-hidden="true" />
           {labels.internalHint}
         </p>
@@ -321,11 +338,25 @@ export function ReplyComposer({
         }}
       />
 
-      <div className="mt-3 flex flex-wrap items-center gap-2">
+      {pendingFile && currentTab === "message" ? (
+        <p role="status" className="break-words text-sm">
+          {pendingFile.name}
+          {uploadFailed ? (
+            <Button
+              variant="outline"
+              disabled={sending || attaching}
+              onClick={() => void pickFile(pendingFile)}
+            >
+              {labels.attachFile}
+            </Button>
+          ) : null}
+        </p>
+      ) : null}
+      <Toolbar className="mt-3 flex flex-wrap items-center gap-2">
         {savedReplies && currentTab === "message" ? (
           <SavedReplyPicker labels={savedReplies} onPick={insertReply} />
         ) : null}
-        {onAttach ? (
+        {onAttach && currentTab === "message" ? (
           <>
             <input
               ref={fileRef}
@@ -355,7 +386,7 @@ export function ReplyComposer({
         <Button
           type="button"
           onClick={() => void submit()}
-          disabled={sending || body.trim().length === 0}
+          disabled={sending || attaching || body.trim().length === 0}
           className="ms-auto min-h-11 rounded-full px-6"
         >
           {sending ? (
@@ -365,12 +396,12 @@ export function ReplyComposer({
           )}
           {sending ? labels.sending : labels.send}
         </Button>
-      </div>
+      </Toolbar>
     </>
   );
 
   return (
-    <div className="rounded-2xl border border-border bg-white p-4 transition-all focus-within:border-brand/40 focus-within:ring-2 focus-within:ring-ring/40">
+    <Panel className="rounded-2xl border border-border bg-card p-4 transition-[color,background-color,border-color,box-shadow,opacity,transform] focus-within:border-brand/40 focus-within:ring-2 focus-within:ring-ring/40">
       <Tabs
         value={currentTab}
         onValueChange={(v) => setTab(v as "message" | "internal_note")}
@@ -383,18 +414,25 @@ export function ReplyComposer({
             </TabsTrigger>
           ) : null}
           {canNote ? (
-            <TabsTrigger value="internal_note" disabled={sending} className="gap-1.5">
+            <TabsTrigger
+              value="internal_note"
+              disabled={sending}
+              className="gap-1.5"
+            >
               <Lock className="size-3.5" aria-hidden="true" />
               {labels.internalNote}
             </TabsTrigger>
           ) : null}
         </TabsList>
-        {[...(canReply ? ["message"] : []), ...(canNote ? ["internal_note"] : [])].map((value) => (
+        {[
+          ...(canReply ? ["message"] : []),
+          ...(canNote ? ["internal_note"] : []),
+        ].map((value) => (
           <TabsContent key={value} value={value}>
             {currentTab === value ? composer : null}
           </TabsContent>
         ))}
       </Tabs>
-    </div>
+    </Panel>
   );
 }

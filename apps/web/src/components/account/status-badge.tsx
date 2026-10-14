@@ -4,12 +4,12 @@
  */
 const STATUS_CLASSES: Record<string, string> = {
   new: "bg-brand-soft text-brand-strong",
-  in_review: "bg-amber-100 text-amber-800",
-  awaiting_info: "bg-violet-100 text-violet-800",
-  in_progress: "bg-sky-100 text-sky-800",
-  responded: "bg-green-100 text-green-800",
+  in_review: "bg-warning-soft text-warning-foreground",
+  awaiting_info: "bg-highlight-soft text-highlight-foreground",
+  in_progress: "bg-info-soft text-info-foreground",
+  responded: "bg-success-soft text-success-foreground",
   closed: "bg-muted text-muted-foreground",
-  cancelled: "bg-red-100 text-red-800",
+  cancelled: "bg-danger-soft text-danger-foreground",
 };
 
 const FALLBACK = "bg-muted text-muted-foreground";

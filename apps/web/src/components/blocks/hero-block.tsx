@@ -1,5 +1,6 @@
 "use client";
 
+import { APPEARANCE_MOTION } from "@so7ob/contracts";
 import Link from "@/routing/link";
 import { motion, useReducedMotion } from "framer-motion";
 import { Check, ArrowLeft, ArrowRight } from "lucide-react";
@@ -52,10 +53,10 @@ export function HeroBlock({
             : {
                 initial: { opacity: 0, y: 24 },
                 animate: { opacity: 1, y: 0 },
-                transition: { duration: 0.6, ease: "easeOut" },
+                transition: { duration: APPEARANCE_MOTION.panel / 1000, ease: "easeOut" },
               })}
         >
-          <p className="mb-5 inline-flex items-center gap-2 rounded-full border border-skydrop/40 bg-white px-4 py-2 text-sm font-semibold text-brand-strong shadow-sm">
+          <p className="mb-5 inline-flex items-center gap-2 rounded-full border border-skydrop/40 bg-card px-4 py-2 text-sm font-semibold text-brand-strong shadow-sm">
             <span
               className="inline-block h-2 w-2 rounded-full bg-skydrop"
               aria-hidden="true"
@@ -90,14 +91,14 @@ export function HeroBlock({
           <div className="mt-9 flex flex-col gap-3 sm:flex-row sm:items-center">
             <Link
               href={`${localePath(locale, "contact")}?type=discussion`}
-              className="inline-flex min-h-12 items-center justify-center gap-2 rounded-full bg-primary px-7 text-base font-semibold text-primary-foreground shadow-md shadow-brand/20 transition-all hover:bg-brand-strong hover:shadow-lg"
+              className="inline-flex min-h-12 items-center justify-center gap-2 rounded-lg bg-primary px-7 text-base font-semibold text-primary-foreground shadow-md shadow-brand/20 transition-[color,background-color,border-color,box-shadow,opacity,transform] hover:bg-primary-hover hover:text-primary-hover-foreground hover:shadow-lg"
             >
               {t.actions.discuss}
               {arrow}
             </Link>
             <Link
               href={`${localePath(locale, "contact")}?type=quote`}
-              className="inline-flex min-h-12 items-center justify-center gap-2 rounded-full border-2 border-navy/15 bg-white px-7 text-base font-semibold text-navy transition-colors hover:border-brand hover:text-brand"
+              className="inline-flex min-h-12 items-center justify-center gap-2 rounded-lg border-2 border-navy/15 bg-card px-7 text-base font-semibold text-navy transition-colors hover:border-brand hover:text-brand"
             >
               {t.actions.quote}
             </Link>
@@ -132,7 +133,7 @@ export function HeroBlock({
             : {
                 initial: { opacity: 0, scale: 0.96 },
                 animate: { opacity: 1, scale: 1 },
-                transition: { duration: 0.7, delay: 0.15, ease: "easeOut" },
+                transition: { duration: APPEARANCE_MOTION.panel / 1000, ease: "easeOut" },
               })}
           className="relative"
         >

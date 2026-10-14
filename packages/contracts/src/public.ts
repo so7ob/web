@@ -1,6 +1,7 @@
 import type { AccountPayload, AccountIdentity } from "./account.js";
 import type { AdminPayload, AdminIdentity } from "./admin.js";
 export interface PublicPage {
+  ogImage?: string | null;
   id: string;
   slug: string;
   titleAr: string;
@@ -26,13 +27,14 @@ export interface SiteViewBase {
   }>;
   settings: Record<string, string>;
   canonicalOrigin: string;
-  viewer: { name: string; roleKey: string } | null;
+  viewer: { name: string; roleKey: string; isStaff?:boolean } | null;
 }
 export const authScreens = [
   "login",
   "register",
   "forgot-password",
   "reset-password",
+  "change-password",
   "invite",
   "verified",
   "logout",

@@ -52,10 +52,10 @@ const SECTION_ICONS: LucideIcon[] = [
 const SECTION_ICON_STYLES = [
   "bg-brand-soft text-brand-strong",
   "bg-skydrop/20 text-brand-strong",
-  "bg-violet-100 text-violet-700",
-  "bg-emerald-100 text-emerald-700",
-  "bg-amber-100 text-amber-700",
-  "bg-rose-100 text-rose-700",
+  "bg-highlight-soft text-highlight-foreground",
+  "bg-success-soft text-success-foreground",
+  "bg-warning-soft text-warning-foreground",
+  "bg-danger-soft text-danger-foreground",
 ];
 
 export function EditorGuide({ open, onOpenChange, locale }: EditorGuideProps) {
@@ -93,7 +93,7 @@ export function EditorGuide({ open, onOpenChange, locale }: EditorGuideProps) {
               <BookOpen className="size-5" aria-hidden="true" />
             </span>
             {g.title}
-            <span className="ms-auto hidden items-center gap-1 rounded-full border border-border bg-white px-2 py-0.5 font-mono text-[10px] font-bold text-muted-foreground sm:inline-flex" dir="ltr">
+            <span className="ms-auto hidden items-center gap-1 rounded-full border border-border bg-card px-2 py-0.5 font-mono text-[10px] font-bold text-muted-foreground sm:inline-flex" dir="ltr">
               {g.openHint}
             </span>
           </DialogTitle>
@@ -160,14 +160,14 @@ export function EditorGuide({ open, onOpenChange, locale }: EditorGuideProps) {
               {visibleShortcuts.length > 0 && (
                 <section aria-label={g.shortcutsTitle} className="rounded-2xl border border-border bg-muted/30 p-4">
                   <h3 className="mb-3 flex items-center gap-2 text-sm font-bold text-navy">
-                    <span className="flex size-8 shrink-0 items-center justify-center rounded-lg bg-navy/10 text-navy">
+                    <span className="flex size-8 shrink-0 items-center justify-center rounded-lg bg-inverse/10 text-navy">
                       <BookOpen className="size-4" aria-hidden="true" />
                     </span>
                     {g.shortcutsTitle}
                   </h3>
                   <ul className="grid gap-1.5 sm:grid-cols-2">
                     {visibleShortcuts.map((s) => (
-                      <li key={s.keys} className="flex items-center justify-between gap-2 rounded-lg bg-white px-3 py-2 shadow-sm">
+                      <li key={s.keys} className="flex items-center justify-between gap-2 rounded-lg bg-card px-3 py-2 shadow-sm">
                         <span className="text-xs text-muted-foreground">{s.description}</span>
                         <kbd className="ltr-isolate shrink-0 rounded-md border border-border bg-muted px-1.5 py-0.5 font-mono text-[10px] font-bold text-navy" dir="ltr">
                           {s.keys}

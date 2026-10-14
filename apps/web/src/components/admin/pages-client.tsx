@@ -1,5 +1,7 @@
 "use client";
 
+import { ListWorkspace, PageHeading, Toolbar } from "@/components/ui/workspace";
+
 /**
  * قائمة صفحات المحتوى — بحث وتصفية حالة، جدول بالعنوانين والمسار والحالة
  * (منشورة/مسودة/قيد المراجعة/مؤرشفة) ونقطة «تغييرات غير منشورة» والترتيب
@@ -104,16 +106,16 @@ interface PagesClientProps {
 }
 
 const STATUS_TONES: Record<string, string> = {
-  published: "border-transparent bg-emerald-100 text-emerald-800",
+  published: "border-transparent bg-success-soft text-success-foreground",
   draft: "border-transparent bg-secondary text-secondary-foreground",
-  in_review: "border-transparent bg-amber-100 text-amber-800",
-  archived: "border-transparent bg-slate-200 text-slate-500",
+  in_review: "border-transparent bg-warning-soft text-warning-foreground",
+  archived: "border-transparent bg-muted text-muted-foreground",
 };
 
 /** شارة أيقونة ملونة حسب حالة الصفحة (تشخيص بصرية بجانب الشارة النصية) */
 const STATUS_CHIP_TONES: Record<string, string> = {
-  published: "bg-emerald-100 text-emerald-800",
-  draft: "bg-amber-100 text-amber-800",
+  published: "bg-success-soft text-success-foreground",
+  draft: "bg-warning-soft text-warning-foreground",
   in_review: "bg-skydrop/20 text-brand-strong",
   archived: "bg-muted text-muted-foreground",
 };
@@ -230,8 +232,8 @@ export function PagesClient({ me, locale }: PagesClientProps) {
       ) {
         toast.error(tp.slugHint);
       } else {
-        toast.error(apiErrorMessage(err, t.auth.errors));
-      }
+      toast.error(apiErrorMessage(err, t.auth.errors));
+    }
     } finally {
       setCreating(false);
     }
@@ -296,12 +298,11 @@ export function PagesClient({ me, locale }: PagesClientProps) {
   return (
     <div className="space-y-4">
       {/* الترويسة */}
-      <div className="flex flex-wrap items-end justify-between gap-3">
-        <div>
-          <h1 className="text-xl font-bold text-navy">{tp.title}</h1>
-          <p className="mt-1 text-sm text-muted-foreground">{tp.subtitle}</p>
-        </div>
-        <div className="flex flex-wrap items-center gap-2">
+      <PageHeading
+        title={tp.title}
+        description={tp.subtitle}
+        actions={
+          <Toolbar className="flex flex-wrap items-center gap-2">
           <Button
             type="button"
             variant="outline"
@@ -323,12 +324,14 @@ export function PagesClient({ me, locale }: PagesClientProps) {
               {tp.createPage}
             </Button>
           )}
-        </div>
-      </div>
+        </Toolbar>
+        }
+      />
 
       {/* البحث والتصفية */}
-      <div className="flex flex-wrap items-center gap-2">
-        <div className="relative min-w-56 flex-1">
+      <ListWorkspace>
+        <div className="ds-list-filters flex flex-wrap items-center gap-2">
+          <div className="relative min-w-56 flex-1">
           <Search
             className="pointer-events-none absolute start-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground"
             aria-hidden="true"
@@ -341,7 +344,7 @@ export function PagesClient({ me, locale }: PagesClientProps) {
             aria-label={tp.title}
           />
         </div>
-        <Select value={status} onValueChange={setStatus}>
+          <Select value={status} onValueChange={setStatus}>
           <SelectTrigger
             className="min-h-10 w-40 focus-visible:ring-2 focus-visible:ring-ring/40"
             aria-label={tp.status}
@@ -356,49 +359,49 @@ export function PagesClient({ me, locale }: PagesClientProps) {
             <SelectItem value="archived">{tp.archivedStatus}</SelectItem>
           </SelectContent>
         </Select>
-      </div>
+        </div>
 
-      {/* الجدول */}
-      {loading && !data ? (
+        {/* الجدول */}
+        {loading && !data ? (
         <div className="space-y-2">
           {Array.from({ length: 5 }).map((_, i) => (
             <Skeleton key={i} className="h-16 rounded-xl" />
           ))}
         </div>
       ) : error ? (
-        <p className="rounded-xl border border-destructive/30 bg-red-50 p-4 text-sm text-destructive">
+        <p className="rounded-xl border border-destructive/30 bg-danger-soft p-4 text-sm text-destructive">
           {error}
         </p>
       ) : rows.length === 0 ? (
         <EmptyState icon={FileText} title={tp.empty} body={tp.emptyBody} />
       ) : (
-        <div className="overflow-x-auto rounded-2xl border border-border bg-white shadow-sm">
-          <Table>
-            <TableHeader>
-              <TableRow className="bg-muted/50 hover:bg-muted/50 [&_th]:text-xs [&_th]:font-medium [&_th]:uppercase [&_th]:tracking-wide [&_th]:text-muted-foreground">
-                <TableHead className="min-w-56">
+          <div className="overflow-x-auto rounded-2xl border border-border bg-card shadow-sm">
+            <Table>
+              <TableHeader>
+                <TableRow className="bg-muted/50 hover:bg-muted/50">
+                  <TableHead className="min-w-56">
                   {t.admin.menus.labelAr} / {t.admin.menus.labelEn}
                 </TableHead>
-                <TableHead className="min-w-32">{tp.slug}</TableHead>
-                <TableHead>{tp.status}</TableHead>
-                <TableHead className="text-center">{tp.order}</TableHead>
-                <TableHead className="min-w-36">{tp.updated}</TableHead>
-                <TableHead className="text-center">{tp.versions}</TableHead>
-                <TableHead className="w-12">{t.admin.media.actions}</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {rows.map((row) => {
-                const archived = row.status === "archived";
-                return (
-                  <TableRow
+                  <TableHead className="min-w-32">{tp.slug}</TableHead>
+                  <TableHead>{tp.status}</TableHead>
+                  <TableHead className="text-center">{tp.order}</TableHead>
+                  <TableHead className="min-w-36">{tp.updated}</TableHead>
+                  <TableHead className="text-center">{tp.versions}</TableHead>
+                  <TableHead className="w-12">{t.admin.media.actions}</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {rows.map((row) => {
+                  const archived = row.status === "archived";
+                  return (
+                    <TableRow
                     key={row.id}
                     className={cn(
                       "group/row transition-colors hover:bg-muted/50",
                       archived && "opacity-60",
                     )}
                   >
-                    <TableCell>
+                      <TableCell>
                       <div className="flex items-center gap-2">
                         <span
                           aria-hidden="true"
@@ -412,7 +415,7 @@ export function PagesClient({ me, locale }: PagesClientProps) {
                         </span>
                         {row.isHome ? (
                           <Star
-                            className="size-4 shrink-0 fill-amber-400 text-amber-500"
+                            className="size-4 shrink-0 fill-warning text-warning-foreground"
                             aria-hidden="true"
                           />
                         ) : null}
@@ -433,7 +436,7 @@ export function PagesClient({ me, locale }: PagesClientProps) {
                         </div>
                       </div>
                     </TableCell>
-                    <TableCell>
+                      <TableCell>
                       <span
                         className="ltr-isolate font-mono text-xs text-muted-foreground"
                         title={row.isHome ? tp.home : undefined}
@@ -441,43 +444,54 @@ export function PagesClient({ me, locale }: PagesClientProps) {
                         {row.slug === "" ? "—" : row.slug}
                       </span>
                     </TableCell>
-                    <TableCell>
-                      <div className="flex items-center gap-1.5">
-                        <Badge
+                      <TableCell>
+                        <div className="flex items-center gap-1.5">
+                          <Badge
                           className={
                             STATUS_TONES[row.status] ?? STATUS_TONES.draft
                           }
                         >
                           {statusLabel(row.status)}
                         </Badge>
-                        {row.hasUnpublishedChanges && (
+                          {row.hasUnpublishedChanges && (
                           <span
-                            className="size-2 shrink-0 rounded-full bg-amber-500"
+                            className="size-2 shrink-0 rounded-full bg-warning"
                             title={te.unpublishedChanges}
-                            aria-label={te.unpublishedChanges}
+                            role="img" aria-label={te.unpublishedChanges}
                           />
                         )}
-                      {row.scheduledPublishAt && <span className="inline-flex items-center gap-1 rounded-full bg-violet-100 px-1.5 py-0.5 text-[10px] font-bold text-violet-800" title={tp.scheduledFor.replace("{time}", fmtDateTime(row.scheduledPublishAt, locale))}><CalendarClock className="size-3" aria-hidden="true" />{fmtRelative(row.scheduledPublishAt, locale)}</span>}
+                          {row.scheduledPublishAt && (
+                            <span
+                              className="inline-flex items-center gap-1 rounded-full bg-highlight-soft px-1.5 py-0.5 text-[10px] font-bold text-highlight-foreground"
+                              title={tp.scheduledFor.replace(
+                                "{time}",
+                                fmtDateTime(row.scheduledPublishAt, locale),
+                              )}
+                            >
+                              <CalendarClock className="size-3" aria-hidden="true" />
+                              {fmtRelative(row.scheduledPublishAt, locale)}
+                            </span>
+                          )}
                         </div>
-                    </TableCell>
-                    <TableCell className="text-center text-sm tabular-nums text-foreground">
+                      </TableCell>
+                      <TableCell className="text-center text-sm tabular-nums text-foreground">
                       {row.order}
                     </TableCell>
-                    <TableCell>
+                      <TableCell>
                       <p className="text-xs text-muted-foreground">
                         {fmtRelative(row.draftUpdatedAt, locale)}
                       </p>
                       {row.publishedAt && (
-                        <p className="text-[11px] text-muted-foreground/70">
+                        <p className="text-xs text-muted-foreground">
                           {tp.published} ·{" "}
                           {fmtRelative(row.publishedAt, locale)}
                         </p>
                       )}
                     </TableCell>
-                    <TableCell className="text-center text-sm tabular-nums text-foreground">
+                      <TableCell className="text-center text-sm tabular-nums text-foreground">
                       {row.versionCount}
                     </TableCell>
-                    <TableCell>
+                      <TableCell>
                       <DropdownMenu>
                         <DropdownMenuTrigger asChild>
                           <Button
@@ -554,13 +568,14 @@ export function PagesClient({ me, locale }: PagesClientProps) {
                         </DropdownMenuContent>
                       </DropdownMenu>
                     </TableCell>
-                  </TableRow>
-                );
-              })}
-            </TableBody>
-          </Table>
-        </div>
-      )}
+                    </TableRow>
+                  );
+                })}
+              </TableBody>
+            </Table>
+          </div>
+        )}
+      </ListWorkspace>
 
       {/* ——— حوار صفحة جديدة ——— */}
       <Dialog open={newOpen} onOpenChange={setNewOpen}>
@@ -611,7 +626,7 @@ export function PagesClient({ me, locale }: PagesClientProps) {
               />
               <p
                 className={cn(
-                  "text-[11px] leading-5",
+                  "text-xs leading-5",
                   newSlug !== "" && !slugOk
                     ? "text-destructive"
                     : "text-muted-foreground",
@@ -634,7 +649,7 @@ export function PagesClient({ me, locale }: PagesClientProps) {
                         <span>
                           {locale === "en" ? opt.label.en : opt.label.ar}
                         </span>
-                        <span className="text-[11px] text-muted-foreground">
+                        <span className="text-xs text-muted-foreground">
                           {locale === "en" ? opt.note.en : opt.note.ar}
                         </span>
                       </div>
@@ -662,7 +677,8 @@ export function PagesClient({ me, locale }: PagesClientProps) {
               {creating ? (
                 <Loader2 className="size-4 animate-spin" aria-hidden="true" />
               ) : (
-                <Plus className="size-4" aria-hidden="true" />
+                <Plus className="size-4"
+                                  aria-hidden="true" />
               )}
               {tp.createPage}
             </Button>
@@ -698,7 +714,7 @@ export function PagesClient({ me, locale }: PagesClientProps) {
               {t.admin.users.cancel}
             </AlertDialogCancel>
             <AlertDialogAction
-              className="bg-destructive text-white hover:bg-destructive/90"
+              className="bg-destructive text-inverse-foreground hover:bg-destructive/90"
               disabled={archiving}
               onClick={(e) => {
                 e.preventDefault();

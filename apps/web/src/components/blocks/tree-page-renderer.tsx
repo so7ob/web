@@ -18,10 +18,10 @@
  */
 import { useContext, useMemo, type ReactNode } from "react";
 import type { Locale } from "@/lib/i18n";
-import type { ContentNode, ContainerType } from "@so7ob/contracts";
+import type { ContentNode, ContainerType, NodeStyle, DeviceKey } from "@so7ob/contracts";
 import { isContainerType } from "@so7ob/contracts";
 import { nodeStyleClasses, nodeAlignClasses } from "@so7ob/contracts";
-import { NestedBlockContext, RenderModeContext, type RenderMode } from "./nested-context";
+import { NestedBlockContext, PreviewDeviceContext, RenderModeContext, type RenderMode } from "./nested-context";
 import { InlineEditNodeContext, InlineEditSessionContext } from "./inline-edit-context";
 
 import { LeafContent as ExistingLeafContent } from "./page-renderer";
@@ -30,13 +30,14 @@ interface PageRendererProps {
   nodes: ContentNode[];
   locale: Locale;
   mode?: RenderMode;
+  nested?: boolean;
 }
 
-export function TreePageRenderer({ nodes, locale, mode = "live" }: PageRendererProps) {
+export function TreePageRenderer({ nodes, locale, mode = "live", nested = false }: PageRendererProps) {
   return (
     <RenderModeContext.Provider value={mode}>
       {nodes.map((node) => (
-        <NodeView key={node.id} node={node} locale={locale} nested={false} />
+        <NodeView key={node.id} node={node} locale={locale} nested={nested} />
       ))}
     </RenderModeContext.Provider>
   );
@@ -44,7 +45,8 @@ export function TreePageRenderer({ nodes, locale, mode = "live" }: PageRendererP
 
 // ─── أدوات مشتركة ───
 
-function visibilityClasses(visibility: ContentNode["visibility"]): string {
+function visibilityClasses(visibility: ContentNode["visibility"], device?: DeviceKey): string {
+  if (device) return visibility?.[device] === false ? "hidden" : "";
   return [
     visibility?.mobile === false ? "max-md:hidden" : "",
     visibility?.tablet === false ? "md:max-lg:hidden" : "",
@@ -54,25 +56,11 @@ function visibilityClasses(visibility: ContentNode["visibility"]): string {
     .join(" ");
 }
 
-const LEGACY_BACKGROUND: Record<string, string> = {
-  default: "",
-  white: "bg-white",
-  accent: "bg-accent/50",
-  navy: "bg-navy",
-  soft: "bg-brand-soft/30",
-};
-
-const LEGACY_PADDING: Record<string, string> = {
-  none: "py-0",
-  sm: "py-6",
-  md: "py-12",
-  lg: "py-20",
-};
-
 // ─── عرض العقدة (حاوية أو ورقية) ───
 
 function NodeView({ node, locale, nested }: { node: ContentNode; locale: Locale; nested: boolean }) {
-  const visClass = visibilityClasses(node.visibility);
+  const device = useContext(PreviewDeviceContext);
+  const visClass = visibilityClasses(node.visibility, device);
   const id = node.anchorId || undefined;
 
   if (isContainerType(node.type)) {
@@ -83,27 +71,20 @@ function NodeView({ node, locale, nested }: { node: ContentNode; locale: Locale;
 
   const content = <BlockContent node={node} locale={locale} />;
 
-  if (nested) return content;
-
-  // كتلة ورقية في الجذر — غلاف التوافق: خلفية/حشوة من النمط (بشكله الجديد أو القديم)
-  const style = (node.style ?? {}) as {
-    base?: { background?: string; paddingY?: string };
-    background?: string;
-    paddingY?: string;
-  };
-  const backgroundToken = style.base?.background ?? style.background ?? "default";
-  const paddingToken = style.base?.paddingY ?? style.paddingY ?? "md";
-  const background = LEGACY_BACKGROUND[backgroundToken] ?? "";
-  const padding = LEGACY_PADDING[paddingToken] ?? "py-12";
-  const hasStyle = Boolean(node.style) && (backgroundToken !== "default" || paddingToken !== "md");
-
-  if (!hasStyle && !visClass && !id) return content;
-
-  const sectionClass = [background, padding, visClass].filter(Boolean).join(" ");
-
+  // Persisted v1 slots and legacy root styles share the central token maps.
+  const legacy = node.style as NodeStyle & { background?: string; paddingY?: string } | undefined;
+  const style = legacy && (legacy.background || legacy.paddingY)
+    ? { base: { background: legacy.background, paddingY: legacy.paddingY } } as NodeStyle
+    : node.style;
+  const classes = nodeStyleClasses(style, device);
+  if (!classes && !visClass && !id) {
+    return <NestedBlockContext.Provider value={nested}>{content}</NestedBlockContext.Provider>;
+  }
   return (
-    <section id={id} className={sectionClass || undefined}>
-      {content}
+    <section id={id} className={[classes, visClass].filter(Boolean).join(" ") || undefined}>
+      <NestedBlockContext.Provider value={nested || Boolean(classes)}>
+        {nested ? content : <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">{content}</div>}
+      </NestedBlockContext.Provider>
     </section>
   );
 }
@@ -148,7 +129,8 @@ function asStringProp(props: unknown, key: string, fallback: string): string {
 
 function ContainerView({ node, id, visClass, locale }: { node: ContentNode; id?: string; visClass: string; locale: Locale }) {
   const type = node.type as ContainerType;
-  const styleClasses = nodeStyleClasses(node.style);
+  const device = useContext(PreviewDeviceContext);
+  const styleClasses = nodeStyleClasses(node.style, device);
   const children = (node.children ?? []).map((child) => (
     <NodeView key={child.id} node={child} locale={locale} nested={true} />
   ));
@@ -173,7 +155,7 @@ function ContainerView({ node, id, visClass, locale }: { node: ContentNode; id?:
     return (
       <div
         id={id}
-        className={`grid grid-cols-1 ${ROW_GRID_TABLET[tabletCount]} ${ROW_GRID_DESKTOP[desktopCount]} ${gap} ${styleClasses} ${visClass}`.trim()}
+        className={`grid ${device ? (device === "desktop" ? ROW_GRID_DESKTOP[desktopCount].replace("lg:", "") : device === "tablet" ? ROW_GRID_TABLET[tabletCount].replace("md:", "") : "grid-cols-1") : `grid-cols-1 ${ROW_GRID_TABLET[tabletCount]} ${ROW_GRID_DESKTOP[desktopCount]}`} ${gap} ${styleClasses} ${visClass}`.trim()}
       >
         {children}
       </div>
@@ -182,8 +164,9 @@ function ContainerView({ node, id, visClass, locale }: { node: ContentNode; id?:
 
   if (type === "column") {
     const gap = GAP_CLASS[asStringProp(node.props, "gap", "md")] ?? "gap-6";
-    const span = COLUMN_SPAN[asStringProp(node.props, "span", "auto")] ?? "";
-    const align = nodeAlignClasses(node.style);
+    const responsiveSpan = COLUMN_SPAN[asStringProp(node.props, "span", "auto")] ?? "";
+    const span = device ? device === "desktop" ? responsiveSpan.replace("lg:", "") : "" : responsiveSpan;
+    const align = nodeAlignClasses(node.style, device);
     return (
       <div
         id={id}

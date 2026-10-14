@@ -201,7 +201,7 @@ export function MediaPicker({ open, onOpenChange, me, locale, onSelect }: MediaP
           <>
             <ul className="grid grid-cols-2 gap-3 sm:grid-cols-3">
               {data.media.map((item) => (
-                <li key={item.id} className="overflow-hidden rounded-xl border border-border bg-white transition-all hover:border-brand/40 hover:shadow-sm">
+                <li key={item.id} className="overflow-hidden rounded-xl border border-border bg-card transition-[color,background-color,border-color,box-shadow,opacity,transform] hover:border-brand/40 hover:shadow-sm">
                   <button
                     type="button"
                     onClick={() => pick(item.url)}
@@ -213,16 +213,16 @@ export function MediaPicker({ open, onOpenChange, me, locale, onSelect }: MediaP
                         src={item.url}
                         alt={item.altText ?? item.filename}
                         loading="lazy"
-                        className="size-full object-cover transition-transform duration-300 group-hover:scale-105"
+                        className="size-full object-cover transition-transform duration-(--duration-panel) group-hover:scale-105"
                       />
                     </span>
                     {/* لمسة التحديد: غشاوة ولمعة تظهر عند التحويم/التركيز قبل الإدراج */}
                     <span
-                      className="pointer-events-none absolute inset-0 bg-accent/60 opacity-0 transition-opacity duration-200 group-hover:opacity-100 group-focus-visible:opacity-100"
+                      className="pointer-events-none absolute inset-0 bg-accent/60 opacity-0 transition-opacity duration-(--duration-normal) group-hover:opacity-100 group-focus-visible:opacity-100"
                       aria-hidden="true"
                     />
                     <span
-                      className="pointer-events-none absolute inset-0 opacity-0 ring-2 ring-inset ring-brand transition-opacity duration-200 group-hover:opacity-100 group-focus-visible:opacity-100"
+                      className="pointer-events-none absolute inset-0 opacity-0 ring-2 ring-inset ring-brand transition-opacity duration-(--duration-normal) group-hover:opacity-100 group-focus-visible:opacity-100"
                       aria-hidden="true"
                     />
                   </button>
@@ -230,7 +230,7 @@ export function MediaPicker({ open, onOpenChange, me, locale, onSelect }: MediaP
                     <p className="truncate font-mono text-xs font-medium text-navy" dir="ltr" title={item.filename}>
                       {item.filename}
                     </p>
-                    <p className="text-[11px] tabular-nums text-muted-foreground">{formatBytes(item.size)}</p>
+                    <p className="text-xs tabular-nums text-muted-foreground">{formatBytes(item.size)}</p>
                     {canManage && (
                       <Input
                         value={altDraft[item.id] ?? item.altText ?? ""}

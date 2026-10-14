@@ -1,4 +1,6 @@
 "use client";
+
+import { PageHeading, TableScroll } from "@/components/ui/workspace";
 import {ErrorFeedback} from "@/components/errors/error-feedback";
 import {ApiError} from "@/lib/errors/transport";
 
@@ -26,8 +28,7 @@ const STATUS_KEYS = ["new", "in_review", "awaiting_info", "responded", "closed"]
 const OPEN_SHORTCUT = "open";
 
 /** لغة حبوب التبويب — منسوخة من قائمة الطلبات (كحلي عند التفعيل) */
-const TAB_PILL_CLASS =
-  "min-h-9 rounded-full px-4 text-sm font-medium transition-colors focus-visible:ring-2 focus-visible:ring-ring/40 data-[state=inactive]:hover:bg-muted data-[state=active]:bg-navy data-[state=active]:text-white data-[state=active]:shadow-none";
+const TAB_PILL_CLASS = "min-h-11 px-4";
 
 /** قائمة استفسارات العميل: تبويبات حالة (URL) + بحث مؤجل + جدول + حوار استفسار جديد */
 export function InquiriesView({
@@ -113,28 +114,17 @@ export function InquiriesView({
 
   return (
     <div className="space-y-6">
-      <header className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-        <div className="flex items-center gap-3">
-          <span className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-accent text-brand-strong">
-            <MessageCircleQuestion className="size-5" aria-hidden="true" />
-          </span>
-          <div className="min-w-0">
-            <h1 className="text-2xl font-bold text-navy">{t.title}</h1>
-            <p className="mt-1 text-sm text-muted-foreground">{t.subtitle}</p>
-          </div>
-        </div>
-        <Button
+      <PageHeading title={t.title} description={t.subtitle} actions={<Button
           onClick={() => setCreateOpen(true)}
-          className="h-11 rounded-full bg-primary px-6 font-bold text-primary-foreground shadow-md shadow-brand/20 transition-all hover:bg-brand-strong focus-visible:ring-2 focus-visible:ring-ring/40"
+          className="h-11 rounded-full bg-primary px-6 font-bold text-primary-foreground shadow-md shadow-brand/20 transition-[color,background-color,border-color,box-shadow,opacity,transform] hover:bg-primary-hover hover:text-primary-hover-foreground focus-visible:ring-2 focus-visible:ring-ring/40"
         >
           <Plus className="h-4 w-4" aria-hidden="true" />
           {t.create}
-        </Button>
-      </header>
+        </Button>} />
 
       <Tabs value={status} onValueChange={onStatusChange} dir={locale === "ar" ? "rtl" : "ltr"} className="space-y-5">
         <div className="overflow-x-auto pb-1">
-          <TabsList className="h-auto w-max flex-wrap gap-1 rounded-full bg-muted/60 p-1">
+          <TabsList className="w-max max-w-full justify-start gap-1">
             <TabsTrigger value="all" className={TAB_PILL_CLASS}>
               {t.all}
             </TabsTrigger>
@@ -175,9 +165,9 @@ export function InquiriesView({
         </div>
       </div>
 
-      <section className="rounded-2xl border border-border bg-white p-4 sm:p-6">
+      <section className="rounded-2xl border border-border bg-card p-4 sm:p-6">
         {loading ? (
-          <div className="space-y-3" aria-busy="true" aria-label={t.title}>
+          <div className="space-y-3" role="status" aria-busy="true" aria-label={t.title}>
             {[...Array(5)].map((_, i) => (
               <div key={i} className="flex items-center gap-4">
                 <Skeleton className="animate-shimmer h-5 w-24" />
@@ -206,7 +196,7 @@ export function InquiriesView({
               <div className="mt-6 flex justify-center">
                 <Button
                   onClick={() => setCreateOpen(true)}
-                  className="h-11 rounded-full bg-primary px-6 font-bold text-primary-foreground shadow-md shadow-brand/20 transition-all hover:bg-brand-strong focus-visible:ring-2 focus-visible:ring-ring/40"
+                  className="h-11 rounded-full bg-primary px-6 font-bold text-primary-foreground shadow-md shadow-brand/20 transition-[color,background-color,border-color,box-shadow,opacity,transform] hover:bg-primary-hover hover:text-primary-hover-foreground focus-visible:ring-2 focus-visible:ring-ring/40"
                 >
                   <Plus className="h-4 w-4" aria-hidden="true" />
                   {t.create}
@@ -216,7 +206,7 @@ export function InquiriesView({
           )
         ) : (
           <>
-            <div className="overflow-x-auto">
+            <TableScroll className="overflow-x-auto">
               <table className="w-full min-w-[48rem] text-sm">
                 <thead>
                   <tr className="border-b border-border text-xs font-semibold uppercase tracking-wide text-muted-foreground">
@@ -247,7 +237,7 @@ export function InquiriesView({
                         </span>
                       </td>
                       <td className="px-3 py-3.5">
-                        <StatusBadge status={inquiry.status} label={t.statuses[inquiry.status] ?? inquiry.status} />
+                        <StatusBadge status={inquiry.status} label={inquiry.workflowStage?.[locale === "ar" ? "nameAr" : "nameEn"] ?? t.statuses[inquiry.status] ?? inquiry.status} />
                       </td>
                       <td className="px-3 py-3.5 text-muted-foreground">
                         <span className="inline-flex items-center gap-1.5">
@@ -270,7 +260,7 @@ export function InquiriesView({
                   ))}
                 </tbody>
               </table>
-            </div>
+            </TableScroll>
 
             {totalPages > 1 && (
               <div className="mt-4 flex items-center justify-end gap-2">

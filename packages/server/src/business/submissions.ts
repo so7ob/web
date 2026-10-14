@@ -1,3 +1,4 @@
+import {WorkflowEngine} from '../workflows/engine.js';
 import { TrackService } from "../track/service.js";
 import { randomInt } from "node:crypto";
 import type { DataSource } from "typeorm";
@@ -105,6 +106,7 @@ export class SubmissionService {
         ip === "unknown" ? undefined : ip,
         {before:{},after:(await r.query("SELECT status,priority,assigneeId,clientId,serviceType,budget,currency,timeline,preferredContact FROM ProjectRequest WHERE id=?",[id]))[0]},
       );
+      await new WorkflowEngine(this.db).initialize(r,'requests',id);
       const staff = await notifyStaff(
         r,
         "new_request",
@@ -244,11 +246,12 @@ export class SubmissionService {
         portal ? undefined : ip,
         {before:{},after:(await r.query("SELECT status,assigneeId,clientId FROM Inquiry WHERE id=?",[id]))[0]},
       );
+      await new WorkflowEngine(this.db).initialize(r,'inquiries',id);
       await notifyStaff(
         r,
         "new_inquiry",
         { ref: code, subject },
-        `/${locale}/admin/inquiries`,
+        `/${locale}/admin/inquiries/${id}`,
       );
       return { ok: true, ref: code, id };
     });

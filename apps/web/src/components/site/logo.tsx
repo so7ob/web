@@ -1,9 +1,6 @@
-import { siteConfig } from "@/config/site";
-
-/**
- * الشعار: الرسمة المعتمدة كما هي + معالجة كتابية للاسم (مؤقتة حتى اعتماد شعار نصي).
- * variant: dark = رسمة سوداء للأسطح الفاتحة، light = رسمة بيضاء للأسطح الداكنة.
- */
+import { PRESENTATION_DEFAULTS } from "@so7ob/contracts";
+import { useSitePresentation } from "@/components/appearance/provider";
+/** Explicit light variant is for permanently dark surfaces such as the footer. */
 export function Logo({
   variant = "dark",
   size = "md",
@@ -15,29 +12,60 @@ export function Logo({
   showName?: boolean;
   nameLang?: "ar" | "en";
 }) {
-  const dims = { sm: "h-8 w-8", md: "h-10 w-10", lg: "h-12 w-12" }[size];
-  const titleSizes =
-    nameLang === "ar"
-      ? { main: "text-lg font-bold", sub: "text-[11px] font-medium tracking-wide" }
-      : { main: "text-lg font-semibold", sub: "text-[11px] font-medium tracking-wide" };
-
+  const s = useSitePresentation(),
+    lang = nameLang === "ar" ? "Ar" : "En";
+  const name =
+    s["site.name" + lang] || PRESENTATION_DEFAULTS["site.name" + lang];
+  const secondary =
+    s[nameLang === "ar" ? "site.nameEn" : "site.nameAr"] ||
+    PRESENTATION_DEFAULTS[nameLang === "ar" ? "site.nameEn" : "site.nameAr"];
+  const displayName = showName && s["identity.showName"] !== "false";
+  const dims = { sm: "h-8", md: "h-10", lg: "h-12" }[size];
+  const light = s["identity.logo" + lang + "Light"] || "/logo.png",
+    dark = s["identity.logo" + lang + "Dark"] || "/logo-white.png";
   return (
-    <span className="inline-flex items-center gap-2.5">
-      <img
-        src={variant === "dark" ? "/logo.png" : "/logo-white.png"}
-        alt=""
-        aria-hidden="true"
-        className={`${dims} w-auto`}
-        width={40}
-        height={40}
-      />
-      {showName && (
-        <span className="flex flex-col leading-tight">
-          <span className={`${titleSizes.main} ${variant === "dark" ? "text-navy" : "text-white"}`}>
-            {nameLang === "ar" ? siteConfig.nameAr : siteConfig.nameEn}
+    <span
+      className="inline-flex min-w-0 max-w-full items-center gap-2.5"
+      aria-label={!displayName ? name : undefined}
+      role={!displayName ? "img" : undefined}
+    >
+      {variant === "light" ? (
+        <img
+          src={dark}
+          alt=""
+          className={`${dims} max-w-32 w-auto object-contain`}
+          width={40}
+          height={40}
+        />
+      ) : (
+        <>
+          <img
+            src={light}
+            alt=""
+            className={`${dims} logo-for-light max-w-32 w-auto object-contain`}
+            width={40}
+            height={40}
+          />
+          <img
+            src={dark}
+            alt=""
+            className={`${dims} logo-for-dark max-w-32 w-auto object-contain`}
+            width={40}
+            height={40}
+          />
+        </>
+      )}
+      {displayName && (
+        <span className="flex min-w-0 max-w-40 flex-col leading-tight sm:max-w-64">
+          <span
+            className={`truncate text-lg font-bold ${variant === "light" ? "text-inverse-foreground" : "text-foreground"}`}
+          >
+            {name}
           </span>
-          <span className={`${titleSizes.sub} ${variant === "dark" ? "text-muted-foreground" : "text-white/70"}`}>
-            {nameLang === "ar" ? siteConfig.nameEn : siteConfig.nameAr}
+          <span
+            className={`truncate text-xs ${variant === "light" ? "text-emphasis-muted" : "text-muted-foreground"}`}
+          >
+            {secondary}
           </span>
         </span>
       )}

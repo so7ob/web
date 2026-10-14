@@ -1,5 +1,7 @@
 "use client";
 
+import { Toolbar } from "@/components/ui/workspace";
+
 /**
  * حوار قوالب الصفحات (§5) — يعرض القوالب المدمجة والمخصصة بتطبيق آمن:
  * - تطبيق قالب: تأكيد + لقطة احتياطية تلقائية في الخادم قبل الاستبدال.
@@ -307,7 +309,7 @@ export function TemplatesDialog({
                       onChange={(e) => setNameAr(e.target.value)}
                       placeholder={tt.formNameAr}
                       maxLength={120}
-                      className="min-h-10 rounded-lg bg-white"
+                      className="min-h-10 rounded-lg bg-card"
                       aria-label={tt.formNameAr}
                     />
                     <Input
@@ -315,7 +317,7 @@ export function TemplatesDialog({
                       onChange={(e) => setNameEn(e.target.value)}
                       placeholder={tt.formNameEn}
                       maxLength={120}
-                      className="min-h-10 rounded-lg bg-white"
+                      className="min-h-10 rounded-lg bg-card"
                       aria-label={tt.formNameEn}
                     />
                     <Textarea
@@ -324,7 +326,7 @@ export function TemplatesDialog({
                       placeholder={tt.formDescAr}
                       maxLength={400}
                       rows={2}
-                      className="resize-none rounded-lg bg-white"
+                      className="resize-none rounded-lg bg-card"
                       aria-label={tt.formDescAr}
                     />
                     <Textarea
@@ -333,11 +335,11 @@ export function TemplatesDialog({
                       placeholder={tt.formDescEn}
                       maxLength={400}
                       rows={2}
-                      className="resize-none rounded-lg bg-white"
+                      className="resize-none rounded-lg bg-card"
                       aria-label={tt.formDescEn}
                     />
                   </div>
-                  <div className="flex flex-wrap items-center justify-between gap-2">
+                  <Toolbar className="flex flex-wrap items-center justify-between gap-2">
                     <p className="text-xs text-muted-foreground">{tt.saveHint}</p>
                     <div className="flex items-center gap-2">
                       <Button
@@ -362,7 +364,7 @@ export function TemplatesDialog({
                         {tt.saveAsTemplate}
                       </Button>
                     </div>
-                  </div>
+                  </Toolbar>
                 </div>
               ) : (
                 <button
@@ -371,7 +373,7 @@ export function TemplatesDialog({
                   onClick={() => setShowSaveForm(true)}
                 >
                   <span className="flex items-center gap-2 text-sm font-semibold text-navy">
-                    <span className="flex size-9 shrink-0 items-center justify-center rounded-lg bg-brand text-white shadow-sm">
+                    <span className="flex size-9 shrink-0 items-center justify-center rounded-lg bg-brand text-on-brand shadow-sm">
                       <Sparkles className="size-4.5" aria-hidden="true" />
                     </span>
                     {tt.saveFromCurrent}
@@ -411,9 +413,9 @@ export function TemplatesDialog({
 
             {data && templates.length === 0 && !loading && (
               <div className="flex min-h-40 flex-col items-center justify-center gap-1.5 text-center">
-                <FileStack className="size-8 text-muted-foreground/50" aria-hidden="true" />
+                <FileStack className="size-8 text-muted-foreground" aria-hidden="true" />
                 <p className="text-sm font-semibold text-muted-foreground">{tt.empty}</p>
-                <p className="max-w-xs text-xs text-muted-foreground/80">{tt.emptyBody}</p>
+                <p className="max-w-xs text-xs text-muted-foreground">{tt.emptyBody}</p>
               </div>
             )}
 
@@ -422,13 +424,13 @@ export function TemplatesDialog({
               return (
                 <article
                   key={tpl.id}
-                  className="group relative flex gap-3.5 rounded-2xl border border-border/70 bg-white p-4 shadow-sm transition-all hover:-translate-y-0.5 hover:border-brand/40 hover:shadow-md"
+                  className="group relative flex gap-3.5 rounded-2xl border border-border/70 bg-card p-4 shadow-sm transition-[color,background-color,border-color,box-shadow,opacity,transform] hover:-translate-y-0.5 hover:border-brand/40 hover:shadow-md"
                 >
                   {/* شعار النوع */}
                   <span
                     className={cn(
                       "mt-0.5 flex size-11 shrink-0 items-center justify-center rounded-xl shadow-inner",
-                      tpl.kind === "builtin" ? "bg-navy text-white" : "bg-accent text-brand-strong"
+                      tpl.kind === "builtin" ? "bg-inverse text-inverse-foreground" : "bg-accent text-brand-strong"
                     )}
                     aria-hidden="true"
                   >
@@ -441,19 +443,19 @@ export function TemplatesDialog({
                       <span
                         className={cn(
                           "rounded-full px-2 py-0.5 text-[10px] font-bold leading-none",
-                          tpl.kind === "builtin" ? "bg-navy/10 text-navy" : "bg-brand/10 text-brand"
+                          tpl.kind === "builtin" ? "bg-inverse/10 text-navy" : "bg-brand/10 text-brand"
                         )}
                       >
                         {tpl.kind === "builtin" ? tt.builtin : tt.custom}
                       </span>
                       {!hasLocaleContent && (
-                        <span className="rounded-full bg-amber-100 px-2 py-0.5 text-[10px] font-semibold leading-none text-amber-700">
+                        <span className="rounded-full bg-warning-soft px-2 py-0.5 text-[10px] font-semibold leading-none text-warning-foreground">
                           {tt.missingLocale}
                         </span>
                       )}
                     </div>
                     {descOf(tpl) && <p className="mt-1 line-clamp-2 text-xs leading-relaxed text-muted-foreground">{descOf(tpl)}</p>}
-                    <p className="mt-1.5 flex flex-wrap items-center gap-x-3 gap-y-0.5 text-[11px] tabular-nums text-muted-foreground/90">
+                    <p className="mt-1.5 flex flex-wrap items-center gap-x-3 gap-y-0.5 text-xs tabular-nums text-muted-foreground">
                       <span>{hasLocaleContent ? nodesLabel(nodesOf(tpl)) : "—"}</span>
                       {tpl.usageCount > 0 && <span>{usageLabel(tpl.usageCount)}</span>}
                       {tpl.createdBy && <span>{tt.createdBy.replace("{name}", tpl.createdBy)}</span>}
@@ -464,7 +466,7 @@ export function TemplatesDialog({
                       <div className="mt-3 border-t border-dashed border-border/70 pt-3">
                         <div className="mb-1.5 flex items-center gap-1.5">
                           <Eye className="size-3 text-brand/70" aria-hidden="true" />
-                          <span className="text-[10px] font-semibold uppercase tracking-wide text-muted-foreground/80">
+                          <span className="text-[10px] font-semibold uppercase tracking-wide text-muted-foreground">
                             {tt.previewCaption}
                           </span>
                         </div>
@@ -531,7 +533,7 @@ export function TemplatesDialog({
               <span className="block rounded-lg bg-accent px-3 py-2 text-xs font-semibold text-navy">
                 {tt.applyLocaleNote}
               </span>
-              <span className="block rounded-lg bg-emerald-50 px-3 py-2 text-xs font-semibold text-emerald-700">
+              <span className="block rounded-lg bg-success-soft px-3 py-2 text-xs font-semibold text-success-foreground">
                 {tt.applyBackupNote}
               </span>
             </AlertDialogDescription>
@@ -632,7 +634,7 @@ export function TemplatesDialog({
             <AlertDialogCancel disabled={deleting}>{t.admin.users.cancel}</AlertDialogCancel>
             <AlertDialogAction
               disabled={deleting}
-              className="bg-destructive text-white hover:bg-destructive/90"
+              className="bg-destructive text-inverse-foreground hover:bg-destructive/90"
               onClick={(e) => {
                 e.preventDefault();
                 void remove();

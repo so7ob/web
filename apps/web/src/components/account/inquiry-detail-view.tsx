@@ -1,4 +1,6 @@
 "use client";
+
+import { Panel, PageHeading, Toolbar } from "@/components/ui/workspace";
 import {ErrorFeedback} from '@/components/errors/error-feedback';
 import {ApiError} from '@/lib/errors/transport';
 
@@ -128,7 +130,7 @@ export function InquiryDetailView({
 
   if (phase === "loading") {
     return (
-      <div className="space-y-5" aria-busy="true" aria-label={t.title}>
+      <div className="space-y-5" role="status" aria-busy="true" aria-label={t.title}>
         <Skeleton className="animate-shimmer h-9 w-48" />
         <Skeleton className="animate-shimmer h-6 w-2/3" />
         <Skeleton className="animate-shimmer h-72 w-full rounded-2xl" />
@@ -140,8 +142,8 @@ export function InquiryDetailView({
 
   if (phase === "notFound" || !inquiry) {
     return (
-      <div className="rounded-2xl border border-border bg-white p-8 text-center sm:p-12" role="alert">
-        <span className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-rose-100 text-rose-800">
+      <Panel className="rounded-2xl border border-border bg-card p-8 text-center sm:p-12" role="alert">
+        <span className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-danger-soft text-danger-foreground">
           <SearchX className="h-7 w-7" aria-hidden="true" />
         </span>
         <p className="mt-4 font-semibold text-navy">{t.notFound}</p>
@@ -152,12 +154,12 @@ export function InquiryDetailView({
         >
           <Link href={`/${locale}/account/inquiries`}>{t.back}</Link>
         </Button>
-      </div>
+      </Panel>
     );
   }
 
   const BackIcon = locale === "ar" ? ArrowRight : ArrowLeft;
-  const statusLabel = t.statuses[inquiry.status] ?? inquiry.status;
+  const statusLabel = inquiry.workflowStage?.[locale==='ar'?'nameAr':'nameEn']??t.statuses[inquiry.status]??inquiry.status;
 
   return (
     <div className="space-y-5">
@@ -168,8 +170,7 @@ export function InquiryDetailView({
           {siteName} · {new Date().toLocaleDateString(locale)}
         </p>
       </div>
-      <header className="flex flex-wrap items-center gap-3">
-        <Button
+      <PageHeading title={<bdi dir="ltr">{inquiry.refCode}</bdi>} back={<Button
           asChild
           variant="ghost"
           className="h-11 rounded-full px-4 font-semibold text-muted-foreground focus-visible:ring-2 focus-visible:ring-ring/40 print:hidden"
@@ -178,11 +179,7 @@ export function InquiryDetailView({
             <BackIcon className="h-4 w-4" aria-hidden="true" />
             {t.back}
           </Link>
-        </Button>
-        <h1 className="font-mono text-lg font-bold text-navy ltr-isolate" dir="ltr">
-          {inquiry.refCode}
-        </h1>
-        <div className="flex flex-wrap items-center gap-2">
+        </Button>} metadata={<div className="flex flex-wrap items-center gap-2">
           <StatusBadge
             status={inquiry.status}
             label={statusLabel}
@@ -191,8 +188,7 @@ export function InquiryDetailView({
           <span className="rounded-full bg-accent px-2.5 py-0.5 text-xs font-medium text-brand-strong">
             {t.categories[inquiry.category] ?? inquiry.category}
           </span>
-        </div>
-        <Button
+        </div>} actions={<Button
           variant="outline"
           onClick={() => window.print()}
           aria-label={t.print}
@@ -200,15 +196,14 @@ export function InquiryDetailView({
         >
           <Printer className="h-4 w-4" aria-hidden="true" />
           {t.print}
-        </Button>
-      </header>
+        </Button>} />
 
       <h2 className="text-lg font-semibold text-navy">{inquiry.subject}</h2>
 
       <div className="grid items-start gap-5 lg:grid-cols-[minmax(0,1fr)_320px] print:block print:space-y-6">
         {/* المحادثة + ملحن الرد */}
         <div className="min-w-0 space-y-4">
-          <section className="rounded-2xl border border-border bg-white p-4 sm:p-6">
+          <section className="rounded-2xl border border-border bg-card p-4 sm:p-6">
             <h2 className="flex items-center gap-2 text-lg font-bold text-navy">
               <MessageSquare className="h-5 w-5 text-brand" aria-hidden="true" />
               {t.conversation}
@@ -235,7 +230,7 @@ export function InquiryDetailView({
                           "max-w-[85%] rounded-2xl border px-4 py-3 text-sm leading-7 shadow-sm sm:max-w-[75%] print:border-border print:bg-transparent print:text-foreground print:shadow-none",
                           message.authorType === "client"
                             ? "rounded-se-sm border-brand/10 bg-accent/60 text-foreground"
-                            : "rounded-ss-sm border-navy bg-navy text-white shadow-navy/10"
+                            : "rounded-ss-sm border-navy bg-inverse text-inverse-foreground shadow-navy/10"
                         )}
                       >
                         <p
@@ -248,7 +243,7 @@ export function InquiryDetailView({
                           <span
                             className={cn(
                               "ms-2 font-normal",
-                              message.authorType === "client" ? "text-muted-foreground" : "text-white/60 print:text-muted-foreground"
+                              message.authorType === "client" ? "text-muted-foreground" : "text-emphasis-muted print:text-muted-foreground"
                             )}
                           >
                             {formatRelative(message.createdAt, locale)}
@@ -264,11 +259,11 @@ export function InquiryDetailView({
           </section>
 
           {/* ملحن الرد — مخفي عند الطباعة */}
-          <section className="rounded-2xl border border-border bg-white p-4 sm:p-6 print:hidden">
+          <section className="rounded-2xl border border-border bg-card p-4 sm:p-6 print:hidden">
             {conversationLocked ? (
               <div
                 role="status"
-                className="flex items-start gap-3 rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm leading-7 text-amber-900"
+                className="flex items-start gap-3 rounded-xl border border-warning-border bg-warning-soft px-4 py-3 text-sm leading-7 text-warning-foreground"
               >
                 <Lock className="mt-1 h-4 w-4 shrink-0" aria-hidden="true" />
                 <p>{t.closedNote}</p>
@@ -285,16 +280,16 @@ export function InquiryDetailView({
                   className="min-h-24 resize-y leading-8 focus-visible:ring-2 focus-visible:ring-ring/40"
                   disabled={sending}
                 />
-                <div className="flex flex-wrap items-center gap-3">
+                <Toolbar className="flex flex-wrap items-center gap-3">
                   <Button
                     type="submit"
                     disabled={sending || reply.trim().length === 0}
-                    className="ms-auto h-11 rounded-full bg-primary px-8 font-bold text-primary-foreground shadow-md shadow-brand/20 transition-all hover:bg-brand-strong focus-visible:ring-2 focus-visible:ring-ring/40"
+                    className="ms-auto h-11 rounded-full bg-primary px-8 font-bold text-primary-foreground shadow-md shadow-brand/20 transition-[color,background-color,border-color,box-shadow,opacity,transform] hover:bg-primary-hover hover:text-primary-hover-foreground focus-visible:ring-2 focus-visible:ring-ring/40"
                   >
                     {sending ? <Loader2 className="h-4 w-4 animate-spin" aria-hidden="true" /> : <Send className="h-4 w-4" aria-hidden="true" />}
                     {sending ? t.sending : t.send}
                   </Button>
-                </div>
+                </Toolbar>
               </form>
             )}
           </section>
@@ -302,7 +297,7 @@ export function InquiryDetailView({
 
         {/* العمود الجانبي: بيانات الاستفسار + المرفقات */}
         <div className="space-y-4">
-          <section className="rounded-2xl border border-border bg-white p-4 sm:p-6">
+          <section className="rounded-2xl border border-border bg-card p-4 sm:p-6">
             <h2 className="text-lg font-bold text-navy">{t.meta}</h2>
             <dl className="mt-4 space-y-3 text-sm">
               <InfoRow
@@ -340,7 +335,7 @@ export function InquiryDetailView({
           </section>
 
           {inquiry.attachments.length > 0 && (
-            <section className="rounded-2xl border border-border bg-white p-4 sm:p-6">
+            <section className="rounded-2xl border border-border bg-card p-4 sm:p-6">
               <h2 className="text-lg font-bold text-navy">{t.attachments}</h2>
               <ul className="mt-4 space-y-2">
                 {inquiry.attachments.map((file) => {

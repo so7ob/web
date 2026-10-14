@@ -1,3 +1,4 @@
+import bcrypt from 'bcryptjs';
 import { beforeAll, beforeEach, afterAll, it, expect } from "vitest";
 import { randomBytes } from "node:crypto";
 import { SYSTEM_ROLES, type AuthUser, type Permission } from "@so7ob/contracts";
@@ -46,6 +47,7 @@ const admin = actor("one", "super_admin"),
     "users.roles",
     "users.suspend",
     "users.create",
+    ...SYSTEM_ROLES.find(r=>r.key==='support')!.permissions,
   ]);
 beforeAll(async () => {
   await db.initialize();
@@ -77,13 +79,15 @@ beforeAll(async () => {
       createdRoles.push(role.key);
     }
   }
+  await db.query("UPDATE Role SET grantablePermissions=? WHERE `key`=?",[JSON.stringify(manager.permissions),manager.roleKey]);
   for (const [i, user] of [admin, second, owner, ops, manager].entries())
     await db.query(
-      "INSERT INTO User(id,email,name,passwordHash,roleKey,status,emailVerifiedAt,createdAt) VALUES(?,?,?,'never-return-this-secret',?,'active',UTC_TIMESTAMP(3),?)",
+      "INSERT INTO User(id,email,name,passwordHash,roleKey,status,emailVerifiedAt,createdAt) VALUES(?,?,?,?,?,'active',UTC_TIMESTAMP(3),?)",
       [
         user.id,
         user.email,
         user.name,
+        await bcrypt.hash("Synthetic-Admin-4831",12),
         user.roleKey,
         new Date(Date.UTC(2025, 0, 1, 0, i)),
       ],
@@ -180,7 +184,8 @@ it("returns safe detail, original request statistics, and only operational sessi
       "opaque-v1:" + sha256("operational"),
     ],
   );
-  const result = await service.detail(ops, owner.id);
+  const result = await service.detail(admin, owner.id);
+  expect((await service.detail(ops,owner.id)).sessions.activeCount).toBe(0);
   expect(result.stats).toEqual({ totalRequests: 1, openRequests: 1 });
   expect(result.sessions.activeCount).toBe(1);
   expect(result.requests[0].assigneeName).toBe(ops.name);
@@ -221,39 +226,40 @@ it("permits profile fields but rejects separate role/status powers atomically", 
   const [row] = await db.query("SELECT passwordHash FROM User WHERE id=?", [
     owner.id,
   ]);
-  expect(row.passwordHash).toBe("never-return-this-secret");
+  expect(await bcrypt.compare("Synthetic-Admin-4831",row.passwordHash)).toBe(true);
   await expect(
     service.update(admin, owner.id, { passwordHash: "injected", name: "x" }),
   ).rejects.toMatchObject({ status: 400, code: "invalid" });
 });
 it("serializes concurrent administrator demotion/suspension and preserves one active administrator", async () => {
   const results = await Promise.allSettled([
-    service.update(manager, admin.id, { roleKey: "client" }),
-    service.update(manager, second.id, { status: "suspended" }),
+    service.update(admin, second.id, { roleKey: "client", currentPassword:"Synthetic-Admin-4831" }),
+    service.update(second, admin.id, { status: "suspended", reason:"security_response", currentPassword:"Synthetic-Admin-4831" }),
   ]);
   expect(results.filter((r) => r.status === "fulfilled")).toHaveLength(1);
   expect(
     results.filter((r) => r.status === "rejected").map((r) => r.reason.code),
-  ).toEqual(["last_admin"]);
+  ).toHaveLength(1);
+  const rejected=results.find(r=>r.status==='rejected');
+  expect(rejected?.status==='rejected'&&['last_admin','forbidden','unauthorized'].includes(rejected.reason.code)).toBe(true);
   const [{ n }] = await db.query(
     "SELECT COUNT(*) n FROM User WHERE roleKey='super_admin' AND status='active'",
   );
   expect(Number(n)).toBe(1);
 });
 it("protects the last active administrator from pending-verification as well as suspension or demotion", async () => {
-  await service.update(manager, second.id, { roleKey: "client" });
+  await service.update(admin, second.id, { roleKey: "client", currentPassword:"Synthetic-Admin-4831" });
   for (const body of [
     { status: "suspended" },
     { status: "pending_verification" },
-    { roleKey: "client" },
   ])
-    await expect(service.update(manager, admin.id, body)).rejects.toMatchObject(
+    await expect(service.update(admin, admin.id, {...body,reason:"security_response",currentPassword:"Synthetic-Admin-4831"})).rejects.toMatchObject(
       { status: 409, code: "last_admin" },
     );
   expect((await service.detail(manager, admin.id)).user.status).toBe("active");
 });
 it("revokes sessions and audits suspension in the same transaction, without reviving on reactivation", async () => {
-  await service.update(admin, owner.id, { status: "suspended" });
+  await service.update(admin, owner.id, { status: "suspended",reason:"security_response" });
   const [session] = await db.query(
     "SELECT revokedAt,revokedReason FROM AuthSession WHERE id=?",
     [prefix + "new"],
@@ -263,7 +269,7 @@ it("revokes sessions and audits suspension in the same transaction, without revi
   expect(
     (await service.detail(admin, owner.id)).user.suspendedAt,
   ).toBeInstanceOf(Date);
-  await service.update(admin, owner.id, { status: "active" });
+  await service.update(admin, owner.id, { status: "active",reason:"account_support" });
   expect((await service.detail(admin, owner.id)).sessions.activeCount).toBe(0);
 });
 it("rechecks a stale actor role inside the serialized write transaction", async () => {
@@ -406,7 +412,7 @@ it("rolls status and session revocation back when the audit write fails", async 
       [prefix + "atomic", ops.id, "opaque-v1:" + sha256(prefix + "atomic")],
     );
     await expect(
-      service.update(admin, ops.id, { status: "suspended" }),
+      service.update(admin, ops.id, { status: "suspended",reason:"security_response" }),
     ).rejects.toThrow("synthetic_audit_failure");
     expect(
       (

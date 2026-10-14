@@ -1,5 +1,7 @@
+import {workflowAccessSql,auditWorkflowAccessSql} from '../workflows/access.js';
 import {project} from '../audit/reader.js';
-import {responsePolicy,responseDueSql} from "./response-policy.js";
+import {conversationDueSql} from '../workflows/deadlines.js';
+import {responsePolicy} from "./response-policy.js";
 import type { DataSource } from "typeorm";
 import {
   can,
@@ -63,7 +65,7 @@ export class AdminDashboardService {
     const policy=await responsePolicy(this.db);
     const requestCounts = access.requests
       ? await this.db.query(
-          `SELECT COUNT(*) open,SUM(status='awaiting_info') awaiting,SUM(${responseDueSql('')}<UTC_TIMESTAMP(3)) overdue FROM ProjectRequest WHERE archivedAt IS NULL AND status IN ('new','in_review','awaiting_info','in_progress','responded')`,[policy.hours],
+          `SELECT COUNT(*) open,SUM(status='awaiting_info') awaiting,SUM(${conversationDueSql('requests','ProjectRequest',policy.hours)}<UTC_TIMESTAMP(3)) overdue FROM ProjectRequest WHERE (${workflowAccessSql(actor,'requests','ProjectRequest')}) AND archivedAt IS NULL AND status IN ('new','in_review','awaiting_info','in_progress','responded')`,
         )
       : [{ open: 0, awaiting: 0, overdue: 0 }];
     const [
@@ -77,7 +79,7 @@ export class AdminDashboardService {
     ] = await Promise.all([
       access.inquiries
         ? count(
-            "SELECT COUNT(*) n FROM Inquiry WHERE archivedAt IS NULL AND status IN ('new','in_review','awaiting_info','responded')",
+            `SELECT COUNT(*) n FROM Inquiry WHERE (${workflowAccessSql(actor,'inquiries','Inquiry')}) AND archivedAt IS NULL AND status IN ('new','in_review','awaiting_info','responded')`,
           )
         : 0,
       access.pages
@@ -90,22 +92,22 @@ export class AdminDashboardService {
         : 0,
       access.requests
         ? this.db.query(
-            "SELECT status,COUNT(*) _count FROM ProjectRequest WHERE archivedAt IS NULL GROUP BY status",
+            `SELECT status,COUNT(*) _count FROM ProjectRequest WHERE (${workflowAccessSql(actor,'requests','ProjectRequest')}) AND archivedAt IS NULL GROUP BY status`,
           )
         : [],
       access.requests
         ? this.db.query(
-            "SELECT p.id,p.refCode,p.name,p.status,p.serviceType,p.createdAt,u.name assigneeName FROM ProjectRequest p LEFT JOIN User u ON u.id=p.assigneeId WHERE p.archivedAt IS NULL ORDER BY p.createdAt DESC LIMIT 8",
+            `SELECT p.id,p.refCode,p.name,p.status,p.serviceType,p.createdAt,u.name assigneeName FROM ProjectRequest p LEFT JOIN User u ON u.id=p.assigneeId WHERE (${workflowAccessSql(actor,'requests','p')}) AND p.archivedAt IS NULL ORDER BY p.createdAt DESC LIMIT 8`,
           )
         : [],
       access.audit
         ? this.db.query(
-            "SELECT a.* FROM AuditLog a ORDER BY a.createdAt DESC,a.id DESC LIMIT 10",
+            `SELECT a.* FROM AuditLog a WHERE (${auditWorkflowAccessSql(actor)}) ORDER BY a.createdAt DESC,a.id DESC LIMIT 10`,
           )
         : [],
       access.requests
         ? this.db.query(
-            "SELECT createdAt FROM ProjectRequest WHERE createdAt>=?",
+            `SELECT createdAt FROM ProjectRequest WHERE (${workflowAccessSql(actor,'requests','ProjectRequest')}) AND createdAt>=?`,
             [new Date(Date.now() - rangeDays * 86400000)],
           )
         : [],
@@ -166,7 +168,7 @@ export class AdminDashboardService {
       if (q.length < 2 || !can(actor, permission)) return [];
       const terms = fields.map((field) => sqliteLike(field, q));
       return this.db.query(
-        `SELECT ${projection} FROM ${table} WHERE ${where} AND (${terms.map((t) => t.sql).join(" OR ")}) ORDER BY ${order} DESC LIMIT 5`,
+        `SELECT ${projection} FROM ${table} WHERE ${where} AND (${table==='ProjectRequest'?workflowAccessSql(actor,'requests',table):table==='Inquiry'?workflowAccessSql(actor,'inquiries',table):'1=1'}) AND (${terms.map((t) => t.sql).join(" OR ")}) ORDER BY ${order} DESC LIMIT 5`,
         terms.map((t) => t.value),
       );
     };

@@ -1,93 +1,54 @@
 "use client";
-import {ErrorFeedback} from '@/components/errors/error-feedback';
-import {asApiError} from '@/lib/errors/transport';
+
+import { PageHeading } from "@/components/ui/workspace";
 import { TrackPanel } from "@/components/admin/track/track-panel";
+import { ErrorFeedback } from "@/components/errors/error-feedback";
+import { asApiError } from "@/lib/errors/transport";
+import { apiUpload } from "../helpers";
+import {
+  ConversationAttachments,
+  ConversationManagement,
+  ReplyWorkflowHint,
+} from "../workflows/management";
 
 /**
  * تفاصيل الاستفسار: محادثة (رد/ملاحظة داخلية) + تعيين + تغيير حالة +
  * أرشفة/استعادة + طباعة — نسخة أخف من تفاصيل الطلب بنفس عناصر المحادثة المشتركة.
  */
-import { useCallback, useEffect, useRef, useState } from "react";
-import Link from "@/routing/link";
-import { toast } from "sonner";
+import { StatusBadge } from "@/components/admin/badges";
+import { MessageBubble, ReplyComposer } from "@/components/admin/conversation";
+import { EmptyState } from "@/components/admin/empty-state";
 import {
+  ApiError,
+  apiErrorMessage,
+  apiGet,
+  apiSend,
+  fmtDateTime,
+} from "@/components/admin/helpers";
+import { Button } from "@/components/ui/button";
+import { Skeleton } from "@/components/ui/skeleton";
+import { ar as siteAr } from "@/content/ar";
+import { en as siteEn } from "@/content/en";
+import { getPortalContent } from "@/content/portal";
+import { can } from "@/lib/auth/permissions";
+import type { Locale } from "@/lib/i18n";
+import Link from "@/routing/link";
+import {
+  Archive,
   ArrowLeft,
   ArrowRight,
   MessageSquareText,
-  Loader2,
-  RotateCcw,
-  Archive,
-  ArchiveRestore,
   Printer,
+  RotateCcw,
 } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Label } from "@/components/ui/label";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { Skeleton } from "@/components/ui/skeleton";
-import { getPortalContent } from "@/content/portal";
-import { ar as siteAr } from "@/content/ar";
-import { en as siteEn } from "@/content/en";
-import type { PortalContent } from "@/content/portal/types";
-import { can } from "@/lib/auth/permissions";
-import type { Locale } from "@/lib/i18n";
-import { StatusBadge } from "@/components/admin/badges";
-import { EmptyState } from "@/components/admin/empty-state";
-import { MessageBubble, ReplyComposer } from "@/components/admin/conversation";
-import {
-  apiGet,
-  apiSend,
-  ApiError,
-  apiErrorMessage,
-  fmtDateTime,
-} from "@/components/admin/helpers";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { toast } from "sonner";
 import type {
   InquiryDetail,
   InquiryDetailResponse,
   Me,
   MessageRow,
-  RequestsResponse,
-  StaffOption,
 } from "../types";
-
-const INQUIRY_STATUS_KEYS = [
-  "new",
-  "in_review",
-  "awaiting_info",
-  "responded",
-  "closed",
-];
-
-/** شارة عمر الانتظار — منذ آخر رسالة عميل: محايدة تحت 24 ساعة، تحذير
- *  كهرماني بعدها (نسخة مطابقة لشارة قائمة الطلبات، مفاتيح الترجمة نفسها) */
-function AgingBadge({
-  since,
-  tr,
-}: {
-  since: string;
-  tr: PortalContent["admin"]["requests"];
-}) {
-  const ageMs = Date.now() - new Date(since).getTime();
-  const hours = Math.max(0, Math.floor(ageMs / 3_600_000));
-  const days = Math.max(0, Math.floor(ageMs / 86_400_000));
-  if (days >= 1) {
-    return (
-      <span className="inline-flex items-center rounded-full border border-amber-300 bg-amber-100 px-2 py-0.5 text-xs font-medium tabular-nums text-amber-900 print:break-inside-avoid print:border-border">
-        {tr.overdueReply} · {tr.agingDays.replace("{n}", String(days))}
-      </span>
-    );
-  }
-  return (
-    <span className="inline-flex items-center rounded-full border border-border bg-muted px-2 py-0.5 text-xs font-medium tabular-nums text-muted-foreground print:break-inside-avoid print:border-border">
-      {tr.awaitingTeam} · {tr.agingHours.replace("{n}", String(hours))}
-    </span>
-  );
-}
 
 interface InquiryDetailClientProps {
   me: Me;
@@ -106,11 +67,15 @@ export function InquiryDetailClient({
   const siteMeta = locale === "en" ? siteEn.meta : siteAr.meta;
 
   const [detail, setDetail] = useState<InquiryDetail | null>(null);
-  const [staffOptions, setStaffOptions] = useState<StaffOption[]>([]);
   const [loading, setLoading] = useState(true);
   const [notFound, setNotFound] = useState(false);
-  const [failure,setFailure]=useState<{error:ApiError;operation:string}|null>(null);
-  const needsReview=!!failure&&["network","timeout","invalid_response"].includes(failure.error.code);
+  const [failure, setFailure] = useState<{
+    error: ApiError;
+    operation: string;
+  } | null>(null);
+  const needsReview =
+    !!failure &&
+    ["network", "timeout", "invalid_response"].includes(failure.error.code);
   const [error, setError] = useState<string | null>(null);
   const [reloadToken, setReloadToken] = useState(0);
   const [sending, setSending] = useState(false);
@@ -118,16 +83,14 @@ export function InquiryDetailClient({
   const busyRef = useRef(false);
 
   const mayReply = can(me, "inquiries.reply");
-  const mayAssign = can(me, "inquiries.assign");
-  const mayStatus = can(me, "inquiries.status");
-  const mayArchive = can(me, "inquiries.archive");
 
   const load = useCallback(
     async (signal: AbortSignal, quiet = false) => {
       if (!quiet) setLoading(true);
       try {
         const res = await apiGet<InquiryDetailResponse>(
-          `/api/admin/inquiries/${inquiryId}`,signal,
+          `/api/admin/inquiries/${inquiryId}`,
+          signal,
         );
         if (!signal.aborted) {
           setDetail(res.inquiry);
@@ -158,39 +121,40 @@ export function InquiryDetailClient({
     return () => controller.abort();
   }, [load, reloadToken]);
 
-  // قائمة الطاقم القابلة للتعيين (من استجابة قائمة الطلبات)
-  useEffect(() => {
-    if (!mayAssign) return;
-    const controller = new AbortController();
-    apiGet<RequestsResponse>("/api/admin/requests?page=1")
-      .then((res) => {
-        if (!controller.signal.aborted) setStaffOptions(res.staff);
-      })
-      .catch(() => {
-        // غير حرج
-      });
-    return () => controller.abort();
-  }, [mayAssign]);
-
   const reload = () => setReloadToken((v) => v + 1);
 
   const patch = async (body: Record<string, unknown>, successMsg?: string) => {
-    if(busyRef.current||needsReview)return false;
-    setFailure(null);setBusy(true);busyRef.current=true;
-    try{
-      await apiSend(`/api/admin/inquiries/${inquiryId}`,"PATCH",body);
-      if(!await load(new AbortController().signal,true))setFailure({error:new ApiError(0,'network'),operation:t.admin.requests.savedRefreshFailed});
-      else if(successMsg)toast.success(successMsg);
+    if (busyRef.current || needsReview) return false;
+    setFailure(null);
+    setBusy(true);
+    busyRef.current = true;
+    try {
+      await apiSend(`/api/admin/inquiries/${inquiryId}`, "PATCH", body);
+      if (!(await load(new AbortController().signal, true)))
+        setFailure({
+          error: new ApiError(0, "network"),
+          operation: t.admin.requests.savedRefreshFailed,
+        });
+      else if (successMsg) toast.success(successMsg);
       return true;
-    }catch(err){setFailure({error:asApiError(err),operation:body.status!==undefined?t.admin.requests.changeStatus:ti.assign});return false;}
-    finally{setBusy(false);busyRef.current=false;}
+    } catch (err) {
+      setFailure({
+        error: asApiError(err),
+        operation:
+          body.status !== undefined ? t.admin.requests.changeStatus : ti.assign,
+      });
+      return false;
+    } finally {
+      setBusy(false);
+      busyRef.current = false;
+    }
   };
 
   const sendMessage = async (
     kind: "message" | "internal_note",
     body: string,
   ) => {
-    if(needsReview)return false;
+    if (needsReview) return false;
     setFailure(null);
     setSending(true);
     busyRef.current = true;
@@ -220,10 +184,14 @@ export function InquiryDetailClient({
           : t.admin.requests.sentReply,
       );
       const controller = new AbortController();
-      if(!await load(controller.signal,true))setFailure({error:new ApiError(0,"network"),operation:t.admin.requests.savedRefreshFailed});
+      if (!(await load(controller.signal, true)))
+        setFailure({
+          error: new ApiError(0, "network"),
+          operation: t.admin.requests.savedRefreshFailed,
+        });
       return true;
     } catch (err) {
-      setFailure({error:asApiError(err),operation:t.admin.requests.reply});
+      setFailure({ error: asApiError(err), operation: t.admin.requests.reply });
       return false;
     } finally {
       setSending(false);
@@ -231,10 +199,30 @@ export function InquiryDetailClient({
     }
   };
 
+  const attachFile = async (file: File) => {
+    if (needsReview || busyRef.current) throw new ApiError(409, "conflict");
+    busyRef.current = true;
+    try {
+      const form = new FormData();
+      form.append("file", file);
+      form.append("inquiryId", inquiryId);
+      await apiUpload("/api/attachments", form);
+      if (!(await load(new AbortController().signal, true)))
+        setFailure({
+          error: new ApiError(0, "network"),
+          operation: t.admin.requests.savedRefreshFailed,
+        });
+    } catch (err) {
+      setFailure({ error: asApiError(err), operation: td.attachments });
+      throw err;
+    } finally {
+      busyRef.current = false;
+    }
+  };
   if (loading && !detail) {
     return (
-      <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_320px]">
-        <div className="space-y-4">
+      <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_360px]">
+        <div className="min-w-0 space-y-4">
           <Skeleton className="h-9 w-72 rounded-xl" />
           <Skeleton className="h-80 rounded-2xl" />
         </div>
@@ -267,22 +255,6 @@ export function InquiryDetailClient({
   }
 
   const BackIcon = locale === "ar" ? ArrowRight : ArrowLeft;
-  // شارة عمر الانتظار في الترويسة — تُحسب من المحادثة المحمّلة نفسها بنفس
-  // دلالات القائمة: آخر رسالة ظاهرة (kind=message) من العميل، أو تاريخ
-  // الإنشاء إن لم توجد رسائل بعد؛ المغلق/المؤرشف بلا شارة (بلا تغيير API).
-  const visibleMessages = detail.messages.filter((m) => m.kind === "message");
-  const lastVisible =
-    visibleMessages.length > 0
-      ? visibleMessages[visibleMessages.length - 1]
-      : null;
-  const awaitingSince =
-    detail.status !== "closed" && detail.archivedAt === null
-      ? lastVisible
-        ? lastVisible.authorType === "client"
-          ? lastVisible.createdAt
-          : null
-        : detail.createdAt
-      : null;
   const bubbleLabels = {
     client: t.admin.requests.client,
     staff: td.staff,
@@ -292,8 +264,18 @@ export function InquiryDetailClient({
   };
 
   return (
-    <div className="space-y-5">
-      {failure?<ErrorFeedback error={failure.error} operation={failure.operation} locale={locale} onRefresh={async()=>{if(await load(new AbortController().signal,true))setFailure(null);}}/>:null}
+    <div className="min-w-0 space-y-5">
+      {failure ? (
+        <ErrorFeedback
+          error={failure.error}
+          operation={failure.operation}
+          locale={locale}
+          onRefresh={async () => {
+            if (await load(new AbortController().signal, true))
+              setFailure(null);
+          }}
+        />
+      ) : null}
       {/* ترويسة الطباعة — تظهر على الورق فقط: العلامة + التاريخ + الرقم المرجعي */}
       <div className="hidden print:block print:border-b print:border-border print:pb-2">
         <p className="text-xs font-medium text-muted-foreground">
@@ -303,8 +285,10 @@ export function InquiryDetailClient({
       </div>
 
       {/* الترويسة */}
-      <div className="flex flex-wrap items-center gap-3">
-        <Button
+      <PageHeading
+        title={detail.refCode}
+        back={
+          <Button
           asChild
           variant="ghost"
           size="sm"
@@ -316,21 +300,21 @@ export function InquiryDetailClient({
             {ti.title}
           </Link>
         </Button>
-        <h1 className="font-mono text-xl font-bold text-navy ltr-isolate">
-          {detail.refCode}
-        </h1>
-        <div className="flex min-w-0 flex-wrap items-center gap-2">
+        }
+        metadata={
+          <div className="flex min-w-0 flex-wrap items-center gap-2">
           <StatusBadge
             status={detail.status}
-            label={ti.statuses[detail.status] ?? detail.status}
+            label={
+              detail.workflowStage?.[locale === "ar" ? "nameAr" : "nameEn"] ??
+              ti.statuses[detail.status] ??
+              detail.status
+            }
             className="print:break-inside-avoid print:border-border"
           />
           <span className="inline-flex items-center rounded-full bg-accent px-2.5 py-0.5 text-xs font-medium text-brand-strong print:break-inside-avoid print:border print:border-border">
             {ti.categories[detail.category] ?? detail.category}
           </span>
-          {awaitingSince ? (
-            <AgingBadge since={awaitingSince} tr={t.admin.requests} />
-          ) : null}
           {detail.archivedAt ? (
             <span className="inline-flex items-center gap-1 rounded-full bg-muted px-2.5 py-0.5 text-xs font-medium text-muted-foreground print:break-inside-avoid print:border print:border-border">
               <Archive className="size-3" aria-hidden="true" />
@@ -338,8 +322,9 @@ export function InquiryDetailClient({
             </span>
           ) : null}
         </div>
-        {/* زر الطباعة — مخفي على الورق (ترويسة الطباعة الخاصة تظهر بدله) */}
-        <Button
+        }
+        actions={
+          <Button
           variant="outline"
           onClick={() => window.print()}
           aria-label={ti.print}
@@ -348,18 +333,19 @@ export function InquiryDetailClient({
           <Printer className="size-4" aria-hidden="true" />
           {ti.print}
         </Button>
-      </div>
+        }
+      />
 
       <h2 className="text-lg font-semibold break-words text-navy">
         {detail.subject}
       </h2>
 
-      <div className="grid items-start gap-6 lg:grid-cols-[minmax(0,1fr)_320px] print:block print:space-y-6">
+      <div className="grid grid-cols-1 items-start gap-6 lg:grid-cols-[minmax(0,1fr)_360px] print:block print:space-y-6">
         {/* المحادثة */}
-        <div className="space-y-4">
+        <div className="min-w-0 space-y-4">
           <section
             aria-label={ti.conversation}
-            className="rounded-2xl border border-border bg-white p-4 sm:p-6"
+            className="rounded-2xl border border-border bg-card p-4 sm:p-6"
           >
             <h3 className="mb-3 text-sm font-semibold text-navy">
               {ti.conversation}
@@ -389,11 +375,17 @@ export function InquiryDetailClient({
 
           {/* الملحن — مخفي عند الطباعة */}
           <div className="print:hidden">
+            <ReplyWorkflowHint
+              scope="inquiries"
+              locale={locale}
+              workflow={detail.workflow}
+            />
             <ReplyComposer
               canReply={mayReply}
               canNote={mayReply}
               sending={sending}
               onSend={sendMessage}
+              onAttach={mayReply ? attachFile : undefined}
               savedReplies={
                 mayReply
                   ? {
@@ -404,7 +396,8 @@ export function InquiryDetailClient({
                   : undefined
               }
               labels={{
-                reply: ti.reply,
+                attachFile: td.attachFile,
+                reply: t.admin.requests.reply,
                 internalNote: t.admin.requests.internalNote,
                 internalHint: t.admin.requests.internalNoteHint,
                 placeholder: td.replyPlaceholder,
@@ -416,8 +409,8 @@ export function InquiryDetailClient({
         </div>
 
         {/* عمود الإدارة */}
-        <aside className="space-y-4">
-          <section className="rounded-2xl border border-border bg-white p-4">
+        <aside className="min-w-0 space-y-4">
+          <section className="rounded-2xl border border-border bg-card p-4">
             <h3 className="text-sm font-semibold text-navy">
               {t.admin.requests.client}
             </h3>
@@ -464,89 +457,27 @@ export function InquiryDetailClient({
           </section>
 
           {/* الإدارة: تعيين/حالة — مخفية عند الطباعة (المعيّن يظهر في بطاقة العميل) */}
-          <section className="space-y-4 rounded-2xl border border-border bg-white p-4 print:hidden">
-            {mayAssign ? (
-              <div className="space-y-2">
-                <Label htmlFor="inquiry-assignee">{ti.assign}</Label>
-                <Select
-                  value={detail.assigneeId ?? "none"}
-                  onValueChange={(v) =>
-                    patch(
-                      { assigneeId: v === "none" ? null : v },
-                      v === "none" ? t.admin.requests.unassigned : undefined,
-                    )
-                  }
-                  disabled={busy}
-                >
-                  <SelectTrigger id="inquiry-assignee" className="min-h-11 w-full focus-visible:ring-2 focus-visible:ring-ring/40">
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="none">
-                      {t.admin.requests.unassigned}
-                    </SelectItem>
-                    {detail.assignee &&
-                    !staffOptions.some((s) => s.id === detail.assignee?.id) ? (
-                      <SelectItem value={detail.assignee.id}>
-                        {detail.assignee.name}
-                      </SelectItem>
-                    ) : null}
-                    {staffOptions.map((s) => (
-                      <SelectItem key={s.id} value={s.id}>
-                        {s.name}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
-            ) : null}
-
-            {mayStatus ? (
-              <div className="space-y-2">
-                <Label htmlFor="inquiry-status">{t.admin.requests.changeStatus}</Label>
-                <Select
-                  value={detail.status}
-                  onValueChange={(v) =>
-                    patch({ status: v }, ti.statuses[v] ?? v)
-                  }
-                  disabled={busy}
-                >
-                  <SelectTrigger id="inquiry-status" className="min-h-11 w-full focus-visible:ring-2 focus-visible:ring-ring/40">
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {INQUIRY_STATUS_KEYS.map((s) => (
-                      <SelectItem key={s} value={s}>
-                        {ti.statuses[s]}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
-            ) : null}
-
-            {mayArchive ? (
-              <Button
-                variant="outline"
-                onClick={() =>
-                  patch(
-                    { action: detail.archivedAt ? "restore" : "archive" },
-                    detail.archivedAt ? ti.restore : ti.archived,
-                  )
-                }
-                disabled={busy}
-                className="min-h-11 w-full rounded-full"
-              >
-                {detail.archivedAt ? (
-                  <ArchiveRestore className="size-4" aria-hidden="true" />
-                ) : (
-                  <Archive className="size-4" aria-hidden="true" />
-                )}
-                {detail.archivedAt ? ti.restore : ti.archive}
-              </Button>
-            ) : null}
-          </section>
-          <div className="print:hidden"><TrackPanel scope="inquiry" cardId={detail.id} locale={locale} t={t.admin.track} /></div>
+          <ConversationManagement
+            scope="inquiries"
+            locale={locale}
+            me={me}
+            detail={detail}
+            patch={patch}
+            onChanged={reload}
+            disabled={busy || sending || needsReview}
+          />
+          <div className="print:hidden">
+            <TrackPanel
+              scope="inquiry"
+              cardId={detail.id}
+              locale={locale}
+              t={t.admin.track}
+            />
+          </div>
+          <ConversationAttachments
+            attachments={detail.attachments ?? []}
+            locale={locale}
+          />
         </aside>
       </div>
     </div>

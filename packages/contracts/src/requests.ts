@@ -44,7 +44,8 @@ export function canTransition(status: string, to: string, actor: "staff" | "clie
 
 /** وصول العميل لطلبه أو الطاقم بصلاحية — لا مكان لحقول متصفح */
 export function canAccessRequest(user: AuthUser, request: { clientId: string | null; assigneeId: string | null }): boolean {
+  if (user.status === "suspended") return false;
   if (user.roleKey === "super_admin") return true;
-  if (user.roleKey === "client") return request.clientId === user.id;
+  if (request.clientId === user.id) return true;
   return can(user, "requests.view.all");
 }

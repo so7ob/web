@@ -27,6 +27,9 @@ export interface Models {
   TrackLink: TrackLink;
 }
 export interface Role {
+  status: string;
+  version: number;
+  grantablePermissions: string;
   key: string;
   nameAr: string;
   nameEn: string;
@@ -40,6 +43,8 @@ export interface Role {
   _count: Record<string, number>;
 }
 export interface User {
+  credentialState: string;
+  credentialExpiresAt: Date | null;
   id: string;
   email: string;
   passwordHash: string;

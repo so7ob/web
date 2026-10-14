@@ -1,4 +1,6 @@
 "use client";
+
+import { PageHeading } from "@/components/ui/workspace";
 import {ErrorFeedback} from "@/components/errors/error-feedback";
 import {ApiError} from "@/lib/errors/transport";
 
@@ -103,14 +105,9 @@ export function ProfileForm({
 
   return (
     <div className="space-y-6">
-      <header className="flex items-center gap-3">
-        <span className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-accent text-brand-strong">
-          <User className="size-5" aria-hidden="true" />
-        </span>
-        <h1 className="text-2xl font-bold text-navy">{t.title}</h1>
-      </header>
+      <PageHeading title={t.title} />
 
-      <section className="max-w-2xl rounded-2xl border border-border bg-white p-6">
+      <section className="max-w-2xl rounded-2xl border border-border bg-card p-6">
         <ErrorFeedback error={formError} locale={locale} operation={t.title}/>
         <form onSubmit={onSubmit} noValidate className="space-y-5">
           <fieldset
@@ -137,8 +134,8 @@ export function ProfileForm({
                 <span
                   className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-semibold ${
                     initial.emailVerified
-                      ? "bg-green-100 text-green-800"
-                      : "bg-amber-100 text-amber-800"
+                      ? "bg-success-soft text-success-foreground"
+                      : "bg-warning-soft text-warning-foreground"
                   }`}
                 >
                   {initial.emailVerified ? (
@@ -181,7 +178,7 @@ export function ProfileForm({
                 <p
                   id="profile-name-error"
                   role="alert"
-                  className="text-xs font-medium text-red-700"
+                  className="text-xs font-medium text-danger-foreground"
                 >
                   {fieldErrors.name}
                 </p>
@@ -208,13 +205,13 @@ export function ProfileForm({
                   aria-describedby={
                     fieldErrors.phone ? "profile-phone-error" : undefined
                   }
-                  className={`min-h-11 text-start ltr-isolate focus-visible:ring-2 focus-visible:ring-ring/40 ${fieldErrors.phone ? "border-red-400" : ""}`}
+                  className={`min-h-11 text-start ltr-isolate focus-visible:ring-2 focus-visible:ring-ring/40 ${fieldErrors.phone ? "border-danger-border" : ""}`}
                 />
                 {fieldErrors.phone && (
                   <p
                     id="profile-phone-error"
                     role="alert"
-                    className="text-xs font-medium text-red-700"
+                    className="text-xs font-medium text-danger-foreground"
                   >
                     {fieldErrors.phone}
                   </p>
@@ -263,7 +260,7 @@ export function ProfileForm({
             <Button
               type="submit"
               disabled={saving}
-              className="h-12 rounded-full bg-primary px-8 text-base font-bold text-primary-foreground shadow-md shadow-brand/20 transition-all hover:bg-brand-strong"
+              className="h-12 rounded-full bg-primary px-8 text-base font-bold text-primary-foreground shadow-md shadow-brand/20 transition-[color,background-color,border-color,box-shadow,opacity,transform] hover:bg-primary-hover hover:text-primary-hover-foreground"
             >
               {saving ? (
                 <Loader2 className="h-5 w-5 animate-spin" aria-hidden="true" />

@@ -25,19 +25,19 @@ export function ServicesDetailBlock({ props, locale }: { props: ServicesDetailBl
           <article
             key={item.service}
             id={item.service}
-            className="scroll-mt-24 overflow-hidden rounded-3xl border border-border bg-white"
+            className="scroll-mt-24 overflow-hidden rounded-3xl border border-border bg-card"
           >
             <div className={`grid lg:grid-cols-[0.9fr_1.1fr] ${i % 2 === 1 ? "lg:[&>*:first-child]:order-2" : ""}`}>
               {/* رأس الخدمة */}
-              <div className="relative bg-gradient-to-br from-navy to-navy-soft p-8 text-white sm:p-10">
-                <span className="inline-flex h-12 w-12 items-center justify-center rounded-xl bg-white/10 text-skydrop">
+              <div className="relative bg-gradient-to-br from-inverse to-inverse-soft p-8 text-inverse-foreground sm:p-10">
+                <span className="inline-flex h-12 w-12 items-center justify-center rounded-xl bg-card/10 text-skydrop">
                   <ServiceIcon service={item.service as ServiceType} />
                 </span>
                 <h2 className="mt-5 text-balance text-2xl font-bold leading-snug">{item.name}</h2>
-                <p className="mt-4 text-pretty text-[15px] leading-8 text-white/75">{item.definition}</p>
+                <p className="mt-4 text-pretty text-[15px] leading-8 text-emphasis-muted">{item.definition}</p>
                 <div className="mt-7">
-                  <h3 className="text-sm font-bold uppercase tracking-wider text-white/50">{props.labels.forWhom}</h3>
-                  <p className="mt-2.5 text-pretty text-sm leading-7 text-white/80">{item.forWhom}</p>
+                  <h3 className="text-sm font-bold uppercase tracking-wider text-emphasis-muted">{props.labels.forWhom}</h3>
+                  <p className="mt-2.5 text-pretty text-sm leading-7 text-emphasis-muted">{item.forWhom}</p>
                 </div>
               </div>
 
@@ -74,7 +74,7 @@ export function ServicesDetailBlock({ props, locale }: { props: ServicesDetailBl
                 <div className="mt-8">
                   <Link
                     href={`${localePath(locale, "contact")}?service=${item.service}&type=quote`}
-                    className="inline-flex min-h-12 items-center gap-2 rounded-full bg-primary px-6 text-sm font-semibold text-primary-foreground shadow-sm transition-colors hover:bg-brand-strong"
+                    className="inline-flex min-h-12 items-center gap-2 rounded-lg bg-primary px-6 text-sm font-semibold text-primary-foreground shadow-sm transition-colors hover:bg-primary-hover hover:text-primary-hover-foreground"
                   >
                     {requestLabel}
                     <span aria-hidden="true">{locale === "ar" ? "←" : "→"}</span>

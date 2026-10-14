@@ -389,7 +389,7 @@ export function CommandPalette({
                             {u.email}
                           </span>
                         </span>
-                        <span className="ms-auto shrink-0 rounded-full bg-muted px-2 py-0.5 text-[11px] text-muted-foreground">
+                        <span className="ms-auto shrink-0 rounded-full bg-muted px-2 py-0.5 text-xs text-muted-foreground">
                           {userStatusLabel(u.status)}
                         </span>
                       </CommandItem>
@@ -421,7 +421,7 @@ export function CommandPalette({
                             {r.refCode}
                           </span>
                         </span>
-                        <span className="ms-auto shrink-0 rounded-full bg-muted px-2 py-0.5 text-[11px] text-muted-foreground">
+                        <span className="ms-auto shrink-0 rounded-full bg-muted px-2 py-0.5 text-xs text-muted-foreground">
                           {requestStatusLabel(r.status)}
                         </span>
                       </CommandItem>
@@ -459,7 +459,7 @@ export function CommandPalette({
                             {i.refCode} · {i.email}
                           </span>
                         </span>
-                        <span className="ms-auto shrink-0 rounded-full bg-muted px-2 py-0.5 text-[11px] text-muted-foreground">
+                        <span className="ms-auto shrink-0 rounded-full bg-muted px-2 py-0.5 text-xs text-muted-foreground">
                           {inquiryStatusLabel(i.status)}
                         </span>
                       </CommandItem>

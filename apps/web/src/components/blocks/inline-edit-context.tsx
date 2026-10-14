@@ -160,7 +160,7 @@ export function EditableText({
         className,
         "cursor-text rounded-md px-1 -mx-1 outline-none ring-2 ring-brand/60 bg-brand/[0.04] caret-brand",
         "transition-colors focus-visible:ring-brand",
-        "empty:before:content-[attr(data-placeholder)] empty:before:italic empty:before:text-muted-foreground/50"
+        "empty:before:content-[attr(data-placeholder)] empty:before:italic empty:before:text-muted-foreground"
       )}
     />
   );

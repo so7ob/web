@@ -19,14 +19,14 @@ export function FaqSectionBlock({ props, locale }: { props: FaqSectionBlockProps
   const ctaHref = props.ctaHref || localePath(locale, "faq");
 
   return (
-    <Section className="bg-white">
+    <Section className="bg-card">
       <div className="grid gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:gap-16">
         <div>
           <SectionHeading kicker={props.kicker} title={props.title} description={props.description} />
           <BlockLink
             href={ctaHref}
             locale={locale}
-            className="mt-6 inline-flex min-h-11 items-center gap-2 rounded-full border border-border bg-background px-5 text-sm font-semibold text-navy transition-colors hover:border-brand hover:text-brand"
+            className="mt-6 inline-flex min-h-11 items-center gap-2 rounded-lg border border-border bg-background px-5 text-sm font-semibold text-navy transition-colors hover:border-brand hover:text-brand"
           >
             {ctaLabel}
           </BlockLink>

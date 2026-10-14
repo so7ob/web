@@ -43,3 +43,6 @@ export * from './audit/index.js';
 export * from './audit/display.js';
 
 export type * from "./audit/workspace.js";
+export * from './permission-catalog.js';
+export * from './workflows.js';
+export * from './site-settings.js';

@@ -1,4 +1,6 @@
 "use client";
+
+import { PageHeading, Toolbar } from "@/components/ui/workspace";
 import {ErrorFeedback} from "@/components/errors/error-feedback";
 import {ApiError} from "@/lib/errors/transport";
 
@@ -131,18 +133,11 @@ export function SecurityView({
 
   return (
     <div className="space-y-6">
-      <header className="flex items-center gap-3">
-        <span className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-accent text-brand-strong">
-          <ShieldCheck className="size-5" aria-hidden="true" />
-        </span>
-        <div className="min-w-0">
-          <h1 className="text-2xl font-bold text-navy">{t.title}</h1>
-        </div>
-      </header>
+      <PageHeading title={t.title} />
 
       <div className="grid gap-6 lg:grid-cols-2">
         {/* تغيير كلمة المرور */}
-        <section className="rounded-2xl border border-border bg-white p-6">
+        <section className="rounded-2xl border border-border bg-card p-6">
           <h2 className="flex items-center gap-2.5 text-base font-semibold text-navy">
             <span className="flex size-9 shrink-0 items-center justify-center rounded-xl bg-accent text-brand-strong">
               <KeyRound className="size-4" aria-hidden="true" />
@@ -178,7 +173,7 @@ export function SecurityView({
             <Button
               type="submit"
               disabled={saving}
-              className="h-12 w-full rounded-full bg-primary text-base font-bold text-primary-foreground shadow-md shadow-brand/20 transition-all hover:bg-brand-strong focus-visible:ring-2 focus-visible:ring-ring/40"
+              className="h-12 w-full rounded-full bg-primary text-base font-bold text-primary-foreground shadow-md shadow-brand/20 transition-[color,background-color,border-color,box-shadow,opacity,transform] hover:bg-primary-hover hover:text-primary-hover-foreground focus-visible:ring-2 focus-visible:ring-ring/40"
             >
               {saving ? <Loader2 className="h-5 w-5 animate-spin" aria-hidden="true" /> : <ShieldCheck className="h-5 w-5" aria-hidden="true" />}
               {t.changePassword}
@@ -187,8 +182,8 @@ export function SecurityView({
         </section>
 
         {/* الجلسات النشطة */}
-        <section className="rounded-2xl border border-border bg-white p-6">
-          <div className="flex flex-wrap items-center justify-between gap-3">
+        <section className="rounded-2xl border border-border bg-card p-6">
+          <Toolbar className="flex flex-wrap items-center justify-between gap-3">
             <h2 className="flex items-center gap-2.5 text-base font-semibold text-navy">
               <span className="flex size-9 shrink-0 items-center justify-center rounded-xl bg-accent text-brand-strong">
                 <MonitorSmartphone className="size-4" aria-hidden="true" />
@@ -198,7 +193,7 @@ export function SecurityView({
             {others.length > 0 && (
               <Button
                 variant="outline"
-                className="h-10 rounded-full px-4 text-sm font-semibold text-rose-700 hover:border-rose-300 hover:bg-rose-50 hover:text-rose-800 focus-visible:ring-2 focus-visible:ring-ring/40"
+                className="h-10 rounded-full px-4 text-sm font-semibold text-danger-foreground hover:border-danger-border hover:bg-danger-soft hover:text-danger-foreground focus-visible:ring-2 focus-visible:ring-ring/40"
                 onClick={revokeAll}
                 disabled={revokingAll}
               >
@@ -206,7 +201,7 @@ export function SecurityView({
                 {t.revokeAll}
               </Button>
             )}
-          </div>
+          </Toolbar>
 
           {sessions === null ? (
             <ul className="mt-5 divide-y divide-border rounded-xl border border-border/70" aria-busy="true" aria-label={t.sessions}>
@@ -245,8 +240,8 @@ export function SecurityView({
                       {describeUserAgent(session.userAgent, t.unknownDevice)}
                       {session.current && (
                         <>
-                          <span className="inline-flex size-2 rounded-full bg-emerald-500" aria-hidden="true" />
-                          <span className="rounded-full bg-brand-soft px-2 py-0.5 text-[11px] font-bold text-brand-strong">
+                          <span className="inline-flex size-2 rounded-full bg-success" aria-hidden="true" />
+                          <span className="rounded-full bg-brand-soft px-2 py-0.5 text-xs font-bold text-brand-strong">
                             {t.thisDevice}
                           </span>
                         </>
@@ -259,7 +254,7 @@ export function SecurityView({
                   <Button
                     variant="outline"
                     size="sm"
-                    className="h-9 rounded-full px-4 text-xs font-semibold text-rose-700 hover:border-rose-300 hover:bg-rose-50 hover:text-rose-800 focus-visible:ring-2 focus-visible:ring-ring/40"
+                    className="h-9 rounded-full px-4 text-xs font-semibold text-danger-foreground hover:border-danger-border hover:bg-danger-soft hover:text-danger-foreground focus-visible:ring-2 focus-visible:ring-ring/40"
                     onClick={() => void revoke(session.id)}
                     disabled={revokingId === session.id}
                   >
@@ -308,10 +303,10 @@ function PasswordField({
         required
         aria-invalid={Boolean(error)}
         aria-describedby={error ? `${id}-error` : undefined}
-        className={`min-h-11 focus-visible:ring-2 focus-visible:ring-ring/40 ${error ? "border-rose-400" : ""}`}
+        className={`min-h-11 focus-visible:ring-2 focus-visible:ring-ring/40 ${error ? "border-danger-border" : ""}`}
       />
       {error && (
-        <p id={`${id}-error`} role="alert" className="text-xs font-medium text-rose-700">
+        <p id={`${id}-error`} role="alert" className="text-xs font-medium text-danger-foreground">
           {error}
         </p>
       )}

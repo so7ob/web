@@ -4,6 +4,7 @@
 
 /** صف طلب في القائمة — GET /api/account/requests */
 export interface AccountRequestRow {
+  workflowStage?:import("@so7ob/contracts").WorkflowPublicStage|null;
   id: string;
   refCode: string;
   serviceType: string;
@@ -59,6 +60,7 @@ export interface RequestStatusEvent {
 
 /** تفاصيل الطلب الكاملة — GET /api/account/requests/[id] */
 export interface RequestDetail {
+  workflowStage?:import("@so7ob/contracts").WorkflowPublicStage|null;
   id: string;
   refCode: string;
   requestType: string;
@@ -142,6 +144,7 @@ export interface AccountProfile {
 
 /** صف استفسار في القائمة — GET /api/account/inquiries */
 export interface InquiryRow {
+  workflowStage?:import("@so7ob/contracts").WorkflowPublicStage|null;
   id: string;
   refCode: string;
   subject: string;
@@ -186,6 +189,7 @@ export interface InquiryAttachment {
 
 /** تفاصيل الاستفسار الكاملة — GET /api/account/inquiries/[id] */
 export interface InquiryDetail {
+  workflowStage?:import("@so7ob/contracts").WorkflowPublicStage|null;
   id: string;
   refCode: string;
   subject: string;

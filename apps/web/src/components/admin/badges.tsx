@@ -14,8 +14,8 @@ interface Tone {
 }
 
 const FALLBACK_TONE: Tone = {
-  chip: "border-slate-200 bg-secondary/70 text-secondary-foreground",
-  dot: "bg-slate-400",
+  chip: "border-border bg-secondary/70 text-secondary-foreground",
+  dot: "bg-muted",
 };
 
 function ToneBadge({
@@ -40,32 +40,32 @@ function ToneBadge({
 
 const STATUS_TONES: Record<string, Tone> = {
   new: {
-    chip: "border-sky-200 bg-accent/70 text-brand-strong",
+    chip: "border-info-border bg-accent/70 text-brand-strong",
     dot: "bg-brand",
   },
   in_review: {
-    chip: "border-slate-200 bg-secondary/70 text-secondary-foreground",
-    dot: "bg-slate-400",
+    chip: "border-border bg-secondary/70 text-secondary-foreground",
+    dot: "bg-muted",
   },
   awaiting_info: {
-    chip: "border-amber-200 bg-amber-50 text-amber-800",
-    dot: "bg-amber-400",
+    chip: "border-warning-border bg-warning-soft text-warning-foreground",
+    dot: "bg-warning",
   },
   in_progress: {
-    chip: "border-sky-200 bg-brand-soft/70 text-brand-strong",
+    chip: "border-info-border bg-brand-soft/70 text-brand-strong",
     dot: "bg-brand",
   },
   responded: {
-    chip: "border-emerald-200 bg-emerald-50 text-emerald-800",
-    dot: "bg-emerald-500",
+    chip: "border-success-border bg-success-soft text-success-foreground",
+    dot: "bg-success",
   },
   closed: {
-    chip: "border-slate-300 bg-slate-100 text-slate-600",
-    dot: "bg-slate-400",
+    chip: "border-border bg-muted text-foreground text-muted-foreground",
+    dot: "bg-muted",
   },
   cancelled: {
-    chip: "border-rose-200 bg-rose-50 text-rose-700",
-    dot: "bg-rose-500",
+    chip: "border-danger-border bg-danger-soft text-danger-foreground",
+    dot: "bg-danger",
   },
 };
 
@@ -90,18 +90,18 @@ export function StatusBadge({
 
 const PRIORITY_TONES: Record<string, Tone> = {
   low: {
-    chip: "border-slate-200 bg-muted/70 text-muted-foreground",
-    dot: "bg-slate-400",
+    chip: "border-border bg-muted/70 text-muted-foreground",
+    dot: "bg-muted",
   },
   normal: {
-    chip: "border-sky-200 bg-accent/70 text-brand-strong",
+    chip: "border-info-border bg-accent/70 text-brand-strong",
     dot: "bg-brand",
   },
   high: {
-    chip: "border-amber-200 bg-amber-50 text-amber-800",
-    dot: "bg-amber-500",
+    chip: "border-warning-border bg-warning-soft text-warning-foreground",
+    dot: "bg-warning",
   },
-  urgent: { chip: "border-red-200 bg-red-50 text-red-700", dot: "bg-red-500" },
+  urgent: { chip: "border-danger-border bg-danger-soft text-danger-foreground", dot: "bg-danger" },
 };
 
 /** شارة الأولوية */
@@ -125,16 +125,16 @@ export function PriorityBadge({
 
 const USER_STATUS_TONES: Record<string, Tone> = {
   active: {
-    chip: "border-emerald-200 bg-emerald-50 text-emerald-800",
-    dot: "bg-emerald-500",
+    chip: "border-success-border bg-success-soft text-success-foreground",
+    dot: "bg-success",
   },
   pending_verification: {
-    chip: "border-amber-200 bg-amber-50 text-amber-800",
-    dot: "bg-amber-400",
+    chip: "border-warning-border bg-warning-soft text-warning-foreground",
+    dot: "bg-warning",
   },
   suspended: {
-    chip: "border-rose-200 bg-rose-50 text-rose-700",
-    dot: "bg-rose-500",
+    chip: "border-danger-border bg-danger-soft text-danger-foreground",
+    dot: "bg-danger",
   },
 };
 
@@ -158,22 +158,22 @@ export function UserStatusBadge({
 }
 
 const ROLE_TONES: Record<string, Tone> = {
-  super_admin: { chip: "border-navy bg-navy text-white", dot: "bg-skydrop" },
+  super_admin: { chip: "border-navy bg-inverse text-inverse-foreground", dot: "bg-skydrop" },
   ops_manager: {
-    chip: "border-sky-200 bg-brand-soft/70 text-brand-strong",
+    chip: "border-info-border bg-brand-soft/70 text-brand-strong",
     dot: "bg-brand",
   },
   support: {
-    chip: "border-sky-200 bg-accent/70 text-brand-strong",
+    chip: "border-info-border bg-accent/70 text-brand-strong",
     dot: "bg-brand",
   },
   content_editor: {
-    chip: "border-purple-200 bg-purple-50 text-purple-800",
-    dot: "bg-purple-500",
+    chip: "border-highlight-border bg-highlight-soft text-highlight-foreground",
+    dot: "bg-highlight",
   },
   client: {
-    chip: "border-slate-200 bg-secondary/70 text-secondary-foreground",
-    dot: "bg-slate-400",
+    chip: "border-border bg-secondary/70 text-secondary-foreground",
+    dot: "bg-muted",
   },
 };
 
@@ -182,12 +182,14 @@ export function RoleBadge({
   roleKey,
   locale,
   className,
+  role:suppliedRole,
 }: {
   roleKey: string;
   locale: Locale;
+  role?:{nameAr:string;nameEn:string};
   className?: string;
 }) {
-  const role = SYSTEM_ROLES.find((r) => r.key === roleKey);
+  const role = suppliedRole ?? SYSTEM_ROLES.find((r) => r.key === roleKey);
   const label =
     locale === "en" ? (role?.nameEn ?? roleKey) : (role?.nameAr ?? roleKey);
   return (
@@ -209,16 +211,16 @@ export function roleLabel(roleKey: string, locale: Locale): string {
 
 const OUTBOX_TONES: Record<string, Tone> = {
   sent: {
-    chip: "border-emerald-200 bg-emerald-50 text-emerald-800",
-    dot: "bg-emerald-500",
+    chip: "border-success-border bg-success-soft text-success-foreground",
+    dot: "bg-success",
   },
   dev_logged: {
-    chip: "border-sky-200 bg-accent/70 text-brand-strong",
+    chip: "border-info-border bg-accent/70 text-brand-strong",
     dot: "bg-brand",
   },
   failed: {
-    chip: "border-destructive/60 bg-destructive text-white",
-    dot: "bg-white/80",
+    chip: "border-destructive/60 bg-destructive text-inverse-foreground",
+    dot: "bg-card/80",
   },
 };
 
@@ -246,7 +248,7 @@ export function ActionBadge({ action }: { action: string }) {
   return (
     <Badge
       variant="outline"
-      className="rounded-full bg-muted/50 font-mono text-[11px] tracking-tight"
+      className="rounded-full bg-muted/50 font-mono text-xs tracking-tight"
     >
       {action}
     </Badge>

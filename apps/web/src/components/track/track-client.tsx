@@ -1,5 +1,7 @@
 "use client";
 
+import { Panel, PageTitle, Toolbar } from "@/components/ui/workspace";
+
 import { useCallback, useEffect, useRef, useState } from "react";
 import Link from "@/routing/link";
 import { useRouter } from "@/routing/navigation";
@@ -57,6 +59,7 @@ interface TrackMessage {
 }
 
 interface TrackCard {
+  workflowStage?:import("@so7ob/contracts").WorkflowPublicStage | null;
   scope: Scope;
   id: string;
   refCode: string;
@@ -103,10 +106,10 @@ type FailurePhase = "invalid" | "expired" | "revoked" | "policy_denied" | "login
 /** ألوان شريحة الحالة — أزواج ناعمة بهوية العلامة (بلا نيلي) */
 const STATUS_CHIP_CLASSES: Record<string, string> = {
   new: "bg-brand-soft text-brand-strong",
-  in_review: "bg-amber-100 text-amber-800",
-  awaiting_info: "bg-amber-100 text-amber-800",
-  in_progress: "bg-amber-100 text-amber-800",
-  responded: "bg-green-100 text-green-800",
+  in_review: "bg-warning-soft text-warning-foreground",
+  awaiting_info: "bg-warning-soft text-warning-foreground",
+  in_progress: "bg-warning-soft text-warning-foreground",
+  responded: "bg-success-soft text-success-foreground",
   closed: "bg-muted text-muted-foreground",
   cancelled: "bg-muted text-muted-foreground",
 };
@@ -115,12 +118,12 @@ const STATUS_CHIP_FALLBACK = "bg-muted text-muted-foreground";
 
 /** أيقونة ودائرة لون لكل حالة فشل */
 const FAILURE_META: Record<FailurePhase, { icon: LucideIcon; circle: string }> = {
-  invalid: { icon: XCircle, circle: "bg-rose-100 text-rose-700" },
-  expired: { icon: Hourglass, circle: "bg-amber-100 text-amber-800" },
-  revoked: { icon: ShieldAlert, circle: "bg-rose-100 text-rose-700" },
-  policy_denied: { icon: ShieldAlert, circle: "bg-amber-100 text-amber-800" },
+  invalid: { icon: XCircle, circle: "bg-danger-soft text-danger-foreground" },
+  expired: { icon: Hourglass, circle: "bg-warning-soft text-warning-foreground" },
+  revoked: { icon: ShieldAlert, circle: "bg-danger-soft text-danger-foreground" },
+  policy_denied: { icon: ShieldAlert, circle: "bg-warning-soft text-warning-foreground" },
   login_required: { icon: LogIn, circle: "bg-brand-soft text-brand-strong" },
-  rate_limited: { icon: Hourglass, circle: "bg-amber-100 text-amber-800" },
+  rate_limited: { icon: Hourglass, circle: "bg-warning-soft text-warning-foreground" },
 };
 
 /** تحليل معامل card بصيغة scope:id — يقبل "?card=..." أو القيمة المجردة */
@@ -398,16 +401,16 @@ export function TrackClient({
 
     return (
       <div className="flex w-full flex-col">
-        <div className="rounded-3xl border border-border bg-white p-8 text-center sm:p-12" role="alert">
+        <Panel className="rounded-3xl border border-border bg-card p-8 text-center sm:p-12" role="alert">
           <span className={cn("mx-auto flex size-16 items-center justify-center rounded-full", meta.circle)}>
             <FailureIcon className="size-8" aria-hidden="true" />
           </span>
-          <h1 className="mt-5 text-2xl font-bold text-navy">{text.title}</h1>
+          <PageTitle>{text.title}</PageTitle>
           {text.body && <p className="mx-auto mt-3 max-w-md leading-8 text-muted-foreground">{text.body}</p>}
           {needsSignIn && (
             <Button
               asChild
-              className="mt-6 h-11 rounded-full bg-primary px-8 font-bold text-primary-foreground shadow-md shadow-brand/20 transition-all hover:bg-brand-strong"
+              className="mt-6 h-11 rounded-full bg-primary px-8 font-bold text-primary-foreground shadow-md shadow-brand/20 transition-[color,background-color,border-color,box-shadow,opacity,transform] hover:bg-primary-hover hover:text-primary-hover-foreground"
             >
               <Link href={`/${locale}/auth/login?next=${encodeURIComponent(`/${locale}/track?card=${cardKey}`)}`}>
                 <LogIn className="size-4" aria-hidden="true" />
@@ -423,7 +426,7 @@ export function TrackClient({
               {t.backHome}
             </Link>
           </div>
-        </div>
+        </Panel>
         <p className="mt-10 text-center text-xs text-muted-foreground">{siteName}</p>
       </div>
     );
@@ -432,7 +435,7 @@ export function TrackClient({
   /* ----- عرض البطاقة ----- */
   const { card, policy, access } = data;
   const viaLink = access.via === "link";
-  const statusLabel = (t.statusLabels as Record<string, string>)[card.status] ?? card.status;
+  const statusLabel = card.workflowStage?.[locale==='ar'?'nameAr':'nameEn']??(t.statusLabels as Record<string, string>)[card.status]??card.status;
   const statusChip = STATUS_CHIP_CLASSES[card.status] ?? STATUS_CHIP_FALLBACK;
   const typeLabel = t.cardType[card.scope] ?? card.typeLabel;
   const clientAuthorLabel = viaLink ? t.guestAuthor : t.ownerAuthor;
@@ -454,7 +457,7 @@ export function TrackClient({
   return (
     <div className="w-full space-y-5">
       {/* ترويسة البطاقة: النوع والحالة، الرقم المرجعي، الموضوع والوصف، التواريخ */}
-      <section className="rounded-2xl border border-border bg-white p-5 sm:p-6">
+      <section className="rounded-2xl border border-border bg-card p-5 sm:p-6">
         <div className="flex flex-wrap items-center gap-2">
           <span className="rounded-full bg-accent px-2.5 py-1 text-xs font-semibold text-brand-strong">{typeLabel}</span>
           <span className={cn("rounded-full px-2.5 py-1 text-xs font-semibold", statusChip)}>{statusLabel}</span>
@@ -465,7 +468,7 @@ export function TrackClient({
           {card.refCode}
         </p>
 
-        <h1 className="mt-3 break-words text-xl font-bold text-navy">{card.subject}</h1>
+        <PageTitle>{card.subject}</PageTitle>
         {card.description ? (
           <p className="mt-3 whitespace-pre-line break-words text-sm leading-7 text-muted-foreground">{card.description}</p>
         ) : null}
@@ -498,7 +501,7 @@ export function TrackClient({
             className="h-11 shrink-0 rounded-full border-border px-5 font-semibold text-navy hover:border-brand hover:text-brand"
           >
             {copied ? (
-              <Check className="size-4 text-green-700" aria-hidden="true" />
+              <Check className="size-4 text-success-foreground" aria-hidden="true" />
             ) : (
               <Copy className="size-4" aria-hidden="true" />
             )}
@@ -509,7 +512,7 @@ export function TrackClient({
 
       {/* تسلسل الحالة — يُخفى إن لم توجد أحداث */}
       {timeline.length > 0 && (
-        <section className="rounded-2xl border border-border bg-white p-5 sm:p-6">
+        <section className="rounded-2xl border border-border bg-card p-5 sm:p-6">
           <h2 className="flex items-center gap-2 text-lg font-bold text-navy">
             <History className="size-5 text-brand" aria-hidden="true" />
             {t.timeline}
@@ -538,7 +541,7 @@ export function TrackClient({
       )}
 
       {/* المحادثة */}
-      <section className="rounded-2xl border border-border bg-white p-5 sm:p-6">
+      <section className="rounded-2xl border border-border bg-card p-5 sm:p-6">
         <h2 className="flex items-center gap-2 text-lg font-bold text-navy">
           <MessageSquare className="size-5 text-brand" aria-hidden="true" />
           {t.conversation}
@@ -616,7 +619,7 @@ export function TrackClient({
       </section>
 
       {/* الرد أو سبب تعطيله */}
-      <section className="rounded-2xl border border-border bg-white p-5 sm:p-6">
+      <section className="rounded-2xl border border-border bg-card p-5 sm:p-6">
         {canReply ? (
           <form onSubmit={submitReply} noValidate className="space-y-3">
             <label htmlFor="track-reply" className="block text-sm font-bold text-navy">
@@ -633,14 +636,14 @@ export function TrackClient({
               aria-describedby="track-reply-count"
               className="min-h-28 resize-y leading-7"
             />
-            <div className="flex flex-wrap items-center justify-between gap-3">
+            <Toolbar className="flex flex-wrap items-center justify-between gap-3">
               <span id="track-reply-count" dir="ltr" className="font-mono text-xs text-muted-foreground">
                 {reply.length} / 5000
               </span>
               <Button
                 type="submit"
                 disabled={sending || reply.trim().length === 0}
-                className="h-11 rounded-full bg-primary px-8 font-bold text-primary-foreground shadow-md shadow-brand/20 transition-all hover:bg-brand-strong"
+                className="h-11 rounded-full bg-primary px-8 font-bold text-primary-foreground shadow-md shadow-brand/20 transition-[color,background-color,border-color,box-shadow,opacity,transform] hover:bg-primary-hover hover:text-primary-hover-foreground"
               >
                 {sending ? (
                   <Loader2 className="size-4 animate-spin" aria-hidden="true" />
@@ -649,7 +652,7 @@ export function TrackClient({
                 )}
                 {sending ? t.sending : t.send}
               </Button>
-            </div>
+            </Toolbar>
           </form>
         ) : (
           <div

@@ -1,3 +1,4 @@
+import { PRESENTATION_KEYS } from '@so7ob/contracts';
 import { Injectable, NotFoundException } from "@nestjs/common";
 import {
   database,
@@ -25,6 +26,7 @@ import {
   type PublicView,
 } from "@so7ob/contracts";
 const settingsKeys = [
+  ...PRESENTATION_KEYS,
   "contact.email",
   "contact.phone",
   "contact.address",
@@ -69,11 +71,12 @@ export class PublicService {
     } catch {
       throw new NotFoundException();
     }
+    if (viewer?.credentialState && viewer.credentialState !== "ready" && slug !== "auth/change-password") return {redirect:`/${locale}/auth/change-password`};
     const db = await database();
     const shell = await this.shell(locale, viewer);
     if (slug === "track") return {...shell,kind:"track",parameters:{token:url.searchParams.get("t")??"",cardParam:url.searchParams.get("card")??""}};
     const adminRoute =
-      /^admin(?:\/(users(?:\/([^/]+))?|requests(?:\/([^/]+))?|inquiries(?:\/([^/]+))?|pages(?:\/([^/]+)\/(edit|preview))?|notifications|media|menus|settings|audit|outbox|diagnostics))?\/?$/.exec(
+      /^admin(?:\/(users(?:\/([^/]+))?|requests(?:\/([^/]+))?|inquiries(?:\/([^/]+))?|pages(?:\/([^/]+)\/(edit|preview))?|roles|permissions|invitations|notifications|media|menus|settings|audit|outbox|diagnostics|workflows))?\/?$/.exec(
         decoded,
       );
     if (adminRoute) {
@@ -86,12 +89,14 @@ export class PublicService {
       const section = adminRoute[1]?.split("/")[0] ?? "dashboard";
       const permissions: Record<string, Permission> = {
         users: "users.view",
+        roles:"roles.view",permissions:"roles.view",invitations:"invitations.manage",
         requests: "requests.view.all",
         inquiries: "inquiries.view.all",
         pages: adminRoute[6] === "edit" ? "pages.edit" : "pages.view",
         media: "media.manage",
         menus: "menus.manage",
         settings: "settings.manage",
+        workflows: "workflows.view",
         diagnostics: "diagnostics.view",
         audit: "audit.view",
         outbox: "email.outbox",
@@ -235,9 +240,10 @@ export class PublicService {
         visibility: string;
         allowedRoles: string;
         publishedSettings: string | null;
+        ogMediaId: string | null;
       }
     > = await db.query(
-      "SELECT id,slug,titleAr,titleEn,seoTitleAr,seoTitleEn,seoDescAr,seoDescEn,publishedBlocksAr,publishedBlocksEn,visibility,allowedRoles,publishedSettings FROM Page WHERE slug=? AND status=? LIMIT 1",
+      "SELECT id,slug,titleAr,titleEn,seoTitleAr,seoTitleEn,seoDescAr,seoDescEn,publishedBlocksAr,publishedBlocksEn,visibility,allowedRoles,publishedSettings,ogMediaId FROM Page WHERE slug=? AND status=? LIMIT 1",
       [slug, "published"],
     );
     const stored = pages[0];
@@ -257,7 +263,9 @@ export class PublicService {
         redirect: `/${locale}/auth/login?next=/${locale}${slug ? "/" + slug : ""}`,
       };
     if (!canAccessPage(viewer, stored)) throw new NotFoundException();
-    const { visibility, allowedRoles, publishedSettings, ...published } = stored;
+    const { visibility, allowedRoles, publishedSettings, ogMediaId, ...published } = stored;
+    let publishedImage: string | null = null;
+    try { const snapshot=JSON.parse(publishedSettings||"{}");publishedImage=Object.keys(snapshot).length===0?ogMediaId:typeof snapshot.ogMediaId==="string"?snapshot.ogMediaId:null; } catch { publishedImage=ogMediaId; }
     const settings = parsePageSettings(publishedSettings, stored);
     void allowedRoles; // Authorization-only metadata is deliberately omitted from the DTO.
     const page: PublicPage = {
@@ -265,6 +273,7 @@ export class PublicService {
       titleAr: settings.titleAr, titleEn: settings.titleEn,
       seoTitleAr: settings.seoTitleAr, seoTitleEn: settings.seoTitleEn,
       seoDescAr: settings.seoDescAr, seoDescEn: settings.seoDescEn,
+      ogImage: publishedImage && /^[a-zA-Z0-9_-]+$/.test(publishedImage) ? `/api/media/${publishedImage}` : null,
       restricted: visibility !== "public",
     };
     const blocks =
@@ -315,7 +324,7 @@ export class PublicService {
       canonicalOrigin: (
         process.env.SITE_URL ?? "http://127.0.0.1:3000"
       ).replace(/\/+$/, ""),
-      viewer: viewer ? { name: viewer.name, roleKey: viewer.roleKey } : null,
+      viewer: viewer ? { name: viewer.name, roleKey: viewer.roleKey, isStaff:can(viewer,"admin.dashboard") } : null,
     };
   }
 }

@@ -25,10 +25,9 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Textarea } from "@/components/ui/textarea";
 import { getPortalContent } from "@/content/portal";
 import { isValidSlug } from "@so7ob/contracts";
-import { SYSTEM_ROLES } from "@/lib/auth/permissions";
+import { loadRoleOptions, type RoleOption } from "../identity/shared";
 import type { Locale } from "@/lib/i18n";
 import { apiErrorMessage, apiSend, ApiError } from "@/components/admin/helpers";
-import { roleLabel } from "@/components/admin/badges";
 import type { Me } from "@/components/admin/types";
 import { cn } from "@/lib/utils";
 import type { PageDetail, PatchPageResponse } from "./types";
@@ -45,6 +44,8 @@ interface PageSettingsDialogProps {
 }
 
 export function PageSettingsDialog({ open, onOpenChange, page, locale, me, baseRevision, onSaved, onConflict }: PageSettingsDialogProps) {
+  const [staffRoles,setStaffRoles]=useState<RoleOption[]>([]);
+  useEffect(()=>{if(open)void loadRoleOptions('/api/admin/identity/role-options').then(setStaffRoles).catch(err=>toast.error(apiErrorMessage(err,getPortalContent(locale).auth.errors)));},[open,locale]);
   const t = getPortalContent(locale);
   const tp = t.admin.pages;
   const te = t.admin.editor;
@@ -133,7 +134,7 @@ export function PageSettingsDialog({ open, onOpenChange, page, locale, me, baseR
     }
   };
 
-  const staffRoles = SYSTEM_ROLES.filter((r) => r.key !== "client");
+
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -146,7 +147,7 @@ export function PageSettingsDialog({ open, onOpenChange, page, locale, me, baseR
         </DialogHeader>
 
         {willApplyAtPublish && (
-          <div className="flex items-start gap-2 rounded-xl border border-amber-200 bg-amber-50 p-3 text-xs leading-5 text-amber-800">
+          <div className="flex items-start gap-2 rounded-xl border border-warning-border bg-warning-soft p-3 text-xs leading-5 text-warning-foreground">
             <Info className="mt-0.5 size-4 shrink-0" aria-hidden="true" />
             {te.settingsDraftOnly}
           </div>
@@ -189,7 +190,7 @@ export function PageSettingsDialog({ open, onOpenChange, page, locale, me, baseR
                 className={cn("min-h-9 font-mono text-xs focus-visible:ring-2 focus-visible:ring-ring/40", !slugValid && "border-destructive focus-visible:ring-destructive")}
                 placeholder="about"
               />
-              <p className={cn("text-[11px] leading-5", slugValid ? "text-muted-foreground" : "text-destructive")}>
+              <p className={cn("text-xs leading-5", slugValid ? "text-muted-foreground" : "text-destructive")}>
                 {page.isHome ? tp.homeSlugHint : slugChanged ? te.slugDraftHint : tp.slugHint}
               </p>
             </div>
@@ -229,7 +230,7 @@ export function PageSettingsDialog({ open, onOpenChange, page, locale, me, baseR
                   {staffRoles.map((role) => (
                     <label key={role.key} className="flex min-h-9 cursor-pointer items-center gap-2.5 rounded-lg px-2 hover:bg-muted/50">
                       <Checkbox checked={allowedRoles.includes(role.key)} onCheckedChange={(v) => toggleRole(role.key, v === true)} />
-                      <span className="text-sm text-foreground">{roleLabel(role.key, locale)}</span>
+                      <span className="text-sm text-foreground">{locale==='ar'?role.nameAr:role.nameEn}</span>
                     </label>
                   ))}
                 </div>

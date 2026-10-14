@@ -1,3 +1,4 @@
+import {AppearanceProvider} from './components/appearance/provider';
 import {useEffect,useMemo} from 'react';
 import {ClientErrors} from './components/errors/client-errors';
 import {ErrorFeedback} from './components/errors/error-feedback';
@@ -78,17 +79,17 @@ function presentation(data: PublicView) {
 }
 export function App() {
   const data = useLoaderData<PublicView>();
-  return <AppDirectionProvider dir={data.locale === "ar" ? "rtl" : "ltr"}><ClientErrors locale={data.locale}/><AppContent /></AppDirectionProvider>;
+  return <AppDirectionProvider dir={data.locale === "ar" ? "rtl" : "ltr"}><ClientErrors locale={data.locale}/><AppearanceProvider><AppContent /></AppearanceProvider></AppDirectionProvider>;
 }
 function AppContent() {
   const data = useLoaderData<PublicView>();
-  if (data.kind === "not-found") return <NotFound />;
+  if (data.kind === "not-found") return <NotFound locale={data.locale} />;
   if (data.kind === "admin")
     return (
       <>
         <a
           href="#main-content"
-          className="sr-only focus:not-sr-only focus:fixed focus:start-4 focus:top-4 focus:z-[100] focus:rounded-md focus:bg-navy focus:px-4 focus:py-2 focus:text-white"
+          className="sr-only focus:not-sr-only focus:fixed focus:start-4 focus:top-4 focus:z-[100] focus:rounded-md focus:bg-inverse focus:px-4 focus:py-2 focus:text-inverse-foreground"
         >
           {(data.locale === "ar" ? ar : en).common.skipToContent}
         </a>
@@ -110,7 +111,7 @@ function AppContent() {
       />
       <a
         href="#main-content"
-        className="sr-only focus:not-sr-only focus:fixed focus:start-4 focus:top-4 focus:z-[100] focus:rounded-md focus:bg-navy focus:px-4 focus:py-2 focus:text-white"
+        className="sr-only focus:not-sr-only focus:fixed focus:start-4 focus:top-4 focus:z-[100] focus:rounded-md focus:bg-inverse focus:px-4 focus:py-2 focus:text-inverse-foreground"
       >
         {content.common.skipToContent}
       </a>
@@ -120,7 +121,7 @@ function AppContent() {
         items={header}
         auth={{
           loggedIn: !!data.viewer,
-          isStaff: !!data.viewer && data.viewer.roleKey !== "client",
+          isStaff: !!data.viewer?.isStaff,
           accountLabel: portal.account.nav.dashboard,
           adminLabel: portal.admin.nav.dashboard,
           loginLabel: portal.auth.loginTitle,
@@ -146,7 +147,7 @@ function RouteError() {
   const locale=useLocation().pathname.startsWith('/en')?'en':'ar';
   const status = isRouteErrorResponse(error) ? error.status : error instanceof ApiError?error.status:500;
   return status === 404 ? (
-    <NotFound />
+    <NotFound locale={locale} />
   ) : (
     <main id="main-content" className="p-12">
       <h1>{locale==='ar'?'تعذر عرض الصفحة':'Unable to display the page'}</h1>
@@ -160,7 +161,7 @@ export const routes = (loader: LoaderFunction): RouteObject[] => [
     id: "root",
     path: "/",
     loader,
-    shouldRevalidate: () => true,
+    shouldRevalidate: ({currentUrl,nextUrl}) => !(currentUrl.pathname===nextUrl.pathname && /\/admin\/settings\/?$/.test(nextUrl.pathname) && currentUrl.search!==nextUrl.search),
     Component: App,
     ErrorBoundary: RouteError,
     children: [
@@ -178,6 +179,7 @@ export const routes = (loader: LoaderFunction): RouteObject[] => [
             path: "pages/:id/preview",
             lazy: () => import("./screens/admin/page-preview"),
           },
+          ...["roles","permissions","invitations"].map(path=>({path,lazy:()=>import("./screens/admin/identity")})),
           { path: "users", lazy: () => import("./screens/admin/users") },
           {
             path: "users/:id",
@@ -202,6 +204,7 @@ export const routes = (loader: LoaderFunction): RouteObject[] => [
           },
           { path: "media", lazy: () => import("./screens/admin/media") },
           { path: "menus", lazy: () => import("./screens/admin/menus") },
+          { path: "workflows", lazy: () => import("./screens/admin/workflows") },
           { path: "settings", lazy: () => import("./screens/admin/settings") },
           { path: "diagnostics", lazy: () => import("./screens/admin/diagnostics") },
           { path: "audit", lazy: () => import("./screens/admin/audit") },

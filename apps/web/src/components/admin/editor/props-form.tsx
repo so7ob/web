@@ -312,7 +312,7 @@ function ArrayField({ field, raw, onSet, locale, me, te }: { field: FieldDef; ra
       {items.map((item, i) => (
         <div key={i} className="rounded-xl border border-border bg-muted/30 p-3">
           <div className="mb-2 flex items-center justify-between gap-2">
-            <p className="text-[11px] font-bold uppercase tracking-wider text-muted-foreground">
+            <p className="text-xs font-bold uppercase tracking-wider text-muted-foreground">
               {label} {i + 1}
             </p>
             <div className="flex items-center gap-0.5">
@@ -396,7 +396,7 @@ function RowsField({ label, raw, onSet, te, locale }: { label: string; raw: unkn
       {rows.map((row, i) => (
         <div key={i} className="rounded-xl border border-border bg-muted/30 p-2.5">
           <div className="mb-2 flex items-center justify-between">
-            <p className="text-[11px] font-bold uppercase tracking-wider text-muted-foreground">
+            <p className="text-xs font-bold uppercase tracking-wider text-muted-foreground">
               {label} {i + 1}
             </p>
             <div className="flex items-center gap-0.5">

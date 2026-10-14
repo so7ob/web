@@ -13,13 +13,16 @@ for(const locale of ['ar','en'] as const)test(`${locale}: administrator saves me
  expect(menus).toHaveLength(menuSnapshot.length);
  const marker='Synthetic '+locale+' '+info.project.name;
  try{
-  await page.goto('/'+locale+'/admin/settings',{waitUntil:'networkidle'});
+  await page.goto('/'+locale+'/admin/settings?section=contact',{waitUntil:'networkidle'});
   await page.locator('#contact-phone').focus();await page.keyboard.press('Control+a');await page.keyboard.insertText('+967 123456789');
+  await page.getByRole('button',{name:t.admin.settings.save,exact:true}).click();
+  await expect(page.getByRole('button',{name:t.admin.settings.save,exact:true})).toBeDisabled();
+  await page.locator('nav[aria-label] a[href="?section=announcement"]').click();
   await page.locator('#announcement-message-ar').fill(marker+' عربي');await page.locator('#announcement-message-en').fill(marker+' English');
-  if((await page.locator('#announcement-enabled').getAttribute('aria-checked'))!=='true')await page.locator('#announcement-enabled').click();
+  if((await page.locator('#announcement-enabled').isChecked())!==true)await page.locator('#announcement-enabled').click();
   const saved=page.waitForResponse(r=>r.request().method()==='PATCH'&&r.url().endsWith('/api/v1/admin/settings/checked'));
   await page.getByRole('button',{name:t.admin.settings.save,exact:true}).click();expect((await saved).status()).toBe(200);
-  await page.reload({waitUntil:'networkidle'});await expect(page.locator('#contact-phone')).toHaveValue('+967 123456789');
+  await page.reload({waitUntil:'networkidle'});await page.locator('a[href="?section=contact"]').click();await expect(page.locator('#contact-phone')).toHaveValue('+967 123456789');
   expect((await db.query("SELECT value FROM SiteSetting WHERE `key`='announcement.messageAr'"))[0].value).toBe(marker+' عربي');
   expect(await(await page.request.get('/'+locale)).text()).toContain(marker+(locale==='ar'?' عربي':' English'));
   await page.goto('/'+locale+'/admin/menus',{waitUntil:'networkidle'});

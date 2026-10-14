@@ -1,3 +1,4 @@
+import { Textarea } from "@/components/ui/textarea";
 import {useEffect,useState} from 'react';
 import {Button} from '@/components/ui/button';
 import {apiGet} from './helpers';
@@ -9,9 +10,9 @@ export function ConflictReview({locale,storageKey,captured,remoteUrl,onReload}:{
  useEffect(()=>{try{setDraft(sessionStorage.getItem(storageKey));}catch{/* storage unavailable */}},[storageKey]);
  useEffect(()=>{if(captured===null)return;const text=JSON.stringify(captured,null,2);setDraft(text);try{sessionStorage.setItem(storageKey,text);}catch{/* retain in memory */}},[captured,storageKey]);
  if(!draft)return null;
- return <section role="alert" className="space-y-3 rounded-xl border border-amber-300 bg-amber-50 p-4 text-amber-950">
+ return <section role="alert" className="space-y-3 rounded-xl border border-warning-border bg-warning-soft p-4 text-warning-foreground">
   <p>{ar?'توجد تعديلات أحدث. حُفظت مسودة تعديلاتك هنا؛ راجع النسخة الحالية قبل إعادة الحفظ.':'Newer edits exist. Your draft is preserved here; review the current version before saving again.'}</p>
-  <label className="block">{ar?'مسودة تعديلاتك المحفوظة':'Your preserved draft'}<textarea readOnly value={draft} rows={6} className="mt-2 w-full rounded border bg-white p-2 text-sm text-foreground"/></label>
+  <label className="block">{ar?'مسودة تعديلاتك المحفوظة':'Your preserved draft'}<Textarea readOnly value={draft} rows={6} className="mt-2 w-full rounded border bg-card p-2 text-sm text-foreground"/></label>
   <div className="flex flex-wrap gap-2">
    <Button variant="outline" onClick={()=>{void apiGet(remoteUrl).then(value=>setRemote(JSON.stringify(value,null,2))).catch(()=>setRemote(ar?'تعذرت قراءة النسخة الحالية':'Unable to read current version'));}}>{ar?'مراجعة النسخة الحالية':'Review current version'}</Button>
    <Button variant="outline" onClick={()=>{void onReload();}}>{ar?'إعادة تحميل مع الاحتفاظ بالمسودة':'Reload and keep draft'}</Button>

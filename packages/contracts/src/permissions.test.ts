@@ -41,8 +41,8 @@ describe("can — مصفوفة الصلاحيات", () => {
   });
 
   it("isStaff يميز الطاقم عن العميل", () => {
-    expect(isStaff({ roleKey: "support" })).toBe(true);
-    expect(isStaff({ roleKey: "client" })).toBe(false);
+    expect(isStaff({ roleKey: "support", permissions: ["admin.dashboard"] })).toBe(true);
+    expect(isStaff({ roleKey: "client", permissions: [] })).toBe(false);
   });
 
   it("لا جلسة = لا صلاحية", () => {

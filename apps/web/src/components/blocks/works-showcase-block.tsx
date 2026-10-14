@@ -22,8 +22,8 @@ export function WorksShowcaseBlock({ props, locale }: { props: WorksShowcaseBloc
   return (
     <Section>
       <SectionHeading kicker={props.kicker} title={props.title} description={props.description} />
-      <div className="mt-6 rounded-2xl border border-amber-200 bg-amber-50 p-5">
-        <p className="flex items-start gap-3 text-sm font-semibold leading-7 text-amber-900">
+      <div className="mt-6 rounded-2xl border border-warning-border bg-warning-soft p-5">
+        <p className="flex items-start gap-3 text-sm font-semibold leading-7 text-warning-foreground">
           <Info className="mt-1 h-4.5 w-4.5 shrink-0" aria-hidden="true" />
           {disclaimer}
         </p>
@@ -32,7 +32,7 @@ export function WorksShowcaseBlock({ props, locale }: { props: WorksShowcaseBloc
         {(props.cases ?? []).map((c) => (
           <article
             key={c.key}
-            className="flex flex-col overflow-hidden rounded-2xl border border-border bg-white shadow-sm transition-shadow hover:shadow-md"
+            className="flex flex-col overflow-hidden rounded-2xl border border-border bg-card shadow-sm transition-shadow hover:shadow-md"
           >
             <div className="p-4 pb-0">
               <CaseVisual kind={c.kind} label={c.title} />
@@ -51,7 +51,7 @@ export function WorksShowcaseBlock({ props, locale }: { props: WorksShowcaseBloc
         <BlockLink
           href={viewAllHref}
           locale={locale}
-          className="inline-flex min-h-11 items-center gap-2 rounded-full bg-navy px-6 text-sm font-semibold text-white transition-colors hover:bg-navy-soft"
+          className="inline-flex min-h-11 items-center gap-2 rounded-lg bg-inverse px-6 text-sm font-semibold text-inverse-foreground transition-colors hover:bg-inverse-soft"
         >
           {viewAllLabel}
         </BlockLink>

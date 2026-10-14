@@ -123,6 +123,7 @@ export interface TrackMessageView {
   attachments: Array<{id:string;filename:string;size:number;mimeType:string}>;
 }
 export interface TrackCardView {
+  workflowStage?: import("./workflows.js").WorkflowPublicStage | null;
   scope: TrackScope; id:string; refCode:string; typeLabel:string; subject:string;
   description:string; status:string; createdAt:string; updatedAt:string;
   timeline:Array<{toStatus:string;at:string}>; messages:TrackMessageView[];

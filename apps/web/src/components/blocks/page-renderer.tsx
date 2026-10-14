@@ -1,5 +1,8 @@
 "use client";
 
+import { useContext } from "react";
+import { legacyBackgroundClass, legacyPaddingClass } from "@so7ob/contracts";
+import { PreviewDeviceContext, NestedBlockContext } from "./nested-context";
 import type { Block } from "@/lib/blocks/types";
 import type { Locale } from "@/lib/i18n";
 
@@ -31,23 +34,6 @@ import { SimpleTableBlock, type SimpleTableBlockProps } from "./simple-table-blo
 import { DividerBlock, type DividerBlockProps } from "./divider-block";
 import { SpacerBlock, type SpacerBlockProps } from "./spacer-block";
 
-/** خلفيات الأقسام حسب block.style.background */
-const BACKGROUND_CLASSES: Record<string, string> = {
-  default: "",
-  white: "bg-white",
-  accent: "bg-accent/50",
-  navy: "bg-navy",
-  soft: "bg-brand-soft/30",
-};
-
-/** الحشوة الرأسية حسب block.style.paddingY */
-const PADDING_CLASSES: Record<string, string> = {
-  none: "py-0",
-  sm: "py-6",
-  md: "py-12",
-  lg: "py-20",
-};
-
 /**
  * يرسم شجرة بلوكات الصفحة. الإخفاء على الأجهزة يتم عبر أصناف CSS فقط
  * (وليس شرطًا شرطيًا) حتى تبقى البنية متطابقة بين اللغتين والأجهزة.
@@ -63,8 +49,9 @@ export function PageRenderer({ blocks, locale }: { blocks: Block[]; locale: Loca
 }
 
 function BlockView({ block, locale }: { block: Block; locale: Locale }) {
+  const device = useContext(PreviewDeviceContext);
   const visibility = block.visibility;
-  const visibilityClasses = [
+  const visibilityClasses = device ? (visibility?.[device] === false ? "hidden" : "") : [
     visibility?.mobile === false ? "max-md:hidden" : "",
     visibility?.tablet === false ? "md:max-lg:hidden" : "",
     visibility?.desktop === false ? "lg:hidden" : "",
@@ -91,13 +78,13 @@ function BlockView({ block, locale }: { block: Block; locale: Locale }) {
     );
   }
 
-  const background = BACKGROUND_CLASSES[style?.background ?? "default"] ?? "";
-  const padding = PADDING_CLASSES[style?.paddingY ?? "md"] ?? "py-12";
+  const background = legacyBackgroundClass(style?.background);
+  const padding = legacyPaddingClass(style?.paddingY);
   const sectionClass = [background, padding, visibilityClasses].filter(Boolean).join(" ");
 
   return (
     <section id={block.anchorId} className={sectionClass}>
-      {content}
+      <NestedBlockContext.Provider value={true}><div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">{content}</div></NestedBlockContext.Provider>
     </section>
   );
 }

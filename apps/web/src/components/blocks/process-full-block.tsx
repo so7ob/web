@@ -30,12 +30,12 @@ export function ProcessFullBlock({ props, locale }: { props: ProcessFullBlockPro
         {(props.phases ?? []).map((phase, i) => (
           <li key={`${i}-${phase.title}`} className="relative ps-16 sm:ps-24">
             <span
-              className="absolute start-0 top-0 flex h-14 w-14 items-center justify-center rounded-2xl bg-navy font-mono text-xl font-bold text-skydrop shadow-md"
+              className="absolute start-0 top-0 flex h-14 w-14 items-center justify-center rounded-2xl bg-inverse font-mono text-xl font-bold text-skydrop shadow-md"
               aria-hidden="true"
             >
               {i + 1}
             </span>
-            <div className="rounded-3xl border border-border bg-white p-7 sm:p-9">
+            <div className="rounded-3xl border border-border bg-card p-7 sm:p-9">
               <h2 className="text-xl font-bold text-navy sm:text-2xl">{phase.title}</h2>
               <p className="mt-2 text-[15px] font-medium leading-8 text-brand-strong">{phase.goal}</p>
 
@@ -44,7 +44,7 @@ export function ProcessFullBlock({ props, locale }: { props: ProcessFullBlockPro
                   <ul className="space-y-2.5">
                     {phase.weDo.map((item) => (
                       <li key={item} className="flex items-start gap-2.5 text-[15px] leading-7 text-muted-foreground">
-                        <span className="mt-2.5 h-1.5 w-1.5 shrink-0 rounded-full bg-skydrop" aria-hidden="true" />
+                        <span className="mt-2.5 h-1.5 w-1.5 shrink-0 rounded-full bg-emphasis-action" aria-hidden="true" />
                         {item}
                       </li>
                     ))}
@@ -82,42 +82,42 @@ export function ProcessFullBlock({ props, locale }: { props: ProcessFullBlockPro
 
       {/* إدارة التغييرات */}
       {changes && (
-        <div className="mt-16 overflow-hidden rounded-3xl bg-navy p-8 text-white sm:p-12">
+        <div className="mt-16 overflow-hidden rounded-3xl bg-inverse p-8 text-inverse-foreground sm:p-12">
           <div className="grid gap-8 lg:grid-cols-[0.9fr_1.1fr] lg:gap-14">
             <div>
-              <p className="mb-3 inline-flex items-center gap-2 rounded-full bg-white/10 px-3.5 py-1.5 text-sm font-semibold text-skydrop">
+              <p className="mb-3 inline-flex items-center gap-2 rounded-full bg-card/10 px-3.5 py-1.5 text-sm font-semibold text-skydrop">
                 <GitPullRequestArrow className="h-4 w-4" aria-hidden="true" />
                 {changes.kicker}
               </p>
               <h2 className="text-balance text-2xl font-bold leading-snug sm:text-3xl">{changes.title}</h2>
-              <p className="mt-4 text-pretty text-[15px] leading-8 text-white/70">{changes.body}</p>
+              <p className="mt-4 text-pretty text-[15px] leading-8 text-emphasis-muted">{changes.body}</p>
             </div>
             <ol className="space-y-4">
               {changes.items.map((item, i) => (
-                <li key={`${i}-${item}`} className="flex items-start gap-4 rounded-2xl bg-white/5 p-4">
+                <li key={`${i}-${item}`} className="flex items-start gap-4 rounded-2xl bg-card/5 p-4">
                   <span
-                    className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-skydrop/15 font-mono text-sm font-bold text-skydrop"
+                    className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-emphasis-action/15 font-mono text-sm font-bold text-skydrop"
                     aria-hidden="true"
                   >
                     {i + 1}
                   </span>
-                  <p className="text-sm leading-7 text-white/85">{item}</p>
+                  <p className="text-sm leading-7 text-emphasis-muted">{item}</p>
                 </li>
               ))}
             </ol>
           </div>
-          <div className="mt-9 border-t border-white/10 pt-7">
+          <div className="mt-9 border-t border-inverse-foreground/10 pt-7">
             <p className="text-lg font-bold">{t.home.finalCta.title}</p>
             <div className="mt-4 flex flex-wrap gap-3">
               <Link
                 href={`${localePath(locale, "contact")}?type=discussion`}
-                className="inline-flex min-h-11 items-center rounded-full bg-skydrop px-6 text-sm font-bold text-navy transition-colors hover:bg-sky-300"
+                className="inline-flex min-h-11 items-center rounded-lg bg-emphasis-action px-6 text-sm font-bold text-emphasis-action-foreground transition-colors hover:bg-emphasis-action/90"
               >
                 {t.actions.discuss}
               </Link>
               <Link
                 href={`${localePath(locale, "contact")}?type=quote`}
-                className="inline-flex min-h-11 items-center rounded-full border-2 border-white/25 px-6 text-sm font-semibold text-white transition-colors hover:border-skydrop hover:text-skydrop"
+                className="inline-flex min-h-11 items-center rounded-lg border-2 border-inverse-foreground/25 px-6 text-sm font-semibold text-inverse-foreground transition-colors hover:border-skydrop hover:text-skydrop"
               >
                 {t.actions.quote}
               </Link>

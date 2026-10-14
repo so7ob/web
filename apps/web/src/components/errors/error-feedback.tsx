@@ -9,7 +9,7 @@ export function ErrorFeedback({error:input,locale,operation,onRefresh,focusOnErr
  useEffect(()=>{if(focusOnError&&error&&error.category!=='cancelled'){region.current?.focus({preventScroll:true});region.current?.scrollIntoView({block:'center',behavior:'instant'});}},[error,focusOnError]);
  if(!error)return null;const t=errorCopy[locale];if(error.category==='cancelled')return null;
  const reference=error.errorId??error.requestId??error.localId;
- return <section ref={region} tabIndex={focusOnError?-1:undefined} role="alert" aria-live="polite" className="scroll-mt-24 focus-visible:outline-2 focus-visible:outline-rose-700 space-y-2 rounded-xl border border-rose-200 bg-rose-50 p-4 text-sm text-rose-950" dir={locale==='ar'?'rtl':'ltr'}>
+ return <section ref={region} tabIndex={focusOnError?-1:undefined} role="alert" aria-live="polite" className="scroll-mt-24 focus-visible:outline-2 focus-visible:outline-danger space-y-2 rounded-xl border border-danger-border bg-danger-soft p-4 text-sm text-danger-foreground" dir={locale==='ar'?'rtl':'ltr'}>
   <p className="font-semibold">{operation?`${t.failed}: ${operation}`:t.failed}</p><p>{errorMessage(error,locale)}</p>
   <p>{error.uncertain?t.uncertain:error.category==='internal'?t.retry:['network','timeout','invalid_response','conflict'].includes(error.category)?t.review:null}</p>
   {error.retryAfterSec!==undefined?<p>{error.retryAfterSec} {t.seconds}</p>:null}
@@ -23,5 +23,5 @@ export function ErrorFeedback({error:input,locale,operation,onRefresh,focusOnErr
 }
 export function FieldError({error:input,name,id,locale}:{error:unknown;name:string;id:string;locale:'ar'|'en'}){
  const error=input?asApiError(input):null,fields=error?.body?.errors;
- return fields&&typeof fields==='object'&&Object.hasOwn(fields,name)?<p id={id} className="text-sm text-rose-800">{errorCopy[locale].validation}</p>:null;
+ return fields&&typeof fields==='object'&&Object.hasOwn(fields,name)?<p id={id} className="text-sm text-danger-foreground">{errorCopy[locale].validation}</p>:null;
 }

@@ -39,6 +39,8 @@ export interface UsersResponse {
 
 // ——— ملف المستخدم الموسّع ———
 export interface UserDetailInfo {
+  credentialState:string;
+  credentialExpiresAt:string|null;
   id: string;
   email: string;
   name: string;
@@ -76,6 +78,7 @@ export interface UserAuditRow {
   createdAt: string;
 }
 export interface UserDetailResponse {
+  role:{nameAr:string;nameEn:string;permissions:Permission[];status:string};
   ok: boolean;
   user: UserDetailInfo;
   stats: { totalRequests: number; openRequests: number };
@@ -179,6 +182,8 @@ export interface RequestClientInfo {
   status: string;
 }
 export interface RequestDetail {
+  workflow?:import("@so7ob/contracts").WorkflowState|null;
+  workflowStage?:import("@so7ob/contracts").WorkflowPublicStage|null;
   id: string;
   refCode: string;
   requestType: string;
@@ -258,6 +263,9 @@ export interface InquiriesResponse {
   pageSize: number;
 }
 export interface InquiryDetail {
+  workflow?:import("@so7ob/contracts").WorkflowState|null;
+  workflowStage?:import("@so7ob/contracts").WorkflowPublicStage|null;
+  attachments:AttachmentRow[];
   id: string;
   refCode: string;
   subject: string;
@@ -350,7 +358,7 @@ export interface MediaResponse {
 }
 /** موضع استخدام وسيلة — يرد من حاجز الحذف (409) */
 export interface MediaUsageLocationView {
-  kind: "page_published" | "page_draft" | "page_og" | "template";
+  kind: "page_published" | "page_draft" | "page_og" | "template" | "site_setting";
   entityId: string;
   titleAr: string;
   titleEn: string;

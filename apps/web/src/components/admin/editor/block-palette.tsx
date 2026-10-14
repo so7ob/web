@@ -99,7 +99,7 @@ export function BlockPalette({ locale, open, onOpenChange, onAdd }: BlockPalette
                   <span className="min-w-0 truncate text-sm font-medium text-navy">
                     {locale === "en" ? entry.en : entry.ar}
                   </span>
-                  <span className="ms-auto shrink-0 rounded-full bg-muted px-2 py-0.5 text-[11px] text-muted-foreground">
+                  <span className="ms-auto shrink-0 rounded-full bg-muted px-2 py-0.5 text-xs text-muted-foreground">
                     {te.groups[entry.group]}
                   </span>
                 </CommandItem>

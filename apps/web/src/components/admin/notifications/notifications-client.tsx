@@ -1,5 +1,8 @@
 "use client";
 
+import { PageHeading } from "@/components/ui/workspace";
+import { can } from "@so7ob/contracts";
+
 /**
  * إشعارات الفريق: نفس بيانات بوابة العميل (واجهة /api/account/notifications
  * تعمل لأي مستخدم موثق وتعيد إشعاراته الخاصة) مع خرائط روابط الطاقم —
@@ -89,7 +92,7 @@ export function NotificationsClient({
   const [error, setError] = useState<string | null>(null);
   const [markingAll, setMarkingAll] = useState(false);
 
-  const isStaff = me.roleKey !== "client";
+  const isStaff = can(me, "admin.dashboard");
 
   const load = useCallback(
     async (targetPage: number, append: boolean) => {
@@ -173,12 +176,10 @@ export function NotificationsClient({
 
   return (
     <div className="space-y-5">
-      <div className="flex flex-wrap items-end justify-between gap-3">
-        <div>
-          <h1 className="text-2xl font-bold text-navy">{tn.title}</h1>
-          <p className="mt-1 text-sm text-muted-foreground">{tn.subtitle}</p>
-        </div>
-        {unread > 0 && (
+      <PageHeading
+        title={tn.title}
+        description={tn.subtitle}
+        actions={unread > 0 && (
           <Button
             variant="outline"
             onClick={() => void markAllRead()}
@@ -193,7 +194,7 @@ export function NotificationsClient({
             {tn.markAllRead}
           </Button>
         )}
-      </div>
+      />
 
       {error ? (
         <div className="flex items-center justify-between gap-3 rounded-2xl border border-destructive/30 bg-destructive/5 px-4 py-3">
@@ -211,7 +212,7 @@ export function NotificationsClient({
       ) : null}
 
       <section
-        className="rounded-2xl border border-border bg-white p-4 sm:p-6"
+        className="rounded-2xl border border-border bg-card p-4 sm:p-6"
         aria-busy={loading}
       >
         {loading && items.length === 0 ? (
@@ -271,7 +272,7 @@ export function NotificationsClient({
                         </span>
                         {unreadRow && (
                           <span
-                            className="inline-flex h-2 w-2 rounded-full bg-red-600"
+                            className="inline-flex h-2 w-2 rounded-full bg-danger"
                             aria-hidden="true"
                           />
                         )}
@@ -285,8 +286,8 @@ export function NotificationsClient({
                         )}
                         {notification.payload.status &&
                           t.admin.requests.statuses[
-                            notification.payload.status
-                          ] && (
+                                  notification.payload.status
+                                ] && (
                             <span className="rounded-full bg-muted px-2 py-0.5 text-xs font-medium text-muted-foreground">
                               {
                                 t.admin.requests.statuses[

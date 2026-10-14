@@ -15,14 +15,15 @@ import {
   type ExceptionFilter,
 } from "@nestjs/common";
 import { ApiPropertyOptional, ApiTags, ApiResponse } from "@nestjs/swagger";
-import { Allow, IsIn, IsOptional, IsString, Matches } from "class-validator";
+import { Allow, IsOptional, IsString, Matches } from "class-validator";
 import { Transform } from "class-transformer";
 import type { Request, Response, NextFunction } from "express";
-import { can, ROLE_KEYS, type AuthUser } from "@so7ob/contracts";
+import { can, type AuthUser } from "@so7ob/contracts";
 import {
   AuthenticationService,
   AuthFault,
   UserAdministrationService,
+  IdentityAdministrationService,
 } from "@so7ob/server";
 import {
   PermissionGuard,
@@ -43,7 +44,7 @@ class UserContractErrors implements ExceptionFilter {
       .json({
         ok: false,
         code: error.code,
-        ...(error.code === "invalid" ? {} : error.extra),
+        ...(error.code === "invalid" && !host.switchToHttp().getRequest<Request>().path.endsWith("/direct") ? {} : error.extra),
       });
   }
 }
@@ -88,6 +89,7 @@ class UserQuery {
   @ApiPropertyOptional() @IsOptional() @IsString() page?: string;
 }
 class InviteDto {
+  @Allow() currentPassword?: unknown;
   @ApiPropertyOptional()
   @Transform(({ value }) =>
     String(value ?? "")
@@ -97,20 +99,28 @@ class InviteDto {
   )
   @Matches(/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/)
   email = "";
-  @ApiPropertyOptional({ enum: ROLE_KEYS, default: "client" })
+  @ApiPropertyOptional({ default: "client" })
   @Transform(({ value }) => String(value ?? "client"))
-  @IsIn(ROLE_KEYS)
+  @IsString()
   roleKey = "client";
   // Website accepted this field but never persisted it; name is entered on acceptance.
   @ApiPropertyOptional() @Allow() name?: unknown;
 }
 class UserPatchDto {
+  @Allow() currentPassword?: unknown;
+  @Allow() reason?: unknown;
   @ApiPropertyOptional() @Allow() name?: unknown;
   @ApiPropertyOptional() @Allow() phone?: unknown;
   @ApiPropertyOptional() @Allow() company?: unknown;
   @ApiPropertyOptional() @Allow() roleKey?: unknown;
   @ApiPropertyOptional() @Allow() status?: unknown;
 }
+
+class DirectUserDto {
+ @Allow() name?: unknown; @Allow() email?: unknown; @Allow() phone?: unknown; @Allow() company?: unknown;
+ @Allow() locale?: unknown; @Allow() roleKey?: unknown; @Allow() status?: unknown; @Allow() method?: unknown; @Allow() currentPassword?: unknown;
+}
+
 @ApiTags("User administration")
 @ApiResponse({ status: 401, description: "No active server session" })
 @ApiResponse({
@@ -124,7 +134,10 @@ export class UserAdministrationController {
   constructor(
     @Inject(UserAdministrationService)
     private readonly users: UserAdministrationService,
+    @Inject(IdentityAdministrationService) private readonly identity: IdentityAdministrationService,
   ) {}
+  @Post("direct") @RequiresPermission("users.provision") direct(@Req() req:AdminRequest,@Body() body:DirectUserDto) {return this.identity.direct(req.actor,{...body});}
+  @Get("roles") @RequiresPermission("users.view") roles(@Req() req:AdminRequest,@Query() query:UserQuery) {return this.identity.roles(req.actor,query,true);}
   @Get() @RequiresPermission("users.view") list(
     @Req() req: AdminRequest,
     @Query() query: UserQuery,

@@ -168,7 +168,19 @@ for (const locale of ["ar", "en"] as const)
       await page.reload();
       await expect(page.locator("#name")).toHaveValue("Portal Contact");
       await expect(page.locator("#email")).toHaveValue("");
+      let releaseDraftSave!: () => void;
+      let draftSaveStarted!: () => void;
+      const heldDraftSave = new Promise<void>((resolve) => { releaseDraftSave = resolve; });
+      const draftStarted = new Promise<void>((resolve) => { draftSaveStarted = resolve; });
+      await page.route("**/api/account/drafts", async (route) => {
+        if (route.request().method() === "PUT") {
+          draftSaveStarted();
+          await heldDraftSave;
+        }
+        await route.continue();
+      });
       await page.locator("#email").pressSequentially(email, { delay: 60 });
+      await draftStarted;
       await expect(page.locator("#description")).toHaveValue(
         /Synthetic portal project/,
       );
@@ -180,6 +192,10 @@ for (const locale of ["ar", "en"] as const)
       const response = await submitted;
       expect(response.status()).toBe(201);
       const ref = (await response.json()).ref;
+      // A confirmed request must not expose the parent's completed state while
+      // an older draft write can still arrive after cleanup.
+      await expect(page.getByRole("status").filter({ hasText: ref })).toHaveCount(0);
+      releaseDraftSave();
       await expect(
         page.getByRole("status").filter({ hasText: ref }),
       ).toBeVisible();
@@ -229,7 +245,16 @@ for (const locale of ["ar", "en"] as const)
       await page.goto("/" + locale + "/account/requests");
       await expect(page.getByText(ref, { exact: true })).toBeVisible();
       await assertPortalAxe(page, locale, "requests");
+      let releaseInquiries!: () => void;
+      const inquiriesGate = new Promise<void>(resolve => { releaseInquiries = resolve; });
+      await page.route("**/api/account/inquiries?**", async route => { await inquiriesGate; await route.continue(); });
       await page.goto("/" + locale + "/account/inquiries");
+      try {
+        await expect(page.getByRole("status", {name: t.inquiries.title, exact: true})).toBeVisible();
+        await assertPortalAxe(page, locale, "inquiries-loading");
+      } finally { releaseInquiries(); }
+      await expect(page.locator('[aria-busy="true"]')).toHaveCount(0);
+      await page.unroute("**/api/account/inquiries?**");
       await expect(
         page
           .getByRole("button", { name: t.inquiries.create, exact: true })

@@ -25,6 +25,9 @@ import {
 } from "@so7ob/server";
 import { AccountGuard } from "../business/controller.js";
 class AdminQuery {
+  @IsOptional() @IsString() team?: string;
+  @IsOptional() @IsString() stage?: string;
+  @IsOptional() @IsString() version?: string;
   @ApiPropertyOptional() @IsOptional() @IsString() q?: string;
   @ApiPropertyOptional() @IsOptional() @IsString() range?: string;
   @ApiPropertyOptional() @IsOptional() @IsString() status?: string;
@@ -39,6 +42,7 @@ class AdminQuery {
   @ApiPropertyOptional() @IsOptional() @IsString() page?: string;
 }
 class OperationBody {
+  @Allow() expectedRevision?: unknown;
   @Allow() baseRevision?: unknown;
   @ApiPropertyOptional() @Allow() name?: unknown;
   @ApiPropertyOptional() @Allow() content?: unknown;
@@ -54,6 +58,32 @@ class OperationBody {
   @ApiPropertyOptional() @Allow() items?: unknown;
 }
 class SettingsBody {
+  @Allow() "identity.showName"?: unknown;
+  @Allow() "identity.logoArLight"?: unknown;
+  @Allow() "identity.logoEnLight"?: unknown;
+  @Allow() "identity.logoArDark"?: unknown;
+  @Allow() "identity.logoEnDark"?: unknown;
+  @Allow() "identity.icon"?: unknown;
+  @Allow() "sharing.image"?: unknown;
+  @Allow() "sharing.descriptionAr"?: unknown;
+  @Allow() "sharing.descriptionEn"?: unknown;
+  @Allow() "appearance.mode"?: unknown;
+  @Allow() "appearance.primaryLight"?: unknown;
+  @Allow() "appearance.accentLight"?: unknown;
+  @Allow() "appearance.primaryDark"?: unknown;
+  @Allow() "appearance.accentDark"?: unknown;
+  @Allow() "appearance.fontAr"?: unknown;
+  @Allow() "appearance.fontEn"?: unknown;
+  @Allow() "appearance.radius"?: unknown;
+  @Allow() "appearance.density"?: unknown;
+  @Allow() "social.linkedin"?: unknown;
+  @Allow() "social.x"?: unknown;
+  @Allow() "social.facebook"?: unknown;
+  @Allow() "social.instagram"?: unknown;
+  @Allow() "social.youtube"?: unknown;
+  @Allow() "social.telegram"?: unknown;
+  @Allow() "social.whatsapp"?: unknown;
+
   @Allow() "response.hours"?: unknown;
   @Allow() "response.applyToExisting"?: unknown;
   @Allow() baseRevisions?: unknown;

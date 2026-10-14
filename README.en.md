@@ -2,7 +2,7 @@
   <img src="apps/web/public/icon-192.png" width="112" alt="So7ob technology logo">
   <h1>So7ob · سُحُب</h1>
   <p>A bilingual platform for content, service requests, customer support and operational review.</p>
-  <p><a href="README.md">العربية</a> · <a href="docs/releases/v1.2.1.md">v1.2.1 release notes</a> · <a href="docs/migration/local-development.ar.md">Local setup guide</a> · <a href="CONTRIBUTING.md">Contributing</a></p>
+  <p><a href="README.md">العربية</a> · <a href="docs/releases/v1.3.0.md">v1.3.0 release notes</a> · <a href="docs/migration/local-development.ar.md">Local setup guide</a> · <a href="CONTRIBUTING.md">Contributing</a></p>
 </div>
 
 [![Project checks](https://github.com/so7ob/web/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/so7ob/web/actions/workflows/ci.yml)
@@ -49,14 +49,16 @@ Search a resource reference, inspect its changes and follow the related events. 
 
 **Image provenance:** actual synthetic acceptance runs at 375/1280 CSS pixels. Investigation captures are from `abf3304`; health captures are from `d978938`. See [audit verification](docs/migration/audit-70/verification.md) and [collation regression evidence](docs/migration/audit-72/README.md) for source versions and limits. These are neither customer accounts nor design mockups.
 
-## New in v1.2.1
+## New in v1.3.0
 
-- Independent development, build, tests, runtime and maintenance from web alone, with no retired source archive or historical checkout.
-- One static asset source in `apps/web/public/`, with recovered-release HTTP checks for images, stylesheets and fonts.
-- Removal of unused code, dependencies and completed migration tools, preserving fixed test contracts, current migrations, attribution and product evidence.
-- Footer links have pointer targets of at least 24×24 CSS px, preserving labels, destinations and both languages.
+- Account, role, permission, delegation and invitation administration, with protected administrator operations and temporary credential setup.
+- Versioned workflows, teams, business calendars and deadlines, with shared request/inquiry conversation screens.
+- Keyboard-accessible menu editing, preview and independent saves, plus identity and appearance settings with separate section drafts.
+- A shared design system across the public site, customer account, administration and editor, in Arabic/English and light/dark modes.
+- Authentication inputs and theme selection stay guarded until hydration; failed and conflicting saves retain inputs.
+- Visible startup readiness and transaction cleanup that releases database runners and preserves the original failure.
 
-[Full scope, upgrade and rollback notes](docs/releases/v1.2.1.md) · [v1.2.0 features](docs/releases/v1.2.0.md) · [Published releases](https://github.com/so7ob/web/releases)
+[Full scope, upgrade and rollback notes](docs/releases/v1.3.0.md) · [v1.2.1 features](docs/releases/v1.2.1.md) · [Published releases](https://github.com/so7ob/web/releases)
 
 ## Run locally
 

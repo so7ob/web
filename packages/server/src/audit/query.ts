@@ -1,3 +1,4 @@
+import {auditWorkflowAccessSql} from "../workflows/access.js";
 import { z } from "zod";
 import { createHmac, timingSafeEqual } from "node:crypto";
 import {
@@ -94,7 +95,7 @@ export function validateFilter(raw: unknown): AuditFilter {
   return out as AuditFilter;
 }
 export function predicate(filter: AuditFilter, actor: AuthUser) {
-  const where = ["1=1"],
+  const where = [auditWorkflowAccessSql(actor)],
     args: unknown[] = [];
   if (!filter.includeAccess)
     where.push(

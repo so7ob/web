@@ -138,6 +138,12 @@ const metadata = [
   "fields",
 ];
 export const AUDIT_CATALOG: Record<string, AuditCatalogEntry> = {
+  "workflow.team_updated": entry("حدّث فريق العمل", "Updated work team", "workflows", [], ["teamId", "members"]),
+  "workflow.calendar_created": entry("أنشأ إصدار تقويم", "Created calendar version", "workflows", [], ["calendarId"]),
+  "workflow.draft_saved": entry("حفظ مسودة مسار", "Saved workflow draft", "workflows", [], ["workflowId"]),
+  "workflow.published": entry("نشر إصدار مسار", "Published workflow version", "workflows", [], ["versionId", "selector"]),
+  "workflow.assigned": entry("غيّر المسؤول", "Changed assignee", "workflows", ["assigneeId"], []),
+  "workflow.transitioned": entry("نقل المرحلة", "Transitioned stage", "workflows", ["stageId", "teamId", "assigneeId"], ["fromStage", "toStage", "versionId", "teamId", "assigneeId"]),
   "request.submitted": entry(
     "أنشأ طلبًا",
     "Created request",
@@ -578,3 +584,14 @@ AUDIT_CATALOG["audit.retention_completed"].context = [
 export const AUDIT_SENSITIVE_PERMISSIONS = ["users.roles", "users.suspend", "pages.publish", "settings.manage", "audit.export", "audit.rules.manage", "audit.policy.manage", "audit.sensitive.view", "diagnostics.manage"] as const;
 for (const [code, spec] of Object.entries(AUDIT_CATALOG))
   if (code.startsWith("user.")) spec.context = [...spec.context, "grantedPermissions"];
+
+for (const [code, ar, en, category, fields] of [
+ ['user.created','أنشأ حسابًا','Created account','identity',['roleKey','status','credentialState']],
+ ['user.credential_issued','أصدر اعتمادًا مؤقتًا','Issued temporary credential','identity',['credentialState']],
+ ['user.setup_requested','طلب إعداد الاعتماد','Requested credential setup','identity',['credentialState']],
+ ['user.sessions_revoked','أنهى جلسات مستخدم','Revoked user sessions','identity',[]],
+ ['role.created','أنشأ دورًا','Created role','identity',['nameAr','nameEn','permissions','grantablePermissions']],
+ ['role.updated','عدّل دورًا','Updated role','identity',['nameAr','nameEn','descriptionAr','descriptionEn','permissions','grantablePermissions','status','version']],
+ ['invitation.cancelled','ألغى دعوة','Cancelled invitation','identity',[]],
+ ['invitation.resent','أعاد إرسال دعوة','Resent invitation','identity',[]],
+] as const) AUDIT_CATALOG[code] = entry(ar,en,category as AuditCatalogEntry['category'],[...fields],['reason','count','emailStatus','roleKey'],true);

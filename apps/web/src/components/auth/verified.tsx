@@ -1,3 +1,4 @@
+import { PageTitle } from "@/components/ui/workspace";
 import Link from '@/routing/link';
 import { CheckCircle2, CircleCheck, ShieldX } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -10,10 +11,10 @@ export function Verified({ locale, value }: { locale: Locale; value: string }) {
   const body = status === "invalid" ? t.verifyInvalidBody : t.verifyOkBody;
 
   return (
-    <section className="rounded-2xl border border-border bg-white p-6 text-center shadow-sm sm:p-10" role="status">
+    <section className="rounded-2xl border border-border bg-card p-6 text-center shadow-sm sm:p-10" role="status">
       <span
         className={`mx-auto flex h-16 w-16 items-center justify-center rounded-full ${
-          status === "invalid" ? "bg-red-100 text-red-700" : "bg-green-100 text-green-700"
+          status === "invalid" ? "bg-danger-soft text-danger-foreground" : "bg-success-soft text-success-foreground"
         }`}
       >
         {status === "ok" ? (
@@ -24,13 +25,13 @@ export function Verified({ locale, value }: { locale: Locale; value: string }) {
           <ShieldX className="h-8 w-8" aria-hidden="true" />
         )}
       </span>
-      <h1 className="mt-5 text-xl font-bold text-navy sm:text-2xl">{t.verifyTitle}</h1>
+      <PageTitle>{t.verifyTitle}</PageTitle>
       <p className="mt-2 text-lg font-semibold text-navy">{heading}</p>
       <p className="mx-auto mt-3 max-w-md leading-8 text-muted-foreground">{body}</p>
       <div className="mt-8 flex flex-col items-center gap-3">
         <Button
           asChild
-          className="h-12 w-full rounded-full bg-primary px-10 text-base font-bold text-primary-foreground shadow-md shadow-brand/20 transition-all hover:bg-brand-strong sm:w-auto"
+          className="h-12 w-full rounded-full bg-primary px-10 text-base font-bold text-primary-foreground shadow-md shadow-brand/20 transition-[color,background-color,border-color,box-shadow,opacity,transform] hover:bg-primary-hover hover:text-primary-hover-foreground sm:w-auto"
         >
           <Link href={`/${locale}/auth/login`}>{t.loginTitle}</Link>
         </Button>

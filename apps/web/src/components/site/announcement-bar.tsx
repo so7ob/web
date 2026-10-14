@@ -25,24 +25,24 @@ interface AnnouncementBarProps {
 
 const VARIANTS: Record<AnnouncementVariant, { strip: string; icon: LucideIcon; cta: string }> = {
   info: {
-    strip: "bg-skydrop/15 text-navy border-b border-skydrop/30",
+    strip: "bg-info-soft text-info-foreground border-b border-info-border",
     icon: Info,
-    cta: "bg-navy text-white hover:bg-navy-soft",
+    cta: "bg-inverse text-inverse-foreground hover:bg-inverse-soft",
   },
   warning: {
-    strip: "bg-amber-100 text-amber-900 border-b border-amber-300",
+    strip: "bg-warning-soft text-warning-foreground border-b border-warning-border",
     icon: TriangleAlert,
-    cta: "bg-amber-900 text-white hover:bg-amber-800",
+    cta: "bg-warning text-on-warning hover:bg-warning",
   },
   success: {
-    strip: "bg-emerald-100 text-emerald-900 border-b border-emerald-300",
+    strip: "bg-success-soft text-success-foreground border-b border-success-border",
     icon: CircleCheck,
-    cta: "bg-emerald-900 text-white hover:bg-emerald-800",
+    cta: "bg-success text-on-success hover:bg-success",
   },
   brand: {
-    strip: "bg-navy text-white border-b border-navy-soft",
+    strip: "bg-inverse text-inverse-foreground border-b border-navy-soft",
     icon: Megaphone,
-    cta: "bg-skydrop text-navy hover:bg-skydrop/85",
+    cta: "bg-emphasis-action text-emphasis-action-foreground hover:bg-emphasis-action/90",
   },
 };
 
@@ -89,7 +89,7 @@ export function AnnouncementBar({ announcement, locale, labels }: AnnouncementBa
   const variant = VARIANTS[announcement.variant];
   const Icon = variant.icon;
   const ctaClasses = cn(
-    "inline-flex min-h-9 shrink-0 items-center rounded-full px-3 py-1 text-sm font-semibold transition-colors",
+    "inline-flex min-h-11 shrink-0 items-center rounded-lg px-3 py-1 text-sm font-semibold transition-colors",
     variant.cta
   );
 
@@ -125,7 +125,7 @@ export function AnnouncementBar({ announcement, locale, labels }: AnnouncementBa
           type="button"
           onClick={dismiss}
           aria-label={labels.dismiss}
-          className="grid size-11 shrink-0 place-items-center self-center rounded-full transition-colors hover:bg-white/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-current"
+          className="grid size-11 shrink-0 place-items-center self-center rounded-full transition-colors hover:bg-card/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-current"
         >
           <X className="size-4" aria-hidden="true" />
         </button>

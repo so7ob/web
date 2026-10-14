@@ -17,8 +17,8 @@ export function NumberedListBlock({ props }: { props: NumberedListBlockProps; lo
         <h2 className="text-2xl font-bold text-navy sm:text-3xl">{props.title}</h2>
         <ol className="mt-8 space-y-4">
           {items.map((p, i) => (
-            <li key={`${i}-${p.title}`} className="flex gap-5 rounded-2xl border border-border bg-white p-6">
-              <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-navy font-mono text-sm font-bold text-skydrop">
+            <li key={`${i}-${p.title}`} className="flex gap-5 rounded-2xl border border-border bg-card p-6">
+              <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-inverse font-mono text-sm font-bold text-skydrop">
                 {i + 1}
               </span>
               <div>

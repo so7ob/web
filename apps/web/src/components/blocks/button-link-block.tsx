@@ -13,10 +13,10 @@ export type ButtonLinkBlockProps = z.input<typeof blockSchemas.buttonLink>["prop
 /** أنماط الأزرار — نفس هوية أزرار الواجهة الافتتاحية */
 const VARIANT_CLASSES: Record<string, string> = {
   primary:
-    "inline-flex min-h-12 items-center justify-center gap-2 rounded-full bg-primary px-7 text-base font-semibold text-primary-foreground shadow-md shadow-brand/20 transition-all hover:bg-brand-strong hover:shadow-lg",
+    "inline-flex min-h-12 items-center justify-center gap-2 rounded-lg bg-primary px-7 text-base font-semibold text-primary-foreground shadow-md shadow-brand/20 transition-[color,background-color,border-color,box-shadow,opacity,transform] hover:bg-primary-hover hover:text-primary-hover-foreground hover:shadow-lg",
   outline:
-    "inline-flex min-h-12 items-center justify-center gap-2 rounded-full border-2 border-navy/15 bg-white px-7 text-base font-semibold text-navy transition-colors hover:border-brand hover:text-brand",
-  navy: "inline-flex min-h-12 items-center justify-center gap-2 rounded-full bg-navy px-7 text-base font-semibold text-white transition-colors hover:bg-navy-soft",
+    "inline-flex min-h-12 items-center justify-center gap-2 rounded-lg border-2 border-navy/15 bg-card px-7 text-base font-semibold text-navy transition-colors hover:border-brand hover:text-brand",
+  navy: "inline-flex min-h-12 items-center justify-center gap-2 rounded-lg bg-inverse px-7 text-base font-semibold text-inverse-foreground transition-colors hover:bg-inverse-soft",
 };
 
 /** زر/رابط واحد بثلاثة أنماط من هوية الموقع */
