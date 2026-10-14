@@ -85,7 +85,7 @@ export function OutboxClient({ me, locale }: OutboxClientProps) {
       uncertain: to.uncertain,
       dev_logged: to.devLogged,
     };
-    return Object.hasOwn(labels,s) ? labels[s] : to.unknown;
+    return Object.hasOwn(labels, s) ? labels[s] : to.unknown;
   };
 
   return (
@@ -95,65 +95,71 @@ export function OutboxClient({ me, locale }: OutboxClientProps) {
       <ListWorkspace>
         <div className="min-w-0">
           <div className="overflow-x-auto">
-            <Table tabIndex={0} aria-label={to.title} className="focus-visible:outline-2 focus-visible:outline-brand">
+            <Table
+              tabIndex={0}
+              aria-label={to.title}
+              className="min-w-[48rem] table-fixed focus-visible:outline-2 focus-visible:outline-brand [&_td]:whitespace-normal [&_td]:break-words"
+            >
               <TableHeader>
                 <TableRow className="bg-muted/50 hover:bg-muted/50">
-                  <TableHead className="min-w-40">{to.date}</TableHead>
-                  <TableHead className="min-w-52">{to.to}</TableHead>
-                  <TableHead className="min-w-64">{to.subject}</TableHead>
-                  <TableHead className="min-w-28">{to.status}</TableHead>
+                  <TableHead className="w-[18%]">{to.date}</TableHead>
+                  <TableHead className="w-[22%]">{to.to}</TableHead>
+                  <TableHead className="w-[36%]">{to.subject}</TableHead>
+                  <TableHead className="w-[24%]">{to.status}</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {loading && !data ? (
-                Array.from({ length: 10 }).map((_, i) => (
-                  <TableRow key={`sk-${i}`}>
-                    {Array.from({ length: 4 }).map((__, j) => (
-                      <TableCell key={j}>
-                        <Skeleton className="h-5 w-full" />
-                      </TableCell>
-                    ))}
+                  Array.from({ length: 10 }).map((_, i) => (
+                    <TableRow key={`sk-${i}`}>
+                      {Array.from({ length: 4 }).map((__, j) => (
+                        <TableCell key={j}>
+                          <Skeleton className="h-5 w-full" />
+                        </TableCell>
+                      ))}
+                    </TableRow>
+                  ))
+                ) : emails.length === 0 ? (
+                  <TableRow>
+                    <TableCell colSpan={4} className="p-0">
+                      <EmptyState
+                        icon={Send}
+                        title={to.empty}
+                        body={to.emptyBody}
+                      />
+                    </TableCell>
                   </TableRow>
-                ))
-              ) : emails.length === 0 ? (
-                <TableRow>
-                  <TableCell colSpan={4} className="p-0">
-                    <EmptyState
-                      icon={Send}
-                      title={to.empty}
-                      body={to.emptyBody}
-                    />
-                  </TableCell>
-                </TableRow>
-              ) : (
+                ) : (
                   emails.map((email) => (
                     <TableRow
-                    key={email.id}
-                    className="align-top transition-colors hover:bg-muted/50"
-                  >
+                      key={email.id}
+                      className="align-top transition-colors hover:bg-muted/50"
+                    >
                       <TableCell className="whitespace-nowrap text-xs tabular-nums text-muted-foreground">
-                      {fmtDateTime(email.createdAt, locale)}
-                    </TableCell>
-                      <TableCell className="max-w-56 truncate font-mono text-xs text-navy ltr-isolate">
-                      {email.to}
-                    </TableCell>
+                        {fmtDateTime(email.createdAt, locale)}
+                      </TableCell>
+                      <TableCell className="font-mono text-xs text-foreground ltr-isolate [overflow-wrap:anywhere]">
+                        {email.to}
+                      </TableCell>
                       <TableCell>
-                      <p className="max-w-96 truncate text-sm text-foreground">
-                        {email.subject}
-                      </p>
-                      {email.errorCode ? (
-                        <p className="max-w-96 truncate text-xs text-destructive">
-                          {to.errorCode}: {email.errorCode}
+                        <p className="text-sm text-foreground">
+                          {email.subject}
                         </p>
-                      ) : null}
-                    </TableCell>
+                        {email.errorCode ? (
+                          <p className="text-xs text-destructive">
+                            {to.errorCode}: {email.errorCode}
+                          </p>
+                        ) : null}
+                      </TableCell>
                       <TableCell>
                         <OutboxStatusBadge
-                        status={email.status}
-                        label={statusLabel(email.status)}
-                      />
+                          status={email.status}
+                          label={statusLabel(email.status)}
+                        />
                         {email.attempts !== null && (
-                          <p className="mt-1 text-xs text-muted-foreground">{to.attempts}: {email.attempts}</p>
+                          <p className="mt-1 text-xs text-muted-foreground">
+                            {to.attempts}: {email.attempts}
+                          </p>
                         )}
                         {email.nextAttemptAt && (
                           <p className="mt-1 text-xs text-muted-foreground">
@@ -171,29 +177,29 @@ export function OutboxClient({ me, locale }: OutboxClientProps) {
         </div>
 
         {error ? (
-        <div className="flex items-center justify-between gap-3 rounded-2xl border border-destructive/30 bg-destructive/5 px-4 py-3">
-          <p className="text-sm text-destructive">{error}</p>
-          <Button
-            variant="outline"
-            size="icon"
-            onClick={reload}
-            className="size-10 shrink-0"
-            aria-label={to.title}
-          >
-            <RotateCcw className="size-4" aria-hidden="true" />
-          </Button>
-        </div>
-      ) : null}
+          <div className="flex items-center justify-between gap-3 rounded-2xl border border-destructive/30 bg-destructive/5 px-4 py-3">
+            <p className="text-sm text-destructive">{error}</p>
+            <Button
+              variant="outline"
+              size="icon"
+              onClick={reload}
+              className="size-10 shrink-0"
+              aria-label={to.title}
+            >
+              <RotateCcw className="size-4" aria-hidden="true" />
+            </Button>
+          </div>
+        ) : null}
 
         {data ? (
-        <AdminPagination
-          page={page}
-          total={data.total}
-          pageSize={data.pageSize}
-          locale={locale}
-          onPage={setPage}
-        />
-      ) : null}
+          <AdminPagination
+            page={page}
+            total={data.total}
+            pageSize={data.pageSize}
+            locale={locale}
+            onPage={setPage}
+          />
+        ) : null}
       </ListWorkspace>
 
       {loading && data ? (

@@ -78,6 +78,13 @@ for (const locale of ["ar", "en"])
             "font-size",
             "14px",
           );
+          if (path === "outbox" && info.project.name === "desktop") {
+            const scroller = list.locator('[data-slot="table-container"]');
+            expect(
+              await scroller.evaluate((el) => el.scrollWidth <= el.clientWidth),
+              "four-column outbox fits the desktop workspace",
+            ).toBe(true);
+          }
         }
         const accessibility = await new AxeBuilder({ page })
           .exclude("iframe")
