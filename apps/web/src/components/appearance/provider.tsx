@@ -100,7 +100,8 @@ export function ThemeToggle({
   compact?: boolean;
 }) {
   const ar = locale === "ar",
-    [mode, setMode] = useState("default");
+    [mode, setMode] = useState("default"),
+    [interactive, setInteractive] = useState(false);
   useEffect(() => {
     const update = () => {
       try {
@@ -111,6 +112,7 @@ export function ThemeToggle({
       }
     };
     update();
+    setInteractive(true);
     window.addEventListener("storage", update);
     window.addEventListener("so7ob-theme", update);
     return () => {
@@ -131,6 +133,7 @@ export function ThemeToggle({
       <span className="sr-only">{ar ? "وضع العرض" : "Color mode"}</span>
       <select
         aria-label={ar ? "وضع العرض" : "Color mode"}
+        disabled={!interactive}
         className={
           compact
             ? "absolute inset-0 h-full w-full cursor-pointer opacity-0"

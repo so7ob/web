@@ -196,7 +196,23 @@ for(const locale of ['ar','en'] as const)for(const mode of ['light','dark'] as c
 test('theme preference survives client navigation when browser storage is unavailable',async({page})=>{
   const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));page.on('console',m=>{if(m.type()==='error'&&/hydration|did not match|server rendered/i.test(m.text()))errors.push(m.text());});
   await page.addInitScript(()=>{for(const key of ['getItem','setItem','removeItem'])Object.defineProperty(Storage.prototype,key,{value(){throw new DOMException('Storage unavailable','SecurityError');}});});
-  await page.goto('/en');
+  let release!:()=>void;
+  const gate=new Promise<void>(resolve=>{release=resolve;});
+  let intercepted=0;
+  const entry='**/assets/index-*.js';
+  await page.route(entry,async route=>{intercepted++;await gate;await route.continue();});
+  try {
+    await page.goto('/en',{waitUntil:'commit'});
+    const toggle=page.getByLabel('Color mode',{exact:true}).filter({visible:true});
+    await expect(toggle).toBeVisible();
+    await expect(toggle).toBeDisabled();
+    await expect.poll(()=>intercepted).toBeGreaterThan(0);
+    release();
+    await expect(toggle).toBeEnabled();
+  } finally {
+    release();
+    await page.unroute(entry);
+  }
   await page.getByLabel('Color mode',{exact:true}).filter({visible:true}).selectOption('dark');
   await expect(page.locator('html')).toHaveAttribute('data-color-mode','dark');
   await page.locator('a[href="/en/contact"]').filter({visible:true}).first().click();
