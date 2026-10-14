@@ -1,6 +1,6 @@
 "use client";
 
-import { PageHeader, PageTitle } from "@/components/ui/workspace";
+import { PageHeading } from "@/components/ui/workspace";
 import {ErrorFeedback} from "@/components/errors/error-feedback";
 import {ApiError} from "@/lib/errors/transport";
 
@@ -105,12 +105,7 @@ export function ProfileForm({
 
   return (
     <div className="space-y-6">
-      <PageHeader className="flex items-center gap-3">
-        <span className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-accent text-brand-strong">
-          <User className="size-5" aria-hidden="true" />
-        </span>
-        <PageTitle>{t.title}</PageTitle>
-      </PageHeader>
+      <PageHeading title={t.title} />
 
       <section className="max-w-2xl rounded-2xl border border-border bg-card p-6">
         <ErrorFeedback error={formError} locale={locale} operation={t.title}/>

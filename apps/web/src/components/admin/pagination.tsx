@@ -53,7 +53,7 @@ export function AdminPagination({
   return (
     <nav
       className={cn(
-        "flex flex-wrap items-center justify-between gap-3 pt-2",
+        "ds-pagination flex flex-wrap items-center justify-between gap-3",
         className,
       )}
     >
@@ -93,7 +93,7 @@ export function AdminPagination({
               className={cn(
                 "size-10 rounded-full text-sm font-medium tabular-nums transition-colors",
                 item === page
-                  ? "border-transparent bg-inverse text-inverse-foreground hover:bg-inverse hover:text-inverse-foreground"
+                  ? "border-primary bg-primary text-primary-foreground hover:bg-primary-hover hover:text-primary-hover-foreground"
                   : "hover:bg-muted",
               )}
               onClick={() => onPage(item)}

@@ -1,7 +1,7 @@
 "use client";
 import { Textarea } from "@/components/ui/textarea";
 
-import { PageHeader, PageTitle, Toolbar } from "@/components/ui/workspace";
+import { PageHeading, Toolbar } from "@/components/ui/workspace";
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
@@ -338,19 +338,11 @@ export function MenusClient({ me, locale }: { me: Me; locale: Locale }) {
           await load(location);
         }}
       />
-      <PageHeader className="flex flex-wrap items-start justify-between gap-4">
-        <div className="flex items-start gap-3">
-          <span className="rounded-2xl bg-primary/10 p-3 text-primary">
-            <ListTree aria-hidden="true" className="size-6" />
-          </span>
-          <div>
-            <PageTitle>{tm.title}</PageTitle>
-            <p className="mt-1 text-sm leading-6 text-muted-foreground">
-              {tm.subtitle}
-            </p>
-          </div>
-        </div>
-        <Button
+      <PageHeading
+        title={tm.title}
+        description={tm.subtitle}
+        actions={
+          <Button
           onClick={() => void save()}
           disabled={
             saving ||
@@ -368,7 +360,8 @@ export function MenusClient({ me, locale }: { me: Me; locale: Locale }) {
           )}
           {saving ? tm.saving : tm.save}
         </Button>
-      </PageHeader>
+        }
+      />
       {readError && (
         <Toolbar
           role="alert"
@@ -377,7 +370,8 @@ export function MenusClient({ me, locale }: { me: Me; locale: Locale }) {
           <p className="text-sm text-destructive">{readError}</p>
           {!loaded && (
             <Button variant="outline" onClick={() => void load()}>
-              <RotateCcw className="size-4" aria-hidden="true" />
+              <RotateCcw className="size-4"
+                                        aria-hidden="true" />
               {tm.retry}
             </Button>
           )}
@@ -435,7 +429,8 @@ export function MenusClient({ me, locale }: { me: Me; locale: Locale }) {
                 {dirty[location] ? (
                   <span className="size-2 rounded-full bg-primary" />
                 ) : (
-                  <Check className="size-4" aria-hidden="true" />
+                  <Check className="size-4"
+                                        aria-hidden="true" />
                 )}
                 {dirty[location] ? tm.unsaved : tm.upToDate}
               </span>
@@ -487,7 +482,8 @@ export function MenusClient({ me, locale }: { me: Me; locale: Locale }) {
                     disabled={saving || refreshing || items.length >= MAX_ITEMS}
                     className="min-h-11 rounded-full"
                   >
-                    <Plus className="size-4" aria-hidden="true" />
+                    <Plus className="size-4"
+                                        aria-hidden="true" />
                     {tm.add}
                   </Button>
                 </div>
@@ -564,7 +560,7 @@ export function MenusClient({ me, locale }: { me: Me; locale: Locale }) {
                               >
                                 <ChevronUp
                                   className="size-4"
-                                  aria-hidden="true"
+                                        aria-hidden="true"
                                 />
                               </Button>
                               <Button
@@ -577,7 +573,7 @@ export function MenusClient({ me, locale }: { me: Me; locale: Locale }) {
                               >
                                 <ChevronDown
                                   className="size-4"
-                                  aria-hidden="true"
+                                        aria-hidden="true"
                                 />
                               </Button>
                               <Button
@@ -587,7 +583,8 @@ export function MenusClient({ me, locale }: { me: Me; locale: Locale }) {
                                 onClick={() => setRemoveKey(item.key)}
                                 aria-label={`${tm.remove}: ${itemLabel(item)}`}
                               >
-                                <Trash2 className="size-4" aria-hidden="true" />
+                                <Trash2 className="size-4"
+                                        aria-hidden="true" />
                               </Button>
                             </div>
                           </Toolbar>
@@ -827,12 +824,15 @@ export function MenusClient({ me, locale }: { me: Me; locale: Locale }) {
                 >
                   <div className="mb-4 flex items-center gap-2 border-b border-border pb-3 text-xs text-muted-foreground">
                     {location === "header" ? (
-                      <PanelTop className="size-4" aria-hidden="true" />
+                      <PanelTop className="size-4"
+                                        aria-hidden="true" />
                     ) : (
-                      <PanelBottom className="size-4" aria-hidden="true" />
+                      <PanelBottom className="size-4"
+                                        aria-hidden="true" />
                     )}
                     {tm[location]} ·{" "}
-                    {items.filter((item) => item.enabled).length} /{" "}
+                    {items
+                        .filter((item) => item.enabled).length} /{" "}
                     {items.length}
                   </div>
                   {items.some((item) => item.enabled) ? (

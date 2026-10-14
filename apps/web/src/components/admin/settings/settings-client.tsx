@@ -1,11 +1,10 @@
 import { NativeSelect } from "@/components/ui/native-select";
-import { Panel, PageTitle, Toolbar } from "@/components/ui/workspace";
+import { Panel, PageHeading, Toolbar } from "@/components/ui/workspace";
 import { siteConfig } from "@/config/site";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useBlocker, useSearchParams } from "react-router-dom";
 import { toast } from "sonner";
 import {
-  Settings,
   Save,
   RotateCcw,
   Palette,
@@ -73,9 +72,17 @@ function previewHtml(
       `identity.logo${ar ? "Ar" : "En"}${mode === "light" ? "Light" : "Dark"}`
     ] || (mode === "light" ? "/logo.png" : "/logo-white.png");
   const description = s[ar ? "sharing.descriptionAr" : "sharing.descriptionEn"];
-  const announcementColors:Record<string,string[]>={info:['var(--info-soft)','var(--info-foreground)'],warning:['var(--warning-soft)','var(--warning-foreground)'],success:['var(--success-soft)','var(--success-foreground)'],brand:['var(--primary)','var(--primary-foreground)']};
-  const announcementColorsSelected=announcementColors[s['announcement.variant']]??announcementColors.info;
-  return `<!doctype html><html lang="${lang}" dir="${ar ? "rtl" : "ltr"}" data-color-mode="${mode}"><head><title>${ar ? "معاينة الإعدادات" : "Settings preview"}</title><meta name="viewport" content="width=device-width,initial-scale=1"><style>${themeStyles(s)}*{box-sizing:border-box}body{margin:0;background:var(--background);color:var(--foreground);font-family:var(--site-font);font-size:15px;line-height:1.7}header{display:flex;align-items:center;gap:12px;padding:20px;background:var(--card);border-bottom:1px solid var(--border)}img{max-width:100%;object-fit:contain}main{padding:20px}h1{font-size:22px;margin:0}h2{font-size:18px}p{color:var(--muted-foreground)}article{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:20px;margin-bottom:16px}button,input{font:inherit;border-radius:var(--radius);min-height:44px;padding:var(--control-padding) 12px}button{background:var(--primary);color:var(--primary-foreground);border:0}input{width:100%;border:1px solid var(--input);background:var(--card);color:var(--foreground);margin:8px 0 16px}table{border-collapse:collapse;width:100%}td,th{text-align:start;border-bottom:1px solid var(--border);padding:var(--row-padding) 4px}a{color:var(--primary)}.tag{background:var(--accent);color:var(--accent-foreground);padding:3px 8px;border-radius:var(--radius)}</style></head><body><header><img src="${esc(image)}" alt="${esc(name)}" width="48" height="48">${s["identity.showName"] === "false" ? "" : `<strong>${esc(name)}</strong>`}</header><main>${section === "sharing" ? `<article><small>example.invalid</small><h1><a>${esc(name)}</a></h1><p>${esc(description || (ar ? "وصف الموقع في نتائج البحث والمشاركة" : "Site description in search and sharing"))}</p>${s["sharing.image"] ? `<img src="${esc(s["sharing.image"])}" alt="" width="320">` : ""}</article>` : section === "announcement" ? `<article style="background:${announcementColorsSelected[0]};color:${announcementColorsSelected[1]}"><span class="tag">${s["announcement.enabled"] === "true" ? (ar ? "مفعّل — يخضع للجدولة" : "Enabled — subject to schedule") : ar ? "غير مفعّل" : "Disabled"}</span><p style="color:inherit">${esc(s[ar ? "announcement.messageAr" : "announcement.messageEn"])}</p><a style="color:inherit">${esc(s[ar ? "announcement.ctaLabelAr" : "announcement.ctaLabelEn"])}</a></article>` : `<article><span class="tag">${ar ? "معاينة" : "Preview"}</span><h1>${ar ? "تفاصيل واضحة وتجربة مريحة" : "Clear details, comfortable experience"}</h1><p>${ar ? "معاينة محلية للتعديلات قبل حفظها." : "A local preview of your changes before saving."}</p><label>${ar ? "عنوان الطلب" : "Request title"}<input value="${ar ? "تطوير الموقع" : "Website development"}" readonly></label><button type="button">${ar ? "إرسال الطلب" : "Send request"}</button> <button type="button" style="background:transparent;color:var(--digital);border:1px solid var(--digital)">${ar ? "عرض التفاصيل" : "View details"}</button></article><article><h2>${ar ? "آخر الطلبات" : "Recent requests"}</h2><table><thead><tr><th>${ar ? "الموضوع" : "Subject"}</th><th>${ar ? "الحالة" : "Status"}</th></tr></thead><tbody><tr><td>${ar ? "تصميم واجهة" : "Interface design"}</td><td><span class="tag">${ar ? "جديد" : "New"}</span></td></tr><tr><td>${ar ? "استفسار عام" : "General inquiry"}</td><td>${ar ? "تم الرد" : "Replied"}</td></tr></tbody></table></article>`}</main></body></html>`;
+  const announcementColors: Record<string, string[]> = {
+    info: ["var(--info-soft)", "var(--info-foreground)"],
+    warning: ["var(--warning-soft)", "var(--warning-foreground)"],
+    success: ["var(--success-soft)", "var(--success-foreground)"],
+    brand: ["var(--primary)", "var(--primary-foreground)"],
+  };
+  const announcementColorsSelected =
+    announcementColors[s["announcement.variant"]] ?? announcementColors.info;
+  return `<!doctype html><html lang="${lang}" dir="${ar ? "rtl" : "ltr"}" data-color-mode="${mode}"><head><title>${ar ? "معاينة الإعدادات" : "Settings preview"}</title><meta name="viewport" content="width=device-width,initial-scale=1"><style>${themeStyles(s)}*{box-sizing:border-box}body{margin:0;background:var(--background);color:var(--foreground);font-family:var(--site-font);font-size:15px;line-height:1.7}header{display:flex;align-items:center;gap:12px;padding:20px;background:var(--card);border-bottom:1px solid var(--border)}img{max-width:100%;object-fit:contain}main{padding:20px}h1{font-size:22px;margin:0}h2{font-size:18px}p{color:var(--muted-foreground)}article{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:20px;margin-bottom:16px}button,input{font:inherit;border-radius:var(--radius);min-height:44px;padding:var(--control-padding) 12px}button{background:var(--primary);color:var(--primary-foreground);border:0}input{width:100%;border:1px solid var(--input);background:var(--card);color:var(--foreground);margin:8px 0 16px}table{border-collapse:collapse;width:100%}td,th{text-align:start;border-bottom:1px solid var(--border);padding:var(--row-padding) 4px}a{color:var(--primary)}.tag{background:var(--accent);color:var(--accent-foreground);padding:3px 8px;border-radius:var(--radius)}</style></head><body><header><img src="${esc(image)}" alt="${esc(name)}" width="48" height="48">${s["identity.showName"] === "false" ? "" : `<strong>${esc(name)}</strong>`}</header><main>${section === "sharing" ? `<article><small>example.invalid</small><h1><a>${esc(name)}</a></h1><p>${esc(description || (ar ? "وصف الموقع في نتائج البحث والمشاركة" : "Site description in search and sharing"))}</p>${s["sharing.image"] ? `<img src="${esc(s["sharing.image"])}" alt="" width="320">` : ""}</article>` : section === "announcement" ? `<article style="background:${announcementColorsSelected[0]};color:${announcementColorsSelected[1]}"><span class="tag">${s["announcement.enabled"] === "true" ? (ar ? "مفعّل — يخضع للجدولة" : "Enabled — subject to schedule") : ar
+                  ? "غير مفعّل"
+                  : "Disabled"}</span><p style="color:inherit">${esc(s[ar ? "announcement.messageAr" : "announcement.messageEn"])}</p><a style="color:inherit">${esc(s[ar ? "announcement.ctaLabelAr" : "announcement.ctaLabelEn"])}</a></article>` : `<article><span class="tag">${ar ? "معاينة" : "Preview"}</span><h1>${ar ? "تفاصيل واضحة وتجربة مريحة" : "Clear details, comfortable experience"}</h1><p>${ar ? "معاينة محلية للتعديلات قبل حفظها." : "A local preview of your changes before saving."}</p><label>${ar ? "عنوان الطلب" : "Request title"}<input value="${ar ? "تطوير الموقع" : "Website development"}" readonly></label><button type="button">${ar ? "إرسال الطلب" : "Send request"}</button> <button type="button" style="background:transparent;color:var(--digital);border:1px solid var(--digital)">${ar ? "عرض التفاصيل" : "View details"}</button></article><article><h2>${ar ? "آخر الطلبات" : "Recent requests"}</h2><table><thead><tr><th>${ar ? "الموضوع" : "Subject"}</th><th>${ar ? "الحالة" : "Status"}</th></tr></thead><tbody><tr><td>${ar ? "تصميم واجهة" : "Interface design"}</td><td><span class="tag">${ar ? "جديد" : "New"}</span></td></tr><tr><td>${ar ? "استفسار عام" : "General inquiry"}</td><td>${ar ? "تم الرد" : "Replied"}</td></tr></tbody></table></article>`}</main></body></html>`;
 }
 export function SettingsClient({ me, locale }: { me: Me; locale: Locale }) {
   const ar = locale === "ar",
@@ -360,15 +367,15 @@ export function SettingsClient({ me, locale }: { me: Me; locale: Locale }) {
           {label(key)}
         </Label>
         {media ? (
-          <div className="space-y-3 rounded-xl border border-dashed bg-muted/30 p-4">
+          <div className="space-y-3 rounded-lg border bg-background p-3">
             {value ? (
               <img
                 src={value}
                 alt={label(key)}
-                className="h-20 max-w-full rounded bg-card p-2 object-contain"
+                className="h-12 max-w-full rounded bg-card p-1 object-contain"
               />
             ) : (
-              <div className="flex h-20 items-center gap-2 text-sm text-muted-foreground">
+              <div className="flex min-h-12 items-center gap-2 text-sm text-muted-foreground">
                 <ImagePlus aria-hidden="true" />
                 {ar ? "استخدام الصورة الافتراضية" : "Using the default image"}
               </div>
@@ -401,7 +408,7 @@ export function SettingsClient({ me, locale }: { me: Me; locale: Locale }) {
             )}
           </div>
         ) : booleanKeys.includes(key) ? (
-          <div className="flex min-h-11 items-center gap-3 rounded-xl border bg-muted/30 px-3">
+          <div className="flex min-h-11 items-center gap-3 px-1">
             <input
               id={id}
               type="checkbox"
@@ -492,25 +499,60 @@ export function SettingsClient({ me, locale }: { me: Me; locale: Locale }) {
   };
   return (
     <div className="space-y-6">
-      <div className="ds-page-header">
-        <div className="flex items-center gap-3">
-          <span className="rounded-2xl bg-accent p-3 text-primary">
-            <Settings aria-hidden="true" />
-          </span>
-          <div>
-            <PageTitle>{ts.title}</PageTitle>
-            <p className="mt-1 max-w-2xl text-sm text-muted-foreground">
-              {ar
-                ? "هوية متناسقة، ومظهر يناسبك، وإعدادات واضحة في مكان واحد."
-                : "A consistent identity, your preferred appearance, and clear settings in one place."}
-            </p>
-          </div>
-        </div>
-        <span
-          className="rounded-full border bg-card px-3 py-2 text-sm"
-          role="status"
-        >
-          {dirty ? (
+      <PageHeading
+        title={ts.title}
+        description={
+          ar
+            ? "إدارة هوية المنصة ومظهرها وإعداداتها."
+            : "Manage your platform identity, appearance and settings."
+        }
+        actions={
+          <Toolbar className="flex flex-wrap items-center gap-2">
+            <div className="flex flex-wrap gap-2">
+              <Button
+                variant="ghost"
+                disabled={saving || !currentDirty}
+                onClick={() => reset(false)}
+              >
+                <RotateCcw className="size-4" />
+                {ar ? "التراجع" : "Revert"}
+              </Button>
+              <Button
+                variant="outline"
+                disabled={saving}
+                onClick={() => reset(true)}
+              >
+                <Palette className="size-4" />
+                {ar ? "استعادة الافتراضي" : "Restore defaults"}
+              </Button>
+            </div>
+            <Button
+              className="min-h-11"
+              onClick={() => void save()}
+              disabled={
+                saving ||
+                !currentDirty ||
+                blocked[section] ||
+                (section === "tracking" &&
+                  form["response.hours"] !== initial["response.hours"] &&
+                  !applyPolicy)
+              }
+            >
+              {saving ? (
+                <Loader2 className="size-4 animate-spin" />
+              ) : (
+                <Save className="size-4" />
+              )}
+              {ts.save}
+            </Button>
+          </Toolbar>
+        }
+        metadata={
+          <span
+            className="inline-flex items-center gap-2 text-sm text-muted-foreground"
+            role="status"
+          >
+            {dirty ? (
             `${dirtySections.length} ${ar ? "أقسام غير محفوظة" : "unsaved sections"}`
           ) : (
             <>
@@ -518,14 +560,15 @@ export function SettingsClient({ me, locale }: { me: Me; locale: Locale }) {
               {ar ? "كل التعديلات محفوظة" : "All changes saved"}
             </>
           )}
-        </span>
-      </div>
-      <div className="grid items-start gap-5 lg:grid-cols-[210px_minmax(0,1fr)]">
+          </span>
+        }
+      />
+      <div className="space-y-6">
         <nav
           aria-label={ar ? "أقسام الإعدادات" : "Settings sections"}
-          className="lg:sticky lg:top-24"
+          className="space-y-3"
         >
-          <div className="ds-section-nav grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-1">
+          <div className="ds-section-nav">
             {SETTING_SECTIONS.map((s) => (
               <a
                 key={s}
@@ -539,9 +582,9 @@ export function SettingsClient({ me, locale }: { me: Me; locale: Locale }) {
                   setFailure(null);
                 }}
                 className={cn(
-                  "flex min-h-12 items-center justify-between gap-2 rounded-xl px-3 text-sm font-medium",
+                  "inline-flex min-h-11 items-center gap-2 px-4 text-sm font-medium",
                   s === section
-                    ? "bg-card text-primary"
+                    ? "text-primary"
                     : "text-muted-foreground hover:bg-muted",
                 )}
               >
@@ -555,7 +598,7 @@ export function SettingsClient({ me, locale }: { me: Me; locale: Locale }) {
               </a>
             ))}
           </div>
-          <p className="mt-3 px-2 text-xs leading-6 text-muted-foreground">
+          <p className="text-sm leading-6 text-muted-foreground">
             {ar
               ? "يُحفظ كل قسم على حدة. المعاينة لا تغيّر الموقع قبل الحفظ."
               : "Each section saves independently. Preview changes stay local until saved."}
@@ -578,9 +621,9 @@ export function SettingsClient({ me, locale }: { me: Me; locale: Locale }) {
               {failure || loadError}
             </p>
           )}
-          <div className="grid items-start gap-5 xl:grid-cols-[minmax(0,1fr)_360px]">
+          <div className="grid items-start gap-6 xl:grid-cols-[minmax(0,1fr)_340px]">
             <section
-              className="min-w-0 rounded-2xl border bg-card p-4 sm:p-6"
+              className="ds-panel min-w-0"
               aria-labelledby="settings-section-title"
             >
               <div className="mb-6 border-b pb-4">
@@ -769,12 +812,12 @@ export function SettingsClient({ me, locale }: { me: Me; locale: Locale }) {
             {["identity", "appearance", "sharing", "announcement"].includes(
               section,
             ) && (
-              <aside className="min-w-0 space-y-3 rounded-2xl border bg-card p-4 xl:sticky xl:top-24">
+              <aside className="min-w-0 space-y-4 xl:sticky xl:top-24">
                 <div className="flex items-center gap-2 text-sm font-semibold">
                   <Eye className="size-4" />
                   {ar ? "معاينة قبل الحفظ" : "Preview before saving"}
                 </div>
-                <div className="flex flex-wrap gap-2">
+                <div className="grid grid-cols-2 gap-2">
                   <NativeSelect
                     aria-label={ar ? "لغة المعاينة" : "Preview language"}
                     value={previewLocale}
@@ -792,8 +835,12 @@ export function SettingsClient({ me, locale }: { me: Me; locale: Locale }) {
                     }
                     className="min-h-11 rounded-lg border bg-card px-3 text-sm"
                   >
-                    <option value="light">{ar ? "فاتح" : "Light"}</option>
-                    <option value="dark">{ar ? "داكن" : "Dark"}</option>
+                    <option value="light">{ar
+                          ? "فاتح"
+                          : "Light"}</option>
+                    <option value="dark">{ar
+                          ? "داكن"
+                          : "Dark"}</option>
                   </NativeSelect>
                 </div>
                 <iframe
@@ -805,7 +852,7 @@ export function SettingsClient({ me, locale }: { me: Me; locale: Locale }) {
                     previewMode,
                     section,
                   )}
-                  className="h-[600px] w-full rounded-xl border bg-background"
+                  className="h-[560px] w-full rounded-lg border bg-background"
                 />
                 <p className="text-xs text-muted-foreground">
                   {ar
@@ -815,45 +862,6 @@ export function SettingsClient({ me, locale }: { me: Me; locale: Locale }) {
               </aside>
             )}
           </div>
-          <Toolbar className="sticky bottom-3 z-20 flex flex-wrap items-center justify-between gap-3 rounded-2xl border bg-card p-3 shadow-lg">
-            <div className="flex flex-wrap gap-2">
-              <Button
-                variant="ghost"
-                disabled={saving || !currentDirty}
-                onClick={() => reset(false)}
-              >
-                <RotateCcw className="size-4" />
-                {ar ? "التراجع" : "Revert"}
-              </Button>
-              <Button
-                variant="outline"
-                disabled={saving}
-                onClick={() => reset(true)}
-              >
-                <Palette className="size-4" />
-                {ar ? "استعادة الافتراضي" : "Restore defaults"}
-              </Button>
-            </div>
-            <Button
-              className="min-h-11"
-              onClick={() => void save()}
-              disabled={
-                saving ||
-                !currentDirty ||
-                blocked[section] ||
-                (section === "tracking" &&
-                  form["response.hours"] !== initial["response.hours"] &&
-                  !applyPolicy)
-              }
-            >
-              {saving ? (
-                <Loader2 className="size-4 animate-spin" />
-              ) : (
-                <Save className="size-4" />
-              )}
-              {ts.save}
-            </Button>
-          </Toolbar>
         </div>
       </div>
       <MediaPicker

@@ -1,6 +1,6 @@
 "use client";
 
-import { PageHeader, PageTitle, Toolbar } from "@/components/ui/workspace";
+import { PageHeading, Toolbar } from "@/components/ui/workspace";
 import { TrackPanel } from "@/components/admin/track/track-panel";
 import { ErrorFeedback } from "@/components/errors/error-feedback";
 import { asApiError } from "@/lib/errors/transport";
@@ -382,8 +382,10 @@ export function RequestDetailClient({
         </p>
       </div>
       {/* الترويسة */}
-      <PageHeader className="flex flex-wrap items-center gap-3">
-        <Button
+      <PageHeading
+        title={detail.refCode}
+        back={
+          <Button
           asChild
           variant="ghost"
           size="sm"
@@ -395,10 +397,9 @@ export function RequestDetailClient({
             {tr.title}
           </Link>
         </Button>
-        <PageTitle>
-          {detail.refCode}
-        </PageTitle>
-        <div className="flex flex-wrap items-center gap-2">
+        }
+        metadata={
+          <div className="flex flex-wrap items-center gap-2">
           <StatusBadge
             status={detail.status}
             label={
@@ -419,7 +420,9 @@ export function RequestDetailClient({
             </span>
           ) : null}
         </div>
-        <Toolbar className="ms-auto flex flex-wrap items-center gap-2 print:hidden">
+        }
+        actions={
+          <Toolbar className="ms-auto flex flex-wrap items-center gap-2 print:hidden">
           <Button
             variant="outline"
             size="sm"
@@ -445,7 +448,8 @@ export function RequestDetailClient({
             {tr.clientView}
           </Button>
         </Toolbar>
-      </PageHeader>
+        }
+      />
 
       <div className="grid grid-cols-1 items-start gap-6 lg:grid-cols-[minmax(0,1fr)_360px] print:block print:space-y-6">
         {/* المحادثة + الملحن */}

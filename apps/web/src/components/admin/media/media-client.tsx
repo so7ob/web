@@ -1,6 +1,6 @@
 "use client";
 
-import { PageTitle } from "@/components/ui/workspace";
+import { PageHeading } from "@/components/ui/workspace";
 
 /**
  * مكتبة الوسائط (§7): رفع بمجلد، بحث فوري، تصفية بمجلدات، شارة استخدام
@@ -40,8 +40,22 @@ import { can } from "@/lib/auth/permissions";
 import type { Locale } from "@/lib/i18n";
 import { EmptyState } from "@/components/admin/empty-state";
 import { AdminPagination } from "@/components/admin/pagination";
-import { apiGet, apiSend, apiUpload, ApiError, apiErrorMessage, buildQuery, fmtDate, formatBytes } from "@/components/admin/helpers";
-import type { MediaResponse, Me, MediaRow, MediaUsageLocationView } from "../types";
+import {
+  apiGet,
+  apiSend,
+  apiUpload,
+  ApiError,
+  apiErrorMessage,
+  buildQuery,
+  fmtDate,
+  formatBytes,
+} from "@/components/admin/helpers";
+import type {
+  MediaResponse,
+  Me,
+  MediaRow,
+  MediaUsageLocationView,
+} from "../types";
 import { cn } from "@/lib/utils";
 
 interface MediaClientProps {
@@ -51,7 +65,9 @@ interface MediaClientProps {
 
 export function MediaClient({ me, locale }: MediaClientProps) {
   const [interactive, setInteractive] = useState(false);
-  useEffect(() => { setInteractive(true); }, []);
+  useEffect(() => {
+    setInteractive(true);
+  }, []);
   const t = getPortalContent(locale);
   const tmed = t.admin.media;
 
@@ -71,7 +87,10 @@ export function MediaClient({ me, locale }: MediaClientProps) {
   const [folderDraft, setFolderDraft] = useState("general");
   const fileRef = useRef<HTMLInputElement>(null);
   const [deleteTarget, setDeleteTarget] = useState<MediaRow | null>(null);
-  const [blockedUsage, setBlockedUsage] = useState<{ item: MediaRow; usage: MediaUsageLocationView[] } | null>(null);
+  const [blockedUsage, setBlockedUsage] = useState<{
+    item: MediaRow;
+    usage: MediaUsageLocationView[];
+  } | null>(null);
   const [deleting, setDeleting] = useState(false);
   const [copiedId, setCopiedId] = useState<string | null>(null);
   const [altEdits, setAltEdits] = useState<Record<string, string>>({});
@@ -95,7 +114,9 @@ export function MediaClient({ me, locale }: MediaClientProps) {
       setLoading(true);
       setError(null);
       try {
-        const res = await apiGet<MediaResponse>(`/api/admin/media${buildQuery({ page, search, folder, usage: usage === "all" ? undefined : usage })}`);
+        const res = await apiGet<MediaResponse>(
+          `/api/admin/media${buildQuery({ page, search, folder, usage: usage === "all" ? undefined : usage })}`,
+        );
         if (!signal.aborted) setData(res);
       } catch (err) {
         if (!signal.aborted && err instanceof ApiError) setError(apiErrorMessage(err, t.auth.errors));
@@ -103,7 +124,7 @@ export function MediaClient({ me, locale }: MediaClientProps) {
         if (!signal.aborted) setLoading(false);
       }
     },
-    [page, search, folder, usage, t.auth.errors]
+    [page, search, folder, usage, t.auth.errors],
   );
 
   useEffect(() => {
@@ -158,8 +179,8 @@ export function MediaClient({ me, locale }: MediaClientProps) {
       toast.success(t.admin.users.saved);
       reload();
     } catch (err) {
-      toast.error(apiErrorMessage(err, t.auth.errors));
-    } finally {
+        toast.error(apiErrorMessage(err, t.auth.errors));
+      } finally {
       setSavingAltId(null);
     }
   };
@@ -172,8 +193,8 @@ export function MediaClient({ me, locale }: MediaClientProps) {
       toast.success(tmed.folderSaved);
       reload();
     } catch (err) {
-      toast.error(apiErrorMessage(err, t.auth.errors));
-    } finally {
+        toast.error(apiErrorMessage(err, t.auth.errors));
+      } finally {
       setMovingFolderId(null);
     }
   };
@@ -205,7 +226,9 @@ export function MediaClient({ me, locale }: MediaClientProps) {
       reload();
     } catch (err) {
       if (err instanceof ApiError && err.code === "media_in_use") {
-        const body = err.body as { usage?: MediaUsageLocationView[] } | undefined;
+        const body = err.body as
+          | { usage?: MediaUsageLocationView[] }
+          | undefined;
         setDeleteTarget(null);
         setBlockedUsage({ item: deleteTarget, usage: body?.usage ?? [] });
       } else {
@@ -219,7 +242,9 @@ export function MediaClient({ me, locale }: MediaClientProps) {
   const folders = useMemo(() => {
     const fromData = data?.folders ?? [];
     if (folderDraft.trim() && !fromData.includes(folderDraft.trim())) {
-      return [...fromData, folderDraft.trim()].sort((a, b) => a.localeCompare(b));
+      return [...fromData, folderDraft.trim()].sort((a, b) =>
+        a.localeCompare(b),
+      );
     }
     return fromData;
   }, [data?.folders, folderDraft]);
@@ -235,15 +260,7 @@ export function MediaClient({ me, locale }: MediaClientProps) {
 
   return (
     <div className="space-y-5">
-      <div className="flex items-center gap-3">
-        <span className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-accent text-brand-strong">
-          <Images className="size-5" aria-hidden="true" />
-        </span>
-        <div>
-          <PageTitle>{tmed.title}</PageTitle>
-          <p className="mt-1 text-sm text-muted-foreground">{tmed.subtitle}</p>
-        </div>
-      </div>
+      <PageHeading title={tmed.title} description={tmed.subtitle} />
 
       {/* بطاقة الرفع */}
       {mayUpload ? (
@@ -291,7 +308,11 @@ export function MediaClient({ me, locale }: MediaClientProps) {
               />
             </div>
             <Button onClick={upload} disabled={!interactive || uploading} className="min-h-11 rounded-full">
-              {uploading ? <Loader2 className="size-4 animate-spin" aria-hidden="true" /> : <Upload className="size-4" aria-hidden="true" />}
+              {uploading ? (
+                <Loader2 className="size-4 animate-spin" aria-hidden="true" />
+              ) : (
+                <Upload className="size-4" aria-hidden="true" />
+              )}
               {tmed.upload}
             </Button>
           </div>
@@ -315,13 +336,16 @@ export function MediaClient({ me, locale }: MediaClientProps) {
           <div className="flex flex-wrap items-center gap-1.5" role="group" aria-label={tmed.folder}>
             <button
               type="button"
-              onClick={() => { setFolder(""); setPage(1); }}
+              onClick={() => {
+                setFolder("");
+                setPage(1);
+              }}
               aria-pressed={folder === ""}
               className={cn(
                 "inline-flex min-h-9 items-center gap-1.5 rounded-full border px-3.5 text-xs font-medium transition-colors",
                 folder === ""
                   ? "border-brand bg-brand text-on-brand shadow-sm"
-                  : "border-border bg-card text-muted-foreground hover:border-brand/40 hover:text-brand-strong"
+                  : "border-border bg-card text-muted-foreground hover:border-brand/40 hover:text-brand-strong",
               )}
             >
               <Layers className="size-3.5" aria-hidden="true" />
@@ -331,14 +355,17 @@ export function MediaClient({ me, locale }: MediaClientProps) {
               <button
                 key={f}
                 type="button"
-                onClick={() => { setFolder(f); setPage(1); }}
+                onClick={() => {
+                  setFolder(f);
+                  setPage(1);
+                }}
                 aria-pressed={folder === f}
                 dir="ltr"
                 className={cn(
                   "inline-flex min-h-9 items-center gap-1.5 rounded-full border px-3.5 text-xs font-medium transition-colors",
                   folder === f
                     ? "border-brand bg-brand text-on-brand shadow-sm"
-                    : "border-border bg-card text-muted-foreground hover:border-brand/40 hover:text-brand-strong"
+                    : "border-border bg-card text-muted-foreground hover:border-brand/40 hover:text-brand-strong",
                 )}
               >
                 <FolderOpen className="size-3.5" aria-hidden="true" />
@@ -349,15 +376,35 @@ export function MediaClient({ me, locale }: MediaClientProps) {
         )}
         {/* تصفية بحالة الاستخدام — شارة إجمالي غير المستخدم على الفلتر نفسه (جولة 37) */}
         <div className="flex flex-wrap items-center gap-1.5" role="group" aria-label={tmed.usageFilterLabel}>
-          {([
-            { key: "all", label: tmed.usageFilterAll, icon: Layers, count: null as number | null },
-            { key: "in_use", label: tmed.usageFilterInUse, icon: CircleCheckBig, count: null as number | null },
-            { key: "unused", label: tmed.usageFilterUnused, icon: CircleSlash, count: data?.unusedTotal ?? 0 },
-          ] as const).map(({ key, label, icon: Icon, count }) => (
+          {(
+            [
+              {
+                key: "all",
+                label: tmed.usageFilterAll,
+                icon: Layers,
+                count: null as number | null,
+              },
+              {
+                key: "in_use",
+                label: tmed.usageFilterInUse,
+                icon: CircleCheckBig,
+                count: null as number | null,
+              },
+              {
+                key: "unused",
+                label: tmed.usageFilterUnused,
+                icon: CircleSlash,
+                count: data?.unusedTotal ?? 0,
+              },
+            ] as const
+          ).map(({ key, label, icon: Icon, count }) => (
             <button
               key={key}
               type="button"
-              onClick={() => { setUsage(key); setPage(1); }}
+              onClick={() => {
+                setUsage(key);
+                setPage(1);
+              }}
               aria-pressed={usage === key}
               className={cn(
                 "inline-flex min-h-9 items-center gap-1.5 rounded-full border px-3.5 text-xs font-medium transition-colors",
@@ -367,7 +414,7 @@ export function MediaClient({ me, locale }: MediaClientProps) {
                     : "border-brand bg-brand text-on-brand shadow-sm"
                   : key === "unused" && count > 0
                     ? "border-warning-border bg-warning-soft text-warning-foreground hover:border-warning-border"
-                    : "border-border bg-card text-muted-foreground hover:border-brand/40 hover:text-brand-strong"
+                    : "border-border bg-card text-muted-foreground hover:border-brand/40 hover:text-brand-strong",
               )}
             >
               <Icon className="size-3.5" aria-hidden="true" />
@@ -376,7 +423,7 @@ export function MediaClient({ me, locale }: MediaClientProps) {
                 <span
                   className={cn(
                     "rounded-full px-1.5 py-px text-[10px] font-bold tabular-nums",
-                    usage === "unused" ? "bg-card/25 text-inverse-foreground" : "bg-warning-soft/80 text-warning-foreground"
+                    usage === "unused" ? "bg-card/25 text-inverse-foreground" : "bg-warning-soft/80 text-warning-foreground",
                   )}
                 >
                   {count}
@@ -425,7 +472,7 @@ export function MediaClient({ me, locale }: MediaClientProps) {
                 <span
                   className={cn(
                     "absolute end-2 top-2 inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[10px] font-semibold shadow-sm backdrop-blur",
-                    item.usageCount > 0 ? "bg-success/90 text-on-success" : "bg-card/90 text-muted-foreground"
+                    item.usageCount > 0 ? "bg-success/90 text-on-success" : "bg-card/90 text-muted-foreground",
                   )}
                 >
                   {item.usageCount > 0 ? (
@@ -472,18 +519,27 @@ export function MediaClient({ me, locale }: MediaClientProps) {
                   {item.filename}
                 </p>
                 <p className="text-xs tabular-nums text-muted-foreground">
-                  {formatBytes(item.size)} · {fmtDate(item.createdAt, locale)} · {item.uploadedBy}
+                  {formatBytes(item.size)} · {fmtDate(item.createdAt, locale)} ·{" "}
+                  {item.uploadedBy}
                 </p>
                 {mayManage ? (
                   <div className="grid gap-2">
                     <Input
                       value={altEdits[item.id] ?? item.altText ?? ""}
-                      onChange={(e) => setAltEdits((prev) => ({ ...prev, [item.id]: e.target.value }))}
+                      onChange={(e) =>
+                        setAltEdits((prev) => ({
+                          ...prev,
+                          [item.id]: e.target.value,
+                        }))
+                      }
                       onBlur={() => saveAlt(item)}
                       placeholder={tmed.alt}
                       aria-label={`${tmed.alt} — ${item.filename}`}
                       maxLength={300}
-                      className={cn("min-h-10 text-xs focus-visible:ring-2 focus-visible:ring-ring/40", savingAltId === item.id && "opacity-60")}
+                      className={cn(
+                        "min-h-10 text-xs focus-visible:ring-2 focus-visible:ring-ring/40",
+                        savingAltId === item.id && "opacity-60",
+                      )}
                     />
                     <div className="flex items-center gap-2">
                       <FolderOpen className="size-3.5 shrink-0 text-muted-foreground" aria-hidden="true" />
@@ -532,7 +588,9 @@ export function MediaClient({ me, locale }: MediaClientProps) {
           <AlertDialogFooter>
             <AlertDialogCancel className="min-h-11 rounded-full">{t.admin.users.cancel}</AlertDialogCancel>
             <AlertDialogAction onClick={remove} disabled={deleting} className="min-h-11 rounded-full bg-destructive text-destructive-foreground hover:bg-destructive/90">
-              {deleting ? <Loader2 className="size-4 animate-spin" aria-hidden="true" /> : null}
+              {deleting ? (
+                <Loader2 className="size-4 animate-spin" aria-hidden="true" />
+              ) : null}
               {tmed.delete}
             </AlertDialogAction>
           </AlertDialogFooter>
@@ -560,8 +618,12 @@ export function MediaClient({ me, locale }: MediaClientProps) {
                 <li key={`${u.entityId}-${u.kind}-${u.locale ?? "og"}-${i}`} className="flex items-center justify-between gap-2">
                   <span className="truncate font-medium text-navy">
                     {locale === "en" ? u.titleEn : u.titleAr}
-                    {u.archived ? <span className="ms-1.5 text-xs font-normal text-muted-foreground">({tmed.usageArchived})</span> : null}
-                    {u.locale ? <span className="ms-1.5 text-xs text-muted-foreground">({u.locale.toUpperCase()})</span> : null}
+                    {u.archived ? (
+                      <span className="ms-1.5 text-xs font-normal text-muted-foreground">({tmed.usageArchived})</span>
+                    ) : null}
+                    {u.locale ? (
+                      <span className="ms-1.5 text-xs text-muted-foreground">({u.locale.toUpperCase()})</span>
+                    ) : null}
                   </span>
                   <Badge variant="secondary" className="shrink-0 text-[10px]">
                     {usageKindLabel(u.kind)}

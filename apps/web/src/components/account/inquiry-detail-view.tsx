@@ -1,6 +1,6 @@
 "use client";
 
-import { Panel, PageHeader, PageTitle, Toolbar } from "@/components/ui/workspace";
+import { Panel, PageHeading, Toolbar } from "@/components/ui/workspace";
 import {ErrorFeedback} from '@/components/errors/error-feedback';
 import {ApiError} from '@/lib/errors/transport';
 
@@ -170,8 +170,7 @@ export function InquiryDetailView({
           {siteName} · {new Date().toLocaleDateString(locale)}
         </p>
       </div>
-      <PageHeader className="flex flex-wrap items-center gap-3">
-        <Button
+      <PageHeading title={<bdi dir="ltr">{inquiry.refCode}</bdi>} back={<Button
           asChild
           variant="ghost"
           className="h-11 rounded-full px-4 font-semibold text-muted-foreground focus-visible:ring-2 focus-visible:ring-ring/40 print:hidden"
@@ -180,11 +179,7 @@ export function InquiryDetailView({
             <BackIcon className="h-4 w-4" aria-hidden="true" />
             {t.back}
           </Link>
-        </Button>
-        <PageTitle  dir="ltr">
-          {inquiry.refCode}
-        </PageTitle>
-        <div className="flex flex-wrap items-center gap-2">
+        </Button>} metadata={<div className="flex flex-wrap items-center gap-2">
           <StatusBadge
             status={inquiry.status}
             label={statusLabel}
@@ -193,8 +188,7 @@ export function InquiryDetailView({
           <span className="rounded-full bg-accent px-2.5 py-0.5 text-xs font-medium text-brand-strong">
             {t.categories[inquiry.category] ?? inquiry.category}
           </span>
-        </div>
-        <Button
+        </div>} actions={<Button
           variant="outline"
           onClick={() => window.print()}
           aria-label={t.print}
@@ -202,8 +196,7 @@ export function InquiryDetailView({
         >
           <Printer className="h-4 w-4" aria-hidden="true" />
           {t.print}
-        </Button>
-      </PageHeader>
+        </Button>} />
 
       <h2 className="text-lg font-semibold text-navy">{inquiry.subject}</h2>
 

@@ -1,6 +1,6 @@
 /**
  * حالة فراغ موحدة لقوائم لوحة الإدارة — أيقونة + عنوان + شرح.
- * إحساس بطاقة بحد متقطع + دائرة أيقونة ملوّنة.
+ * يستخدم سطح القائمة نفسه لتجنب الحاويات المتداخلة.
  */
 import type { LucideIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -12,19 +12,26 @@ interface EmptyStateProps {
   className?: string;
 }
 
-export function EmptyState({ icon: Icon, title, body, className }: EmptyStateProps) {
+export function EmptyState({
+  icon: Icon,
+  title,
+  body,
+  className,
+}: EmptyStateProps) {
   return (
     <div
       className={cn(
-        "flex flex-col items-center justify-center gap-2 rounded-2xl border border-dashed border-border/80 bg-muted/20 px-6 py-12 text-center",
-        className
+        "flex flex-col items-center justify-center gap-3 px-6 py-12 text-center",
+        className,
       )}
     >
-      <div className="flex size-12 items-center justify-center rounded-full bg-accent text-brand-strong ring-8 ring-accent/50">
+      <div className="flex size-10 items-center justify-center text-muted-foreground">
         <Icon className="size-6" aria-hidden="true" />
       </div>
       <p className="text-sm font-semibold text-navy">{title}</p>
-      {body ? <p className="max-w-sm text-sm text-muted-foreground">{body}</p> : null}
+      {body ? (
+        <p className="max-w-sm text-sm text-muted-foreground">{body}</p>
+      ) : null}
     </div>
   );
 }

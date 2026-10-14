@@ -1,6 +1,6 @@
 "use client";
 
-import { PageHeader, PageTitle, TableScroll, Toolbar } from "@/components/ui/workspace";
+import { PageHeading, TableScroll, Toolbar } from "@/components/ui/workspace";
 import {ErrorFeedback} from "@/components/errors/error-feedback";
 import {ApiError} from "@/lib/errors/transport";
 
@@ -199,17 +199,7 @@ export function RequestsView({
 
   return (
     <div className="space-y-6">
-      <PageHeader className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-        <div className="flex items-center gap-3">
-          <span className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-accent text-brand-strong">
-            <Inbox className="size-5" aria-hidden="true" />
-          </span>
-          <div className="min-w-0">
-            <PageTitle>{t.title}</PageTitle>
-            <p className="mt-1 text-sm text-muted-foreground">{t.subtitle}</p>
-          </div>
-        </div>
-        <Toolbar className="flex flex-wrap items-center gap-3">
+      <PageHeading title={t.title} description={t.subtitle} actions={<Toolbar className="flex flex-wrap items-center gap-3">
           <Button
             variant="outline"
             className="h-11 rounded-full px-5 font-semibold focus-visible:ring-2 focus-visible:ring-ring/40"
@@ -230,8 +220,7 @@ export function RequestsView({
               {t.create}
             </Link>
           </Button>
-        </Toolbar>
-      </PageHeader>
+        </Toolbar>} />
 
       {banner && (
         <div

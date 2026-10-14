@@ -1,6 +1,6 @@
 "use client";
 
-import { PageHeader, PageTitle, Panel } from "@/components/ui/workspace";
+import { PageHeading, Panel } from "@/components/ui/workspace";
 
 import { Suspense, useCallback, useEffect, useRef, useState } from "react";
 import Link from "@/routing/link";
@@ -98,12 +98,7 @@ export function NewRequestView({
 
   return (
     <div className="space-y-6">
-      <PageHeader className="flex items-center gap-3">
-        <span className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-accent text-brand-strong">
-          <FilePlus2 className="size-5" aria-hidden="true" />
-        </span>
-        <PageTitle>{heading}</PageTitle>
-      </PageHeader>
+      <PageHeading title={heading} />
 
       {submitted ? (
         <Panel className="rounded-3xl border border-success-border bg-card p-8 text-center sm:p-12" role="status">

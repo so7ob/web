@@ -1,7 +1,7 @@
-import {ThemeToggle} from '@/components/appearance/provider';
-import {Logo} from '@/components/site/logo';
+import { ThemeToggle } from "@/components/appearance/provider";
+import { Logo } from "@/components/site/logo";
 
-import {diagnosticsCopy} from '@/content/diagnostics';
+import { diagnosticsCopy } from "@/content/diagnostics";
 
 /**
  * هيكل لوحة الإدارة: شريط جانبي كثيف (سطح المكتب) + درج (الجوال) + شريط علوي.
@@ -67,11 +67,7 @@ interface NavItem {
  *  (لقطة خادمية false ثم القيمة الفعلية بعد الإغراق، بلا عدم تطابق) */
 const subscribePlatform = () => () => {};
 
-export function AdminShell({
-  me,
-  locale,
-  children,
-}: AdminShellProps) {
+export function AdminShell({ me, locale, children }: AdminShellProps) {
   const pathname = usePathname() ?? `/${locale}/admin`;
   const [mobileOpen, setMobileOpen] = useState(false);
   // لوحة البحث الشاملة (Ctrl+K) — الحالة هنا ليصل إليها الزر ومستمع المفاتيح داخلها
@@ -109,7 +105,11 @@ export function AdminShell({
     };
   }, [pathname]);
 
-  const identitySection = can(me, 'users.view') ? 'users' : can(me, 'roles.view') ? 'roles' : 'invitations';
+  const identitySection = can(me, "users.view")
+    ? "users"
+    : can(me, "roles.view")
+      ? "roles"
+      : "invitations";
   const identityHref = `/${locale}/admin/${identitySection}`;
   const items: NavItem[] = [
     { href: `/${locale}/admin`, label: t.dashboard, icon: LayoutDashboard },
@@ -117,7 +117,12 @@ export function AdminShell({
       href: identityHref,
       label: locale === "ar" ? "الهوية والمستخدمون" : "Identity & users",
       icon: Users,
-      permission: identitySection === 'users' ? 'users.view' : identitySection === 'roles' ? 'roles.view' : 'invitations.manage',
+      permission:
+        identitySection === "users"
+          ? "users.view"
+          : identitySection === "roles"
+            ? "roles.view"
+            : "invitations.manage",
     },
     {
       href: `/${locale}/admin/requests`,
@@ -131,7 +136,12 @@ export function AdminShell({
       icon: MessageSquareText,
       permission: "inquiries.view.all",
     },
-    {href:`/${locale}/admin/workflows`,label:locale==='ar'?'مسارات العمل':'Workflows',icon:ListTree,permission:'workflows.view'},
+    {
+      href: `/${locale}/admin/workflows`,
+      label: locale === "ar" ? "مسارات العمل" : "Workflows",
+      icon: ListTree,
+      permission: "workflows.view",
+    },
     {
       href: `/${locale}/admin/notifications`,
       label: t.notifications,
@@ -161,7 +171,12 @@ export function AdminShell({
       icon: Settings,
       permission: "settings.manage",
     },
-    {href:`/${locale}/admin/diagnostics`,label:diagnosticsCopy[locale].title,icon:ScrollText,permission:"diagnostics.view"},
+    {
+      href: `/${locale}/admin/diagnostics`,
+      label: diagnosticsCopy[locale].title,
+      icon: ScrollText,
+      permission: "diagnostics.view",
+    },
     {
       href: `/${locale}/admin/audit`,
       label: t.audit,
@@ -183,7 +198,10 @@ export function AdminShell({
     href === `/${locale}/admin`
       ? pathname === href
       : pathname === href || pathname.startsWith(`${href}/`) ||
-        (href === identityHref && ['users','roles','permissions','invitations'].some(section => pathname === `/${locale}/admin/${section}`));
+        (href === identityHref &&
+          ["users", "roles", "permissions", "invitations"].some(
+            (section) => pathname === `/${locale}/admin/${section}`,
+          ));
 
   const titleFor = (path: string): string => {
     const rest = path
@@ -193,9 +211,9 @@ export function AdminShell({
     const segment = rest[0] ?? "";
     const map: Record<string, string> = {
       users: t.users,
-      roles: locale === 'ar' ? 'الأدوار' : 'Roles',
-      permissions: locale === 'ar' ? 'دليل الصلاحيات' : 'Permission catalog',
-      invitations: locale === 'ar' ? 'الدعوات' : 'Invitations',
+      roles: locale === "ar" ? "الأدوار" : "Roles",
+      permissions: locale === "ar" ? "دليل الصلاحيات" : "Permission catalog",
+      invitations: locale === "ar" ? "الدعوات" : "Invitations",
       requests: t.requests,
       inquiries: t.inquiries,
       notifications: t.notifications,
@@ -203,7 +221,7 @@ export function AdminShell({
       media: t.media,
       menus: t.menus,
       settings: t.settings,
-      workflows: locale==='ar'?'مسارات العمل':'Workflows',
+      workflows: locale === "ar" ? "مسارات العمل" : "Workflows",
       diagnostics: diagnosticsCopy[locale].title,
       audit: t.audit,
       outbox: t.outbox,
@@ -215,34 +233,76 @@ export function AdminShell({
   const sheetSide = locale === "ar" ? "right" : "left";
 
   const groups = [
-    { label: locale === "ar" ? "نظرة عامة" : "Overview", paths: ["", "notifications"] },
-    { label: locale === "ar" ? "العمليات" : "Operations", paths: ["requests", "inquiries", "workflows"] },
-    { label: locale === "ar" ? "المحتوى" : "Content", paths: ["pages", "media", "menus"] },
-    { label: locale === "ar" ? "إدارة المنصة" : "Platform", paths: [identitySection, "settings"] },
-    { label: locale === "ar" ? "المتابعة" : "Monitoring", paths: ["audit", "diagnostics", "outbox"] },
+    {
+      label: locale === "ar" ? "نظرة عامة" : "Overview",
+      paths: ["", "notifications"],
+    },
+    {
+      label: locale === "ar" ? "العمليات" : "Operations",
+      paths: ["requests", "inquiries", "workflows"],
+    },
+    {
+      label: locale === "ar" ? "المحتوى" : "Content",
+      paths: ["pages", "media", "menus"],
+    },
+    {
+      label: locale === "ar" ? "إدارة المنصة" : "Platform",
+      paths: [identitySection, "settings"],
+    },
+    {
+      label: locale === "ar" ? "المتابعة" : "Monitoring",
+      paths: ["audit", "diagnostics", "outbox"],
+    },
   ];
   const navList = (onNavigate?: () => void) => (
-    <nav aria-label={locale === "ar" ? "أقسام الإدارة" : "Administration"} className="flex-1 space-y-5 overflow-y-auto px-4 py-5">
-      {groups.map(group => {
-        const links = group.paths.flatMap(path => visibleItems.filter(item => item.href === `/${locale}/admin${path ? "/" + path : ""}`));
+    <nav
+      aria-label={locale === "ar" ? "أقسام الإدارة" : "Administration"}
+      className="flex-1 space-y-4 overflow-y-auto px-3 py-4"
+    >
+      {groups.map((group) => {
+        const links = group.paths.flatMap((path) =>
+          visibleItems.filter(
+            (item) => item.href === `/${locale}/admin${path ? "/" + path : ""}`,
+          ),
+        );
         if (!links.length) return null;
-        return <div key={group.label}>
-          <p className="mb-2 px-3 text-xs font-medium text-muted-foreground">{group.label}</p>
-          <ul className="space-y-1">{links.map(item => {
-            const active = isActive(item.href);
-            return <li key={item.href}><Link href={item.href} onClick={onNavigate} aria-current={active ? "page" : undefined}
-              className={cn("relative flex min-h-11 items-center gap-3 rounded-lg px-3 text-sm font-medium transition-colors duration-(--duration-fast)", active ? "bg-sidebar-accent text-sidebar-primary" : "text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground")}>
-              <item.icon className="size-4 shrink-0" aria-hidden="true" /><span className="truncate">{item.label}</span>
-              {active && <span aria-hidden="true" className="ms-auto size-1.5 shrink-0 rounded-full bg-sidebar-primary" />}
-            </Link></li>;
-          })}</ul>
-        </div>;
+        return (
+          <div key={group.label}>
+            <p className="mb-1 px-3 text-xs font-semibold text-muted-foreground">
+              {group.label}
+            </p>
+            <ul className="space-y-0.5">
+              {links.map((item) => {
+                const active = isActive(item.href);
+                return (
+                  <li key={item.href}>
+                    <Link
+                      href={item.href}
+                      onClick={onNavigate}
+                      aria-current={active ? "page" : undefined}
+                      className={cn(
+                        "relative flex min-h-11 items-center gap-3 rounded-lg px-3 text-sm font-medium transition-colors duration-(--duration-fast)",
+                        active ? "bg-sidebar-accent text-sidebar-primary" : "text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground",
+                      )}
+                    >
+                      <item.icon className="size-4 shrink-0" aria-hidden="true" />
+                      <span className="truncate">{item.label}</span>
+                      {active && (
+                        <span aria-hidden="true" className="ms-auto size-1.5 shrink-0 rounded-full bg-sidebar-primary" />
+                      )}
+                    </Link>
+                  </li>
+                );
+              })}
+            </ul>
+          </div>
+        );
       })}
     </nav>
   );
 
   const sidebarFooter = (onNavigate?: () => void) => (
-    <div className="border-t border-sidebar-border px-3 py-4">
+    <div className="border-t border-sidebar-border px-3 py-2">
       <Link
         href={`/${locale}`}
         onClick={onNavigate}
@@ -259,7 +319,7 @@ export function AdminShell({
         <LogOut className="size-4 shrink-0" aria-hidden="true" />
         <span className="truncate">{t.logout}</span>
       </Link>
-      <div className="mt-3 flex items-center gap-3 rounded-xl bg-muted px-3 py-2.5">
+      <div className="mt-2 flex items-center gap-3 border-t border-sidebar-border px-3 py-3">
         <span
           className="flex size-9 shrink-0 items-center justify-center rounded-full bg-sidebar-accent text-sm font-bold text-sidebar-primary"
           aria-hidden="true"
@@ -282,7 +342,7 @@ export function AdminShell({
       <style>{`body:has(#admin-shell) > header, body:has(#admin-shell) > footer, body:has(#admin-shell) > #site-announcement { display: none !important; }`}</style>
 
       {/* الشريط الجانبي — سطح المكتب (مخفي عند الطباعة) */}
-      <aside className="sticky top-0 hidden h-dvh w-64 shrink-0 flex-col border-e border-sidebar-border bg-sidebar text-sidebar-foreground print:hidden lg:flex">
+      <aside className="sticky top-0 hidden h-dvh w-60 shrink-0 flex-col border-e border-sidebar-border bg-sidebar text-sidebar-foreground print:hidden lg:flex">
         <div className="flex h-16 items-center gap-3 border-b border-sidebar-border px-5">
           <Logo size="sm" nameLang={locale}/>
         </div>
@@ -292,7 +352,7 @@ export function AdminShell({
 
       <div className="flex min-w-0 flex-1 flex-col">
         {/* الشريط العلوي (مخفي عند الطباعة) */}
-        <header className="sticky top-0 z-30 flex h-16 items-center gap-2 sm:gap-3 border-b border-border bg-card/90 px-3 backdrop-blur print:hidden sm:px-6">
+        <header className="sticky top-0 z-30 flex h-16 items-center gap-2 sm:gap-3 border-b border-border bg-card px-3 print:hidden sm:px-6">
           <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
             <SheetTrigger asChild>
               <Button
@@ -318,12 +378,12 @@ export function AdminShell({
             </SheetContent>
           </Sheet>
 
-          <ThemeToggle locale={locale} compact/>
           <h2 className="hidden truncate text-sm font-semibold text-navy sm:block sm:text-base">
             {titleFor(pathname)}
           </h2>
 
           <div className="ms-auto flex items-center gap-2">
+            <ThemeToggle locale={locale} compact />
             {/* زر لوحة البحث الشامل — سطح المكتب: حبة تحمل الاختصار، الجوال: أيقونة */}
             <Button
               variant="outline"
@@ -382,7 +442,7 @@ export function AdminShell({
                 {localeMeta[locale].otherLabel}
               </Link>
             </Button>
-            <div className="hidden items-center gap-2.5 rounded-full border border-border bg-card/90 py-1.5 pe-3 ps-1.5 shadow-sm backdrop-blur sm:flex">
+            <div className="hidden items-center gap-2.5 border-s border-border ps-4 sm:flex">
               <span
                 className="flex size-7 items-center justify-center rounded-full bg-primary text-xs font-bold text-primary-foreground"
                 aria-hidden="true"
@@ -404,8 +464,13 @@ export function AdminShell({
           onOpenChange={setPaletteOpen}
         />
 
-        <main id="main-content" className="flex-1 px-4 py-6 sm:px-6 lg:px-10 lg:py-8">
-          <div className="mx-auto w-full max-w-7xl">{children}</div>
+        <main
+          id="main-content"
+          className="admin-main flex-1 px-4 py-6 sm:px-6 lg:px-8"
+        >
+          <div className="admin-workspace mx-auto w-full max-w-[1440px]">
+            {children}
+          </div>
         </main>
       </div>
 

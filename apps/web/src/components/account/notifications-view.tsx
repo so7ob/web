@@ -1,6 +1,6 @@
 "use client";
 
-import { PageHeader, PageTitle } from "@/components/ui/workspace";
+import { PageHeading } from "@/components/ui/workspace";
 import {ErrorFeedback} from "@/components/errors/error-feedback";
 import {ApiError} from "@/lib/errors/transport";
 
@@ -124,18 +124,7 @@ export function NotificationsView({
 
   return (
     <div className="space-y-6">
-      <PageHeader className="flex flex-wrap items-center justify-between gap-4">
-        <div>
-          <PageTitle>{t.title}</PageTitle>
-          {unread > 0 && (
-            <p className="mt-1 inline-flex items-center gap-2 text-sm font-semibold text-brand-strong">
-              <span className="inline-flex h-5 min-w-5 items-center justify-center rounded-full bg-danger px-1 text-xs font-bold text-on-danger">
-                {unread > 99 ? "99+" : unread}
-              </span>
-            </p>
-          )}
-        </div>
-        {unread > 0 && (
+      <PageHeading title={t.title} metadata={unread > 0 && <span className="rounded-full bg-danger px-2 py-0.5 text-xs font-semibold text-on-danger">{unread > 99 ? "99+" : unread}</span>} actions={unread > 0 && (
           <Button
             variant="outline"
             className="h-11 rounded-full px-5 font-semibold"
@@ -145,8 +134,7 @@ export function NotificationsView({
             {markingAll ? <Loader2 className="h-4 w-4 animate-spin" aria-hidden="true" /> : <CheckCheck className="h-4 w-4" aria-hidden="true" />}
             {t.markAllRead}
           </Button>
-        )}
-      </PageHeader>
+        )} />
 
       <ErrorFeedback error={failure} locale={locale} operation={t.title} onRefresh={async()=>{setPage(1);await load(1,false);}}/>
       <section className="rounded-2xl border border-border bg-card p-4 sm:p-6">

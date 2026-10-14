@@ -1,4 +1,4 @@
-import { PageHeader, PageTitle, TableScroll } from "@/components/ui/workspace";
+import { PageHeading, TableScroll } from "@/components/ui/workspace";
 import Link from '@/routing/link';
 import { Bell,FilePlus2,FolderOpen,Inbox,Layers,LayoutDashboard,MessageCircle,MessageCircleQuestion } from 'lucide-react';
 import type { AccountDashboardData } from '@so7ob/contracts';
@@ -39,19 +39,7 @@ export function AccountDashboard({locale,user,data}:{locale:Locale;user:{name:st
 
   return (
     <div className="space-y-8">
-      <PageHeader className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-        <div className="flex min-w-0 items-center gap-3">
-          <span className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-accent text-brand-strong">
-            <LayoutDashboard className="size-5" aria-hidden="true" />
-          </span>
-          <div className="min-w-0">
-            <PageTitle>{t.title}</PageTitle>
-            <p className="mt-1 text-sm text-muted-foreground">
-              {t.welcomeWithName.replace("{name}", user.name)}
-            </p>
-          </div>
-        </div>
-        <Button
+      <PageHeading title={t.title} description={t.welcomeWithName.replace("{name}", user.name)} actions={<Button
           asChild
           className="h-12 rounded-full bg-primary px-6 text-base font-bold text-primary-foreground shadow-md shadow-brand/20 transition-[color,background-color,border-color,box-shadow,opacity,transform] hover:bg-primary-hover hover:text-primary-hover-foreground print:hidden"
         >
@@ -59,8 +47,7 @@ export function AccountDashboard({locale,user,data}:{locale:Locale;user:{name:st
             <FilePlus2 className="h-5 w-5" aria-hidden="true" />
             {t.createRequest}
           </Link>
-        </Button>
-      </PageHeader>
+        </Button>} />
 
       {/* بطاقات المؤشرات — ذات الرابط تفتح القائمة المقابلة (روابط عميقة بلغة لوحة الإدارة) */}
       <section aria-label={t.title} className="grid grid-cols-2 gap-4 lg:grid-cols-3 xl:grid-cols-6">

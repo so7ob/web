@@ -1,4 +1,4 @@
-import { PageTitle, PageHeader } from "@/components/ui/workspace";
+import { PageHeading } from "@/components/ui/workspace";
 /**
  * لوحة الإدارة الرئيسية: البيانات وتسميات الوقت تأتي من الخادم، مع الحفاظ
  * على العرض الأصلي دون استيراد قاعدة البيانات في المتصفح. كل الأرقام حقيقية.
@@ -13,7 +13,6 @@ import {
   FileText,
   Timer,
   ArrowUpRight,
-  LayoutDashboard,
   ChartBar,
   CalendarDays,
   ScrollText,
@@ -35,14 +34,11 @@ interface StatDef {
   hint?: string;
   /** رابط عميق اختياري — البطاقة تصبح رابطًا إلى قائمة مفلترة */
   href?: string;
-  /** تلوين بصري فقط: شريحة الأيقونة + شريط التمييز العلوي */
-  chip: string;
-  bar: string;
 }
 
 /** فئات بطاقات المؤشرات — البطاقة نفسها بلا تغيير بصري، والرابط يضيف حلقة تركيز فقط */
 const STAT_CARD_CLASS =
-  "relative overflow-hidden rounded-2xl border border-border bg-card p-5 transition-[color,background-color,border-color,box-shadow,opacity,transform] duration-(--duration-panel) hover:-translate-y-0.5 hover:shadow-lg hover:shadow-navy/10";
+  "group relative min-w-0 rounded-lg border border-border bg-card p-5 transition-colors hover:border-primary/40 hover:bg-accent/20";
 
 /** تدرجات أشرطة الحالة — نفس عائلات ألوان شارات الحالة */
 const STATUS_BAR: Record<string, string> = {
@@ -105,8 +101,6 @@ export function AdminDashboard({
       label: t.totalUsers,
       hint: `${activeUsers} · ${t.activeUsers}`,
       href: `/${locale}/admin/users`,
-      chip: "bg-accent text-brand-strong",
-      bar: "bg-gradient-to-r from-brand to-skydrop",
     },
     {
       icon: Clock,
@@ -114,8 +108,6 @@ export function AdminDashboard({
       value: pendingUsers,
       label: t.pendingUsers,
       href: `/${locale}/admin/users?status=pending_verification`,
-      chip: "bg-highlight-soft text-highlight-foreground",
-      bar: "bg-gradient-to-r from-highlight to-highlight",
     },
     {
       icon: Inbox,
@@ -124,8 +116,6 @@ export function AdminDashboard({
       label: t.openRequests,
       hint: `${rangeTotal} · ${rangeDays === 7 ? t.last7days : rangeLabel}`,
       href: `/${locale}/admin/requests`,
-      chip: "bg-skydrop/20 text-brand-strong",
-      bar: "bg-gradient-to-r from-inverse to-skydrop",
     },
     {
       icon: Hourglass,
@@ -133,8 +123,6 @@ export function AdminDashboard({
       value: awaitingInfo,
       label: t.awaitingInfo,
       href: `/${locale}/admin/requests?status=awaiting_info`,
-      chip: "bg-warning-soft text-warning-foreground",
-      bar: "bg-gradient-to-r from-warning to-warning",
     },
     {
       icon: Timer,
@@ -143,8 +131,6 @@ export function AdminDashboard({
       label: t.overdueReplies,
       hint: t.overdueHint,
       href: `/${locale}/admin/requests?overdue=1`,
-      chip: "bg-danger-soft text-danger-foreground",
-      bar: "bg-gradient-to-r from-danger to-danger",
     },
     {
       icon: MessageSquareText,
@@ -154,8 +140,6 @@ export function AdminDashboard({
       // «open» مرشّح مركّب في واجهة الاستفسارات: الحالات غير المغلقة وغير المؤرشفة —
       // يطابق هذا المؤشر تمامًا (أُضيف في تكامل الجولة 19)
       href: `/${locale}/admin/inquiries?status=open`,
-      chip: "bg-success-soft text-success-foreground",
-      bar: "bg-gradient-to-r from-success to-success",
     },
     {
       icon: FileText,
@@ -163,50 +147,48 @@ export function AdminDashboard({
       value: publishedPages,
       label: t.publishedPages,
       hint: `${draftPages} · ${t.draftPages}`,
-      chip: "bg-brand-soft text-brand-strong",
-      bar: "bg-gradient-to-r from-brand-strong to-brand",
     },
   ];
 
   return (
     <div className="space-y-6">
-      <PageHeader className="flex flex-wrap items-center justify-between gap-3">
-        <div className="flex min-w-0 items-center gap-3">
-          <span className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-accent text-brand-strong">
-            <LayoutDashboard className="size-5" aria-hidden="true" />
-          </span>
-          <PageTitle>{t.title}</PageTitle>
-        </div>
-        {/* مبدّل المدى الزمني — تنقل خادمي يعيد رسم اللوحة والمخطط
-            (حبوب بحدود بلغة مرشّحات القوائم — تُخفى عند الطباعة) */}
-        {access.requests && (
-          <div
+      <PageHeading
+        title={t.title}
+        description={
+          locale === "ar"
+            ? "نظرة على نشاط المنصة والعمليات التي تحتاج إلى متابعتك."
+            : "An overview of platform activity and operations that need your attention."
+        }
+        actions={
+          access.requests && (
+            <div
             role="group"
             aria-label={t.rangeLabel}
             className="flex flex-wrap items-center gap-2 print:hidden"
           >
-            {rangeOptions.map((option) => {
-              const active = option.days === rangeDays;
-              return (
-                <Link
-                  key={option.days}
-                  href={`/${locale}/admin?range=${option.days}`}
-                  scroll={false}
-                  aria-current={active ? "page" : undefined}
-                  className={cn(
-                    "inline-flex min-h-9 items-center rounded-full border px-4 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/40",
-                    active
+              {rangeOptions.map((option) => {
+                const active = option.days === rangeDays;
+                return (
+                  <Link
+                    key={option.days}
+                    href={`/${locale}/admin?range=${option.days}`}
+                    scroll={false}
+                    aria-current={active ? "page" : undefined}
+                    className={cn(
+                      "inline-flex min-h-11 items-center rounded-lg border px-4 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/40",
+                      active
                       ? "border-brand bg-accent text-brand-strong"
                       : "border-border bg-card text-muted-foreground hover:bg-muted/50 hover:text-foreground",
-                  )}
-                >
-                  {option.label}
-                </Link>
-              );
-            })}
-          </div>
-        )}
-      </PageHeader>
+                    )}
+                  >
+                    {option.label}
+                  </Link>
+                );
+              })}
+            </div>
+          )
+        }
+      />
 
       {/* بطاقات المؤشرات — 7 بطاقات: صف 4+3 على الشاشات الواسعة؛
           ذات الرابط تفتح القائمة المفلترة المقابلة (روابط اللوحة العميقة) */}
@@ -219,28 +201,20 @@ export function AdminDashboard({
           .map((stat) => {
             const card = (
               <>
-                <span
-                  aria-hidden="true"
-                  className={cn("absolute inset-x-0 top-0 h-1", stat.bar)}
-                />
-                <div className="flex items-center justify-between gap-2">
-                  <span
-                    className={cn(
-                      "flex size-9 items-center justify-center rounded-xl",
-                      stat.chip,
-                    )}
-                  >
-                    <stat.icon className="size-4.5" aria-hidden="true" />
-                  </span>
-                  <p className="text-2xl font-bold tabular-nums text-navy">
-                    {stat.value}
+                <div className="flex items-start justify-between gap-3">
+                  <p className="text-sm font-medium text-muted-foreground">
+                    {stat.label}
                   </p>
+                  <stat.icon
+                    className="size-4 shrink-0 text-muted-foreground"
+                    aria-hidden="true"
+                  />
                 </div>
-                <p className="mt-2 text-xs font-medium text-muted-foreground">
-                  {stat.label}
+                <p className="mt-4 text-3xl font-semibold tabular-nums tracking-tight text-foreground">
+                  {stat.value}
                 </p>
                 {stat.hint ? (
-                  <p className="mt-0.5 text-xs tabular-nums text-muted-foreground">
+                  <p className="mt-2 text-xs tabular-nums text-muted-foreground">
                     {stat.hint}
                   </p>
                 ) : null}
@@ -269,12 +243,12 @@ export function AdminDashboard({
       {access.requests && (
         <div className="grid gap-4 print:block print:space-y-4 lg:grid-cols-2">
           {/* الطلبات حسب الحالة — أشرطة أفقية */}
-          <section className="rounded-2xl border border-border bg-card p-5">
+          <section className="ds-panel">
             <div className="flex items-center gap-2.5">
-              <span className="flex size-9 shrink-0 items-center justify-center rounded-xl bg-accent text-brand-strong">
+              <span className="flex size-5 shrink-0 items-center justify-center text-muted-foreground">
                 <ChartBar className="size-4" aria-hidden="true" />
               </span>
-              <h2 className="text-sm font-semibold text-navy">
+              <h2 className="text-base font-semibold text-foreground">
                 {t.requestsByStatus}
               </h2>
             </div>
@@ -287,7 +261,7 @@ export function AdminDashboard({
                     <Link
                       href={`/${locale}/admin/requests?status=${row.status}`}
                       aria-label={`${requestLabels.statuses[row.status] ?? row.status}: ${row.count}`}
-                      className="flex items-center gap-3 rounded-lg px-2.5 py-1.5 transition-colors hover:bg-muted/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/40"
+                      className="flex min-h-11 items-center gap-3 rounded-lg px-2.5 py-1.5 transition-colors hover:bg-muted/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/40"
                     >
                       <p className="w-28 shrink-0 truncate text-xs text-muted-foreground">
                         {requestLabels.statuses[row.status] ?? row.status}
@@ -296,7 +270,7 @@ export function AdminDashboard({
                         <div
                           title={`${requestLabels.statuses[row.status] ?? row.status}: ${row.count}`}
                           className={cn(
-                            "animate-shimmer h-full rounded-full transition-[color,background-color,border-color,box-shadow,opacity,transform] duration-(--duration-panel)",
+                            "h-full rounded-full transition-[color,background-color,border-color,box-shadow,opacity,transform] duration-(--duration-panel)",
                             STATUS_BAR[row.status] ??
                               "bg-gradient-to-r from-brand to-brand-strong",
                           )}
@@ -316,19 +290,21 @@ export function AdminDashboard({
           </section>
 
           {/* المدى المختار — أعمدة مصغرة (أيام لـ 7/30، أسابيع لـ 90) — تُخفى عند الطباعة */}
-          <section className="rounded-2xl border border-border bg-card p-5 print:hidden">
+          <section className="ds-panel print:hidden">
             <div className="flex items-center gap-2.5">
-              <span className="flex size-9 shrink-0 items-center justify-center rounded-xl bg-accent text-brand-strong">
+              <span className="flex size-5 shrink-0 items-center justify-center text-muted-foreground">
                 <CalendarDays className="size-4" aria-hidden="true" />
               </span>
-              <h2 className="text-sm font-semibold text-navy">{rangeLabel}</h2>
+              <h2 className="text-base font-semibold text-foreground">
+                {rangeLabel}
+              </h2>
             </div>
             {rangeTotal === 0 ? (
               <EmptyState icon={Inbox} title={t.noData} className="py-8" />
             ) : (
               <div
                 className={cn(
-                  "mt-4 flex h-28 items-end",
+                  "mt-6 flex h-64 items-end border-b border-border pb-3",
                   rangeDays === 30 ? "gap-1" : "gap-2 sm:gap-3",
                 )}
               >
@@ -346,14 +322,14 @@ export function AdminDashboard({
                     <div
                       title={bar.title}
                       className={cn(
-                        "rounded-full transition-[color,background-color,border-color,box-shadow,opacity,transform] duration-(--duration-panel) hover:brightness-125",
+                        "rounded-t-sm transition-[color,background-color,border-color,box-shadow,opacity,transform] duration-(--duration-panel) hover:brightness-125",
                         rangeDays === 30 ? "w-full" : "w-full max-w-10",
                         bar.count === 0
                           ? "bg-muted hover:brightness-100"
-                          : "bg-gradient-to-t from-brand to-skydrop",
+                          : "bg-primary",
                       )}
                       style={{
-                        height: `${Math.max(4, Math.round((bar.count / maxBar) * 64))}px`,
+                        height: `${Math.max(4, Math.round((bar.count / maxBar) * 180))}px`,
                       }}
                     />
                     {bar.label !== null ? (
@@ -379,19 +355,19 @@ export function AdminDashboard({
       <div className="grid gap-4 print:block print:space-y-4 lg:grid-cols-2">
         {/* أحدث الطلبات */}
         {access.requests && (
-          <section className="rounded-2xl border border-border bg-card">
+          <section className="overflow-hidden rounded-lg border border-border bg-card">
             <div className="flex items-center justify-between gap-2 border-b border-border px-5 py-4">
               <div className="flex min-w-0 items-center gap-2.5">
-                <span className="flex size-9 shrink-0 items-center justify-center rounded-xl bg-accent text-brand-strong">
+                <span className="flex size-5 shrink-0 items-center justify-center text-muted-foreground">
                   <Inbox className="size-4" aria-hidden="true" />
                 </span>
-                <h2 className="text-sm font-semibold text-navy">
+                <h2 className="text-base font-semibold text-foreground">
                   {t.recentRequests}
                 </h2>
               </div>
               <Link
                 href={`/${locale}/admin/requests`}
-                className="inline-flex min-h-9 shrink-0 items-center gap-1 rounded-full px-3 text-xs font-semibold text-brand transition-colors hover:bg-accent hover:text-brand-strong focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/40"
+                className="inline-flex min-h-11 shrink-0 items-center gap-1 rounded-full px-3 text-xs font-semibold text-brand transition-colors hover:bg-accent hover:text-brand-strong focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/40"
               >
                 {t.viewAll}
                 <ArrowUpRight className="size-3.5" aria-hidden="true" />
@@ -437,19 +413,19 @@ export function AdminDashboard({
 
         {/* أحدث الأحداث (سجل التدقيق) */}
         {access.audit && (
-          <section className="rounded-2xl border border-border bg-card">
+          <section className="overflow-hidden rounded-lg border border-border bg-card">
             <div className="flex items-center justify-between gap-2 border-b border-border px-5 py-4">
               <div className="flex min-w-0 items-center gap-2.5">
-                <span className="flex size-9 shrink-0 items-center justify-center rounded-xl bg-accent text-brand-strong">
+                <span className="flex size-5 shrink-0 items-center justify-center text-muted-foreground">
                   <ScrollText className="size-4" aria-hidden="true" />
                 </span>
-                <h2 className="text-sm font-semibold text-navy">
+                <h2 className="text-base font-semibold text-foreground">
                   {t.recentActivity}
                 </h2>
               </div>
               <Link
                 href={`/${locale}/admin/audit`}
-                className="inline-flex min-h-9 shrink-0 items-center gap-1 rounded-full px-3 text-xs font-semibold text-brand transition-colors hover:bg-accent hover:text-brand-strong focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/40"
+                className="inline-flex min-h-11 shrink-0 items-center gap-1 rounded-full px-3 text-xs font-semibold text-brand transition-colors hover:bg-accent hover:text-brand-strong focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/40"
               >
                 {t.viewAll}
                 <ArrowUpRight className="size-3.5" aria-hidden="true" />

@@ -1,9 +1,9 @@
 "use client";
 
-import { PageHeader, PageTitle, Panel } from "@/components/ui/workspace";
-import { UserSecurity } from '../identity/user-security';
-import { IdentityNav } from '../identity/shared';
-import { useAdmin } from '@/screens/admin/data';
+import { PageHeading, Panel } from "@/components/ui/workspace";
+import { UserSecurity } from "../identity/user-security";
+import { IdentityNav } from "../identity/shared";
+import { useAdmin } from "@/screens/admin/data";
 
 /**
  * ملف المستخدم الموسّع (إدارة): بيانات الحساب + إحصاءات + آخر الطلبات (روابط مباشرة
@@ -65,7 +65,7 @@ interface UserDetailClientProps {
 }
 
 export function UserDetailClient({ locale, userId }: UserDetailClientProps) {
-  const {user:me}=useAdmin();
+  const { user: me } = useAdmin();
   const t = getPortalContent(locale);
   const tud = t.admin.users.detail;
 
@@ -175,8 +175,11 @@ export function UserDetailClient({ locale, userId }: UserDetailClientProps) {
   return (
     <div className="space-y-5">
       {/* الترويسة */}
-      <PageHeader className="flex flex-wrap items-center gap-3">
-        <Button
+      <PageHeading
+        title={user.name}
+        description={<bdi>{user.email}</bdi>}
+        back={
+          <Button
           asChild
           variant="ghost"
           size="sm"
@@ -188,21 +191,18 @@ export function UserDetailClient({ locale, userId }: UserDetailClientProps) {
             {tud.back}
           </Link>
         </Button>
-        <div className="min-w-0 max-w-full">
-          <PageTitle>{user.name}</PageTitle>
-          <p className="truncate text-sm text-muted-foreground ltr-isolate">
-            {user.email}
-          </p>
-        </div>
-        <div className="ms-auto flex flex-wrap items-center gap-2">
+        }
+        metadata={
+          <div className="ms-auto flex flex-wrap items-center gap-2">
           <RoleBadge roleKey={user.roleKey} role={data.role} locale={locale} />
           <UserStatusBadge
             status={user.status}
             label={statusLabel(user.status)}
           />
         </div>
-      </PageHeader>
-      <IdentityNav me={me} locale={locale}/>
+        }
+      />
+      <IdentityNav me={me} locale={locale} />
       <UserSecurity me={me} locale={locale} data={data} onChanged={reload}/>
 
       {/* بطاقات الإحصاءات */}
@@ -238,7 +238,9 @@ export function UserDetailClient({ locale, userId }: UserDetailClientProps) {
               {tud.userRequests}
             </h2>
           </div>
-          {requests.length === 0 ? <EmptyState icon={Inbox} title={tud.noRequests} /> : (
+          {requests.length === 0 ? (
+            <EmptyState icon={Inbox} title={tud.noRequests} />
+          ) : (
           <div className="overflow-x-auto">
             <Table>
               <TableHeader>

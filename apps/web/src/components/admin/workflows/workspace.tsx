@@ -1,6 +1,6 @@
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { NativeSelect } from "@/components/ui/native-select";
-import { PageTitle, PageHeader, Toolbar } from "@/components/ui/workspace";
+import { PageHeading, Toolbar } from "@/components/ui/workspace";
 import { useCallback, useEffect, useRef, useState } from "react";
 import {
   can,
@@ -81,11 +81,11 @@ export function WorkflowWorkspace({ locale, me }: { locale: Locale; me: Me }) {
       useState<(typeof workflowTriggers)[number]>("staff_reply"),
     [fields, setFields] = useState<Record<string, string>>({});
   const [team, setTeam] = useState<Partial<Team>>({
-      nameAr: "",
-      nameEn: "",
-      members: [],
-      active: true,
-    }),
+                    nameAr: "",
+                    nameEn: "",
+                    members: [],
+                    active: true,
+                  }),
     [calendar, setCalendar] = useState<BusinessCalendar>(emptyCalendar);
   const [transferQuery, setTransferQuery] = useState(""),
     [transferPage, setTransferPage] = useState(1),
@@ -217,16 +217,16 @@ export function WorkflowWorkspace({ locale, me }: { locale: Locale; me: Me }) {
       onChange={(e) => onChange(e.target.value)}
     >
       {definition.stages.map((s) => (
-        <option key={s.id} value={s.id}>
-          {label(s)}
-        </option>
-      ))}
+                      <option key={s.id} value={s.id}>
+                        {label(s)}
+                      </option>
+                    ))}
     </NativeSelect>
   );
   if (!data)
     return (
       <div className={wfCard}>
-        <PageTitle>{t("مسارات العمل", "Workflows")}</PageTitle>
+        <PageHeading title={t("مسارات العمل", "Workflows")} />
         {error ? (
           <ErrorFeedback error={error} locale={locale} onRefresh={load} />
         ) : (
@@ -236,17 +236,13 @@ export function WorkflowWorkspace({ locale, me }: { locale: Locale; me: Me }) {
     );
   return (
     <Tabs value={tab} onValueChange={setTab} className="min-w-0 space-y-5">
-      <PageHeader>
-        <PageTitle>
-          {t("مسارات العمل", "Workflows")}
-        </PageTitle>
-        <p className="mt-2 text-sm text-muted-foreground">
-          {t(
+      <PageHeading
+        title={t("مسارات العمل", "Workflows")}
+        description={t(
             "اضبط مراحل المعاملة والإحالة والظهور والمهل. النشر يطبق على المعاملات الجديدة.",
             "Configure stages, routing, visibility and deadlines. Publishing applies to new conversations.",
           )}
-        </p>
-      </PageHeader>
+      />
       <TabsList
         className="w-full justify-start"
         aria-label={t(
@@ -268,7 +264,7 @@ export function WorkflowWorkspace({ locale, me }: { locale: Locale; me: Me }) {
         ))}
       </TabsList>
       <TabsContent value={tab} className="space-y-6">
-      {error ? (
+        {error ? (
         <ErrorFeedback
           error={error}
           locale={locale}
@@ -279,13 +275,13 @@ export function WorkflowWorkspace({ locale, me }: { locale: Locale; me: Me }) {
           }}
         />
       ) : null}
-      <p role="status" className="text-sm">
+        <p role="status" className="text-sm">
         {busy ? t("جارٍ الحفظ…", "Saving…") : notice}
       </p>
-      <fieldset disabled={busy} className="min-w-0 space-y-5">
-        {tab === "flows" ? (
-          <>
-            <section className={wfCard}>
+        <fieldset disabled={busy} className="min-w-0 space-y-5">
+          {tab === "flows" ? (
+            <>
+              <section className={wfCard}>
               <div className="grid gap-4 sm:grid-cols-2">
                 <Field title={t("المسار", "Workflow")}>
                   <NativeSelect
@@ -354,7 +350,7 @@ export function WorkflowWorkspace({ locale, me }: { locale: Locale; me: Me }) {
                 </Button>
               </div>
             </section>
-            <section className={wfCard}>
+              <section className={wfCard}>
               <div className="grid gap-4 sm:grid-cols-2">
                 <Field title={t("اسم المسار بالعربية", "Workflow Arabic name")}>
                   <Input
@@ -414,11 +410,11 @@ export function WorkflowWorkspace({ locale, me }: { locale: Locale; me: Me }) {
                 onSelect={setStageId}
               />
             </section>
-            <section className={wfCard}>
-              <h2 className="text-lg font-semibold">
+              <section className={wfCard}>
+                <h2 className="text-lg font-semibold">
                 {t("المراحل", "Stages")}
               </h2>
-              <div className="flex flex-wrap gap-2">
+                <div className="flex flex-wrap gap-2">
                 {definition.stages.map((s) => (
                   <Button
                     key={s.id}
@@ -453,10 +449,10 @@ export function WorkflowWorkspace({ locale, me }: { locale: Locale; me: Me }) {
                   {t("إضافة مرحلة", "Add stage")}
                 </Button>
               </div>
-              {stage ? (
-                <>
-                  <div className="grid gap-4 sm:grid-cols-2">
-                    <Field
+                {stage ? (
+                  <>
+                    <div className="grid gap-4 sm:grid-cols-2">
+                      <Field
                       title={t("اسم المرحلة بالعربية", "Stage Arabic name")}
                     >
                       <Input
@@ -466,17 +462,20 @@ export function WorkflowWorkspace({ locale, me }: { locale: Locale; me: Me }) {
                         }
                       />
                     </Field>
-                    <Field
-                      title={t("اسم المرحلة بالإنجليزية", "Stage English name")}
-                    >
-                      <Input
+                      <Field
+                        title={t(
+                          "اسم المرحلة بالإنجليزية",
+                          "Stage English name",
+                        )}
+                      >
+                        <Input
                         value={stage.nameEn}
                         onChange={(e) =>
                           updateStage({ nameEn: e.target.value })
                         }
                       />
-                    </Field>
-                    <Field title={t("الحالة التشغيلية", "Operational status")}>
+                      </Field>
+                      <Field title={t("الحالة التشغيلية", "Operational status")}>
                       <NativeSelect
                         className={wfControl}
                         value={stage.status}
@@ -493,7 +492,7 @@ export function WorkflowWorkspace({ locale, me }: { locale: Locale; me: Me }) {
                         ))}
                       </NativeSelect>
                     </Field>
-                    <Field
+                      <Field
                       title={t("ظهور المعاملة", "Conversation visibility")}
                     >
                       <NativeSelect
@@ -520,7 +519,7 @@ export function WorkflowWorkspace({ locale, me }: { locale: Locale; me: Me }) {
                         </option>
                       </NativeSelect>
                     </Field>
-                    <Field
+                      <Field
                       title={t(
                         "الإحالة عند دخول المرحلة",
                         "Routing on stage entry",
@@ -546,7 +545,7 @@ export function WorkflowWorkspace({ locale, me }: { locale: Locale; me: Me }) {
                         ))}
                       </NativeSelect>
                     </Field>
-                    <Field title={t("الفريق", "Team")}>
+                      <Field title={t("الفريق", "Team")}>
                       <NativeSelect
                         className={wfControl}
                         value={stage.routing.teamId ?? ""}
@@ -569,7 +568,7 @@ export function WorkflowWorkspace({ locale, me }: { locale: Locale; me: Me }) {
                           ))}
                       </NativeSelect>
                     </Field>
-                    {stage.routing.mode === "person" ? (
+                      {stage.routing.mode === "person" ? (
                       <Field title={t("الموظف المسؤول", "Assignee")}>
                         <NativeSelect
                           className={wfControl}
@@ -594,7 +593,7 @@ export function WorkflowWorkspace({ locale, me }: { locale: Locale; me: Me }) {
                         </NativeSelect>
                       </Field>
                     ) : null}
-                    <Field
+                      <Field
                       title={t(
                         "مهلة الرد بالساعات — فارغ لسياسة الموقع",
                         "Response hours — empty inherits site policy",
@@ -614,7 +613,7 @@ export function WorkflowWorkspace({ locale, me }: { locale: Locale; me: Me }) {
                         }
                       />
                     </Field>
-                    <Field
+                      <Field
                       title={t(
                         "مهلة المرحلة بالساعات — فارغ لتعطيلها",
                         "Stage hours — empty disables timer",
@@ -634,7 +633,7 @@ export function WorkflowWorkspace({ locale, me }: { locale: Locale; me: Me }) {
                         }
                       />
                     </Field>
-                    {(["x", "y"] as const).map((axis) => (
+                      {(["x", "y"] as const).map((axis) => (
                       <Field
                         key={axis}
                         title={t(
@@ -655,8 +654,8 @@ export function WorkflowWorkspace({ locale, me }: { locale: Locale; me: Me }) {
                         />
                       </Field>
                     ))}
-                  </div>
-                  <Button
+                    </div>
+                    <Button
                     variant="outline"
                     disabled={
                       definition.stages.length === 1 ||
@@ -675,39 +674,45 @@ export function WorkflowWorkspace({ locale, me }: { locale: Locale; me: Me }) {
                       setStageId(definition.initialStage);
                     }}
                   >
-                    {t("حذف المرحلة وروابطها", "Remove stage and connections")}
-                  </Button>
-                </>
-              ) : null}
-            </section>
-            <section className={wfCard}>
-              <h2 className="text-lg font-semibold">
+                      {t(
+                        "حذف المرحلة وروابطها",
+                        "Remove stage and connections",
+                      )}
+                    </Button>
+                  </>
+                ) : null}
+              </section>
+              <section className={wfCard}>
+                <h2 className="text-lg font-semibold">
                 {t("الانتقالات والقواعد", "Transitions and rules")}
               </h2>
-              <Field
+                <Field
                 title={t(
                   "القاعدة — حسب أولوية التنفيذ",
                   "Rule — in execution order",
                 )}
               >
-                <NativeSelect
+                  <NativeSelect
                   className={wfControl}
                   value={transitionId}
                   onChange={(e) => setTransitionId(e.target.value)}
                 >
-                  <option value="">
+                    <option value="">
                     {t("اختر انتقالًا", "Choose a transition")}
                   </option>
-                  {definition.transitions.map((tr, i) => (
-                    <option key={tr.id} value={tr.id}>
-                      {i + 1}. {label(tr)} ·{" "}
-                      {label(definition.stages.find((s) => s.id === tr.from)!)}{" "}
-                      → {label(definition.stages.find((s) => s.id === tr.to)!)}
-                    </option>
-                  ))}
-                </NativeSelect>
-              </Field>
-              <Button
+                    {definition.transitions.map((tr, i) => (
+                      <option key={tr.id} value={tr.id}>
+                        {i + 1}. {label(tr)} ·{" "}
+                        {label(
+                          definition.stages.find((s) => s.id === tr.from)!,
+                        )}{" "}
+                        →{" "}
+                        {label(definition.stages.find((s) => s.id === tr.to)!)}
+                      </option>
+                    ))}
+                  </NativeSelect>
+                </Field>
+                <Button
                 variant="outline"
                 onClick={() => {
                   const id = uid();
@@ -735,10 +740,10 @@ export function WorkflowWorkspace({ locale, me }: { locale: Locale; me: Me }) {
               >
                 {t("إضافة انتقال", "Add transition")}
               </Button>
-              {transition ? (
-                <>
-                  <div className="grid gap-4 sm:grid-cols-2">
-                    <Field
+                {transition ? (
+                  <>
+                    <div className="grid gap-4 sm:grid-cols-2">
+                      <Field
                       title={t("اسم الإجراء بالعربية", "Action Arabic name")}
                     >
                       <Input
@@ -748,7 +753,7 @@ export function WorkflowWorkspace({ locale, me }: { locale: Locale; me: Me }) {
                         }
                       />
                     </Field>
-                    <Field
+                      <Field
                       title={t(
                         "اسم الإجراء بالإنجليزية",
                         "Action English name",
@@ -761,17 +766,17 @@ export function WorkflowWorkspace({ locale, me }: { locale: Locale; me: Me }) {
                         }
                       />
                     </Field>
-                    <Field title={t("من مرحلة", "From stage")}>
+                      <Field title={t("من مرحلة", "From stage")}>
                       {selectStages(transition.from, (v) =>
                         updateTransition({ from: v }),
                       )}
                     </Field>
-                    <Field title={t("إلى مرحلة", "To stage")}>
+                      <Field title={t("إلى مرحلة", "To stage")}>
                       {selectStages(transition.to, (v) =>
                         updateTransition({ to: v }),
                       )}
                     </Field>
-                    <Field title={t("المحفز", "Trigger")}>
+                      <Field title={t("المحفز", "Trigger")}>
                       <NativeSelect
                         className={wfControl}
                         value={transition.trigger}
@@ -791,8 +796,8 @@ export function WorkflowWorkspace({ locale, me }: { locale: Locale; me: Me }) {
                         ))}
                       </NativeSelect>
                     </Field>
-                    <Field title={t("الإجراء", "Action")}>
-                      <NativeSelect
+                      <Field title={t("الإجراء", "Action")}>
+                        <NativeSelect
                         className={wfControl}
                         value={transition.action}
                         onChange={(e) =>
@@ -802,19 +807,22 @@ export function WorkflowWorkspace({ locale, me }: { locale: Locale; me: Me }) {
                           })
                         }
                       >
-                        <option value="transition">
+                          <option value="transition">
                           {t("انتقال وإحالة", "Transition and route")}
                         </option>
-                        {["response_due", "stage_due"].includes(
+                          {["response_due", "stage_due"].includes(
                           transition.trigger,
                         ) ? (
-                          <option value="notify">
-                            {t("تنبيه داخلي فقط", "Internal notification only")}
-                          </option>
-                        ) : null}
-                      </NativeSelect>
-                    </Field>
-                    <Field
+                            <option value="notify">
+                              {t(
+                                "تنبيه داخلي فقط",
+                                "Internal notification only",
+                              )}
+                            </option>
+                          ) : null}
+                        </NativeSelect>
+                      </Field>
+                      <Field
                       title={t(
                         "المخول بالتنفيذ اليدوي",
                         "Who can perform this action",
@@ -846,19 +854,21 @@ export function WorkflowWorkspace({ locale, me }: { locale: Locale; me: Me }) {
                         </option>
                       </NativeSelect>
                     </Field>
-                    <label className="flex min-h-11 items-center gap-2">
-                      <input
-                        type="checkbox"
-                        checked={transition.reasonRequired}
-                        disabled={transition.trigger !== "manual"}
-                        onChange={(e) =>
-                          updateTransition({ reasonRequired: e.target.checked })
-                        }
-                      />
-                      {t("سبب إلزامي", "Reason required")}
-                    </label>
-                  </div>
-                  <Field title={t("مطابقة الشروط", "Condition matching")}>
+                      <label className="flex min-h-11 items-center gap-2">
+                        <input
+                          type="checkbox"
+                          checked={transition.reasonRequired}
+                          disabled={transition.trigger !== "manual"}
+                          onChange={(e) =>
+                            updateTransition({
+                              reasonRequired: e.target.checked,
+                            })
+                          }
+                        />
+                        {t("سبب إلزامي", "Reason required")}
+                      </label>
+                    </div>
+                    <Field title={t("مطابقة الشروط", "Condition matching")}>
                     <NativeSelect
                       className={wfControl}
                       value={transition.match}
@@ -876,12 +886,12 @@ export function WorkflowWorkspace({ locale, me }: { locale: Locale; me: Me }) {
                       </option>
                     </NativeSelect>
                   </Field>
-                  {transition.conditions.map((c, i) => (
-                    <div
+                    {transition.conditions.map((c, i) => (
+                      <div
                       key={i}
                       className="grid gap-3 rounded-xl bg-muted/40 p-3 sm:grid-cols-4"
                     >
-                      <Field title={t("الحقل", "Field")}>
+                        <Field title={t("الحقل", "Field")}>
                         <NativeSelect
                           className={wfControl}
                           value={c.field}
@@ -915,21 +925,24 @@ export function WorkflowWorkspace({ locale, me }: { locale: Locale; me: Me }) {
                             ))}
                         </NativeSelect>
                       </Field>
-                      <Field title={t("المقارنة", "Comparison")}>
-                        <NativeSelect
-                          className={wfControl}
-                          value={c.op}
-                          onChange={(e) =>
-                            updateTransition({
-                              conditions: transition.conditions.map((v, j) =>
-                                i === j
-                                  ? { ...v, op: e.target.value as typeof c.op }
-                                  : v,
-                              ),
-                            })
-                          }
-                        >
-                          {[
+                        <Field title={t("المقارنة", "Comparison")}>
+                          <NativeSelect
+                            className={wfControl}
+                            value={c.op}
+                            onChange={(e) =>
+                              updateTransition({
+                                conditions: transition.conditions.map((v, j) =>
+                                  i === j
+                                    ? {
+                                        ...v,
+                                        op: e.target.value as typeof c.op,
+                                      }
+                                    : v,
+                                ),
+                              })
+                            }
+                          >
+                            {[
                             ["eq", t("يساوي", "Equals")],
                             ["ne", t("لا يساوي", "Not equal")],
                             ["in", t("ضمن قائمة", "In list")],
@@ -941,9 +954,9 @@ export function WorkflowWorkspace({ locale, me }: { locale: Locale; me: Me }) {
                               {n}
                             </option>
                           ))}
-                        </NativeSelect>
-                      </Field>
-                      <Field
+                          </NativeSelect>
+                        </Field>
+                        <Field
                         title={t(
                           "القيمة — افصل القائمة بفاصلة",
                           "Value — comma-separated list",
@@ -961,7 +974,7 @@ export function WorkflowWorkspace({ locale, me }: { locale: Locale; me: Me }) {
                           }
                         />
                       </Field>
-                      <Button
+                        <Button
                         variant="outline"
                         onClick={() =>
                           updateTransition({
@@ -973,9 +986,9 @@ export function WorkflowWorkspace({ locale, me }: { locale: Locale; me: Me }) {
                       >
                         {t("حذف الشرط", "Remove condition")}
                       </Button>
-                    </div>
-                  ))}
-                  <div className="flex flex-wrap gap-2">
+                      </div>
+                    ))}
+                    <div className="flex flex-wrap gap-2">
                     <Button
                       variant="outline"
                       onClick={() =>
@@ -1016,17 +1029,17 @@ export function WorkflowWorkspace({ locale, me }: { locale: Locale; me: Me }) {
                       {t("حذف الانتقال", "Remove transition")}
                     </Button>
                   </div>
-                </>
-              ) : null}
-            </section>
-            <section className={wfCard}>
-              <h2 className="text-lg font-semibold">
+                  </>
+                ) : null}
+              </section>
+              <section className={wfCard}>
+                <h2 className="text-lg font-semibold">
                 {t(
                   "التحقق والمحاكاة والنشر",
                   "Validation, simulation and publishing",
                 )}
               </h2>
-              <div className="grid gap-4 sm:grid-cols-2">
+                <div className="grid gap-4 sm:grid-cols-2">
                 <Field title={t("مرحلة المحاكاة", "Simulation stage")}>
                   {selectStages(stageId, setStageId)}
                 </Field>
@@ -1056,8 +1069,8 @@ export function WorkflowWorkspace({ locale, me }: { locale: Locale; me: Me }) {
                   </Field>
                 ))}
               </div>
-              <div className="flex flex-wrap gap-2">
-                <Button
+                <div className="flex flex-wrap gap-2">
+                  <Button
                   variant="outline"
                   onClick={() =>
                     void run(async () => {
@@ -1071,36 +1084,41 @@ export function WorkflowWorkspace({ locale, me }: { locale: Locale; me: Me }) {
                 >
                   {t("التحقق من المسار", "Validate workflow")}
                 </Button>
-                <Button
-                  variant="outline"
-                  onClick={() =>
-                    void run(async () => {
-                      const r = await workflowPost<{
+                  <Button
+                    variant="outline"
+                    onClick={() =>
+                      void run(async () => {
+                        const r = await workflowPost<{
                         transitions: WorkflowTransition[];
                         errors: string[];
-                      }>("simulate", { definition, stageId, trigger, fields });
-                      setSimulation(r.transitions);
-                      setValidation(r.errors);
-                    })
-                  }
-                >
-                  {t("محاكاة", "Simulate")}
-                </Button>
-                <Button
+                      }>("simulate", {
+                          definition,
+                          stageId,
+                          trigger,
+                          fields,
+                        });
+                        setSimulation(r.transitions);
+                        setValidation(r.errors);
+                      })
+                    }
+                  >
+                    {t("محاكاة", "Simulate")}
+                  </Button>
+                  <Button
                   disabled={!can(me, "workflows.manage")}
                   onClick={() => void run(save)}
                 >
                   {t("حفظ المسودة", "Save draft")}
                 </Button>
-              </div>
-              <Validation errors={validation} locale={locale} />
-              {simulation.map((tr) => (
+                </div>
+                <Validation errors={validation} locale={locale} />
+                {simulation.map((tr) => (
                 <p key={tr.id} className="rounded-xl bg-accent p-3">
                   {label(tr)} →{" "}
                   {label(definition.stages.find((s) => s.id === tr.to)!)}
                 </p>
               ))}
-              <Field
+                <Field
                 title={t(
                   "تطبيق المسار على المعاملات الجديدة",
                   "Apply workflow to new conversations",
@@ -1125,7 +1143,7 @@ export function WorkflowWorkspace({ locale, me }: { locale: Locale; me: Me }) {
                   ))}
                 </NativeSelect>
               </Field>
-              <Button
+                <Button
                 disabled={
                   !can(me, "workflows.publish") ||
                   (!can(me, "workflows.manage") && !active)
@@ -1149,20 +1167,20 @@ export function WorkflowWorkspace({ locale, me }: { locale: Locale; me: Me }) {
                   "Publish version for new conversations",
                 )}
               </Button>
-              <p className="text-sm text-muted-foreground">
+                <p className="text-sm text-muted-foreground">
                 {t(
                   "تظل المعاملات الجارية على إصدارها. النقل متاح من القسم المخصص بعد المعاينة.",
                   "Existing conversations stay on their pinned versions. Transfer them separately after previewing.",
                 )}
               </p>
-            </section>
-          </>
-        ) : null}
-        {tab === "teams" ? (
-          <section className={wfCard}>
-            <h2 className="text-lg font-semibold">{t("فرق العمل", "Teams")}</h2>
-            <div className="flex flex-wrap gap-2">
-              {data.teams.map((v) => (
+              </section>
+            </>
+          ) : null}
+          {tab === "teams" ? (
+            <section className={wfCard}>
+              <h2 className="text-lg font-semibold">{t("فرق العمل", "Teams")}</h2>
+              <div className="flex flex-wrap gap-2">
+                {data.teams.map((v) => (
                 <Button
                   key={v.id}
                   variant="outline"
@@ -1171,16 +1189,21 @@ export function WorkflowWorkspace({ locale, me }: { locale: Locale; me: Me }) {
                   {label(v)}
                 </Button>
               ))}
-              <Button
-                variant="outline"
-                onClick={() =>
-                  setTeam({ nameAr: "", nameEn: "", members: [], active: true })
-                }
-              >
-                {t("فريق جديد", "New team")}
-              </Button>
-            </div>
-            <div className="grid gap-4 sm:grid-cols-2">
+                <Button
+                  variant="outline"
+                  onClick={() =>
+                    setTeam({
+                    nameAr: "",
+                    nameEn: "",
+                    members: [],
+                    active: true,
+                  })
+                  }
+                >
+                  {t("فريق جديد", "New team")}
+                </Button>
+              </div>
+              <div className="grid gap-4 sm:grid-cols-2">
               <Field title={t("اسم الفريق بالعربية", "Team Arabic name")}>
                 <Input
                   value={team.nameAr ?? ""}
@@ -1194,7 +1217,7 @@ export function WorkflowWorkspace({ locale, me }: { locale: Locale; me: Me }) {
                 />
               </Field>
             </div>
-            <fieldset className="grid gap-2 sm:grid-cols-2">
+              <fieldset className="grid gap-2 sm:grid-cols-2">
               <legend className="mb-2 font-medium">
                 {t("الأعضاء", "Members")}
               </legend>
@@ -1221,7 +1244,7 @@ export function WorkflowWorkspace({ locale, me }: { locale: Locale; me: Me }) {
                 </label>
               ))}
             </fieldset>
-            <label className="flex min-h-11 items-center gap-2">
+              <label className="flex min-h-11 items-center gap-2">
               <input
                 type="checkbox"
                 checked={team.active ?? true}
@@ -1229,7 +1252,7 @@ export function WorkflowWorkspace({ locale, me }: { locale: Locale; me: Me }) {
               />
               {t("فريق نشط", "Active team")}
             </label>
-            <Button
+              <Button
               disabled={!can(me, "teams.manage")}
               onClick={() =>
                 void run(async () => {
@@ -1246,20 +1269,20 @@ export function WorkflowWorkspace({ locale, me }: { locale: Locale; me: Me }) {
             >
               {t("حفظ الفريق", "Save team")}
             </Button>
-          </section>
-        ) : null}
-        {tab === "calendar" ? (
-          <section className={wfCard}>
-            <h2 className="text-lg font-semibold">
+            </section>
+          ) : null}
+          {tab === "calendar" ? (
+            <section className={wfCard}>
+              <h2 className="text-lg font-semibold">
               {t("تقويم ساعات العمل", "Business calendar")}
             </h2>
-            <p className="text-sm">
+              <p className="text-sm">
               {t(
                 "كل حفظ ينشئ إصدارًا جديدًا؛ لا يغير مهل المسارات المنشورة.",
                 "Each save creates a new version and preserves published workflow deadlines.",
               )}
             </p>
-            <Field title={t("المنطقة الزمنية", "Time zone")}>
+              <Field title={t("المنطقة الزمنية", "Time zone")}>
               <Input
                 value={calendar.timezone}
                 onChange={(e) =>
@@ -1267,7 +1290,7 @@ export function WorkflowWorkspace({ locale, me }: { locale: Locale; me: Me }) {
                 }
               />
             </Field>
-            <Button
+              <Button
               variant="outline"
               disabled={!data.calendars.length}
               onClick={() =>
@@ -1276,29 +1299,31 @@ export function WorkflowWorkspace({ locale, me }: { locale: Locale; me: Me }) {
             >
               {t("نسخ آخر تقويم للتعديل", "Copy latest calendar to edit")}
             </Button>
-            {calendar.week.map((intervals, day) => (
-              <Intervals
-                key={day}
-                locale={locale}
-                title={new Intl.DateTimeFormat(locale, {
+              {calendar.week.map((intervals, day) => (
+                <Intervals
+                  key={day}
+                  locale={locale}
+                  title={new Intl.DateTimeFormat(locale, {
                   weekday: "long",
                   timeZone: "UTC",
                 }).format(new Date(Date.UTC(2026, 0, 4 + day)))}
-                intervals={intervals}
-                onChange={(v) =>
-                  setCalendar({
-                    ...calendar,
-                    week: calendar.week.map((old, i) => (i === day ? v : old)),
-                  })
-                }
-              />
-            ))}
-            <h3 className="font-semibold">
+                  intervals={intervals}
+                  onChange={(v) =>
+                    setCalendar({
+                      ...calendar,
+                      week: calendar.week.map((old, i) =>
+                        i === day ? v : old,
+                      ),
+                    })
+                  }
+                />
+              ))}
+              <h3 className="font-semibold">
               {t("العطلات والاستثناءات", "Holidays and exceptions")}
             </h3>
-            {calendar.exceptions.map((ex, i) => (
-              <div key={i} className="space-y-3 rounded-xl border p-3">
-                <Field title={t("التاريخ", "Date")}>
+              {calendar.exceptions.map((ex, i) => (
+                <div key={i} className="space-y-3 rounded-xl border p-3">
+                  <Field title={t("التاريخ", "Date")}>
                   <Input
                     type="date"
                     value={ex.date}
@@ -1312,7 +1337,7 @@ export function WorkflowWorkspace({ locale, me }: { locale: Locale; me: Me }) {
                     }
                   />
                 </Field>
-                <Intervals
+                  <Intervals
                   locale={locale}
                   title={t(
                     "فترات الدوام — بدون فترات تعني عطلة",
@@ -1328,20 +1353,22 @@ export function WorkflowWorkspace({ locale, me }: { locale: Locale; me: Me }) {
                     })
                   }
                 />
-                <Button
-                  variant="outline"
-                  onClick={() =>
-                    setCalendar({
-                      ...calendar,
-                      exceptions: calendar.exceptions.filter((_, j) => j !== i),
-                    })
-                  }
-                >
-                  {t("حذف الاستثناء", "Remove exception")}
-                </Button>
-              </div>
-            ))}
-            <div className="flex flex-wrap gap-2">
+                  <Button
+                    variant="outline"
+                    onClick={() =>
+                      setCalendar({
+                        ...calendar,
+                        exceptions: calendar.exceptions.filter(
+                          (_, j) => j !== i,
+                        ),
+                      })
+                    }
+                  >
+                    {t("حذف الاستثناء", "Remove exception")}
+                  </Button>
+                </div>
+              ))}
+              <div className="flex flex-wrap gap-2">
               <Button
                 variant="outline"
                 onClick={() =>
@@ -1368,9 +1395,9 @@ export function WorkflowWorkspace({ locale, me }: { locale: Locale; me: Me }) {
                 {t("حفظ إصدار التقويم", "Save calendar version")}
               </Button>
             </div>
-          </section>
-        ) : null}
-        {tab === "transfer" ? (
+            </section>
+          ) : null}
+          {tab === "transfer" ? (
           <section className={wfCard}>
             <h2 className="text-lg font-semibold">
               {t("نقل المعاملات الحالية", "Transfer existing conversations")}
@@ -1588,9 +1615,9 @@ export function WorkflowWorkspace({ locale, me }: { locale: Locale; me: Me }) {
             ) : null}
           </section>
         ) : null}
-      </fieldset>
-    </TabsContent>
-</Tabs>
+        </fieldset>
+      </TabsContent>
+    </Tabs>
   );
 }
 function Intervals({

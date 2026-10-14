@@ -40,12 +40,27 @@ Use `Panel` for content cards, `FormSection` for a labeled fieldset, `TableScrol
 Use `SectionNav` with real links and `aria-current="page"` for URL navigation. Use `Tabs`, `TabsList`, `TabsTrigger` and `TabsContent` for switching a panel in place; Radix owns arrow/Home/End keyboard navigation and selected/controlled relationships. Labels come from Arabic/English content, with logical start/end spacing.
 
 ```tsx
-<PageHeader>
-  <div><PageTitle>{copy.title}</PageTitle><p className="ds-page-description">{copy.description}</p></div>
-  <Toolbar><Button onClick={create}>{copy.create}</Button></Toolbar>
-</PageHeader>
-<Panel><FormSection title={copy.details}>{fields}</FormSection></Panel>
+<PageHeading
+  title={copy.title}
+  description={copy.description}
+  actions={<Button onClick={create}>{copy.create}</Button>}
+/>
+<SectionNav aria-label={copy.sections}>{sectionLinks}</SectionNav>
+<ListWorkspace>
+  <Toolbar className="ds-list-filters">{filters}</Toolbar>
+  <Table>{headAndRows}</Table>
+  <AdminPagination {...pagination} />
+</ListWorkspace>
 ```
+
+Administration headings must use `PageHeading`. Its typed slots keep the title and description together, secondary metadata below them, and actions at the opposite edge. Detail screens use the `back` and `metadata` slots. Do not manually arrange a `PageHeader` or `PageTitle` in an administration page; lint rejects that regression. Account pages use the same heading slots. The lower-level title remains available for public/authentication compositions.
+
+Lists use `ListWorkspace` for filters, locally scrolling results, feedback and pagination. Roles and invitations use the same table vocabulary as users and outbox. Diagnostic records retain their expandable details. `Table` already owns scrolling; avoid adding a second decorated container. Use 14px column headings and body cells, with smaller type only for supplementary metadata.
+
+Administration section links and content tabs share an underline treatment. They keep distinct link/tab semantics. Settings use horizontal section navigation, an independent preview beside the form, and save/revert/default actions in the heading. No floating save bar covers form fields. Dashboard metrics use restrained identity accents and real values, without decorative animated stripes or invented trends.
+
+The structure follows the reusable list/form/workspace principle documented by [Frappe Desk](https://docs.frappe.io/framework/user/en/desk). [Odoo's search and filter guidance](https://www.odoo.com/documentation/saas-18.2/applications/essentials/search.html) also informs keeping list tools directly above results. These are adaptations to So7ob's existing React components, permissions, stored theme settings and Arabic/English layouts.
+
 
 Keep confirmed-only success, preserved form drafts, server authorization and uncertain-write recovery in their existing feature services. Presentation components do not retry writes or clear form state.
 

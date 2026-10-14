@@ -1,6 +1,6 @@
 "use client";
 
-import { PageTitle, Toolbar } from "@/components/ui/workspace";
+import { PageHeading, Toolbar } from "@/components/ui/workspace";
 
 /**
  * محرر الصفحات — قلب لوحة المحتوى:
@@ -14,7 +14,10 @@ import { PageTitle, Toolbar } from "@/components/ui/workspace";
  */
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import Link from "@/routing/link";
-import { useEditorNavigationGuard, type EditorSaveStatus } from "./use-editor-navigation-guard";
+import {
+  useEditorNavigationGuard,
+  type EditorSaveStatus,
+} from "./use-editor-navigation-guard";
 import { toast } from "sonner";
 import {
   AlertTriangle,
@@ -63,11 +66,21 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
-import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+} from "@/components/ui/sheet";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Slider } from "@/components/ui/slider";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 import { getPortalContent } from "@/content/portal";
 import { can } from "@/lib/auth/permissions";
 import { type ContentBlockType as BlockType } from "@so7ob/contracts";
@@ -98,7 +111,12 @@ import type { NodeStyle } from "@so7ob/contracts";
 import { validateContent } from "@so7ob/contracts";
 import { applyInlineField, isInlineEditableType } from "@so7ob/contracts";
 import type { Locale } from "@/lib/i18n";
-import { apiErrorMessage, apiGet, apiSend, ApiError } from "@/components/admin/helpers";
+import {
+  apiErrorMessage,
+  apiGet,
+  apiSend,
+  ApiError,
+} from "@/components/admin/helpers";
 import type { Me } from "@/components/admin/types";
 import { EmptyState } from "@/components/admin/empty-state";
 import { cn } from "@/lib/utils";
@@ -175,7 +193,9 @@ export function PageEditor({ me, locale, pageId }: PageEditorProps) {
   const [page, setPage] = useState<PageDetail | null>(null);
   const [state, setReactState] = useState<EditorState | null>(null);
   const stateRef = useRef<EditorState | null>(null);
-  const [draftLocale, setDraftLocale] = useState<DraftLocale>(locale === "en" ? "en" : "ar");
+  const [draftLocale, setDraftLocale] = useState<DraftLocale>(
+    locale === "en" ? "en" : "ar",
+  );
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [device, setDevice] = useState<PreviewDevice>("desktop");
   const [saveStatus, setSaveStatus] = useState<SaveStatus>("saved");
@@ -204,7 +224,10 @@ export function PageEditor({ me, locale, pageId }: PageEditorProps) {
   const [navGuard, setNavGuard] = useState<{ href: string } | null>(null);
   const navGuardRef = useRef<{ href: string } | null>(null);
   // حوار تأكيد الحذف — مع عدد العقد التي ستُحذف مع الحاوية
-  const [confirmDelete, setConfirmDelete] = useState<{ id: string; count: number } | null>(null);
+  const [confirmDelete, setConfirmDelete] = useState<{
+    id: string;
+    count: number;
+  } | null>(null);
   const [publishing, setPublishing] = useState(false);
   // استبعاد التعديلات غير المنشورة — حوار تأكيد + حالة تنفيذ
   const [discardOpen, setDiscardOpen] = useState(false);
@@ -223,7 +246,9 @@ export function PageEditor({ me, locale, pageId }: PageEditorProps) {
   const [inlineEditId, setInlineEditId] = useState<string | null>(null);
   const inlineEditIdRef = useRef<string | null>(null);
   // حافظة الكتل عبر الصفحات — تُقرأ بعد التركيب (localStorage غير متاح أثناء التهيئة الأولى)
-  const [clipboardEntries, setClipboardEntries] = useState<ClipboardEntry[]>([]);
+  const [clipboardEntries, setClipboardEntries] = useState<ClipboardEntry[]>(
+    [],
+  );
   useEffect(() => {
     setClipboardEntries(readClipboard());
   }, []);
@@ -256,7 +281,9 @@ export function PageEditor({ me, locale, pageId }: PageEditorProps) {
   const autosaveTimerRef = useRef<number | null>(null);
   const historyTimerRef = useRef<number | null>(null);
   const pendingBaselineRef = useRef<DraftState | null>(null);
-  const performSaveRef = useRef<() => Promise<SaveOutcome>>(async () => "failed");
+  const performSaveRef = useRef<() => Promise<SaveOutcome>>(
+    async () => "failed",
+  );
 
   // ——— جدولة الحفظ التلقائي — يتوقف عند التعارض أو خطأ تحقق يحتاج تدخل المستخدم ———
   const scheduleAutosave = useCallback(() => {
@@ -283,7 +310,7 @@ export function PageEditor({ me, locale, pageId }: PageEditorProps) {
       setSaveStatusSync("dirty");
       scheduleAutosave();
     },
-    [scheduleAutosave, setSaveStatusSync]
+    [scheduleAutosave, setSaveStatusSync],
   );
 
   // ——— الحفظ (يقرأ الحالة عبر المراجع) ———
@@ -315,11 +342,15 @@ export function PageEditor({ me, locale, pageId }: PageEditorProps) {
     setSaveStatusSync("saving");
     const sentRevision = revisionRef.current;
     try {
-      const res = await apiSend<PatchPageResponse>(`/api/admin/pages/${pageId}`, "PATCH", {
+      const res = await apiSend<PatchPageResponse>(
+        `/api/admin/pages/${pageId}`,
+        "PATCH",
+        {
         draftBlocksAr: blocksAr,
         draftBlocksEn: blocksEn,
         baseRevision: sentRevision,
-      });
+      },
+      );
       lastSavedRef.current = { ar: blocksAr, en: blocksEn };
       revisionRef.current = res.page.draftRevision;
       setPage((prev) =>
@@ -333,7 +364,7 @@ export function PageEditor({ me, locale, pageId }: PageEditorProps) {
               isHome: res.page.isHome ?? prev.isHome,
               hasUnpublishedChanges: true,
             }
-          : prev
+          : prev,
       );
       setSaveStatusSync("saved");
       return "saved";
@@ -384,9 +415,13 @@ export function PageEditor({ me, locale, pageId }: PageEditorProps) {
       if (!s) return;
       clearPendingHistory();
       const next = updater(s.draft);
-      commit({ draft: next, past: [...s.past.slice(-(HISTORY_LIMIT - 1)), s.draft], future: [] });
+      commit({
+        draft: next,
+        past: [...s.past.slice(-(HISTORY_LIMIT - 1)), s.draft],
+        future: [],
+      });
     },
-    [clearPendingHistory, commit]
+    [clearPendingHistory, commit],
   );
 
   /** تعديل متتابع (كتابة في الحقول): دفع مجمّل بعد 500ms من السكون */
@@ -399,7 +434,11 @@ export function PageEditor({ me, locale, pageId }: PageEditorProps) {
         pendingBaselineRef.current = null;
         const s = stateRef.current;
         if (!s || !baseline || baseline === s.draft) return;
-        commit({ draft: s.draft, past: [...s.past.slice(-(HISTORY_LIMIT - 1)), baseline], future: [] });
+        commit({
+          draft: s.draft,
+          past: [...s.past.slice(-(HISTORY_LIMIT - 1)), baseline],
+          future: [],
+        });
       }, HISTORY_DEBOUNCE);
     }
   }, [commit]);
@@ -411,7 +450,7 @@ export function PageEditor({ me, locale, pageId }: PageEditorProps) {
       scheduleHistoryDebounce();
       commit({ draft: updater(s.draft), past: s.past, future: [] });
     },
-    [commit, scheduleHistoryDebounce]
+    [commit, scheduleHistoryDebounce],
   );
 
   const undo = useCallback(() => {
@@ -419,7 +458,11 @@ export function PageEditor({ me, locale, pageId }: PageEditorProps) {
     if (!s || s.past.length === 0) return;
     clearPendingHistory();
     const snapshot = s.past[s.past.length - 1];
-    commit({ draft: snapshot, past: s.past.slice(0, -1), future: [s.draft, ...s.future.slice(0, HISTORY_LIMIT - 1)] });
+    commit({
+      draft: snapshot,
+      past: s.past.slice(0, -1),
+      future: [s.draft, ...s.future.slice(0, HISTORY_LIMIT - 1)],
+    });
   }, [clearPendingHistory, commit]);
 
   const redo = useCallback(() => {
@@ -427,14 +470,20 @@ export function PageEditor({ me, locale, pageId }: PageEditorProps) {
     if (!s || s.future.length === 0) return;
     clearPendingHistory();
     const snapshot = s.future[0];
-    commit({ draft: snapshot, past: [...s.past.slice(-(HISTORY_LIMIT - 1)), s.draft], future: s.future.slice(1) });
+    commit({
+      draft: snapshot,
+      past: [...s.past.slice(-(HISTORY_LIMIT - 1)), s.draft],
+      future: s.future.slice(1),
+    });
   }, [clearPendingHistory, commit]);
 
   // ——— تحميل الصفحة ———
   const loadPage = useCallback(async () => {
     setLoadStatus("loading");
     try {
-      const res = await apiGet<PageDetailResponse>(`/api/admin/pages/${pageId}`);
+      const res = await apiGet<PageDetailResponse>(
+        `/api/admin/pages/${pageId}`,
+      );
       // الشكلان مقبولان: مصفوفة v0 قديمة (تُرحّل) أو مغلف v1 — التحرير دائمًا من الشجرة
       const checkAr = validateContent(res.page.draftBlocksAr);
       const checkEn = validateContent(res.page.draftBlocksEn);
@@ -478,7 +527,9 @@ export function PageEditor({ me, locale, pageId }: PageEditorProps) {
   const openConflictCompare = useCallback(async () => {
     setConflictBusy(true);
     try {
-      const res = await apiGet<PageDetailResponse>(`/api/admin/pages/${pageId}`);
+      const res = await apiGet<PageDetailResponse>(
+        `/api/admin/pages/${pageId}`,
+      );
       const checkAr = validateContent(res.page.draftBlocksAr);
       const checkEn = validateContent(res.page.draftBlocksEn);
       const local = stateRef.current?.draft;
@@ -506,15 +557,17 @@ export function PageEditor({ me, locale, pageId }: PageEditorProps) {
   const keepMyChanges = useCallback(async () => {
     setConflictBusy(true);
     try {
-      const res = await apiGet<PageDetailResponse>(`/api/admin/pages/${pageId}`);
+      const res = await apiGet<PageDetailResponse>(
+        `/api/admin/pages/${pageId}`,
+      );
       revisionRef.current = res.page.draftRevision;
       setConflictOpen(false);
       setConflictInfo(null);
       const outcome = await performSave();
       if (outcome === "saved") toast.success(te.saved);
     } catch (err) {
-      toast.error(apiErrorMessage(err, t.auth.errors));
-    } finally {
+        toast.error(apiErrorMessage(err, t.auth.errors));
+      } finally {
       setConflictBusy(false);
     }
   }, [pageId, performSave, te.saved, t.auth.errors]);
@@ -532,7 +585,18 @@ export function PageEditor({ me, locale, pageId }: PageEditorProps) {
       if (e.key === "Escape") {
         // A closing Radix dialog can commit its state before this bubbling listener runs.
         // The original event path still identifies the dialog that owns Escape.
-        if (e.composedPath().some((target) => target instanceof HTMLElement && ["dialog", "alertdialog"].includes(target.getAttribute("role") ?? ""))) return;
+        if (
+          e
+            .composedPath()
+            .some(
+              (target) =>
+                target instanceof HTMLElement &&
+                ["dialog", "alertdialog"].includes(
+                  target.getAttribute("role") ?? "",
+                ),
+            )
+        )
+          return;
         // حوار/لوحة مفتوحة؟ Escape يخصّها — تغلقه دون إلغاء تحديد الكتلة خلفها
         if (
           paletteOpen ||
@@ -564,10 +628,10 @@ export function PageEditor({ me, locale, pageId }: PageEditorProps) {
       const mod = e.ctrlKey || e.metaKey;
       // دليل المحرر: F1 في أي موضع، أو ؟ خارج حقول الكتابة
       if (e.key === "F1") {
-        e.preventDefault();
-        setGuideOpen(true);
-        return;
-      }
+          e.preventDefault();
+          setGuideOpen(true);
+          return;
+        }
       if (!mod && e.key === "?" && !e.altKey) {
         const gTarget = e.target as HTMLElement | null;
         const gInField = gTarget && (gTarget.tagName === "INPUT" || gTarget.tagName === "TEXTAREA" || gTarget.isContentEditable);
@@ -581,7 +645,12 @@ export function PageEditor({ me, locale, pageId }: PageEditorProps) {
         // بديل لوحة المفاتيح للنقر المزدوج: Enter على ورقية نصية محددة يبدأ التحرير المباشر
         const target = e.target as HTMLElement | null;
         const inField = target && (target.tagName === "INPUT" || target.tagName === "TEXTAREA" || target.isContentEditable);
-        if (inField || !target?.closest('[data-editor-node]') || target.closest('[role="dialog"],[role="alertdialog"],[role="menu"]')) return;
+        if (
+          inField ||
+          !target?.closest("[data-editor-node]") ||
+          target.closest('[role="dialog"],[role="alertdialog"],[role="menu"]')
+        )
+          return;
         const s = stateRef.current;
         const sel = selectedIdRef.current;
         if (!s || !sel) return;
@@ -637,7 +706,13 @@ export function PageEditor({ me, locale, pageId }: PageEditorProps) {
     testMode,
   ]);
 
-  useEditorNavigationGuard({saveStatus, saveStatusRef, leaveWarning: te.leaveWarning, navGuardRef, setNavGuard});
+  useEditorNavigationGuard({
+    saveStatus,
+    saveStatusRef,
+    leaveWarning: te.leaveWarning,
+    navGuardRef,
+    setNavGuard,
+  });
 
   // ——— عمليات الشجرة ———
   // كل عملية تستنسخ شجرة اللغة الحالية (structuredClone) ثم تعدّل النسخة —
@@ -652,7 +727,7 @@ export function PageEditor({ me, locale, pageId }: PageEditorProps) {
       if (!found) return;
       setConfirmDelete({ id, count: countNodes([found.node]) });
     },
-    [draftLocale]
+    [draftLocale],
   );
 
   /**
@@ -710,13 +785,20 @@ export function PageEditor({ me, locale, pageId }: PageEditorProps) {
       setSelectedId(node.id);
       setMobileLibraryOpen(false);
     },
-    [applyDiscrete, draftLocale, selectedId, te.containerFull, te.maxDepthHint, te.nodeLimit]
+    [
+      applyDiscrete,
+      draftLocale,
+      selectedId,
+      te.containerFull,
+      te.maxDepthHint,
+      te.nodeLimit,
+    ],
   );
 
   /** إضافة من المكتبة/اللوحة السريعة — الهدف يحدده التحديد الحالي */
   const addNode = useCallback(
     (type: BlockType) => insertNode(type, null),
-    [insertNode]
+    [insertNode],
   );
 
   const deleteNode = useCallback(
@@ -730,7 +812,7 @@ export function PageEditor({ me, locale, pageId }: PageEditorProps) {
       setConfirmDelete(null);
       toast(te.nodeDeleted);
     },
-    [applyDiscrete, draftLocale, te.nodeDeleted]
+    [applyDiscrete, draftLocale, te.nodeDeleted],
   );
 
   const duplicateNode = useCallback(
@@ -745,7 +827,9 @@ export function PageEditor({ me, locale, pageId }: PageEditorProps) {
         return;
       }
       const taken = collectIds(tree);
-      const clone = cloneWithNewIds(found.node, taken, () => Math.random().toString(36).slice(2, 8));
+      const clone = cloneWithNewIds(found.node, taken, () =>
+        Math.random().toString(36).slice(2, 8),
+      );
       applyDiscrete((draft) => {
         const treeClone = structuredClone(draft[draftLocale]);
         const f = findNode(treeClone, id);
@@ -756,7 +840,7 @@ export function PageEditor({ me, locale, pageId }: PageEditorProps) {
       });
       setSelectedId(clone.id);
     },
-    [applyDiscrete, draftLocale, te.nodeLimit]
+    [applyDiscrete, draftLocale, te.nodeLimit],
   );
 
   /** نسخ عقدة (بشجرتها) إلى الحافظة عبر الصفحات — بند 1.1 (G1) */
@@ -769,7 +853,7 @@ export function PageEditor({ me, locale, pageId }: PageEditorProps) {
       setClipboardEntries(copyToClipboard(found.node));
       toast.success(te.copiedToClipboard);
     },
-    [draftLocale, te.copiedToClipboard]
+    [draftLocale, te.copiedToClipboard],
   );
 
   /**
@@ -809,7 +893,9 @@ export function PageEditor({ me, locale, pageId }: PageEditorProps) {
         }
       }
       const taken = collectIds(tree);
-      const clone = pasteEntryNode(entry, taken, () => Math.random().toString(36).slice(2, 8));
+      const clone = pasteEntryNode(entry, taken, () =>
+        Math.random().toString(36).slice(2, 8),
+      );
       applyDiscrete((draft) => {
         const treeClone = structuredClone(draft[draftLocale]);
         if (selectedId) {
@@ -826,7 +912,16 @@ export function PageEditor({ me, locale, pageId }: PageEditorProps) {
       setSelectedId(clone.id);
       toast.success(te.pastedFromClipboard);
     },
-    [applyDiscrete, draftLocale, selectedId, te.containerFull, te.maxDepthHint, te.nodeLimit, te.pasteNotAllowedHere, te.pastedFromClipboard]
+    [
+      applyDiscrete,
+      draftLocale,
+      selectedId,
+      te.containerFull,
+      te.maxDepthHint,
+      te.nodeLimit,
+      te.pasteNotAllowedHere,
+      te.pastedFromClipboard,
+    ],
   );
 
   /** إفراغ حافظة الكتل */
@@ -846,11 +941,14 @@ export function PageEditor({ me, locale, pageId }: PageEditorProps) {
         const idx = f.siblings.findIndex((n) => n.id === id);
         const target = idx + dir;
         if (idx < 0 || target < 0 || target >= f.siblings.length) return draft;
-        [f.siblings[idx], f.siblings[target]] = [f.siblings[target], f.siblings[idx]];
+        [f.siblings[idx], f.siblings[target]] = [
+          f.siblings[target],
+          f.siblings[idx],
+        ];
         return { ...draft, [draftLocale]: treeClone };
       });
     },
-    [applyDiscrete, draftLocale]
+    [applyDiscrete, draftLocale],
   );
 
   /** إعادة ترتيب قائمة أبناء والد معين (السحب داخل نفس القائمة) */
@@ -867,13 +965,13 @@ export function PageEditor({ me, locale, pageId }: PageEditorProps) {
         return { ...draft, [draftLocale]: treeClone };
       });
     },
-    [applyDiscrete, draftLocale]
+    [applyDiscrete, draftLocale],
   );
 
   /** إضافة ابن داخل حاوية من شريط الرسم — النوع مقبول مسبقًا من قائمة الأنواع */
   const addChildTo = useCallback(
     (parentId: string, type: BlockType) => insertNode(type, parentId),
-    [insertNode]
+    [insertNode],
   );
 
   /**
@@ -885,7 +983,12 @@ export function PageEditor({ me, locale, pageId }: PageEditorProps) {
     (id: string, targetParentId: string | null, insertIndex: number) => {
       const s = stateRef.current;
       if (!s) return;
-      const check = validateNodeMove(s.draft[draftLocale], id, targetParentId, insertIndex);
+      const check = validateNodeMove(
+        s.draft[draftLocale],
+        id,
+        targetParentId,
+        insertIndex,
+      );
       if (!check.ok) {
         if (check.error === "notFound") return;
         const msg =
@@ -907,7 +1010,15 @@ export function PageEditor({ me, locale, pageId }: PageEditorProps) {
         return next === treeClone ? draft : { ...draft, [draftLocale]: next };
       });
     },
-    [applyDiscrete, draftLocale, te.containerFull, te.maxDepthHint, te.moveIntoOwnChild, te.moveNotAllowedHere, te.nodeLimit]
+    [
+      applyDiscrete,
+      draftLocale,
+      te.containerFull,
+      te.maxDepthHint,
+      te.moveIntoOwnChild,
+      te.moveNotAllowedHere,
+      te.nodeLimit,
+    ],
   );
 
   const updateProps = useCallback(
@@ -920,7 +1031,7 @@ export function PageEditor({ me, locale, pageId }: PageEditorProps) {
         return { ...draft, [draftLocale]: treeClone };
       });
     },
-    [applyContinuous, draftLocale]
+    [applyContinuous, draftLocale],
   );
 
   // ——— التحرير النصي المباشر (inline editing) ———
@@ -946,11 +1057,15 @@ export function PageEditor({ me, locale, pageId }: PageEditorProps) {
       if (!s) return;
       const found = findNode(s.draft[draftLocale], id);
       if (!found) return;
-      const nextProps = applyInlineField({ ...(found.node.props ?? {}) }, field, value);
+      const nextProps = applyInlineField(
+        { ...(found.node.props ?? {}) },
+        field,
+        value,
+      );
       if (!nextProps) return; // حقل غير معروف — تجاهل صامت
       updateProps(id, nextProps);
     },
-    [draftLocale, updateProps]
+    [draftLocale, updateProps],
   );
 
   useEffect(() => {
@@ -991,7 +1106,7 @@ export function PageEditor({ me, locale, pageId }: PageEditorProps) {
         return { ...draft, [draftLocale]: treeClone };
       });
     },
-    [applyDiscrete, draftLocale]
+    [applyDiscrete, draftLocale],
   );
 
   const updateVisibility = useCallback(
@@ -1000,11 +1115,18 @@ export function PageEditor({ me, locale, pageId }: PageEditorProps) {
         const treeClone = structuredClone(draft[draftLocale]);
         const found = findNode(treeClone, id);
         if (!found) return draft;
-        found.node.visibility = { ...(found.node.visibility ?? { mobile: true, tablet: true, desktop: true }), [key]: value };
+        found.node.visibility = {
+          ...(found.node.visibility ?? {
+            mobile: true,
+            tablet: true,
+            desktop: true,
+          }),
+          [key]: value,
+        };
         return { ...draft, [draftLocale]: treeClone };
       });
     },
-    [applyDiscrete, draftLocale]
+    [applyDiscrete, draftLocale],
   );
 
   const updateAnchor = useCallback(
@@ -1018,7 +1140,7 @@ export function PageEditor({ me, locale, pageId }: PageEditorProps) {
         return { ...draft, [draftLocale]: treeClone };
       });
     },
-    [applyDiscrete, draftLocale]
+    [applyDiscrete, draftLocale],
   );
 
   // ——— النشر (حفظ فوري أولًا ثم نشر مرتبط بمراجعة محفوظة) ———
@@ -1029,7 +1151,9 @@ export function PageEditor({ me, locale, pageId }: PageEditorProps) {
       // حفظ حتى النجاح: التعديلات التي تحدث أثناء الطلب تُحفظ في دورة تالية قبل النشر
       const hasPendingEdits = () => {
         const current = stateRef.current, saved = lastSavedRef.current;
-        return !current || !saved || envelopeJson(current.draft.ar) !== saved.ar || envelopeJson(current.draft.en) !== saved.en;
+        return (
+          !current || !saved || envelopeJson(current.draft.ar) !== saved.ar || envelopeJson(current.draft.en) !== saved.en
+        );
       };
       let outcome = await performSave();
       for (let attempt = 0; attempt < 8; attempt++) {
@@ -1045,9 +1169,13 @@ export function PageEditor({ me, locale, pageId }: PageEditorProps) {
         toast.error(apiErrorMessage(new Error("save_failed"), t.auth.errors));
         return;
       }
-      const res = await apiSend<PublishResponse>(`/api/admin/pages/${pageId}/publish`, "POST", {
+      const res = await apiSend<PublishResponse>(
+        `/api/admin/pages/${pageId}/publish`,
+        "POST",
+        {
         baseRevision: revisionRef.current,
-      });
+      },
+      );
       revisionRef.current = res.page.draftRevision;
       setPage((prev) =>
         prev
@@ -1059,7 +1187,7 @@ export function PageEditor({ me, locale, pageId }: PageEditorProps) {
               publishedRevision: res.page.publishedRevision,
               hasUnpublishedChanges: res.page.hasUnpublishedChanges,
             }
-          : prev
+          : prev,
       );
       toast.success(te.publishedOk);
     } catch (err) {
@@ -1077,7 +1205,16 @@ export function PageEditor({ me, locale, pageId }: PageEditorProps) {
     } finally {
       setPublishing(false);
     }
-  }, [pageId, performSave, publishing, t.auth.errors, te.publishedOk, te.emptyPageError, te.archivedError, setSaveStatusSync]);
+  }, [
+    pageId,
+    performSave,
+    publishing,
+    t.auth.errors,
+    te.publishedOk,
+    te.emptyPageError,
+    te.archivedError,
+    setSaveStatusSync,
+  ]);
 
   // ——— استبعاد التعديلات غير المنشورة: المسودة تعود حرفيًا لآخر نسخة منشورة ———
   const discardDraft = useCallback(async () => {
@@ -1089,7 +1226,11 @@ export function PageEditor({ me, locale, pageId }: PageEditorProps) {
         window.clearTimeout(autosaveTimerRef.current);
         autosaveTimerRef.current = null;
       }
-      const res = await apiSend<DiscardResponse>(`/api/admin/pages/${pageId}/discard`, "POST", { baseRevision: revisionRef.current });
+      const res = await apiSend<DiscardResponse>(
+        `/api/admin/pages/${pageId}/discard`,
+        "POST",
+        { baseRevision: revisionRef.current },
+      );
       setDiscardOpen(false);
       toast.success(te.discarded);
       // إعادة تحميل كاملة: المحتوى يطابق المنشور والمراجعة الجديدة لا تعيد استعمال رقم قديم
@@ -1108,7 +1249,15 @@ export function PageEditor({ me, locale, pageId }: PageEditorProps) {
     } finally {
       setDiscarding(false);
     }
-  }, [discarding, pageId, loadPage, t.auth.errors, te.discarded, te.archivedError, setSaveStatusSync]);
+  }, [
+    discarding,
+    pageId,
+    loadPage,
+    t.auth.errors,
+    te.discarded,
+    te.archivedError,
+    setSaveStatusSync,
+  ]);
 
   // ——— جدولة النشر: تحديث خفيف لحالة الصفحة بعد النجاح (لا يمس المحتوى ولا المراجعات) ———
   const scheduleApplied = useCallback((scheduledPublishAt: string | null) => {
@@ -1117,12 +1266,21 @@ export function PageEditor({ me, locale, pageId }: PageEditorProps) {
 
   // ——— المشتقات ———
   const nodes = state?.draft[draftLocale] ?? [];
-  const selectedPath = useMemo(() => (selectedId ? findPath(nodes, selectedId) : null), [nodes, selectedId]);
+  const selectedPath = useMemo(
+    () => (selectedId ? findPath(nodes, selectedId) : null),
+    [nodes, selectedId],
+  );
   const selectedNode = selectedPath ? selectedPath[selectedPath.length - 1] : null;
   const canUndo = (state?.past.length ?? 0) > 0;
   const canRedo = (state?.future.length ?? 0) > 0;
-  const pageTitle = page ? (draftLocale === "en" ? page.titleEn : page.titleAr) : "";
-  const liveHref = page ? (page.slug ? `/${draftLocale}/${page.slug}` : `/${draftLocale}`) : "#";
+  const pageTitle = page
+    ? draftLocale === "en"
+      ? page.titleEn
+      : page.titleAr
+    : "";
+  const liveHref = page
+    ? page.slug ? `/${draftLocale}/${page.slug}` : `/${draftLocale}`
+    : "#";
 
   // تحديد كتلة يفتح لوحة الخصائص كدرج على الشاشات الضيقة فقط
   useEffect(() => {
@@ -1144,7 +1302,9 @@ export function PageEditor({ me, locale, pageId }: PageEditorProps) {
   }
 
   if (loadStatus === "notFound") {
-    return <EmptyState icon={FileWarning} title={tp.empty} body={tp.emptyBody} />;
+    return (
+      <EmptyState icon={FileWarning} title={tp.empty} body={tp.emptyBody} />
+    );
   }
 
   if (loadStatus === "error" || loadStatus === "invalid") {
@@ -1159,7 +1319,10 @@ export function PageEditor({ me, locale, pageId }: PageEditorProps) {
 
   // ——— مؤشر حالة الحفظ ———
   const lastSavedLabel = page?.draftUpdatedAt
-    ? new Intl.DateTimeFormat(locale === "en" ? "en-US" : "ar", { hour: "2-digit", minute: "2-digit" }).format(new Date(page.draftUpdatedAt))
+    ? new Intl.DateTimeFormat(locale === "en" ? "en-US" : "ar", {
+        hour: "2-digit",
+        minute: "2-digit",
+      }).format(new Date(page.draftUpdatedAt))
     : null;
   const statusIndicator =
     saveStatus === "saved" ? (
@@ -1196,7 +1359,7 @@ export function PageEditor({ me, locale, pageId }: PageEditorProps) {
   return (
     <TooltipProvider delayDuration={300}>
       <div className="flex flex-col gap-3">
-        <PageTitle>{pageTitle}</PageTitle>
+        <PageHeading title={pageTitle} />
         {/* ——— الشريط العلوي ——— */}
         <div className="flex flex-wrap items-center gap-2 rounded-2xl border border-border bg-card p-2 shadow-sm">
           <Button
@@ -1264,7 +1427,10 @@ export function PageEditor({ me, locale, pageId }: PageEditorProps) {
             {page?.scheduledPublishAt && (
               <span
                 className="inline-flex items-center gap-1 rounded-full bg-highlight-soft px-2 py-0.5 font-semibold text-highlight-foreground"
-                title={te.scheduleBindHint.replace("{rev}", `#${page.scheduledRevision ?? page.draftRevision}`)}
+                title={te.scheduleBindHint.replace(
+                  "{rev}",
+                  `#${page.scheduledRevision ?? page.draftRevision}`,
+                )}
               >
                 <CalendarClock className="size-3" aria-hidden="true" />
                 {te.scheduledShort}
@@ -1348,7 +1514,10 @@ export function PageEditor({ me, locale, pageId }: PageEditorProps) {
                     type="button"
                     variant={device === d.key ? "secondary" : "ghost"}
                     size="icon"
-                    className={cn("size-8", device === d.key && "bg-card text-navy shadow-sm")}
+                    className={cn(
+                      "size-8",
+                      device === d.key && "bg-card text-navy shadow-sm",
+                    )}
                     onClick={() => setDevice(d.key)}
                     aria-label={d.label}
                     title={d.label}
@@ -1364,7 +1533,10 @@ export function PageEditor({ me, locale, pageId }: PageEditorProps) {
                 type="button"
                 variant={testMode ? "secondary" : "ghost"}
                 size="icon"
-                className={cn("size-8", testMode && "bg-card text-navy shadow-sm")}
+                className={cn(
+                  "size-8",
+                  testMode && "bg-card text-navy shadow-sm",
+                )}
                 onClick={() => setTestMode((v) => !v)}
                 aria-pressed={testMode}
                 aria-label={te.testMode}
@@ -1387,8 +1559,8 @@ export function PageEditor({ me, locale, pageId }: PageEditorProps) {
             >
               <AppWindow className="size-4" aria-hidden="true" />
             </Button>
-              {/* معاينة مستقلة */}
-              <Button
+            {/* معاينة مستقلة */}
+            <Button
                 asChild
                 variant="ghost"
                 size="icon"
@@ -1405,8 +1577,8 @@ export function PageEditor({ me, locale, pageId }: PageEditorProps) {
                 </Link>
               </Button>
 
-              {/* الإصدارات */}
-              <Button
+            {/* الإصدارات */}
+            <Button
                 type="button"
                 variant="ghost"
                 size="icon"
@@ -1418,8 +1590,8 @@ export function PageEditor({ me, locale, pageId }: PageEditorProps) {
                 <History className="size-4" aria-hidden="true" />
               </Button>
 
-              {/* قوالب الصفحات */}
-              <Button
+            {/* قوالب الصفحات */}
+            <Button
                 type="button"
                 variant="ghost"
                 size="icon"
@@ -1439,7 +1611,10 @@ export function PageEditor({ me, locale, pageId }: PageEditorProps) {
                     type="button"
                     variant="ghost"
                     size="icon"
-                    className={cn("size-9", page?.scheduledPublishAt && "text-highlight-foreground")}
+                    className={cn(
+                      "size-9",
+                      page?.scheduledPublishAt && "text-highlight-foreground",
+                    )}
                     onClick={() => setScheduleOpen(true)}
                     aria-label={te.schedule}
                     title={te.schedule}
@@ -1470,7 +1645,7 @@ export function PageEditor({ me, locale, pageId }: PageEditorProps) {
             </Tooltip>
 
             {/* الإعدادات */}
-              <Button
+            <Button
                 type="button"
                 variant="ghost"
                 size="icon"
@@ -1494,7 +1669,11 @@ export function PageEditor({ me, locale, pageId }: PageEditorProps) {
                 aria-label={te.discard}
                 title={te.discard}
               >
-                {discarding ? <Loader2 className="size-4 animate-spin" aria-hidden="true" /> : <Eraser className="size-4" aria-hidden="true" />}
+                {discarding ? (
+                  <Loader2 className="size-4 animate-spin" aria-hidden="true" />
+                ) : (
+                  <Eraser className="size-4" aria-hidden="true" />
+                )}
                 <span className="hidden sm:inline">{te.discard}</span>
               </Button>
             )}
@@ -1502,7 +1681,9 @@ export function PageEditor({ me, locale, pageId }: PageEditorProps) {
             {/* النشر */}
             {canPublish ? (
               <Button type="button" className="min-h-9 rounded-full px-5" onClick={() => void publish()} disabled={publishing}>
-                {publishing ? <Loader2 className="size-4 animate-spin" aria-hidden="true" /> : null}
+                {publishing ? (
+                  <Loader2 className="size-4 animate-spin" aria-hidden="true" />
+                ) : null}
                 {te.publish}
               </Button>
             ) : (
@@ -1597,7 +1778,8 @@ export function PageEditor({ me, locale, pageId }: PageEditorProps) {
             <header className="flex items-center justify-between border-b border-border px-3 py-2">
               <h2 className="text-sm font-bold text-navy">{te.canvas}</h2>
               <p className="text-xs text-muted-foreground">
-                {draftLocale === "ar" ? te.ar : te.en} · {countNodes(nodes)} {te.blocks}
+                {draftLocale === "ar" ? te.ar : te.en} · {countNodes(nodes)}{" "}
+                {te.blocks}
               </p>
             </header>
             {/* شريط تنبيه وضع الاختبار — الإرسال محاكى */}
@@ -1714,7 +1896,11 @@ export function PageEditor({ me, locale, pageId }: PageEditorProps) {
           }
         }}
       >
-        <SheetContent side={locale === "ar" ? "left" : "right"} onCloseAutoFocus={event => { if (inlineEditIdRef.current) event.preventDefault(); }} className="w-[22rem] max-w-[92vw] p-0 sm:max-w-[22rem]">
+        <SheetContent
+          side={locale === "ar" ? "left" : "right"}
+          onCloseAutoFocus={(event) => { if (inlineEditIdRef.current) event.preventDefault(); }}
+          className="w-[22rem] max-w-[92vw] p-0 sm:max-w-[22rem]"
+        >
           <SheetHeader className="sr-only">
             <SheetTitle>{te.properties}</SheetTitle>
           </SheetHeader>
@@ -1745,7 +1931,10 @@ export function PageEditor({ me, locale, pageId }: PageEditorProps) {
           <AlertDialogHeader>
             <AlertDialogTitle>{te.confirmDelete}</AlertDialogTitle>
             <AlertDialogDescription>
-              {te.confirmDeleteTree.replace("{count}", String(confirmDelete?.count ?? 0))}
+              {te.confirmDeleteTree.replace(
+                "{count}",
+                String(confirmDelete?.count ?? 0),
+              )}
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
@@ -1787,7 +1976,11 @@ export function PageEditor({ me, locale, pageId }: PageEditorProps) {
               }}
               disabled={discarding}
             >
-              {discarding ? <Loader2 className="size-4 animate-spin" aria-hidden="true" /> : <Eraser className="size-4" aria-hidden="true" />}
+              {discarding ? (
+                <Loader2 className="size-4 animate-spin" aria-hidden="true" />
+              ) : (
+                <Eraser className="size-4" aria-hidden="true" />
+              )}
               {te.discardConfirm}
             </AlertDialogAction>
           </AlertDialogFooter>
@@ -1837,14 +2030,17 @@ export function PageEditor({ me, locale, pageId }: PageEditorProps) {
                   <div className="rounded-lg bg-card p-2.5">
                     <p className="mb-1 text-xs font-bold text-navy">{te.conflictLocal}</p>
                     <p className="text-xs text-muted-foreground">
-                      AR: {conflictInfo.arSame ? te.conflictSame : te.conflictDiffers} · EN:{" "}
+                      AR:{" "}
+                      {conflictInfo.arSame ? te.conflictSame : te.conflictDiffers}{" "}
+                      · EN:{" "}
                       {conflictInfo.enSame ? te.conflictSame : te.conflictDiffers}
                     </p>
                   </div>
                   <div className="rounded-lg bg-card p-2.5">
                     <p className="mb-1 text-xs font-bold text-navy">{te.conflictServer}</p>
                     <p className="text-xs text-muted-foreground">
-                      AR: {conflictInfo.serverArCount} · EN: {conflictInfo.serverEnCount}
+                      AR: {conflictInfo.serverArCount} · EN:{" "}
+                      {conflictInfo.serverEnCount}
                     </p>
                     {conflictInfo.serverUpdatedByName && (
                       <p className="mt-0.5 text-xs text-muted-foreground">
@@ -1953,7 +2149,7 @@ export function PageEditor({ me, locale, pageId }: PageEditorProps) {
                     order: patch.draftSettings?.order ?? prev.order,
                     hasUnpublishedChanges: true,
                   }
-                : prev
+                : prev,
             );
             revisionRef.current = patch.draftRevision;
           }}
@@ -1980,7 +2176,13 @@ export function PageEditor({ me, locale, pageId }: PageEditorProps) {
         locale={locale}
         draftLocale={draftLocale}
         baseRevision={revisionRef.current}
-        currentEnvelope={state ? envelopeJson(draftLocale === "en" ? state.draft.en : state.draft.ar) : null}
+        currentEnvelope={
+          state
+            ? envelopeJson(
+                draftLocale === "en" ? state.draft.en : state.draft.ar,
+              )
+            : null
+        }
         canEdit={can(me, "pages.edit")}
         onApplied={() => void loadPage()}
       />
@@ -2002,7 +2204,13 @@ interface IframePreviewProps {
   fullWidth: boolean;
 }
 
-function IframePreview({ pageId, uiLocale, draftLocale, device, fullWidth }: IframePreviewProps) {
+function IframePreview({
+  pageId,
+  uiLocale,
+  draftLocale,
+  device,
+  fullWidth,
+}: IframePreviewProps) {
   const te = getPortalContent(uiLocale).admin.editor;
   const [width, setWidth] = useState(DEVICE_PX[device]);
   const [zoom, setZoom] = useState(100);
@@ -2014,7 +2222,10 @@ function IframePreview({ pageId, uiLocale, draftLocale, device, fullWidth }: Ifr
   }, [device]);
 
   const src = `/${uiLocale}/admin/pages/${pageId}/preview?locale=${draftLocale}&device=${device}`;
-  const clampedWidth = Math.min(1920, Math.max(320, Math.trunc(width) || DEVICE_PX[device]));
+  const clampedWidth = Math.min(
+    1920,
+    Math.max(320, Math.trunc(width) || DEVICE_PX[device]),
+  );
   const scale = zoom / 100;
 
   return (

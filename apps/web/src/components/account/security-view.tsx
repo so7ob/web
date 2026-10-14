@@ -1,6 +1,6 @@
 "use client";
 
-import { PageHeader, PageTitle, Toolbar } from "@/components/ui/workspace";
+import { PageHeading, Toolbar } from "@/components/ui/workspace";
 import {ErrorFeedback} from "@/components/errors/error-feedback";
 import {ApiError} from "@/lib/errors/transport";
 
@@ -133,14 +133,7 @@ export function SecurityView({
 
   return (
     <div className="space-y-6">
-      <PageHeader className="flex items-center gap-3">
-        <span className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-accent text-brand-strong">
-          <ShieldCheck className="size-5" aria-hidden="true" />
-        </span>
-        <div className="min-w-0">
-          <PageTitle>{t.title}</PageTitle>
-        </div>
-      </PageHeader>
+      <PageHeading title={t.title} />
 
       <div className="grid gap-6 lg:grid-cols-2">
         {/* تغيير كلمة المرور */}

@@ -1,4 +1,13 @@
-import { PageHeader, PageTitle } from "@/components/ui/workspace";
+import {
+  Table,
+  TableHeader,
+  TableBody,
+  TableRow,
+  TableHead,
+  TableCell,
+} from "@/components/ui/table";
+import { AdminPagination } from "../pagination";
+import { ListWorkspace, PageHeading } from "@/components/ui/workspace";
 import { useEffect, useRef, useState } from "react";
 import { can, PERMISSION_CATALOG, type Permission } from "@so7ob/contracts";
 import { Button } from "@/components/ui/button";
@@ -257,8 +266,8 @@ export function IdentityWorkspace({
           ),
         );
       } catch (e) {
-        setFormError(identityError(e, locale));
-      }
+      setFormError(identityError(e, locale));
+    }
   }
   async function save() {
     if (!editing || pending.current) return;
@@ -321,9 +330,14 @@ export function IdentityWorkspace({
       !can(me, "roles.update"));
   return (
     <div className="space-y-6">
-      <PageHeader className="flex flex-wrap justify-between gap-3">
-        <PageTitle>{t[screen]}</PageTitle>
-        {screen === "roles" && can(me, "roles.create") ? (
+      <PageHeading
+        title={t[screen]}
+        description={
+          locale === "ar"
+            ? "إدارة الحسابات والأدوار والصلاحيات والدعوات."
+            : "Manage accounts, roles, permissions and invitations."
+        }
+        actions={screen === "roles" && can(me, "roles.create") ? (
           <Button
             disabled={loading}
             onClick={() => {
@@ -337,52 +351,71 @@ export function IdentityWorkspace({
             {t.createRole}
           </Button>
         ) : null}
-      </PageHeader>
+      />
       <IdentityNav me={me} locale={locale} />
-      {screen === "permissions" ? (
-        <PermissionEditor
-          value={PERMISSION_CATALOG.filter(p=>can(me,p.key)).map(p=>p.key)}
-          onChange={() => {}}
-          locale={locale}
-          disabled
-        />
-      ) : null}
-      {screen === "roles" ? (
-        <label className="block">
-          {t.search}
-          <Input
+      <ListWorkspace className={screen === "permissions" ? "p-4 sm:p-6" : undefined}>
+        {screen === "permissions" ? (
+          <PermissionEditor
+            value={PERMISSION_CATALOG.filter((p) => can(me, p.key)).map(
+              (p) => p.key,
+            )}
+            onChange={() => {}}
+            locale={locale}
+            disabled
+          />
+        ) : null}
+        {screen === "roles" ? (
+          <label className="ds-list-filters block max-w-md space-y-2 text-sm">
+            {t.search}
+            <Input
             value={q}
             onChange={(e) => {
               setQ(e.target.value);
               setPage(1);
             }}
           />
-        </label>
-      ) : null}
-      {error ? (
-        <p role="alert" className="text-destructive break-all">
-          {error}
-        </p>
-      ) : null}
-      {loading ? <p role="status">{t.loading}</p> : null}
-      {screen === "roles" ? (
-        <div className="grid gap-4 md:grid-cols-2">
-          {roles.map((role) => (
-            <article
-              key={role.key}
-              className="border rounded-2xl bg-card p-5 space-y-3"
-            >
-              <h2 className="font-semibold">
+          </label>
+        ) : null}
+        {error ? (
+              <p role="alert" className="text-destructive break-all">
+                {error}
+              </p>
+            ) : null}
+        {loading ? <p role="status">{t.loading}</p> : null}
+        {screen === "roles" ? (
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead>{t.roles}</TableHead>
+                <TableHead>{t.permissions}</TableHead>
+                <TableHead>{t.affected}</TableHead>
+                <TableHead>{locale === "ar" ? "الحالة" : "Status"}</TableHead>
+                <TableHead>
+                  {locale === "ar" ? "الإجراءات" : "Actions"}
+                </TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {roles.map((role) => (
+                <TableRow key={role.key}>
+                  <TableCell className="min-w-64 whitespace-normal">
+                    <h2 className="font-semibold">
                 {locale === "ar" ? role.nameAr : role.nameEn}
               </h2>
-              <p>{locale === "ar" ? role.descriptionAr : role.descriptionEn}</p>
-              <p className="text-sm">
-                {t.affected}: {role.userCount} · {role.permissions.length}{" "}
-                {t.permissions} ·{" "}
-                {role.status === "active" ? t.active : t.archived}
-              </p>
-              <code className="break-all">{role.key}</code>
-              <div className="flex flex-wrap gap-2">
+                    <p className="mt-1 text-sm text-muted-foreground">
+                      {locale === "ar" ? role.descriptionAr : role.descriptionEn}
+                    </p>
+                    <code className="text-xs text-muted-foreground">
+                      {role.key}
+                    </code>
+                  </TableCell>
+                  <TableCell>{role.permissions.length}</TableCell>
+                  <TableCell>{role.userCount}</TableCell>
+                  <TableCell>
+                    {role.status === "active" ? t.active : t.archived}
+                  </TableCell>
+                  <TableCell>
+                    <div className="flex flex-wrap gap-2">
                 <Button variant="outline" onClick={() => void open(role)}>
                   {t.edit}
                 </Button>
@@ -395,28 +428,48 @@ export function IdentityWorkspace({
                   </Button>
                 ) : null}
               </div>
-            </article>
-          ))}
-        </div>
-      ) : null}
-      {screen === "invitations" ? (
-        <div className="space-y-3">
-          {invites.map((invite) => (
-            <article
-              key={invite.id}
-              className="border rounded-xl p-4 space-y-2"
-            >
-              <p className="break-all" dir="ltr">
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        ) : null}
+        {screen === "invitations" ? (
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead>
+                  {locale === "ar" ? "البريد الإلكتروني" : "Email"}
+                </TableHead>
+                <TableHead>{t.roles}</TableHead>
+                <TableHead>{locale === "ar" ? "الحالة" : "Status"}</TableHead>
+                <TableHead>{locale === "ar" ? "التاريخ" : "Date"}</TableHead>
+                <TableHead>
+                  {locale === "ar" ? "الإجراءات" : "Actions"}
+                </TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {invites.map((invite) => (
+                <TableRow key={invite.id}>
+                  <TableCell>
+                    <p className="break-all" dir="ltr">
                 {invite.email}
               </p>
-              <p>
-                {invite.roleKey} · {t[invite.status]} · {invite.sender}
-              </p>
-              <p className="text-sm">
+                    <p className="text-xs text-muted-foreground">
+                      {invite.sender}
+                    </p>
+                  </TableCell>
+                  <TableCell>{invite.roleKey}</TableCell>
+                  <TableCell>{t[invite.status]}</TableCell>
+                  <TableCell>
+                    <p className="text-sm">
                 {new Date(invite.createdAt).toLocaleString(locale)} —{" "}
                 {new Date(invite.expiresAt).toLocaleString(locale)}
               </p>
-              {["pending", "expired"].includes(invite.status) ? (
+                  </TableCell>
+                  <TableCell>
+                    {["pending", "expired"].includes(invite.status) ? (
                 <div className="flex gap-2">
                   <Button
                     disabled={busy}
@@ -448,32 +501,25 @@ export function IdentityWorkspace({
                   </Button>
                 </div>
               ) : null}
-            </article>
-          ))}
-        </div>
-      ) : null}
-      {screen !== "permissions" && !loading && total === 0 ? (
-        <p>{t.empty}</p>
-      ) : null}
-      {screen !== "permissions" ? (
-        <div className="flex gap-3">
-          <Button
-            variant="outline"
-            disabled={page === 1}
-            onClick={() => setPage((v) => v - 1)}
-          >
-            {t.previous}
-          </Button>
-          <span>{page}</span>
-          <Button
-            variant="outline"
-            disabled={page * (screen === "roles" ? 100 : 20) >= total}
-            onClick={() => setPage((v) => v + 1)}
-          >
-            {t.next}
-          </Button>
-        </div>
-      ) : null}
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        ) : null}
+        {screen !== "permissions" && !loading && total === 0 ? (
+          <p className="p-6 text-sm text-muted-foreground">{t.empty}</p>
+        ) : null}
+        {screen !== "permissions" ? (
+          <AdminPagination
+            locale={locale}
+            page={page}
+            pageSize={screen === "roles" ? 100 : 20}
+            total={total}
+            onPage={setPage}
+          />
+        ) : null}
+      </ListWorkspace>
       <Dialog
         open={!!inviteAction}
         onOpenChange={(open) => {

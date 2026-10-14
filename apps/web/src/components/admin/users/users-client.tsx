@@ -1,6 +1,6 @@
 "use client";
 
-import { PageHeader, PageTitle } from "@/components/ui/workspace";
+import { ListWorkspace, PageHeading } from "@/components/ui/workspace";
 
 /**
  * جدول إدارة المستخدمين: بحث مؤجل + تصفية (دور/حالة) + ترتيب + ترقيم صفحات،
@@ -73,10 +73,16 @@ import {
 import { Skeleton } from "@/components/ui/skeleton";
 import { getPortalContent } from "@/content/portal";
 import { can } from "@/lib/auth/permissions";
-import { IdentityNav, Reason, identityError, loadRoleOptions, type RoleOption } from '../identity/shared';
-import { CreateUser } from '../identity/create-user';
-import { identityCopy } from '@/content/identity';
-import { useSearchParams } from 'react-router-dom';
+import {
+  IdentityNav,
+  Reason,
+  identityError,
+  loadRoleOptions,
+  type RoleOption,
+} from "../identity/shared";
+import { CreateUser } from "../identity/create-user";
+import { identityCopy } from "@/content/identity";
+import { useSearchParams } from "react-router-dom";
 import type { Locale } from "@/lib/i18n";
 import { RoleBadge, UserStatusBadge } from "@/components/admin/badges";
 import { AdminPagination } from "@/components/admin/pagination";
@@ -113,23 +119,50 @@ export function UsersClient({
 }: UsersClientProps) {
   const t = getPortalContent(locale);
   const tu = t.admin.users;
-  const it=identityCopy[locale];
+  const it = identityCopy[locale];
   const [searchParams,setSearchParams]=useSearchParams();
-  const [roles,setRoles]=useState<RoleOption[]>([]);
-  const [mutationError,setMutationError]=useState('');
-  const [reason,setReason]=useState('account_support');
-  const [currentPassword,setCurrentPassword]=useState('');
+  const [roles, setRoles] = useState<RoleOption[]>([]);
+  const [mutationError, setMutationError] = useState("");
+  const [reason, setReason] = useState("account_support");
+  const [currentPassword, setCurrentPassword] = useState("");
   const [statusSaving,setStatusSaving]=useState(false);
-  useEffect(()=>{void loadRoleOptions().then(setRoles).catch(err=>setError(identityError(err,locale)));},[locale]);
+  useEffect(() => {
+    void loadRoleOptions()
+      .then(setRoles)
+      .catch((err) => setError(identityError(err, locale)));
+  }, [locale]);
 
   const [q, setQ] = useState(initialQ);
   const debouncedQ = useDebounced(q);
   const [role, setRole] = useState(searchParams.get("role")??"all");
   const [status, setStatus] = useState(initialStatus ?? "all");
-  const [sort, setSort] = useState<SortCol>((searchParams.get("sort") as SortCol)??"createdAt");
-  const [dir, setDir] = useState<"asc" | "desc">(searchParams.get("dir")==="asc"?"asc":"desc");
+  const [sort, setSort] = useState<SortCol>(
+    (searchParams.get("sort") as SortCol) ?? "createdAt",
+  );
+  const [dir, setDir] = useState<"asc" | "desc">(
+    searchParams.get("dir") === "asc" ? "asc" : "desc",
+  );
   const [page, setPage] = useState(Number(searchParams.get("page"))||1);
-  useEffect(()=>{const next=new URLSearchParams({q:debouncedQ,role,status,sort,dir,page:String(page)});if(next.toString()!==searchParams.toString())setSearchParams(next,{replace:true});},[debouncedQ,role,status,sort,dir,page,setSearchParams,searchParams]);
+  useEffect(() => {
+    const next = new URLSearchParams({
+      q: debouncedQ,
+      role,
+      status,
+      sort,
+      dir,
+      page: String(page),
+    });
+    if(next.toString()!==searchParams.toString())setSearchParams(next,{replace:true});
+  }, [
+    debouncedQ,
+    role,
+    status,
+    sort,
+    dir,
+    page,
+    setSearchParams,
+    searchParams,
+  ]);
   const [reloadToken, setReloadToken] = useState(0);
 
   const [data, setData] = useState<UsersResponse | null>(null);
@@ -200,12 +233,16 @@ export function UsersClient({
     body: Record<string, unknown>,
     successMsg: string,
   ) => {
-    setMutationError('');
+    setMutationError("");
     try {
-      await apiSend(`/api/admin/users/${id}`, "PATCH", {...body,currentPassword,reason});
+      await apiSend(`/api/admin/users/${id}`, "PATCH", {
+        ...body,
+        currentPassword,
+        reason,
+      });
       toast.success(successMsg);
       reload();
-      setCurrentPassword('');
+      setCurrentPassword("");
       return true;
     } catch (err) {
       setMutationError(identityError(err,locale));
@@ -297,17 +334,11 @@ export function UsersClient({
 
   return (
     <div className="space-y-5">
-      <PageHeader className="flex flex-wrap items-end justify-between gap-3">
-        <div className="flex items-center gap-3">
-          <span className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-accent text-brand-strong">
-            <Users className="size-5" aria-hidden="true" />
-          </span>
-          <div>
-            <PageTitle>{tu.title}</PageTitle>
-            <p className="mt-1 text-sm text-muted-foreground">{tu.subtitle}</p>
-          </div>
-        </div>
-        <div className="ms-auto flex flex-wrap items-center gap-2">
+      <PageHeading
+        title={tu.title}
+        description={tu.subtitle}
+        actions={
+          <div className="ms-auto flex flex-wrap items-center gap-2">
         <CreateUser me={me} locale={locale} roles={roles} onCreated={reload}/>
         {mayInvite ? (
           <Button
@@ -322,12 +353,14 @@ export function UsersClient({
           </Button>
         ) : null}
         </div>
-      </PageHeader>
-      <IdentityNav me={me} locale={locale}/>
+        }
+      />
+      <IdentityNav me={me} locale={locale} />
 
       {/* أدوات التصفية */}
-      <div className="flex flex-wrap items-center gap-3">
-        <div className="relative min-w-56 flex-1 sm:max-w-xs">
+      <ListWorkspace>
+        <div className="ds-list-filters flex flex-wrap items-center gap-3">
+          <div className="relative min-w-56 flex-1 sm:max-w-xs">
           <Search
             className="absolute start-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground"
             aria-hidden="true"
@@ -343,7 +376,7 @@ export function UsersClient({
             className="min-h-11 ps-9 focus-visible:ring-2 focus-visible:ring-ring/40"
           />
         </div>
-        <Select
+          <Select
           value={role}
           onValueChange={(v) => {
             setRole(v);
@@ -352,7 +385,7 @@ export function UsersClient({
         >
           <SelectTrigger
             aria-label={tu.role}
-            className="min-h-11 w-40 focus-visible:ring-2 focus-visible:ring-ring/40"
+            className="min-h-11 w-full sm:w-40 focus-visible:ring-2 focus-visible:ring-ring/40"
           >
             <SelectValue />
           </SelectTrigger>
@@ -367,7 +400,7 @@ export function UsersClient({
             ))}
           </SelectContent>
         </Select>
-        <Select
+          <Select
           value={status}
           onValueChange={(v) => {
             setStatus(v);
@@ -376,7 +409,7 @@ export function UsersClient({
         >
           <SelectTrigger
             aria-label={tu.status}
-            className="min-h-11 w-44 focus-visible:ring-2 focus-visible:ring-ring/40"
+            className="min-h-11 w-full sm:w-44 focus-visible:ring-2 focus-visible:ring-ring/40"
           >
             <SelectValue />
           </SelectTrigger>
@@ -391,15 +424,15 @@ export function UsersClient({
             <SelectItem value="suspended">{tu.statusSuspended}</SelectItem>
           </SelectContent>
         </Select>
-      </div>
+        </div>
 
-      {/* الجدول */}
-      <div className="overflow-hidden rounded-2xl border border-border bg-card">
-        <div className="overflow-x-auto">
-          <Table>
-            <TableHeader>
-              <TableRow className="bg-muted/50 hover:bg-muted/50 [&_th]:text-xs [&_th]:font-medium [&_th]:uppercase [&_th]:tracking-wide [&_th]:text-muted-foreground">
-                <TableHead className="min-w-52">
+        {/* الجدول */}
+        <div className="min-w-0">
+          <div className="overflow-x-auto">
+            <Table>
+              <TableHeader>
+                <TableRow className="bg-muted/50 hover:bg-muted/50">
+                  <TableHead className="min-w-52">
                   <SortHeader
                     label={t.account.profile.name}
                     col="name"
@@ -408,7 +441,7 @@ export function UsersClient({
                     onSort={onSort}
                   />
                 </TableHead>
-                <TableHead className="min-w-32">
+                  <TableHead className="min-w-32">
                   <SortHeader
                     label={tu.role}
                     col="roleKey"
@@ -417,11 +450,11 @@ export function UsersClient({
                     onSort={onSort}
                   />
                 </TableHead>
-                <TableHead className="min-w-28">{tu.status}</TableHead>
-                <TableHead className="w-16">
+                  <TableHead className="min-w-28">{tu.status}</TableHead>
+                  <TableHead className="w-16">
                   <span className="sr-only">{tu.emailVerified}</span>
                 </TableHead>
-                <TableHead>
+                  <TableHead>
                   <SortHeader
                     label={tu.createdAt}
                     col="createdAt"
@@ -430,7 +463,7 @@ export function UsersClient({
                     onSort={onSort}
                   />
                 </TableHead>
-                <TableHead>
+                  <TableHead>
                   <SortHeader
                     label={tu.lastLogin}
                     col="lastLoginAt"
@@ -439,14 +472,14 @@ export function UsersClient({
                     onSort={onSort}
                   />
                 </TableHead>
-                <TableHead className="text-center">{tu.requests}</TableHead>
-                <TableHead className="w-14">
+                  <TableHead className="text-center">{tu.requests}</TableHead>
+                  <TableHead className="w-14">
                   <span className="sr-only">{tu.actions}</span>
                 </TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {loading && !data ? (
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {loading && !data ? (
                 Array.from({ length: 6 }).map((_, i) => (
                   <TableRow key={`sk-${i}`}>
                     {Array.from({ length: 8 }).map((__, j) => (
@@ -463,12 +496,12 @@ export function UsersClient({
                   </TableCell>
                 </TableRow>
               ) : (
-                users.map((user) => (
-                  <TableRow
+                  users.map((user) => (
+                    <TableRow
                     key={user.id}
                     className="transition-colors hover:bg-muted/50"
                   >
-                    <TableCell>
+                      <TableCell>
                       <div className="min-w-0">
                         <Link
                           href={`/${locale}/admin/users/${user.id}`}
@@ -481,16 +514,20 @@ export function UsersClient({
                         </p>
                       </div>
                     </TableCell>
-                    <TableCell>
-                      <RoleBadge roleKey={user.roleKey} role={roles.find(r=>r.key===user.roleKey)} locale={locale} />
-                    </TableCell>
-                    <TableCell>
+                      <TableCell>
+                        <RoleBadge
+                          roleKey={user.roleKey}
+                          role={roles.find((r) => r.key === user.roleKey)}
+                          locale={locale}
+                        />
+                      </TableCell>
+                      <TableCell>
                       <UserStatusBadge
                         status={user.status}
                         label={statusLabel(user.status)}
                       />
                     </TableCell>
-                    <TableCell>
+                      <TableCell>
                       {user.emailVerified ? (
                         <span className="inline-flex items-center gap-1 rounded-full bg-success-soft px-2 py-0.5 text-xs font-medium text-success-foreground">
                           <CheckCircle2 className="size-3" aria-hidden="true" />
@@ -503,18 +540,18 @@ export function UsersClient({
                         </span>
                       )}
                     </TableCell>
-                    <TableCell className="whitespace-nowrap text-sm text-muted-foreground">
+                      <TableCell className="whitespace-nowrap text-sm text-muted-foreground">
                       {fmtDate(user.createdAt, locale)}
                     </TableCell>
-                    <TableCell className="whitespace-nowrap text-sm text-muted-foreground">
+                      <TableCell className="whitespace-nowrap text-sm text-muted-foreground">
                       {user.lastLoginAt
                         ? fmtRelative(user.lastLoginAt, locale)
                         : tu.never}
                     </TableCell>
-                    <TableCell className="text-center text-sm font-medium tabular-nums text-navy">
+                      <TableCell className="text-center text-sm font-medium tabular-nums text-navy">
                       {user.requestsCount}
                     </TableCell>
-                    <TableCell>
+                      <TableCell>
                       <DropdownMenu>
                         <DropdownMenuTrigger asChild>
                           <Button
@@ -600,15 +637,15 @@ export function UsersClient({
                         </DropdownMenuContent>
                       </DropdownMenu>
                     </TableCell>
-                  </TableRow>
-                ))
-              )}
-            </TableBody>
-          </Table>
+                    </TableRow>
+                  ))
+                )}
+              </TableBody>
+            </Table>
+          </div>
         </div>
-      </div>
 
-      {error ? (
+        {error ? (
         <div className="flex items-center justify-between gap-3 rounded-2xl border border-destructive/30 bg-destructive/5 px-4 py-3">
           <p className="text-sm text-destructive">{error}</p>
           <Button
@@ -623,7 +660,7 @@ export function UsersClient({
         </div>
       ) : null}
 
-      {data ? (
+        {data ? (
         <AdminPagination
           page={page}
           total={data.total}
@@ -632,6 +669,7 @@ export function UsersClient({
           onPage={setPage}
         />
       ) : null}
+      </ListWorkspace>
 
       {loading && data ? (
         <Loader2
@@ -671,14 +709,16 @@ export function UsersClient({
               <Label>{tu.inviteRole}</Label>
               <Select value={inviteRole} onValueChange={setInviteRole}>
                 <SelectTrigger className="min-h-11 focus-visible:ring-2 focus-visible:ring-ring/40">
-                  <SelectValue />
-                </SelectTrigger>
+                <SelectValue />
+              </SelectTrigger>
                 <SelectContent>
-                  {roles.filter(r=>r.assignable!==false).map((r) => (
-                    <SelectItem key={r.key} value={r.key}>
-                      {locale === "en" ? r.nameEn : r.nameAr}
-                    </SelectItem>
-                  ))}
+                  {roles
+                    .filter((r) => r.assignable !== false)
+                    .map((r) => (
+                  <SelectItem key={r.key} value={r.key}>
+                    {locale === "en" ? r.nameEn : r.nameAr}
+                  </SelectItem>
+                ))}
                 </SelectContent>
               </Select>
             </div>
@@ -709,8 +749,23 @@ export function UsersClient({
               </div>
             ) : null}
           </div>
-          {mutationError?<p role="alert" className="text-destructive break-all">{mutationError}</p>:null}
-          {((editTarget?.roleKey==='super_admin')||(roleTarget?.roleKey==='super_admin')||roleValue==='super_admin'||inviteRole==='super_admin')?<label>{it.currentPassword}<Input type="password" autoComplete="current-password" value={currentPassword} onChange={e=>setCurrentPassword(e.target.value)}/></label>:null}
+          {mutationError ? (
+            <p role="alert" className="text-destructive break-all">{mutationError}</p>
+          ) : null}
+          {editTarget?.roleKey === "super_admin" ||
+          roleTarget?.roleKey === "super_admin" ||
+          roleValue === "super_admin" ||
+          inviteRole === "super_admin" ? (
+            <label>
+              {it.currentPassword}
+              <Input
+                type="password"
+                autoComplete="current-password"
+                value={currentPassword}
+                onChange={(e) => setCurrentPassword(e.target.value)}
+              />
+            </label>
+          ) : null}
           <DialogFooter className="gap-2">
             <Button
               variant="outline"
@@ -779,8 +834,23 @@ export function UsersClient({
               />
             </div>
           </div>
-          {mutationError?<p role="alert" className="text-destructive break-all">{mutationError}</p>:null}
-          {((editTarget?.roleKey==='super_admin')||(roleTarget?.roleKey==='super_admin')||roleValue==='super_admin'||inviteRole==='super_admin')?<label>{it.currentPassword}<Input type="password" autoComplete="current-password" value={currentPassword} onChange={e=>setCurrentPassword(e.target.value)}/></label>:null}
+          {mutationError ? (
+            <p role="alert" className="text-destructive break-all">{mutationError}</p>
+          ) : null}
+          {editTarget?.roleKey === "super_admin" ||
+          roleTarget?.roleKey === "super_admin" ||
+          roleValue === "super_admin" ||
+          inviteRole === "super_admin" ? (
+            <label>
+              {it.currentPassword}
+              <Input
+                type="password"
+                autoComplete="current-password"
+                value={currentPassword}
+                onChange={(e) => setCurrentPassword(e.target.value)}
+              />
+            </label>
+          ) : null}
           <DialogFooter className="gap-2">
             <Button
               variant="outline"
@@ -823,7 +893,9 @@ export function UsersClient({
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
-                {roles.filter(r=>r.assignable!==false).map((r) => (
+                {roles
+                  .filter((r) => r.assignable !== false)
+                  .map((r) => (
                   <SelectItem key={r.key} value={r.key}>
                     {locale === "en" ? r.nameEn : r.nameAr}
                   </SelectItem>
@@ -832,11 +904,35 @@ export function UsersClient({
             </Select>
             <p className="text-xs text-muted-foreground">
               {tu.confirmLastAdmin}
-              <span className="block break-all">{it.source}: {roles.find(r=>r.key===roleTarget?.roleKey)?.permissions.join(', ')||'—'} → {roles.find(r=>r.key===roleValue)?.permissions.join(', ')||'—'}</span>
+              <span className="block break-all">
+                {it.source}:{" "}
+                {roles
+                  .find((r) => r.key === roleTarget?.roleKey)
+                  ?.permissions.join(", ") || "—"}{" "}
+                →{" "}
+                {roles
+                  .find((r) => r.key === roleValue)
+                  ?.permissions.join(", ") || "—"}
+              </span>
             </p>
           </div>
-          {mutationError?<p role="alert" className="text-destructive break-all">{mutationError}</p>:null}
-          {((editTarget?.roleKey==='super_admin')||(roleTarget?.roleKey==='super_admin')||roleValue==='super_admin'||inviteRole==='super_admin')?<label>{it.currentPassword}<Input type="password" autoComplete="current-password" value={currentPassword} onChange={e=>setCurrentPassword(e.target.value)}/></label>:null}
+          {mutationError ? (
+            <p role="alert" className="text-destructive break-all">{mutationError}</p>
+          ) : null}
+          {editTarget?.roleKey === "super_admin" ||
+          roleTarget?.roleKey === "super_admin" ||
+          roleValue === "super_admin" ||
+          inviteRole === "super_admin" ? (
+            <label>
+              {it.currentPassword}
+              <Input
+                type="password"
+                autoComplete="current-password"
+                value={currentPassword}
+                onChange={(e) => setCurrentPassword(e.target.value)}
+              />
+            </label>
+          ) : null}
           <DialogFooter className="gap-2">
             <Button
               variant="outline"
@@ -879,8 +975,19 @@ export function UsersClient({
             </AlertDialogDescription>
           </AlertDialogHeader>
           <Reason locale={locale} value={reason} onChange={setReason}/>
-          {confirmTarget?.roleKey==='super_admin'?<label>{it.currentPassword}<Input type="password" value={currentPassword} onChange={e=>setCurrentPassword(e.target.value)}/></label>:null}
-          {mutationError?<p role="alert" className="text-destructive break-all">{mutationError}</p>:null}
+          {confirmTarget?.roleKey === "super_admin" ? (
+            <label>
+              {it.currentPassword}
+              <Input
+                type="password"
+                value={currentPassword}
+                onChange={(e) => setCurrentPassword(e.target.value)}
+              />
+            </label>
+          ) : null}
+          {mutationError ? (
+            <p role="alert" className="text-destructive break-all">{mutationError}</p>
+          ) : null}
           <AlertDialogFooter>
             <AlertDialogCancel className="min-h-11 rounded-full">
               {tu.cancel}

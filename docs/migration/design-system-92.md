@@ -36,6 +36,16 @@ The full functional browser run exposed two additional regressions beyond the ro
 
 The first unit invocation lacked an isolated database configuration; a subsequent overly broad test environment enabled unrelated outbox behavior. Final unit and browser checks use separate isolated MariaDB databases and appropriately scoped environment values. No existing or production database is used, reset or seeded.
 
+## Administration consistency revision
+
+The user reviewed the local administration at port 3108 and rejected its visual consistency. Their users/settings/outbox examples revealed that shared colors and controls did not enforce page composition: outbox separated its icon from its heading, each page positioned tools differently, settings had nested containers and an overlapping save bar, and identity subpages used unrelated card layouts.
+
+The revised implementation uses mandatory `PageHeading` slots throughout administration (including detail and editor headings), a shared `ListWorkspace`, consistent underline navigation, 14px table headings, and the same pagination for identity lists. Settings navigation is horizontal, preview remains independent, image fields are compact, and save/revert/default actions share the page action area. The shell has a single workspace width and simpler toolbar/profile treatment. Dashboard cards and empty states no longer add decorative stripes, movement or nested dashed boxes. Account profile, security, notifications, request/inquiry lists and details use the same heading slots, removing the same icon/title separation there. Existing handlers, permissions, URL navigation and form/conflict state remain owned by their original features.
+
+`tests/e2e/admin-layout.spec.ts` directly covers the reported defect: users/settings/outbox/dashboard heading and description edges must match across pages in both directions, at 375/1280 and in light/dark. It also checks table typography, overflow and axe and captures 32 synthetic screenshots. The full route matrix still covers the remaining pages, tabs and modes. The initial run of this new test used an incorrect preference key, so its two dark-mode failures were a test setup error; the test now uses the application's existing `so7ob-appearance-mode` key.
+
+The previous `34e1ef1` CI run finished with 278 passing and four failing browser tests. All four were the same stale tree-editor DOM selector after the separate canvas toolbar row was introduced. The selector now targets `data-editor-content`; it still performs the real pointer interaction. That historical CI run and the interrupted local run are not final acceptance.
+
 ## Validation
 
 Final source revision and exit-code-backed results are recorded below after checks complete. Builds alone do not establish visual or functional acceptance.

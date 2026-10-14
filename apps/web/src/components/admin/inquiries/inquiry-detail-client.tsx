@@ -1,6 +1,6 @@
 "use client";
 
-import { PageHeader, PageTitle } from "@/components/ui/workspace";
+import { PageHeading } from "@/components/ui/workspace";
 import { TrackPanel } from "@/components/admin/track/track-panel";
 import { ErrorFeedback } from "@/components/errors/error-feedback";
 import { asApiError } from "@/lib/errors/transport";
@@ -285,8 +285,10 @@ export function InquiryDetailClient({
       </div>
 
       {/* الترويسة */}
-      <PageHeader className="flex flex-wrap items-center gap-3">
-        <Button
+      <PageHeading
+        title={detail.refCode}
+        back={
+          <Button
           asChild
           variant="ghost"
           size="sm"
@@ -298,10 +300,9 @@ export function InquiryDetailClient({
             {ti.title}
           </Link>
         </Button>
-        <PageTitle>
-          {detail.refCode}
-        </PageTitle>
-        <div className="flex min-w-0 flex-wrap items-center gap-2">
+        }
+        metadata={
+          <div className="flex min-w-0 flex-wrap items-center gap-2">
           <StatusBadge
             status={detail.status}
             label={
@@ -321,8 +322,9 @@ export function InquiryDetailClient({
             </span>
           ) : null}
         </div>
-        {/* زر الطباعة — مخفي على الورق (ترويسة الطباعة الخاصة تظهر بدله) */}
-        <Button
+        }
+        actions={
+          <Button
           variant="outline"
           onClick={() => window.print()}
           aria-label={ti.print}
@@ -331,7 +333,8 @@ export function InquiryDetailClient({
           <Printer className="size-4" aria-hidden="true" />
           {ti.print}
         </Button>
-      </PageHeader>
+        }
+      />
 
       <h2 className="text-lg font-semibold break-words text-navy">
         {detail.subject}

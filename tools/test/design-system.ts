@@ -18,6 +18,11 @@ function files(dir: string): string[] {
 export function checkDesignSystem() {
   const candidates = [...files('apps/web/src'), 'packages/contracts/src/content/style.ts'].filter(f=>/\.(?:tsx?|css)$/.test(f)&&!f.includes('.test.')&&!COLOR_EXCEPTIONS.has(f));
   const violations = candidates.flatMap(file=>literalColors(readFileSync(file,'utf8')).map(value=>`${file}: ${value}`));
+  for (const file of candidates.filter(file => file.startsWith('apps/web/src/components/admin/'))) {
+    if (/<(?:PageHeader|PageTitle)\b/.test(readFileSync(file, 'utf8'))) {
+      violations.push(`${file}: use PageHeading's title, description, metadata and actions slots for administration headings`);
+    }
+  }
   if(violations.length) throw new Error('Use semantic design tokens for interface colors:\n'+violations.join('\n'));
   console.log(`Design tokens: ${candidates.length} source files checked; ${COLOR_EXCEPTIONS.size} documented content/print exceptions.`);
 }

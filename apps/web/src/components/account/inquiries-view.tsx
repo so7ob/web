@@ -1,6 +1,6 @@
 "use client";
 
-import { PageHeader, PageTitle, TableScroll } from "@/components/ui/workspace";
+import { PageHeading, TableScroll } from "@/components/ui/workspace";
 import {ErrorFeedback} from "@/components/errors/error-feedback";
 import {ApiError} from "@/lib/errors/transport";
 
@@ -114,24 +114,13 @@ export function InquiriesView({
 
   return (
     <div className="space-y-6">
-      <PageHeader className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-        <div className="flex items-center gap-3">
-          <span className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-accent text-brand-strong">
-            <MessageCircleQuestion className="size-5" aria-hidden="true" />
-          </span>
-          <div className="min-w-0">
-            <PageTitle>{t.title}</PageTitle>
-            <p className="mt-1 text-sm text-muted-foreground">{t.subtitle}</p>
-          </div>
-        </div>
-        <Button
+      <PageHeading title={t.title} description={t.subtitle} actions={<Button
           onClick={() => setCreateOpen(true)}
           className="h-11 rounded-full bg-primary px-6 font-bold text-primary-foreground shadow-md shadow-brand/20 transition-[color,background-color,border-color,box-shadow,opacity,transform] hover:bg-primary-hover hover:text-primary-hover-foreground focus-visible:ring-2 focus-visible:ring-ring/40"
         >
           <Plus className="h-4 w-4" aria-hidden="true" />
           {t.create}
-        </Button>
-      </PageHeader>
+        </Button>} />
 
       <Tabs value={status} onValueChange={onStatusChange} dir={locale === "ar" ? "rtl" : "ltr"} className="space-y-5">
         <div className="overflow-x-auto pb-1">

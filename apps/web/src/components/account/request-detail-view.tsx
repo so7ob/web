@@ -1,6 +1,6 @@
 "use client";
 
-import { Panel, PageHeader, PageTitle, Toolbar } from "@/components/ui/workspace";
+import { Panel, PageHeading, Toolbar } from "@/components/ui/workspace";
 import {ErrorFeedback} from '@/components/errors/error-feedback';
 import {ApiError} from '@/lib/errors/transport';
 
@@ -224,20 +224,14 @@ export function RequestDetailView({
           {content.meta.siteName} · {new Date().toLocaleDateString(locale)}
         </p>
       </div>
-      <PageHeader className="flex flex-wrap items-center gap-3">
-        <Button asChild variant="ghost" className="h-11 rounded-full px-4 font-semibold text-muted-foreground print:hidden">
+      <PageHeading title={<bdi dir="ltr">{request.refCode}</bdi>} back={<Button asChild variant="ghost" className="h-11 rounded-full px-4 font-semibold text-muted-foreground print:hidden">
           <Link href={`/${locale}/account/requests`}>
             {locale === "ar" ? <ChevronRight className="h-4 w-4" aria-hidden="true" /> : <ChevronLeft className="h-4 w-4" aria-hidden="true" />}
             {t.title}
           </Link>
-        </Button>
-        <PageTitle  dir="ltr">
-          {request.refCode}
-        </PageTitle>
-        <div className="flex flex-wrap items-center gap-2">
+        </Button>} metadata={<div className="flex flex-wrap items-center gap-2">
           <StatusBadge status={request.status} label={statusLabel} className="text-sm print:border print:border-border print:break-inside-avoid" />
-        </div>
-        <Button
+        </div>} actions={<Button
           variant="outline"
           onClick={() => window.print()}
           aria-label={d.print}
@@ -245,8 +239,7 @@ export function RequestDetailView({
         >
           <Printer className="h-4 w-4" aria-hidden="true" />
           {d.print}
-        </Button>
-      </PageHeader>
+        </Button>} />
 
       <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_18rem] print:block print:space-y-6">
         {/* المحادثة */}

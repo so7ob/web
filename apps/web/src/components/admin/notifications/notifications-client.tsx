@@ -1,6 +1,6 @@
 "use client";
 
-import { PageTitle, PageHeader } from "@/components/ui/workspace";
+import { PageHeading } from "@/components/ui/workspace";
 import { can } from "@so7ob/contracts";
 
 /**
@@ -92,7 +92,7 @@ export function NotificationsClient({
   const [error, setError] = useState<string | null>(null);
   const [markingAll, setMarkingAll] = useState(false);
 
-  const isStaff = can(me,"admin.dashboard");
+  const isStaff = can(me, "admin.dashboard");
 
   const load = useCallback(
     async (targetPage: number, append: boolean) => {
@@ -176,12 +176,10 @@ export function NotificationsClient({
 
   return (
     <div className="space-y-5">
-      <PageHeader className="flex flex-wrap items-end justify-between gap-3">
-        <div>
-          <PageTitle>{tn.title}</PageTitle>
-          <p className="mt-1 text-sm text-muted-foreground">{tn.subtitle}</p>
-        </div>
-        {unread > 0 && (
+      <PageHeading
+        title={tn.title}
+        description={tn.subtitle}
+        actions={unread > 0 && (
           <Button
             variant="outline"
             onClick={() => void markAllRead()}
@@ -196,7 +194,7 @@ export function NotificationsClient({
             {tn.markAllRead}
           </Button>
         )}
-      </PageHeader>
+      />
 
       {error ? (
         <div className="flex items-center justify-between gap-3 rounded-2xl border border-destructive/30 bg-destructive/5 px-4 py-3">
@@ -288,8 +286,8 @@ export function NotificationsClient({
                         )}
                         {notification.payload.status &&
                           t.admin.requests.statuses[
-                            notification.payload.status
-                          ] && (
+                                  notification.payload.status
+                                ] && (
                             <span className="rounded-full bg-muted px-2 py-0.5 text-xs font-medium text-muted-foreground">
                               {
                                 t.admin.requests.statuses[
