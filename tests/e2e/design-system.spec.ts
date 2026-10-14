@@ -3,6 +3,8 @@ import { test } from './quota-fixture';
 import AxeBuilder from '@axe-core/playwright';
 import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { randomBytes } from 'node:crypto';
+import { execFileSync } from 'node:child_process';
+const sourceRevision=execFileSync('git',['rev-parse','HEAD'],{encoding:'utf8'}).trim();
 import { createDataSource } from '@so7ob/server';
 import { SETTING_SECTIONS, appearanceTokens, BLOCK_REGISTRY, defaultNode, validateContent, type BlockType } from '@so7ob/contracts';
 import { getPortalContent } from '../../apps/web/src/content/portal';
@@ -66,6 +68,19 @@ for(const locale of ['ar','en'] as const)for(const mode of ['light','dark'] as c
     expect(response?.status()).toBe(path==='/design-system-missing-page'?404:200);
     await capture(name||'home');
     if(['/admin/menus','/account/requests','/account/inquiries',`/admin/requests/${id}`,`/admin/inquiries/${id}`].includes(path))await captureTabs(name);
+    if(path===`/admin/pages/${pageId}/preview` || path===`/admin/pages/${pageId}/edit`){
+      const te=getPortalContent(locale).admin.editor;
+      const editor=path.endsWith('/edit');
+      for(const [device,label] of [['tablet',te.deviceTablet],['mobile',te.deviceMobile],['desktop',te.deviceDesktop]]){
+        await page.getByRole('button',{name:label,exact:true}).filter({visible:true}).first().click();
+        const host=editor?page.locator('[data-editor-node="leaf-surface"]'):page.locator('#leaf-surface');
+        const painted=editor?host.locator('#leaf-surface'):host;
+        const tokens=appearanceTokens(palette,mode);
+        await expect(painted).toHaveCSS('background-color',rgb(device==='tablet'?tokens.emphasis:tokens.card));
+        await expect(painted.locator('h2')).toHaveCSS('color',rgb(device==='tablet'?tokens['emphasis-foreground']:tokens.foreground));
+        await capture((editor?'editor':'preview')+'-device-'+device);
+      }
+    }
     if(path===`/admin/pages/${pageId}/edit`){
       const t=getPortalContent(locale),te=t.admin.editor;
       for(const lang of ['en','ar']){await page.locator(`#editor-language-${lang}-${pageId}`).click();await capture('editor-language-'+lang);}
@@ -97,6 +112,8 @@ for(const locale of ['ar','en'] as const)for(const mode of ['light','dark'] as c
     expect(created.status()).toBe(201);pageId=(await created.json()).page.id;
     const tree=JSON.stringify({schemaVersion:1,blocks:[
       {id:'surface',type:'section',props:{},style:{base:{background:'white',paddingY:'sm'},tablet:{background:'navy'},desktop:{background:'white'}},children:[{id:'surface-title',type:'heading',props:{text:'Synthetic surface — سطح متكيف',level:2}}]},
+      {id:'leaf-surface',anchorId:'leaf-surface',type:'heading',props:{text:'Synthetic leaf — كتلة متكيفة',level:2},style:{base:{background:'white',paddingY:'sm'},tablet:{background:'navy'}}},
+      {id:'sparse-surface',anchorId:'sparse-surface',type:'section',props:{},style:{tablet:{background:'navy'}},children:[{id:'sparse-title',type:'heading',props:{text:'Synthetic device override — تجاوز الجهاز',level:2}}]},
       {id:'emphasis',type:'section',props:{},style:{base:{background:'navy',paddingY:'sm'}},children:[{id:'emphasis-title',type:'heading',props:{text:'Synthetic emphasis — سطح بارز',level:2}}]},
     ]});
     expect((await page.request.patch('/api/admin/pages/'+pageId,{headers,data:{baseRevision:0,draftBlocksAr:tree,draftBlocksEn:tree}})).status()).toBe(200);
@@ -123,10 +140,15 @@ for(const locale of ['ar','en'] as const)for(const mode of ['light','dark'] as c
     async function colorOf(selector:string){return page.evaluate(selector=>getComputedStyle(document.querySelector(selector)!).backgroundColor,selector);}
     await expect(surface).toHaveCSS('background-color',rgb(expected.card));
     await expect(emphasis).toHaveCSS('background-color',rgb(expected.emphasis));
+    await expect(page.locator('#sparse-surface')).toHaveCSS('background-color','rgba(0, 0, 0, 0)');
     // Responsive surface overrides use the same generated classes as editor and publication.
     const viewport=page.viewportSize()!;await page.setViewportSize({width:768,height:900});
     await expect(surface).toHaveCSS('background-color',rgb(expected.emphasis));
+    await expect(page.locator('#sparse-surface')).toHaveCSS('background-color',rgb(expected.emphasis));
+    await expect(page.locator('#leaf-surface')).toHaveCSS('background-color',rgb(expected.emphasis));
+    await expect(page.locator('#leaf-surface h2')).toHaveCSS('color',rgb(expected['emphasis-foreground']));
     await page.setViewportSize(viewport);await expect(surface).toHaveCSS('background-color',rgb(expected.card));
+    await expect(page.locator('#sparse-surface')).toHaveCSS('background-color','rgba(0, 0, 0, 0)');
     const taken=new Set<string>();
     const blocks=(Object.keys(BLOCK_REGISTRY) as BlockType[]).map(type=>defaultNode(type,taken));
     const missingLink=blocks.find(b=>b.type==='buttonLink')!;missingLink.props={...missingLink.props,href:`/${locale}/design-system-missing-page`};
@@ -150,7 +172,7 @@ for(const locale of ['ar','en'] as const)for(const mode of ['light','dark'] as c
     await expect(page.locator('a.bg-primary')).toHaveCSS('background-color',rgb(expected.primary));
     expect(errors).toEqual([]);
   }finally{
-    writeFileSync(`${folder}/coverage.json`,JSON.stringify({locale,mode,viewport:info.project.name,visited,errors,assertionErrors:info.errors.map(e=>e.message),blockTypes:Object.keys(BLOCK_REGISTRY)},null,2)+'\n');
+    writeFileSync(`${folder}/coverage.json`,JSON.stringify({sourceRevision,locale,mode,viewport:info.project.name,visited,errors,assertionErrors:info.errors.map(e=>e.message),blockTypes:Object.keys(BLOCK_REGISTRY)},null,2)+'\n');
     if(pageId){await db.query('DELETE FROM PageVersion WHERE pageId=?',[pageId]);await db.query('DELETE FROM Page WHERE id=?',[pageId]);await db.query('DELETE FROM AuditLog WHERE entityId=?',[pageId]);}
     await db.query('DELETE FROM ProjectRequest WHERE id=?',[id]);await db.query('DELETE FROM Inquiry WHERE id=?',[id]);
     for(const key of keys)await db.query('DELETE FROM SiteSetting WHERE `key`=?',[key]);

@@ -13,6 +13,7 @@ import type { Block } from "@/lib/blocks/types";
 import type { Locale } from "@/lib/i18n";
 import { TreePageRenderer } from "@/components/blocks/tree-page-renderer";
 import type { ContentNode } from "@so7ob/contracts";
+import { PreviewDeviceContext } from "@/components/blocks/nested-context";
 import { PageRenderer } from "@/components/blocks/page-renderer";
 import { cn } from "@/lib/utils";
 import type { PreviewDevice } from "@/components/admin/editor/editor-canvas";
@@ -52,6 +53,7 @@ export function PreviewShell({
         className="mx-auto w-full max-w-7xl bg-card shadow-sm transition-[max-width] duration-(--duration-panel)"
       >
         <div className={cn("mx-auto w-full", DEVICE_WIDTHS[device])}>
+          <PreviewDeviceContext.Provider value={device}>
           {(nodes ? nodes.length === 0 : blocks.length === 0) ? (
             <div className="flex min-h-64 flex-col items-center justify-center gap-2 p-8 text-center">
               <p className="text-sm font-semibold text-navy">{tp.empty}</p>
@@ -62,6 +64,7 @@ export function PreviewShell({
           ) : (
             nodes ? <TreePageRenderer nodes={nodes} locale={locale} /> : <PageRenderer blocks={blocks} locale={locale} />
           )}
+          </PreviewDeviceContext.Provider>
         </div>
       </div>
 

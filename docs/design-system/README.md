@@ -29,7 +29,7 @@ Primary and highlight colors derive from saved identity settings. Semantic statu
 
 `inverse`, `brand`, `navy`, `digital` and `skydrop` remain compatibility aliases for existing components. New code should use purpose-based names. `navy` is a foreground alias, not a background surface.
 
-CMS stored values are unchanged: `white` now means Surface (`bg-card surface-card`), `navy` means Emphasis (`bg-emphasis surface-emphasis`). Compound classes receive their own responsive prefix. Editor swatches, editor canvas, preview and published renderers share this mapping. Surface context supplies readable descendants; nested cards restore normal foregrounds. User content and saved style data are not rewritten.
+CMS stored values are unchanged: `white` now means Surface (`bg-card surface-card`), `navy` means Emphasis (`bg-emphasis surface-emphasis`). Compound classes receive their own responsive prefix. Editor swatches, editor canvas, preview and published renderers share this mapping. Surface context supplies readable descendants; nested cards restore normal foregrounds. Explicit preview devices resolve the selected slot independently of the surrounding browser window. Sparse overrides are bounded to their device breakpoint and cannot leak into a different device. Both legacy/root leaves and nested containers use the central mapping. User content and saved style data are not rewritten.
 
 ## Composition
 

@@ -142,7 +142,7 @@ const CONTENT_ALIGN = {
   center: "items-center",
 } as const;
 
-type DeviceKey = "mobile" | "tablet" | "desktop";
+export type DeviceKey = "mobile" | "tablet" | "desktop";
 
 /** القيمة الفعالة لخاصية في جهاز مع كشف الوراثة من الأساس */
 export function effectiveValue<K extends keyof StyleSlot>(
@@ -168,19 +168,35 @@ export function resetDeviceValue(style: NodeStyle | undefined, device: DeviceKey
 
 interface Emit {
   cls: string;
-  prefix: "" | "md:" | "lg:";
+  prefix: "" | "md:" | "lg:" | "max-md:" | "md:max-lg:";
 }
 
 function emitFor(
   style: NodeStyle | undefined,
   key: keyof StyleSlot,
-  map: Record<string, string>
+  map: Record<string, string>,
+  device?: DeviceKey
 ): Emit[] {
+  if (device) {
+    const { value } = effectiveValue(style, device, key);
+    const cls = value === undefined ? undefined : map[value as string];
+    return cls ? [{ cls, prefix: "" }] : [];
+  }
   const sources: { device: DeviceKey; prefix: "" | "md:" | "lg:" }[] = [
     { device: "mobile", prefix: "" },
     { device: "tablet", prefix: "md:" },
     { device: "desktop", prefix: "lg:" },
   ];
+  // An absent/default slot must not inherit another device's override through CSS.
+  // Bound sparse overrides to their own breakpoint instead of inventing reset values.
+  const values = sources.map(({ device }) => effectiveValue(style, device, key).value);
+  if (values.some(value => value === undefined || !map[value as string])) {
+    const prefixes = ["max-md:", "md:max-lg:", "lg:"] as const;
+    return values.flatMap((value, index) => {
+      const cls = value === undefined ? undefined : map[value as string];
+      return cls ? [{ cls, prefix: prefixes[index] }] : [];
+    });
+  }
   const out: Emit[] = [];
   let prevValue: string | undefined;
   for (const { device, prefix } of sources) {
@@ -207,23 +223,23 @@ function join(emits: Emit[]): string {
  * أصناف نمط عقدة (حاوية أو كتلة داخل حاوية) وفق النظام المدرك للأجهزة.
  * يعيد سلسلة أصناف جاهزة للدمج مع أصناف البنية (grid/flex).
  */
-export function nodeStyleClasses(style: NodeStyle | undefined): string {
+export function nodeStyleClasses(style: NodeStyle | undefined, device?: DeviceKey): string {
   const parts = [
-    join(emitFor(style, "background", BACKGROUND)),
-    join(emitFor(style, "paddingY", PADDING_Y)),
-    join(emitFor(style, "paddingX", PADDING_X)),
-    join(emitFor(style, "marginY", MARGIN_Y)),
-    join(emitFor(style, "radius", RADIUS)),
-    join(emitFor(style, "shadow", SHADOW)),
-    join(emitFor(style, "borderWidth", BORDER_WIDTH)),
-    join(emitFor(style, "gap", GAP)),
+    join(emitFor(style, "background", BACKGROUND, device)),
+    join(emitFor(style, "paddingY", PADDING_Y, device)),
+    join(emitFor(style, "paddingX", PADDING_X, device)),
+    join(emitFor(style, "marginY", MARGIN_Y, device)),
+    join(emitFor(style, "radius", RADIUS, device)),
+    join(emitFor(style, "shadow", SHADOW, device)),
+    join(emitFor(style, "borderWidth", BORDER_WIDTH, device)),
+    join(emitFor(style, "gap", GAP, device)),
   ];
   return parts.filter(Boolean).join(" ");
 }
 
 /** صنف محاذاة محتوى العمود/الحاوية وفق الأجهزة */
-export function nodeAlignClasses(style: NodeStyle | undefined): string {
-  return join(emitFor(style, "contentAlign", CONTENT_ALIGN));
+export function nodeAlignClasses(style: NodeStyle | undefined, device?: DeviceKey): string {
+  return join(emitFor(style, "contentAlign", CONTENT_ALIGN, device));
 }
 
 /** خلفية كتلة ورقية في الجذر (سلوك التوافق مع الصفحات القديمة) */

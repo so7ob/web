@@ -34,6 +34,16 @@ describe('unified appearance contracts', () => {
     expect(JSON.stringify(style)).toBe(frozen);
     expect(classes).not.toContain('bg-white');
   });
+  it('resolves explicit preview devices without depending on the surrounding window', () => {
+    const style={base:{background:'white' as const,paddingY:'sm' as const},tablet:{background:'navy' as const,paddingY:'lg' as const}};
+    expect(nodeStyleClasses(style,'tablet')).toBe('bg-emphasis surface-emphasis py-20');
+    expect(nodeStyleClasses(style,'mobile')).toBe('bg-card surface-card py-6');
+    expect(nodeStyleClasses(style,'desktop')).toBe('bg-card surface-card py-6');
+  });
+  it('bounds sparse and default device overrides so they cannot bleed into other widths', () => {
+    expect(nodeStyleClasses({tablet:{background:'navy'}})).toBe('md:max-lg:bg-emphasis md:max-lg:surface-emphasis');
+    expect(nodeStyleClasses({base:{background:'navy'},tablet:{background:'default'}})).toBe('max-md:bg-emphasis max-md:surface-emphasis lg:bg-emphasis lg:surface-emphasis');
+  });
   it('rejects raw colors across states, arbitrary utilities and inline styles', () => {
     for(const source of ['dark:hover:bg-sky-300','text-white/80','border-[#123456]','color: "#aabbcc"','background: rgb(12 34 56)','shadow-[0_1px_2px_rgba(0,0,0,.2)]'])expect(literalColors(source).length).toBeGreaterThan(0);
     expect(literalColors('bg-card text-card-foreground hover:bg-accent border-border var(--primary) #main-content')).toEqual([]);

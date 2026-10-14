@@ -11,7 +11,7 @@
  * - وضع الاختبار (test): بلا غلاف مانع — أزرار تحديد صغيرة بالأركان حتى
  *   يعمل التفاعل الحقيقي (روابط/نماذج — الإرسال محاكى في العارض).
  */
-import { memo, useMemo, useState } from "react";
+import { memo, useContext, useMemo, useState } from "react";
 import {
   DndContext,
   DragOverlay,
@@ -64,7 +64,7 @@ import { InlineEditSessionContext, type InlineEditSession } from "@/components/b
 import type { ContentBlockType as BlockType } from "@so7ob/contracts";
 import type { Locale } from "@/lib/i18n";
 import { TreePageRenderer as PageRenderer } from "@/components/blocks/tree-page-renderer";
-import type { RenderMode } from "@/components/blocks/nested-context";
+import { PreviewDeviceContext, type RenderMode } from "@/components/blocks/nested-context";
 import { cn } from "@/lib/utils";
 import { TYPE_ICONS } from "./block-library";
 import { CopyToClipboardButton } from "./clipboard-menu";
@@ -91,7 +91,8 @@ function nodeLabel(type: BlockType, locale: Locale): string {
 }
 
 /** صنف إخفاء حسب الجهاز (نسخة المحرر من سلوك العارض) */
-function visibilityClasses(visibility: ContentNode["visibility"]): string {
+function visibilityClasses(visibility: ContentNode["visibility"], device?: PreviewDevice): string {
+  if (device) return visibility?.[device] === false ? "hidden" : "";
   return [
     visibility?.mobile === false ? "max-md:hidden" : "",
     visibility?.tablet === false ? "md:max-lg:hidden" : "",
@@ -146,15 +147,17 @@ const LeafBody = memo(function LeafBody({
   locale,
   mode,
   session,
+  nested,
 }: {
   node: ContentNode;
   locale: Locale;
   mode: RenderMode;
   session: InlineEditSession | null;
+  nested: boolean;
 }) {
   return (
     <InlineEditSessionContext.Provider value={session}>
-      <PageRenderer nodes={[node]} locale={locale} mode={mode} />
+      <PageRenderer nodes={[node]} locale={locale} mode={mode} nested={nested} />
     </InlineEditSessionContext.Provider>
   );
 });
@@ -276,6 +279,7 @@ export function EditorCanvas({
   const draggingNode = draggingId ? findNode(nodes, draggingId)?.node ?? null : null;
 
   return (
+    <PreviewDeviceContext.Provider value={device}>
     <div className="flex h-full flex-col">
       <DndContext
         sensors={sensors}
@@ -347,6 +351,7 @@ export function EditorCanvas({
         </DragOverlay>
       </DndContext>
     </div>
+    </PreviewDeviceContext.Provider>
   );
 }
 
@@ -489,7 +494,7 @@ function NodeWrapper({
           </>
         ) : (
           <>
-            <LeafBody node={node} locale={locale} mode={mode} session={session} />
+            <LeafBody node={node} locale={locale} mode={mode} session={session} nested={parentId !== null} />
             {/* طبقة شفافة تمنع تفاعل الروابط/النماذج وتلتقط النقر للتحديد —
                 والنقر المزدوج يفتح التحرير المباشر للأنواع النصية.
                 أثناء الجلسة تُزال الطبقة كي يعمل caret داخل النص */}
@@ -661,8 +666,9 @@ function ContainerBody({
 }: ContainerBodyProps) {
   const te = getPortalContent(uiLocale).admin.editor;
   const type = node.type;
-  const styleClasses = nodeStyleClasses(node.style);
-  const visClass = visibilityClasses(node.visibility);
+  const device = useContext(PreviewDeviceContext);
+  const styleClasses = nodeStyleClasses(node.style, device);
+  const visClass = visibilityClasses(node.visibility, device);
   const children = node.children ?? [];
   const canNest = depth < MAX_TREE_DEPTH;
   const allowed = allowedChildrenFor(node.type);
@@ -737,7 +743,7 @@ function ContainerBody({
     const gap = GAP_CLASS[asStringProp(node.props, "gap", "md")] ?? "gap-6";
     return (
       <div
-        className={`grid grid-cols-1 ${ROW_GRID_TABLET[tabletCount]} ${ROW_GRID_DESKTOP[desktopCount]} ${gap} ${styleClasses} ${visClass}`.trim()}
+        className={`grid ${device ? (device === "desktop" ? ROW_GRID_DESKTOP[desktopCount].replace("lg:", "") : device === "tablet" ? ROW_GRID_TABLET[tabletCount].replace("md:", "") : "grid-cols-1") : `grid-cols-1 ${ROW_GRID_TABLET[tabletCount]} ${ROW_GRID_DESKTOP[desktopCount]}`} ${gap} ${styleClasses} ${visClass}`.trim()}
       >
         {renderChildren()}
       </div>
@@ -746,8 +752,9 @@ function ContainerBody({
 
   if (type === "column") {
     const gap = GAP_CLASS[asStringProp(node.props, "gap", "md")] ?? "gap-6";
-    const span = COLUMN_SPAN[asStringProp(node.props, "span", "auto")] ?? "";
-    const align = nodeAlignClasses(node.style);
+    const responsiveSpan = COLUMN_SPAN[asStringProp(node.props, "span", "auto")] ?? "";
+    const span = device ? device === "desktop" ? responsiveSpan.replace("lg:", "") : "" : responsiveSpan;
+    const align = nodeAlignClasses(node.style, device);
     return (
       <div className={`flex flex-col ${gap} ${align} ${span} ${styleClasses} ${visClass}`.trim()}>{renderChildren()}</div>
     );
