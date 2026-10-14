@@ -95,6 +95,9 @@ for(const locale of ['ar','en'] as const)for(const mode of ['light','dark'] as c
       const sheet=page.getByRole('dialog',{name:te.properties,exact:true});
       await captureTabs('editor-properties',info.project.name==='mobile'?sheet:page.locator('aside').filter({has:page.getByRole('tab',{name:te.style,exact:true})}));
       if(await sheet.isVisible())await page.keyboard.press('Escape');
+      const activeToolbar=page.locator('[data-editor-toolbar]:not([inert])');
+      const toolbarBox=(await activeToolbar.boundingBox())!,contentBox=(await activeToolbar.locator('..').locator(':scope > [data-editor-content]').boundingBox())!;
+      expect.soft(toolbarBox.y+toolbarBox.height,'canvas toolbar must not cover content').toBeLessThanOrEqual(contentBox.y);
       for(const control of await page.locator('[data-editor-toolbar]:not([inert]) button').filter({visible:true}).all()){const box=(await control.boundingBox())!;expect.soft(box.width,'canvas action width').toBeGreaterThanOrEqual(44);expect.soft(box.height,'canvas action height').toBeGreaterThanOrEqual(44);}
       for(const [name,label] of [['versions',t.admin.pages.versions],['templates',t.admin.templates.title]]){
         const trigger=page.getByRole('button',{name:label,exact:true});await trigger.click();

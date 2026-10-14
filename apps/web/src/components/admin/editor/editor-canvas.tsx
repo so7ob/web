@@ -434,7 +434,100 @@ function NodeWrapper({
         parentId !== null && "min-w-0"
       )}
     >
+      {/* The selected toolbar owns layout space so touch targets never cover editable content. */}
       <div
+        dir={uiLocale === "ar" ? "rtl" : "ltr"}
+        inert={!selected}
+        data-editor-toolbar=""
+        className={cn(
+          "relative z-20 mx-2 mb-2 flex-wrap items-center gap-0.5 rounded-xl border border-border bg-card p-1 shadow-sm",
+          selected ? "flex" : "hidden"
+        )}
+      >
+        <span className="hidden max-w-36 truncate px-1.5 text-xs font-semibold text-muted-foreground sm:block">
+          {label}
+        </span>
+        <button
+          type="button"
+          ref={setActivatorNodeRef}
+          {...attributes}
+          {...listeners}
+          title={te.blocks}
+          aria-label={te.blocks}
+          className="flex size-11 cursor-grab touch-none items-center justify-center rounded-lg text-muted-foreground transition-colors hover:bg-accent hover:text-brand-strong focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand active:cursor-grabbing"
+        >
+          <GripVertical className="size-4" aria-hidden="true" />
+        </button>
+        {isContainer && (
+          <AddChildMenu parentId={node.id} allowed={allowedChildrenFor(node.type)} uiLocale={uiLocale} onAddChild={onAddChild}>
+            <button
+              type="button"
+              title={te.addChild}
+              aria-label={te.addChild}
+              className="flex size-11 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:bg-accent hover:text-brand-strong focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
+            >
+              <Plus className="size-4" aria-hidden="true" />
+            </button>
+          </AddChildMenu>
+        )}
+        {!isContainer && inlineEditable && !testMode && (
+          <button
+            type="button"
+            onClick={() => onInlineEditBegin(node.id)}
+            title={te.inlineEdit}
+            aria-label={te.inlineEdit}
+            className={cn(
+              "flex size-11 items-center justify-center rounded-lg transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand",
+              inlineEditing
+                ? "bg-brand text-on-brand"
+                : "text-muted-foreground hover:bg-accent hover:text-brand-strong"
+            )}
+          >
+            <Pencil className="size-4" aria-hidden="true" />
+          </button>
+        )}
+        <button
+          type="button"
+          onClick={() => onMove(node.id, -1)}
+          disabled={index === 0}
+          title={te.moveUp}
+          aria-label={te.moveUp}
+          className="flex size-11 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:bg-accent hover:text-brand-strong focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand disabled:pointer-events-none disabled:opacity-40"
+        >
+          <ArrowUp className="size-4" aria-hidden="true" />
+        </button>
+        <button
+          type="button"
+          onClick={() => onMove(node.id, 1)}
+          disabled={index === total - 1}
+          title={te.moveDown}
+          aria-label={te.moveDown}
+          className="flex size-11 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:bg-accent hover:text-brand-strong focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand disabled:pointer-events-none disabled:opacity-40"
+        >
+          <ArrowDown className="size-4" aria-hidden="true" />
+        </button>
+        <CopyToClipboardButton node={node} uiLocale={uiLocale} onCopy={onCopy} />
+        <button
+          type="button"
+          onClick={() => onDuplicate(node.id)}
+          title={te.duplicate}
+          aria-label={te.duplicate}
+          className="flex size-11 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:bg-accent hover:text-brand-strong focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
+        >
+          <Copy className="size-4" aria-hidden="true" />
+        </button>
+        <button
+          type="button"
+          onClick={() => onDelete(node.id)}
+          title={te.delete}
+          aria-label={te.delete}
+          className="flex size-11 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:bg-danger-soft hover:text-destructive focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-destructive"
+        >
+          <Trash2 className="size-4" aria-hidden="true" />
+        </button>
+      </div>
+      <div
+        data-editor-content=""
         className={cn(
           "relative rounded-sm",
           isContainer && !testMode && "outline outline-1 outline-dashed outline-border/40 group-hover:outline-brand/40",
@@ -528,99 +621,6 @@ function NodeWrapper({
             {te.inlineEditingBadge}
           </span>
         )}
-      </div>
-
-      {/* One active toolbar prevents nested ancestor toolbars from covering each other. */}
-      <div
-        dir={uiLocale === "ar" ? "rtl" : "ltr"}
-        inert={!selected}
-        data-editor-toolbar=""
-        className={cn(
-          "absolute top-2 start-2 z-20 flex max-w-[calc(100%-1rem)] flex-wrap items-center gap-0.5 rounded-xl border border-border bg-card/95 p-1 shadow-md backdrop-blur transition-opacity",
-          selected ? "opacity-100" : "pointer-events-none opacity-0"
-        )}
-      >
-        <span className="hidden max-w-36 truncate px-1.5 text-xs font-semibold text-muted-foreground sm:block">
-          {label}
-        </span>
-        <button
-          type="button"
-          ref={setActivatorNodeRef}
-          {...attributes}
-          {...listeners}
-          title={te.blocks}
-          aria-label={te.blocks}
-          className="flex size-11 cursor-grab touch-none items-center justify-center rounded-lg text-muted-foreground transition-colors hover:bg-accent hover:text-brand-strong focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand active:cursor-grabbing"
-        >
-          <GripVertical className="size-4" aria-hidden="true" />
-        </button>
-        {isContainer && (
-          <AddChildMenu parentId={node.id} allowed={allowedChildrenFor(node.type)} uiLocale={uiLocale} onAddChild={onAddChild}>
-            <button
-              type="button"
-              title={te.addChild}
-              aria-label={te.addChild}
-              className="flex size-11 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:bg-accent hover:text-brand-strong focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
-            >
-              <Plus className="size-4" aria-hidden="true" />
-            </button>
-          </AddChildMenu>
-        )}
-        {!isContainer && inlineEditable && !testMode && (
-          <button
-            type="button"
-            onClick={() => onInlineEditBegin(node.id)}
-            title={te.inlineEdit}
-            aria-label={te.inlineEdit}
-            className={cn(
-              "flex size-11 items-center justify-center rounded-lg transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand",
-              inlineEditing
-                ? "bg-brand text-on-brand"
-                : "text-muted-foreground hover:bg-accent hover:text-brand-strong"
-            )}
-          >
-            <Pencil className="size-4" aria-hidden="true" />
-          </button>
-        )}
-        <button
-          type="button"
-          onClick={() => onMove(node.id, -1)}
-          disabled={index === 0}
-          title={te.moveUp}
-          aria-label={te.moveUp}
-          className="flex size-11 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:bg-accent hover:text-brand-strong focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand disabled:pointer-events-none disabled:opacity-40"
-        >
-          <ArrowUp className="size-4" aria-hidden="true" />
-        </button>
-        <button
-          type="button"
-          onClick={() => onMove(node.id, 1)}
-          disabled={index === total - 1}
-          title={te.moveDown}
-          aria-label={te.moveDown}
-          className="flex size-11 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:bg-accent hover:text-brand-strong focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand disabled:pointer-events-none disabled:opacity-40"
-        >
-          <ArrowDown className="size-4" aria-hidden="true" />
-        </button>
-        <CopyToClipboardButton node={node} uiLocale={uiLocale} onCopy={onCopy} />
-        <button
-          type="button"
-          onClick={() => onDuplicate(node.id)}
-          title={te.duplicate}
-          aria-label={te.duplicate}
-          className="flex size-11 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:bg-accent hover:text-brand-strong focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
-        >
-          <Copy className="size-4" aria-hidden="true" />
-        </button>
-        <button
-          type="button"
-          onClick={() => onDelete(node.id)}
-          title={te.delete}
-          aria-label={te.delete}
-          className="flex size-11 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:bg-danger-soft hover:text-destructive focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-destructive"
-        >
-          <Trash2 className="size-4" aria-hidden="true" />
-        </button>
       </div>
     </div>
   );
