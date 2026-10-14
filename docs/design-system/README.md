@@ -35,7 +35,7 @@ CMS stored values are unchanged: `white` now means Surface (`bg-card surface-car
 
 Use `PageHeader` + `PageTitle`, then section navigation, then the `Toolbar`, content and pagination. A heading must not be nested inside a button or another page header. Keep actions together at the logical end of the header.
 
-Use `Panel` for content cards, `FormSection` for a labeled fieldset, `TableScroll` for raw tables, and the existing shared `Table` for composed tables. Scroll dense tables within their container; never hide columns or actions merely to fit the viewport. `NativeSelect` retains native option and keyboard behavior with shared control geometry. `Input`, `Textarea`, `Select`, `Button`, dialogs and feedback share the same tokens.
+Use `Panel` for content cards, `FormSection` for a labeled fieldset, `TableScroll` for raw tables, and the existing shared `Table` for composed tables. Scroll dense tables within their container; never hide columns or actions merely to fit the viewport. `NativeSelect` retains native option and keyboard behavior with shared control geometry. `Input`, `Textarea`, `Select`, `Button`, dialogs and feedback share the same tokens. Native checkbox/radio/range/progress accents use the primary token while keeping native semantics.
 
 Use `SectionNav` with real links and `aria-current="page"` for URL navigation. Use `Tabs`, `TabsList`, `TabsTrigger` and `TabsContent` for switching a panel in place; Radix owns arrow/Home/End keyboard navigation and selected/controlled relationships. Labels come from Arabic/English content, with logical start/end spacing.
 

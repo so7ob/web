@@ -293,3 +293,6 @@ html { scroll-padding-block: 6rem 10rem; }
 }
 
 :where(input, textarea, select, button, a[href]) { scroll-margin-block: 6rem; }
+
+/* Native choices share identity colors while retaining browser semantics. */
+:where(input[type="checkbox"], input[type="radio"], input[type="range"], progress) { accent-color:var(--primary); }

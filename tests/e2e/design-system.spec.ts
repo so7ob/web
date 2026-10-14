@@ -67,6 +67,7 @@ for(const locale of ['ar','en'] as const)for(const mode of ['light','dark'] as c
     const response=await page.goto(`/${locale}${path}`);
     expect(response?.status()).toBe(path==='/design-system-missing-page'?404:200);
     await capture(name||'home');
+    if(path==='/admin/requests')await expect(page.locator('input[type=checkbox]').first()).toHaveCSS('accent-color',rgb(appearanceTokens(palette,mode).primary));
     if(['/admin/menus','/account/requests','/account/inquiries',`/admin/requests/${id}`,`/admin/inquiries/${id}`].includes(path))await captureTabs(name);
     if(path===`/admin/pages/${pageId}/preview` || path===`/admin/pages/${pageId}/edit`){
       const te=getPortalContent(locale).admin.editor;
