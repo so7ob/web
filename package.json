@@ -27,7 +27,9 @@
     "data:recovery-check": "node --env-file-if-exists=.env --import tsx packages/server/src/migration/recovery-cli.ts",
     "test:cms-boundaries": "node --max-old-space-size=3072 tools/migration/cms-boundary-smoke.mjs",
     "db:check-cms": "node --env-file-if-exists=.env --import tsx packages/server/src/database/cli.ts check-cms",
-    "test:independence": "node --test tools/test/runtime-independence.test.mjs && node tools/test/runtime-independence.mjs"
+    "test:independence": "node --test tools/test/runtime-independence.test.mjs && node tools/test/runtime-independence.mjs",
+    "test:ci-policy": "node --test tools/test/ci-policy.test.mjs tools/test/ci-gate.test.mjs tools/test/ci-evidence.test.mjs tools/test/docs-check.test.mjs",
+    "test:e2e:ci": "node tools/test/run-e2e-job.mjs"
   },
   "dependencies": {
     "@dnd-kit/core": "6.3.1",

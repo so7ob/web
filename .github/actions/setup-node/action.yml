@@ -1,0 +1,16 @@
+name: Locked Node workspace
+description: Exact Node/npm with a content-addressed dependency cache
+runs:
+  using: composite
+  steps:
+    - uses: actions/setup-node@v4
+      with:
+        node-version: '24.21.0'
+    - uses: actions/cache@v4
+      with:
+        path: ~/.npm
+        key: npm-${{ runner.os }}-${{ runner.arch }}-node24.21.0-npm10.8.2-${{ hashFiles('package-lock.json') }}
+    - shell: bash
+      run: npm install --global npm@10.8.2
+    - shell: bash
+      run: npm ci --prefer-offline

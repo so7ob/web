@@ -12,6 +12,7 @@ import {
 import { resolve } from "node:path";
 import { tmpdir } from "node:os";
 const origin = new URL(process.env.E2E_BASE_URL ?? "https://127.0.0.1:3198");
+const startupStarted = performance.now();
 if (
   origin.protocol !== "https:" ||
   origin.hostname !== "127.0.0.1" ||
@@ -95,7 +96,27 @@ const server = https.createServer(
   },
 );
 server.listen(Number(origin.port), "127.0.0.1");
+let stopping = false;
+// Optional measured readiness through the real TLS proxy. No configuration,
+// credentials or response bodies are recorded. The existing webServer health
+// gate remains authoritative, including its startup failure and timeout paths.
+if (process.env.SO7OB_E2E_PROFILE_DIR) {
+  const observeReady = () => {
+    if (stopping || performance.now() - startupStarted > 30000) return;
+    const retry = () => { if (!stopping) setTimeout(observeReady, 25).unref(); };
+    const probe = https.get(new URL('/api/health/ready', origin), {rejectUnauthorized:false}, response => {
+      response.resume();
+      if (response.statusCode !== 200) { retry(); return; }
+      mkdirSync(process.env.SO7OB_E2E_PROFILE_DIR, {recursive:true});
+      writeFileSync(resolve(process.env.SO7OB_E2E_PROFILE_DIR,'server-startup.json'),JSON.stringify({stage:'tls-server-ready',milliseconds:performance.now()-startupStarted})+'\n');
+    });
+    probe.once('error',retry);
+    probe.setTimeout(500,()=>probe.destroy());
+  };
+  observeReady();
+}
 function stop() {
+  stopping = true;
   api.kill("SIGTERM");
   server.close(() => process.exit(0));
   setTimeout(() => {
@@ -106,6 +127,7 @@ function stop() {
 process.once("SIGTERM", stop);
 process.once("SIGINT", stop);
 api.once("exit", (code) => {
+  stopping = true;
   if (code) process.exitCode = code;
   server.close();
 });
