@@ -1,0 +1,274 @@
+{
+  "sourceRevision": "e36746c165df9aba3148df3d9d17ff13c9d4094f",
+  "localChecks": [
+    {
+      "name": "infra",
+      "exitCode": 0,
+      "path": ".migration/design-system/infra-e36746c.log",
+      "sha256": "b010f0bcbfddcd1a8b006ea476b4628efce42cf6ea25989a3ee0470c79a3b6e5"
+    },
+    {
+      "name": "independence",
+      "exitCode": 0,
+      "path": ".migration/design-system/independence-e36746c.log",
+      "sha256": "7348ff796b8bd8a9c5eb3b842f8cf70bedbd2326a305d067b1382caa098660f8"
+    },
+    {
+      "name": "lint",
+      "exitCode": 0,
+      "path": ".migration/design-system/lint-e36746c.log",
+      "sha256": "9a6bdda40725709c20b05484b9580f0b1d9dc046f222dd7c798f1e8e3b407910"
+    },
+    {
+      "name": "typecheck",
+      "exitCode": 0,
+      "path": ".migration/design-system/typecheck-e36746c.log",
+      "sha256": "0ff5ad20f89a9e279f6216e1a395a204a4fb7d5c8adce7c6c6ab749f95e513ae"
+    },
+    {
+      "name": "unit",
+      "exitCode": 0,
+      "path": ".migration/design-system/unit-e36746c.log",
+      "sha256": "d800836a2395011b0c489d066e9e3e8a7be30269a8d24e57d968ac0b15523625"
+    },
+    {
+      "name": "build",
+      "exitCode": 0,
+      "path": ".migration/design-system/build-e36746c.log",
+      "sha256": "9f5a24164dcd78569394b97eecb9acc27a19120dbee96481411efbaf2ee0c05e"
+    },
+    {
+      "name": "theme hydration regression",
+      "exitCode": 0,
+      "path": ".migration/design-system/theme-race-green.log",
+      "sha256": "2f5e068f4791ca1624d2ce9d7ede714880cdda21e6b863b5f5de82c7bb770778"
+    },
+    {
+      "name": "git diff --check",
+      "exitCode": 0
+    }
+  ],
+  "ci": {
+    "url": "https://github.com/so7ob/web/actions/runs/38599256847",
+    "headSha": "e36746c165df9aba3148df3d9d17ff13c9d4094f",
+    "status": "completed",
+    "conclusion": "success",
+    "counts": {
+      "sourceRevision": "e36746c165df9aba3148df3d9d17ff13c9d4094f",
+      "passed": 290,
+      "unitPassed": 939,
+      "logSha256": "adcd8e31e822304e0735488351564d849b91f7d83badf86b682872e98e9fde0e"
+    },
+    "steps": [
+      {
+        "name": "Set up job",
+        "conclusion": "success"
+      },
+      {
+        "name": "Initialize containers",
+        "conclusion": "success"
+      },
+      {
+        "name": "Run actions/checkout@v4",
+        "conclusion": "success"
+      },
+      {
+        "name": "Run actions/setup-node@v4",
+        "conclusion": "success"
+      },
+      {
+        "name": "Validate bundled skill contracts offline",
+        "conclusion": "success"
+      },
+      {
+        "name": "Run npm install --global npm@10.8.2",
+        "conclusion": "success"
+      },
+      {
+        "name": "Run npm ci",
+        "conclusion": "success"
+      },
+      {
+        "name": "Run npm run test:independence",
+        "conclusion": "success"
+      },
+      {
+        "name": "Run npm run lint",
+        "conclusion": "success"
+      },
+      {
+        "name": "Run npm run typecheck",
+        "conclusion": "success"
+      },
+      {
+        "name": "Run npm run db:migrate",
+        "conclusion": "success"
+      },
+      {
+        "name": "Run npm test",
+        "conclusion": "success"
+      },
+      {
+        "name": "Run npm run build",
+        "conclusion": "success"
+      },
+      {
+        "name": "Run npm run test:worker",
+        "conclusion": "success"
+      },
+      {
+        "name": "Run npm run test:file-worker",
+        "conclusion": "success"
+      },
+      {
+        "name": "Run npm run test:webhook",
+        "conclusion": "success"
+      },
+      {
+        "name": "Run npm run test:auth",
+        "conclusion": "success"
+      },
+      {
+        "name": "Run sudo apt-get update && sudo apt-get install -y mariadb-client",
+        "conclusion": "success"
+      },
+      {
+        "name": "Configure packet size on the isolated CI MariaDB service",
+        "conclusion": "success"
+      },
+      {
+        "name": "Run npm run db:check-cms",
+        "conclusion": "success"
+      },
+      {
+        "name": "Run npm run test:cms-boundaries",
+        "conclusion": "success"
+      },
+      {
+        "name": "Prepare isolated v1 upgrade rehearsal database",
+        "conclusion": "success"
+      },
+      {
+        "name": "Verify v1 records through the current ordered migrations",
+        "conclusion": "success"
+      },
+      {
+        "name": "Prepare isolated identity upgrade rehearsal",
+        "conclusion": "success"
+      },
+      {
+        "name": "Verify identity migration preserves existing accounts and roles",
+        "conclusion": "success"
+      },
+      {
+        "name": "Prepare isolated workflow upgrade and crash-recovery rehearsal",
+        "conclusion": "success"
+      },
+      {
+        "name": "Preserve legacy workflows and recover a killed workflow worker",
+        "conclusion": "success"
+      },
+      {
+        "name": "Run npm run test:restore",
+        "conclusion": "success"
+      },
+      {
+        "name": "Run npx playwright install --with-deps chromium",
+        "conclusion": "success"
+      },
+      {
+        "name": "Run npm run test:e2e",
+        "conclusion": "success"
+      },
+      {
+        "name": "Preserve synthetic bilingual identity screenshots",
+        "conclusion": "success"
+      },
+      {
+        "name": "Preserve synthetic bilingual workflow and conversation screenshots",
+        "conclusion": "success"
+      },
+      {
+        "name": "Preserve synthetic bilingual menu screenshots",
+        "conclusion": "success"
+      },
+      {
+        "name": "Preserve synthetic bilingual settings and appearance screenshots",
+        "conclusion": "success"
+      },
+      {
+        "name": "Preserve design system coverage and synthetic screenshots",
+        "conclusion": "success"
+      },
+      {
+        "name": "Run actions/upload-artifact@v4",
+        "conclusion": "skipped"
+      },
+      {
+        "name": "Run sudo apt-get update && sudo apt-get install -y nginx openssl",
+        "conclusion": "success"
+      },
+      {
+        "name": "Run npm run test:infra",
+        "conclusion": "success"
+      },
+      {
+        "name": "Run git diff --check",
+        "conclusion": "success"
+      },
+      {
+        "name": "Post Run actions/setup-node@v4",
+        "conclusion": "success"
+      },
+      {
+        "name": "Post Run actions/checkout@v4",
+        "conclusion": "success"
+      },
+      {
+        "name": "Stop containers",
+        "conclusion": "success"
+      },
+      {
+        "name": "Complete job",
+        "conclusion": "success"
+      }
+    ],
+    "artifacts": [
+      {
+        "expired": false,
+        "id": 11915398244,
+        "name": "identity-84-synthetic-interfaces",
+        "size_in_bytes": 2672930
+      },
+      {
+        "expired": false,
+        "id": 11915293478,
+        "name": "workflows-86-synthetic-interfaces",
+        "size_in_bytes": 2181757
+      },
+      {
+        "expired": false,
+        "id": 11914639586,
+        "name": "design-system-92-synthetic-interfaces",
+        "size_in_bytes": 133479170
+      },
+      {
+        "expired": false,
+        "id": 11914404648,
+        "name": "settings-90-synthetic-interfaces",
+        "size_in_bytes": 1051011
+      },
+      {
+        "expired": false,
+        "id": 11914244603,
+        "name": "menus-88-synthetic-interfaces",
+        "size_in_bytes": 356394
+      }
+    ]
+  },
+  "notes": [
+    "Local log paths are retained in ignored working data; hashes identify the observed files.",
+    "Full local browser exit 1 and the passing unchanged case rerun are recorded in coverage.json; full CI 290/290 supplies browser acceptance.",
+    "Any following delivery commit changes documentation and evidence only."
+  ]
+}

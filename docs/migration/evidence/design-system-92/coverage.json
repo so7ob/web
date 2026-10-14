@@ -1,0 +1,4698 @@
+{
+  "sourceRevision": "e36746c165df9aba3148df3d9d17ff13c9d4094f",
+  "acceptance": {
+    "sourceRevision": "e36746c165df9aba3148df3d9d17ff13c9d4094f",
+    "authority": "GitHub Actions full suite",
+    "ci": {
+      "url": "https://github.com/so7ob/web/actions/runs/38599256847",
+      "headSha": "e36746c165df9aba3148df3d9d17ff13c9d4094f",
+      "conclusion": "success",
+      "browserPassed": 290
+    },
+    "localFullSuite": {
+      "exitCode": 1,
+      "stats": {
+        "startTime": "2026-10-14T16:36:17.155Z",
+        "duration": 2374374.534,
+        "expected": 289,
+        "skipped": 0,
+        "unexpected": 1,
+        "flaky": 0
+      },
+      "failures": [
+        {
+          "file": "account-portal.spec.ts",
+          "title": "ar: client portal preserves drafts, conversations, files, claims, profile and session controls",
+          "project": "desktop",
+          "status": "unexpected"
+        }
+      ]
+    },
+    "independentAccountRepeat": {
+      "stats": {
+        "startTime": "2026-10-14T17:16:25.615Z",
+        "duration": 40795.623,
+        "expected": 1,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      },
+      "unchangedTest": true
+    }
+  },
+  "artifact": "design-system-92-synthetic-interfaces",
+  "screenshotCount": 832,
+  "workspaceCaptureCount": 32,
+  "workspaceScreenshots": [
+    {
+      "file": "ar-desktop-light/users.png",
+      "sha256": "ac9f296741fcb7b4b17e903678320a17afc34dbdff54364e9a97db4de7e6d0be"
+    },
+    {
+      "file": "ar-desktop-light/settings.png",
+      "sha256": "81d1e240f578c4b7f75bd60f6df925728e0ee38ac9ef963546a4c1aba15b96bf"
+    },
+    {
+      "file": "ar-desktop-light/outbox.png",
+      "sha256": "0dd69082a716df0bc8078780781ec56bf9d0a30528b04b3a6ea5d7556d9fc238"
+    },
+    {
+      "file": "ar-desktop-light/dashboard.png",
+      "sha256": "d8cd1bbaec444f86b45d9d9358d1dbf528e622dc9a8999bbcc9eceab85b06a88"
+    },
+    {
+      "file": "ar-desktop-dark/users.png",
+      "sha256": "72566a65f979622d4d528c239e1eca9c2d3434212e91f7389d908859644f6b7b"
+    },
+    {
+      "file": "ar-desktop-dark/settings.png",
+      "sha256": "e80c799553fabb819ed190d7e9f6edb955eecc42c0d2d17877eff65d3dc522cb"
+    },
+    {
+      "file": "ar-desktop-dark/outbox.png",
+      "sha256": "c406fbf5bb493c16f3f286d91664a449c3dd7a3fe19965e6fa7b4572e2e1a1fb"
+    },
+    {
+      "file": "ar-desktop-dark/dashboard.png",
+      "sha256": "c352041abfb451adf952ba0128914e7cbf9e4b972243591a9464d61b5dcf7c75"
+    },
+    {
+      "file": "ar-mobile-light/users.png",
+      "sha256": "2e429d71523fc30bff03df5d6c1e35c4656dd9d6c05285756ba29d0dfeb21d79"
+    },
+    {
+      "file": "ar-mobile-light/settings.png",
+      "sha256": "d1b282d013de7d51a8af73758f54069284b4ded5cb0479022655fc06a8fbc735"
+    },
+    {
+      "file": "ar-mobile-light/outbox.png",
+      "sha256": "afcd41e27d10676541dcd5d7b0c9ca2bbd89a0e3f83d008cf7928eeabe500773"
+    },
+    {
+      "file": "ar-mobile-light/dashboard.png",
+      "sha256": "54090c170e8732d1f5e5905cc7c4f5a934d12e897f6808458af67dacf3a7d0a3"
+    },
+    {
+      "file": "ar-mobile-dark/users.png",
+      "sha256": "3ed374ce47abaa96ed0813297f8b7e9c691b4e6dee52ac79e65db7b5050e9efc"
+    },
+    {
+      "file": "ar-mobile-dark/settings.png",
+      "sha256": "24cb5e2feeed4aa6eea76caeaf45286e4e42fcd21149ec729086bcd503aee644"
+    },
+    {
+      "file": "ar-mobile-dark/outbox.png",
+      "sha256": "bfe254eb6d3997653a862899731ae312021ad11de1ec7194f6d3e4a0b9cf2634"
+    },
+    {
+      "file": "ar-mobile-dark/dashboard.png",
+      "sha256": "9e33f71af217e3128b5af9b8f0f543dba50e582bb9bba50f1a8b6da149293c66"
+    },
+    {
+      "file": "en-desktop-light/users.png",
+      "sha256": "3366ce22798d7b239e34d1bf8abbcf24849467aa7730b71d2a66fe4444eca76b"
+    },
+    {
+      "file": "en-desktop-light/settings.png",
+      "sha256": "1288b67cf1322ba29b0ca182f21b265c424a1b7b7c49f124b566be5ddc6afd05"
+    },
+    {
+      "file": "en-desktop-light/outbox.png",
+      "sha256": "43aca2d49d5af335d9cae8c599e4a20d5eab85a3cbf8c4a8bf05eabaae16bab7"
+    },
+    {
+      "file": "en-desktop-light/dashboard.png",
+      "sha256": "d2df57749a81937410e3463fbaed3491e1145332314bb04407807be6ac40d6f9"
+    },
+    {
+      "file": "en-desktop-dark/users.png",
+      "sha256": "a552b4f6312d2ab51bcda105b3700e1084961e0f2f48a0239774b9bc3f00a452"
+    },
+    {
+      "file": "en-desktop-dark/settings.png",
+      "sha256": "0b158843c4b85838ef8a1d578f52bc65fd9b3b0d54113971ee20ff7932987d8e"
+    },
+    {
+      "file": "en-desktop-dark/outbox.png",
+      "sha256": "a87eea3d732a9e7083855f8448cba75349a196ce6ab8bc19c66c40c68f0e71bc"
+    },
+    {
+      "file": "en-desktop-dark/dashboard.png",
+      "sha256": "d2d0f21871a0ca784dfe708bf24ee108e95264a892eef124aa0b802995a143dd"
+    },
+    {
+      "file": "en-mobile-light/users.png",
+      "sha256": "85702e12199036e3b28a8bf521887a5e60185219dc66823aa816f3fe91cb5280"
+    },
+    {
+      "file": "en-mobile-light/settings.png",
+      "sha256": "ee55cb8b5d10a8bc3bec399aed34787dba22ea0e099fc200fcc293738978ffae"
+    },
+    {
+      "file": "en-mobile-light/outbox.png",
+      "sha256": "4f8f3c33083693cec55a6bc35931157725fa0cb94822ac0a44c95f10fb285666"
+    },
+    {
+      "file": "en-mobile-light/dashboard.png",
+      "sha256": "1b61773280b9b91988907e75cb05114d2a2055303dc747cd58d6e956472429ab"
+    },
+    {
+      "file": "en-mobile-dark/users.png",
+      "sha256": "b607fbbd3e46192e33046c1ee3e94e4adf76fcda14eb0e9cf175da32b2cb73db"
+    },
+    {
+      "file": "en-mobile-dark/settings.png",
+      "sha256": "4ea04d301043720a9d9bd27ea393d92cac4dd0081065ea11a7fbed34cff70793"
+    },
+    {
+      "file": "en-mobile-dark/outbox.png",
+      "sha256": "71b2033c765ef993e4e03ff20623ead43398851de4b08a05c85c5a9e56ce8d1f"
+    },
+    {
+      "file": "en-mobile-dark/dashboard.png",
+      "sha256": "f8a2a6504a0ab6017c00d988644eee4ae94fba448b6f4459caebc772abb1bfef"
+    }
+  ],
+  "runs": [
+    {
+      "sourceRevision": "e36746c165df9aba3148df3d9d17ff13c9d4094f",
+      "locale": "ar",
+      "mode": "light",
+      "viewport": "desktop",
+      "visited": [
+        "admin-dashboard",
+        "admin-users",
+        "admin-roles",
+        "admin-permissions",
+        "admin-invitations",
+        "admin-requests",
+        "admin-inquiries",
+        "admin-notifications",
+        "admin-pages",
+        "admin-media",
+        "admin-menus",
+        "admin-menus-tab-1",
+        "admin-menus-tab-2",
+        "admin-workflows",
+        "admin-settings",
+        "admin-diagnostics",
+        "admin-audit",
+        "admin-outbox",
+        "settings-identity",
+        "settings-appearance",
+        "settings-contact",
+        "settings-sharing",
+        "settings-announcement",
+        "settings-tracking",
+        "audit-events",
+        "audit-reports",
+        "audit-reviews",
+        "audit-alerts",
+        "audit-rules",
+        "audit-health",
+        "workflows-workflows",
+        "workflows-teams",
+        "workflows-business-hours",
+        "workflows-transfer-conversations",
+        "admin-user-detail",
+        "admin-request-detail",
+        "admin-request-detail-tab-1",
+        "admin-request-detail-tab-2",
+        "admin-inquiry-detail",
+        "admin-inquiry-detail-tab-1",
+        "admin-inquiry-detail-tab-2",
+        "editor",
+        "editor-device-tablet",
+        "editor-device-mobile",
+        "editor-device-desktop",
+        "editor-language-en",
+        "editor-language-ar",
+        "editor-library-tab-1",
+        "editor-library-tab-2",
+        "editor-properties-tab-1",
+        "editor-properties-tab-2",
+        "editor-versions-tab-1",
+        "editor-versions-tab-2",
+        "editor-templates-tab-1",
+        "editor-templates-tab-2",
+        "editor-templates-tab-3",
+        "editor-preview",
+        "preview-device-tablet",
+        "preview-device-mobile",
+        "preview-device-desktop",
+        "account-dashboard",
+        "account-requests",
+        "account-requests-tab-1",
+        "account-requests-tab-2",
+        "account-requests-tab-3",
+        "account-requests-tab-4",
+        "account-requests-tab-5",
+        "account-requests-tab-6",
+        "account-requests-tab-7",
+        "account-requests-tab-8",
+        "account-requests-tab-9",
+        "account-requests-new",
+        "account-inquiries",
+        "account-inquiries-tab-1",
+        "account-inquiries-tab-2",
+        "account-inquiries-tab-3",
+        "account-inquiries-tab-4",
+        "account-inquiries-tab-5",
+        "account-inquiries-tab-6",
+        "account-inquiries-tab-7",
+        "account-profile",
+        "account-security",
+        "account-notifications",
+        "account-request-detail",
+        "account-inquiry-detail",
+        "public-home",
+        "public-about",
+        "public-services",
+        "public-works",
+        "public-process",
+        "public-faq",
+        "public-contact",
+        "public-track",
+        "published-surfaces",
+        "published-tablet-surfaces",
+        "published-all-block-types",
+        "not-found-client-navigation",
+        "auth-login",
+        "auth-register",
+        "auth-forgot-password",
+        "auth-reset-password",
+        "auth-invite",
+        "auth-verified",
+        "not-found"
+      ],
+      "errors": [],
+      "assertionErrors": [],
+      "blockTypes": [
+        "hero",
+        "servicesGrid",
+        "featureGrid",
+        "worksShowcase",
+        "processSteps",
+        "faqSection",
+        "ctaSection",
+        "pageHeader",
+        "richText",
+        "visionMission",
+        "numberedValues",
+        "numberedList",
+        "navCtaBanner",
+        "servicesDetail",
+        "worksFull",
+        "processFull",
+        "requestForm",
+        "contactInfo",
+        "heading",
+        "text",
+        "image",
+        "gallery",
+        "buttonLink",
+        "columns",
+        "simpleTable",
+        "divider",
+        "spacer",
+        "section",
+        "container",
+        "row",
+        "column"
+      ],
+      "screenshots": [
+        {
+          "file": "ar-desktop-light/admin-dashboard.png",
+          "sha256": "c65b6f0f4f15de07c88d872fb18de1775a06f78ec04bedcca953eb0059a82e6a"
+        },
+        {
+          "file": "ar-desktop-light/admin-users.png",
+          "sha256": "c03aa976539425c84504a6663e664fe5d271fc66aa10d72691880fbff935630e"
+        },
+        {
+          "file": "ar-desktop-light/admin-roles.png",
+          "sha256": "74264a6b45b84c1c01d9ce14a4c2b79924b591e4256f5fcb2435d6970e164ddb"
+        },
+        {
+          "file": "ar-desktop-light/admin-permissions.png",
+          "sha256": "27e8572d0098db69578e7adce0ea2b7bd3d0f83f25c408848b488a14c8a7a4d6"
+        },
+        {
+          "file": "ar-desktop-light/admin-invitations.png",
+          "sha256": "84b894c665ae4003af1e73dc57dd46c45cc382ca32d8e6595ee09ce96b6557b8"
+        },
+        {
+          "file": "ar-desktop-light/admin-requests.png",
+          "sha256": "e4b232346eaab00e3d9c6dba13c85fb33bf30f0f0b3bef8d599cd459359b704d"
+        },
+        {
+          "file": "ar-desktop-light/admin-inquiries.png",
+          "sha256": "49e05b68aad8135bbb8498b17006a5fbc3508a54035b6a2150e88879ba8cc973"
+        },
+        {
+          "file": "ar-desktop-light/admin-notifications.png",
+          "sha256": "2c73a3bcf40dce01fcd8363be551c9dffc1d6b012e5ef7ae9a338450c95b3ec6"
+        },
+        {
+          "file": "ar-desktop-light/admin-pages.png",
+          "sha256": "882ce8c0a2989cc8c67d9b3a41d9a39cf37c449038c0c8fd07b2f4c0e04188f4"
+        },
+        {
+          "file": "ar-desktop-light/admin-media.png",
+          "sha256": "a53ed0ce649047ad66ba2064552d15ec7395c311912693a74f516ec8a85515bd"
+        },
+        {
+          "file": "ar-desktop-light/admin-menus.png",
+          "sha256": "9528fc6338eb64d05776792a33b7368fb617523669ef5c4a30831bda8d040acc"
+        },
+        {
+          "file": "ar-desktop-light/admin-menus-tab-1.png",
+          "sha256": "08233c8ef1db22fb3bfad10354309e582f485488c96bfc5fb5a53f785fe64329"
+        },
+        {
+          "file": "ar-desktop-light/admin-menus-tab-2.png",
+          "sha256": "1256eaff09e8d18d1eabfb0d892ffde3fb8f73c218cd35af217358e432a7e37b"
+        },
+        {
+          "file": "ar-desktop-light/admin-workflows.png",
+          "sha256": "323d6e98fbc571b2c8acce11aa9d5c10fe2c81b35e34c5bdae1c485192ae5528"
+        },
+        {
+          "file": "ar-desktop-light/admin-settings.png",
+          "sha256": "2dab2f71ad4bb60fca8d078b0e651654d2b36291ffe037bba299401aa573ffd0"
+        },
+        {
+          "file": "ar-desktop-light/admin-diagnostics.png",
+          "sha256": "a0f32f4cfe35aadde1473b687965d71f432146f8528db29a3a9628892e8ed4d0"
+        },
+        {
+          "file": "ar-desktop-light/admin-audit.png",
+          "sha256": "ade9e555feda4fba8fa93c0c312a9138cbabed76b8392d0730cd386a6e5594ef"
+        },
+        {
+          "file": "ar-desktop-light/admin-outbox.png",
+          "sha256": "4a61a1c7c974279ab297ebbe21576ddc0cc426a8ad9e07bb8d26d21185c16ab6"
+        },
+        {
+          "file": "ar-desktop-light/settings-identity.png",
+          "sha256": "2dab2f71ad4bb60fca8d078b0e651654d2b36291ffe037bba299401aa573ffd0"
+        },
+        {
+          "file": "ar-desktop-light/settings-appearance.png",
+          "sha256": "2edb2034ab3728607b143d7a7dfeeabaa57feb696fd2b89168577997b6d80d79"
+        },
+        {
+          "file": "ar-desktop-light/settings-contact.png",
+          "sha256": "7678408af7845fb3a1a434797564ebf3d6b24cb074676dbe573a3ed8c0cea2f7"
+        },
+        {
+          "file": "ar-desktop-light/settings-sharing.png",
+          "sha256": "a7eb786fd7fa67dc261a1efbe5fc5e66edabf3af27cb4670dc639e3a9886b422"
+        },
+        {
+          "file": "ar-desktop-light/settings-announcement.png",
+          "sha256": "bf25fbc1316f6217b60d40f0030ddf977ae2ddbb8a87d45db1b7295aca3d0dc5"
+        },
+        {
+          "file": "ar-desktop-light/settings-tracking.png",
+          "sha256": "9f2998005ecc1259363250ca239fccc690358db8acb5d8da513b6fa3679e69a9"
+        },
+        {
+          "file": "ar-desktop-light/audit-events.png",
+          "sha256": "13f75f60c6c768b9b723ad82a277cf262034a31b45a521f6d06f02b619927e55"
+        },
+        {
+          "file": "ar-desktop-light/audit-reports.png",
+          "sha256": "fb2662c21c632fb6615301bebee298bb6372a419014774a73d02119437fdf56c"
+        },
+        {
+          "file": "ar-desktop-light/audit-reviews.png",
+          "sha256": "4ee68cc236843f21e177471672cfac2ad6adaaf4b0b25b69831f2ce55789024d"
+        },
+        {
+          "file": "ar-desktop-light/audit-alerts.png",
+          "sha256": "a6975b19641a7665acfc7da1b688003dadbc624c0f248ba2b2a38863def3f84f"
+        },
+        {
+          "file": "ar-desktop-light/audit-rules.png",
+          "sha256": "a25ec4400d129f2d82ce417d7d8337dc50e6ff915f96ce18b17b2603aabbcadd"
+        },
+        {
+          "file": "ar-desktop-light/audit-health.png",
+          "sha256": "34d90adc584c2baeebd98b88cef253373333123ead445c191d91dc2777feb146"
+        },
+        {
+          "file": "ar-desktop-light/workflows-workflows.png",
+          "sha256": "7690722cd44dbe34e7b91ba97697297f71c75a15253ebd35f112a57c0c14aaf9"
+        },
+        {
+          "file": "ar-desktop-light/workflows-teams.png",
+          "sha256": "c7e499c9ef474c5bbf8d0ed3a7feb22fdfc270775335be767d40b0e4c9c7d796"
+        },
+        {
+          "file": "ar-desktop-light/workflows-business-hours.png",
+          "sha256": "9212713f5f4f1ab00791562e2895cf1becd908e883051252ec87a98045d90dd7"
+        },
+        {
+          "file": "ar-desktop-light/workflows-transfer-conversations.png",
+          "sha256": "3e57c3f038678d0ab95478121903b3909533f8df983b06302464c67afac661a2"
+        },
+        {
+          "file": "ar-desktop-light/admin-user-detail.png",
+          "sha256": "429afeda3db882a8e2ecf7a6e2dd170d6256de486f62a5423756921c36f89b00"
+        },
+        {
+          "file": "ar-desktop-light/admin-request-detail.png",
+          "sha256": "a6df2a8e2ea93f391dd65985b67d1a5e97f79bef4aa187cb1f0a32abbff5de08"
+        },
+        {
+          "file": "ar-desktop-light/admin-request-detail-tab-1.png",
+          "sha256": "6cfa857dc7e621124583aba85be6b18d1587af556f97e9667385141a02bdd07a"
+        },
+        {
+          "file": "ar-desktop-light/admin-request-detail-tab-2.png",
+          "sha256": "5bca2182a00875e0ae455be748da7fc9c9526de1b45682275413eb28da2c0d46"
+        },
+        {
+          "file": "ar-desktop-light/admin-inquiry-detail.png",
+          "sha256": "01e0a2da89be49753936d06c0a2d3b83576061daf631e56772229f2dacb72b62"
+        },
+        {
+          "file": "ar-desktop-light/admin-inquiry-detail-tab-1.png",
+          "sha256": "777787d2b0dae05fefd91b69950ad7c54d84e0b61f8955732c7f47fd4ee3dfaa"
+        },
+        {
+          "file": "ar-desktop-light/admin-inquiry-detail-tab-2.png",
+          "sha256": "3e556a14d855166f9a7e1c3c33208ea3491bf8dd3c13fef35401b0a4ceb51042"
+        },
+        {
+          "file": "ar-desktop-light/editor.png",
+          "sha256": "c2b5d846f0fd49d1b3fb61970742699ab62c550f41a61ea851c96e9598393d3b"
+        },
+        {
+          "file": "ar-desktop-light/editor-device-tablet.png",
+          "sha256": "a41d398f3dbbc6ca26f872613b745f627b9e6ace31d836e1e37624961d7cbd90"
+        },
+        {
+          "file": "ar-desktop-light/editor-device-mobile.png",
+          "sha256": "adfbe77982b45e4cd81ec86c91ea4f35b4780b9b01a3d983c2e91c273b2e27f4"
+        },
+        {
+          "file": "ar-desktop-light/editor-device-desktop.png",
+          "sha256": "5adb25246d8e2a4b9de88fdb3938f36165885c275adc8a37d79363ac89a46f6d"
+        },
+        {
+          "file": "ar-desktop-light/editor-language-en.png",
+          "sha256": "1786c7d00f3b1f4cbaff7db8627fc427ccc1bc61683ea3146a37e94fb04f6a77"
+        },
+        {
+          "file": "ar-desktop-light/editor-language-ar.png",
+          "sha256": "a8d771bd1efa31419d1f66a1d87f212673782439c0aacd1fc5d661fc7d41ea25"
+        },
+        {
+          "file": "ar-desktop-light/editor-library-tab-1.png",
+          "sha256": "8665f8005d28e1bf7966aa2da08cb5332bce8b02d3d4658616df6a8f761c9b0c"
+        },
+        {
+          "file": "ar-desktop-light/editor-library-tab-2.png",
+          "sha256": "ee689eac750665178fcce84f113ab4238cced30f2493e429de2637c967ead7e6"
+        },
+        {
+          "file": "ar-desktop-light/editor-properties-tab-1.png",
+          "sha256": "6e13e619cf86e56ed5418943d5b1f7e53d8115d9b0c99cbd88cfaf585dea0711"
+        },
+        {
+          "file": "ar-desktop-light/editor-properties-tab-2.png",
+          "sha256": "febe6ae3f59f87f1392120d14c520d38ed68079f0291d3309e7ccd0fd1646f01"
+        },
+        {
+          "file": "ar-desktop-light/editor-versions-tab-1.png",
+          "sha256": "9a10518d96daee6830f2a5ce2244e0a0c358cdd1052728c07b8a4d2e0cbc1f99"
+        },
+        {
+          "file": "ar-desktop-light/editor-versions-tab-2.png",
+          "sha256": "5c56601c2b0c2389be4246194f2e7f4c8c1aaf4eccfa55b1ac32d30424069a3c"
+        },
+        {
+          "file": "ar-desktop-light/editor-templates-tab-1.png",
+          "sha256": "b2e14c584d5d557aed7b4fb0ca8b3f592dfd5bd0236fe70dd57f15acb5f8869f"
+        },
+        {
+          "file": "ar-desktop-light/editor-templates-tab-2.png",
+          "sha256": "01f5893596e7ea4cdc670dad387606abf3ba8379783f3a08d6e57cd63f2a4899"
+        },
+        {
+          "file": "ar-desktop-light/editor-templates-tab-3.png",
+          "sha256": "febee25995f39178c77e0df04d39ef39deb54c7316e1abd21ed3f94b31891549"
+        },
+        {
+          "file": "ar-desktop-light/editor-preview.png",
+          "sha256": "7d16b4ccd0b71bd1a5bcc6e3e1a25eae937dc0076ddee9de1cdef8765d93da46"
+        },
+        {
+          "file": "ar-desktop-light/preview-device-tablet.png",
+          "sha256": "73f6745b61bc1b2fb2719e3bd9fa2e153a4c4d1d5757beb944aaa2f08b590a6d"
+        },
+        {
+          "file": "ar-desktop-light/preview-device-mobile.png",
+          "sha256": "2d5d7c81e117dfaf091a08760e2a8c8828caa2b82113d726311f3328876857e6"
+        },
+        {
+          "file": "ar-desktop-light/preview-device-desktop.png",
+          "sha256": "b60cffb0093d102a8b8983e4f42cecc04d7ea79d40489b1d5687ede6840e57f1"
+        },
+        {
+          "file": "ar-desktop-light/account-dashboard.png",
+          "sha256": "f1120fd5addd9b59dae8ec70163900418c8610036b2c5f61b41c2afdc2684dff"
+        },
+        {
+          "file": "ar-desktop-light/account-requests.png",
+          "sha256": "8f58b5429e65009c79c57f0e32909baff0e053a049c57bc992643f91a5ab215e"
+        },
+        {
+          "file": "ar-desktop-light/account-requests-tab-1.png",
+          "sha256": "8f58b5429e65009c79c57f0e32909baff0e053a049c57bc992643f91a5ab215e"
+        },
+        {
+          "file": "ar-desktop-light/account-requests-tab-2.png",
+          "sha256": "1efc79735e8689fd4d8aad97247a350154b4e7a56dbd383f9af8a3c00b1ca8b6"
+        },
+        {
+          "file": "ar-desktop-light/account-requests-tab-3.png",
+          "sha256": "a1bfc910aced5fe0768d51c45b2b7c905f22b3fb9c77fc6da9a1b7715c7a7d1e"
+        },
+        {
+          "file": "ar-desktop-light/account-requests-tab-4.png",
+          "sha256": "b8e694bf18c33880f3e0a67aec9539a003eff03bea74d460386da7a42f315289"
+        },
+        {
+          "file": "ar-desktop-light/account-requests-tab-5.png",
+          "sha256": "c63fc332fedaba06b1eccd096a7cf62e6a67da4900626737b1b8d95fda8fa56b"
+        },
+        {
+          "file": "ar-desktop-light/account-requests-tab-6.png",
+          "sha256": "8f08b97f1c9c811715994fac84d88b5ce3aa413d7fbefc58914a81674f9949bf"
+        },
+        {
+          "file": "ar-desktop-light/account-requests-tab-7.png",
+          "sha256": "7342d00b02ab33e3d39325ad50841e781d8040fed29bbf3b29636b499ac5c8d0"
+        },
+        {
+          "file": "ar-desktop-light/account-requests-tab-8.png",
+          "sha256": "bba8b4aab4263c43172adbbd711d48242351886d2677dc3090cebdac2f32e22c"
+        },
+        {
+          "file": "ar-desktop-light/account-requests-tab-9.png",
+          "sha256": "2b2b49d257b7d03df57bb2db4a978180fc417f637b7b2aaa9aa1431842e5619f"
+        },
+        {
+          "file": "ar-desktop-light/account-requests-new.png",
+          "sha256": "23a468e4c3268b932bebfb2efb834649840afb52fa6193677e4b2c6f3d81113f"
+        },
+        {
+          "file": "ar-desktop-light/account-inquiries.png",
+          "sha256": "ab1c0357b18da13c6bd6213788389de7bf8d6fb879835de76dad70b934a9a9dc"
+        },
+        {
+          "file": "ar-desktop-light/account-inquiries-tab-1.png",
+          "sha256": "ab1c0357b18da13c6bd6213788389de7bf8d6fb879835de76dad70b934a9a9dc"
+        },
+        {
+          "file": "ar-desktop-light/account-inquiries-tab-2.png",
+          "sha256": "52d756d5348c44dece317b9f89a409de9a796a7c6aae91dc8623e57e19df855a"
+        },
+        {
+          "file": "ar-desktop-light/account-inquiries-tab-3.png",
+          "sha256": "442350a70958f853b13b41d34630a144c9f845f615e921cf27df709527110694"
+        },
+        {
+          "file": "ar-desktop-light/account-inquiries-tab-4.png",
+          "sha256": "3beb2d72a663cb123deef36d6c4c16501140d506392825cd69d5e1465b5c605e"
+        },
+        {
+          "file": "ar-desktop-light/account-inquiries-tab-5.png",
+          "sha256": "f93f9b8f55b7acbc9f17074b6fc907225c4ee73f66787b18fea26ed00d0d90e5"
+        },
+        {
+          "file": "ar-desktop-light/account-inquiries-tab-6.png",
+          "sha256": "11e039fc5cb4ffcc4fe38acfd61e751bd65d76ff1619941ff2d613c1b058f61a"
+        },
+        {
+          "file": "ar-desktop-light/account-inquiries-tab-7.png",
+          "sha256": "2d1f626c360a43bd05ec0c06c4cb7e1a45f707439026c894a92affd55ae6199d"
+        },
+        {
+          "file": "ar-desktop-light/account-profile.png",
+          "sha256": "cbab8d7e64db13a03194953b355c76d7dbd0172fdf060daea348467e73f5cb01"
+        },
+        {
+          "file": "ar-desktop-light/account-security.png",
+          "sha256": "cbfbf4328e1a8fe564800a0419861e09008cb3df17871d405cbeee8ca436a701"
+        },
+        {
+          "file": "ar-desktop-light/account-notifications.png",
+          "sha256": "620c440439c60b14a6633c921408200f9615c8b2e84876963a6ec0988563078d"
+        },
+        {
+          "file": "ar-desktop-light/account-request-detail.png",
+          "sha256": "dcf8e371cf300db7a42fa62be9c0d33296089eff55303eb6ebfba5393c7b2043"
+        },
+        {
+          "file": "ar-desktop-light/account-inquiry-detail.png",
+          "sha256": "29849a41fb7f0a42ee9971cd7871deefc6e28cad13ca039d7e1b39fe35bccf31"
+        },
+        {
+          "file": "ar-desktop-light/public-home.png",
+          "sha256": "3b3977033f1779b3a590884ea3b00ae2d0bd91e885f546d7e08c86a901a629a5"
+        },
+        {
+          "file": "ar-desktop-light/public-about.png",
+          "sha256": "1d021fe8e1dafdc803d1cdd0acff207380513efae7cab68e8e701cd2dd7a3b93"
+        },
+        {
+          "file": "ar-desktop-light/public-services.png",
+          "sha256": "cf459f6b57407186baef21d7d83644b8d862cf5c41e43f660bd72e7fe35567c8"
+        },
+        {
+          "file": "ar-desktop-light/public-works.png",
+          "sha256": "e9f58f53c47cfde6d6885a239af98ae0b24354b64ecfcd899953ea536275d777"
+        },
+        {
+          "file": "ar-desktop-light/public-process.png",
+          "sha256": "b99abd8a7903e9d786ca34175d3e4f6dbf824c6b7c29ad89336a24d8986acb15"
+        },
+        {
+          "file": "ar-desktop-light/public-faq.png",
+          "sha256": "e4e6be6cf962d563f5802702567fd37572668b38d1f8e4406ff3b6cad7692154"
+        },
+        {
+          "file": "ar-desktop-light/public-contact.png",
+          "sha256": "068999a1152f564a15058c750f0789619622900cdb0aafaf4e8350c9559e751f"
+        },
+        {
+          "file": "ar-desktop-light/public-track.png",
+          "sha256": "fe17b1df59cc1bea26bdd90820ea7528c5299b7eb213f61436023da2c78e4a1e"
+        },
+        {
+          "file": "ar-desktop-light/published-surfaces.png",
+          "sha256": "252bf22e3c5f3c8b7ac1cc392bad6995b0fc296e36d70e93754b0c19c94f7765"
+        },
+        {
+          "file": "ar-desktop-light/published-tablet-surfaces.png",
+          "sha256": "102f703219feef6b8ee6467e9f1998356bfe3509252e420bdb2fdec39540dd32"
+        },
+        {
+          "file": "ar-desktop-light/published-all-block-types.png",
+          "sha256": "1ab52fce70b265fa71eeb93990a155366da0a0a3dda7314e8b54b41c6505389b"
+        },
+        {
+          "file": "ar-desktop-light/not-found-client-navigation.png",
+          "sha256": "b2c9ec6ee95d50e91632fc46fb1a492afd5c32ba396e9040680d3484c0c8049e"
+        },
+        {
+          "file": "ar-desktop-light/auth-login.png",
+          "sha256": "a127573a9292b300b457119bebaa1642aed4b2e486e2f3279b755cf34f14e0d7"
+        },
+        {
+          "file": "ar-desktop-light/auth-register.png",
+          "sha256": "cad16b568a81d1e2a66aa553b02b7d8ff8c18854da9677d8ed38b35166bb6acd"
+        },
+        {
+          "file": "ar-desktop-light/auth-forgot-password.png",
+          "sha256": "bdfab2401daa2ad358d769a3081798c326661004690642c3494b451f4460baeb"
+        },
+        {
+          "file": "ar-desktop-light/auth-reset-password.png",
+          "sha256": "7848edc8ec16c409000f4e2a696577074ba75d33aaf3014722495c56a04e2961"
+        },
+        {
+          "file": "ar-desktop-light/auth-invite.png",
+          "sha256": "f09d9f5fc637d02e8b0d608dd1359c61b651e1c76d83eddb2e73466afafb69da"
+        },
+        {
+          "file": "ar-desktop-light/auth-verified.png",
+          "sha256": "65afc88f4a9cc735f09b6a03c8f502cf9cee536c06391d2315fd9b3de17f9e24"
+        },
+        {
+          "file": "ar-desktop-light/not-found.png",
+          "sha256": "b2c9ec6ee95d50e91632fc46fb1a492afd5c32ba396e9040680d3484c0c8049e"
+        }
+      ]
+    },
+    {
+      "sourceRevision": "e36746c165df9aba3148df3d9d17ff13c9d4094f",
+      "locale": "ar",
+      "mode": "dark",
+      "viewport": "desktop",
+      "visited": [
+        "admin-dashboard",
+        "admin-users",
+        "admin-roles",
+        "admin-permissions",
+        "admin-invitations",
+        "admin-requests",
+        "admin-inquiries",
+        "admin-notifications",
+        "admin-pages",
+        "admin-media",
+        "admin-menus",
+        "admin-menus-tab-1",
+        "admin-menus-tab-2",
+        "admin-workflows",
+        "admin-settings",
+        "admin-diagnostics",
+        "admin-audit",
+        "admin-outbox",
+        "settings-identity",
+        "settings-appearance",
+        "settings-contact",
+        "settings-sharing",
+        "settings-announcement",
+        "settings-tracking",
+        "audit-events",
+        "audit-reports",
+        "audit-reviews",
+        "audit-alerts",
+        "audit-rules",
+        "audit-health",
+        "workflows-workflows",
+        "workflows-teams",
+        "workflows-business-hours",
+        "workflows-transfer-conversations",
+        "admin-user-detail",
+        "admin-request-detail",
+        "admin-request-detail-tab-1",
+        "admin-request-detail-tab-2",
+        "admin-inquiry-detail",
+        "admin-inquiry-detail-tab-1",
+        "admin-inquiry-detail-tab-2",
+        "editor",
+        "editor-device-tablet",
+        "editor-device-mobile",
+        "editor-device-desktop",
+        "editor-language-en",
+        "editor-language-ar",
+        "editor-library-tab-1",
+        "editor-library-tab-2",
+        "editor-properties-tab-1",
+        "editor-properties-tab-2",
+        "editor-versions-tab-1",
+        "editor-versions-tab-2",
+        "editor-templates-tab-1",
+        "editor-templates-tab-2",
+        "editor-templates-tab-3",
+        "editor-preview",
+        "preview-device-tablet",
+        "preview-device-mobile",
+        "preview-device-desktop",
+        "account-dashboard",
+        "account-requests",
+        "account-requests-tab-1",
+        "account-requests-tab-2",
+        "account-requests-tab-3",
+        "account-requests-tab-4",
+        "account-requests-tab-5",
+        "account-requests-tab-6",
+        "account-requests-tab-7",
+        "account-requests-tab-8",
+        "account-requests-tab-9",
+        "account-requests-new",
+        "account-inquiries",
+        "account-inquiries-tab-1",
+        "account-inquiries-tab-2",
+        "account-inquiries-tab-3",
+        "account-inquiries-tab-4",
+        "account-inquiries-tab-5",
+        "account-inquiries-tab-6",
+        "account-inquiries-tab-7",
+        "account-profile",
+        "account-security",
+        "account-notifications",
+        "account-request-detail",
+        "account-inquiry-detail",
+        "public-home",
+        "public-about",
+        "public-services",
+        "public-works",
+        "public-process",
+        "public-faq",
+        "public-contact",
+        "public-track",
+        "published-surfaces",
+        "published-tablet-surfaces",
+        "published-all-block-types",
+        "not-found-client-navigation",
+        "auth-login",
+        "auth-register",
+        "auth-forgot-password",
+        "auth-reset-password",
+        "auth-invite",
+        "auth-verified",
+        "not-found"
+      ],
+      "errors": [],
+      "assertionErrors": [],
+      "blockTypes": [
+        "hero",
+        "servicesGrid",
+        "featureGrid",
+        "worksShowcase",
+        "processSteps",
+        "faqSection",
+        "ctaSection",
+        "pageHeader",
+        "richText",
+        "visionMission",
+        "numberedValues",
+        "numberedList",
+        "navCtaBanner",
+        "servicesDetail",
+        "worksFull",
+        "processFull",
+        "requestForm",
+        "contactInfo",
+        "heading",
+        "text",
+        "image",
+        "gallery",
+        "buttonLink",
+        "columns",
+        "simpleTable",
+        "divider",
+        "spacer",
+        "section",
+        "container",
+        "row",
+        "column"
+      ],
+      "screenshots": [
+        {
+          "file": "ar-desktop-dark/admin-dashboard.png",
+          "sha256": "7098d9ec4773152e9195ee96b3773696676c85a2e2bcc57dbdf757efb17a6d7c"
+        },
+        {
+          "file": "ar-desktop-dark/admin-users.png",
+          "sha256": "f9fa239b367b4c17cb104468439ffe46ec2adc6eb893d424a26380a03b93021c"
+        },
+        {
+          "file": "ar-desktop-dark/admin-roles.png",
+          "sha256": "2d8ecbb6382bbe9605eee624764838eadb131673cb2834f2131f1c1f1d5a9f07"
+        },
+        {
+          "file": "ar-desktop-dark/admin-permissions.png",
+          "sha256": "7bfb2a64a6f7bcefcc3065637868fb494b190b986a28e6d5092e67a2c0ac02ba"
+        },
+        {
+          "file": "ar-desktop-dark/admin-invitations.png",
+          "sha256": "574666852a780ef8095f6890aca9093cc18c73fb4737efc0e637d036d02be284"
+        },
+        {
+          "file": "ar-desktop-dark/admin-requests.png",
+          "sha256": "18a9bf5055e1996e67e4fc70b552a36422395efef6cf6b58d5ff1d36d388ce96"
+        },
+        {
+          "file": "ar-desktop-dark/admin-inquiries.png",
+          "sha256": "cf11b7eca50a41db8b8f357063295589ca17d3c6dbef51c3be4aa15e2808c9b3"
+        },
+        {
+          "file": "ar-desktop-dark/admin-notifications.png",
+          "sha256": "4c3a4da05a38e0eeb5ad5ce99a0d4056a835faa3f4e8a30cf593e2fe5243b183"
+        },
+        {
+          "file": "ar-desktop-dark/admin-pages.png",
+          "sha256": "f7680107c2730bc000d743d099f741cec7b95c06e03e79e5c37b7acfb58833e0"
+        },
+        {
+          "file": "ar-desktop-dark/admin-media.png",
+          "sha256": "4c0e631e5b00c93db984f4cbf73b46b24bcfae97e65cf24fb942edff4da01d6e"
+        },
+        {
+          "file": "ar-desktop-dark/admin-menus.png",
+          "sha256": "69f52b246f61b7e408585f17ffd5cd6f751b23c935700648a45a4216ade1573d"
+        },
+        {
+          "file": "ar-desktop-dark/admin-menus-tab-1.png",
+          "sha256": "ccf50c5feeb2a8d4462b85e1e9a1778e8ac45a2b4a9137284935feb259027eb1"
+        },
+        {
+          "file": "ar-desktop-dark/admin-menus-tab-2.png",
+          "sha256": "a356026e0469663c3f03c87697ac438ac53c2d0a8c52b23751bb6772950d3994"
+        },
+        {
+          "file": "ar-desktop-dark/admin-workflows.png",
+          "sha256": "1eae08b60b8b4459225e747fccdcc94c137061aad1d2db56766abdbcc0d2e4f9"
+        },
+        {
+          "file": "ar-desktop-dark/admin-settings.png",
+          "sha256": "9ed0112c440fc11bc810ba9c2c5123ba1e3ada4cc88cfee78224cf633667a894"
+        },
+        {
+          "file": "ar-desktop-dark/admin-diagnostics.png",
+          "sha256": "ceb2ce1a9b5e54b9da4d409d155f8ec5c2eb30af616da4ce0a7a454c91c14342"
+        },
+        {
+          "file": "ar-desktop-dark/admin-audit.png",
+          "sha256": "a7fb5dbb2fe78970c4947d025ef5c58f24e285a78043bdc294753b3183d453b6"
+        },
+        {
+          "file": "ar-desktop-dark/admin-outbox.png",
+          "sha256": "33f5e9c9a972c4adc366d503ef38cff6d62bb304386f3be7a63c18a107d21dd7"
+        },
+        {
+          "file": "ar-desktop-dark/settings-identity.png",
+          "sha256": "9ed0112c440fc11bc810ba9c2c5123ba1e3ada4cc88cfee78224cf633667a894"
+        },
+        {
+          "file": "ar-desktop-dark/settings-appearance.png",
+          "sha256": "39712409c1971035b1827005a25948381d24b4d7c5b0e8c8d28d34bfea47396f"
+        },
+        {
+          "file": "ar-desktop-dark/settings-contact.png",
+          "sha256": "da7a15e94278fef41a83285b1dcafe24315c6f50c8540bc2068192d626eeda63"
+        },
+        {
+          "file": "ar-desktop-dark/settings-sharing.png",
+          "sha256": "ab09a35c5d6dc090221125b13b317b79cb42337ec5f0de2d8a9154046951794b"
+        },
+        {
+          "file": "ar-desktop-dark/settings-announcement.png",
+          "sha256": "949860af9006cf4b50e0a264b6d0a38e1830f17016f8d9201f95c4c456a5d208"
+        },
+        {
+          "file": "ar-desktop-dark/settings-tracking.png",
+          "sha256": "d8ccdc306470f5d9a415e3a444f666e7c40262951dccd53bcf755c0d98094cdd"
+        },
+        {
+          "file": "ar-desktop-dark/audit-events.png",
+          "sha256": "62b2bc0ce83be8dd1b693833c13887f8e04ae30703c92456aa524eebe14eaed9"
+        },
+        {
+          "file": "ar-desktop-dark/audit-reports.png",
+          "sha256": "c1730ea042b451ff45ac57be81b9df6324e52b901eae69b538f581bac83e507d"
+        },
+        {
+          "file": "ar-desktop-dark/audit-reviews.png",
+          "sha256": "85c0b60fc1be77d8ff2a53f73a288a6603c38c2ab27bb47860469b4f148ffc80"
+        },
+        {
+          "file": "ar-desktop-dark/audit-alerts.png",
+          "sha256": "af084ebd27854efed7f893dd58fa04c204b464f7240449819a080e00bb735f5e"
+        },
+        {
+          "file": "ar-desktop-dark/audit-rules.png",
+          "sha256": "58e82aaa4c05ede1aabecd4c55da2defeb01307df850f1593d6a8669b4b22175"
+        },
+        {
+          "file": "ar-desktop-dark/audit-health.png",
+          "sha256": "b181da0c0a832c407186528d65f4088411dc6ae2ff840331cf21660d65d4447e"
+        },
+        {
+          "file": "ar-desktop-dark/workflows-workflows.png",
+          "sha256": "77e94b2591a3246da674837c5fbc589148f2d017c0889ea6ab58adc4143b178d"
+        },
+        {
+          "file": "ar-desktop-dark/workflows-teams.png",
+          "sha256": "cad02dc6a291b5e7d280d212bc0c70ebd4a567e05fbc9ac727a9f528008bd7db"
+        },
+        {
+          "file": "ar-desktop-dark/workflows-business-hours.png",
+          "sha256": "72a2b64e2b7b0633c5b2bdbfbbe3d8230c4e5a8f020dc26293efb3a87b09aeec"
+        },
+        {
+          "file": "ar-desktop-dark/workflows-transfer-conversations.png",
+          "sha256": "bc6215bd4c698743b67db89c6556a68e1b682233cf25528b28f287beef0d846a"
+        },
+        {
+          "file": "ar-desktop-dark/admin-user-detail.png",
+          "sha256": "879aaf92c5e1199aa218a881d4433226dc61dfc11a4c026532715395a27742ab"
+        },
+        {
+          "file": "ar-desktop-dark/admin-request-detail.png",
+          "sha256": "2c5e478d629f8d97c7ec7bbc4182eb436b1c451e3070fb73330694d378f0822c"
+        },
+        {
+          "file": "ar-desktop-dark/admin-request-detail-tab-1.png",
+          "sha256": "bee3b64d7d45350dcee3a1cd9dfd52ba8f063a0ae5b2cbdf299814eafed13e90"
+        },
+        {
+          "file": "ar-desktop-dark/admin-request-detail-tab-2.png",
+          "sha256": "10ea2e2b22598d3980cd5bf1a48ec9961411c11e15c0164f0720aa820ef4b11a"
+        },
+        {
+          "file": "ar-desktop-dark/admin-inquiry-detail.png",
+          "sha256": "32f2f131e839fbc2514f3f5061b163d465e438de7c3e2b9c1eaf77c3ddbff89b"
+        },
+        {
+          "file": "ar-desktop-dark/admin-inquiry-detail-tab-1.png",
+          "sha256": "abf33fea100251a63d742d0cfc673201fd6c7b74e685b096a5bb7775889eba7e"
+        },
+        {
+          "file": "ar-desktop-dark/admin-inquiry-detail-tab-2.png",
+          "sha256": "9017015baed225115d07a8e903ee208d017b9bb813bf9fcee0e9a11593c7c134"
+        },
+        {
+          "file": "ar-desktop-dark/editor.png",
+          "sha256": "476d7beb980925ef361c175a382679b77dea3e08a3664d8ecb8b1b86ea7a8db0"
+        },
+        {
+          "file": "ar-desktop-dark/editor-device-tablet.png",
+          "sha256": "850d0ec4189ef5319923a619a9d2fd3652e7d98070428c1f4b3dd22c76d53cf8"
+        },
+        {
+          "file": "ar-desktop-dark/editor-device-mobile.png",
+          "sha256": "e3fc30abfe169d6351776262b762d8537935847ff9b3653e435edd102716c338"
+        },
+        {
+          "file": "ar-desktop-dark/editor-device-desktop.png",
+          "sha256": "66bc1ca3ba82729677901f4ebdb82d713039d2cb72779fe15c08dba1ecc43c20"
+        },
+        {
+          "file": "ar-desktop-dark/editor-language-en.png",
+          "sha256": "2136561946c4cb725c78e03d100888a7d009e1cc3ba7f306007d5b739e3d8824"
+        },
+        {
+          "file": "ar-desktop-dark/editor-language-ar.png",
+          "sha256": "59843643b9a527af072d2e394b425a3971c2d93d8f7ca2d530625d794c8aaf63"
+        },
+        {
+          "file": "ar-desktop-dark/editor-library-tab-1.png",
+          "sha256": "69a5bb29798adc4fef143d4005eddf40759d3ebaf7a3f650a649710b70e51a66"
+        },
+        {
+          "file": "ar-desktop-dark/editor-library-tab-2.png",
+          "sha256": "829b2b78aef0d0e8f826a06da427b0b9553d49d3edfb9074d0f6403a905133f2"
+        },
+        {
+          "file": "ar-desktop-dark/editor-properties-tab-1.png",
+          "sha256": "57a9b1de28f82a11b0d26fb4b7ca46037a418f6fb82ced9c7768655c8f404d76"
+        },
+        {
+          "file": "ar-desktop-dark/editor-properties-tab-2.png",
+          "sha256": "df39a86dc274ac8e79b1bb8e971cf684ebc729f1b7b2bb970ade55d53a6902ad"
+        },
+        {
+          "file": "ar-desktop-dark/editor-versions-tab-1.png",
+          "sha256": "ca73c3efc82262f4f68272ea6715fb3a03bbe95a0d2f511654089dbabed3d5a2"
+        },
+        {
+          "file": "ar-desktop-dark/editor-versions-tab-2.png",
+          "sha256": "0f44b34d756d706a2956a3cbfc749f4d5c1f0925577debfc31fba62d3592d45e"
+        },
+        {
+          "file": "ar-desktop-dark/editor-templates-tab-1.png",
+          "sha256": "2d0930e2ed06f6dfd7e45dd2d74f6d7a55d7824c6b5126e858d4d02fea9cc4ed"
+        },
+        {
+          "file": "ar-desktop-dark/editor-templates-tab-2.png",
+          "sha256": "7cd15701b3eb924f819daf0ebb208019784a863912c22267c0a0dfbf5a3492d2"
+        },
+        {
+          "file": "ar-desktop-dark/editor-templates-tab-3.png",
+          "sha256": "c0cd46aea099cd92d9bb7a3930487334dfd6cdd03337738f0271d5f80d2fb6de"
+        },
+        {
+          "file": "ar-desktop-dark/editor-preview.png",
+          "sha256": "88bee900f8fe4786cb6b29d064cfcde7dfe361007bfeedcb83bc75eafe985968"
+        },
+        {
+          "file": "ar-desktop-dark/preview-device-tablet.png",
+          "sha256": "46916195002f74cfabcf87381d4c28a97912a9fe96d4451acdae8b6ed8063140"
+        },
+        {
+          "file": "ar-desktop-dark/preview-device-mobile.png",
+          "sha256": "0a9c67809882460ef8f04abef3e628c65508a8952ff02350ae2e6d87d38aaed3"
+        },
+        {
+          "file": "ar-desktop-dark/preview-device-desktop.png",
+          "sha256": "098e565196542d98aa31d4231c5e73a96b468e427e753ee24c3c28c0135a106c"
+        },
+        {
+          "file": "ar-desktop-dark/account-dashboard.png",
+          "sha256": "1d6c7ec3cc849d1a5a04b464524814ef2d01e790b082cca258b0256cc6a943d7"
+        },
+        {
+          "file": "ar-desktop-dark/account-requests.png",
+          "sha256": "d8d1fae8c8f296135d8914cdcac5e62300ff9d9cbfd5563b305eaecb028fc52c"
+        },
+        {
+          "file": "ar-desktop-dark/account-requests-tab-1.png",
+          "sha256": "d8d1fae8c8f296135d8914cdcac5e62300ff9d9cbfd5563b305eaecb028fc52c"
+        },
+        {
+          "file": "ar-desktop-dark/account-requests-tab-2.png",
+          "sha256": "0994d965bbd4022ddbcea34dd6c39783eb1af23140b74279ea3d39381c44ecdf"
+        },
+        {
+          "file": "ar-desktop-dark/account-requests-tab-3.png",
+          "sha256": "fe7a2bf2aeddea6111a97e075b56bc808cd0586643f556b5ea54b2024b924e97"
+        },
+        {
+          "file": "ar-desktop-dark/account-requests-tab-4.png",
+          "sha256": "6262e1ce027a46d43d41aea14bff8d56bd9ec73ca6ed9cccbd225c73e22fff29"
+        },
+        {
+          "file": "ar-desktop-dark/account-requests-tab-5.png",
+          "sha256": "c84f834d3a075e7c474082a7821a934b64ed63fbd30bb3a59f28a09db928ccb0"
+        },
+        {
+          "file": "ar-desktop-dark/account-requests-tab-6.png",
+          "sha256": "02067990dd07bf52498de3d0a2952b3ac81cf2116ab87ff73cc67c5c88657cf6"
+        },
+        {
+          "file": "ar-desktop-dark/account-requests-tab-7.png",
+          "sha256": "6ace357d1fc6675835267cf3256cb3e4be7d6607f93f11009549aa6abb269982"
+        },
+        {
+          "file": "ar-desktop-dark/account-requests-tab-8.png",
+          "sha256": "7c094bf800a73661f66f16273e8d29769df719ff4c1ed79eba203e5e20caf0ff"
+        },
+        {
+          "file": "ar-desktop-dark/account-requests-tab-9.png",
+          "sha256": "fac225fa26a2d8f5b3f0dd6323fe44cfa5db6ea26bcb5451f1b5d02984fdd2b9"
+        },
+        {
+          "file": "ar-desktop-dark/account-requests-new.png",
+          "sha256": "d813b142eef2a455ca5a07780250050be8ee0c4e9be7f3423dc20b591c38fe88"
+        },
+        {
+          "file": "ar-desktop-dark/account-inquiries.png",
+          "sha256": "cb6ef7a7130b88260425e5aea7411603fa73e11629dd30e7756ad659fb609374"
+        },
+        {
+          "file": "ar-desktop-dark/account-inquiries-tab-1.png",
+          "sha256": "cb6ef7a7130b88260425e5aea7411603fa73e11629dd30e7756ad659fb609374"
+        },
+        {
+          "file": "ar-desktop-dark/account-inquiries-tab-2.png",
+          "sha256": "01745bdf8816cf2724ca4a1d5a773e8a691bf00e578dd7d2555fb03c1135ae8d"
+        },
+        {
+          "file": "ar-desktop-dark/account-inquiries-tab-3.png",
+          "sha256": "cc42f2b352d2db429ea7f5612a2786a80da8df651f1af2f78cf369b6eb962e05"
+        },
+        {
+          "file": "ar-desktop-dark/account-inquiries-tab-4.png",
+          "sha256": "f8a9663d6fd5a360bc9d6549893d765ef29b32a266e369093e636df70df25902"
+        },
+        {
+          "file": "ar-desktop-dark/account-inquiries-tab-5.png",
+          "sha256": "b51ecb616b1e5a829abe5c127eca7790643ec30bf27937eedd84648b33364199"
+        },
+        {
+          "file": "ar-desktop-dark/account-inquiries-tab-6.png",
+          "sha256": "ad52fc33fe0d666e63b471f953f3b6fe384bd16dcd35cad17c0311eed5f4de29"
+        },
+        {
+          "file": "ar-desktop-dark/account-inquiries-tab-7.png",
+          "sha256": "dbbd515e9478580a1f226804647a97807f799766b094ead2277bdf3eb87253a7"
+        },
+        {
+          "file": "ar-desktop-dark/account-profile.png",
+          "sha256": "c34898f01182e4716cf7a084268074030e8f63c6551e129f6a2cd624e41f8693"
+        },
+        {
+          "file": "ar-desktop-dark/account-security.png",
+          "sha256": "218dc1875996cf5e2e279221ab4ed1cefba5239bd3cda454e1f8af06ef5c3b0a"
+        },
+        {
+          "file": "ar-desktop-dark/account-notifications.png",
+          "sha256": "809ac93f0ce6672f303bff2f3099345c09742415f822887d2865ba91fd29ca9a"
+        },
+        {
+          "file": "ar-desktop-dark/account-request-detail.png",
+          "sha256": "28bbbde1d3b62f5c64dc90a90ac7c838fb10003a9251f7e2895a105fb5d88c41"
+        },
+        {
+          "file": "ar-desktop-dark/account-inquiry-detail.png",
+          "sha256": "7337ceb89f6011acf64097e1dd60c106fdf2103145632cee1cb2a3a5d95e79ea"
+        },
+        {
+          "file": "ar-desktop-dark/public-home.png",
+          "sha256": "145d9c046e01a80dabbac88b7a7cd1065ecc45a70798428e6dfc0e7724aa0e0e"
+        },
+        {
+          "file": "ar-desktop-dark/public-about.png",
+          "sha256": "a3e05a00ee047c92fef2e22eaddb80d3446fb093ff26b9f8c6ec4a02496db7f7"
+        },
+        {
+          "file": "ar-desktop-dark/public-services.png",
+          "sha256": "72d3b8685764da70d12d7d9ad12fdeb3f390d4198713cc65530b93e03e20c741"
+        },
+        {
+          "file": "ar-desktop-dark/public-works.png",
+          "sha256": "9f78c41c2ccd10369baa9a916a2d5f98424c1bee32455a764001fe75ec8855ae"
+        },
+        {
+          "file": "ar-desktop-dark/public-process.png",
+          "sha256": "bb481474c8b75190a69025f33210015609baa9df1bb8efd2e2800a137ffb0a10"
+        },
+        {
+          "file": "ar-desktop-dark/public-faq.png",
+          "sha256": "88f332ec6ee84d8d691f37dc214231cd2210cef77d9deccb2de3c0b36dbbb390"
+        },
+        {
+          "file": "ar-desktop-dark/public-contact.png",
+          "sha256": "ad3e73a61827d697a714c849df66d2df27f523c163626f1ed5d6445dcf5f6aaa"
+        },
+        {
+          "file": "ar-desktop-dark/public-track.png",
+          "sha256": "efaf398ac886ee57521f9fa7d91dbc687dea66d1566070c9098fcd2b6167da19"
+        },
+        {
+          "file": "ar-desktop-dark/published-surfaces.png",
+          "sha256": "ddfb59960d067786a70b5e93cfd9aeefa8dad83c09af20b83ab8b2663988b7c2"
+        },
+        {
+          "file": "ar-desktop-dark/published-tablet-surfaces.png",
+          "sha256": "d5df089db2718d8cae3feb06aea9f6400e8d5ec2915ace8e1877173ebcfca731"
+        },
+        {
+          "file": "ar-desktop-dark/published-all-block-types.png",
+          "sha256": "e36a35ac389acaee97aa07f4c409f149d70452ee440931dbe03537ad93811e31"
+        },
+        {
+          "file": "ar-desktop-dark/not-found-client-navigation.png",
+          "sha256": "ab370bc562e7c1ef250831a7823ed103e225b003d2f1eb985f6e35ca40485861"
+        },
+        {
+          "file": "ar-desktop-dark/auth-login.png",
+          "sha256": "bf8595093bb9a83a9b23ca01298c9a8d74a76f9a14cd46253693dbebc1ba16e4"
+        },
+        {
+          "file": "ar-desktop-dark/auth-register.png",
+          "sha256": "c4845bebc72dfe2b088d7cd0a5ad1118a2e67ca5c77d17bb4ce3c4fc39e699ce"
+        },
+        {
+          "file": "ar-desktop-dark/auth-forgot-password.png",
+          "sha256": "22ff7a2e6d0ec46291a996431f07c931260e8562e79a0f2ced2e0a756083cd40"
+        },
+        {
+          "file": "ar-desktop-dark/auth-reset-password.png",
+          "sha256": "6809e5fbaa673aa04a26a3e661874607b82e7fcc401404ab8af62536ab526ef8"
+        },
+        {
+          "file": "ar-desktop-dark/auth-invite.png",
+          "sha256": "b4c5ae76f40837241c582b889bc412a56d63c08976d010fa1fceb02596982f98"
+        },
+        {
+          "file": "ar-desktop-dark/auth-verified.png",
+          "sha256": "3ab07f13d65ebeef975961d155b8580b52f0413c8db23fc081823c003077bf02"
+        },
+        {
+          "file": "ar-desktop-dark/not-found.png",
+          "sha256": "ab370bc562e7c1ef250831a7823ed103e225b003d2f1eb985f6e35ca40485861"
+        }
+      ]
+    },
+    {
+      "sourceRevision": "e36746c165df9aba3148df3d9d17ff13c9d4094f",
+      "locale": "ar",
+      "mode": "light",
+      "viewport": "mobile",
+      "visited": [
+        "admin-dashboard",
+        "admin-users",
+        "admin-roles",
+        "admin-permissions",
+        "admin-invitations",
+        "admin-requests",
+        "admin-inquiries",
+        "admin-notifications",
+        "admin-pages",
+        "admin-media",
+        "admin-menus",
+        "admin-menus-tab-1",
+        "admin-menus-tab-2",
+        "admin-workflows",
+        "admin-settings",
+        "admin-diagnostics",
+        "admin-audit",
+        "admin-outbox",
+        "settings-identity",
+        "settings-appearance",
+        "settings-contact",
+        "settings-sharing",
+        "settings-announcement",
+        "settings-tracking",
+        "audit-events",
+        "audit-reports",
+        "audit-reviews",
+        "audit-alerts",
+        "audit-rules",
+        "audit-health",
+        "workflows-workflows",
+        "workflows-teams",
+        "workflows-business-hours",
+        "workflows-transfer-conversations",
+        "admin-user-detail",
+        "admin-request-detail",
+        "admin-request-detail-tab-1",
+        "admin-request-detail-tab-2",
+        "admin-inquiry-detail",
+        "admin-inquiry-detail-tab-1",
+        "admin-inquiry-detail-tab-2",
+        "editor",
+        "editor-device-tablet",
+        "editor-device-mobile",
+        "editor-device-desktop",
+        "editor-language-en",
+        "editor-language-ar",
+        "editor-library-tab-1",
+        "editor-library-tab-2",
+        "editor-properties-tab-1",
+        "editor-properties-tab-2",
+        "editor-versions-tab-1",
+        "editor-versions-tab-2",
+        "editor-templates-tab-1",
+        "editor-templates-tab-2",
+        "editor-templates-tab-3",
+        "editor-preview",
+        "preview-device-tablet",
+        "preview-device-mobile",
+        "preview-device-desktop",
+        "account-dashboard",
+        "account-requests",
+        "account-requests-tab-1",
+        "account-requests-tab-2",
+        "account-requests-tab-3",
+        "account-requests-tab-4",
+        "account-requests-tab-5",
+        "account-requests-tab-6",
+        "account-requests-tab-7",
+        "account-requests-tab-8",
+        "account-requests-tab-9",
+        "account-requests-new",
+        "account-inquiries",
+        "account-inquiries-tab-1",
+        "account-inquiries-tab-2",
+        "account-inquiries-tab-3",
+        "account-inquiries-tab-4",
+        "account-inquiries-tab-5",
+        "account-inquiries-tab-6",
+        "account-inquiries-tab-7",
+        "account-profile",
+        "account-security",
+        "account-notifications",
+        "account-request-detail",
+        "account-inquiry-detail",
+        "public-home",
+        "public-about",
+        "public-services",
+        "public-works",
+        "public-process",
+        "public-faq",
+        "public-contact",
+        "public-track",
+        "published-surfaces",
+        "published-tablet-surfaces",
+        "published-all-block-types",
+        "not-found-client-navigation",
+        "auth-login",
+        "auth-register",
+        "auth-forgot-password",
+        "auth-reset-password",
+        "auth-invite",
+        "auth-verified",
+        "not-found"
+      ],
+      "errors": [],
+      "assertionErrors": [],
+      "blockTypes": [
+        "hero",
+        "servicesGrid",
+        "featureGrid",
+        "worksShowcase",
+        "processSteps",
+        "faqSection",
+        "ctaSection",
+        "pageHeader",
+        "richText",
+        "visionMission",
+        "numberedValues",
+        "numberedList",
+        "navCtaBanner",
+        "servicesDetail",
+        "worksFull",
+        "processFull",
+        "requestForm",
+        "contactInfo",
+        "heading",
+        "text",
+        "image",
+        "gallery",
+        "buttonLink",
+        "columns",
+        "simpleTable",
+        "divider",
+        "spacer",
+        "section",
+        "container",
+        "row",
+        "column"
+      ],
+      "screenshots": [
+        {
+          "file": "ar-mobile-light/admin-dashboard.png",
+          "sha256": "5c414945eb3c1ec62d4929a61644d2fd5397a906072b0f210b3b470bfe5722ee"
+        },
+        {
+          "file": "ar-mobile-light/admin-users.png",
+          "sha256": "2212193e2b348521a91f9f62dd5ca386cd30da26c1606d152f7ef9cba0041949"
+        },
+        {
+          "file": "ar-mobile-light/admin-roles.png",
+          "sha256": "db97e7888ce7850588d8e796ecf99352a838e3b70dacc5cb573867ab67b11325"
+        },
+        {
+          "file": "ar-mobile-light/admin-permissions.png",
+          "sha256": "66dc0d509d454671c347b8fb69181b03764e8547afbc3702273a81b2e8b20d02"
+        },
+        {
+          "file": "ar-mobile-light/admin-invitations.png",
+          "sha256": "0e329dc5bdb6c5f3891e6eac33549a7f6fc8861f026a445648a3dc4d9dcae507"
+        },
+        {
+          "file": "ar-mobile-light/admin-requests.png",
+          "sha256": "fa9f45e4af9a501f4afde19b938b9d6156ffb63d2b1ba1d1e0cf2a7ae01139e2"
+        },
+        {
+          "file": "ar-mobile-light/admin-inquiries.png",
+          "sha256": "577283a221be5fee093b2f6a7a69507b8d2f3a2ef5a849d0aa73f901b2f260ed"
+        },
+        {
+          "file": "ar-mobile-light/admin-notifications.png",
+          "sha256": "47025d2d8359d6f13cb035b52f82a64b15fbe783efa71d87be100da52b78be46"
+        },
+        {
+          "file": "ar-mobile-light/admin-pages.png",
+          "sha256": "ff5160566d7ebdea290125401b4c50c07355a7e0dcb43feb89d552e04e4926da"
+        },
+        {
+          "file": "ar-mobile-light/admin-media.png",
+          "sha256": "48e3395a74b065bcfb646cbe1ffed319f84e823fec940496cb1d5bc93b19cfc7"
+        },
+        {
+          "file": "ar-mobile-light/admin-menus.png",
+          "sha256": "271e8c88c0d4be1334ef6885f54d1d36d72a322cb2906e560db22911257f5798"
+        },
+        {
+          "file": "ar-mobile-light/admin-menus-tab-1.png",
+          "sha256": "0081fdc73c957ead3682ab2e53443e79923114bbe8c794b09b2265724989bb08"
+        },
+        {
+          "file": "ar-mobile-light/admin-menus-tab-2.png",
+          "sha256": "59206aee138ffa77a70676f6af59f65389ab2c9465db49b15fdbf93cde8f3126"
+        },
+        {
+          "file": "ar-mobile-light/admin-workflows.png",
+          "sha256": "999ed0c66235a1756e5cd1604c8fca6364440126cd1de00ea3866fb912f065f3"
+        },
+        {
+          "file": "ar-mobile-light/admin-settings.png",
+          "sha256": "d57a41ef906e861980215fb091532b0fa3c24b5e428c3fd34430ad156437332c"
+        },
+        {
+          "file": "ar-mobile-light/admin-diagnostics.png",
+          "sha256": "baf32929771d1dc3867b0fbe3722fffbed1a0b1dcd3d1037f997f7b139283cc4"
+        },
+        {
+          "file": "ar-mobile-light/admin-audit.png",
+          "sha256": "cda828c75340d7d8cbdbf59d21e5eacda25eff0efb7878629acd1096249e5fcf"
+        },
+        {
+          "file": "ar-mobile-light/admin-outbox.png",
+          "sha256": "6710c82baf52e52b227371f23758bfdba61204df0bfb408ede9a953aa94e11d5"
+        },
+        {
+          "file": "ar-mobile-light/settings-identity.png",
+          "sha256": "d57a41ef906e861980215fb091532b0fa3c24b5e428c3fd34430ad156437332c"
+        },
+        {
+          "file": "ar-mobile-light/settings-appearance.png",
+          "sha256": "04b0f1fb7f1bdb3668e69091d905e389476c5add5f5afaa20b76a83e25a2c7bf"
+        },
+        {
+          "file": "ar-mobile-light/settings-contact.png",
+          "sha256": "0d3dba348659aa2ab8e0dd4e2f463dc8fe51ccd7c1abbe53161350eb64b245b9"
+        },
+        {
+          "file": "ar-mobile-light/settings-sharing.png",
+          "sha256": "6713b6589046bf17b1f7395abfd542f825c8c841aa5650a32ae8e5e20fc45117"
+        },
+        {
+          "file": "ar-mobile-light/settings-announcement.png",
+          "sha256": "d156d1ed75a72e7ba0f3e92b5613cd36a4789391416eef21c4407ed9f1243a1c"
+        },
+        {
+          "file": "ar-mobile-light/settings-tracking.png",
+          "sha256": "c71e7da7c8e089898e7fa3ac84ca288b25b58dc330e40f672fa7aeecd8ce586f"
+        },
+        {
+          "file": "ar-mobile-light/audit-events.png",
+          "sha256": "111e8a64b64a460873e94737eb9786cd3d9743b581ad7b639fa6269789c349d5"
+        },
+        {
+          "file": "ar-mobile-light/audit-reports.png",
+          "sha256": "4d2017d5c9f076009007bba100c27f088ce9e69b491b3cc713e5d2d72d3aa168"
+        },
+        {
+          "file": "ar-mobile-light/audit-reviews.png",
+          "sha256": "9042c19e1812b05c04bd53f6d5a84eb2c10d7da30750724a7251a8ad1e070435"
+        },
+        {
+          "file": "ar-mobile-light/audit-alerts.png",
+          "sha256": "464103aa7a93099863a4063a0290f2fea61976bec063d17a555064ee9cfc12b8"
+        },
+        {
+          "file": "ar-mobile-light/audit-rules.png",
+          "sha256": "3716bb43db75d8c4ba46ea7da760a5f14f924b6d01a968162b54ce7c6b9c52bf"
+        },
+        {
+          "file": "ar-mobile-light/audit-health.png",
+          "sha256": "e604fafcbd4fd0c5c125b182c2036ffdf1517c7c2764530a740826e1cdbe8bac"
+        },
+        {
+          "file": "ar-mobile-light/workflows-workflows.png",
+          "sha256": "da4852b2f120b1e8781bb5c41685ff0e5b2c972d6a60aa82062a0324175b83c5"
+        },
+        {
+          "file": "ar-mobile-light/workflows-teams.png",
+          "sha256": "1ad1c01f1fc8c4adbf3befb25ae4f098ebf2cc07f47e3e5e15f678b48f84dc51"
+        },
+        {
+          "file": "ar-mobile-light/workflows-business-hours.png",
+          "sha256": "07a1eda4ca128d9d513dd2b15e945bb5b609151d17de0b787913a27e31400a9a"
+        },
+        {
+          "file": "ar-mobile-light/workflows-transfer-conversations.png",
+          "sha256": "5dc7b0bd07897f1bd05c313a665a33a84109f4f0dcf149cdb8c9f7c06c97dcac"
+        },
+        {
+          "file": "ar-mobile-light/admin-user-detail.png",
+          "sha256": "8d88d59523a5a6c4e9e2a7add8c31a093b35a959417f043e0e439432d6628f2b"
+        },
+        {
+          "file": "ar-mobile-light/admin-request-detail.png",
+          "sha256": "9bc60fcb110f264e2806f3ccb60e49519bf4df5a7d5763eebea91c8894f894bf"
+        },
+        {
+          "file": "ar-mobile-light/admin-request-detail-tab-1.png",
+          "sha256": "9dcf4dd0337abe6b0aeacb9e61190f56c9a7bcfe8f4f24a2efa6702080ddbebd"
+        },
+        {
+          "file": "ar-mobile-light/admin-request-detail-tab-2.png",
+          "sha256": "0b6cebb61466730a99772617831c028c4300fd2b581c4359cfe32aaedc6c0fba"
+        },
+        {
+          "file": "ar-mobile-light/admin-inquiry-detail.png",
+          "sha256": "a18c73eda49022f0331edd4fc0f4b55533797be12841040a31fc8dac5749489c"
+        },
+        {
+          "file": "ar-mobile-light/admin-inquiry-detail-tab-1.png",
+          "sha256": "c82deae55fcebfdadfd20b4ec6d3135e06c1c03ee43e746df3e3b2318d65d193"
+        },
+        {
+          "file": "ar-mobile-light/admin-inquiry-detail-tab-2.png",
+          "sha256": "9d1422e28ac07029e344f51083036a7d7d05ed269fa07faa8f318942fe33bb12"
+        },
+        {
+          "file": "ar-mobile-light/editor.png",
+          "sha256": "2db2e3251bd0921bb33618bf817d73bc19451dcda268a15dc723d5ce97335452"
+        },
+        {
+          "file": "ar-mobile-light/editor-device-tablet.png",
+          "sha256": "b83b164d51c18a41a6d440db929aa0144ab5e26b13ca8209a1c4f8b17376f389"
+        },
+        {
+          "file": "ar-mobile-light/editor-device-mobile.png",
+          "sha256": "e0a5c0781f2c0592858486f1c46e3abe3af3d72c059e14a994c6e70fb01edd15"
+        },
+        {
+          "file": "ar-mobile-light/editor-device-desktop.png",
+          "sha256": "da16d625b779842bfdbb2ea26ba9bd25e87905f2eaec7b2737f02bdc286152d7"
+        },
+        {
+          "file": "ar-mobile-light/editor-language-en.png",
+          "sha256": "e11a7afe9edd764aec244585e347c69fd8f0dee20fa7c27afcf18cfb034b053f"
+        },
+        {
+          "file": "ar-mobile-light/editor-language-ar.png",
+          "sha256": "9fea9bc99b79554f431a10888fbf9ff200df8145dfb0fedbd03bd3bb91138945"
+        },
+        {
+          "file": "ar-mobile-light/editor-library-tab-1.png",
+          "sha256": "0fbb411bf94fac63540ef3db6201c97825be97748cfc6c9d19b506f4fa191288"
+        },
+        {
+          "file": "ar-mobile-light/editor-library-tab-2.png",
+          "sha256": "c651d43d17f057949530e831e42a9dca3902fa455a2731d0a0c45f4646078630"
+        },
+        {
+          "file": "ar-mobile-light/editor-properties-tab-1.png",
+          "sha256": "d1b620536c342b9c07c22be691eb96ee08fa691424bca6cc1749c8bd03273e96"
+        },
+        {
+          "file": "ar-mobile-light/editor-properties-tab-2.png",
+          "sha256": "a8cb33966180a199a01d1d841950bb4364da73442ad19cec4641028a3c31b1a4"
+        },
+        {
+          "file": "ar-mobile-light/editor-versions-tab-1.png",
+          "sha256": "d15e66d2fb95ba05b6377b706863c70ad1db2f0da17e6db329f97a596cae0038"
+        },
+        {
+          "file": "ar-mobile-light/editor-versions-tab-2.png",
+          "sha256": "b89d5c9df549f58f3763b66233f45b7699fe128aee2550c3f657e9285c224300"
+        },
+        {
+          "file": "ar-mobile-light/editor-templates-tab-1.png",
+          "sha256": "de4f1d8d7542786a8b3e3c38726e3fe72822c4bd3fb93f0ef5a06634f900605f"
+        },
+        {
+          "file": "ar-mobile-light/editor-templates-tab-2.png",
+          "sha256": "8a9bd70dc3e32cf4b8c5bd41eb629ae5cfb2f4da4d6b671dfe7f16289d1fd872"
+        },
+        {
+          "file": "ar-mobile-light/editor-templates-tab-3.png",
+          "sha256": "d73fc53940c9c4248dab1c34f8660128308684dd942619061dc5cc58a0b0443d"
+        },
+        {
+          "file": "ar-mobile-light/editor-preview.png",
+          "sha256": "82b69cfcf14c767f03ec571ae3dfa6d4bcf6d859f9c76dfcaff02a586c0f6e22"
+        },
+        {
+          "file": "ar-mobile-light/preview-device-tablet.png",
+          "sha256": "280ff5f861fa29b75a4ef8eedb22f2853dfb54104bf0747eb9586e7126a9228d"
+        },
+        {
+          "file": "ar-mobile-light/preview-device-mobile.png",
+          "sha256": "01e8e99941208bdd3ca81e3a18536c4641d1eecac8d1bdbe28f073f0311d7987"
+        },
+        {
+          "file": "ar-mobile-light/preview-device-desktop.png",
+          "sha256": "fef2ad5de81bb741309340554b63d6b869758ad127bafa236f011d72113e173f"
+        },
+        {
+          "file": "ar-mobile-light/account-dashboard.png",
+          "sha256": "cad132cdca89204e83cf35f336c07e69ac260dce556b9a0c689bd41e51031649"
+        },
+        {
+          "file": "ar-mobile-light/account-requests.png",
+          "sha256": "eda4de6b9ba87b0843b04b6848053f16f458e9e604a499f335df44d81367b4a2"
+        },
+        {
+          "file": "ar-mobile-light/account-requests-tab-1.png",
+          "sha256": "eda4de6b9ba87b0843b04b6848053f16f458e9e604a499f335df44d81367b4a2"
+        },
+        {
+          "file": "ar-mobile-light/account-requests-tab-2.png",
+          "sha256": "c7499dd844ee08cdcd36583e3334fa6de8fa99185654651453d78bdec29be81e"
+        },
+        {
+          "file": "ar-mobile-light/account-requests-tab-3.png",
+          "sha256": "0c16338b66ccc30239053b5397292a67bb7502d94dd392155269e1dead718026"
+        },
+        {
+          "file": "ar-mobile-light/account-requests-tab-4.png",
+          "sha256": "3c5f33ce8bf8bc99af721d0ab3ae25108d474f44a7ef30f7d9c734a63b085e19"
+        },
+        {
+          "file": "ar-mobile-light/account-requests-tab-5.png",
+          "sha256": "659c32fc810205766817816aa4652801fc37e32b2b4eca3c8d19346da6dd60e0"
+        },
+        {
+          "file": "ar-mobile-light/account-requests-tab-6.png",
+          "sha256": "8f870abe2ae6480df5d6b90327d91ad3104a72e93e590aa46ea9a2fbe0f8ad4c"
+        },
+        {
+          "file": "ar-mobile-light/account-requests-tab-7.png",
+          "sha256": "2768b8f6415ce286e5fcc4d8bf6409dfbe0d091b34ceab3b0add30241d59a1bb"
+        },
+        {
+          "file": "ar-mobile-light/account-requests-tab-8.png",
+          "sha256": "bf46b90207a253043dbbb36177c3fcd6553665d2e169644f41e46b8bcc3288b5"
+        },
+        {
+          "file": "ar-mobile-light/account-requests-tab-9.png",
+          "sha256": "88db69e186bdf63bb9312e18c9470f3a447eba497de6c5bd01822723e6a41fc3"
+        },
+        {
+          "file": "ar-mobile-light/account-requests-new.png",
+          "sha256": "9936452873399ca54411f1f7405a824cc30d22e63a79b45857769a5b79a5b442"
+        },
+        {
+          "file": "ar-mobile-light/account-inquiries.png",
+          "sha256": "8937f4393e907d2b1196514564fad69948b4018da537518c4eb70c62cd6b62f2"
+        },
+        {
+          "file": "ar-mobile-light/account-inquiries-tab-1.png",
+          "sha256": "8937f4393e907d2b1196514564fad69948b4018da537518c4eb70c62cd6b62f2"
+        },
+        {
+          "file": "ar-mobile-light/account-inquiries-tab-2.png",
+          "sha256": "4fbede4e6badca99b44093ceb7795c50af433d9616e17afe97da86a032d98699"
+        },
+        {
+          "file": "ar-mobile-light/account-inquiries-tab-3.png",
+          "sha256": "d794b098030ebd91cbc0cdfd91cd20c9d0a14fbbb8d8b7543d84e2fbfe264b99"
+        },
+        {
+          "file": "ar-mobile-light/account-inquiries-tab-4.png",
+          "sha256": "12c45ffd8215415e8443cc2041dda7e610b1dd89323cf5cbedc4275cd00672c1"
+        },
+        {
+          "file": "ar-mobile-light/account-inquiries-tab-5.png",
+          "sha256": "4128f2ccaeba31d28a358a7ae1f8237e73b8fd7bb1aa5ed8e3993167d408a730"
+        },
+        {
+          "file": "ar-mobile-light/account-inquiries-tab-6.png",
+          "sha256": "dffbeae4010b9a9aacb06b8a84d17aabbba5194a9a2f173c9bdf5b08184179cf"
+        },
+        {
+          "file": "ar-mobile-light/account-inquiries-tab-7.png",
+          "sha256": "d5e707ba626ba9028c536785d16e32da9c2ab1afd1697e29166b3b5b809b0540"
+        },
+        {
+          "file": "ar-mobile-light/account-profile.png",
+          "sha256": "df7a1eb5d06edae4506ea6b7d2da75226d44a1912d51cfa6eeb82786492fe482"
+        },
+        {
+          "file": "ar-mobile-light/account-security.png",
+          "sha256": "274b8a85dfbe03f745dd78b2bc1606f90c14a905bb49317ca1fb140b8d363dd0"
+        },
+        {
+          "file": "ar-mobile-light/account-notifications.png",
+          "sha256": "d1d2c2d3a22d414d89869296f1f9bc6f1a0a40526da163f10d860fb6f89635a6"
+        },
+        {
+          "file": "ar-mobile-light/account-request-detail.png",
+          "sha256": "73f84f10bf115e6ca6017ab7fda54e035e1558c071283e0362fa70de10d6c111"
+        },
+        {
+          "file": "ar-mobile-light/account-inquiry-detail.png",
+          "sha256": "6fb7d7885cdf3099b6876e953599b2239ce44c992a7e9b37356dd4c393e8cb18"
+        },
+        {
+          "file": "ar-mobile-light/public-home.png",
+          "sha256": "f150259e8dcf449c3b7c6a6e1613a590c20b98b411fa8662ae2847c1b1bf523f"
+        },
+        {
+          "file": "ar-mobile-light/public-about.png",
+          "sha256": "873f76aba212045b50f9bf5e1d5b8125bcb635b076dde94fee9ef641dd2ce72f"
+        },
+        {
+          "file": "ar-mobile-light/public-services.png",
+          "sha256": "985db316c69fb8143a335f19e42bb15091ea83697948d085e35e53736a63af84"
+        },
+        {
+          "file": "ar-mobile-light/public-works.png",
+          "sha256": "773ea98fa7253eba3d32f835a775acad23866469500abb4a741775379e6d98ea"
+        },
+        {
+          "file": "ar-mobile-light/public-process.png",
+          "sha256": "8b603920209ab768180416a42e2c2f14778dbe47a7eb4b83700bb54e9c7896dd"
+        },
+        {
+          "file": "ar-mobile-light/public-faq.png",
+          "sha256": "7ffc214e26663db4f8af989067d554a43045a05fbe61d06f4fb539518fbdbaed"
+        },
+        {
+          "file": "ar-mobile-light/public-contact.png",
+          "sha256": "0122fdd0404213be15441065f96f6841532f5c53838802fd4cf2d1b5a961c9d9"
+        },
+        {
+          "file": "ar-mobile-light/public-track.png",
+          "sha256": "e5c6ddaf51d26b46421cb35b0eaa1d9982ef8815bfae6b681b605eec9bbdb118"
+        },
+        {
+          "file": "ar-mobile-light/published-surfaces.png",
+          "sha256": "8848ea44c9946709c0b9e7d168562c6038590461ee897f9b3a0fa10dddcddc13"
+        },
+        {
+          "file": "ar-mobile-light/published-tablet-surfaces.png",
+          "sha256": "102f703219feef6b8ee6467e9f1998356bfe3509252e420bdb2fdec39540dd32"
+        },
+        {
+          "file": "ar-mobile-light/published-all-block-types.png",
+          "sha256": "b99e13ff441b7198807033324458bd7f7e8f3af20852b414814601e7df980f55"
+        },
+        {
+          "file": "ar-mobile-light/not-found-client-navigation.png",
+          "sha256": "79b8f2cfea051d647f913e2bd7f6f33fedadc8e36e0621fab21cbfb408d6f710"
+        },
+        {
+          "file": "ar-mobile-light/auth-login.png",
+          "sha256": "86769d982687bb1dec2084bfed2e12da4cc4e9e62b6901340dcdb4db9039b6d3"
+        },
+        {
+          "file": "ar-mobile-light/auth-register.png",
+          "sha256": "57fa45d6e9b09310294ebea3ab82dbfeed3d010b0c2908798de724a52c098ef3"
+        },
+        {
+          "file": "ar-mobile-light/auth-forgot-password.png",
+          "sha256": "2b02f9cf6ffe2462f53dbb7fa4de5cbf16feb2c15d7e0d8846ad65d035981a3c"
+        },
+        {
+          "file": "ar-mobile-light/auth-reset-password.png",
+          "sha256": "b26743080c4eff3d56abfdf60778f204f9382544cb0e6265b285ee99050c36d0"
+        },
+        {
+          "file": "ar-mobile-light/auth-invite.png",
+          "sha256": "0f6cbb9738145939f1b6c40f015d314b0af42cac3472bb677059fc8515e2c8af"
+        },
+        {
+          "file": "ar-mobile-light/auth-verified.png",
+          "sha256": "9a50247a277b97f3e0dc9cf53d785a79e338bdf0e75ec0c43550239fa364955f"
+        },
+        {
+          "file": "ar-mobile-light/not-found.png",
+          "sha256": "79b8f2cfea051d647f913e2bd7f6f33fedadc8e36e0621fab21cbfb408d6f710"
+        }
+      ]
+    },
+    {
+      "sourceRevision": "e36746c165df9aba3148df3d9d17ff13c9d4094f",
+      "locale": "ar",
+      "mode": "dark",
+      "viewport": "mobile",
+      "visited": [
+        "admin-dashboard",
+        "admin-users",
+        "admin-roles",
+        "admin-permissions",
+        "admin-invitations",
+        "admin-requests",
+        "admin-inquiries",
+        "admin-notifications",
+        "admin-pages",
+        "admin-media",
+        "admin-menus",
+        "admin-menus-tab-1",
+        "admin-menus-tab-2",
+        "admin-workflows",
+        "admin-settings",
+        "admin-diagnostics",
+        "admin-audit",
+        "admin-outbox",
+        "settings-identity",
+        "settings-appearance",
+        "settings-contact",
+        "settings-sharing",
+        "settings-announcement",
+        "settings-tracking",
+        "audit-events",
+        "audit-reports",
+        "audit-reviews",
+        "audit-alerts",
+        "audit-rules",
+        "audit-health",
+        "workflows-workflows",
+        "workflows-teams",
+        "workflows-business-hours",
+        "workflows-transfer-conversations",
+        "admin-user-detail",
+        "admin-request-detail",
+        "admin-request-detail-tab-1",
+        "admin-request-detail-tab-2",
+        "admin-inquiry-detail",
+        "admin-inquiry-detail-tab-1",
+        "admin-inquiry-detail-tab-2",
+        "editor",
+        "editor-device-tablet",
+        "editor-device-mobile",
+        "editor-device-desktop",
+        "editor-language-en",
+        "editor-language-ar",
+        "editor-library-tab-1",
+        "editor-library-tab-2",
+        "editor-properties-tab-1",
+        "editor-properties-tab-2",
+        "editor-versions-tab-1",
+        "editor-versions-tab-2",
+        "editor-templates-tab-1",
+        "editor-templates-tab-2",
+        "editor-templates-tab-3",
+        "editor-preview",
+        "preview-device-tablet",
+        "preview-device-mobile",
+        "preview-device-desktop",
+        "account-dashboard",
+        "account-requests",
+        "account-requests-tab-1",
+        "account-requests-tab-2",
+        "account-requests-tab-3",
+        "account-requests-tab-4",
+        "account-requests-tab-5",
+        "account-requests-tab-6",
+        "account-requests-tab-7",
+        "account-requests-tab-8",
+        "account-requests-tab-9",
+        "account-requests-new",
+        "account-inquiries",
+        "account-inquiries-tab-1",
+        "account-inquiries-tab-2",
+        "account-inquiries-tab-3",
+        "account-inquiries-tab-4",
+        "account-inquiries-tab-5",
+        "account-inquiries-tab-6",
+        "account-inquiries-tab-7",
+        "account-profile",
+        "account-security",
+        "account-notifications",
+        "account-request-detail",
+        "account-inquiry-detail",
+        "public-home",
+        "public-about",
+        "public-services",
+        "public-works",
+        "public-process",
+        "public-faq",
+        "public-contact",
+        "public-track",
+        "published-surfaces",
+        "published-tablet-surfaces",
+        "published-all-block-types",
+        "not-found-client-navigation",
+        "auth-login",
+        "auth-register",
+        "auth-forgot-password",
+        "auth-reset-password",
+        "auth-invite",
+        "auth-verified",
+        "not-found"
+      ],
+      "errors": [],
+      "assertionErrors": [],
+      "blockTypes": [
+        "hero",
+        "servicesGrid",
+        "featureGrid",
+        "worksShowcase",
+        "processSteps",
+        "faqSection",
+        "ctaSection",
+        "pageHeader",
+        "richText",
+        "visionMission",
+        "numberedValues",
+        "numberedList",
+        "navCtaBanner",
+        "servicesDetail",
+        "worksFull",
+        "processFull",
+        "requestForm",
+        "contactInfo",
+        "heading",
+        "text",
+        "image",
+        "gallery",
+        "buttonLink",
+        "columns",
+        "simpleTable",
+        "divider",
+        "spacer",
+        "section",
+        "container",
+        "row",
+        "column"
+      ],
+      "screenshots": [
+        {
+          "file": "ar-mobile-dark/admin-dashboard.png",
+          "sha256": "6c76aa5953dd0f2c8d66ae2a5c305f32f3048161af083a73ec07849c7c321ce3"
+        },
+        {
+          "file": "ar-mobile-dark/admin-users.png",
+          "sha256": "a1516b0f113748620323c345b1ff363fd44188091a36a9bb91b034f664ef5cce"
+        },
+        {
+          "file": "ar-mobile-dark/admin-roles.png",
+          "sha256": "34075f18866e9adacf2b3eaf1f95138ab97602938d4594ed352c739d6a8e42cb"
+        },
+        {
+          "file": "ar-mobile-dark/admin-permissions.png",
+          "sha256": "85aed0600e243294a11d0adf31bc08c15135dd34a50dffdcbe97deb19dace6b1"
+        },
+        {
+          "file": "ar-mobile-dark/admin-invitations.png",
+          "sha256": "38eca99b15fa069fd3f32de670e81885de6c81d93b613ebd9b20dca8f5522458"
+        },
+        {
+          "file": "ar-mobile-dark/admin-requests.png",
+          "sha256": "f54a19591667262cec073321c002b130fca2f31959616b09c8f27a4a6ff6eee7"
+        },
+        {
+          "file": "ar-mobile-dark/admin-inquiries.png",
+          "sha256": "a98727227221a0560c4f0da3b736dea4493d4af44d12ea451f082399c2f8aa12"
+        },
+        {
+          "file": "ar-mobile-dark/admin-notifications.png",
+          "sha256": "c48eee7e52fda4e029fa1f4ee0da0a48498d59ad6ed98c9d39d0b5dedc86e4e6"
+        },
+        {
+          "file": "ar-mobile-dark/admin-pages.png",
+          "sha256": "2bcc8cb5253157439c50500f94e455b81c79a686f6423fe8028a9a9a3a9c5865"
+        },
+        {
+          "file": "ar-mobile-dark/admin-media.png",
+          "sha256": "38eb74d23823c7a3a4cef9d6125a4fe37a6728004e73ee1c2324094cfdc58370"
+        },
+        {
+          "file": "ar-mobile-dark/admin-menus.png",
+          "sha256": "41124fea0762d89a86a5cf872e825587b146a97c61e283b2eb4b8bd338417453"
+        },
+        {
+          "file": "ar-mobile-dark/admin-menus-tab-1.png",
+          "sha256": "6bd42c234434835542f9566e60532c115db524dc44c5ee8b4af5636993f34a41"
+        },
+        {
+          "file": "ar-mobile-dark/admin-menus-tab-2.png",
+          "sha256": "4f58387b10469064edf4b797b8549e650c205cdf78cc0b68f046136f5b9b91fd"
+        },
+        {
+          "file": "ar-mobile-dark/admin-workflows.png",
+          "sha256": "87307336e4f03c4d30eb8144e2cb4a175b27b6ae6b3b377b9e6fb1a53755e589"
+        },
+        {
+          "file": "ar-mobile-dark/admin-settings.png",
+          "sha256": "35818e0c0fbcd02eebdf01aba9c35b11a00efaed9491d09fdce390d02d0ea03b"
+        },
+        {
+          "file": "ar-mobile-dark/admin-diagnostics.png",
+          "sha256": "a11f0dbe8fd736e18795111c44a562c15dd0a93f121e4625837905c5c0b92df3"
+        },
+        {
+          "file": "ar-mobile-dark/admin-audit.png",
+          "sha256": "def777773d5e901e7afbcd553b0edfec303a06b3432a41516ec29a08fefd606b"
+        },
+        {
+          "file": "ar-mobile-dark/admin-outbox.png",
+          "sha256": "4383c82c0306dc31013f20d0b1f7c1468db68a02a5f925ba26fe587cc19979d2"
+        },
+        {
+          "file": "ar-mobile-dark/settings-identity.png",
+          "sha256": "35818e0c0fbcd02eebdf01aba9c35b11a00efaed9491d09fdce390d02d0ea03b"
+        },
+        {
+          "file": "ar-mobile-dark/settings-appearance.png",
+          "sha256": "b73ed94085d9a6384207131d1c4254cd88422c6fb770ab4f47fb589b20e3a33e"
+        },
+        {
+          "file": "ar-mobile-dark/settings-contact.png",
+          "sha256": "9726f76d5eb7278e0787c8aab9291a9376eeb704478046b6779a87dbd24eda41"
+        },
+        {
+          "file": "ar-mobile-dark/settings-sharing.png",
+          "sha256": "361d37c2d7ff7fd72101bb05e50089aa9983a1cc877391975fbc75baaef8110f"
+        },
+        {
+          "file": "ar-mobile-dark/settings-announcement.png",
+          "sha256": "d147dcfa4ef1369d5365c367f85d297b123cf3b14deb661fefb1dd65505ceafd"
+        },
+        {
+          "file": "ar-mobile-dark/settings-tracking.png",
+          "sha256": "1241a74c152e51c7454d83a3ec8ca9f15a0517fe0f7e01b8f3e048119bbae73e"
+        },
+        {
+          "file": "ar-mobile-dark/audit-events.png",
+          "sha256": "271030b71b4ad3c20ab4eb811542878a1284efab76768ad5319adaff0a2e0bd8"
+        },
+        {
+          "file": "ar-mobile-dark/audit-reports.png",
+          "sha256": "053254151c0ada8f97bb8262b9e925927010e444321bac3f88b854e059edf396"
+        },
+        {
+          "file": "ar-mobile-dark/audit-reviews.png",
+          "sha256": "949596ab62fffbcfddb641d9ce092629372daf702f842e534b0fa902acbb2a51"
+        },
+        {
+          "file": "ar-mobile-dark/audit-alerts.png",
+          "sha256": "fcbc7b2b72ed71fa975c069d7be4ce7198edf514815f436b01ae748f931b4bac"
+        },
+        {
+          "file": "ar-mobile-dark/audit-rules.png",
+          "sha256": "e24af5af1111bf8e7f66abdfba2b67b0666827d477b0f24a4d7a32a99565f0ab"
+        },
+        {
+          "file": "ar-mobile-dark/audit-health.png",
+          "sha256": "d89a6bda4307affbd866aa27445e240811e1ccdf27724e3e22e1222fdfac0a1f"
+        },
+        {
+          "file": "ar-mobile-dark/workflows-workflows.png",
+          "sha256": "67911d9d66ff9070251f35154c0c23811fd2ff02b88e5941456a6ace5b37a89a"
+        },
+        {
+          "file": "ar-mobile-dark/workflows-teams.png",
+          "sha256": "cdf81bb5e70abf1fb97378cdda7b101ae3ed7419277e431cb47b6f7cd4b0dba6"
+        },
+        {
+          "file": "ar-mobile-dark/workflows-business-hours.png",
+          "sha256": "daf6f628a83b389dfe0c13c82d4d03017bda5278d2c938e8b21dbdae344b8290"
+        },
+        {
+          "file": "ar-mobile-dark/workflows-transfer-conversations.png",
+          "sha256": "9b60a8939a251ac37100f82c80b6aa63a3de0f83c73a66ecb664f8452441cbd4"
+        },
+        {
+          "file": "ar-mobile-dark/admin-user-detail.png",
+          "sha256": "ab027e18bf8a13f1210fc9443aae9d30df219e231c69211d1542350fd23ec6d4"
+        },
+        {
+          "file": "ar-mobile-dark/admin-request-detail.png",
+          "sha256": "3b533830d58e362cbcbdb6437ad9f388e9a02b2cf20833fddf416a0f726fa7f5"
+        },
+        {
+          "file": "ar-mobile-dark/admin-request-detail-tab-1.png",
+          "sha256": "b4fe0da713bc8a7bbd476076757917414b1e06c821347559dd31157ffb01d130"
+        },
+        {
+          "file": "ar-mobile-dark/admin-request-detail-tab-2.png",
+          "sha256": "1d9a62a86974d49ed6b92e3ac8be70bb1b6ee6aa7c68c245532f3a6a99711645"
+        },
+        {
+          "file": "ar-mobile-dark/admin-inquiry-detail.png",
+          "sha256": "26f889ea50e7d9116defadf9cd38cb9b6edafc8d118c3a8d5d10eb7ee095e612"
+        },
+        {
+          "file": "ar-mobile-dark/admin-inquiry-detail-tab-1.png",
+          "sha256": "bbe7a0a0ba69290ec2def115cf72fe3baffeec0a56425e04fbff4fc6a90a8f81"
+        },
+        {
+          "file": "ar-mobile-dark/admin-inquiry-detail-tab-2.png",
+          "sha256": "a18e498eeabc724632c36408531519329dc0d83667beb75e0cec7e80977e182f"
+        },
+        {
+          "file": "ar-mobile-dark/editor.png",
+          "sha256": "0cafedcca70a420c01459382d24318e0bfab3664b0fdc59457a0c41994b6a51b"
+        },
+        {
+          "file": "ar-mobile-dark/editor-device-tablet.png",
+          "sha256": "6e0a2ebce9e262d0aeb956fd8c8648f89d09a70fbbf2724d7d1f40ee2af96d12"
+        },
+        {
+          "file": "ar-mobile-dark/editor-device-mobile.png",
+          "sha256": "7dd716d48eb58753ca712129adfd96cbc91ebe0d0ced37562e39720c46deb203"
+        },
+        {
+          "file": "ar-mobile-dark/editor-device-desktop.png",
+          "sha256": "fe036be49bff8bff56b7f7d8cc0c6290a7d91c5e04173f60748427a4ada868e9"
+        },
+        {
+          "file": "ar-mobile-dark/editor-language-en.png",
+          "sha256": "71f66c30fb009b99adbaf2aaecc04af475947616b0f2cec2214361be2665f0ce"
+        },
+        {
+          "file": "ar-mobile-dark/editor-language-ar.png",
+          "sha256": "f5d99a9005aa0001de6de0e8b5df1928f30505c5f816b462d46002e92250bb66"
+        },
+        {
+          "file": "ar-mobile-dark/editor-library-tab-1.png",
+          "sha256": "b9498e1a37a9129ed030b36318bc8fe163a34772002d65f71bfefda9fa440349"
+        },
+        {
+          "file": "ar-mobile-dark/editor-library-tab-2.png",
+          "sha256": "cc52a6c95a64947f1703fc92b9295c7a16e1107a81d687f52ef952e692c0c472"
+        },
+        {
+          "file": "ar-mobile-dark/editor-properties-tab-1.png",
+          "sha256": "dac2604ed3c626533e729888a53ac177b08baf433fab1aaa92544e88f200fa40"
+        },
+        {
+          "file": "ar-mobile-dark/editor-properties-tab-2.png",
+          "sha256": "7236409ebe4b18bb6c002b61b4f5428a9427b514b6e5592d1e48002364debe3b"
+        },
+        {
+          "file": "ar-mobile-dark/editor-versions-tab-1.png",
+          "sha256": "76dc65fc88bc8efff4ae7d77a85459be7100c239531c99e6ff63bb9fa8d13f29"
+        },
+        {
+          "file": "ar-mobile-dark/editor-versions-tab-2.png",
+          "sha256": "2ff901fb0fe331fd4ef95783888ab5111be60792642d787a464340ae5449d122"
+        },
+        {
+          "file": "ar-mobile-dark/editor-templates-tab-1.png",
+          "sha256": "cf1e35ada23de02af98c6ab92f1aa43adb9296bdf05607e6be53b97f184c5df8"
+        },
+        {
+          "file": "ar-mobile-dark/editor-templates-tab-2.png",
+          "sha256": "33716cb9437c248c331685c4e511ec773d713a8bd7245fa15c72ea77e26daaf6"
+        },
+        {
+          "file": "ar-mobile-dark/editor-templates-tab-3.png",
+          "sha256": "e20a6011e09ab6ce35054dea529727f8a3143737683c2f9e4d2bd3b2309cea15"
+        },
+        {
+          "file": "ar-mobile-dark/editor-preview.png",
+          "sha256": "28554a6c785d57fe18469c8f8787d021ac7799cc57ba0423e988a3a9a09c483d"
+        },
+        {
+          "file": "ar-mobile-dark/preview-device-tablet.png",
+          "sha256": "b755403ff6ae757be596c7ac3c9d28281ca15dc56207ca750b30108e1aef00f5"
+        },
+        {
+          "file": "ar-mobile-dark/preview-device-mobile.png",
+          "sha256": "7b2846368fe64e28c9a689d4eb8523b7a6dc2ae16d2c6d25acdc2daf672c5061"
+        },
+        {
+          "file": "ar-mobile-dark/preview-device-desktop.png",
+          "sha256": "7c9b989165e3ed21f464b28048c1e6955ca27e8ab1a2871aaebe170fdaa0bc87"
+        },
+        {
+          "file": "ar-mobile-dark/account-dashboard.png",
+          "sha256": "e6faf4efcec5bd62d7a983e964f1622d341de41b5c1a25a72ff4d754243f164a"
+        },
+        {
+          "file": "ar-mobile-dark/account-requests.png",
+          "sha256": "23090b2dbac6e0d31c77805bda070c55aea817757e0bedd3e9e3a8f97643dc8b"
+        },
+        {
+          "file": "ar-mobile-dark/account-requests-tab-1.png",
+          "sha256": "23090b2dbac6e0d31c77805bda070c55aea817757e0bedd3e9e3a8f97643dc8b"
+        },
+        {
+          "file": "ar-mobile-dark/account-requests-tab-2.png",
+          "sha256": "a9f8ce095007709f2ccdef5eb569291bbc1e6e2e5b3df7040442a1ec3c2fbc01"
+        },
+        {
+          "file": "ar-mobile-dark/account-requests-tab-3.png",
+          "sha256": "a7718bb3de784522ce52ba2318096b779ddc9d582db30f6fa45fdbf4c4416ebc"
+        },
+        {
+          "file": "ar-mobile-dark/account-requests-tab-4.png",
+          "sha256": "9ab108e6629537d7d81f060bf920d525a3dab469450e5347ff2e5cf66d09e3a7"
+        },
+        {
+          "file": "ar-mobile-dark/account-requests-tab-5.png",
+          "sha256": "dad6a72bf6fc81e9a13acd5634a76b8268a0a6dfecdff2fab0c52c0bc3e58329"
+        },
+        {
+          "file": "ar-mobile-dark/account-requests-tab-6.png",
+          "sha256": "71e44f33bd336d942d2a76c3c23aa2a95f0b00f25d17ccc2f7bbd0e5c0b42bf2"
+        },
+        {
+          "file": "ar-mobile-dark/account-requests-tab-7.png",
+          "sha256": "183a3bca54eec014325d0703b9556e544e13ab7e55fe0cda3ef52c2a71f8cdbe"
+        },
+        {
+          "file": "ar-mobile-dark/account-requests-tab-8.png",
+          "sha256": "552138020b2aaf5539a056147918ffe6c9fe8ec3a4e65a08572770a9871bd920"
+        },
+        {
+          "file": "ar-mobile-dark/account-requests-tab-9.png",
+          "sha256": "e1282ee2384b62a3aa535c6b1dd6b99e754cd3194449586e2c4dc9a4ac87bc4e"
+        },
+        {
+          "file": "ar-mobile-dark/account-requests-new.png",
+          "sha256": "95317bb8b42f1b210f73f49b165e760746144ce007b0881884128e3ba00d9870"
+        },
+        {
+          "file": "ar-mobile-dark/account-inquiries.png",
+          "sha256": "295e1eeb4abffa252a249219852ae7724b803134a4e62941bd58057b434c28b8"
+        },
+        {
+          "file": "ar-mobile-dark/account-inquiries-tab-1.png",
+          "sha256": "295e1eeb4abffa252a249219852ae7724b803134a4e62941bd58057b434c28b8"
+        },
+        {
+          "file": "ar-mobile-dark/account-inquiries-tab-2.png",
+          "sha256": "407480c05b21219be01b0442256709300eb329ca17741a377b67861514628b7b"
+        },
+        {
+          "file": "ar-mobile-dark/account-inquiries-tab-3.png",
+          "sha256": "f7f8194010bc2e34372eaa205144a189d5fd9caecf8e7f2f207236f674718d53"
+        },
+        {
+          "file": "ar-mobile-dark/account-inquiries-tab-4.png",
+          "sha256": "eebb33f64523f9b2df84fc1f6953e29d6d0638a8f79a2ca71093f7bc188d630e"
+        },
+        {
+          "file": "ar-mobile-dark/account-inquiries-tab-5.png",
+          "sha256": "c76a820930ddac2876090233ef4ff202caa93ace00b96c8e45571ffae26a4818"
+        },
+        {
+          "file": "ar-mobile-dark/account-inquiries-tab-6.png",
+          "sha256": "9cf345984ed97ca519b66b34e7a1e86d10a4c817d6c885592e791b271d5a1227"
+        },
+        {
+          "file": "ar-mobile-dark/account-inquiries-tab-7.png",
+          "sha256": "55d06f990b9db0b9375b9ae8ccf7f976a4c299cf2e77b9698059560c7f095d2f"
+        },
+        {
+          "file": "ar-mobile-dark/account-profile.png",
+          "sha256": "2b1504e9c0275561616cfe3f042fa2b1a85f4c8b116fe37de846301a917b1a71"
+        },
+        {
+          "file": "ar-mobile-dark/account-security.png",
+          "sha256": "00366268433e84b85b2f1312d996b9474ba2c1b8cccbe6489e862faa69f89d63"
+        },
+        {
+          "file": "ar-mobile-dark/account-notifications.png",
+          "sha256": "a1f24a494337fc5852f25ce90e619c7b47885e3c78afd869062f0f07a275c621"
+        },
+        {
+          "file": "ar-mobile-dark/account-request-detail.png",
+          "sha256": "5e6221cabc5f8e714e9b614f50da62200117a6a990688dfc66867d05e1d61172"
+        },
+        {
+          "file": "ar-mobile-dark/account-inquiry-detail.png",
+          "sha256": "fb293178825d1690262a1f01656f590bdbd0ac902af145b118ab7f1abc2b1e11"
+        },
+        {
+          "file": "ar-mobile-dark/public-home.png",
+          "sha256": "59713b09ed00b5881907eb1121a291858a6da5b3b0d1175bc435bb7579110b4c"
+        },
+        {
+          "file": "ar-mobile-dark/public-about.png",
+          "sha256": "8d406a378bcbcf072e6622e88268ce154caa49943e0e68b6a90b5597837b8aef"
+        },
+        {
+          "file": "ar-mobile-dark/public-services.png",
+          "sha256": "2ebf76776492d8d20e9f71317b311b1ce1fcb025d891bf47e517250dc7ec1513"
+        },
+        {
+          "file": "ar-mobile-dark/public-works.png",
+          "sha256": "e87b7e6b2e4229e381fad39e26b703295c900254a9dfc98d8f19399d4fbfdce4"
+        },
+        {
+          "file": "ar-mobile-dark/public-process.png",
+          "sha256": "97d31238080f04e5d59712a8420ff2627382b5677a755c0582ce31123378ffcc"
+        },
+        {
+          "file": "ar-mobile-dark/public-faq.png",
+          "sha256": "ad4b671d3849ba3f15b1755f730d5877dde4ae2e30b02d0b4b3cce754203d169"
+        },
+        {
+          "file": "ar-mobile-dark/public-contact.png",
+          "sha256": "aa40478b315be1cf8709e405f3d11ce4a02331dceaac5c5a0bbe18e6b0ced7fb"
+        },
+        {
+          "file": "ar-mobile-dark/public-track.png",
+          "sha256": "eaf53c9d305d63f2121fc2e829404f9f26bb0207591991f5ca6ca483d25cc446"
+        },
+        {
+          "file": "ar-mobile-dark/published-surfaces.png",
+          "sha256": "d86a2b505f31163d3af80401ccaf4434e7476557f0f2aa427bae5d29cc1896fc"
+        },
+        {
+          "file": "ar-mobile-dark/published-tablet-surfaces.png",
+          "sha256": "d5df089db2718d8cae3feb06aea9f6400e8d5ec2915ace8e1877173ebcfca731"
+        },
+        {
+          "file": "ar-mobile-dark/published-all-block-types.png",
+          "sha256": "3e9f46b9706b2127e49ba40d34c2c2d940fb37f92eb46dd8a78c81d24a3bd7c6"
+        },
+        {
+          "file": "ar-mobile-dark/not-found-client-navigation.png",
+          "sha256": "2103974667095e369b2f588e60d183fe23fb4a059c2c707869dc8631feb2d5c0"
+        },
+        {
+          "file": "ar-mobile-dark/auth-login.png",
+          "sha256": "82824ad4a6c8bc48d95618d7b5c6a5c7ef068ca1a2612438298e9fca469d9276"
+        },
+        {
+          "file": "ar-mobile-dark/auth-register.png",
+          "sha256": "5f42a1523a262a880f17533e7973cba6f2e4d43362093bff89ae9007b9989e10"
+        },
+        {
+          "file": "ar-mobile-dark/auth-forgot-password.png",
+          "sha256": "88db30407a3ae206ab718d9d9ba8339601a330e9f4542e7e7783d6bee14441d8"
+        },
+        {
+          "file": "ar-mobile-dark/auth-reset-password.png",
+          "sha256": "67250b85ab5d0d1314a74a1b4a869ddaa7cbccbeca2442e5375329ccc3f313ad"
+        },
+        {
+          "file": "ar-mobile-dark/auth-invite.png",
+          "sha256": "419518823c00b506f2bced91a3148ff19ff557e4ca320ab516f73fa7df7aa801"
+        },
+        {
+          "file": "ar-mobile-dark/auth-verified.png",
+          "sha256": "27a6fe5b9565418005fc133fc0771c7710e29f8b1b7722bc554d6f064641d944"
+        },
+        {
+          "file": "ar-mobile-dark/not-found.png",
+          "sha256": "2103974667095e369b2f588e60d183fe23fb4a059c2c707869dc8631feb2d5c0"
+        }
+      ]
+    },
+    {
+      "sourceRevision": "e36746c165df9aba3148df3d9d17ff13c9d4094f",
+      "locale": "en",
+      "mode": "light",
+      "viewport": "desktop",
+      "visited": [
+        "admin-dashboard",
+        "admin-users",
+        "admin-roles",
+        "admin-permissions",
+        "admin-invitations",
+        "admin-requests",
+        "admin-inquiries",
+        "admin-notifications",
+        "admin-pages",
+        "admin-media",
+        "admin-menus",
+        "admin-menus-tab-1",
+        "admin-menus-tab-2",
+        "admin-workflows",
+        "admin-settings",
+        "admin-diagnostics",
+        "admin-audit",
+        "admin-outbox",
+        "settings-identity",
+        "settings-appearance",
+        "settings-contact",
+        "settings-sharing",
+        "settings-announcement",
+        "settings-tracking",
+        "audit-events",
+        "audit-reports",
+        "audit-reviews",
+        "audit-alerts",
+        "audit-rules",
+        "audit-health",
+        "workflows-workflows",
+        "workflows-teams",
+        "workflows-business-hours",
+        "workflows-transfer-conversations",
+        "admin-user-detail",
+        "admin-request-detail",
+        "admin-request-detail-tab-1",
+        "admin-request-detail-tab-2",
+        "admin-inquiry-detail",
+        "admin-inquiry-detail-tab-1",
+        "admin-inquiry-detail-tab-2",
+        "editor",
+        "editor-device-tablet",
+        "editor-device-mobile",
+        "editor-device-desktop",
+        "editor-language-en",
+        "editor-language-ar",
+        "editor-library-tab-1",
+        "editor-library-tab-2",
+        "editor-properties-tab-1",
+        "editor-properties-tab-2",
+        "editor-versions-tab-1",
+        "editor-versions-tab-2",
+        "editor-templates-tab-1",
+        "editor-templates-tab-2",
+        "editor-templates-tab-3",
+        "editor-preview",
+        "preview-device-tablet",
+        "preview-device-mobile",
+        "preview-device-desktop",
+        "account-dashboard",
+        "account-requests",
+        "account-requests-tab-1",
+        "account-requests-tab-2",
+        "account-requests-tab-3",
+        "account-requests-tab-4",
+        "account-requests-tab-5",
+        "account-requests-tab-6",
+        "account-requests-tab-7",
+        "account-requests-tab-8",
+        "account-requests-tab-9",
+        "account-requests-new",
+        "account-inquiries",
+        "account-inquiries-tab-1",
+        "account-inquiries-tab-2",
+        "account-inquiries-tab-3",
+        "account-inquiries-tab-4",
+        "account-inquiries-tab-5",
+        "account-inquiries-tab-6",
+        "account-inquiries-tab-7",
+        "account-profile",
+        "account-security",
+        "account-notifications",
+        "account-request-detail",
+        "account-inquiry-detail",
+        "public-home",
+        "public-about",
+        "public-services",
+        "public-works",
+        "public-process",
+        "public-faq",
+        "public-contact",
+        "public-track",
+        "published-surfaces",
+        "published-tablet-surfaces",
+        "published-all-block-types",
+        "not-found-client-navigation",
+        "auth-login",
+        "auth-register",
+        "auth-forgot-password",
+        "auth-reset-password",
+        "auth-invite",
+        "auth-verified",
+        "not-found"
+      ],
+      "errors": [],
+      "assertionErrors": [],
+      "blockTypes": [
+        "hero",
+        "servicesGrid",
+        "featureGrid",
+        "worksShowcase",
+        "processSteps",
+        "faqSection",
+        "ctaSection",
+        "pageHeader",
+        "richText",
+        "visionMission",
+        "numberedValues",
+        "numberedList",
+        "navCtaBanner",
+        "servicesDetail",
+        "worksFull",
+        "processFull",
+        "requestForm",
+        "contactInfo",
+        "heading",
+        "text",
+        "image",
+        "gallery",
+        "buttonLink",
+        "columns",
+        "simpleTable",
+        "divider",
+        "spacer",
+        "section",
+        "container",
+        "row",
+        "column"
+      ],
+      "screenshots": [
+        {
+          "file": "en-desktop-light/admin-dashboard.png",
+          "sha256": "1c50302afcb14aab38d4d668f86735038aa1ddc1f26bc9cb64ae104221341a4f"
+        },
+        {
+          "file": "en-desktop-light/admin-users.png",
+          "sha256": "306ef44a92b2a319ceb43df63e928d0b4fffb39b8e761da729227c3b2d46fe87"
+        },
+        {
+          "file": "en-desktop-light/admin-roles.png",
+          "sha256": "c41cf2c2e46fae2a6e7a2b163686cc63b2f3f90c8ecf481329f2e3ca4ea1129e"
+        },
+        {
+          "file": "en-desktop-light/admin-permissions.png",
+          "sha256": "3050832b0512ad15a9bb24176d3f44aa1811e5e0cf708243600bcfc3cc18c635"
+        },
+        {
+          "file": "en-desktop-light/admin-invitations.png",
+          "sha256": "2356a18b1a62092317237156e82fbae38777b43e05a803ad280c3c20ea2a3385"
+        },
+        {
+          "file": "en-desktop-light/admin-requests.png",
+          "sha256": "3e1b4c08c3abe30337c80d2f7dabf672c9eeb6163fd2bf229dac84a71aadf9e3"
+        },
+        {
+          "file": "en-desktop-light/admin-inquiries.png",
+          "sha256": "7837b5e896925c2ccf953e85898e878514692bdc41049d6b3ca97f5f75b6bf67"
+        },
+        {
+          "file": "en-desktop-light/admin-notifications.png",
+          "sha256": "54278294a00d42c9d1c653c4436d5737ccb9dfab180f609739e2c3fc5072c5e1"
+        },
+        {
+          "file": "en-desktop-light/admin-pages.png",
+          "sha256": "c1fe114b890fd0dad6889145a1baca524352f9a501cd10ab2089fdc1363cc4b6"
+        },
+        {
+          "file": "en-desktop-light/admin-media.png",
+          "sha256": "563b20486e5f66586fe60b9510cc307f10172a1f302d0063cc188160068eaaa1"
+        },
+        {
+          "file": "en-desktop-light/admin-menus.png",
+          "sha256": "aaefa5eebf7417e6bc03dce270327a375e37511cbc8d8aea94aeabdc47f0882c"
+        },
+        {
+          "file": "en-desktop-light/admin-menus-tab-1.png",
+          "sha256": "7fa6c7f1702b0c495065e3e6fa0b36e0614cb2eb6df38519975280d4086f2442"
+        },
+        {
+          "file": "en-desktop-light/admin-menus-tab-2.png",
+          "sha256": "5df10f2320d000e6869b198f760d7f5700e128eec17ea3c02849ef79868fb35b"
+        },
+        {
+          "file": "en-desktop-light/admin-workflows.png",
+          "sha256": "5ff2c1567cae1e5a91b7770a3cd24718dd5b3efd90ce651afd9b387a22f3e2e7"
+        },
+        {
+          "file": "en-desktop-light/admin-settings.png",
+          "sha256": "ce0b8e576d8475c2c47cc73ced8e8ee11598a26d6b7d8fa41a6eced44de15fa9"
+        },
+        {
+          "file": "en-desktop-light/admin-diagnostics.png",
+          "sha256": "c3edf46c666e9701c0a6f8f0d11a0427337105ecd125c431a6ae7b26da9fc298"
+        },
+        {
+          "file": "en-desktop-light/admin-audit.png",
+          "sha256": "103ddc08451351b828cfc0b725658acd7e96040304b992d4425c731f76e2140c"
+        },
+        {
+          "file": "en-desktop-light/admin-outbox.png",
+          "sha256": "f2848a1ca772112d65652dbe571127768bb2a0e60792ca0b87224fd8259575a6"
+        },
+        {
+          "file": "en-desktop-light/settings-identity.png",
+          "sha256": "ce0b8e576d8475c2c47cc73ced8e8ee11598a26d6b7d8fa41a6eced44de15fa9"
+        },
+        {
+          "file": "en-desktop-light/settings-appearance.png",
+          "sha256": "ed1e8e91e35d9157c66ffc455c7792a45fef47ab245979876ef56320b6152e47"
+        },
+        {
+          "file": "en-desktop-light/settings-contact.png",
+          "sha256": "af50e8a9c3e3f6779d1d9f13481ccd15a048a89c993ed7bff389d5f4c06e9fc2"
+        },
+        {
+          "file": "en-desktop-light/settings-sharing.png",
+          "sha256": "21f8eefeda7de8aefe3509b5d8e3e016d5404f951ecae692ca2c3056d77176f8"
+        },
+        {
+          "file": "en-desktop-light/settings-announcement.png",
+          "sha256": "16114991b090e345050b93b079f8c683e88e05b11167891c165b0cfc145b3fe1"
+        },
+        {
+          "file": "en-desktop-light/settings-tracking.png",
+          "sha256": "0b0ac276d43a21529f9ff14e0128d5264d5e5fb788589acc73133cd0ea3b7bf9"
+        },
+        {
+          "file": "en-desktop-light/audit-events.png",
+          "sha256": "0a3cca0e4c1460f20d5dbe3f96761671ed1170f8a443bb9a5687662f6844739b"
+        },
+        {
+          "file": "en-desktop-light/audit-reports.png",
+          "sha256": "730c2b9f662128818fb3297e469865a849363dddcefbf92d32ef76bcf3eec54a"
+        },
+        {
+          "file": "en-desktop-light/audit-reviews.png",
+          "sha256": "49b23ba9510fef68e4d54be2eeddf3b997fe8ebb654866dda3e25e8cf2a46564"
+        },
+        {
+          "file": "en-desktop-light/audit-alerts.png",
+          "sha256": "edadfc52928888f9200e887cf0e6044abbcdc4a17a516c9b27e1b116d6677e9c"
+        },
+        {
+          "file": "en-desktop-light/audit-rules.png",
+          "sha256": "b2237e7db1f707f5574849a94c28709d6657263b2560989d6b3c9f09924e9311"
+        },
+        {
+          "file": "en-desktop-light/audit-health.png",
+          "sha256": "eca55592930a8e99c8ee35bccbfbbac1debade43bfef32e47ebc1f7c4c226b8e"
+        },
+        {
+          "file": "en-desktop-light/workflows-workflows.png",
+          "sha256": "32d576b6e720591348ceff19571b29f0a6bac0a301de0845062ac945ba645f79"
+        },
+        {
+          "file": "en-desktop-light/workflows-teams.png",
+          "sha256": "8fafe221875416eb7e38f1f4f6596706191eb3860f080e81453e2d86fd6ec280"
+        },
+        {
+          "file": "en-desktop-light/workflows-business-hours.png",
+          "sha256": "0c5891882930311da56a148fa4f5b215b74cb177caf2de78f1e44a98034dbd05"
+        },
+        {
+          "file": "en-desktop-light/workflows-transfer-conversations.png",
+          "sha256": "b0132aa2d46069ae97964ae3cf63928eb8416ced310a45d5ba3b60ab5b4026fa"
+        },
+        {
+          "file": "en-desktop-light/admin-user-detail.png",
+          "sha256": "6c192423157cc4ef93209bc21c9a1f76ea5474114d56f72f3dcb519fc22e9566"
+        },
+        {
+          "file": "en-desktop-light/admin-request-detail.png",
+          "sha256": "48c109f7753968ad44647c7343ca0fd2a700d9f92a4e1187f4d0e421b4e98a39"
+        },
+        {
+          "file": "en-desktop-light/admin-request-detail-tab-1.png",
+          "sha256": "6ce1401af832fc9c5968f48201fdf17be6971b42fc2b9363eab45d3da9983058"
+        },
+        {
+          "file": "en-desktop-light/admin-request-detail-tab-2.png",
+          "sha256": "351856e1f6288258555efe22035bf849636eba67e4ddb1a89a1042a4f8ebe1ef"
+        },
+        {
+          "file": "en-desktop-light/admin-inquiry-detail.png",
+          "sha256": "76a72de21f5cda37f5e1ffc23f586ece79183c52eacb7207c3df44b39f2acae7"
+        },
+        {
+          "file": "en-desktop-light/admin-inquiry-detail-tab-1.png",
+          "sha256": "6ed2e131a835d3bf51976dd74662c82145ade93855c344d2905f9f458d05de14"
+        },
+        {
+          "file": "en-desktop-light/admin-inquiry-detail-tab-2.png",
+          "sha256": "b581b0e8aacba01d181ecdecad6b0d78f57823ba8e37b72bdf1650aaa5f6d286"
+        },
+        {
+          "file": "en-desktop-light/editor.png",
+          "sha256": "07e2a5c8e2fe599c9be437dfdb6eb1497e795e2bf213a0cc5703c3ee15905da1"
+        },
+        {
+          "file": "en-desktop-light/editor-device-tablet.png",
+          "sha256": "bb78f14631f4186f0caf64d83cbfc9de07ca1d6388109b8101f7eb0082e3eb48"
+        },
+        {
+          "file": "en-desktop-light/editor-device-mobile.png",
+          "sha256": "856265998bc0be83dae5d13b17b69bb2494fea44374710ba8862148d30b924cb"
+        },
+        {
+          "file": "en-desktop-light/editor-device-desktop.png",
+          "sha256": "4566ab034449aa086e6ca42e2f46ce8931f68501c46ae10f45bff46cd1fe1fe7"
+        },
+        {
+          "file": "en-desktop-light/editor-language-en.png",
+          "sha256": "c5b7df2ab0d6a715f808c849f9b7d01d86510f97fc44561e057906316e9226e3"
+        },
+        {
+          "file": "en-desktop-light/editor-language-ar.png",
+          "sha256": "4c14249909831743c444e5c257cca991454ceb008ac19ce0bc9e3db509bccdab"
+        },
+        {
+          "file": "en-desktop-light/editor-library-tab-1.png",
+          "sha256": "68841975fae2caf0e011db21c4f5ef7ee971b4adeec4b24b776cb490fb5b90da"
+        },
+        {
+          "file": "en-desktop-light/editor-library-tab-2.png",
+          "sha256": "cc4bb0421ac9197f6f63ce0a56ef5fdbc4f552ee3ca629c7c8020d1a31ebc770"
+        },
+        {
+          "file": "en-desktop-light/editor-properties-tab-1.png",
+          "sha256": "4b0fdc835ce88d37c346102e41b2a01e05aa6b5e09194e8adc812b8e9c426e4e"
+        },
+        {
+          "file": "en-desktop-light/editor-properties-tab-2.png",
+          "sha256": "18180fd5f3605ba60ee4a399f77ffd26efc473fa940d17edb5f47cc795b49c6c"
+        },
+        {
+          "file": "en-desktop-light/editor-versions-tab-1.png",
+          "sha256": "bc90bc681f56c037e540e7f630988be41bb8429a6fffdcae599dc3607ceebfd0"
+        },
+        {
+          "file": "en-desktop-light/editor-versions-tab-2.png",
+          "sha256": "ad0421f52e6646f4966152465419f42ead69df241a1859ce9b7c1cde026a0cc8"
+        },
+        {
+          "file": "en-desktop-light/editor-templates-tab-1.png",
+          "sha256": "fe0fe6fa23913c6512396713bff062d09d747e6763da469b7fb4a1bea16b551c"
+        },
+        {
+          "file": "en-desktop-light/editor-templates-tab-2.png",
+          "sha256": "92ae05426db43b7e26cb64459a6c9374d02c39edea8713c64bc1747c36c420aa"
+        },
+        {
+          "file": "en-desktop-light/editor-templates-tab-3.png",
+          "sha256": "acf46323db7fe2553cebf4184f929e6010f849c3a9971f663be28f6887a4051f"
+        },
+        {
+          "file": "en-desktop-light/editor-preview.png",
+          "sha256": "72521d70f2a435cb0869042b44b92384f4dc64ba2c29300c5051876676cf472a"
+        },
+        {
+          "file": "en-desktop-light/preview-device-tablet.png",
+          "sha256": "871f6f23d4eb50f16f5c53b1977888a3707788ca2c28679017a912253ed34e75"
+        },
+        {
+          "file": "en-desktop-light/preview-device-mobile.png",
+          "sha256": "db4843905f154877da011642b5e3f4688dce4efff4fee2e6a476b0c63e3f3a7d"
+        },
+        {
+          "file": "en-desktop-light/preview-device-desktop.png",
+          "sha256": "650f962b803285bbb0c80b249728f721e376c04599a0d0396f3d0e1dfced8514"
+        },
+        {
+          "file": "en-desktop-light/account-dashboard.png",
+          "sha256": "17ecffc1eaf4f0a8e4afca8b10719d8247b76d52ce6fbe31f9817de97284396e"
+        },
+        {
+          "file": "en-desktop-light/account-requests.png",
+          "sha256": "87c5fc3ab514f2a5cce222a7dc43d65b2aecc29ac0b4346ffece5eb7c1ab66c7"
+        },
+        {
+          "file": "en-desktop-light/account-requests-tab-1.png",
+          "sha256": "87c5fc3ab514f2a5cce222a7dc43d65b2aecc29ac0b4346ffece5eb7c1ab66c7"
+        },
+        {
+          "file": "en-desktop-light/account-requests-tab-2.png",
+          "sha256": "7032bbf67dbc87db416b743b58a4b940d742c2309bf309f9daf89e02fd6a27c4"
+        },
+        {
+          "file": "en-desktop-light/account-requests-tab-3.png",
+          "sha256": "6098383278d29e046230b9c0131543b14e1821f22c4363b0c8e2452bde055531"
+        },
+        {
+          "file": "en-desktop-light/account-requests-tab-4.png",
+          "sha256": "c53b7559e6ea04c37358c9fe4d9cc17ec543052e64485dafbeca3ce7c64711dd"
+        },
+        {
+          "file": "en-desktop-light/account-requests-tab-5.png",
+          "sha256": "f4c02c34f5ba8462732122f1b750b24bb6b37a5cf511276cef79cd0557460aaf"
+        },
+        {
+          "file": "en-desktop-light/account-requests-tab-6.png",
+          "sha256": "9d605b72907a216293a1b1363961e16a3b6dfd89cbd22307e04b8d17376047cc"
+        },
+        {
+          "file": "en-desktop-light/account-requests-tab-7.png",
+          "sha256": "2411ec019c6bc7208d7e14511fa64bbdb5fe81086f2a703de0ce5cbd4027c963"
+        },
+        {
+          "file": "en-desktop-light/account-requests-tab-8.png",
+          "sha256": "157923459fee01ee354ee45b147538d485e6835cdfe1d15876acc580163b264d"
+        },
+        {
+          "file": "en-desktop-light/account-requests-tab-9.png",
+          "sha256": "808378ee24ba920a17acfbe39ef892e901b6b62eb18e96595ed084fbcf656a74"
+        },
+        {
+          "file": "en-desktop-light/account-requests-new.png",
+          "sha256": "c22b4f40c1a52bfe69efde338d3487db03ae2fef53d81c2d79cf421d7b59a92c"
+        },
+        {
+          "file": "en-desktop-light/account-inquiries.png",
+          "sha256": "6abee33830b5c486b36641cb6ba7860c57abdd288ab8667d77ec3c4a1e3d1bbb"
+        },
+        {
+          "file": "en-desktop-light/account-inquiries-tab-1.png",
+          "sha256": "6abee33830b5c486b36641cb6ba7860c57abdd288ab8667d77ec3c4a1e3d1bbb"
+        },
+        {
+          "file": "en-desktop-light/account-inquiries-tab-2.png",
+          "sha256": "5232969e7bc194eccb726dc0f7d6102595c80038094ada3c2cbebb774d80e6dc"
+        },
+        {
+          "file": "en-desktop-light/account-inquiries-tab-3.png",
+          "sha256": "37e61f64456220466921efcf3952e25ec3f3d5335ee3709df8eb5c1c4dd5bbb1"
+        },
+        {
+          "file": "en-desktop-light/account-inquiries-tab-4.png",
+          "sha256": "103b479883c28c73f7a1411f0cafe841a132210ae04e7d14f0d66ce9bfc1ae30"
+        },
+        {
+          "file": "en-desktop-light/account-inquiries-tab-5.png",
+          "sha256": "de24e7b595cc473e6be8db843c61336c0554a53582cdded25655d84a80c0b80b"
+        },
+        {
+          "file": "en-desktop-light/account-inquiries-tab-6.png",
+          "sha256": "59ea68e8eccfadf7dc994bdd017a3d70e07471e8aecf8c368d46aa4120a40a7b"
+        },
+        {
+          "file": "en-desktop-light/account-inquiries-tab-7.png",
+          "sha256": "8d7d5ff0f516ee92a153cf12b157484b83bfadeeacb07d7c862725ae52a30025"
+        },
+        {
+          "file": "en-desktop-light/account-profile.png",
+          "sha256": "6382a147a247a193f76578344b7ae760ac18ba14ee90b3ac4aa6f6e071e2da4b"
+        },
+        {
+          "file": "en-desktop-light/account-security.png",
+          "sha256": "2d2a70ce1c3e13da69e23df56297e5dac7ac941e2873f640ad6c1b5abe2a92cb"
+        },
+        {
+          "file": "en-desktop-light/account-notifications.png",
+          "sha256": "9b67d725408eb08212a54dcec237d766c51083d2019dced0f604d1fbec2e9e3f"
+        },
+        {
+          "file": "en-desktop-light/account-request-detail.png",
+          "sha256": "94754adf6a1c739429d5cdabc2780e7cb84d564dcd102dbb4d261a16d04c6f21"
+        },
+        {
+          "file": "en-desktop-light/account-inquiry-detail.png",
+          "sha256": "f1fbf748ac7a4958af171eb57e8d942b4106f465c6551152d18b1fab6d74292a"
+        },
+        {
+          "file": "en-desktop-light/public-home.png",
+          "sha256": "2506dcfc2dd7335ba114d01fa24a9c2d04530d49065719f350c40070f3b16aa1"
+        },
+        {
+          "file": "en-desktop-light/public-about.png",
+          "sha256": "21ee376529ef9e273e1a4cd7d528d591be206d579cb945219e5d90410ce998cc"
+        },
+        {
+          "file": "en-desktop-light/public-services.png",
+          "sha256": "5b65a04b3c5f6bc7aad25c081898082708cd2f5c85f5eca3f9a5d628e8a86b37"
+        },
+        {
+          "file": "en-desktop-light/public-works.png",
+          "sha256": "0c8e5ff8e94c1c7a7da4e8e2fa8fd1bd7de2a9c7dd82582148aa1475f1cdf6de"
+        },
+        {
+          "file": "en-desktop-light/public-process.png",
+          "sha256": "ee5fb122ce02682776349f05a5db62ad44f76ce49e95db9c70d71ae28282eab3"
+        },
+        {
+          "file": "en-desktop-light/public-faq.png",
+          "sha256": "182015bf826af1d39db585f97d679b738482949d9123555408082f0836adb4d0"
+        },
+        {
+          "file": "en-desktop-light/public-contact.png",
+          "sha256": "9558189395cc2f6e710c8c274706a041c83d409237372246d356715d874973e8"
+        },
+        {
+          "file": "en-desktop-light/public-track.png",
+          "sha256": "a4245b5d85d12624f4a81ed4c3fcbe68eacf4fb8bd3c4d0b342bb815bcd8289a"
+        },
+        {
+          "file": "en-desktop-light/published-surfaces.png",
+          "sha256": "04ae2effbe25b9ab19f891214b900eae190f10a0402770970bd110844cd8f507"
+        },
+        {
+          "file": "en-desktop-light/published-tablet-surfaces.png",
+          "sha256": "02f2c7e18c800b091689e9595fd391dc5231cf9e167a084464268eeddeae8b17"
+        },
+        {
+          "file": "en-desktop-light/published-all-block-types.png",
+          "sha256": "3c8c1d579916635f7c48f68f6236dca75d9223723a749833370483989ad0b836"
+        },
+        {
+          "file": "en-desktop-light/not-found-client-navigation.png",
+          "sha256": "cc030ab8a079b76e1f3ad4ba5e229d52c8c6f8e16358e69ecb5390099390050e"
+        },
+        {
+          "file": "en-desktop-light/auth-login.png",
+          "sha256": "edd2e306751084b20d1446b84e10cdfb073b89cdb5975d48786049c243a0046d"
+        },
+        {
+          "file": "en-desktop-light/auth-register.png",
+          "sha256": "b9a1aa4bff5e196daff66cd0b146bb5e314380886f33904837a0b5045594f07a"
+        },
+        {
+          "file": "en-desktop-light/auth-forgot-password.png",
+          "sha256": "296093a1a023441a37685cfd39e111d1840c596f24a4857418f89245d2fe9166"
+        },
+        {
+          "file": "en-desktop-light/auth-reset-password.png",
+          "sha256": "fee1a1c1736ad909f46f59d4b47a6b5cf1b1629b57f0c2654dda8f7a8b1b5818"
+        },
+        {
+          "file": "en-desktop-light/auth-invite.png",
+          "sha256": "c7e05fd5b8f696d92de05384de842f4ee14280e35517fb4994349395cd3884b9"
+        },
+        {
+          "file": "en-desktop-light/auth-verified.png",
+          "sha256": "d9d3825a04275fef3e3ec9a434084ca07fea2f4e1419b3ff5e74bc608bf77e6d"
+        },
+        {
+          "file": "en-desktop-light/not-found.png",
+          "sha256": "cc030ab8a079b76e1f3ad4ba5e229d52c8c6f8e16358e69ecb5390099390050e"
+        }
+      ]
+    },
+    {
+      "sourceRevision": "e36746c165df9aba3148df3d9d17ff13c9d4094f",
+      "locale": "en",
+      "mode": "dark",
+      "viewport": "desktop",
+      "visited": [
+        "admin-dashboard",
+        "admin-users",
+        "admin-roles",
+        "admin-permissions",
+        "admin-invitations",
+        "admin-requests",
+        "admin-inquiries",
+        "admin-notifications",
+        "admin-pages",
+        "admin-media",
+        "admin-menus",
+        "admin-menus-tab-1",
+        "admin-menus-tab-2",
+        "admin-workflows",
+        "admin-settings",
+        "admin-diagnostics",
+        "admin-audit",
+        "admin-outbox",
+        "settings-identity",
+        "settings-appearance",
+        "settings-contact",
+        "settings-sharing",
+        "settings-announcement",
+        "settings-tracking",
+        "audit-events",
+        "audit-reports",
+        "audit-reviews",
+        "audit-alerts",
+        "audit-rules",
+        "audit-health",
+        "workflows-workflows",
+        "workflows-teams",
+        "workflows-business-hours",
+        "workflows-transfer-conversations",
+        "admin-user-detail",
+        "admin-request-detail",
+        "admin-request-detail-tab-1",
+        "admin-request-detail-tab-2",
+        "admin-inquiry-detail",
+        "admin-inquiry-detail-tab-1",
+        "admin-inquiry-detail-tab-2",
+        "editor",
+        "editor-device-tablet",
+        "editor-device-mobile",
+        "editor-device-desktop",
+        "editor-language-en",
+        "editor-language-ar",
+        "editor-library-tab-1",
+        "editor-library-tab-2",
+        "editor-properties-tab-1",
+        "editor-properties-tab-2",
+        "editor-versions-tab-1",
+        "editor-versions-tab-2",
+        "editor-templates-tab-1",
+        "editor-templates-tab-2",
+        "editor-templates-tab-3",
+        "editor-preview",
+        "preview-device-tablet",
+        "preview-device-mobile",
+        "preview-device-desktop",
+        "account-dashboard",
+        "account-requests",
+        "account-requests-tab-1",
+        "account-requests-tab-2",
+        "account-requests-tab-3",
+        "account-requests-tab-4",
+        "account-requests-tab-5",
+        "account-requests-tab-6",
+        "account-requests-tab-7",
+        "account-requests-tab-8",
+        "account-requests-tab-9",
+        "account-requests-new",
+        "account-inquiries",
+        "account-inquiries-tab-1",
+        "account-inquiries-tab-2",
+        "account-inquiries-tab-3",
+        "account-inquiries-tab-4",
+        "account-inquiries-tab-5",
+        "account-inquiries-tab-6",
+        "account-inquiries-tab-7",
+        "account-profile",
+        "account-security",
+        "account-notifications",
+        "account-request-detail",
+        "account-inquiry-detail",
+        "public-home",
+        "public-about",
+        "public-services",
+        "public-works",
+        "public-process",
+        "public-faq",
+        "public-contact",
+        "public-track",
+        "published-surfaces",
+        "published-tablet-surfaces",
+        "published-all-block-types",
+        "not-found-client-navigation",
+        "auth-login",
+        "auth-register",
+        "auth-forgot-password",
+        "auth-reset-password",
+        "auth-invite",
+        "auth-verified",
+        "not-found"
+      ],
+      "errors": [],
+      "assertionErrors": [],
+      "blockTypes": [
+        "hero",
+        "servicesGrid",
+        "featureGrid",
+        "worksShowcase",
+        "processSteps",
+        "faqSection",
+        "ctaSection",
+        "pageHeader",
+        "richText",
+        "visionMission",
+        "numberedValues",
+        "numberedList",
+        "navCtaBanner",
+        "servicesDetail",
+        "worksFull",
+        "processFull",
+        "requestForm",
+        "contactInfo",
+        "heading",
+        "text",
+        "image",
+        "gallery",
+        "buttonLink",
+        "columns",
+        "simpleTable",
+        "divider",
+        "spacer",
+        "section",
+        "container",
+        "row",
+        "column"
+      ],
+      "screenshots": [
+        {
+          "file": "en-desktop-dark/admin-dashboard.png",
+          "sha256": "3cf13145c849a29cede4faad91ac2fb68c40b04ebcf4a3a3199f968d2abfa251"
+        },
+        {
+          "file": "en-desktop-dark/admin-users.png",
+          "sha256": "4023cc54123b474f1b3d025a70d697e4557ecf1055397d36e001ebc5250afb47"
+        },
+        {
+          "file": "en-desktop-dark/admin-roles.png",
+          "sha256": "b8aa00c3a71ef64ebaf7c539b12fde2ce55b1b24d421e804c1c71275f7b894a8"
+        },
+        {
+          "file": "en-desktop-dark/admin-permissions.png",
+          "sha256": "7dcb8151853f4d8f4db0d2957fc08dd08c2ff016c111f3aa18e27eba461e03cb"
+        },
+        {
+          "file": "en-desktop-dark/admin-invitations.png",
+          "sha256": "341d12bdc5a35f4ba9d9d6f864a1ec70829001b466f2f23a7a35c201ae56ff5f"
+        },
+        {
+          "file": "en-desktop-dark/admin-requests.png",
+          "sha256": "b9173515380c7368340f57c9d9fe3db1cca2af2e81d806558fce727dee948b26"
+        },
+        {
+          "file": "en-desktop-dark/admin-inquiries.png",
+          "sha256": "dc46ca9040b02db802f972751f4ae2f19231e1f454bfc47359e2065e47661492"
+        },
+        {
+          "file": "en-desktop-dark/admin-notifications.png",
+          "sha256": "e388158d0bf343709e7c9ec639a5152825d13210740414a6f00d24fcae99bae5"
+        },
+        {
+          "file": "en-desktop-dark/admin-pages.png",
+          "sha256": "538a0597c3b8c6098b23e1811a75e9f2cbd58ce169d1f553999eec027bce6193"
+        },
+        {
+          "file": "en-desktop-dark/admin-media.png",
+          "sha256": "3937dbd312598f7b6cf6d00db3a0edfa42ed5dcae6fa21db2fc0f2f67202de27"
+        },
+        {
+          "file": "en-desktop-dark/admin-menus.png",
+          "sha256": "25eb556f4181bdd4a29281707498ca4884f78de10041276a185ffd4fd8d9cb13"
+        },
+        {
+          "file": "en-desktop-dark/admin-menus-tab-1.png",
+          "sha256": "d95aac435191e99c112085184dbf70af4c25ed09f8aa49f987c54273751b6cfe"
+        },
+        {
+          "file": "en-desktop-dark/admin-menus-tab-2.png",
+          "sha256": "4545a3c5c6d296802139efcca8711e56c97755aa7b4ac2b28041300e70f5cac2"
+        },
+        {
+          "file": "en-desktop-dark/admin-workflows.png",
+          "sha256": "146ef7a5c93d423e32c5ac70c53cff04e36e1c836a78289d6c2098d1817b1ae6"
+        },
+        {
+          "file": "en-desktop-dark/admin-settings.png",
+          "sha256": "b1d62b3795d7a8d967f1b21b31b9b7ca998d57d880acc815ec9d6f2fb0c9c976"
+        },
+        {
+          "file": "en-desktop-dark/admin-diagnostics.png",
+          "sha256": "9f8e0a5098d0eda149df128f9f622a8b2249aaf2b85d8f89d7427b1e8ccf9c0e"
+        },
+        {
+          "file": "en-desktop-dark/admin-audit.png",
+          "sha256": "134b8bee209c5338d8e4b90eca6c6f5b8e0a56a6fbd7474883883ee5537b007d"
+        },
+        {
+          "file": "en-desktop-dark/admin-outbox.png",
+          "sha256": "f0234993d93347bc7d0a3498249be935028844666332ad02c3d3b71532cfb3fe"
+        },
+        {
+          "file": "en-desktop-dark/settings-identity.png",
+          "sha256": "b1d62b3795d7a8d967f1b21b31b9b7ca998d57d880acc815ec9d6f2fb0c9c976"
+        },
+        {
+          "file": "en-desktop-dark/settings-appearance.png",
+          "sha256": "82296d1f7586c935139696eb71a1c8c9f06296a9c52047b6f86d5d249d9e663c"
+        },
+        {
+          "file": "en-desktop-dark/settings-contact.png",
+          "sha256": "96c81b258fb93fd7aff72c83e6713f4d10e80794dd4fe8a5023a36a78ec6b292"
+        },
+        {
+          "file": "en-desktop-dark/settings-sharing.png",
+          "sha256": "8b8dbe4f0f814282edd7881df800bf4796aa295cf5b3e602912554d6bba77fa7"
+        },
+        {
+          "file": "en-desktop-dark/settings-announcement.png",
+          "sha256": "f380e7d99b344e896a73558ba72a70d2a0fb1606a928b5694ac5beaf9470170c"
+        },
+        {
+          "file": "en-desktop-dark/settings-tracking.png",
+          "sha256": "d5dc219d9380979884e4458a4c7ba6ae8cc0c0385871bc2a319c411be542e058"
+        },
+        {
+          "file": "en-desktop-dark/audit-events.png",
+          "sha256": "22771399567fb63bd5ac8a3d71dd07a553294fc0005b2fa2b48dcc19f0e6280b"
+        },
+        {
+          "file": "en-desktop-dark/audit-reports.png",
+          "sha256": "c6c6bb1dd291df447c6fc749c8293ffa466e053861fb08fe8fdc97b84fdbdb71"
+        },
+        {
+          "file": "en-desktop-dark/audit-reviews.png",
+          "sha256": "fcc2fdd59b78d86be7775296ed9293222dbead30956a110db89ede9b076b1914"
+        },
+        {
+          "file": "en-desktop-dark/audit-alerts.png",
+          "sha256": "c353606a864bafae793db39e1710fa96719990c6685aa8483c3e2b7a1af88b47"
+        },
+        {
+          "file": "en-desktop-dark/audit-rules.png",
+          "sha256": "b9b54413abf3744bb643cd7233e41c4477d3ffb8984be424fd8331b304701361"
+        },
+        {
+          "file": "en-desktop-dark/audit-health.png",
+          "sha256": "6f81443a4ea9a006b01f3836cf769823dfc684a193986e202dcf10c618b90e5d"
+        },
+        {
+          "file": "en-desktop-dark/workflows-workflows.png",
+          "sha256": "1842fe5767847abb6e60446909beeb39b95a9ee40fccd14844bb8abb43ce687a"
+        },
+        {
+          "file": "en-desktop-dark/workflows-teams.png",
+          "sha256": "b3e4a8b46e5b9bd135f3a158c7280bf4229fbed824ed2da5fe1410b656810815"
+        },
+        {
+          "file": "en-desktop-dark/workflows-business-hours.png",
+          "sha256": "8ae3b085693ad4654c34f1e43650bc21250050a79f163908233f2d39d6ec81d5"
+        },
+        {
+          "file": "en-desktop-dark/workflows-transfer-conversations.png",
+          "sha256": "da244bbdb94f846c4ac03a24048e8ab72886f7fc188dcc99b02d755523e872e5"
+        },
+        {
+          "file": "en-desktop-dark/admin-user-detail.png",
+          "sha256": "39612da91a9a535e1b04f096f04911c116659843c01b57b9bc3b10d7808e0289"
+        },
+        {
+          "file": "en-desktop-dark/admin-request-detail.png",
+          "sha256": "90549859f51bc16da8ea9d3b95711825ba07805a2fd40ec043964af4b32767b7"
+        },
+        {
+          "file": "en-desktop-dark/admin-request-detail-tab-1.png",
+          "sha256": "77464dc2b26dd60621c8ed3f5db8f521f59214e424337703f9899e74e3e51922"
+        },
+        {
+          "file": "en-desktop-dark/admin-request-detail-tab-2.png",
+          "sha256": "171e173155ca70b1411d2607083d54fb44d93deebda8e622d1701e8dffe93ebc"
+        },
+        {
+          "file": "en-desktop-dark/admin-inquiry-detail.png",
+          "sha256": "2ec03ecb9f7d7b25c1d52be613f21b34ae10e7768d9e8e2abc80736374fdddea"
+        },
+        {
+          "file": "en-desktop-dark/admin-inquiry-detail-tab-1.png",
+          "sha256": "45e2420cf7c1da0fa7b4f4f98ed23057611abd755d698e967e68c220c7ebb51f"
+        },
+        {
+          "file": "en-desktop-dark/admin-inquiry-detail-tab-2.png",
+          "sha256": "9d2de72c89c4568c58293d43e732f7a2bee2a0b592f58ca91a1c1a3c0cca5079"
+        },
+        {
+          "file": "en-desktop-dark/editor.png",
+          "sha256": "a7159300c600017054dc2672ab06b97dcd59bbd656e43017b81495c721051a24"
+        },
+        {
+          "file": "en-desktop-dark/editor-device-tablet.png",
+          "sha256": "de0412d33003539d1aeb8aa8517d6b49fbfef762e916adc392a3449da540bd8d"
+        },
+        {
+          "file": "en-desktop-dark/editor-device-mobile.png",
+          "sha256": "0bcd4703f1899f0fe4a399829ed28ac6d73c8602b101b6a0545e85057f68b34e"
+        },
+        {
+          "file": "en-desktop-dark/editor-device-desktop.png",
+          "sha256": "11775bbf01ff2e16385d89dad019ac0b2005f42a3f3658b03c081e3c5128f019"
+        },
+        {
+          "file": "en-desktop-dark/editor-language-en.png",
+          "sha256": "4c351873231477305bb8dd041466834dec32e3cf1326f87b5d79be0d5af91c2b"
+        },
+        {
+          "file": "en-desktop-dark/editor-language-ar.png",
+          "sha256": "cd38c0f1811e8a965e6bc01d41dd3488599f9e87a48d264fb21c7bd01222e362"
+        },
+        {
+          "file": "en-desktop-dark/editor-library-tab-1.png",
+          "sha256": "702e950ffd9a1bc9b892158e7249d0774442305cde18d1c6fb8754b43852cc97"
+        },
+        {
+          "file": "en-desktop-dark/editor-library-tab-2.png",
+          "sha256": "86953603ea11137bf7922141af6d946bd37f66471ffdf7991cdf724fd9010de8"
+        },
+        {
+          "file": "en-desktop-dark/editor-properties-tab-1.png",
+          "sha256": "7e343c4a13350706d192509a2e1a788a8626827ae3160aaf579b2800dcbcd00f"
+        },
+        {
+          "file": "en-desktop-dark/editor-properties-tab-2.png",
+          "sha256": "44f24728f65ceabdc65a3ca5959eaadde9fd0079466ea921200a2a85016dff50"
+        },
+        {
+          "file": "en-desktop-dark/editor-versions-tab-1.png",
+          "sha256": "17ed9b845e65d1f7ddef4b89cb5c5ea4d87ac5bb7ec4fcb5272a7a722a6769fe"
+        },
+        {
+          "file": "en-desktop-dark/editor-versions-tab-2.png",
+          "sha256": "48b204a3f7b3517cfc2943c7ac60cb1fee8db880b64ec6ef9f21714ab430308f"
+        },
+        {
+          "file": "en-desktop-dark/editor-templates-tab-1.png",
+          "sha256": "9e7c93d72c3875c6d9c5da8938a9afafafd966c8fc473f267e06d2b3adcd385a"
+        },
+        {
+          "file": "en-desktop-dark/editor-templates-tab-2.png",
+          "sha256": "983fd2c8bae9d028c3406055ded7c7df5cedf6b82ba5b023259fda316a037348"
+        },
+        {
+          "file": "en-desktop-dark/editor-templates-tab-3.png",
+          "sha256": "ff898a54c9fa8d6fd7a9fa670bb70a88077785486daa7d97d9d196e02f3437fc"
+        },
+        {
+          "file": "en-desktop-dark/editor-preview.png",
+          "sha256": "d5b2be3f512a58bf64bbdb909243f7fa6200450c307c6e9c5f2bab3775c9a5e0"
+        },
+        {
+          "file": "en-desktop-dark/preview-device-tablet.png",
+          "sha256": "bfe7bef31d2a792b28251b5b42b4bcac6023318dd31adcebae9efdb97c49f0dc"
+        },
+        {
+          "file": "en-desktop-dark/preview-device-mobile.png",
+          "sha256": "b59a7e0c0b8c9b63c1f8afd8409375699cc5a1524e57bbe4697b5f2517d74e05"
+        },
+        {
+          "file": "en-desktop-dark/preview-device-desktop.png",
+          "sha256": "c17e7fe45f60672305738812c4cc2e61ba68bf62939cb72fe07c50d4a37d0c17"
+        },
+        {
+          "file": "en-desktop-dark/account-dashboard.png",
+          "sha256": "e8ee60bd649417aa28b82645ad21d205b0565df9afdef64f573498fa31886f2a"
+        },
+        {
+          "file": "en-desktop-dark/account-requests.png",
+          "sha256": "b71898f951ee88b00f5f5a56054b9e3f5979a780e34cba95c73bc154b0882cd4"
+        },
+        {
+          "file": "en-desktop-dark/account-requests-tab-1.png",
+          "sha256": "b71898f951ee88b00f5f5a56054b9e3f5979a780e34cba95c73bc154b0882cd4"
+        },
+        {
+          "file": "en-desktop-dark/account-requests-tab-2.png",
+          "sha256": "9b473d39384fb5877ec1f972c32e33b97df7a6730659dca67b59c75e06687bd4"
+        },
+        {
+          "file": "en-desktop-dark/account-requests-tab-3.png",
+          "sha256": "1d91569bddabe102ac6862d62eebdbdf62894cc4a2d4b894ef5eb1e4db95abb2"
+        },
+        {
+          "file": "en-desktop-dark/account-requests-tab-4.png",
+          "sha256": "b380c33a724d6cda7004d4bdb29a18580d7150c075c7b94c5d5c28d7d9630678"
+        },
+        {
+          "file": "en-desktop-dark/account-requests-tab-5.png",
+          "sha256": "bfaaa10382544993c8293da6fc14e7930ab250bbbdcd27db5f2b2141f4e72c43"
+        },
+        {
+          "file": "en-desktop-dark/account-requests-tab-6.png",
+          "sha256": "e2839836ad9842fd2d6f4b6c67b1b5d40e7c97c21f87474ba031a3f91d3aa287"
+        },
+        {
+          "file": "en-desktop-dark/account-requests-tab-7.png",
+          "sha256": "e6b7c25b6a9716be68d698b5f023da165893dbac0a28694a7853fd7623b7e436"
+        },
+        {
+          "file": "en-desktop-dark/account-requests-tab-8.png",
+          "sha256": "3022e58ba3b18561e20d9784e5c899f69882f2f648a1a3ad4db00db86d24dada"
+        },
+        {
+          "file": "en-desktop-dark/account-requests-tab-9.png",
+          "sha256": "aa3aa6eb951ef8f979ae4243b119e8b832ceba52adc55a902cb565336eb983ed"
+        },
+        {
+          "file": "en-desktop-dark/account-requests-new.png",
+          "sha256": "9585680372a01c09699f98051f85a49f02ed719fd294130978beece974aff879"
+        },
+        {
+          "file": "en-desktop-dark/account-inquiries.png",
+          "sha256": "e0ec4e37fcc2260d6be11a2750e0736acfc56938156fb239552d5a5a9d996063"
+        },
+        {
+          "file": "en-desktop-dark/account-inquiries-tab-1.png",
+          "sha256": "e0ec4e37fcc2260d6be11a2750e0736acfc56938156fb239552d5a5a9d996063"
+        },
+        {
+          "file": "en-desktop-dark/account-inquiries-tab-2.png",
+          "sha256": "141efc126b2ab62200b6d797b9afd8957aa81472ededeaf502e17d710d2d4daa"
+        },
+        {
+          "file": "en-desktop-dark/account-inquiries-tab-3.png",
+          "sha256": "1225840e866d79b7806c8895e75a79ca0b9f7c1bc06b011503c192a5d22c3d81"
+        },
+        {
+          "file": "en-desktop-dark/account-inquiries-tab-4.png",
+          "sha256": "43f9ac877d1f1779f4bca4fa6e5b92e7d568baa056a0a06c32b5d73ed001c5d4"
+        },
+        {
+          "file": "en-desktop-dark/account-inquiries-tab-5.png",
+          "sha256": "ff1a79a86ffb172426887434dce9941b5e84e7192afda32397022ab89e4524ad"
+        },
+        {
+          "file": "en-desktop-dark/account-inquiries-tab-6.png",
+          "sha256": "80ea6a153c57a479a7b8eb20c6ed7ba2aae928963dcd3e0093cc02b2aeafacd6"
+        },
+        {
+          "file": "en-desktop-dark/account-inquiries-tab-7.png",
+          "sha256": "9b3f69697fc369c7cec4c30d2780a84dc55c9c9c63db77fc92c8d6bbd8c565be"
+        },
+        {
+          "file": "en-desktop-dark/account-profile.png",
+          "sha256": "d2a829234307c9de1cc63e8771d306762d8d03dc49d6e8d5d857a999dcb15588"
+        },
+        {
+          "file": "en-desktop-dark/account-security.png",
+          "sha256": "2d4cc52cc4b91201ed9b1cbda5855969c7d0c3183308cf87ac3efd95f7be93f3"
+        },
+        {
+          "file": "en-desktop-dark/account-notifications.png",
+          "sha256": "db38df8c7a6305cf698fbc40919a3a3adb77cbd53867262ac31ee6aea47f08e7"
+        },
+        {
+          "file": "en-desktop-dark/account-request-detail.png",
+          "sha256": "4e4cbb2963bf6cf8fb4a5c98a3246598c4130d607a895233af823a482e48d0ac"
+        },
+        {
+          "file": "en-desktop-dark/account-inquiry-detail.png",
+          "sha256": "b4556d69933d510570120f7443f5d9fc0c52878c7cf4f819a3f6c71d5a12496e"
+        },
+        {
+          "file": "en-desktop-dark/public-home.png",
+          "sha256": "b690dc28cac97f775df27d3f687da6d7b003df8eb919b254e43626c1399e190a"
+        },
+        {
+          "file": "en-desktop-dark/public-about.png",
+          "sha256": "def67459e69b167301a500ad3b9c83ba926dd1f4fe0c644c9677d060281133b7"
+        },
+        {
+          "file": "en-desktop-dark/public-services.png",
+          "sha256": "8e42ba07797a029d4b728d6a6439517afe3b7df4b0ef6dbaf1eec03cb9d966ff"
+        },
+        {
+          "file": "en-desktop-dark/public-works.png",
+          "sha256": "7ac2587f53ec8a063f8354425920a7e61c13bb6bc62ad2c05218887f587ef4e6"
+        },
+        {
+          "file": "en-desktop-dark/public-process.png",
+          "sha256": "4efaafdf7ac0a53c62c1afca8fde6863e5bd1d440ed6fb70aef2d3f667285237"
+        },
+        {
+          "file": "en-desktop-dark/public-faq.png",
+          "sha256": "080a5dd9c56c5c642cb4f722666ed14f147d9bcf1aa141f2439f2ae01fdeaaeb"
+        },
+        {
+          "file": "en-desktop-dark/public-contact.png",
+          "sha256": "0f3da05ada0e35f0bb3ebdb8ea3fd3962f3f107fe6a6e7df6214bf0220008151"
+        },
+        {
+          "file": "en-desktop-dark/public-track.png",
+          "sha256": "72af8ea6ce6a2d456a5908b9f7c89e07a4b1dff205f27912e6aa1478ce3581d2"
+        },
+        {
+          "file": "en-desktop-dark/published-surfaces.png",
+          "sha256": "349efaa393e51b22f547ff47ac271ddd39f288bf22088854beacd234d4188eeb"
+        },
+        {
+          "file": "en-desktop-dark/published-tablet-surfaces.png",
+          "sha256": "7bde4b2164cff95cde62087e4fce4a0fd984847523fd4f8ff2bb65ce5b7e5d64"
+        },
+        {
+          "file": "en-desktop-dark/published-all-block-types.png",
+          "sha256": "c9bc708199a62831f9178be31cbdc27a16b311acb1b3d101881d15b07af7c106"
+        },
+        {
+          "file": "en-desktop-dark/not-found-client-navigation.png",
+          "sha256": "5193ffc3ba94ed65c7cca2f6561aaf8ededf48cc874e44d0fbc872fbf82c7831"
+        },
+        {
+          "file": "en-desktop-dark/auth-login.png",
+          "sha256": "098c2f9d926536cff464d41d18b82bbc67def08cd128f1906301262147d78a7f"
+        },
+        {
+          "file": "en-desktop-dark/auth-register.png",
+          "sha256": "c62da8e929835a784c9d92938f9bea4b1bc3bf7f733e3598e64966fa1e2d8a84"
+        },
+        {
+          "file": "en-desktop-dark/auth-forgot-password.png",
+          "sha256": "80866ca29ea958df1eee465eff311ed17767adac40597c9b8b66c211d42e5063"
+        },
+        {
+          "file": "en-desktop-dark/auth-reset-password.png",
+          "sha256": "500bc612b8b7f4e5e6cb140350ddb10684df4578f6dfff207f0368dac77bd89d"
+        },
+        {
+          "file": "en-desktop-dark/auth-invite.png",
+          "sha256": "16968ed60334855e650cbdfb38877dbce304354c5b34ba7a21441ce69ced0e4c"
+        },
+        {
+          "file": "en-desktop-dark/auth-verified.png",
+          "sha256": "deeacff98017e463322ca99ac521e483cab65bdd2633d3ad774a7497fef86153"
+        },
+        {
+          "file": "en-desktop-dark/not-found.png",
+          "sha256": "5193ffc3ba94ed65c7cca2f6561aaf8ededf48cc874e44d0fbc872fbf82c7831"
+        }
+      ]
+    },
+    {
+      "sourceRevision": "e36746c165df9aba3148df3d9d17ff13c9d4094f",
+      "locale": "en",
+      "mode": "light",
+      "viewport": "mobile",
+      "visited": [
+        "admin-dashboard",
+        "admin-users",
+        "admin-roles",
+        "admin-permissions",
+        "admin-invitations",
+        "admin-requests",
+        "admin-inquiries",
+        "admin-notifications",
+        "admin-pages",
+        "admin-media",
+        "admin-menus",
+        "admin-menus-tab-1",
+        "admin-menus-tab-2",
+        "admin-workflows",
+        "admin-settings",
+        "admin-diagnostics",
+        "admin-audit",
+        "admin-outbox",
+        "settings-identity",
+        "settings-appearance",
+        "settings-contact",
+        "settings-sharing",
+        "settings-announcement",
+        "settings-tracking",
+        "audit-events",
+        "audit-reports",
+        "audit-reviews",
+        "audit-alerts",
+        "audit-rules",
+        "audit-health",
+        "workflows-workflows",
+        "workflows-teams",
+        "workflows-business-hours",
+        "workflows-transfer-conversations",
+        "admin-user-detail",
+        "admin-request-detail",
+        "admin-request-detail-tab-1",
+        "admin-request-detail-tab-2",
+        "admin-inquiry-detail",
+        "admin-inquiry-detail-tab-1",
+        "admin-inquiry-detail-tab-2",
+        "editor",
+        "editor-device-tablet",
+        "editor-device-mobile",
+        "editor-device-desktop",
+        "editor-language-en",
+        "editor-language-ar",
+        "editor-library-tab-1",
+        "editor-library-tab-2",
+        "editor-properties-tab-1",
+        "editor-properties-tab-2",
+        "editor-versions-tab-1",
+        "editor-versions-tab-2",
+        "editor-templates-tab-1",
+        "editor-templates-tab-2",
+        "editor-templates-tab-3",
+        "editor-preview",
+        "preview-device-tablet",
+        "preview-device-mobile",
+        "preview-device-desktop",
+        "account-dashboard",
+        "account-requests",
+        "account-requests-tab-1",
+        "account-requests-tab-2",
+        "account-requests-tab-3",
+        "account-requests-tab-4",
+        "account-requests-tab-5",
+        "account-requests-tab-6",
+        "account-requests-tab-7",
+        "account-requests-tab-8",
+        "account-requests-tab-9",
+        "account-requests-new",
+        "account-inquiries",
+        "account-inquiries-tab-1",
+        "account-inquiries-tab-2",
+        "account-inquiries-tab-3",
+        "account-inquiries-tab-4",
+        "account-inquiries-tab-5",
+        "account-inquiries-tab-6",
+        "account-inquiries-tab-7",
+        "account-profile",
+        "account-security",
+        "account-notifications",
+        "account-request-detail",
+        "account-inquiry-detail",
+        "public-home",
+        "public-about",
+        "public-services",
+        "public-works",
+        "public-process",
+        "public-faq",
+        "public-contact",
+        "public-track",
+        "published-surfaces",
+        "published-tablet-surfaces",
+        "published-all-block-types",
+        "not-found-client-navigation",
+        "auth-login",
+        "auth-register",
+        "auth-forgot-password",
+        "auth-reset-password",
+        "auth-invite",
+        "auth-verified",
+        "not-found"
+      ],
+      "errors": [],
+      "assertionErrors": [],
+      "blockTypes": [
+        "hero",
+        "servicesGrid",
+        "featureGrid",
+        "worksShowcase",
+        "processSteps",
+        "faqSection",
+        "ctaSection",
+        "pageHeader",
+        "richText",
+        "visionMission",
+        "numberedValues",
+        "numberedList",
+        "navCtaBanner",
+        "servicesDetail",
+        "worksFull",
+        "processFull",
+        "requestForm",
+        "contactInfo",
+        "heading",
+        "text",
+        "image",
+        "gallery",
+        "buttonLink",
+        "columns",
+        "simpleTable",
+        "divider",
+        "spacer",
+        "section",
+        "container",
+        "row",
+        "column"
+      ],
+      "screenshots": [
+        {
+          "file": "en-mobile-light/admin-dashboard.png",
+          "sha256": "8cc76a580b1955179fdc6b758742c5ec2e170d8b3d1598a80c863853a1bb8fe3"
+        },
+        {
+          "file": "en-mobile-light/admin-users.png",
+          "sha256": "b692b5fc46b7a169b8e142e60b2579a54ab5f6bd19812bf90624f884ec9d89b6"
+        },
+        {
+          "file": "en-mobile-light/admin-roles.png",
+          "sha256": "32329d21eec92719577a8f985b7c7fa8646beb001c9fc8c21d243385b4f6626b"
+        },
+        {
+          "file": "en-mobile-light/admin-permissions.png",
+          "sha256": "f2b76d02ea2a2294bc764012384d99c7cbf67160513149b74331dfe59307e752"
+        },
+        {
+          "file": "en-mobile-light/admin-invitations.png",
+          "sha256": "95be28c0167d409efb7a750486d609da6eef924823afec46a8bf222729707c31"
+        },
+        {
+          "file": "en-mobile-light/admin-requests.png",
+          "sha256": "4b90e09d1b2942a32e072bb010287cdf65bb98d3c0878f65de77c1be085fce94"
+        },
+        {
+          "file": "en-mobile-light/admin-inquiries.png",
+          "sha256": "df23c1e19d45a57e2363dfa381bf77feb9b483818bb4d4bc3f999d017c6aff27"
+        },
+        {
+          "file": "en-mobile-light/admin-notifications.png",
+          "sha256": "3562378eaa93a6cbe782b87d1ada1fba25a3e6f98c7861a145c4926b7a272a23"
+        },
+        {
+          "file": "en-mobile-light/admin-pages.png",
+          "sha256": "19449dc943bfdf4bc068c936c16f1e97f7ff95cf5562de61daa5c2297f72c9ea"
+        },
+        {
+          "file": "en-mobile-light/admin-media.png",
+          "sha256": "97b4ed6ed10f601729fc6372a69947954f2a029465c3dc0383be09077b50dd94"
+        },
+        {
+          "file": "en-mobile-light/admin-menus.png",
+          "sha256": "9675e38986018148859304e033a68e3c3a2a03540136d59508ce2046b99fc702"
+        },
+        {
+          "file": "en-mobile-light/admin-menus-tab-1.png",
+          "sha256": "882dc7a9a0863caa1f8b351a2edba609fd47d9b0beb3039e6627fdd0b1e0b392"
+        },
+        {
+          "file": "en-mobile-light/admin-menus-tab-2.png",
+          "sha256": "1506c3d04cb98ad07216e6c73532867a18b729eb87e0497ba4de830fc4aaacb6"
+        },
+        {
+          "file": "en-mobile-light/admin-workflows.png",
+          "sha256": "681fb27726d5ef0f0dd5cbeee788b9a5eda1b9e8da803c4e8c7f96f85807f611"
+        },
+        {
+          "file": "en-mobile-light/admin-settings.png",
+          "sha256": "6de1eaca2b6ba96f3a36982314c0d760bd997c38a86011307209d0278643552d"
+        },
+        {
+          "file": "en-mobile-light/admin-diagnostics.png",
+          "sha256": "27e638d33170da6d11c020300d1fc597dc5f769a3c4078939e4a061248dd1329"
+        },
+        {
+          "file": "en-mobile-light/admin-audit.png",
+          "sha256": "2e76925b2a2b22892b2cf24e5696e41e7f07dc14e72e641701e29ae8e3ad6bc6"
+        },
+        {
+          "file": "en-mobile-light/admin-outbox.png",
+          "sha256": "784b4e805a529475b73e6bdfd81c1a5f61ff6c84eaddf28c54a2219727bd3349"
+        },
+        {
+          "file": "en-mobile-light/settings-identity.png",
+          "sha256": "6de1eaca2b6ba96f3a36982314c0d760bd997c38a86011307209d0278643552d"
+        },
+        {
+          "file": "en-mobile-light/settings-appearance.png",
+          "sha256": "714d5d11c2f71061e66f0f8c32a8ea203677dc435f5b5e11918dfc25762afecf"
+        },
+        {
+          "file": "en-mobile-light/settings-contact.png",
+          "sha256": "45dea810f5cbfa1f2c020b622b8dca3eb7a056f6ef3f32ee00c7d4bbce380691"
+        },
+        {
+          "file": "en-mobile-light/settings-sharing.png",
+          "sha256": "af59d966d205ef485f1838ae133e886ba9e925d801bc5e3f47a47fc95555fae9"
+        },
+        {
+          "file": "en-mobile-light/settings-announcement.png",
+          "sha256": "ca83ee28665f58c37753ae32e49d081cc90b2b9c5c9ec09f56fcfd3e87dc1de9"
+        },
+        {
+          "file": "en-mobile-light/settings-tracking.png",
+          "sha256": "df7d98a3b25807c45ec764a40a90910b475e8d576488b720e32783f79091a7e1"
+        },
+        {
+          "file": "en-mobile-light/audit-events.png",
+          "sha256": "dac47b9c22c60ae7326b214ad99db067a50956b993cdcb24f2f365488a2f6f81"
+        },
+        {
+          "file": "en-mobile-light/audit-reports.png",
+          "sha256": "46b6f37abba37941506c754b2a8627eccdafa0c3cc92be936df2c6f853bb494d"
+        },
+        {
+          "file": "en-mobile-light/audit-reviews.png",
+          "sha256": "f16788879b8631451345939bff972549d23b74ee29a15754936e78e9baceb406"
+        },
+        {
+          "file": "en-mobile-light/audit-alerts.png",
+          "sha256": "a4060bbb8b21caafd39b35121a99da543bec571d9d34a7dfb030eea7647bc8c0"
+        },
+        {
+          "file": "en-mobile-light/audit-rules.png",
+          "sha256": "0fbe924900cc13b01082ff73a8a3f981b7293c802f20febd55dffa21362590a7"
+        },
+        {
+          "file": "en-mobile-light/audit-health.png",
+          "sha256": "150146b591033eedbc9e6e9add3aa52b474dc40d5dc6a226e2550260723ce078"
+        },
+        {
+          "file": "en-mobile-light/workflows-workflows.png",
+          "sha256": "48b3d73925aad2d4c57f1e3d61c259010341388abe071607da047f9ec77319d4"
+        },
+        {
+          "file": "en-mobile-light/workflows-teams.png",
+          "sha256": "476e0b326c05c10dcd7ec07fea66c09206c51b181f02a94ea277d59734917ef9"
+        },
+        {
+          "file": "en-mobile-light/workflows-business-hours.png",
+          "sha256": "a8cfb1f52d8251df17d02b9cd7755aabc68b182d48290400319f2019da16d092"
+        },
+        {
+          "file": "en-mobile-light/workflows-transfer-conversations.png",
+          "sha256": "668272e957ac46e9cae067c4e97d803af441f21058cda0a8dd4cf9fa57ff71a7"
+        },
+        {
+          "file": "en-mobile-light/admin-user-detail.png",
+          "sha256": "6f486b3d74f6a66b9cd1f1651ffa6fa61261a81e0c6a0cdcc36cf3f648715129"
+        },
+        {
+          "file": "en-mobile-light/admin-request-detail.png",
+          "sha256": "20d21c72387607d83320d82304ad0661f7582566b477b9f8bc97511ca8f45fa7"
+        },
+        {
+          "file": "en-mobile-light/admin-request-detail-tab-1.png",
+          "sha256": "e305400d6fbad83212fb325622fd3a6feef5aa182d8cf06fcb7e0910e17949ea"
+        },
+        {
+          "file": "en-mobile-light/admin-request-detail-tab-2.png",
+          "sha256": "813ca8b2d3b376d87cccf8bbfd254757cf4c7351d3cc56a535163aa35363550f"
+        },
+        {
+          "file": "en-mobile-light/admin-inquiry-detail.png",
+          "sha256": "7ed4517a70a4fc7c3ee0658d37e0750b3e2f950f82982c27e284ecd3adfe028f"
+        },
+        {
+          "file": "en-mobile-light/admin-inquiry-detail-tab-1.png",
+          "sha256": "3cf7af2e21cdd582e2ddbff437df2b5c38b90b52da6eaf7d2b236cd406b770d0"
+        },
+        {
+          "file": "en-mobile-light/admin-inquiry-detail-tab-2.png",
+          "sha256": "f41697510970d63fa695cf934c308cbe110e2ae6d1fc3e44c8680c87b1e108b9"
+        },
+        {
+          "file": "en-mobile-light/editor.png",
+          "sha256": "f902d0fdc58b98745e0be01384d6ab29cd1094528ca2e7bd56d4465b9d122b50"
+        },
+        {
+          "file": "en-mobile-light/editor-device-tablet.png",
+          "sha256": "346ddeaf3fd62a0f167a342bfad7dfa011e47e24b52e6ea0f0b7d9aa1ff8be21"
+        },
+        {
+          "file": "en-mobile-light/editor-device-mobile.png",
+          "sha256": "d9a14db5ceaf43468994b0531a010d248864ddce6192786b9e8ed4bc60094075"
+        },
+        {
+          "file": "en-mobile-light/editor-device-desktop.png",
+          "sha256": "a9646a2ce548a791c5b5b3a9cb8cbe6d08b4b69eae124c7fdd489f7eb7e8760f"
+        },
+        {
+          "file": "en-mobile-light/editor-language-en.png",
+          "sha256": "f9065df055b0c26f5fb02d4edd1a066aa773a166a9b19491b7db67be4f3ad042"
+        },
+        {
+          "file": "en-mobile-light/editor-language-ar.png",
+          "sha256": "39060a9aefebc3bfc6c3525d4e5fabf6b4bb5c5c73e030a5e1bc79ddea52aa70"
+        },
+        {
+          "file": "en-mobile-light/editor-library-tab-1.png",
+          "sha256": "e5c9cdb3ed8041695fee554a057561a91be72233ec1af68883a0a7c883b406f3"
+        },
+        {
+          "file": "en-mobile-light/editor-library-tab-2.png",
+          "sha256": "6496cfebcaa40bd2638047002a79d7d3ee1efd4a7a5c76f62dce23dc028a5047"
+        },
+        {
+          "file": "en-mobile-light/editor-properties-tab-1.png",
+          "sha256": "4b8f32483ee34305269c7860d805129e31697890f8c3d8021fefd4b4ff0841e5"
+        },
+        {
+          "file": "en-mobile-light/editor-properties-tab-2.png",
+          "sha256": "e67362195e5b1481e1ff95f36604c8c2ec54a67aedd4d4e7c67c8fc111df93b1"
+        },
+        {
+          "file": "en-mobile-light/editor-versions-tab-1.png",
+          "sha256": "80a5a87c8b52c88e273fd46544fbc5f8f93391f7e62a450c4530b321cc3a2811"
+        },
+        {
+          "file": "en-mobile-light/editor-versions-tab-2.png",
+          "sha256": "adddd772de5869c4bb0c4fae61428636e69929f2ab96466c57147d0ce5744846"
+        },
+        {
+          "file": "en-mobile-light/editor-templates-tab-1.png",
+          "sha256": "6dc62d8b2a217952eff86e556e68baf3d799445e7b6c08fa6c16b565e3708aba"
+        },
+        {
+          "file": "en-mobile-light/editor-templates-tab-2.png",
+          "sha256": "6ee9d04ce294d5740baf8ef7f300a0cea30f66ad7fee189e7a7ca70899689a3c"
+        },
+        {
+          "file": "en-mobile-light/editor-templates-tab-3.png",
+          "sha256": "71c4837e1df82db5535a6ffc9118507e9c83635c221b8b25dfa1fc72bddd0dad"
+        },
+        {
+          "file": "en-mobile-light/editor-preview.png",
+          "sha256": "e6a04e2432582d6fa9c9c1c70775ec43c1ecbf10ab76d414c7e039705c24ef58"
+        },
+        {
+          "file": "en-mobile-light/preview-device-tablet.png",
+          "sha256": "13213831d93e27c303ab344de99e2b24d016f189bfc3d94024b8b4a0c947828b"
+        },
+        {
+          "file": "en-mobile-light/preview-device-mobile.png",
+          "sha256": "7220e85b897547e1b449701634bef5ee5b32f4497f44530f8361fe54bbbd3438"
+        },
+        {
+          "file": "en-mobile-light/preview-device-desktop.png",
+          "sha256": "c3b9d7f9299d1c9828386f667f15b9bbefa81027b616eca3d48ba9c93ad88fc5"
+        },
+        {
+          "file": "en-mobile-light/account-dashboard.png",
+          "sha256": "878e60a899b93d5465fd5dfae363c5c172cbca6f70bdc77c07a72e3ba2395a4a"
+        },
+        {
+          "file": "en-mobile-light/account-requests.png",
+          "sha256": "8c02a32d66ddcac10ae4f63b5609edb67842c8dc85d2c76c048cd5c30981b26b"
+        },
+        {
+          "file": "en-mobile-light/account-requests-tab-1.png",
+          "sha256": "8c02a32d66ddcac10ae4f63b5609edb67842c8dc85d2c76c048cd5c30981b26b"
+        },
+        {
+          "file": "en-mobile-light/account-requests-tab-2.png",
+          "sha256": "5a0b4b053cc47fc5e194f4ab76e9eaa887a8e2732aa78ed5db6589daf33fba9f"
+        },
+        {
+          "file": "en-mobile-light/account-requests-tab-3.png",
+          "sha256": "e626a04bf0530ada7d7079c7ebaa0d4788f28191584a4472ed9301349437692e"
+        },
+        {
+          "file": "en-mobile-light/account-requests-tab-4.png",
+          "sha256": "ae0edb0a6668ef282ccd479312ddf4f259d29b3f2581c70259a623eb4f068e80"
+        },
+        {
+          "file": "en-mobile-light/account-requests-tab-5.png",
+          "sha256": "b19143254e16a6d6e4ddf3f1091023f44b7367fab366b466dc506d823b6777c5"
+        },
+        {
+          "file": "en-mobile-light/account-requests-tab-6.png",
+          "sha256": "2a35337b5a1b82880e678bf83f550f8067937ceb6989662ed5704ef35debf051"
+        },
+        {
+          "file": "en-mobile-light/account-requests-tab-7.png",
+          "sha256": "e52327851f2742ea68fd113fc924ae098819ab4be4a3d81e0d898d9d930a3a8d"
+        },
+        {
+          "file": "en-mobile-light/account-requests-tab-8.png",
+          "sha256": "1967a43a791c2ddc6930c4832c9bc260065ae82b057929a330c7037ab1c2f2a1"
+        },
+        {
+          "file": "en-mobile-light/account-requests-tab-9.png",
+          "sha256": "e560cdbb945e8ae1d983b6904445dfbaa1bef6c72004580c2358823409644e6d"
+        },
+        {
+          "file": "en-mobile-light/account-requests-new.png",
+          "sha256": "31bce027fa5fa24536a80f98babb7fd53b4d2b5131cc5106a37fa1d45eee4ec2"
+        },
+        {
+          "file": "en-mobile-light/account-inquiries.png",
+          "sha256": "0fb1df664ae68e9a7da44398c8643619ab703a7f3ec29a2fdb7911180939b7f5"
+        },
+        {
+          "file": "en-mobile-light/account-inquiries-tab-1.png",
+          "sha256": "0fb1df664ae68e9a7da44398c8643619ab703a7f3ec29a2fdb7911180939b7f5"
+        },
+        {
+          "file": "en-mobile-light/account-inquiries-tab-2.png",
+          "sha256": "d3317b1135ed077112509b2bea7b5b0003216c959df16cda35df8b72fc0f42b2"
+        },
+        {
+          "file": "en-mobile-light/account-inquiries-tab-3.png",
+          "sha256": "19c284e7614a99652d88bc739b60abf647bbe25e4f8c4d0468a4d7510b667e73"
+        },
+        {
+          "file": "en-mobile-light/account-inquiries-tab-4.png",
+          "sha256": "31dd430f855731e03f1aa7905687e156586ab189811af828436c7cad306a59bf"
+        },
+        {
+          "file": "en-mobile-light/account-inquiries-tab-5.png",
+          "sha256": "9149bcd6851d9de62062ff1b0aa70940e00851911d2a25aa21531e04ff072028"
+        },
+        {
+          "file": "en-mobile-light/account-inquiries-tab-6.png",
+          "sha256": "749df6e67f86be3010ae3f4dd1d5edfdb97fff8af174ed2c319752f762a11494"
+        },
+        {
+          "file": "en-mobile-light/account-inquiries-tab-7.png",
+          "sha256": "ae994f9be9991c754ee8553c4a818fb2e01345545a4cdf570f480e338f30ec82"
+        },
+        {
+          "file": "en-mobile-light/account-profile.png",
+          "sha256": "a63be39401c82c77fe4f5cebdf59d88bbac33c33502f6c95468a7090610187e9"
+        },
+        {
+          "file": "en-mobile-light/account-security.png",
+          "sha256": "f8542c85eebafe9f431de05a9ffc27eb29815d1f627c3988a088ac0ad7720c8b"
+        },
+        {
+          "file": "en-mobile-light/account-notifications.png",
+          "sha256": "99e9c7cd293f206668e4ec6d0097eb8568aa410cd6202f2c69d0c61dd57a8c1c"
+        },
+        {
+          "file": "en-mobile-light/account-request-detail.png",
+          "sha256": "767dd1f99379cf2356e0c5988f78f797a8ba498872d37bc1b35e8b104f1ce138"
+        },
+        {
+          "file": "en-mobile-light/account-inquiry-detail.png",
+          "sha256": "50e66307eaa5aaf1335e20f0be1997babd394050c0bb9ef260eef593b7d16d24"
+        },
+        {
+          "file": "en-mobile-light/public-home.png",
+          "sha256": "73d3efc11238bf272c36e2db00f85ade3b0d427cf338d646459496b7b7067c7a"
+        },
+        {
+          "file": "en-mobile-light/public-about.png",
+          "sha256": "6c5e7eb69fa62951b15bcdbee500def8ab01220787843ab9f3fecc423ec551a9"
+        },
+        {
+          "file": "en-mobile-light/public-services.png",
+          "sha256": "e852ead2f31cf83f577b6325c3c8095d8e8a72483d22b302c91c6aba9b7cb56d"
+        },
+        {
+          "file": "en-mobile-light/public-works.png",
+          "sha256": "6cafa00dee8030b4cead923b5c0e1ecbfc87fa9b00434c324506ca3ac9849f6a"
+        },
+        {
+          "file": "en-mobile-light/public-process.png",
+          "sha256": "d3976129038ea50aef2ec323a68ef5b6ad8976067bb959af4557521e8b992c83"
+        },
+        {
+          "file": "en-mobile-light/public-faq.png",
+          "sha256": "e35b0047883f5325e09aa55498281afb4317eb7e0506f3ec6a629e3dca86e5cd"
+        },
+        {
+          "file": "en-mobile-light/public-contact.png",
+          "sha256": "0be3ec7a27c618ae71227835fa2881328c565a95a277b403d8ba1d1b66737c82"
+        },
+        {
+          "file": "en-mobile-light/public-track.png",
+          "sha256": "b5e7090c5c5cdc358a0ae0dddf907912c96410c3cb931dae1ffa5f5a91aed732"
+        },
+        {
+          "file": "en-mobile-light/published-surfaces.png",
+          "sha256": "1cf4b819449544e2e8c4bc49e986e282b154e79ad5bf8342bba58fcd727c5def"
+        },
+        {
+          "file": "en-mobile-light/published-tablet-surfaces.png",
+          "sha256": "02f2c7e18c800b091689e9595fd391dc5231cf9e167a084464268eeddeae8b17"
+        },
+        {
+          "file": "en-mobile-light/published-all-block-types.png",
+          "sha256": "8e58f187f036e59b235bd746f844ff9e421e62514f439e159d65fbac83c1fe6e"
+        },
+        {
+          "file": "en-mobile-light/not-found-client-navigation.png",
+          "sha256": "7b38e23002f2328567552ac2bb8b8450b18d24fbf1624088702606d3ebbbe525"
+        },
+        {
+          "file": "en-mobile-light/auth-login.png",
+          "sha256": "b7959f655229e29b85cb97670f6c2d5488652be3accf23bfa321374de600b0d0"
+        },
+        {
+          "file": "en-mobile-light/auth-register.png",
+          "sha256": "f3d664656559b05b41f2d2bbf1b53a19e0ad77bc6068e19ac8b1000ea87a4577"
+        },
+        {
+          "file": "en-mobile-light/auth-forgot-password.png",
+          "sha256": "c0c9eaa2bf60901abbc9e44a37135cb939e472f69e481f0dafa8a3122c051fac"
+        },
+        {
+          "file": "en-mobile-light/auth-reset-password.png",
+          "sha256": "ec822d4f26b136c14d304e5af8c6e46ac96e583f0fb533c371ebde16c1674a98"
+        },
+        {
+          "file": "en-mobile-light/auth-invite.png",
+          "sha256": "84035ba1140e95e18ad6ba8970a90e5f322f80f1defe25487b0c0b451eee19c4"
+        },
+        {
+          "file": "en-mobile-light/auth-verified.png",
+          "sha256": "97ddf3a58ea20819081adb22585c563823d56591bbb4abe18d0e99d96eed7a6a"
+        },
+        {
+          "file": "en-mobile-light/not-found.png",
+          "sha256": "7b38e23002f2328567552ac2bb8b8450b18d24fbf1624088702606d3ebbbe525"
+        }
+      ]
+    },
+    {
+      "sourceRevision": "e36746c165df9aba3148df3d9d17ff13c9d4094f",
+      "locale": "en",
+      "mode": "dark",
+      "viewport": "mobile",
+      "visited": [
+        "admin-dashboard",
+        "admin-users",
+        "admin-roles",
+        "admin-permissions",
+        "admin-invitations",
+        "admin-requests",
+        "admin-inquiries",
+        "admin-notifications",
+        "admin-pages",
+        "admin-media",
+        "admin-menus",
+        "admin-menus-tab-1",
+        "admin-menus-tab-2",
+        "admin-workflows",
+        "admin-settings",
+        "admin-diagnostics",
+        "admin-audit",
+        "admin-outbox",
+        "settings-identity",
+        "settings-appearance",
+        "settings-contact",
+        "settings-sharing",
+        "settings-announcement",
+        "settings-tracking",
+        "audit-events",
+        "audit-reports",
+        "audit-reviews",
+        "audit-alerts",
+        "audit-rules",
+        "audit-health",
+        "workflows-workflows",
+        "workflows-teams",
+        "workflows-business-hours",
+        "workflows-transfer-conversations",
+        "admin-user-detail",
+        "admin-request-detail",
+        "admin-request-detail-tab-1",
+        "admin-request-detail-tab-2",
+        "admin-inquiry-detail",
+        "admin-inquiry-detail-tab-1",
+        "admin-inquiry-detail-tab-2",
+        "editor",
+        "editor-device-tablet",
+        "editor-device-mobile",
+        "editor-device-desktop",
+        "editor-language-en",
+        "editor-language-ar",
+        "editor-library-tab-1",
+        "editor-library-tab-2",
+        "editor-properties-tab-1",
+        "editor-properties-tab-2",
+        "editor-versions-tab-1",
+        "editor-versions-tab-2",
+        "editor-templates-tab-1",
+        "editor-templates-tab-2",
+        "editor-templates-tab-3",
+        "editor-preview",
+        "preview-device-tablet",
+        "preview-device-mobile",
+        "preview-device-desktop",
+        "account-dashboard",
+        "account-requests",
+        "account-requests-tab-1",
+        "account-requests-tab-2",
+        "account-requests-tab-3",
+        "account-requests-tab-4",
+        "account-requests-tab-5",
+        "account-requests-tab-6",
+        "account-requests-tab-7",
+        "account-requests-tab-8",
+        "account-requests-tab-9",
+        "account-requests-new",
+        "account-inquiries",
+        "account-inquiries-tab-1",
+        "account-inquiries-tab-2",
+        "account-inquiries-tab-3",
+        "account-inquiries-tab-4",
+        "account-inquiries-tab-5",
+        "account-inquiries-tab-6",
+        "account-inquiries-tab-7",
+        "account-profile",
+        "account-security",
+        "account-notifications",
+        "account-request-detail",
+        "account-inquiry-detail",
+        "public-home",
+        "public-about",
+        "public-services",
+        "public-works",
+        "public-process",
+        "public-faq",
+        "public-contact",
+        "public-track",
+        "published-surfaces",
+        "published-tablet-surfaces",
+        "published-all-block-types",
+        "not-found-client-navigation",
+        "auth-login",
+        "auth-register",
+        "auth-forgot-password",
+        "auth-reset-password",
+        "auth-invite",
+        "auth-verified",
+        "not-found"
+      ],
+      "errors": [],
+      "assertionErrors": [],
+      "blockTypes": [
+        "hero",
+        "servicesGrid",
+        "featureGrid",
+        "worksShowcase",
+        "processSteps",
+        "faqSection",
+        "ctaSection",
+        "pageHeader",
+        "richText",
+        "visionMission",
+        "numberedValues",
+        "numberedList",
+        "navCtaBanner",
+        "servicesDetail",
+        "worksFull",
+        "processFull",
+        "requestForm",
+        "contactInfo",
+        "heading",
+        "text",
+        "image",
+        "gallery",
+        "buttonLink",
+        "columns",
+        "simpleTable",
+        "divider",
+        "spacer",
+        "section",
+        "container",
+        "row",
+        "column"
+      ],
+      "screenshots": [
+        {
+          "file": "en-mobile-dark/admin-dashboard.png",
+          "sha256": "29da56769fd15dbe4e74109b4b879112ca8123e2e057ce800382f4770c64248b"
+        },
+        {
+          "file": "en-mobile-dark/admin-users.png",
+          "sha256": "a5e974c1943600529bfa113af0efa8b714b2d71839e8f563fb6bcc6528739a28"
+        },
+        {
+          "file": "en-mobile-dark/admin-roles.png",
+          "sha256": "7c600a77c62c5053875ba3964539051405f5576917b825a5f53fd59f84f3c0be"
+        },
+        {
+          "file": "en-mobile-dark/admin-permissions.png",
+          "sha256": "1274fc3a936ff226bfeb5889a187ffa06e1984bed9c91d47151b72262b4919d2"
+        },
+        {
+          "file": "en-mobile-dark/admin-invitations.png",
+          "sha256": "2818b39c8df3e27612d4d9a031eb0a5ec6a239886d9a4ba03f90cea05df9d1be"
+        },
+        {
+          "file": "en-mobile-dark/admin-requests.png",
+          "sha256": "54115096052ba01a7b9090f2369d2a06c84d796ec64c26d35b84a6ceaecee993"
+        },
+        {
+          "file": "en-mobile-dark/admin-inquiries.png",
+          "sha256": "64a325c1059cd165ced647da9b9312c4e7bb8b7da17425d11d68af679d928b72"
+        },
+        {
+          "file": "en-mobile-dark/admin-notifications.png",
+          "sha256": "bea1507f316327b9dc8549e0d3539f22462704328d75d06f0745e18bf094564c"
+        },
+        {
+          "file": "en-mobile-dark/admin-pages.png",
+          "sha256": "9fb46a06b418a5a0829507757f2ea90a4fc5643c7865d867879784eaf223a451"
+        },
+        {
+          "file": "en-mobile-dark/admin-media.png",
+          "sha256": "653852427087c0e0b0ab14d54577018fac3d831df49e09dd92f795f3f8ad59cd"
+        },
+        {
+          "file": "en-mobile-dark/admin-menus.png",
+          "sha256": "a1df28e65f404b5d8a0cc4f5f7e2ede9066708b71a49c103ba948e19eeae41de"
+        },
+        {
+          "file": "en-mobile-dark/admin-menus-tab-1.png",
+          "sha256": "9e742ac50767b8004b303948e1293ab481c2ebb38b83929fcf611b49b40d0398"
+        },
+        {
+          "file": "en-mobile-dark/admin-menus-tab-2.png",
+          "sha256": "5cfd9c09c318337f02e96f6b89c18488edd5415c6f58d2695c297c43fabd6789"
+        },
+        {
+          "file": "en-mobile-dark/admin-workflows.png",
+          "sha256": "95371e26b3f784fa13629b80b43e1e48f66719252d5832c2f263618254f23511"
+        },
+        {
+          "file": "en-mobile-dark/admin-settings.png",
+          "sha256": "c26dc896e33e25384c97727e7471fbb596ae6b1be79871bf3d4a867803366234"
+        },
+        {
+          "file": "en-mobile-dark/admin-diagnostics.png",
+          "sha256": "026443e17f47caa6abf39474cf0b33a1244a14a8df4e1da4f42f252fda7ff6b9"
+        },
+        {
+          "file": "en-mobile-dark/admin-audit.png",
+          "sha256": "d0c59c1f377ac362e7a6a0c777eb90a08f6b23767b3d844630bf9091ea0af002"
+        },
+        {
+          "file": "en-mobile-dark/admin-outbox.png",
+          "sha256": "25263463b6ffde45b7fd524f3898112dc875ac5d56f6d32f7ed9b7c46b1218f7"
+        },
+        {
+          "file": "en-mobile-dark/settings-identity.png",
+          "sha256": "c26dc896e33e25384c97727e7471fbb596ae6b1be79871bf3d4a867803366234"
+        },
+        {
+          "file": "en-mobile-dark/settings-appearance.png",
+          "sha256": "31e6eb5b1c5c5be10d4882813af6e1c807822b5b8a5f1024ba5154afaaed6ea9"
+        },
+        {
+          "file": "en-mobile-dark/settings-contact.png",
+          "sha256": "ba966fa4c81b72ae11cad8a164d775b3086350fc6d1d2662a7468d783c0e5437"
+        },
+        {
+          "file": "en-mobile-dark/settings-sharing.png",
+          "sha256": "de85eabe6a237884f3fb044609a8ef8cf6373b0755c1bbde0b895303ac741081"
+        },
+        {
+          "file": "en-mobile-dark/settings-announcement.png",
+          "sha256": "9a700dbc4337729e83923eb9c2416472f8dc2170aa7292f0c0dd4ab1470a48c9"
+        },
+        {
+          "file": "en-mobile-dark/settings-tracking.png",
+          "sha256": "31c6e1bcd47bee6195ff1d4e1a976de560645dee399da53d7b4204167180aa9e"
+        },
+        {
+          "file": "en-mobile-dark/audit-events.png",
+          "sha256": "c62485f51e5664fb17ec80ce30a8d504f413e3816c585e9d67b5de2219be00cf"
+        },
+        {
+          "file": "en-mobile-dark/audit-reports.png",
+          "sha256": "51c6f1db7406d9559b25d1fd0c4754d86f2f2eb797886d16a31a8a85300c1f7c"
+        },
+        {
+          "file": "en-mobile-dark/audit-reviews.png",
+          "sha256": "9c3b9a917ceb5a4f00b4fb0565c08849d07a0cabcad76b925132bbc3ea120b6d"
+        },
+        {
+          "file": "en-mobile-dark/audit-alerts.png",
+          "sha256": "4828cabc3b3e90ceffa6026c8d4ee15f62d26d4870795284baf67afbcca5616e"
+        },
+        {
+          "file": "en-mobile-dark/audit-rules.png",
+          "sha256": "3e77f988999c5845ae7f28ed05bb60162855a11407dd2fe4010581bda84220da"
+        },
+        {
+          "file": "en-mobile-dark/audit-health.png",
+          "sha256": "a9c52c3ef76fab7ed8e1516aabe077cef4b138f2034bc8857fb4295b196940d0"
+        },
+        {
+          "file": "en-mobile-dark/workflows-workflows.png",
+          "sha256": "7058546f07dedcfb251f6dc6dc07f8ef88c50a5f09efbfe909f16e2030faa205"
+        },
+        {
+          "file": "en-mobile-dark/workflows-teams.png",
+          "sha256": "b3fa585822a304e804019706db303654fa0ad3efe219155a89c5cf255c32e6ce"
+        },
+        {
+          "file": "en-mobile-dark/workflows-business-hours.png",
+          "sha256": "2449deee3879df1d35d15007f26c9341758e93c7184589e753b25b98f53f8504"
+        },
+        {
+          "file": "en-mobile-dark/workflows-transfer-conversations.png",
+          "sha256": "9984701f1df94beaa6f8b34774c0f5c7db4bc386b9d199583abcd06ca2c1583e"
+        },
+        {
+          "file": "en-mobile-dark/admin-user-detail.png",
+          "sha256": "950809b92188901daf5cef1ca791047e089b7780ce81f592c5496e71e6a1da79"
+        },
+        {
+          "file": "en-mobile-dark/admin-request-detail.png",
+          "sha256": "74e0b083b5fd00a77fe325e52a6640d1aa681091ff5ad7eea90560feb07ad0fb"
+        },
+        {
+          "file": "en-mobile-dark/admin-request-detail-tab-1.png",
+          "sha256": "3bbb16f0960c076b8f9c8f540db716ae3e0e44a41d4f92b7169bccb8fb0af5ad"
+        },
+        {
+          "file": "en-mobile-dark/admin-request-detail-tab-2.png",
+          "sha256": "3fc4f499fb29212702020eeb83d65164fcf3866a8afafc8b1f5a6f6bdcf19c07"
+        },
+        {
+          "file": "en-mobile-dark/admin-inquiry-detail.png",
+          "sha256": "b8484781f2b2434f37105a1f8368ab0e73285a0c93e447bdcb9d449bcb7d2d01"
+        },
+        {
+          "file": "en-mobile-dark/admin-inquiry-detail-tab-1.png",
+          "sha256": "96f12fcfb04cac4b25a66879e32b999fdad0a90c2aa4071ef60a78aa43fe0ce9"
+        },
+        {
+          "file": "en-mobile-dark/admin-inquiry-detail-tab-2.png",
+          "sha256": "29d1ff3608c99e7c899fcd202efa226a22f31eebd30cd46cf847b1b83f77c428"
+        },
+        {
+          "file": "en-mobile-dark/editor.png",
+          "sha256": "d750a4d6898db36ed74c3dd95d84fce97d96529b28284a97a22a5b56f914f1ae"
+        },
+        {
+          "file": "en-mobile-dark/editor-device-tablet.png",
+          "sha256": "4a1078c70a1c4965594435e19e3d36ff59129100d54ed72c6d7569998d295b2a"
+        },
+        {
+          "file": "en-mobile-dark/editor-device-mobile.png",
+          "sha256": "8a2b3fabfe80219e1ba04ea00d66a9a417d0e80356993b1e334e811ca39e0d67"
+        },
+        {
+          "file": "en-mobile-dark/editor-device-desktop.png",
+          "sha256": "dd6c04786a1d17e2dc924593669512bfd2e66629ea42ff67928730830c9f78ae"
+        },
+        {
+          "file": "en-mobile-dark/editor-language-en.png",
+          "sha256": "36c94318dd65adb66654e60487299b76d8a866289583b2cb6e6756083f70e43e"
+        },
+        {
+          "file": "en-mobile-dark/editor-language-ar.png",
+          "sha256": "1744a6b073765877f384680d2fc945ad36ccb6af2d793e6080553a667be4e52a"
+        },
+        {
+          "file": "en-mobile-dark/editor-library-tab-1.png",
+          "sha256": "4eb1b275769588b80ba2b82bbe7618451e57c772e0c6770e3b5233ee62359683"
+        },
+        {
+          "file": "en-mobile-dark/editor-library-tab-2.png",
+          "sha256": "7496f26798acfcafe49deea65621b0e33fe9ba4610b81f304b8a88c357e58d7d"
+        },
+        {
+          "file": "en-mobile-dark/editor-properties-tab-1.png",
+          "sha256": "33aae9d586b95b75fa38e23cbfce81114ae390c218079713a7239f415a229f3c"
+        },
+        {
+          "file": "en-mobile-dark/editor-properties-tab-2.png",
+          "sha256": "8be12fe207ccb8dd27f72bfc0a181d302f79fdd8880b8a451b061975c57c39a7"
+        },
+        {
+          "file": "en-mobile-dark/editor-versions-tab-1.png",
+          "sha256": "80c5ccce9fb4706c19c9cb152562b8e3375c41cd00ba0c02630c7031c83433a4"
+        },
+        {
+          "file": "en-mobile-dark/editor-versions-tab-2.png",
+          "sha256": "3296f56c8fa76909c4735224cd74e43d1702fc610ce57051017aadee9a582dfc"
+        },
+        {
+          "file": "en-mobile-dark/editor-templates-tab-1.png",
+          "sha256": "c66e38eee64cdaea1fd1af30952f1103084581311a6f91a6a7c5a89d26fd38f0"
+        },
+        {
+          "file": "en-mobile-dark/editor-templates-tab-2.png",
+          "sha256": "59a085b8a03d4240d584e979773dd7da7aa1e0c117f17e61b63f6783fc09ca98"
+        },
+        {
+          "file": "en-mobile-dark/editor-templates-tab-3.png",
+          "sha256": "dd64506d9c164fab4999435ca84d5f7e311ddfacd16cb7e3d63cf51e787730ce"
+        },
+        {
+          "file": "en-mobile-dark/editor-preview.png",
+          "sha256": "c0eb70287c6979d725f5d6b89c1641d70de060939efe2d150d80fc6e50160b00"
+        },
+        {
+          "file": "en-mobile-dark/preview-device-tablet.png",
+          "sha256": "0f8212997ebe3958ce08abe0c36b77072d14fe4535bd93f06c2ca80b6616051a"
+        },
+        {
+          "file": "en-mobile-dark/preview-device-mobile.png",
+          "sha256": "1a97f3135c108f2ec712974d49de6202cb182c6d4d59c094f15835ede15e626a"
+        },
+        {
+          "file": "en-mobile-dark/preview-device-desktop.png",
+          "sha256": "732c87bf4ea0f09c5241b5e2e93230ebd4199933061977c6bf7c235109efc1b0"
+        },
+        {
+          "file": "en-mobile-dark/account-dashboard.png",
+          "sha256": "d0697e930070b19afe00d7d9efe85956597241629c37fdca64a96c5cbae9fcb6"
+        },
+        {
+          "file": "en-mobile-dark/account-requests.png",
+          "sha256": "c3ae303d7451536e0c259f6e2b5d6ab250eaafdc887ce07aa084da6f4c43473d"
+        },
+        {
+          "file": "en-mobile-dark/account-requests-tab-1.png",
+          "sha256": "c3ae303d7451536e0c259f6e2b5d6ab250eaafdc887ce07aa084da6f4c43473d"
+        },
+        {
+          "file": "en-mobile-dark/account-requests-tab-2.png",
+          "sha256": "bf3136367cf9c6ce9591bd31441f58884f33a0de1bf51cad837a3b73de62b945"
+        },
+        {
+          "file": "en-mobile-dark/account-requests-tab-3.png",
+          "sha256": "c6c4817b03f248ded691648e70b1f8bb8ffd3c692884a6e586f3aa082c20682c"
+        },
+        {
+          "file": "en-mobile-dark/account-requests-tab-4.png",
+          "sha256": "d63c7c9d95f4b496045b0f34ae9b6314fd06767433e2078eb5275d6c97bcaedd"
+        },
+        {
+          "file": "en-mobile-dark/account-requests-tab-5.png",
+          "sha256": "7e29b9b68924ad9a6e939321bed075e455207b6783b04663772b4d1e31bf0dab"
+        },
+        {
+          "file": "en-mobile-dark/account-requests-tab-6.png",
+          "sha256": "13d451164544bcdba99a974f61d992160b50b20f58621e3f61fc93afb9b82dfe"
+        },
+        {
+          "file": "en-mobile-dark/account-requests-tab-7.png",
+          "sha256": "35966f9d471294f9d805b9ee2f8734d24a5974a1a14ea6d75ab646b726aa05c0"
+        },
+        {
+          "file": "en-mobile-dark/account-requests-tab-8.png",
+          "sha256": "dff141a933236ed056135f780e6ac8dfd8606c348cebd61c7ccddd0fea9f8e45"
+        },
+        {
+          "file": "en-mobile-dark/account-requests-tab-9.png",
+          "sha256": "50bb60f36deeb17b6a769a0cb94a47e7d4b0dcd26c080103925f70d439143ae8"
+        },
+        {
+          "file": "en-mobile-dark/account-requests-new.png",
+          "sha256": "0cbf0ffb007d8246115ddc4017b88314e0533c250198ead2b8c9bd9c8e92161b"
+        },
+        {
+          "file": "en-mobile-dark/account-inquiries.png",
+          "sha256": "2477b9b6f1e6ed236efd88aa543cab66c4ea5044bbe7630483ed64ac87ebd355"
+        },
+        {
+          "file": "en-mobile-dark/account-inquiries-tab-1.png",
+          "sha256": "2477b9b6f1e6ed236efd88aa543cab66c4ea5044bbe7630483ed64ac87ebd355"
+        },
+        {
+          "file": "en-mobile-dark/account-inquiries-tab-2.png",
+          "sha256": "91ddee1091ebb1b8a459557d8f08fa7726cc9a4a1222f8bcb1008c0a4a4a74e5"
+        },
+        {
+          "file": "en-mobile-dark/account-inquiries-tab-3.png",
+          "sha256": "770b834711f6146eb1357ae1cb2be8e8750ffbd29a57448574c03e8a34680315"
+        },
+        {
+          "file": "en-mobile-dark/account-inquiries-tab-4.png",
+          "sha256": "061a4026bab0a48829b3163f464e4636103e3c51d39b30bf67b92ae6bd974051"
+        },
+        {
+          "file": "en-mobile-dark/account-inquiries-tab-5.png",
+          "sha256": "39f43e156ebad0d44a36b9075e2fa637a3e98f14995cdde1a80b6f2a1fbce0ca"
+        },
+        {
+          "file": "en-mobile-dark/account-inquiries-tab-6.png",
+          "sha256": "2b8b73c4d41e6fac40162c1baf69bf0a8e0548390e85c160b77d31714fbac2c6"
+        },
+        {
+          "file": "en-mobile-dark/account-inquiries-tab-7.png",
+          "sha256": "be2db2f25a0cbb57a09ba1f151cb3c6a87dc048ea2f22d5db9dfdf2554b7f0fa"
+        },
+        {
+          "file": "en-mobile-dark/account-profile.png",
+          "sha256": "6e10a263d8c926a527224794ef1baee4fcbbbc29aca560aec9dc8a2fd283b447"
+        },
+        {
+          "file": "en-mobile-dark/account-security.png",
+          "sha256": "0ecf41e06bd64743bb28d85be5a553b53d8d30107ec1b9eecd0443d68af9c344"
+        },
+        {
+          "file": "en-mobile-dark/account-notifications.png",
+          "sha256": "af240bbe383dfd6790ce2c7c8d3332eb38bc36ac2fb42f696720ad9aee2c2322"
+        },
+        {
+          "file": "en-mobile-dark/account-request-detail.png",
+          "sha256": "ebc745b2510c4f17b7f0d6010f3b22ffe467ec993a9c4bf0189b500d4c63955f"
+        },
+        {
+          "file": "en-mobile-dark/account-inquiry-detail.png",
+          "sha256": "24b09568cdf146a64a24a73431c4169f5fdb771cf63fefd527b15828b6ebcd74"
+        },
+        {
+          "file": "en-mobile-dark/public-home.png",
+          "sha256": "a4fed22ff691a63f3f25246df3e9f6d45a6d34ca9647349d058d059290c3b7f1"
+        },
+        {
+          "file": "en-mobile-dark/public-about.png",
+          "sha256": "f1b3f9b72b425afed0e60d4b753ee7dbe80cb9b946bb90d91cdd35c7bafdfffd"
+        },
+        {
+          "file": "en-mobile-dark/public-services.png",
+          "sha256": "0c7c93cba2b580623b421ead19bcd3619564407deb300ef2932aa88e3ee95da0"
+        },
+        {
+          "file": "en-mobile-dark/public-works.png",
+          "sha256": "763f6cef99267d431d6d1849c950471b40a31ae3b433dd8b8e87c2d3d48d829e"
+        },
+        {
+          "file": "en-mobile-dark/public-process.png",
+          "sha256": "0db4eedd71f0155bab01ba2b2313e97891d250f134c20b50282ac1c8aa2ddf6c"
+        },
+        {
+          "file": "en-mobile-dark/public-faq.png",
+          "sha256": "ab57185c1d9fa2a0613c080b94c20df06178c91aa32cc08564deea578a087226"
+        },
+        {
+          "file": "en-mobile-dark/public-contact.png",
+          "sha256": "5d8d3580aefb6822ff4374d52233043b3d1b36151b3f8c4817c5dbf322cd09e1"
+        },
+        {
+          "file": "en-mobile-dark/public-track.png",
+          "sha256": "d0e7d785f882bcf42ab0873d446be51cda73e7fe849fe36c49ec4e43d60bb1db"
+        },
+        {
+          "file": "en-mobile-dark/published-surfaces.png",
+          "sha256": "757c1188b965ddcd2ab7fdd128dc94d54ffc3877e6e27b621c895441a2a982d4"
+        },
+        {
+          "file": "en-mobile-dark/published-tablet-surfaces.png",
+          "sha256": "7bde4b2164cff95cde62087e4fce4a0fd984847523fd4f8ff2bb65ce5b7e5d64"
+        },
+        {
+          "file": "en-mobile-dark/published-all-block-types.png",
+          "sha256": "61c14d9f0ac6cb22724e4fd8f44199bf0e8d67e410e86a6c024a136a258e3912"
+        },
+        {
+          "file": "en-mobile-dark/not-found-client-navigation.png",
+          "sha256": "2604652aeccdbb9b2f3503e9abbd577ea1203800ec24e366321070ce3b41acc4"
+        },
+        {
+          "file": "en-mobile-dark/auth-login.png",
+          "sha256": "d1755e1716923a21004083f7ef91649f58302e3cf8f9eec1c4d988b1b49a5a8c"
+        },
+        {
+          "file": "en-mobile-dark/auth-register.png",
+          "sha256": "196b7018e284a8d34bd7b7b2f7d627993da12e906cb383a5dfd726406286ccd3"
+        },
+        {
+          "file": "en-mobile-dark/auth-forgot-password.png",
+          "sha256": "fc9a178487a676a5e2819d2e19fa28a28788d2bd100786356cc90df708bba48e"
+        },
+        {
+          "file": "en-mobile-dark/auth-reset-password.png",
+          "sha256": "bafe41155a274adff92124fbbaab61cdb04227e6e0e50c05470d0e76c95ec083"
+        },
+        {
+          "file": "en-mobile-dark/auth-invite.png",
+          "sha256": "839a8da2b14a35886f990ebd466118c87d859572c7d2f73c19f393eeb348effc"
+        },
+        {
+          "file": "en-mobile-dark/auth-verified.png",
+          "sha256": "b70bc7884ed8abcf325c8ec5aa5d30d3d629ddd2e40db80f499e4b9a3ff9e6a7"
+        },
+        {
+          "file": "en-mobile-dark/not-found.png",
+          "sha256": "2604652aeccdbb9b2f3503e9abbd577ea1203800ec24e366321070ce3b41acc4"
+        }
+      ]
+    }
+  ]
+}

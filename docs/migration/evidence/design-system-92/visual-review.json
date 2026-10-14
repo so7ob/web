@@ -1,0 +1,159 @@
+{
+  "sourceRevision": "e36746c165df9aba3148df3d9d17ff13c9d4094f",
+  "defaultWorkspaceCaptures": 32,
+  "matrix": {
+    "ar-desktop-light": {
+      "sheets": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "blocks": [
+        1
+      ],
+      "reviewedRevision": "9d28b41edf69992f7fb50c9ff709e19196882836"
+    },
+    "ar-desktop-dark": {
+      "sheets": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "blocks": [
+        1
+      ],
+      "reviewedRevision": "9d28b41edf69992f7fb50c9ff709e19196882836"
+    },
+    "en-desktop-light": {
+      "sheets": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "blocks": [
+        1
+      ],
+      "reviewedRevision": "9d28b41edf69992f7fb50c9ff709e19196882836"
+    },
+    "en-desktop-dark": {
+      "sheets": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "blocks": [
+        1
+      ],
+      "reviewedRevision": "f22cdf9620d7f055802f0c21b75fc3201f0d8c8d"
+    },
+    "ar-mobile-light": {
+      "sheets": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "blocks": [
+        1,
+        2
+      ],
+      "reviewedRevision": "f22cdf9620d7f055802f0c21b75fc3201f0d8c8d",
+      "correctionReview": {
+        "revision": "e36746c165df9aba3148df3d9d17ff13c9d4094f",
+        "view": "admin-user-detail",
+        "scope": "Fresh 375px capture and full-size top 1100px: heading/back action, wrapped email, navigation and first account controls; no page-width overflow."
+      }
+    },
+    "ar-mobile-dark": {
+      "sheets": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "blocks": [
+        1,
+        2
+      ],
+      "reviewedRevision": "f22cdf9620d7f055802f0c21b75fc3201f0d8c8d",
+      "correctionReview": {
+        "revision": "e36746c165df9aba3148df3d9d17ff13c9d4094f",
+        "view": "admin-user-detail",
+        "scope": "Fresh 375px capture and full-size top 1100px: heading/back action, wrapped email, navigation and first account controls; no page-width overflow."
+      }
+    },
+    "en-mobile-light": {
+      "sheets": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "blocks": [
+        1,
+        2
+      ],
+      "reviewedRevision": "f22cdf9620d7f055802f0c21b75fc3201f0d8c8d",
+      "correctionReview": {
+        "revision": "e36746c165df9aba3148df3d9d17ff13c9d4094f",
+        "view": "admin-user-detail",
+        "scope": "Fresh 375px capture and full-size top 1100px: heading/back action, wrapped email, navigation and first account controls; no page-width overflow."
+      }
+    },
+    "en-mobile-dark": {
+      "sheets": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "blocks": [
+        1,
+        2
+      ],
+      "reviewedRevision": "f22cdf9620d7f055802f0c21b75fc3201f0d8c8d",
+      "correctionReview": {
+        "revision": "e36746c165df9aba3148df3d9d17ff13c9d4094f",
+        "view": "admin-user-detail",
+        "scope": "Fresh 375px capture and full-size top 1100px: heading/back action, wrapped email, navigation and first account controls; no page-width overflow."
+      }
+    }
+  },
+  "notes": [
+    "Read full-size default users/settings/outbox/dashboard screenshots as well as contact sheets.",
+    "Desktop outbox long records and mobile empty feedback fixed before final source.",
+    "Settings preview has independent color mode; light preview in dark workspace is intentional.",
+    "Application source unchanged between 9d28b41 and f22cdf9; latter changes test trace settings, HTTP 5xx detection and documentation only. Desktop views reviewed on identical application source; EN/dark repeated after ENOSPC with successful detail controls.",
+    "Final e36746c matrix: all 8 x 104 views recaptured with zero runtime/assertion errors. Four mobile detail headings re-inspected after wrapping correction. Earlier complete contact-sheet and block-page reviews retain their original SHA above; final theme-control hydration protection does not alter the hydrated layout."
+  ],
+  "productRevision": "e36746c165df9aba3148df3d9d17ff13c9d4094f",
+  "finalCaptureRevision": "e36746c165df9aba3148df3d9d17ff13c9d4094f"
+}

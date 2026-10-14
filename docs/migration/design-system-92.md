@@ -48,9 +48,38 @@ The previous `34e1ef1` CI run finished with 278 passing and four failing browser
 
 Populated outbox review additionally revealed that long addresses and retry metadata forced a four-column table to scroll on desktop. Fixed column proportions and wrapping now keep it within the desktop workspace while retaining local mobile scrolling. The composition regression test asserts that desktop fit. Users/outbox empty feedback now lives outside the wide scrolling table, so its message remains centered and visible on mobile; the regression test exercises a real no-match user search and measures its bounds.
 
+The local full run at `9d28b41` encountered a host storage failure: MariaDB logged `ENOSPC` while creating temporary query data and growing the synthetic `DiagnosticEvent` table. The diagnostics test failed and request/inquiry detail captures showed the existing safe error feedback. This run was stopped (exit 143) after 155 passes and the diagnostics failure; it is not acceptance. The matrix now records unexpected HTTP 5xx responses in addition to runtime/hydration errors. Its full-page PNG evidence remains enabled; failure action traces omit duplicate screenshot/DOM snapshots to bound temporary storage. All functional, axe, geometry and palette assertions remain enabled. That failure required a fresh isolated full run. On the space-constrained local host, temporary action traces belonging to already completed passing matrix cases were removed after their pass was confirmed; review PNGs, coverage records and failure evidence were retained. No production database or server configuration was changed to conceal the failure.
+
+The subsequent full run at `f22cdf9` passed the functional journeys and desktop matrix, then exposed a real mobile layout defect: long email metadata beside the user-detail back action expanded the document. Shared page descriptions now allow long unbroken text to wrap. The administration composition test additionally sets an explicit long email on the isolated synthetic owner, visits the real detail screen, checks viewport containment and axe, and restores the original fixture value. This regression no longer depends on test ordering or earlier account edits. The old process ended with signal/exit 143 before its final reporter completed, so the four coverage violations are retained as failure evidence rather than a completed-suite result. The corrected eight-case composition suite passed before the final full rerun.
+
+The retained `f22cdf9` trace also records a desktop preference failure before the first dark selection applied. Reviewing that trace exposed an enabled server-rendered theme selector before its React handler was attached. The shared selector now stays disabled until hydration completes. The storage-unavailable regression deliberately gates the real entry script, verifies the server-rendered disabled state, then releases hydration and verifies the first selection, client navigation and system changes. The `ad25952` full run was deliberately stopped after 139 passing functional cases when this remaining race was identified; it is not acceptance.
+
+In the final local `e36746c` run, the Arabic desktop account journey encountered Chromium `net::ERR_TOO_MANY_RETRIES` for the generated CSS asset. Its trace records the stylesheet request failing, and its screenshot shows the unstyled page; axe correctly rejected the resulting undersized links. This is retained as a failed local case, not reclassified as passing. The local suite completed with 289 passes and this one failure (exit 1, no skipped or flaky cases). The unchanged affected account journey then passed independently against a fresh isolated database (1/1, exit 0). All eight local design-matrix journeys passed with 832 captures and zero runtime/HTTP/assertion errors. The independent exact-source CI run supplies full-suite acceptance: 290/290 browser tests passed without retries.
+
 ## Validation
 
-Final source revision and exit-code-backed results are recorded below after checks complete. Builds alone do not establish visual or functional acceptance.
+Product source: `e36746c165df9aba3148df3d9d17ff13c9d4094f`. Documentation/evidence-only commits are identified separately in the PR. Builds alone do not establish visual or functional acceptance.
+
+| Check | Local result at the product revision |
+|---|---|
+| `npm run lint` | Exit 0; ESLint and central-color/composition guard |
+| `npm run typecheck` | Exit 0 |
+| `npm test` | Exit 0; 939 tests in 55 files |
+| `npm run build` | Exit 0 |
+| `npm run test:independence` | Exit 0 |
+| `npm run test:infra` | Exit 0 |
+| `git diff --check` | Exit 0 |
+| Focused administration composition | 8/8 passed again in the final full suite, including explicit long-email detail regression; 32 AR/EN, light/dark, desktop/mobile captures |
+| Delayed-hydration theme regression | 2/2 passed; the unchanged test fails on the old enabled SSR control |
+| `npm run test:e2e` | Exit 1: 289 passed, 1 failed stylesheet-load case; unchanged case independently passed 1/1. Exact-source CI: 290/290 passed, exit 0 |
+
+Exact-source [CI run 38599256847](https://github.com/so7ob/web/actions/runs/38599256847) completed successfully on `e36746c165df9aba3148df3d9d17ff13c9d4094f`: 939 unit/integration tests and 290 browser tests, plus all required lint/typecheck/build/independence/infrastructure/diff checks. The workflow also passed its migration, restore, worker, auth, webhook and CMS boundary rehearsals. Its [design-system artifact](https://github.com/so7ob/web/actions/runs/38599256847/artifacts/11914639586) contains synthetic interface captures and coverage (30-day retention).
+
+The [evidence gallery](evidence/design-system-92/README.md), [coverage manifest](evidence/design-system-92/coverage.json), [validation record](evidence/design-system-92/validation.json) and [visual-review record](evidence/design-system-92/visual-review.json) preserve exact source revisions, results and image hashes. All eight final matrix journeys captured 104 views each, with zero runtime, unexpected HTTP 5xx, hydration, axe or layout assertion errors. Another 32 captures cover the shared administration composition with the default identity.
+
+Manual review covered every language/mode/viewport contact-sheet set and segmented published block pages; its original review revisions remain explicit. After the final text-wrapping correction, all four fresh mobile user-detail headings were re-inspected at full width. Hydration protection leaves the hydrated layout unchanged. The automated browser target is Chromium; these captures are review baselines, not pixel-difference tests or cross-browser certification. Settings preview mode remains intentionally independent.
+
+The final delivery commit only adds documentation and synthetic evidence after this verified product revision. Its automatically triggered CI run is separate; the successful run above must not be attributed to that later SHA.
 
 ## Delivery boundary and rollback
 
