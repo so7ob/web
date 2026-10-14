@@ -15,7 +15,9 @@ const palette = {
   'appearance.primaryDark':'#f9a8d4', 'appearance.accentDark':'#5eead4',
 };
 const rgb=(hex:string)=>'rgb('+[1,3,5].map(i=>parseInt(hex.slice(i,i+2),16)).join(', ')+')';
-test.use({contextOptions:{reducedMotion:'reduce'}});
+// Full-page review PNGs already capture every view. Keep action traces on failure
+// without duplicating hundreds of screenshots and DOM snapshots in temporary storage.
+test.use({contextOptions:{reducedMotion:'reduce'},trace:{mode:'retain-on-failure',screenshots:false,snapshots:false}});
 async function audit(page: Page, label: string) {
   await page.evaluate(()=>document.fonts.ready);
   expect.soft(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),label+' overflow').toBe(true);
@@ -44,6 +46,7 @@ for(const locale of ['ar','en'] as const)for(const mode of ['light','dark'] as c
   const db=await createDataSource().initialize(),id=prefix+'design'+randomBytes(4).toString('hex');
   const keys=Object.keys(palette),saved=await db.query('SELECT * FROM SiteSetting WHERE `key` IN (?,?,?,?)',keys);
   const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));page.on('console',m=>{if(m.type()==='error'&&/hydration|did not match|server rendered/i.test(m.text()))errors.push(m.text());});
+  page.on('response',response=>{if(response.status()>=500)errors.push(`HTTP ${response.status()} ${new URL(response.url()).pathname}`);});
   const {csrfToken}=await(await page.request.get('/api/auth/csrf')).json();
   expect((await page.request.post('/api/auth/callback/credentials',{form:{email:prefix+'admin@example.invalid',password,csrfToken,json:'true'}})).status()).toBe(200);
   const headers={'x-csrf-token':csrfToken};let pageId='';

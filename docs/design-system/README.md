@@ -33,7 +33,7 @@ CMS stored values are unchanged: `white` now means Surface (`bg-card surface-car
 
 ## Composition
 
-Use `PageHeader` + `PageTitle`, then section navigation, then the `Toolbar`, content and pagination. A heading must not be nested inside a button or another page header. Keep actions together at the logical end of the header.
+Use `PageHeading`, then section navigation, then the `Toolbar`, content and pagination. A heading must not be nested inside a button or another page header. Keep actions together in the heading action slot.
 
 Use `Panel` for content cards, `FormSection` for a labeled fieldset, `TableScroll` for raw tables, and the existing shared `Table` for composed tables. Scroll dense tables within their container; never hide columns or actions merely to fit the viewport. `NativeSelect` retains native option and keyboard behavior with shared control geometry. `Input`, `Textarea`, `Select`, `Button`, dialogs and feedback share the same tokens. Native checkbox/radio/range/progress accents use the primary token while keeping native semantics.
 
@@ -60,7 +60,6 @@ Lists use `ListWorkspace` for filters, locally scrolling results, feedback and p
 Administration section links and content tabs share an underline treatment. They keep distinct link/tab semantics. Settings use horizontal section navigation, an independent preview beside the form, and save/revert/default actions in the heading. No floating save bar covers form fields. Dashboard metrics use restrained identity accents and real values, without decorative animated stripes or invented trends.
 
 The structure follows the reusable list/form/workspace principle documented by [Frappe Desk](https://docs.frappe.io/framework/user/en/desk). [Odoo's search and filter guidance](https://www.odoo.com/documentation/saas-18.2/applications/essentials/search.html) also informs keeping list tools directly above results. These are adaptations to So7ob's existing React components, permissions, stored theme settings and Arabic/English layouts.
-
 
 Keep confirmed-only success, preserved form drafts, server authorization and uncertain-write recovery in their existing feature services. Presentation components do not retry writes or clear form state.
 
