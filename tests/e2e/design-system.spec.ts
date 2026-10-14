@@ -203,12 +203,13 @@ test('theme preference survives client navigation when browser storage is unavai
   await page.route(entry,async route=>{intercepted++;await gate;await route.continue();});
   try {
     await page.goto('/en',{waitUntil:'commit'});
-    const toggle=page.getByLabel('Color mode',{exact:true}).filter({visible:true});
-    await expect(toggle).toBeVisible();
-    await expect(toggle).toBeDisabled();
+    const toggles=page.getByLabel('Color mode',{exact:true});
+    await expect(toggles.first()).toBeAttached();
+    for(const toggle of await toggles.all())await expect(toggle).toBeDisabled();
     await expect.poll(()=>intercepted).toBeGreaterThan(0);
     release();
-    await expect(toggle).toBeEnabled();
+    await page.waitForLoadState('domcontentloaded');
+    await expect(toggles.filter({visible:true})).toBeEnabled();
   } finally {
     release();
     await page.unroute(entry);
