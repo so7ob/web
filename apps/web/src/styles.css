@@ -279,13 +279,10 @@ html { scroll-padding-block: 6rem 10rem; }
   :root { --duration-fast:0ms; --duration-normal:0ms; --duration-panel:0ms; }
 }
 
-.surface-emphasis :where(.bg-card, .bg-background) {
-  --foreground:var(--base-foreground); --navy:var(--base-foreground);
-  --muted-foreground:var(--base-muted-foreground);
-  --brand:var(--base-primary); --brand-strong:var(--base-brand-strong);
-  --primary:var(--base-primary); --primary-foreground:var(--base-primary-foreground);
-  --border:var(--base-border); color:var(--card-foreground);
-}
+/* Opaque nested surfaces reset their own content palette at utility priority.
+   Responsive surface-emphasis on the same element can still override this. */
+@utility bg-card { @apply surface-card; }
+@utility bg-background { @apply surface-card; }
 
 [data-slot="dropdown-menu-item"], [data-slot="dropdown-menu-checkbox-item"],
 [data-slot="dropdown-menu-radio-item"], [data-slot="select-item"] { min-height:2.75rem; }

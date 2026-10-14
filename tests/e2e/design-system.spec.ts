@@ -113,9 +113,10 @@ for(const locale of ['ar','en'] as const)for(const mode of ['light','dark'] as c
     const tree=JSON.stringify({schemaVersion:1,blocks:[
       {id:'surface',type:'section',props:{},style:{base:{background:'white',paddingY:'sm'},tablet:{background:'navy'},desktop:{background:'white'}},children:[{id:'surface-title',type:'heading',props:{text:'Synthetic surface — سطح متكيف',level:2}}]},
       {id:'leaf-surface',anchorId:'leaf-surface',type:'heading',props:{text:'Synthetic leaf — كتلة متكيفة',level:2},style:{base:{background:'white',paddingY:'sm'},tablet:{background:'navy'}}},
-      {id:'sparse-surface',anchorId:'sparse-surface',type:'section',props:{},style:{tablet:{background:'navy'}},children:[{id:'sparse-title',type:'heading',props:{text:'Synthetic device override — تجاوز الجهاز',level:2}}]},
+      {id:'sparse-surface',anchorId:'sparse-surface',type:'section',props:{},style:{tablet:{background:'navy'}},children:[{id:'sparse-title',type:'heading',props:{text:'Synthetic device override — تجاوز الجهاز',level:2}},{id:'nested-card',type:'simpleTable',props:{headers:['Synthetic card — بطاقة'],rows:[['Readable nested content — محتوى واضح']]}}]},
       {id:'emphasis',type:'section',props:{},style:{base:{background:'navy',paddingY:'sm'}},children:[{id:'emphasis-title',type:'heading',props:{text:'Synthetic emphasis — سطح بارز',level:2}}]},
     ]});
+    expect(validateContent(tree)).toMatchObject({ok:true});
     expect((await page.request.patch('/api/admin/pages/'+pageId,{headers,data:{baseRevision:0,draftBlocksAr:tree,draftBlocksEn:tree}})).status()).toBe(200);
     const detail=(await(await page.request.get('/api/admin/pages/'+pageId)).json()).page;
     expect((await page.request.post('/api/admin/pages/'+pageId+'/publish',{headers,data:{baseRevision:detail.draftRevision}})).status()).toBe(200);
@@ -145,6 +146,9 @@ for(const locale of ['ar','en'] as const)for(const mode of ['light','dark'] as c
     const viewport=page.viewportSize()!;await page.setViewportSize({width:768,height:900});
     await expect(surface).toHaveCSS('background-color',rgb(expected.emphasis));
     await expect(page.locator('#sparse-surface')).toHaveCSS('background-color',rgb(expected.emphasis));
+    await expect(page.locator('#sparse-surface .bg-card')).toHaveCSS('background-color',rgb(expected.card));
+    await expect(page.locator('#sparse-surface .bg-card th')).toHaveCSS('color',rgb(expected.foreground));
+    await capture('published-tablet-surfaces');
     await expect(page.locator('#leaf-surface')).toHaveCSS('background-color',rgb(expected.emphasis));
     await expect(page.locator('#leaf-surface h2')).toHaveCSS('color',rgb(expected['emphasis-foreground']));
     await page.setViewportSize(viewport);await expect(surface).toHaveCSS('background-color',rgb(expected.card));
