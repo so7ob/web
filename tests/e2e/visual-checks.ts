@@ -37,7 +37,12 @@ export class VisualReadiness {
     await expect.poll(() => this.pending.size, { intervals:[25,50,100] }).toBe(0);
     await expect(this.page.locator('main [data-slot="skeleton"], main[aria-busy="true"], main [aria-busy="true"]').filter({visible:true})).toHaveCount(0);
     await this.page.evaluate(() => document.fonts.ready);
-    await this.page.waitForFunction(() => Array.from(document.images).every(image => !image.getClientRects().length || image.complete));
+    await this.page.waitForFunction(() => Array.from(document.images).every(image => {
+      const rect=image.getBoundingClientRect();
+      // Native lazy loading intentionally leaves offscreen images pending.
+      // Wait for images visible in the current viewport, as the user sees them.
+      return !rect.width || !rect.height || rect.bottom<=0 || rect.top>=innerHeight || rect.right<=0 || rect.left>=innerWidth || image.complete;
+    }));
     await this.page.locator('body').evaluate(async root => {
       await Promise.all(root.getAnimations({subtree:true})
         .filter(animation => animation.effect?.getTiming().iterations !== Infinity)
