@@ -48,6 +48,8 @@ for (const locale of ["ar", "en"] as const)
           "Synthetic outbox subject with enough text to verify that long content wraps inside the desktop workspace without hiding the status column",
         ],
       );
+      const [owner] = await db.query("SELECT email FROM User WHERE id=?", [prefix + "owner"]);
+      const longEmail = "synthetic.user.with.an.intentionally.long.email.address.for.layout@example.invalid";
       let headingEdge: number | undefined;
       try {
         for (const path of ["users", "settings", "outbox", ""]) {
@@ -130,7 +132,21 @@ for (const locale of ["ar", "en"] as const)
             await expect(page.locator('[data-slot="table"]')).toBeVisible();
           }
         }
+        // Long identity metadata must wrap beside the back action on narrow screens.
+        await db.query("UPDATE User SET email=? WHERE id=?", [longEmail, prefix + "owner"]);
+        await page.goto(`/${locale}/admin/users/${prefix}owner`);
+        await page.waitForLoadState("networkidle");
+        await page.evaluate(() => document.fonts.ready);
+        await expect(page.locator(".ds-page-description")).toHaveText(longEmail);
+        expect(
+          await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth),
+          "long user email remains within the workspace",
+        ).toBe(true);
+        expect((await new AxeBuilder({ page })
+          .withTags(["wcag2a", "wcag2aa", "wcag21aa", "wcag22aa"])
+          .analyze()).violations).toEqual([]);
       } finally {
+        await db.query("UPDATE User SET email=? WHERE id=?", [owner.email, prefix + "owner"]);
         await db.query("DELETE FROM EmailLog WHERE id=?", [emailId]);
         await db.destroy();
       }
