@@ -24,6 +24,7 @@ import {
   closestCenter,
   pointerWithin,
   useDroppable,
+  useDndContext,
   useSensor,
   useSensors,
   type DragEndEvent,
@@ -365,6 +366,7 @@ function LayerRow({
   const hasChildren = Boolean(node.children?.length);
   const expanded = searching || forceOpen.has(node.id) || !collapsed.has(node.id);
   const selected = selectedId === node.id;
+  const { active } = useDndContext();
 
   const {
     attributes,
@@ -472,8 +474,9 @@ function LayerRow({
         {/* أزرار الصف — تظهر عند التحويم أو التحديد */}
         <div
           className={cn(
-            "hidden basis-full flex-wrap items-center justify-end gap-1 py-1 group-hover/row:flex group-focus-within/row:flex",
-            selected && "flex"
+            "hidden basis-full flex-wrap items-center justify-end gap-1 py-1",
+            !active && "group-hover/row:flex group-focus-within/row:flex",
+            !active && selected && "flex"
           )}
         >
           {deviceButtons.map((d) => {
