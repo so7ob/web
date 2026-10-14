@@ -51,7 +51,7 @@ Keep confirmed-only success, preserved form drafts, server authorization and unc
 
 ## Geometry and movement
 
-Spacing uses a 4/8px rhythm. Body text is 16px; tables and controls use 14px; supporting labels use at least 12px. `--space-panel` and `--space-section` support comfortable/compact density. Control targets remain at least 44px; changing density changes padding, not operability. Geometry follows the saved square/soft/round preference. Circular avatars and status dots retain their semantic shape.
+Spacing uses a 4/8px rhythm. Body text is 16px; tables and controls use 14px; supporting labels use the secondary text scale. `--space-panel` and `--space-section` support comfortable/compact density. Control targets remain at least 44px; changing density changes padding, not operability. Geometry follows the saved square/soft/round preference. Circular avatars and status dots retain their semantic shape.
 
 Motion uses 150ms for direct interaction, 200ms for tabs/menus and 250ms for dialogs/drawers/entry. Animate named properties, not `all`. `prefers-reduced-motion` removes nonessential movement. The hero illustration is static and adopts the current identity palette.
 

@@ -450,7 +450,7 @@ function NodeWrapper({
             onClick={() => onSelect(node.id)}
             aria-label={`${te.selectedBlock}: ${label}`}
             title={`${te.selectedBlock}: ${label}`}
-            className="absolute end-1 top-1 z-30 flex size-7 cursor-pointer items-center justify-center rounded-lg border border-border bg-card/90 text-muted-foreground shadow-sm transition-colors hover:bg-accent hover:text-navy focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
+            className="absolute end-1 top-1 z-30 flex size-11 cursor-pointer items-center justify-center rounded-lg border border-border bg-card/90 text-muted-foreground shadow-sm transition-colors hover:bg-accent hover:text-navy focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
           >
             <MousePointerClick className="size-3.5" aria-hidden="true" />
           </button>
@@ -534,8 +534,9 @@ function NodeWrapper({
       <div
         dir={uiLocale === "ar" ? "rtl" : "ltr"}
         inert={!selected}
+        data-editor-toolbar=""
         className={cn(
-          "absolute top-2 start-2 z-20 flex items-center gap-0.5 rounded-xl border border-border bg-card/95 p-1 shadow-md backdrop-blur transition-opacity",
+          "absolute top-2 start-2 z-20 flex max-w-[calc(100%-1rem)] flex-wrap items-center gap-0.5 rounded-xl border border-border bg-card/95 p-1 shadow-md backdrop-blur transition-opacity",
           selected ? "opacity-100" : "pointer-events-none opacity-0"
         )}
       >
@@ -549,7 +550,7 @@ function NodeWrapper({
           {...listeners}
           title={te.blocks}
           aria-label={te.blocks}
-          className="flex size-8 cursor-grab touch-none items-center justify-center rounded-lg text-muted-foreground transition-colors hover:bg-accent hover:text-brand-strong focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand active:cursor-grabbing"
+          className="flex size-11 cursor-grab touch-none items-center justify-center rounded-lg text-muted-foreground transition-colors hover:bg-accent hover:text-brand-strong focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand active:cursor-grabbing"
         >
           <GripVertical className="size-4" aria-hidden="true" />
         </button>
@@ -559,7 +560,7 @@ function NodeWrapper({
               type="button"
               title={te.addChild}
               aria-label={te.addChild}
-              className="flex size-8 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:bg-accent hover:text-brand-strong focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
+              className="flex size-11 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:bg-accent hover:text-brand-strong focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
             >
               <Plus className="size-4" aria-hidden="true" />
             </button>
@@ -572,7 +573,7 @@ function NodeWrapper({
             title={te.inlineEdit}
             aria-label={te.inlineEdit}
             className={cn(
-              "flex size-8 items-center justify-center rounded-lg transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand",
+              "flex size-11 items-center justify-center rounded-lg transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand",
               inlineEditing
                 ? "bg-brand text-on-brand"
                 : "text-muted-foreground hover:bg-accent hover:text-brand-strong"
@@ -587,7 +588,7 @@ function NodeWrapper({
           disabled={index === 0}
           title={te.moveUp}
           aria-label={te.moveUp}
-          className="flex size-8 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:bg-accent hover:text-brand-strong focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand disabled:pointer-events-none disabled:opacity-40"
+          className="flex size-11 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:bg-accent hover:text-brand-strong focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand disabled:pointer-events-none disabled:opacity-40"
         >
           <ArrowUp className="size-4" aria-hidden="true" />
         </button>
@@ -597,7 +598,7 @@ function NodeWrapper({
           disabled={index === total - 1}
           title={te.moveDown}
           aria-label={te.moveDown}
-          className="flex size-8 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:bg-accent hover:text-brand-strong focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand disabled:pointer-events-none disabled:opacity-40"
+          className="flex size-11 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:bg-accent hover:text-brand-strong focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand disabled:pointer-events-none disabled:opacity-40"
         >
           <ArrowDown className="size-4" aria-hidden="true" />
         </button>
@@ -607,7 +608,7 @@ function NodeWrapper({
           onClick={() => onDuplicate(node.id)}
           title={te.duplicate}
           aria-label={te.duplicate}
-          className="flex size-8 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:bg-accent hover:text-brand-strong focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
+          className="flex size-11 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:bg-accent hover:text-brand-strong focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
         >
           <Copy className="size-4" aria-hidden="true" />
         </button>
@@ -616,7 +617,7 @@ function NodeWrapper({
           onClick={() => onDelete(node.id)}
           title={te.delete}
           aria-label={te.delete}
-          className="flex size-8 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:bg-danger-soft hover:text-destructive focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-destructive"
+          className="flex size-11 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:bg-danger-soft hover:text-destructive focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-destructive"
         >
           <Trash2 className="size-4" aria-hidden="true" />
         </button>
