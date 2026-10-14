@@ -29,12 +29,15 @@ export class VisualReadiness {
     await this.page.waitForLoadState('domcontentloaded');
     await expect(this.page.locator('main').first()).toBeVisible();
     // Theme controls are disabled by SSR until their client effect is interactive.
-    const theme = this.page.locator('header select').filter({visible:true}).first();
-    if (await theme.count()) await expect(theme).toBeEnabled();
+    // Client navigation may replace this header with a route without controls.
+    // Wait for all currently visible disabled controls to disappear or hydrate,
+    // rather than hold a locator that the new route legitimately removes.
+    await expect(this.page.locator('header select:disabled').filter({visible:true})).toHaveCount(0);
     // Flush effects/paint so a new tab's fetch is observed, rather than wait 500ms
     // for every tab, dialog and screenshot regardless of application readiness.
     await this.page.evaluate(() => new Promise<void>(resolve => requestAnimationFrame(() => requestAnimationFrame(() => resolve()))));
     await expect.poll(() => this.pending.size, { intervals:[25,50,100] }).toBe(0);
+    await expect(this.page.locator('header select:disabled').filter({visible:true})).toHaveCount(0);
     await expect(this.page.locator('main [data-slot="skeleton"], main[aria-busy="true"], main [aria-busy="true"]').filter({visible:true})).toHaveCount(0);
     await this.page.evaluate(() => document.fonts.ready);
     await this.page.waitForFunction(() => Array.from(document.images).every(image => {

@@ -28,19 +28,22 @@ test('visual readiness waits for the real loading state and pending API response
   const requestStarted = new Promise<void>(resolve=>{started=resolve;});
   await page.route('**/api/readiness-synthetic', async route => {started();await held;await route.fulfill({json:{ok:true}});});
   try {
-    await page.setContent('<main><h1>Readiness fixture</h1><div data-slot="skeleton">Pending</div><img loading="lazy" style="position:absolute;top:10000px" width="100" height="100" alt="Offscreen synthetic image" src="/api/offscreen-synthetic-image"></main>');
+    await page.setContent('<header><select disabled><option>Synthetic hydration control</option></select></header><main><h1>Readiness fixture</h1><div data-slot="skeleton">Pending</div><img loading="lazy" style="position:absolute;top:10000px" width="100" height="100" alt="Offscreen synthetic image" src="/api/offscreen-synthetic-image"></main>');
     await page.evaluate(() => { void fetch('/api/readiness-synthetic'); });
     await requestStarted;
     let ready = false;
     const wait = readiness.wait().then(()=>{ready=true;});
     // There is a real in-flight response and a real loading element. No sleep/retry.
     await expect(page.locator('[data-slot="skeleton"]')).toBeVisible();
+    await page.evaluate(() => new Promise<void>(resolve=>requestAnimationFrame(()=>requestAnimationFrame(()=>resolve()))));
     expect(ready).toBe(false);
     const response=page.waitForResponse('**/api/readiness-synthetic');
     release();
     // Loading UI may outlive its response. Keep the readiness promise pending
     // through rendering turns until the application explicitly removes it.
     await response;
+    // A completed client navigation can remove its old hydration control.
+    await page.locator('header').evaluate(element=>element.remove());
     await page.evaluate(() => new Promise<void>(resolve=>requestAnimationFrame(()=>requestAnimationFrame(()=>resolve()))));
     expect(ready).toBe(false);
     await page.locator('[data-slot="skeleton"]').evaluate(element=>element.remove());

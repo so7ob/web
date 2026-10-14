@@ -7,6 +7,9 @@ export const domains = {
 };
 export const smoke = ['smoke.spec.ts', 'workflows.spec.ts'];
 export const design = ['design-system.spec.ts', 'accessibility-engine.spec.ts'];
+// Account contains authentication/session controls as well as request views.
+// Only known record views qualify for the narrower request-domain selection.
+const accountRequestViews = new Set(['requests-view.tsx','request-detail-view.tsx','inquiry-detail-view.tsx','inquiries-view.tsx','notifications-view.tsx','new-request-view.tsx','new-inquiry-dialog.tsx','dashboard.tsx','status-badge.tsx']);
 export const docsOnly = path => /^(README(?:\.en)?\.md|docs\/.+\.md)$/.test(path) && !Array.from(path).some(char=>char.charCodeAt(0)<32||char.charCodeAt(0)===127||char==='\\') && !path.split('/').includes('..');
 
 export function selectSuites(paths, specs, event = 'pull_request', base = 'develop') {
@@ -24,6 +27,8 @@ export function selectSuites(paths, specs, event = 'pull_request', base = 'devel
     if (/^(packages\/|apps\/api\/|apps\/worker\/|tests\/|tools\/|ops\/|\.github\/|\.agents\/)/.test(path)) return full('shared, server, security, database or test infrastructure changed');
     if (/^apps\/web\/src\/(components\/ui\/|lib\/|content\/|hooks\/|routing\/)/.test(path)) return full('shared UI, translation, permission or transport dependency changed');
     if (!/^apps\/web\/src\//.test(path)) return full('unknown or root configuration path');
+    if (path.startsWith('apps/web/src/components/account/') && !accountRequestViews.has(path.slice('apps/web/src/components/account/'.length)))
+      return full('account authentication, session, shared helper or unknown dependency changed');
     visual = true;
     if (/\/components\/(account|form|track)\//.test(path) || /\/components\/admin\/requests\//.test(path)) selected.add('requests');
     else if (/\/components\/admin\/workflows\//.test(path)) { /* workflows are mandatory smoke */ }

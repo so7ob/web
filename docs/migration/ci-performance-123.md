@@ -22,23 +22,27 @@ Primary baseline: [successful run 38645921669](https://github.com/so7ob/web/acti
 
 Slowest baseline files after design: account portal 114.0s, admin layout 89.8s, settings/appearance 88.2s, admin navigation 63.5s, identity management 56.2s, CSV download 47.5s, menus 42.5s, workflows 35.6s. These are serial sums across both projects, not parallel wall-clock estimates. Design represents about 47.7% of the baseline E2E step.
 
+The later documentation-only [run 38650995544](https://github.com/so7ob/web/actions/runs/38650995544) completed while this work was underway. It again passed all 294 cases, using **32m 29s** for E2E and **37m 49s** for the job despite having no application/test changes. Its design file summed approximately 904.8s; the next slowest files were account portal 99.3s, admin layout 77.1s, settings/appearance 73.7s and admin navigation 57.3s. The slowest individual cases were desktop EN light/dark (approximately 120s each), followed by desktop AR light/dark (approximately 114s each). This is a useful second baseline and demonstrates substantial runner variation even before optimization; the final comparison includes both runs rather than attributing their difference to this change.
+
 Before changing design behavior, an opt-in timer measured one actual `ar/light/desktop` case on this workstation against a freshly migrated isolated MariaDB. The after observation used the same workstation, tools, source application, matrix cell and fresh separate database. This is a single paired observation, not a statistical flakiness study or a claim about GitHub runner speed.
 
-| Local design case stage | Before | First optimized observation |
-| --- | ---: | ---: |
-| Complete measured case body | 132.527s | 83.101s |
-| Top-document axe, 104 scans | 73.200s | 43.133s |
-| Capture readiness, 104 calls | 29.958s | 12.013s |
-| Screenshots, 104 full-page PNGs | 12.578s | 12.807s |
-| Named page navigations, 53 calls | 4.880s | 4.997s |
-| Login, one independent session | 0.295s | 0.303s |
-| Preview axe, five independent preview documents | 2.173s | 1.501s |
+| Local design case stage | Before | First optimized observation | Final implementation `9d259f9` |
+| --- | ---: | ---: | ---: |
+| Complete measured case body | 132.527s | 83.101s | **88.129s** |
+| Top-document axe, 104 scans | 73.200s | 43.133s | 44.983s |
+| Capture readiness, 104 calls | 29.958s | 12.013s | 14.211s |
+| Screenshots, 104 full-page PNGs | 12.578s | 12.807s | 13.146s |
+| Named page navigations, 53 calls | 4.880s | 4.997s | 5.507s |
+| Login, one independent session | 0.295s | 0.303s | 0.327s |
+| Preview axe, five independent preview documents | 2.173s | 1.501s | 1.509s |
 
-The paired case reduced elapsed time by approximately 37.3%; screenshots and navigations were retained. Additional explicit visible-image and finite-animation readiness conditions were added after this first observation; final run profiles must be used for the final implementation's numbers. The TLS readiness timer measured 4.077s in a separate smoke run; the old GitHub log does not expose pure server startup separately from Playwright/configuration/global setup, so no old-server-startup improvement is claimed.
+The first observation reduced elapsed time by approximately 37.3%. The final implementation, with explicit image/animation conditions and the offscreen-image regression below, reduced it by **33.5%**, retaining all 104 views and 53 named navigations. Its five-case desktop AR/light matrix job passed in 1.8m. The final local run reused only the isolated synthetic database after fixture cleanup, with independent newly seeded identities/settings restored per case; hosted cells use fresh databases. The TLS readiness timer measured 4.077s in a separate smoke run and 3.232s in the final local design run; the old GitHub log does not expose pure server startup separately from Playwright/configuration/global setup, so no old-server-startup improvement is claimed.
 
 Final hosted before/after stages, complete coverage totals and the documentation-update experiment are recorded below after the corresponding runs complete. **The 5–10 minute target is not established by the local observation above.**
 
 Local raw evidence is ignored synthetic working data under `.migration/ci-performance/`: baseline job/log summaries, before/after per-stage profiles, coverage manifests and command logs. Committed expectations in `tests/e2e/fixtures/design-coverage.json` come from the successful pre-optimization design case. Its source test blob matches both baseline `develop` and the cited #107 CI revision.
+
+All eight successful coverage manifests were also read from the official baseline artifact `11933788555` using ZIP entry sizes/CRC checks. Every locale/theme/viewport cell exactly matches the frozen ordered 104 views and 31 block types, with no recorded browser or assertion errors.
 
 ## Changes to design checks
 
@@ -59,9 +63,9 @@ Local raw evidence is ignored synthetic working data under `.migration/ci-perfor
 | Auth, identity, authorization, server, contracts, database, shared UI/translation, infrastructure, scripts/config/test setup, unknown paths or new unclassified spec | required | complete | required | required |
 | PR into main, develop/main push, version tag, manual dispatch | required | complete | required | required |
 
-Selection uses the complete PR diff and conservative dependency groups. All server business services are full-suite triggers because they contain ownership/authorization as well as persistence. New files that cannot be confidently classified select full coverage. Multiple domain edits select the union. No test file is silently omitted because it is absent from an old domain list.
+Selection uses the complete PR diff and conservative dependency groups. All server business services are full-suite triggers because they contain ownership/authorization as well as persistence. Account security/profile/session controls, account shared helpers and unrecognized account components also select full coverage; only explicitly listed record views qualify for the request-domain shortcut. New files that cannot be confidently classified select full coverage. Multiple domain edits select the union. No test file is silently omitted because it is absent from an old domain list.
 
-Smoke has eight cases: real login, request creation/persistence, list/detail navigation and cross-owner denial, plus the existing real workflow editor/queue/transition journeys, for AR/EN × desktop/mobile. Full functional coverage uses four shards. The full design matrix uses eight isolated jobs (AR/EN × light/dark × 375/1280), with the existing preference/density cases and new axe/readiness parity cases assigned exactly once. All jobs keep `workers: 1` and conflicting cases inside a job remain serial.
+Smoke has eight cases: real login, request creation/persistence, list/detail navigation and cross-owner denial, plus the existing real workflow editor/queue/transition journeys, for AR/EN × desktop/mobile. Full functional coverage uses four shards. The full design matrix uses eight isolated jobs (AR/EN × light/dark × 375/1280), with the existing preference/density cases and new axe/readiness parity cases assigned exactly once. Up to eight design jobs may run concurrently; the first hosted observation used four and exposed a second wave of queued mobile cells despite complete VM/database isolation. All jobs keep `workers: 1` and conflicting cases inside a job remain serial.
 
 Each browser matrix job gets its own GitHub VM/workspace, MariaDB service and loopback server, independently seeded identities/quotas/settings/workflow bindings, TLS files and temporary upload directory. Only immutable compiled application artifacts are shared. No fixtures, cookie storage or runtime data are cached or copied between jobs. The identical database name in each job refers to different isolated database servers. Do not run these jobs concurrently in a shared local checkout/database.
 
@@ -91,6 +95,8 @@ The existing check name **Product lint, TypeScript, MariaDB tests and SSR build*
 
 No existing test is removed. Time is saved by lower execution overhead and safe parallelism, not fewer languages, themes, viewports, screenshots, accessibility rules or business assertions.
 
+The pre-change console catalog was compared with the new complete catalog by project, file and full nested test title: all **290 develop cases** remain, exactly four branch-only #107 cases are absent, and ten cases are added. Both local smoke projects also passed the same final exact-ID coverage gate: eight expected, eight passed (desktop 45.2s; mobile 40.4s).
+
 ## Running and measuring
 
 Use a freshly migrated isolated `so7ob_*_test` MariaDB and explicitly set its `DATABASE_HOST`, `DATABASE_NAME`, `DATABASE_USER` and synthetic `DATABASE_PASSWORD`. No production `.env`, mail worker or webhook destination is needed. Run one local environment at a time.
@@ -115,8 +121,14 @@ Before the first PR commit: 958 existing unit/integration tests passed in 57 fil
 
 Risks: conservative selection may run more tests than necessary; GitHub runner limits and cold caches can dominate wall time; eight matrix cells and additional isolated workspaces have setup/runner-minute costs. Reuse is deliberately stricter than content equivalence when the target base changes, and unavailable API/artifact evidence costs a full run. The single paired observation cannot establish absence of flakiness. Full CI results must disclose any failure and queue time rather than conceal it with retries or relaxed thresholds.
 
+During final local validation, an added image-readiness condition incorrectly waited for native lazy images outside the viewport; that attempt failed at the 96th capture. It was corrected to wait for images intersecting the viewport. The readiness regression now also requires success while an offscreen lazy image remains unloaded, and independently holds loading UI after its API response. The failed attempt is not counted as a successful performance measurement.
+
 Rollback is a normal revert of this independent PR: restore the former single-job workflow and capture helper. There are no product migrations or production-data changes. Do not change branch protection or merge the PR automatically.
 
 ## Completed hosted comparison
 
-Pending actual execution; no 5–10 minute gate or full-suite speed claim is made yet.
+The first complete optimized [run 38655206553](https://github.com/so7ob/web/actions/runs/38655206553), head `9d259f9`, **failed**: 299 browser cases passed and one mobile EN/light design case failed. A new readiness check bound a visible theme-control locator, then waited for that element after client navigation legitimately replaced the header with the 404 screen. The stable required aggregate gate also failed, demonstrating that a required matrix failure cannot produce a green result. No retry or skipped case was used.
+
+The corrected readiness condition waits until visible disabled controls hydrate **or are removed by the destination route**. Its regression removes an old disabled control during a held navigation response and keeps the destination loading UI visible afterward; all six local engine/readiness cases passed on desktop/mobile. Account security/session/shared paths were also explicitly promoted to full-suite selection, with negative selection cases; the eight fully isolated design cells can now run together instead of waiting in two groups of four. A new complete hosted run is required for these source/configuration changes.
+
+For the failed first observation only: total workflow elapsed was 12m47s, including waiting behind the superseded run. Build took 4m00s (87s cold dependency setup, 83s unit/integration, 9s compilation). The slowest functional shard took 7m12s, including 5m44s in Playwright; the other Playwright shard steps took 3m56s, 4m11s and 4m20s. Operational acceptance took 2m30s. These are diagnostic timings, **not a passing performance result**. A 5–10 minute ordinary PR gate remains unproven until a comparable passing measurement is available.

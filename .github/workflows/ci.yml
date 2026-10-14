@@ -344,7 +344,7 @@ jobs:
     runs-on: ubuntu-24.04
     strategy:
       fail-fast: false
-      max-parallel: 4
+      max-parallel: 8
       matrix:
         project: [desktop, mobile]
         locale: [ar, en]

@@ -24,7 +24,7 @@ test('CMS and workflow UI preserve their dependency closure and design matrix', 
   assert.equal(workflow.smoke,true); assert.equal(workflow.design,true);
 });
 test('permissions, shared modules, translation, configuration and unknown paths fail closed to full', () => {
-  for (const path of ['packages/contracts/src/permissions.ts','packages/server/src/business/requests.ts','apps/web/src/lib/auth/permissions.ts','apps/web/src/components/ui/button.tsx','apps/web/src/content/portal/ar.ts','apps/web/src/components/auth/login.tsx','playwright.config.ts','package-lock.json','new-unknown-file.xyz']) {
+  for (const path of ['packages/contracts/src/permissions.ts','packages/server/src/business/requests.ts','apps/web/src/lib/auth/permissions.ts','apps/web/src/components/ui/button.tsx','apps/web/src/content/portal/ar.ts','apps/web/src/components/auth/login.tsx','apps/web/src/components/account/security-view.tsx','apps/web/src/components/account/profile-form.tsx','apps/web/src/components/account/account-shell.tsx','apps/web/src/components/account/api.ts','apps/web/src/components/account/types.ts','apps/web/src/components/account/new-unknown-view.tsx','playwright.config.ts','package-lock.json','new-unknown-file.xyz']) {
     assert.equal(select([path]).mode,'full',path);
   }
   assert.equal(select([]).mode,'full');
