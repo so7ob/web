@@ -58,6 +58,9 @@ import type {
 } from "../types";
 import { cn } from "@/lib/utils";
 
+type AltEdit = { value: string; revision: number };
+type AltSave = { active: AltEdit; queued?: AltEdit };
+
 interface MediaClientProps {
   me: Me;
   locale: Locale;
@@ -93,8 +96,11 @@ export function MediaClient({ me, locale }: MediaClientProps) {
   } | null>(null);
   const [deleting, setDeleting] = useState(false);
   const [copiedId, setCopiedId] = useState<string | null>(null);
-  const [altEdits, setAltEdits] = useState<Record<string, string>>({});
-  const [savingAltId, setSavingAltId] = useState<string | null>(null);
+  const [altEdits, setAltEdits] = useState<Record<string, AltEdit>>({});
+  const altEditsRef = useRef<Record<string, AltEdit>>({});
+  const altRevision = useRef(0);
+  const altSaves = useRef(new Map<string, AltSave>());
+  const [savingAltIds, setSavingAltIds] = useState<Record<string, boolean>>({});
   const [movingFolderId, setMovingFolderId] = useState<string | null>(null);
 
   const mayUpload = can(me, "media.upload");
@@ -134,7 +140,6 @@ export function MediaClient({ me, locale }: MediaClientProps) {
   }, [load, reloadToken]);
 
   const reload = () => {
-    setAltEdits({});
     setReloadToken((v) => v + 1);
   };
 
@@ -170,18 +175,64 @@ export function MediaClient({ me, locale }: MediaClientProps) {
     }
   };
 
+  const editAlt = (id: string, value: string) => {
+    const edit = { value, revision: ++altRevision.current };
+    altEditsRef.current = { ...altEditsRef.current, [id]: edit };
+    setAltEdits((prev) => ({ ...prev, [id]: edit }));
+  };
+
   const saveAlt = async (item: MediaRow) => {
-    const value = altEdits[item.id];
-    if (value === undefined || value === (item.altText ?? "")) return;
-    setSavingAltId(item.id);
+    const edit = altEditsRef.current[item.id];
+    if (!edit) return;
+    const running = altSaves.current.get(item.id);
+    if (running) {
+      // Serialize this file's writes; a repeated blur of the same edit is a no-op.
+      if (edit.revision !== running.active.revision) running.queued = edit;
+      return;
+    }
+    if (edit.value === (item.altText ?? "")) return;
+    const job: AltSave = { active: edit };
+    altSaves.current.set(item.id, job);
+    setSavingAltIds((prev) => ({ ...prev, [item.id]: true }));
     try {
-      await apiSend(`/api/admin/media/${item.id}`, "PATCH", { altText: value });
-      toast.success(t.admin.users.saved);
-      reload();
-    } catch (err) {
-        toast.error(apiErrorMessage(err, t.auth.errors));
-      } finally {
-      setSavingAltId(null);
+      let nextEdit: AltEdit | undefined = edit;
+      while (nextEdit) {
+        job.active = nextEdit;
+        const submitted = nextEdit;
+        try {
+          const result = await apiSend<{ media: { altText: string | null } }>(
+            `/api/admin/media/${item.id}`, "PATCH", { altText: submitted.value },
+          );
+          // Only the confirmed file changes. Never reload and reset sibling drafts.
+          setData((prev) => prev ? { ...prev, media: prev.media.map(row =>
+            row.id === item.id ? { ...row, altText: result.media.altText } : row,
+          ) } : prev);
+          if (altEditsRef.current[item.id]?.revision === submitted.revision) {
+            const next = { ...altEditsRef.current };
+            delete next[item.id];
+            altEditsRef.current = next;
+          }
+          setAltEdits((prev) => {
+            if (prev[item.id]?.revision !== submitted.revision) return prev;
+            const next = { ...prev };
+            delete next[item.id];
+            return next;
+          });
+          toast.success(t.admin.users.saved);
+        } catch (err) {
+          // Retain the latest draft; a later blur can retry the failed save.
+          toast.error(apiErrorMessage(err, t.auth.errors));
+        }
+        nextEdit = job.queued;
+        job.queued = undefined;
+      }
+    } finally {
+      altSaves.current.delete(item.id);
+      setSavingAltIds((prev) => {
+        const next = { ...prev };
+        delete next[item.id];
+        return next;
+      });
     }
   };
 
@@ -525,20 +576,15 @@ export function MediaClient({ me, locale }: MediaClientProps) {
                 {mayManage ? (
                   <div className="grid gap-2">
                     <Input
-                      value={altEdits[item.id] ?? item.altText ?? ""}
-                      onChange={(e) =>
-                        setAltEdits((prev) => ({
-                          ...prev,
-                          [item.id]: e.target.value,
-                        }))
-                      }
+                      value={altEdits[item.id]?.value ?? item.altText ?? ""}
+                      onChange={(e) => editAlt(item.id, e.target.value)}
                       onBlur={() => saveAlt(item)}
                       placeholder={tmed.alt}
                       aria-label={`${tmed.alt} — ${item.filename}`}
                       maxLength={300}
                       className={cn(
                         "min-h-10 text-xs focus-visible:ring-2 focus-visible:ring-ring/40",
-                        savingAltId === item.id && "opacity-60",
+                        savingAltIds[item.id] && "opacity-60",
                       )}
                     />
                     <div className="flex items-center gap-2">
