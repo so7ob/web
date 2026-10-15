@@ -78,7 +78,7 @@ beforeAll(async () => {
   await db.initialize();
   await db.runMigrations();
   for (const role of SYSTEM_ROLES.filter((r) =>
-    ["client", "support"].includes(r.key),
+    ["client", "support", "super_admin"].includes(r.key),
   )) {
     if (
       !(await db.query("SELECT `key` FROM Role WHERE `key`=?", [role.key]))
@@ -95,6 +95,7 @@ beforeAll(async () => {
     ["owner", "client"],
     ["other", "client"],
     ["staff", "support"],
+    ["admin", "super_admin"],
   ])
     await db.query(
       "INSERT INTO User(id,email,name,passwordHash,roleKey,status) VALUES(?,?,?,?,?,'active')",
@@ -145,6 +146,8 @@ afterAll(async () => {
   await db.query("DELETE FROM RateLimitBucket WHERE bucketKey=?", [
     sha256("account-inquiry:" + actor.id),
   ]);
+  for (const suffix of ["staff", "admin"])
+    await db.query("DELETE FROM RateLimitBucket WHERE bucketKey=?", [sha256("account-inquiry:" + prefix + suffix)]);
   for (const value of ips)
     for (const bucket of [
       "request:" + fingerprint("ip:" + value),
@@ -431,6 +434,40 @@ describe("submissions and account data on actual MariaDB", () => {
       inquiriesService.message(actor, id, "Cannot reply"),
     ).rejects.toMatchObject({ status: 400, code: "closed" });
   });
+  for (const roleKey of ["client", "support", "super_admin"]) {
+    for (const locale of ["ar", "en"] as const) {
+      it(`keeps ${roleKey} inquiries owner-scoped in the ${locale} account portal`, async () => {
+        const suffix = roleKey === "client" ? "owner" : roleKey === "support" ? "staff" : "admin";
+        const owner: AuthUser = { ...actor, id: prefix + suffix, email: prefix + suffix + "@example.invalid", roleKey, locale,
+          permissions: SYSTEM_ROLES.find(r => r.key === roleKey)!.permissions };
+        const submitted = await service.inquiry({ subject: "Synthetic ownership " + roleKey + locale,
+          message: "Synthetic bilingual inquiry بيانات", locale }, owner, ip(roleKey + locale), true);
+        const id = submitted.id!;
+        const [stored] = await db.query("SELECT clientId,assigneeId FROM Inquiry WHERE id=?", [id]);
+        expect(stored).toMatchObject({ clientId: owner.id, assigneeId: null });
+        expect((await inquiriesService.list(owner, {})).inquiries.filter((r: {id:string}) => r.id === id)).toHaveLength(1);
+        for (let reload = 0; reload < 2; reload++) {
+          const detail = await new InquiryService(db).detail(owner, id);
+          expect(detail.inquiry.messages[0].body).toBe("Synthetic bilingual inquiry بيانات");
+        }
+        const noteId = prefix + roleKey + locale + "note";
+        await db.query("INSERT INTO InquiryMessage(id,inquiryId,authorId,authorType,kind,body) VALUES(?,?,?,'staff','internal_note','PRIVATE OWNER NOTE')", [noteId, id, staff.id]);
+        await db.query("INSERT INTO Attachment(id,filename,storedName,mimeType,size,inquiryId,messageId) VALUES(?,?,?,'text/plain',1,?,?)", [noteId, "private-owner.txt", noteId, id, noteId]);
+        expect(JSON.stringify(await inquiriesService.detail(owner, id))).not.toMatch(/PRIVATE OWNER NOTE|private-owner.txt/);
+        // Assignment does not confer ownership through the account API.
+        await db.query("UPDATE Inquiry SET assigneeId=? WHERE id=?", [other.id, id]);
+        const nonOwner = { ...other, permissions: SYSTEM_ROLES.find(r => r.key === "super_admin")!.permissions };
+        expect((await inquiriesService.list(nonOwner, {})).inquiries.some((r: {id:string}) => r.id === id)).toBe(false);
+        await expect(inquiriesService.detail(nonOwner, id)).rejects.toMatchObject({ status: 404 });
+        await expect(inquiriesService.message(nonOwner, id, "Forbidden response")).rejects.toMatchObject({ status: 404 });
+        await db.query("UPDATE Inquiry SET assigneeId=? WHERE id=?", [staff.id, id]);
+        const replies = await Promise.all(Array.from({length: 3}, () => inquiriesService.message(owner, id, "Synthetic concurrent owner reply")));
+        expect(replies.filter(r => r.status === 201)).toHaveLength(1);
+        expect(new Set(replies.map(r => r.result.message.id)).size).toBe(1);
+        expect((await db.query("SELECT id FROM Inquiry WHERE id=?", [id]))).toHaveLength(1);
+      });
+    }
+  }
   it("matches SQLite ASCII LIKE semantics on real MariaDB without accent folding", async () => {
     const subject = "AbC Café Äpfel a\\xb";
     const submitted = await service.inquiry(
