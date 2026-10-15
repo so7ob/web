@@ -4,7 +4,7 @@
 
 Base: `f3935f3ccfccbb205707619888c352aba68d1517` (develop fetched explicitly from `https://github.com/so7ob/web.git` on 2026-10-15). The restored checkout was clean and the remote develop head matched the snapshot. GitHub connector inspection found no open PRs and no assignees/comments on #102. The shell GitHub API returned Forbidden; repository reads and PR creation use the connected GitHub app instead. No work on #107/#122 or #123/#124 was repeated.
 
-Implementation and test source commit: `586ceaba07f52ee899784152a903e7dd69e921e9`. The subsequent evidence commit changes only this document; the PR's final head therefore contains these same tested source blobs. Runtime: Node 24.21.0, npm 10.8.2, Docker MariaDB 10.11.18 bound to loopback port 33102, fresh database `so7ob_issue102_test`. No worker, external mail, external webhook, production data or persistent credential was used.
+Implementation and test source commit: `586ceaba07f52ee899784152a903e7dd69e921e9`. The initial evidence commit changed only this document. A follow-up CI catalog correction described below preserves those same product and browser/integration test blobs. Runtime: Node 24.21.0, npm 10.8.2, Docker MariaDB 10.11.18 bound to loopback port 33102, fresh database `so7ob_issue102_test`. No worker, external mail, external webhook, production data or persistent credential was used.
 
 ## Reproduction and change
 
@@ -40,3 +40,7 @@ CI policy selects full coverage for this server/test change. GitHub Actions stat
 ## Risks and rollback
 
 The intended behavior change removes staff-assignment access through account inquiry endpoints; administrative endpoints remain the supported staff workspace. Custom-workflow browser journeys were not newly added; existing workflow integration coverage passed. No migration or data rewrite is required. Revert the implementation commit to restore the old endpoint behavior, which also restores the reported defect. Leave this PR Draft for the owner's review, CI and merge decision; do not merge or deploy automatically.
+
+## CI follow-up
+
+The first remote run [38662927613](https://github.com/so7ob/web/actions/runs/38662927613) failed in `npm run test:ci-policy` before product checks: the newly added browser spec was missing from the requests-domain catalog, causing the existing affected-selection assertion to receive `full`. This was reproduced locally (12 passed, 1 failed). Registering `account-inquiry-ownership` in the requests domain fixes the cause; an explicit assertion now requires its inclusion. All 13 policy/evidence/gate/documentation tests pass. No assertion or gate was weakened, and this PR still selects full coverage because it edits server code. Remote CI must be reassessed on the updated head.
