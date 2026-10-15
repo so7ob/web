@@ -77,6 +77,56 @@ for (const locale of ['ar', 'en'] as const) {
     await act(async () => b.resolve({ ok: true, media: { altText: 'Original one' } }));
     expect(first).toHaveValue('Original one');
   });
+  it(`${locale}: reconciles a stale list read across a confirmed save and preserves sibling drafts`, async () => {
+    const read = deferred();
+    get.mockResolvedValueOnce(structuredClone(fixture)).mockReturnValueOnce(read.promise);
+    send.mockResolvedValue({ ok: true, media: { altText: 'Confirmed after read started' } });
+    const { first, second } = await setup();
+    fireEvent.click(screen.getByRole('button', { name: 'general' }));
+    await waitFor(() => expect(get).toHaveBeenCalledTimes(2));
+    fireEvent.change(first, { target: { value: 'Confirmed after read started' } }); fireEvent.blur(first);
+    await waitFor(() => expect(success).toHaveBeenCalled());
+    fireEvent.change(second, { target: { value: 'Sibling draft through refresh' } });
+    await act(async () => read.resolve(structuredClone(fixture)));
+    expect(first).toHaveValue('Confirmed after read started');
+    expect(second).toHaveValue('Sibling draft through refresh');
+    // A later read really is fresh: do not permanently mask other editors' writes.
+    get.mockResolvedValue({ ...fixture, media: fixture.media.map(row => row.id === 'one' ? { ...row, altText: 'Fresh external value' } : row) });
+    fireEvent.click(screen.getByRole('button', { name: getPortalContent(locale).admin.media.allFolders }));
+    await waitFor(() => expect(first).toHaveValue('Fresh external value'));
+    expect(second).toHaveValue('Sibling draft through refresh');
+  });
+  it(`${locale}: preserves a newer draft and its confirmed baseline across a stale list read`, async () => {
+    const read = deferred();
+    get.mockResolvedValueOnce(structuredClone(fixture)).mockReturnValueOnce(read.promise);
+    send.mockResolvedValue({ ok: true, media: { altText: 'Confirmed value' } });
+    const { first } = await setup();
+    fireEvent.click(screen.getByRole('button', { name: 'general' }));
+    await waitFor(() => expect(get).toHaveBeenCalledTimes(2));
+    fireEvent.change(first, { target: { value: 'Confirmed value' } }); fireEvent.blur(first);
+    await waitFor(() => expect(success).toHaveBeenCalled());
+    fireEvent.change(first, { target: { value: 'Newer unsaved value' } });
+    await act(async () => read.resolve(structuredClone(fixture)));
+    expect(first).toHaveValue('Newer unsaved value');
+    expect(screen.getByRole('img', { name: 'Confirmed value' })).toBeInTheDocument();
+  });
+  it(`${locale}: retains a saved image and sibling draft while it leaves and re-enters results`, async () => {
+    const write = deferred(), returning = deferred();
+    get.mockResolvedValueOnce(structuredClone(fixture)).mockResolvedValueOnce({ ...fixture, media: [fixture.media[1]], total: 1 }).mockReturnValueOnce(returning.promise);
+    send.mockReturnValue(write.promise);
+    const { first, second } = await setup();
+    fireEvent.change(first, { target: { value: 'Saved while hidden' } }); fireEvent.blur(first);
+    fireEvent.change(second, { target: { value: 'Sibling retained' } });
+    fireEvent.click(screen.getByRole('button', { name: 'general' }));
+    const firstLabel = getPortalContent(locale).admin.media.alt + ' — one.png';
+    await waitFor(() => expect(screen.queryByRole('textbox', { name: firstLabel })).not.toBeInTheDocument());
+    fireEvent.click(screen.getByRole('button', { name: getPortalContent(locale).admin.media.allFolders }));
+    await waitFor(() => expect(get).toHaveBeenCalledTimes(3));
+    await act(async () => write.resolve({ ok: true, media: { altText: 'Saved while hidden' } }));
+    await act(async () => returning.resolve(structuredClone(fixture)));
+    expect(screen.getByRole('textbox', { name: firstLabel })).toHaveValue('Saved while hidden');
+    expect(second).toHaveValue('Sibling retained');
+  });
   it(`${locale}: retains failed text and a sibling draft, then retries on a later blur`, async () => {
     const pending = deferred(); send.mockReturnValueOnce(pending.promise).mockResolvedValue({ ok: true, media: { altText: 'Retry this text' } });
     const { first, second } = await setup();

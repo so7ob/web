@@ -99,6 +99,8 @@ export function MediaClient({ me, locale }: MediaClientProps) {
   const [altEdits, setAltEdits] = useState<Record<string, AltEdit>>({});
   const altEditsRef = useRef<Record<string, AltEdit>>({});
   const altRevision = useRef(0);
+  const confirmedAltRevision = useRef(0);
+  const confirmedAlts = useRef(new Map<string, { value: string | null; revision: number }>());
   const altSaves = useRef(new Map<string, AltSave>());
   const [savingAltIds, setSavingAltIds] = useState<Record<string, boolean>>({});
   const [movingFolderId, setMovingFolderId] = useState<string | null>(null);
@@ -117,13 +119,26 @@ export function MediaClient({ me, locale }: MediaClientProps) {
 
   const load = useCallback(
     async (signal: AbortSignal) => {
+      const readRevision = confirmedAltRevision.current;
       setLoading(true);
       setError(null);
       try {
         const res = await apiGet<MediaResponse>(
           `/api/admin/media${buildQuery({ page, search, folder, usage: usage === "all" ? undefined : usage })}`,
         );
-        if (!signal.aborted) setData(res);
+        if (!signal.aborted) {
+          const media = res.media.map(row => {
+            const confirmed = confirmedAlts.current.get(row.id);
+            // A read started before this acknowledgement may contain an older value.
+            if (confirmed && confirmed.revision > readRevision) {
+              return { ...row, altText: confirmed.value };
+            }
+            // A read started after the acknowledgement can observe external changes.
+            if (confirmed) confirmedAlts.current.delete(row.id);
+            return row;
+          });
+          setData({ ...res, media });
+        }
       } catch (err) {
         if (!signal.aborted && err instanceof ApiError) setError(apiErrorMessage(err, t.auth.errors));
       } finally {
@@ -203,6 +218,9 @@ export function MediaClient({ me, locale }: MediaClientProps) {
           const result = await apiSend<{ media: { altText: string | null } }>(
             `/api/admin/media/${item.id}`, "PATCH", { altText: submitted.value },
           );
+          confirmedAlts.current.set(item.id, {
+            value: result.media.altText, revision: ++confirmedAltRevision.current,
+          });
           // Only the confirmed file changes. Never reload and reset sibling drafts.
           setData((prev) => prev ? { ...prev, media: prev.media.map(row =>
             row.id === item.id ? { ...row, altText: result.media.altText } : row,

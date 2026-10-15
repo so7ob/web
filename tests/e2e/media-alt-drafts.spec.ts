@@ -87,6 +87,41 @@ for (const locale of ['ar', 'en'] as const) {
       await expect(first).toHaveValue('Newest retained تعديل'); await expect(second).toHaveValue('Keep second draft نص');
       expect((await db.query('SELECT altText FROM MediaItem WHERE id=?', [files[0].id]))[0].altText).toBe('Newest retained تعديل');
       expect((await db.query('SELECT altText FROM MediaItem WHERE id=?', [files[1].id]))[0].altText).toBe('Keep second draft نص');
+
+      // A list snapshot taken before a PATCH must not undo its confirmed value.
+      let releaseRead!: () => void;
+      const readGate = new Promise<void>(resolve => { releaseRead = resolve; }); gates.push(releaseRead);
+      let readFetched!: () => void;
+      const readSnapshot = new Promise<void>(resolve => { readFetched = resolve; });
+      const marker = 'read-applied-' + folder;
+      await page.route('**/api/admin/media?**', async route => {
+        const response = await route.fetch();
+        const snapshot = await response.json(); readFetched(); await readGate;
+        // The synthetic folder marker lets the test wait for React to apply the read.
+        await route.fulfill({ response, json: { ...snapshot, folders: [...snapshot.folders, marker] } });
+      }, { times: 1 });
+      await page.getByRole('group', { name: m.usageFilterLabel }).getByRole('button', { name: m.usageFilterUnused }).click();
+      await readSnapshot;
+      const confirmedResponse = page.waitForResponse(r => r.url().endsWith(url) && r.request().method() === 'PATCH');
+      await first.fill('Confirmed across stale GET'); await first.press('Tab');
+      expect((await confirmedResponse).status()).toBe(200);
+      const firstCard = page.locator('article').filter({ has: first });
+      await expect(firstCard.locator('img')).toHaveAttribute('alt', 'Confirmed across stale GET');
+      await second.click(); await second.fill('Sibling during stale GET');
+      releaseRead();
+      await expect(page.getByRole('button', { name: marker, exact: true })).toBeVisible();
+      await expect(first).toHaveValue('Confirmed across stale GET');
+      await expect(second).toHaveValue('Sibling during stale GET');
+      await expect(second).toBeFocused();
+
+      // The edited image leaves the visible results and returns without losing its value.
+      const search = page.getByRole('textbox', { name: m.search, exact: true });
+      await search.fill(files[1].filename);
+      await expect(first).toHaveCount(0);
+      await search.fill('');
+      await expect(first).toHaveValue('Confirmed across stale GET');
+      expect((await db.query('SELECT altText FROM MediaItem WHERE id=?', [files[0].id]))[0].altText).toBe('Confirmed across stale GET');
+
     } finally {
       for (const release of gates) release();
       await page.unrouteAll({ behavior: 'wait' });
