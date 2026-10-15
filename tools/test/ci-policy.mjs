@@ -5,7 +5,7 @@ export const domains = {
   operations: ['api-inventory','audit-health','audit-investigation','audit-operations','diagnostics-http','diagnostics-ui','error-feedback','outbox-status'],
   presentation: ['admin-hydration','admin-layout','footer-targets','settings-appearance'],
 };
-export const smoke = ['smoke.spec.ts', 'workflows.spec.ts', 'workflow-drafts.spec.ts'];
+export const smoke = ['smoke.spec.ts', 'workflows.spec.ts', 'workflow-drafts.spec.ts', 'workflow-version-labels.spec.ts'];
 export const design = ['design-system.spec.ts', 'accessibility-engine.spec.ts', 'design-pointer-state.spec.ts'];
 // Account contains authentication/session controls as well as request views.
 // Only known record views qualify for the narrower request-domain selection.

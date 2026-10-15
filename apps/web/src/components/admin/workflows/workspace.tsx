@@ -26,6 +26,7 @@ import { apiGet } from "../helpers";
 import { WorkflowGraph } from "./graph";
 import { useWorkflowLeaveGuard } from "./use-workflow-leave-guard";
 import { Field, wfControl, wfCard, words, workflowPost } from "./shared";
+import { workflowVersionLabel, WorkflowVersionIdentity } from "./version-label";
 interface Team {
   id: string;
   nameAr: string;
@@ -45,6 +46,7 @@ interface Version {
   workflowId: string;
   definition: WorkflowDefinition;
   legacy: boolean;
+  createdAt?: string | null;
 }
 interface Overview {
   ok: boolean;
@@ -114,6 +116,7 @@ export function WorkflowWorkspace({ locale, me }: { locale: Locale; me: Me }) {
     [mapping, setMapping] = useState<Record<string, string>>({}),
     [preview, setPreview] = useState<{
       previewId: string;
+      destination: Version;
       rows: Array<{
         recordId: string;
         from: string;
@@ -125,6 +128,7 @@ export function WorkflowWorkspace({ locale, me }: { locale: Locale; me: Me }) {
         route: { teamId: string | null; assigneeId: string | null };
       }>;
     } | null>(null);
+  const [transferResult, setTransferResult] = useState<Version | null>(null);
   const loadTransfer = async (page = 1) => {
     const r = await apiGet<{ records: typeof records; total: number }>(
       `/api/admin/workflows/transfer/records?scope=${transferScope}&q=${encodeURIComponent(transferQuery)}&page=${page}`,
@@ -276,6 +280,7 @@ export function WorkflowWorkspace({ locale, me }: { locale: Locale; me: Me }) {
         )}
       </div>
     );
+  const selectedTransferVersion = data.versions.find(version => version.id === target && !version.legacy && version.definition.scope === transferScope);
   return (
     <Tabs value={tab} onValueChange={setTab} className="min-w-0 space-y-5">
       <PageHeading
@@ -1521,6 +1526,8 @@ export function WorkflowWorkspace({ locale, me }: { locale: Locale; me: Me }) {
               <NativeSelect
                 className={wfControl}
                 value={target}
+                dir="ltr"
+                aria-describedby={selectedTransferVersion ? "workflow-transfer-selected-version" : undefined}
                 onChange={(e) => {
                   setTarget(e.target.value);
                   setPreview(null);
@@ -1533,13 +1540,18 @@ export function WorkflowWorkspace({ locale, me }: { locale: Locale; me: Me }) {
                   .filter(
                     (v) => !v.legacy && v.definition.scope === transferScope,
                   )
-                  .map((v, i) => (
+                  .map((v) => (
                     <option key={v.id} value={v.id}>
-                      {label(v.definition)} · {i + 1}
+                      {workflowVersionLabel(v, locale)}
                     </option>
                   ))}
               </NativeSelect>
             </Field>
+            {selectedTransferVersion ? (
+              <p role="note" aria-label={t("هوية الإصدار المحدد", "Selected version identity")} className="break-words text-sm">
+                <WorkflowVersionIdentity id="workflow-transfer-selected-version" version={selectedTransferVersion} locale={locale}/>
+              </p>
+            ) : null}
             {[
               ...new Set(
                 records.filter((r) => ids.includes(r.id)).map((r) => r.stageId),
@@ -1575,33 +1587,36 @@ export function WorkflowWorkspace({ locale, me }: { locale: Locale; me: Me }) {
                 !can(me, "workflows.transfer") ||
                 !ids.length ||
                 ids.length > 50 ||
-                !target
+                !selectedTransferVersion
               }
               onClick={() =>
-                void run(async () =>
-                  setPreview(
-                    await workflowPost("transfer/preview", {
+                void run(async () => {
+                  if (!selectedTransferVersion) return;
+                  const destination = structuredClone(selectedTransferVersion);
+                  setTransferResult(null);
+                  const result = await workflowPost<Omit<NonNullable<typeof preview>, "destination">>("transfer/preview", {
                       scope: transferScope,
                       ids,
                       versionId: target,
                       mapping,
-                    }),
-                  ),
-                )
+                    });
+                  setPreview({ ...result, destination });
+                })
               }
             >
               {t("معاينة النقل", "Preview transfer")}
             </Button>
             {preview ? (
               <div className="space-y-3 rounded-xl border bg-accent/30 p-4">
+                <p role="note" aria-label={t("وجهة النقل المعاين", "Preview destination")} className="break-words text-sm">
+                  <WorkflowVersionIdentity id="workflow-transfer-preview-version" version={preview.destination} locale={locale}/>
+                </p>
                 {preview.rows.map((row) => (
                   <p key={row.recordId} className="break-words text-sm">
                     {records.find((r) => r.id === row.recordId)?.refCode} ·{" "}
                     {row.from} →{" "}
                     {
-                      data.versions
-                        .find((v) => v.id === target)
-                        ?.definition.stages.find((s) => s.id === row.to)?.[
+                      preview.destination.definition.stages.find((s) => s.id === row.to)?.[
                         locale === "ar" ? "nameAr" : "nameEn"
                       ]
                     }{" "}
@@ -1640,11 +1655,13 @@ export function WorkflowWorkspace({ locale, me }: { locale: Locale; me: Me }) {
                 ))}
                 <Button
                   disabled={!can(me, "workflows.transfer")}
+                  aria-describedby="workflow-transfer-preview-version"
                   onClick={() =>
                     void run(async () => {
                       await workflowPost("transfer/confirm", {
                         previewId: preview.previewId,
                       });
+                      setTransferResult(preview.destination);
                       setPreview(null);
                       setIds([]);
                       await load();
@@ -1654,6 +1671,11 @@ export function WorkflowWorkspace({ locale, me }: { locale: Locale; me: Me }) {
                   {t("تأكيد النقل المعاين", "Confirm previewed transfer")}
                 </Button>
               </div>
+            ) : null}
+            {transferResult ? (
+              <p role="status" aria-label={t("نتيجة النقل", "Transfer result")} className="break-words rounded-xl border p-4 text-sm">
+                {t("اكتمل النقل إلى: ", "Transfer completed to: ")}<WorkflowVersionIdentity version={transferResult} locale={locale}/>
+              </p>
             ) : null}
           </section>
         ) : null}
