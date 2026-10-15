@@ -2,6 +2,8 @@
 
 This change starts at `develop` `d09aaf2ac2e045696b280aeb5d4fe60dd0ec2c80`. It is independent of #107 / PR #122 and does not include that product fix. No application, permission, database schema or production behavior is changed.
 
+During validation, `develop` advanced externally to `78a11a6de705b6e9495ae3a1656a70f99cab5c02` by merging PR #122 at 2026-10-14 23:57:07 UTC. This PR still contains only CI/test/documentation changes; its subsequent GitHub merge checkout inherits the accepted #107 fix and its four browser/four unit regressions. Starting-branch measurements therefore cover 300 browser / 958 unit cases; current-target acceptance covers 304 browser / 962 unit cases. These source states are distinguished below.
+
 ## Measurements and limits
 
 Primary baseline: [successful run 38645921669](https://github.com/so7ob/web/actions/runs/38645921669), Node 24.21.0, npm 10.8.2, Playwright 1.62.1, MariaDB 10.11.18, Ubuntu 24.04, one browser worker. Job timestamps are measured to the second. Individual test durations in the console are rounded, especially minute-long cases; sums of those printed durations are approximate.
@@ -84,10 +86,10 @@ The existing check name **Product lint, TypeScript, MariaDB tests and SSR build*
 | Contract | Before | After |
 | --- | --- | --- |
 | Existing E2E on starting develop | 290 cases | all 290 retained |
-| #107 branch-only regressions | four additional cases in cited CI | not imported into this independent PR |
+| #107 branch-only regressions | four additional cases in cited CI | not imported by this PR; inherited after target develop advanced |
 | New smoke | none as a separate small gate | four new journeys + four existing workflow journeys |
 | Axe/readiness parity | implicit in original scans | six additional cases |
-| Complete current E2E catalog | 290 on develop; 294 in cited #107 CI | 300, with exact ID accounting |
+| Complete E2E catalog | 290 on starting develop; 294 in cited #107 CI | 300 on the starting branch; 304 with current target, exact ID accounting |
 | Design workspace matrix | AR/EN × light/dark × desktop/mobile | all eight cells retained |
 | Captured/audited design view labels per cell | 104 in successful pre-change case | frozen sequence required in every cell |
 | Rendered block types | all 31 registered types | same 31, frozen against accidental omission |
@@ -95,7 +97,7 @@ The existing check name **Product lint, TypeScript, MariaDB tests and SSR build*
 
 No existing test is removed. Time is saved by lower execution overhead and safe parallelism, not fewer languages, themes, viewports, screenshots, accessibility rules or business assertions.
 
-The pre-change console catalog was compared with the new complete catalog by project, file and full nested test title: all **290 develop cases** remain, exactly four branch-only #107 cases are absent, and ten cases are added. Both local smoke projects also passed the same final exact-ID coverage gate: eight expected, eight passed (desktop 45.2s; mobile 40.4s).
+The pre-change console catalog was compared with the starting branch's 300-case catalog by project, file and full nested test title: all **290 starting-develop cases** remain, exactly four branch-only #107 cases are absent, and ten cases are added. After the target advanced, the merged catalog was compared again: all **294 original baseline cases** are present, with exactly ten added, totaling **304**. Both local smoke projects also passed the same final exact-ID coverage gate: eight expected, eight passed (desktop 45.2s; mobile 40.4s).
 
 ## Running and measuring
 
@@ -158,8 +160,26 @@ The slowest final files were design 568.816s, account portal 112.000s, admin lay
 
 The first complete optimized [run 38655206553](https://github.com/so7ob/web/actions/runs/38655206553), head `9d259f9`, **failed**: 299 browser cases passed and one mobile EN/light design case failed. A new readiness check bound a visible theme-control locator, then waited for that element after client navigation legitimately replaced the header with the 404 screen. The stable required aggregate gate also failed, demonstrating that a required matrix failure cannot produce a green result. No retry or skipped case was used.
 
-The corrected readiness condition waits until visible disabled controls hydrate **or are removed by the destination route**. Its regression removes an old disabled control during a held navigation response and keeps the destination loading UI visible afterward; all six local engine/readiness cases passed on desktop/mobile. Account security/session/shared paths were also explicitly promoted to full-suite selection, with negative selection cases; the eight fully isolated design cells can now run together instead of waiting in two groups of four. A new complete hosted run is required for these source/configuration changes.
+The corrected readiness condition waits until visible disabled controls hydrate **or are removed by the destination route**. Its regression removes an old disabled control during a held navigation response and keeps the destination loading UI visible afterward; all six local engine/readiness cases passed on desktop/mobile. Account security/session/shared paths were also explicitly promoted to full-suite selection, with negative selection cases; the eight fully isolated design cells can now run together instead of waiting in two groups of four. The required new complete hosted run passed as 38656630278 above.
 
 The new readiness regression was also run against the actual helper source from `9d259f9` in a local ignored test configuration: Playwright exited **1 as expected**, specifically at `toBeEnabled` because the removed header element no longer existed. The current helper passed the same fixture in the six-case desktop/mobile run. Selection negatives likewise return incorrect `affected` with the old policy and correct `full` with the new policy for account security, shell, API and an unknown account view.
 
-For the failed first observation only: total workflow elapsed was 12m47s, including waiting behind the superseded run. Build took 4m00s (87s cold dependency setup, 83s unit/integration, 9s compilation). The slowest functional shard took 7m12s, including 5m44s in Playwright; the other Playwright shard steps took 3m56s, 4m11s and 4m20s. Operational acceptance took 2m30s. These are diagnostic timings, **not a passing performance result**. A 5–10 minute ordinary PR gate remains unproven until a comparable passing measurement is available.
+For the failed first observation only: total workflow elapsed was 12m47s, including waiting behind the superseded run. Build took 4m00s (87s cold dependency setup, 83s unit/integration, 9s compilation). The slowest functional shard took 7m12s, including 5m44s in Playwright; the other Playwright shard steps took 3m56s, 4m11s and 4m20s. Operational acceptance took 2m30s. These are diagnostic timings, **not a passing performance result** and cannot establish the 5–10 minute goal.
+
+## Target advancement and documentation experiment
+
+The documentation-only source commit `dc6334046b52f3a8609099f6fc24fbceb6ec0f79` triggered [run 38657905733](https://github.com/so7ob/web/actions/runs/38657905733). It correctly selected full coverage: the actual checkout was merge `4930406c42eb659ecf6a49ea4d0d510da2858805` into new target `78a11a6`, whereas the prior successful run had tested the original target. The declared event base still reported `d09aaf2`, so checking that field alone would have been insufficient; the actual merged-source fingerprint and changed suite catalog prevented stale reuse. Its complete catalog contains 304 cases. A successful full proof for that target is required before the next docs-only commit can reuse it.
+
+That current-target run **passed 304/304 unique browser cases, 962 unit/integration tests in 59 files, all 13 policy/gate/evidence tests and every operational check**, with zero skipped or retried browser cases. All 294 baseline cases are present, plus ten new cases, and all eight design cells again captured the frozen 104 views and 31 types. Its passing artifact records the actual merged-source fingerprint separately from the branch-head fingerprint.
+
+| Measured quantity | Original 38645921669 | Latest old-workflow 38650995544 | Current-target 38657905733 |
+| --- | ---: | ---: | ---: |
+| Entire workflow | 44m48s | 37m51s | **10m55s** |
+| Complete browser command interval | 38m50s | 32m29s | **6m11s**, isolated parallel jobs |
+| Browser cases | 294 passed | 294 passed | **304 passed** |
+| Design file case-duration sum | approximately 1110.3s | approximately 904.8s | **576.553s** |
+| Sum of job elapsed time | 44m34s | 37m49s | **55m31s** |
+
+Current-target workflow latency fell approximately 71.2% and the browser interval 81.0% against the latest old-workflow baseline; design-case execution fell approximately 36.3%. Summed job time rose 46.8%. The extra 58s relative to the earlier optimized 9m57s run is observable mainly in setup: Node/npm setup took 47s versus 19s, and the longest functional job took 422s versus 396s although its Playwright command took 336s versus 339s. Build/validation took 203s, operations 214s, and functional commands took 336s/274s/257s/255s. These observations show why a stable 5–10-minute ordinary PR gate is **not claimed**.
+
+Current-target design totals: 832 parent axe scans 296.889s; 832 readiness checks 92.153s; 832 screenshots 79.552s; 424 named navigations 32.094s; 40 preview audits 10.965s; eight logins 2.624s. Fourteen loopback server starts ranged 1.970–3.727s, mean 3.092s. The completed proof is the basis for the next documentation-only experiment; its actual run/result is linked in [PR #124](https://github.com/so7ob/web/pull/124).
