@@ -31,6 +31,8 @@ const allowedSettings = [
   "announcement.startAt",
   "announcement.endAt",
 ];
+// Public announcement copy only; never snapshot arbitrary settings into the audit.
+const announcementAuditKeys = ["announcement.enabled", "announcement.messageAr", "announcement.messageEn"];
 export const requirePermission = (actor: AuthUser, p: Permission) => {
   if (!can(actor, p)) throw new AuthFault(403, "forbidden");
 };
@@ -115,7 +117,14 @@ export class AdminOperationsService {
       // Same lock as media deletion: a saved brand image can never become a dangling reference.
       await lockOperation(r, "cms-pages");
       const currentRows:Array<{key:string;value:string}>=await r.query("SELECT `key`,value FROM SiteSetting");
-      const merged={...SETTINGS_DEFAULTS,...Object.fromEntries(currentRows.map(row=>[row.key,row.value])),...Object.fromEntries(updates.map(u=>[u.key,u.value]))};
+      const current={...SETTINGS_DEFAULTS,...Object.fromEntries(currentRows.map(row=>[row.key,row.value]))};
+      const merged={...current,...Object.fromEntries(updates.map(u=>[u.key,u.value]))};
+      const auditedKeys=announcementAuditKeys.filter(key=>updates.some(update=>update.key===key));
+      const projection=(settings:Record<string,string>)=>Object.fromEntries(auditedKeys.map(key=>[key,key==='announcement.enabled'?settings[key]==='true':settings[key]]));
+      const before=projection(current), after=projection(merged);
+      // An unchanged public field must not imply that an excluded setting was unchanged.
+      const captureAnnouncement=auditedKeys.length>0 && (JSON.stringify(before)!==JSON.stringify(after) || updates.every(update=>update.key!=='response.hours' && current[update.key]===update.value));
+      const announcementOnly=updates.every(update=>update.key.startsWith('announcement.'));
       const affected=new Set(Object.values(SECTION_KEYS).filter(keys=>updates.some(u=>keys.includes(u.key))).flat());
       const fields=Object.fromEntries(Object.entries(validateSiteSettings(merged)).filter(([key])=>affected.has(key)));
       if(Object.keys(fields).length)throw new AuthFault(400,"invalid_settings",{fields});
@@ -150,6 +159,8 @@ export class AdminOperationsService {
         { keys: updates.map((u) => u.key), ...(updates.some(u=>u.key==='response.hours')?{responseHours:updates.find(u=>u.key==='response.hours')!.value,appliesToExisting:true,effectiveAt:updates.find(u=>u.key==='response.effectiveAt')!.value}:{}) },
         "settings",
         null,
+        undefined,
+        { ...(captureAnnouncement?{before,after}:{}), ...(announcementOnly?{resourceRef:'announcement'}:{}) },
       );
       return { ok: true, settings:Object.fromEntries(updates.map(u=>[u.key,u.value])), revisions:await revisions(r) .then(v=>Object.fromEntries(updates.map(u=>[u.key,v["setting:"+u.key]??"0"]))) };
     });

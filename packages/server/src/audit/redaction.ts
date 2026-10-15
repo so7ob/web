@@ -199,12 +199,14 @@ export function safeChanges(action: string, raw: unknown): AuditChange[] {
       !change ||
       typeof change !== "object" ||
       typeof change.path !== "string" ||
-      !fields.includes(change.path.split(".")[0]) ||
       !/^\w+(?:\.\w+){0,4}$/.test(change.path) ||
-      change.path
-        .split(".")
-        .slice(1)
-        .some((key: string) => !nested.has(key) && !/^\d{1,2}$/.test(key))
+      // Explicit leaf paths grant that field only, never their parent or children.
+      (!fields.includes(change.path) &&
+        (!fields.includes(change.path.split(".")[0]) ||
+          change.path
+            .split(".")
+            .slice(1)
+            .some((key: string) => !nested.has(key) && !/^\d{1,2}$/.test(key))))
     )
       return [];
     const clean = (v: unknown): AuditValue => {

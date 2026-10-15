@@ -2,7 +2,7 @@ export const domains = {
   requests: ['account-inquiry-ownership','account-claim-errors','account-diagnostics','account-failure-state','account-portal','admin-request-mutations','client-original-description','csv-download','contact-draft','files-claims','inquiry-hydration','portal-tabs','profile-hydration','reply-drafts','request-list-workflow','response-policy','submissions','support-operations','tracking','tracking-language'],
   cms: ['admin-configuration','admin-conflicts','admin-navigation','cms-publication','content-tree','editor-operations','editor-properties','layer-move','media-library','media-alt-drafts','menus-editor','page-copy','publication','public-visibility','templates','tree-editor'],
   identity: ['admin-users','auth-compatibility','auth-error-state','auth-public','identity-management','invite-ui','login-hydration','role-contracts'],
-  operations: ['api-inventory','audit-health','audit-investigation','audit-operations','diagnostics-http','diagnostics-ui','error-feedback','outbox-status'],
+  operations: ['api-inventory','announcement-audit','audit-health','audit-investigation','audit-operations','diagnostics-http','diagnostics-ui','error-feedback','outbox-status'],
   presentation: ['admin-hydration','admin-layout','footer-targets','settings-appearance'],
 };
 export const smoke = ['smoke.spec.ts', 'workflows.spec.ts', 'workflow-drafts.spec.ts', 'workflow-version-labels.spec.ts', 'workflow-transition-labels.spec.ts', 'workflow-deadline-zones.spec.ts'];

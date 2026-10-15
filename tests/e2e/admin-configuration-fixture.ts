@@ -18,7 +18,10 @@ export const test = base.extend<{ configuration: {
   storageState: async ({ configuration }, use) => {
     await use(await configuration.request.storageState());
   },
-  configuration: [async ({ playwright, baseURL }, use) => {
+  configuration: [async ({ playwright, baseURL, preserveLoginQuota }, use) => {
+    // storageState can request this fixture before automatic test fixtures.
+    // Explicitly bracket its login too, so added cases cannot leak quota.
+    void preserveLoginQuota;
     // This context survives a body deadline and does not depend on page.request.
     const request = await playwright.request.newContext({ baseURL, ignoreHTTPSErrors: true, timeout: 10000 });
     const db = await createDataSource().initialize();
