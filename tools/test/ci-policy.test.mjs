@@ -26,6 +26,7 @@ test('CMS and workflow UI preserve their dependency closure and design matrix', 
   assert.ok(plan.files.includes('publication.spec.ts')); assert.equal(plan.design,true);
   const workflow = select(['apps/web/src/components/admin/workflows/workspace.tsx']);
   assert.ok(smoke.includes('workflow-drafts.spec.ts'));
+  assert.ok(smoke.includes('workflow-transition-labels.spec.ts'));
   assert.equal(workflow.smoke,true); assert.equal(workflow.design,true);
 });
 test('permissions, shared modules, translation, configuration and unknown paths fail closed to full', () => {

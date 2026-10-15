@@ -6,6 +6,7 @@ import { beforeAll, afterAll, it, expect } from "vitest";
 import { randomBytes } from "node:crypto";
 import {
   SYSTEM_ROLES,
+  legacyWorkflow,
   type AuthUser,
   type WorkflowDefinition,
   type BusinessCalendar,
@@ -172,18 +173,18 @@ function definition(scope: WorkflowScope = "requests"): WorkflowDefinition {
     ],
   };
 }
-async function record(scope: WorkflowScope = "requests") {
+async function record(scope: WorkflowScope = "requests", selector = prefix) {
   const id = prefix + randomBytes(5).toString("hex");
   records.push(id);
   if (scope === "requests")
     await db.query(
       "INSERT INTO ProjectRequest(id,refCode,requestType,serviceType,description,descriptionHash,budget,timeline,name,email,preferredContact,locale) VALUES(?,?,'quote',?,'Synthetic workflow','synthetic','unspecified','flexible','Synthetic','synthetic@example.invalid','email','en')",
-      [id, id, prefix],
+      [id, id, selector],
     );
   else
     await db.query(
       "INSERT INTO Inquiry(id,refCode,subject,name,email,category,locale) VALUES(?,?,'Synthetic','Synthetic','synthetic@example.invalid',?,'en')",
-      [id, id, prefix],
+      [id, id, selector],
     );
   await transaction(db, (r) => engine.initialize(r, scope, id));
   return id;
@@ -249,6 +250,7 @@ afterAll(async () => {
   await db.query("DELETE FROM WorkTeamMember WHERE teamId=?", [teamId]);
   await db.query("DELETE FROM WorkflowBinding WHERE selector=?", [prefix]);
   for (const id of flows) {
+    await db.query("DELETE b FROM WorkflowBinding b JOIN WorkflowVersion v ON v.id=b.versionId WHERE v.workflowId=?", [id]);
     await db.query("DELETE FROM WorkflowVersion WHERE workflowId=?", [id]);
     await db.query("DELETE FROM Workflow WHERE id=?", [id]);
   }
@@ -261,6 +263,42 @@ afterAll(async () => {
     await db.query("DELETE FROM Role WHERE `key`='super_admin'");
   await db.destroy();
 });
+for (const scope of ["requests", "inquiries"] as const)
+  it(`${scope}: projects only allowed destination names from the immutable pinned publication`, async () => {
+    const selector = prefix + scope + "labels";
+    const definition = { ...legacyWorkflow(scope), calendarVersionId: calendarId };
+    const review = definition.stages.find(stage => stage.id === "in_review")!;
+    review.nameAr = "فحص بشري"; review.nameEn = "Human review";
+    const inherited = definition.transitions.find(transition => transition.from === "new" && transition.to === "in_review")!;
+    definition.transitions.push({ ...inherited, id: "custom-audit", nameAr: "تدقيق مخصص", nameEn: "Custom audit" });
+    definition.transitions.push({ ...inherited, id: "assignee-only", actors: ["assignee"] });
+    const flow = (await admin.save(root, { definition })).id; flows.push(flow);
+    const publication = (await admin.publish(root, { id: flow, revision: 0, selector })).id;
+    const original = await db.query("SELECT definition FROM WorkflowVersion WHERE id=?", [publication]);
+    const draft = structuredClone(definition);
+    draft.stages.find(stage => stage.id === "in_review")!.nameEn = "Unpublished draft destination";
+    await admin.save(root, { id: flow, revision: 0, definition: draft });
+    const id = await record(scope, selector);
+    const state = (await engine.state(a, scope, id))!;
+    expect(a.permissions).not.toContain("workflows.view");
+    expect(state.versionId).toBe(publication);
+    expect(state.transitions.map(transition => transition.id)).toEqual(definition.transitions.filter(transition => transition.from === "new" && transition.trigger === "manual" && transition.id !== "assignee-only").map(transition => transition.id));
+    for (const transition of state.transitions) {
+      const destination = definition.stages.find(stage => stage.id === transition.to)!;
+      expect(transition.targetStage).toEqual({ nameAr: destination.nameAr, nameEn: destination.nameEn, status: destination.status });
+      const { targetStage: _projection, ...storedFields } = transition;
+      expect(storedFields).toEqual(definition.transitions.find(item => item.id === transition.id));
+    }
+    const viewOnly = { ...a, permissions: a.permissions.filter(permission => permission !== `${scope}.status`) };
+    expect((await engine.state(viewOnly, scope, id))!.transitions).toEqual([]);
+    await expect(engine.transition(viewOnly, scope, id, { transitionId: inherited.id, expectedRevision: state.revision, operationId: "no-status" })).rejects.toMatchObject({ status: 403 });
+    await expect(engine.transition(a, scope, id, { transitionId: "assignee-only", expectedRevision: state.revision, operationId: "not-assignee" })).rejects.toMatchObject({ status: 403 });
+    await engine.transition(a, scope, id, { transitionId: "custom-audit", expectedRevision: state.revision, operationId: "custom-label" });
+    const changed = (await engine.state(a, scope, id))!;
+    expect(changed.stage).toEqual({ id: "in_review", nameAr: "فحص بشري", nameEn: "Human review", status: "in_review" });
+    expect(changed.events.find(event => event.kind === "transition")).toMatchObject({ fromStage: "new", toStage: "in_review", toName: { nameAr: "فحص بشري", nameEn: "Human review" } });
+    expect(await db.query("SELECT definition FROM WorkflowVersion WHERE id=?", [publication])).toEqual(original);
+  });
 it("initializes a pinned restricted team queue and hides it on all administrative surfaces", async () => {
   const id = await record();
   const state = await engine.state(a, "requests", id);
