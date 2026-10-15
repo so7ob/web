@@ -1,9 +1,11 @@
 import {beforeAll,afterAll,beforeEach,it,expect} from 'vitest';
 import {randomBytes} from 'node:crypto';
-import {SYSTEM_ROLES,TRACK_SETTING_KEYS,type AuthUser,type TrackScope} from '@so7ob/contracts';
+import {SYSTEM_ROLES,TRACK_SETTING_KEYS,TRACK_MODES,type AuthUser,type TrackScope} from '@so7ob/contracts';
 import {createDataSource} from '../database/data-source.js';
 import {RequestService} from '../business/requests.js';
 import {AdminConversationService} from '../admin/conversations.js';
+import {transaction} from '../auth/persistence.js';
+import {WorkflowEngine} from '../workflows/engine.js';
 import {TrackService} from './service.js';
 import {AdminOperationsService} from '../admin/operations.js';
 import {MailQueue} from '../queue/mail-queue.js';
@@ -39,6 +41,7 @@ afterAll(async()=>{
  for(const row of oldSettings)await db.query('INSERT INTO SiteSetting(`key`,value,updatedById) VALUES(?,?,?)',[row.key,row.value,row.updatedById]);
  await db.query('DELETE j FROM MailJob j JOIN EmailLog e ON e.id=j.emailLogId WHERE e.`to` LIKE ?',[prefix+'%']);await db.query('DELETE FROM EmailLog WHERE `to` LIKE ?',[prefix+'%']);
  await db.query('DELETE FROM Attachment WHERE id LIKE ?',[prefix+'%']);await db.query('DELETE FROM TrackLink WHERE requestId LIKE ? OR inquiryId LIKE ?',[prefix+'%',prefix+'%']);
+ await db.query('DELETE FROM ConversationWorkflow WHERE recordId LIKE ?',[prefix+'%']);
  await db.query('DELETE FROM ProjectRequest WHERE id LIKE ?',[prefix+'%']);await db.query('DELETE FROM Inquiry WHERE id LIKE ?',[prefix+'%']);
  await db.query("DELETE FROM Notification WHERE userId LIKE ? OR JSON_UNQUOTE(JSON_EXTRACT(payload,'$.ref')) LIKE ?",[prefix+'%',prefix+'%']);
  await db.query('DELETE FROM AuditLog WHERE actorId LIKE ? OR entityId LIKE ?',[prefix+'%',prefix+'%']);await db.query('DELETE FROM User WHERE id LIKE ?',[prefix+'%']);
@@ -155,4 +158,77 @@ for (const scope of ['request', 'inquiry'] as const) it(`${scope}: view never of
  expect(await db.query(`SELECT id FROM ${messages} WHERE ${field}=?`, [id])).toHaveLength(0);
  expect(await db.query("SELECT id FROM AuditLog WHERE entityId=? AND action='track.guest_reply'", [id])).toHaveLength(0);
  expect(view.policy?.canReplyByOwner).toBe(false);
+});
+
+for(const scope of ['request','inquiry'] as const)for(const mode of TRACK_MODES)it(`${scope}/${mode}: session reply flags match actual authorization without changing authorship`,async()=>{
+ const id=await card(scope),{ctx:guestCtx}=await guest(scope,id),table=scope==='request'?'ProjectRequest':'Inquiry';
+ const message=scope==='request'?'RequestMessage':'InquiryMessage',field=scope==='request'?'requestId':'inquiryId';
+ await svc.setException(admin,scope,id,mode);
+ const contexts=[{actor:owner,capability:null},{actor:admin,capability:null},{actor:other,capability:guestCtx.capability},guestCtx];
+ for(const [index,ctx] of contexts.entries()){
+  const view=await svc.view(scope,id,ctx),allowed=index===0||(index===3&&mode==='link_reply');
+  if(view.ok){
+   expect(view.policy?.canReplyByOwner).toBe(index===0);
+   expect(view.policy?.canReplyViaLink).toBe(index===3&&mode==='link_reply');
+   if(index===1)expect(view.policy).toMatchObject({replyDenial:'staff',canOpenStaffWorkspace:true});
+   if(index===2)expect(view.policy?.replyDenial).toBe('owner_required');
+   if(index===3&&!allowed)expect(view.policy?.replyDenial).toBe(mode==='link_view'?'read_only':'login_required');
+  }else expect(mode).toBe('login_required');
+  const before=(await db.query(`SELECT id FROM ${message} WHERE ${field}=?`,[id])).length;
+  const auditBefore=(await db.query("SELECT id FROM AuditLog WHERE entityId=? AND action='track.guest_reply'",[id])).length;
+  if(allowed){
+   expect(view.ok).toBe(true);
+   expect(await svc.reply(scope,id,ctx,'Synthetic matrix117 '+index)).toMatchObject({ok:true,message:{authorType:'client',authorName:null}});
+   expect((await db.query(`SELECT authorId,authorType FROM ${message} WHERE ${field}=? ORDER BY createdAt DESC,id DESC LIMIT 1`,[id]))[0]).toMatchObject({authorId:ctx.actor?.id??null,authorType:'client'});
+  }else{
+   await expect(svc.reply(scope,id,ctx,'Synthetic refused117 '+index)).rejects.toMatchObject({status:403,code:'policy_denied'});
+   expect((await db.query(`SELECT id FROM ${message} WHERE ${field}=?`,[id])).length).toBe(before);
+   expect((await db.query("SELECT id FROM AuditLog WHERE entityId=? AND action='track.guest_reply'",[id])).length).toBe(auditBefore);
+  }
+ }
+ // A non-client role without the staff-reply permission remains an eligible owner.
+ await db.query(`UPDATE ${table} SET clientId=? WHERE id=?`,[editor.id,id]);
+ const ctx={actor:editor,capability:null};
+ expect((await svc.view(scope,id,ctx)).policy).toMatchObject({canReplyByOwner:true,replyDenial:null,canOpenStaffWorkspace:false});
+ expect(await svc.reply(scope,id,ctx,'Synthetic role-preserving owner117')).toMatchObject({ok:true,message:{authorType:'client'}});
+});
+
+for(const scope of ['request','inquiry'] as const)it(`${scope}: refusal reasons preserve guard order and staff navigation respects workflow visibility`,async()=>{
+ const id=await card(scope),table=scope==='request'?'ProjectRequest':'Inquiry';
+ const ctx={actor:owner,capability:null};
+ await db.query(`UPDATE ${table} SET status='closed' WHERE id=?`,[id]);
+ expect((await svc.view(scope,id,ctx)).policy).toMatchObject({cardClosed:true,canReplyByOwner:false,replyDenial:'closed'});
+ await expect(svc.reply(scope,id,ctx,'Synthetic closed117')).rejects.toMatchObject({code:'closed',extra:{replyReason:'closed'}});
+ await expect(svc.reply(scope,id,{actor:admin,capability:null},'Synthetic closed staff117')).rejects.toMatchObject({code:'policy_denied',extra:{replyReason:'staff'}});
+ await db.query(`UPDATE ${table} SET status='new',clientId=? WHERE id=?`,[admin.id,id]);
+ await transaction(db,r=>new WorkflowEngine(db).initialize(r,scope==='request'?'requests':'inquiries',id));
+ await db.query("UPDATE ConversationWorkflow SET visibility='assigned',teamId=NULL WHERE recordId=?",[id]);
+ const scopedStaff={...admin,roleKey:'support',permissions:['admin.dashboard',scope==='request'?'requests.view.all':'inquiries.view.all',scope==='request'?'requests.reply':'inquiries.reply']} as AuthUser;
+ expect((await svc.view(scope,id,{actor:scopedStaff,capability:null})).policy).toMatchObject({replyDenial:'staff',canReplyByOwner:false,canOpenStaffWorkspace:false});
+ await expect(svc.reply(scope,id,{actor:scopedStaff,capability:null},'Synthetic scoped117')).rejects.toMatchObject({code:'policy_denied',extra:{replyReason:'staff',canOpenStaffWorkspace:false}});
+ const replyOnly={...admin,roleKey:'support',permissions:['admin.dashboard',scope==='request'?'requests.reply':'inquiries.reply']} as AuthUser;
+ expect((await svc.view(scope,id,{actor:replyOnly,capability:null})).policy?.canOpenStaffWorkspace).toBe(false);
+ await db.query("UPDATE ConversationWorkflow SET visibility='authorized' WHERE recordId=?",[id]);
+ const noDashboard={...scopedStaff,permissions:scopedStaff.permissions.filter(p=>p!=='admin.dashboard')};
+ expect((await svc.view(scope,id,{actor:noDashboard,capability:null})).policy?.canOpenStaffWorkspace).toBe(false);
+ await expect(svc.reply(scope,id,{actor:noDashboard,capability:null},'Synthetic no dashboard117')).rejects.toMatchObject({code:'policy_denied',extra:{replyReason:'staff',canOpenStaffWorkspace:false}});
+ const temporary={...admin,credentialState:'temporary'};
+ expect((await svc.view(scope,id,{actor:temporary,capability:null})).policy?.canOpenStaffWorkspace).toBe(false);
+ await expect(svc.reply(scope,id,{actor:temporary,capability:null},'Synthetic temporary117')).rejects.toMatchObject({code:'policy_denied',extra:{replyReason:'staff',canOpenStaffWorkspace:false}});
+ expect((await svc.view(scope,id,{actor:scopedStaff,capability:null})).policy?.canOpenStaffWorkspace).toBe(true);
+
+ const {ctx:guestCtx}=await guest(scope,id);await svc.setException(admin,scope,id,'link_reply');
+ const inactive={...owner,status:'suspended'} as AuthUser;
+ await expect(svc.reply(scope,id,{actor:inactive,capability:guestCtx.capability},'Synthetic inactive117')).rejects.toMatchObject({code:'policy_denied',extra:{replyReason:'unavailable'}});
+ await db.query(`UPDATE ${table} SET archivedAt=UTC_TIMESTAMP(3) WHERE id=?`,[id]);
+ expect((await svc.view(scope,id,{actor:admin,capability:null})).policy).toMatchObject({cardClosed:true,canReplyByOwner:false,canReplyViaLink:false});
+});
+
+for(const scope of ['request','inquiry'] as const)it(`${scope}: an expired account without a capability gets a safe login hint without a write`,async()=>{
+ const id=await card(scope),ctx={actor:null,capability:null};
+ await expect(svc.reply(scope,id,ctx,'Synthetic lost session117')).rejects.toMatchObject({status:403,code:'policy_denied',extra:{replyReason:'login_required'}});
+ const message=scope==='request'?'RequestMessage':'InquiryMessage',field=scope==='request'?'requestId':'inquiryId';
+ expect(await db.query(`SELECT id FROM ${message} WHERE ${field}=?`,[id])).toHaveLength(0);
+ expect(await db.query("SELECT id FROM AuditLog WHERE entityId=? AND action='track.guest_reply'",[id])).toHaveLength(0);
+ await expect(svc.reply(scope,prefix+'missing',ctx,'Synthetic missing117')).rejects.toMatchObject({status:404,code:'not_found',extra:{replyReason:'unavailable'}});
 });

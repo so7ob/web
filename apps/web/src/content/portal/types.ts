@@ -85,6 +85,12 @@ export interface PortalContent {
     replyPlaceholder: string;
     replyDisabledView: string;
     replyDisabledLogin: string;
+    replyDisabledStaff: string;
+    replyDisabledOwner: string;
+    replyDisabledUnavailable: string;
+    unsentReply: string;
+    unsentReplyHint: string;
+    openStaffWorkspace: string;
     replyDisabledClosed: string;
     send: string;
     sending: string;

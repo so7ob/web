@@ -131,7 +131,14 @@ export interface TrackCardView {
 export interface TrackViewResult {
   ok:boolean;
   reason?:'missing'|'expired'|'revoked'|'policy_denied'|'owner_required'|'not_found';
-  policy?:EffectiveTrackPolicy & {cardClosed?:boolean};
+  policy?:EffectiveTrackPolicy & {cardClosed?:boolean;replyDenial?:TrackReplyDenial|null;canOpenStaffWorkspace?:boolean};
   card?:TrackCardView;
   link?:{id:string;expiresAt:Date;state:'valid'|'expired'|'revoked'}|null;
+}
+
+/** Safe session eligibility reasons; never include identity or capability data. */
+export const TRACK_REPLY_DENIALS = ['staff','owner_required','login_required','read_only','closed','unavailable'] as const;
+export type TrackReplyDenial = (typeof TRACK_REPLY_DENIALS)[number];
+export function isTrackReplyDenial(value: unknown): value is TrackReplyDenial {
+  return typeof value === 'string' && (TRACK_REPLY_DENIALS as readonly string[]).includes(value);
 }
