@@ -189,6 +189,8 @@ export const portalAr: PortalContent = {
       awaitingDays: "{n} يوم",
     },
     detail: {
+      originalRequest: "نص الطلب الأصلي",
+      originalDescriptionUnavailable: "لم يُسجّل وصف أصلي لهذا الطلب.",
       conversation: "المحادثة",
       openTracking: "فتح بطاقة المتابعة",
       internalHidden: "الملاحظات الداخلية للفريق لا تظهر هنا",
