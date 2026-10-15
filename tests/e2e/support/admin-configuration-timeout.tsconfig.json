@@ -1,0 +1,9 @@
+{
+  "extends": "../../../tsconfig.workspaces.json",
+  "compilerOptions": {
+    "paths": {
+      "@so7ob/server": ["./admin-configuration-server.mjs"],
+      "@so7ob/contracts": ["../../../packages/contracts/dist/index.js"]
+    }
+  }
+}
