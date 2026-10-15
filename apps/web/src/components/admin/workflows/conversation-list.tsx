@@ -55,12 +55,12 @@ import {
   apiSend,
   buildQuery,
   fmtRelative,
-  fmtDateTime,
 } from "../helpers";
 import { downloadCsv } from "../download-csv";
 import { useDebounced } from "../use-debounced";
 import type { Me, RequestRow, InquiryRow, StaffOption } from "../types";
 import { Field, wfControl, wfCard, words } from "./shared";
+import { WorkflowDeadline } from "./deadline";
 interface Filters {
   q: string;
   status: string;
@@ -79,6 +79,7 @@ interface Row extends Omit<Partial<RequestRow & InquiryRow>, "id"> {
   workflowStage?: WorkflowPublicStage;
   workflowRevision?: number;
   teamId?: string | null;
+  calendarTimezone?: string | null;
 }
 interface Options {
   staff: StaffOption[];
@@ -680,7 +681,7 @@ export function ConversationList({
                   {status(row)}
                   {row.responseDueAt ? (
                     <p className="mt-1 text-xs text-muted-foreground">
-                      {fmtDateTime(row.responseDueAt, locale)}
+                      <WorkflowDeadline value={row.responseDueAt} locale={locale} timeZone={row.calendarTimezone} />
                     </p>
                   ) : null}
                 </TableCell>
@@ -771,7 +772,7 @@ export function ConversationList({
               {row.responseDueAt ? (
                 <>
                   <dt>{t("موعد الرد", "Response due")}</dt>
-                  <dd>{fmtDateTime(row.responseDueAt, locale)}</dd>
+                  <dd><WorkflowDeadline value={row.responseDueAt} locale={locale} timeZone={row.calendarTimezone} /></dd>
                 </>
               ) : null}
               <dt>{tr.lastActivity}</dt>

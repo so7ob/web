@@ -287,6 +287,8 @@ export interface WorkflowState {
   teamLabels: { nameAr: string; nameEn: string } | null;
   responseDueAt: string | null;
   stageDueAt: string | null;
+  /** Public timezone of the pinned work calendar; absent on older responses. */
+  calendarTimezone?: string | null;
   /** Response-only destination names from this record's pinned publication. */
   transitions: Array<WorkflowTransition & { targetStage?: WorkflowPublicStage }>;
   replyEffect: WorkflowPublicStage | null;

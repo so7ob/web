@@ -197,9 +197,9 @@ export class AdminConversationService {
       },
     );
     if(result.length){
-      const states=await this.db.query(`SELECT w.*,v.definition FROM ConversationWorkflow w JOIN WorkflowVersion v ON v.id=w.versionId WHERE w.scope=? AND w.recordId IN (${result.map(()=>'?').join(',')}) AND v.legacy=0`,[kind,...result.map((row:{id:string})=>row.id)]);
+      const states=await this.db.query(`SELECT w.*,v.definition,JSON_UNQUOTE(JSON_EXTRACT(c.definition,'$.timezone')) calendarTimezone FROM ConversationWorkflow w JOIN WorkflowVersion v ON v.id=w.versionId LEFT JOIN WorkCalendar c ON c.id=JSON_UNQUOTE(JSON_EXTRACT(v.definition,'$.calendarVersionId')) WHERE w.scope=? AND w.recordId IN (${result.map(()=>'?').join(',')}) AND v.legacy=0`,[kind,...result.map((row:{id:string})=>row.id)]);
       const byId=new Map(states.map((state:{recordId:string})=>[state.recordId,state]));
-      for(const row of result){const state=byId.get(row.id) as {definition:string;stageId:string;teamId:string|null;revision:number;responseDueAt:Date|null}|undefined;if(!state)continue;const stage=(JSON.parse(state.definition) as import('@so7ob/contracts').WorkflowDefinition).stages.find(s=>s.id===state.stageId);Object.assign(row,{workflowStage:stage?{id:stage.id,nameAr:stage.nameAr,nameEn:stage.nameEn,status:stage.status}:null,teamId:state.teamId,workflowRevision:state.revision,responseDueAt:state.responseDueAt?.toISOString()??null,responseOverdue:!!state.responseDueAt&&state.responseDueAt<new Date(),needsStaffReply:!!state.responseDueAt});}
+      for(const row of result){const state=byId.get(row.id) as {definition:string;stageId:string;teamId:string|null;revision:number;responseDueAt:Date|null;calendarTimezone:string|null}|undefined;if(!state)continue;const stage=(JSON.parse(state.definition) as import('@so7ob/contracts').WorkflowDefinition).stages.find(s=>s.id===state.stageId);Object.assign(row,{workflowStage:stage?{id:stage.id,nameAr:stage.nameAr,nameEn:stage.nameEn,status:stage.status}:null,teamId:state.teamId,workflowRevision:state.revision,calendarTimezone:state.calendarTimezone,responseDueAt:state.responseDueAt?.toISOString()??null,responseOverdue:!!state.responseDueAt&&state.responseDueAt<new Date(),needsStaffReply:!!state.responseDueAt});}
     }
     return {
       ok: true,

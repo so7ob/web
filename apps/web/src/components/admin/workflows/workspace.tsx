@@ -1,5 +1,6 @@
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { NativeSelect } from "@/components/ui/native-select";
+import { WorkflowDeadline } from "./deadline";
 import { PageHeading, Toolbar } from "@/components/ui/workspace";
 import { useCallback, useEffect, useRef, useState } from "react";
 import {
@@ -125,6 +126,7 @@ export function WorkflowWorkspace({ locale, me }: { locale: Locale; me: Me }) {
         targetStatus: string;
         responseDueAt: string | null;
         stageDueAt: string | null;
+        calendarTimezone?: string | null;
         route: { teamId: string | null; assigneeId: string | null };
       }>;
     } | null>(null);
@@ -1642,13 +1644,13 @@ export function WorkflowWorkspace({ locale, me }: { locale: Locale; me: Me }) {
                     <span className="block">
                       {t("موعد الرد: ", "Response due: ")}
                       {row.responseDueAt
-                        ? new Date(row.responseDueAt).toLocaleString(locale)
+                        ? <WorkflowDeadline value={row.responseDueAt} locale={locale} timeZone={row.calendarTimezone} />
                         : t("لا توجد مهلة", "No deadline")}
                     </span>
                     <span className="block">
                       {t("مهلة المرحلة التقديرية: ", "Estimated stage due: ")}
                       {row.stageDueAt
-                        ? new Date(row.stageDueAt).toLocaleString(locale)
+                        ? <WorkflowDeadline value={row.stageDueAt} locale={locale} timeZone={row.calendarTimezone} />
                         : t("لا توجد مهلة", "No deadline")}
                     </span>
                   </p>
