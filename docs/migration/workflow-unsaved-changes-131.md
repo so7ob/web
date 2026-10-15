@@ -4,7 +4,7 @@
 
 Work began with a clean workspace after fetching `develop` explicitly from `https://github.com/so7ob/web.git`: `a6d17c9c73f459e6628c08f191caf45f66ac9e5d` (including merged PR #135). Issue #131 was open, unassigned and without comments. Open PRs, prior PR matches and remote issue-131 branches showed no overlapping implementation. The independent branch is `fix/131-workflow-unsaved-changes`; no commits target main/develop.
 
-Tested implementation/test source: `500553d0ec27600d05fbe212f36cda3632ed3db7`. A following evidence commit changes this document only. Local runtime is Node 24.21.0 / npm 10.8.2, MariaDB 10.11.18 in the disposable `so7ob-issue131-test` container on loopback 33131, with separate `so7ob_issue131_unit_test` and `so7ob_issue131_browser_test` databases; final confirmation reruns use a new `so7ob_issue131_confirmation_test` unit database in a replacement disposable container. Accounts, workflows and definitions are synthetic. Fixtures create unpublished workflows and remove only the exact IDs they created. No production data, external delivery worker, mail, webhook or paid API is used for these form journeys.
+Tested implementation/test source: `fa85950e62404eba70a0590e038ad92704ae1164`. A following evidence commit changes this document only. Local runtime is Node 24.21.0 / npm 10.8.2, MariaDB 10.11.18 in the disposable `so7ob-issue131-test` container on loopback 33131, with separate `so7ob_issue131_unit_test` and `so7ob_issue131_browser_test` databases; final confirmation reruns use a new `so7ob_issue131_confirmation_test` unit database in a replacement disposable container. Accounts, workflows and definitions are synthetic. Fixtures create unpublished workflows and remove only the exact IDs they created. No production data, external delivery worker, mail, webhook or paid API is used for these form journeys.
 
 The regression first failed at component level (`before-unit.log`), then in a real browser (`before-browser.log`). Selecting synthetic workflow one, changing its English name without saving, then selecting two replaced the name with two's saved value without a decision. The browser reproduction used the previously built UI; its workflow workspace/graph sources are identical to the newly fetched base. The source confirms `choose` directly replaced the local definition from the selected draft.
 
@@ -26,6 +26,8 @@ Application links and router-managed Back/Forward receive the same decision dial
 
 The existing graph scroll area had an ARIA label without an eligible role. The new whole-page axe check reproduced `aria-prohibited-attr`; adding its named region role preserves scrolling/keyboard behavior and fixes that observed violation. No axe rule was disabled or graph excluded.
 
+Once navigation is approved, the old editor is disabled and inert while the destination loader is pending, including custom graph focus. This closes the window for accepting an edit that would disappear when navigation commits. The component regression failed before this correction (`navigation-wait-before.log`); browser coverage holds the real locale loader and verifies the confirmed content after arrival.
+
 ## Verification and evidence
 
 Ignored local evidence is in `.migration/issue131/`; trace/screenshots are disabled for the new journeys. Browser checks use system Chromium 154 through an ignored alternate configuration, separately from the pinned full-suite CI.
@@ -33,14 +35,14 @@ Ignored local evidence is in `.migration/issue131/`; trace/screenshots are disab
 | Check | Result |
 | --- | --- |
 | Before-fix reproduction | Component failure plus confirmed browser loss on switching; `before-unit.log`, `before-browser.log` |
-| Focused component coverage | 31 passed (`unit-confirmation-final.log`), including both languages, save/discard/stay, 400/409/503, new IDs, malformed replies, cancelled saves, newer edits, stale/fresh reads, route history, unload, and read-only permissions |
+| Focused component coverage | 32 passed (included in `test-freeze-final.log`; focused precursor `unit-navigation-final.log`), including both languages, save/discard/stay, 400/409/503, new IDs, malformed replies, cancelled saves, newer edits, stale/fresh reads, route history, unload, and read-only permissions |
 | Existing workflow integration | 13 passed (`workflow-integration.log`); exact save revisions and stale rejection added while retaining pinned publication/transfer cases |
-| Full unit/integration suite | 65 files / 1056 passed (`test-confirmation-ready.log`); the preceding source passed 1054 (`test-delivery.log`) |
-| New browser matrix | 32 passed (`e2e-confirmation.log`; earlier `e2e-delivery.log` also passed), AR/EN at 375/1280, including the failed in-flight clean-save case; the preceding matrix passed 28 (`e2e-matrix.log`) |
+| Full unit/integration suite | 65 files / 1057 passed (`test-freeze-final.log`); prior candidates passed 1056 and 1054 |
+| New browser matrix | 36 passed (`e2e-freeze-final.log`), AR/EN at 375/1280, including failed in-flight clean saves and editing/focus blocked during approved pending navigation; earlier matrices passed 32 and 28 |
 | Existing smoke/workflow browser journeys | 8 passed (`e2e-existing.log`), including publishing, transfer, queues and ownership |
-| Lint / typecheck / build / independence / policy / diff | Passed (`lint-confirmation.log`, `typecheck-confirmation.log`, `build-confirmation.log`, `independence-confirmation.log`, `policy-confirmation.log`); independence 3/3 and CI policy 13/13; documentation and diff checks passed |
-| Standard pinned-browser local attempt | 386 selected; 1 failed before a browser journey, 385 not run because headless shell v1234 is absent (`pinned-local-attempt.log`); not reported as a complete local pass |
-| Local infrastructure check | Blocked before Nginx configuration validation: `nginx` executable absent (`infra.log` and `command -v nginx`); not reported as passed |
+| Lint / typecheck / build / independence / policy / diff | Passed (`lint-freeze-final.log`, `typecheck-freeze-final.log`, `build-freeze-final.log`, `independence-freeze-final.log`, `policy-freeze-final.log`); independence 3/3 and CI policy 13/13; documentation and diff checks passed |
+| Standard pinned-browser local attempt | 386 selected; 1 failed before a browser journey, 385 not run because headless shell v1234 is absent (`pinned-local-attempt.log`); not reported as a complete local pass. Final-source discovery lists 390 cases / 58 files (`catalog-final.log`), without executing that complete matrix |
+| Local infrastructure check | Blocked before Nginx configuration validation: `nginx` executable absent (`infra-freeze-final.log`, earlier `infra.log` and `command -v nginx`); not reported as passed |
 | Remote CI | Recorded against the exact final PR head in the PR description |
 
 The browser matrix checks 375/1280, Arabic/English and RTL/LTR, real draft saves and unchanged other workflows, absence of publication, failure/uncertainty, a real 409 from a concurrent server edit, router Back/Forward, language navigation, cancelled native reload, keyboard Escape/Enter and focus return. Whole-page axe checks and dialog bounds/44px targets remain mandatory. The new spec is added to mandatory workflow smoke coverage; existing smoke specs and the strict complete-case gate remain. Its policy fixture grows rather than weakening any coverage condition; unknown/unclassified specs still select full coverage.
@@ -50,6 +52,8 @@ During test development, the first post-fix browser harness searched modal-hidde
 ## CI199 history, separate from workflow acceptance
 
 CI199 on first PR head `c5318e7620bb9a7b1e8b8aee02f56ab410f9f329` passed all 40 mandatory smoke cases (32 new and eight old), all four functional shards, build/unit checks and operations/infrastructure. Its mobile Arabic/English light design cells failed the existing client-navigation 404 color assertion at `design-system.spec.ts:180`: expected `rgb(157, 23, 77)`, observed `rgb(139, 24, 75)`. The 404 screen, button styles, palette calculation and design test are unchanged in this issue. A standalone browser check using the actual built CSS at 375px reproduces primary → hover → primary with those exact values (`ci199-hover-diagnosis.log`). That explains the two states but does not establish the pointer position in the CI trace. No assertion or color behavior was changed and no design fix is claimed. The later source corrects the independently reproduced stale-error/save-confirmation overlap; final-head CI is recorded in the PR description.
+
+CI200 on `7a36c68030a31cfc16e62d508adc0e426c5d984e` again passed build/unit, 40 smoke cases, all four functional shards and operations/infrastructure. Seven design cells passed, including both previously failing light cells; mobile Arabic dark failed the same unchanged line-180 assertion: expected `rgb(249, 168, 212)`, observed `rgb(246, 176, 215)`. The existing hover helper produces the latter dark color (`ci200-dark-token.log`). Neither CI199 nor CI200 was rerun, and neither is reported green. Final implementation adds the reproduced navigation-wait freeze and requires a new complete run.
 
 ## Separate CI observation supplied by independent review
 
