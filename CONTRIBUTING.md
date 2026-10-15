@@ -19,3 +19,5 @@ The destination was verified to have no commits, remote branches, issues or PRs 
 Functional parity takes priority over literal Rakim conventions. One-time login is accepted at a separately authorized cutover. Full rollback is supported only while writes remain paused; after reopening writes, recover forward without restoring stale SQLite data.
 
 Final checks: `npm run lint`, `npm run typecheck`, `npm test`, `npm run build`, `npm run test:independence`, `npm run test:e2e`, `npm run test:infra`, and `git diff --check`. Review and passing CI do not authorize merging or deployment.
+
+CI selects conservative smoke/domain/design/full coverage as documented in [CI performance and coverage](docs/migration/ci-performance-123.md). The existing required-check name remains an always-reporting aggregate gate. Full coverage still runs on develop/main pushes, main promotion, version tags and manual dispatch; `npm run test:e2e` remains the complete serial local suite. Keep one worker per isolated database/workspace and preserve all existing behavior assertions.

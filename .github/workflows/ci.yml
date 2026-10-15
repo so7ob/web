@@ -4,14 +4,62 @@ on:
     branches: [develop, main]
   push:
     branches: [develop, main]
+    tags: ['v*']
+  workflow_dispatch:
 permissions:
   contents: read
+  actions: read
 concurrency:
-  group: web-${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: true
+  group: web-${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 jobs:
-  foundation:
-    name: Product lint, TypeScript, MariaDB tests and SSR build
+  plan:
+    name: Select required coverage
+    runs-on: ubuntu-24.04
+    outputs:
+      plan: ${{ steps.select.outputs.plan }}
+      docs: ${{ steps.select.outputs.docs }}
+      build: ${{ steps.select.outputs.build }}
+      operations: ${{ steps.select.outputs.operations }}
+      smoke: ${{ steps.select.outputs.smoke }}
+      functional: ${{ steps.select.outputs.functional }}
+      design: ${{ steps.select.outputs.design }}
+      files: ${{ steps.select.outputs.files }}
+      paths: ${{ steps.select.outputs.paths }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24.21.0'
+      - id: select
+        run: node tools/test/ci-plan.mjs
+        env:
+          GH_TOKEN: ${{ github.token }}
+          CI_BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          CI_HEAD_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+          CI_BASE_BRANCH: ${{ github.base_ref }}
+          CI_PR_NUMBER: ${{ github.event.pull_request.number }}
+  docs:
+    name: Documentation validation
+    needs: plan
+    if: needs.plan.outputs.docs == 'true'
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24.21.0'
+      - run: node --test tools/test/ci-policy.test.mjs tools/test/ci-gate.test.mjs tools/test/ci-evidence.test.mjs tools/test/docs-check.test.mjs
+      - run: node tools/test/docs-check.mjs
+        env:
+          CI_DOC_PATHS: ${{ needs.plan.outputs.paths }}
+  build:
+    name: Build, lint and isolated database tests
+    needs: plan
+    if: needs.plan.outputs.build == 'true'
     runs-on: ubuntu-24.04
     services:
       mariadb:
@@ -34,20 +82,67 @@ jobs:
       DATABASE_PASSWORD: synthetic-ci-only
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: '24.21.0'
-          cache: npm
-      - name: Validate bundled skill contracts offline
-        run: python3 -B -m unittest discover -s .agents/skills/ui-ux-pro-max/scripts/tests
-      - run: npm install --global npm@10.8.2
-      - run: npm ci
+      - uses: ./.github/actions/setup-node
+      - run: python3 -B -m unittest discover -s .agents/skills/ui-ux-pro-max/scripts/tests
+      - run: npm run test:ci-policy
       - run: npm run test:independence
       - run: npm run lint
       - run: npm run typecheck
       - run: npm run db:migrate
       - run: npm test
       - run: npm run build
+      - name: Preserve one build and the complete case catalog
+        run: |
+          mkdir -p .migration/ci
+          tar -czf .migration/ci/build.tgz apps/api/dist apps/worker/dist apps/web/dist packages/contracts/dist packages/server/dist
+          npx playwright test --list --reporter=json > .migration/ci/catalog.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ci-build
+          path: .migration/ci/build.tgz
+          include-hidden-files: true
+          if-no-files-found: error
+          retention-days: 3
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ci-catalog
+          path: .migration/ci/catalog.json
+          include-hidden-files: true
+          if-no-files-found: error
+          retention-days: 30
+  operations:
+    name: Queue, migration, recovery and infrastructure acceptance
+    needs: [plan, build]
+    if: needs.plan.outputs.operations == 'true'
+    runs-on: ubuntu-24.04
+    services:
+      mariadb:
+        image: mariadb:10.11.18
+        env:
+          MARIADB_DATABASE: so7ob_schema_test
+          MARIADB_USER: so7ob_test
+          MARIADB_PASSWORD: synthetic-ci-only
+          MARIADB_ROOT_PASSWORD: synthetic-ci-root-only
+        ports: ['3306:3306']
+        options: >-
+          --health-cmd="healthcheck.sh --connect --innodb_initialized"
+          --health-interval=5s --health-timeout=5s --health-retries=20
+    env:
+      DATABASE_HOST: 127.0.0.1
+      DATABASE_PORT: 3306
+      DATABASE_NAME: so7ob_schema_test
+      TEST_DATABASE_NAME: so7ob_schema_test
+      DATABASE_USER: so7ob_test
+      DATABASE_PASSWORD: synthetic-ci-only
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/setup-node
+      - uses: actions/download-artifact@v4
+        with:
+          name: ci-build
+          path: .migration/ci/build
+      - run: tar -xzf .migration/ci/build/build.tgz
+      - run: npm run db:migrate
       - run: npm run test:worker
       - run: npm run test:file-worker
       - run: npm run test:webhook
@@ -102,57 +197,254 @@ jobs:
           DATABASE_PASSWORD: synthetic-ci-root-only
           RESTORE_REHEARSAL: synthetic-only
           NODE_ENV: test
-      - run: npx playwright install --with-deps chromium
-      - run: npm run test:e2e
-      - name: Preserve synthetic bilingual identity screenshots
-        uses: actions/upload-artifact@v4
-        with:
-          name: identity-84-synthetic-interfaces
-          path: |
-            .migration/iam/users-*.png
-            .migration/iam/roles-*.png
-            .migration/iam/permissions-*.png
-          if-no-files-found: error
-          retention-days: 30
-      - name: Preserve synthetic bilingual workflow and conversation screenshots
-        uses: actions/upload-artifact@v4
-        with:
-          name: workflows-86-synthetic-interfaces
-          path: |
-            .migration/workflows/*.png
-            test-results/**/synthetic-request-details.png
-          if-no-files-found: error
-          retention-days: 30
-      - name: Preserve synthetic bilingual menu screenshots
-        uses: actions/upload-artifact@v4
-        with:
-          name: menus-88-synthetic-interfaces
-          path: .migration/menus/*.png
-          if-no-files-found: error
-          retention-days: 30
-      - name: Preserve synthetic bilingual settings and appearance screenshots
-        uses: actions/upload-artifact@v4
-        with:
-          name: settings-90-synthetic-interfaces
-          path: .migration/settings/*.png
-          if-no-files-found: error
-          retention-days: 30
-      - name: Preserve design system coverage and synthetic screenshots
-        uses: actions/upload-artifact@v4
-        with:
-          name: design-system-92-synthetic-interfaces
-          path: |
-            .migration/design-system/screenshots/**/*.png
-            .migration/design-system/screenshots/**/coverage.json
-            .migration/design-system/refined/**/*.png
-          if-no-files-found: error
-          retention-days: 30
-      - uses: actions/upload-artifact@v4
-        if: failure()
-        with:
-          name: synthetic-browser-failure
-          path: test-results/
-          retention-days: 7
       - run: sudo apt-get update && sudo apt-get install -y nginx openssl
       - run: npm run test:infra
       - run: git diff --check
+  smoke:
+    name: Smoke (${{ matrix.project }})
+    needs: [plan, build]
+    if: needs.plan.outputs.smoke == 'true'
+    runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      max-parallel: 4
+      matrix:
+        project: [desktop, mobile]
+    services:
+      mariadb:
+        image: mariadb:10.11.18
+        env:
+          MARIADB_DATABASE: so7ob_schema_test
+          MARIADB_USER: so7ob_test
+          MARIADB_PASSWORD: synthetic-ci-only
+          MARIADB_ROOT_PASSWORD: synthetic-ci-root-only
+        ports: ['3306:3306']
+        options: >-
+          --health-cmd="healthcheck.sh --connect --innodb_initialized"
+          --health-interval=5s --health-timeout=5s --health-retries=20
+    env:
+      DATABASE_HOST: 127.0.0.1
+      DATABASE_PORT: 3306
+      DATABASE_NAME: so7ob_schema_test
+      TEST_DATABASE_NAME: so7ob_schema_test
+      DATABASE_USER: so7ob_test
+      DATABASE_PASSWORD: synthetic-ci-only
+      SO7OB_E2E_SUITE: smoke
+      SO7OB_E2E_PROJECT: ${{ matrix.project }}
+      SO7OB_E2E_RESULT_FILE: .migration/ci/results/smoke-${{ matrix.project }}.cases.json
+      SO7OB_E2E_PROFILE_DIR: .migration/ci/profiles
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/setup-browser
+      - uses: actions/download-artifact@v4
+        with:
+          name: ci-build
+          path: .migration/ci/build
+      - run: tar -xzf .migration/ci/build/build.tgz
+      - run: npm run db:migrate
+      - run: npm run test:e2e:ci
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: e2e-smoke-${{ matrix.project }}
+          path: |
+            .migration/ci/results/*.json
+            .migration/ci/profiles/*.json
+          include-hidden-files: true
+          if-no-files-found: error
+          retention-days: 30
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: synthetic-smoke-${{ matrix.project }}
+          path: |
+            test-results/
+            .migration/iam/*.png
+            .migration/workflows/*.png
+            .migration/menus/*.png
+            .migration/settings/*.png
+            .migration/design-system/screenshots/**/*.png
+            .migration/design-system/screenshots/**/coverage.json
+          include-hidden-files: true
+          if-no-files-found: ignore
+          retention-days: 7
+  functional:
+    name: Functional shard ${{ matrix.shard }}/4
+    needs: [plan, build]
+    if: needs.plan.outputs.functional == 'true'
+    runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      max-parallel: 4
+      matrix:
+        shard: [1, 2, 3, 4]
+    services:
+      mariadb:
+        image: mariadb:10.11.18
+        env:
+          MARIADB_DATABASE: so7ob_schema_test
+          MARIADB_USER: so7ob_test
+          MARIADB_PASSWORD: synthetic-ci-only
+          MARIADB_ROOT_PASSWORD: synthetic-ci-root-only
+        ports: ['3306:3306']
+        options: >-
+          --health-cmd="healthcheck.sh --connect --innodb_initialized"
+          --health-interval=5s --health-timeout=5s --health-retries=20
+    env:
+      DATABASE_HOST: 127.0.0.1
+      DATABASE_PORT: 3306
+      DATABASE_NAME: so7ob_schema_test
+      TEST_DATABASE_NAME: so7ob_schema_test
+      DATABASE_USER: so7ob_test
+      DATABASE_PASSWORD: synthetic-ci-only
+      SO7OB_E2E_SUITE: functional
+      SO7OB_E2E_SHARD: ${{ matrix.shard }}/4
+      SO7OB_E2E_FILES: ${{ needs.plan.outputs.files }}
+      SO7OB_E2E_RESULT_FILE: .migration/ci/results/functional-${{ matrix.shard }}.cases.json
+      SO7OB_E2E_PROFILE_DIR: .migration/ci/profiles
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/setup-browser
+      - uses: actions/download-artifact@v4
+        with:
+          name: ci-build
+          path: .migration/ci/build
+      - run: tar -xzf .migration/ci/build/build.tgz
+      - run: npm run db:migrate
+      - run: npm run test:e2e:ci
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: e2e-functional-${{ matrix.shard }}
+          path: |
+            .migration/ci/results/*.json
+            .migration/ci/profiles/*.json
+          include-hidden-files: true
+          if-no-files-found: error
+          retention-days: 30
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: synthetic-functional-${{ matrix.shard }}
+          path: |
+            test-results/
+            .migration/iam/*.png
+            .migration/workflows/*.png
+            .migration/menus/*.png
+            .migration/settings/*.png
+            .migration/design-system/screenshots/**/*.png
+            .migration/design-system/screenshots/**/coverage.json
+          include-hidden-files: true
+          if-no-files-found: ignore
+          retention-days: 7
+  design:
+    name: Design (${{ matrix.project }}, ${{ matrix.locale }}, ${{ matrix.mode }})
+    needs: [plan, build]
+    if: needs.plan.outputs.design == 'true'
+    runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      max-parallel: 8
+      matrix:
+        project: [desktop, mobile]
+        locale: [ar, en]
+        mode: [light, dark]
+    services:
+      mariadb:
+        image: mariadb:10.11.18
+        env:
+          MARIADB_DATABASE: so7ob_schema_test
+          MARIADB_USER: so7ob_test
+          MARIADB_PASSWORD: synthetic-ci-only
+          MARIADB_ROOT_PASSWORD: synthetic-ci-root-only
+        ports: ['3306:3306']
+        options: >-
+          --health-cmd="healthcheck.sh --connect --innodb_initialized"
+          --health-interval=5s --health-timeout=5s --health-retries=20
+    env:
+      DATABASE_HOST: 127.0.0.1
+      DATABASE_PORT: 3306
+      DATABASE_NAME: so7ob_schema_test
+      TEST_DATABASE_NAME: so7ob_schema_test
+      DATABASE_USER: so7ob_test
+      DATABASE_PASSWORD: synthetic-ci-only
+      SO7OB_E2E_SUITE: design
+      SO7OB_E2E_PROJECT: ${{ matrix.project }}
+      SO7OB_E2E_LOCALE: ${{ matrix.locale }}
+      SO7OB_E2E_MODE: ${{ matrix.mode }}
+      SO7OB_E2E_RESULT_FILE: .migration/ci/results/design-${{ matrix.project }}-${{ matrix.locale }}-${{ matrix.mode }}.cases.json
+      SO7OB_E2E_PROFILE_DIR: .migration/ci/profiles
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/setup-browser
+      - uses: actions/download-artifact@v4
+        with:
+          name: ci-build
+          path: .migration/ci/build
+      - run: tar -xzf .migration/ci/build/build.tgz
+      - run: npm run db:migrate
+      - run: npm run test:e2e:ci
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: e2e-design-${{ matrix.project }}-${{ matrix.locale }}-${{ matrix.mode }}
+          path: |
+            .migration/ci/results/*.json
+            .migration/ci/profiles/*.json
+          include-hidden-files: true
+          if-no-files-found: error
+          retention-days: 30
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: synthetic-design-${{ matrix.project }}-${{ matrix.locale }}-${{ matrix.mode }}
+          path: |
+            test-results/
+            .migration/iam/*.png
+            .migration/workflows/*.png
+            .migration/menus/*.png
+            .migration/settings/*.png
+            .migration/design-system/screenshots/**/*.png
+            .migration/design-system/screenshots/**/coverage.json
+          include-hidden-files: true
+          if-no-files-found: ignore
+          retention-days: 7
+  foundation:
+    # Preserve the existing required-check name. This gate always reports a result.
+    name: Product lint, TypeScript, MariaDB tests and SSR build
+    needs: [plan, docs, build, operations, smoke, functional, design]
+    if: always()
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24.21.0'
+      - uses: actions/download-artifact@v4
+        if: needs.build.result == 'success'
+        with:
+          name: ci-catalog
+          path: .migration/ci/catalog
+      - uses: actions/download-artifact@v4
+        if: needs.plan.outputs.smoke == 'true' && needs.build.result == 'success'
+        with:
+          pattern: e2e-*
+          path: .migration/ci/results
+      - name: Reject failed jobs and verify exact selected browser coverage
+        run: node tools/test/ci-gate.mjs
+        env:
+          PLAN_JSON: ${{ needs.plan.outputs.plan }}
+          NEEDS_JSON: ${{ toJSON(needs) }}
+          CI_BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          CI_HEAD_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+          CI_PR_NUMBER: ${{ github.event.pull_request.number }}
+      - uses: actions/upload-artifact@v4
+        if: needs.plan.outputs.build == 'true'
+        with:
+          name: ci-proof
+          path: .migration/ci/proof.json
+          include-hidden-files: true
+          if-no-files-found: error
+          retention-days: 30

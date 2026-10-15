@@ -1,6 +1,5 @@
 import { expect, type Page } from '@playwright/test';
 import { test } from './quota-fixture';
-import AxeBuilder from '@axe-core/playwright';
 import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { randomBytes } from 'node:crypto';
 import { execFileSync } from 'node:child_process';
@@ -9,7 +8,10 @@ import { createDataSource } from '@so7ob/server';
 import { SETTING_SECTIONS, appearanceTokens, BLOCK_REGISTRY, defaultNode, validateContent, type BlockType } from '@so7ob/contracts';
 import { getPortalContent } from '../../apps/web/src/content/portal';
 import { auditCopy } from '../../apps/web/src/components/admin/audit/copy';
+import { PerformanceLedger } from './performance';
+import { documentAudit, VisualReadiness } from './visual-checks';
 
+const frozenCoverage=JSON.parse(readFileSync(new URL('./fixtures/design-coverage.json',import.meta.url),'utf8')) as {views:string[];blockTypes:string[]};
 const palette = {
   'appearance.primaryLight':'#9d174d', 'appearance.accentLight':'#0f766e',
   'appearance.primaryDark':'#f9a8d4', 'appearance.accentDark':'#5eead4',
@@ -18,47 +20,49 @@ const rgb=(hex:string)=>'rgb('+[1,3,5].map(i=>parseInt(hex.slice(i,i+2),16)).joi
 // Full-page review PNGs already capture every view. Keep action traces on failure
 // without duplicating hundreds of screenshots and DOM snapshots in temporary storage.
 test.use({contextOptions:{reducedMotion:'reduce'},trace:{mode:'retain-on-failure',screenshots:false,snapshots:false}});
-async function audit(page: Page, label: string) {
+async function audit(page: Page, label: string, ledger: PerformanceLedger) {
   await page.evaluate(()=>document.fonts.ready);
   expect.soft(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),label+' overflow').toBe(true);
   for(const dialog of await page.locator('[data-slot="dialog-content"], [data-slot="alert-dialog-content"], [data-slot="sheet-content"]').filter({visible:true}).all())expect.soft(await dialog.evaluate(e=>e.scrollWidth<=e.clientWidth),label+' dialog overflow').toBe(true);
   for(const close of await page.locator('[data-slot="dialog-close"], [data-slot="sheet-close"]').filter({visible:true}).all()){
     const box=(await close.boundingBox())!;expect.soft(box.width,label+' close width').toBe(44);expect.soft(box.height,label+' close height').toBe(44);
   }
-  const result=await new AxeBuilder({page}).exclude('iframe').withTags(['wcag2a','wcag2aa','wcag21aa','wcag22aa']).analyze();
+  const result=await ledger.measure('axe-page',()=>documentAudit(page,true));
   // Sandboxed editor/settings frames are independently measured below when present.
   expect.soft(result.violations.map(v=>({id:v.id,nodes:v.nodes.map(n=>({target:n.target,summary:n.failureSummary}))})),label).toEqual([]);
   for(const frame of await page.locator('iframe[srcdoc]').all()){
     await expect(frame).toHaveAttribute('title',/.+/);
-    const preview=await page.context().newPage();
+    const preview=await ledger.measure('preview-open',()=>page.context().newPage());
     try {
-      await preview.goto(new URL('/api/health/ready',page.url()).href);
+      await ledger.measure('preview-navigation',()=>preview.goto(new URL('/api/health/ready',page.url()).href));
       await preview.setContent((await frame.getAttribute('srcdoc'))!);
       await preview.evaluate(()=>document.fonts.ready);
-      expect.soft((await new AxeBuilder({page:preview}).withTags(['wcag2a','wcag2aa','wcag21aa','wcag22aa']).analyze()).violations,label+' preview').toEqual([]);
+      expect.soft((await ledger.measure('axe-preview',()=>documentAudit(preview))).violations,label+' preview').toEqual([]);
     } finally {await preview.close();}
   }
 }
 for(const locale of ['ar','en'] as const)for(const mode of ['light','dark'] as const)
  test(`${locale}/${mode}: every platform workspace follows the design system`,async({page},info)=>{
   test.setTimeout(480000);page.setDefaultTimeout(10000);
+  const ledger=new PerformanceLedger(), readiness=new VisualReadiness(page), started=performance.now();
   const {prefix,password}=JSON.parse(readFileSync('.migration/e2e/run.json','utf8'));
   const db=await createDataSource().initialize(),id=prefix+'design'+randomBytes(4).toString('hex');
   const keys=Object.keys(palette),saved=await db.query('SELECT * FROM SiteSetting WHERE `key` IN (?,?,?,?)',keys);
   const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));page.on('console',m=>{if(m.type()==='error'&&/hydration|did not match|server rendered/i.test(m.text()))errors.push(m.text());});
   page.on('response',response=>{if(response.status()>=500)errors.push(`HTTP ${response.status()} ${new URL(response.url()).pathname}`);});
   const {csrfToken}=await(await page.request.get('/api/auth/csrf')).json();
-  expect((await page.request.post('/api/auth/callback/credentials',{form:{email:prefix+'admin@example.invalid',password,csrfToken,json:'true'}})).status()).toBe(200);
+  expect((await ledger.measure('login',()=>page.request.post('/api/auth/callback/credentials',{form:{email:prefix+'admin@example.invalid',password,csrfToken,json:'true'}}))).status()).toBe(200);
   const headers={'x-csrf-token':csrfToken};let pageId='';
   const visited:string[]=[];
   const folder=`.migration/design-system/screenshots/${locale}-${info.project.name}-${mode}`;
   mkdirSync(folder,{recursive:true});
   async function capture(name:string){
-    await page.waitForLoadState('networkidle');
+    await ledger.measure('ready',()=>readiness.wait());
     await expect(page.locator('html')).toHaveAttribute('data-color-mode',mode);
     await expect(page.locator('html')).toHaveAttribute('dir',locale==='ar'?'rtl':'ltr');
-    await audit(page,name);
-    await page.screenshot({path:`${folder}/${name}.png`,fullPage:true});visited.push(name);
+    expect(errors,name+' failed responses or hydration').toEqual([]);
+    await audit(page,name,ledger);
+    await ledger.measure('screenshot',()=>page.screenshot({path:`${folder}/${name}.png`,fullPage:true}));visited.push(name);
   }
   async function captureTabs(name:string, scope=page.locator('main')){
     const tabs=scope.getByRole('tab').filter({visible:true});
@@ -67,7 +71,7 @@ for(const locale of ['ar','en'] as const)for(const mode of ['light','dark'] as c
     for(let i=0;i<count;i++){await tabs.nth(i).click();await expect.soft(tabs.nth(i)).toHaveCSS('color',rgb(appearanceTokens(palette,mode).primary));await capture(`${name}-tab-${i+1}`);}
   }
   async function visit(path:string,name=path.replaceAll('/','-').replaceAll('?','-').replaceAll('=','-')){
-    const response=await page.goto(`/${locale}${path}`);
+    const response=await ledger.measure('navigation',()=>page.goto(`/${locale}${path}`));
     expect(response?.status()).toBe(path==='/design-system-missing-page'?404:200);
     await capture(name||'home');
     if(path==='/admin/requests')await expect(page.locator('input[type=checkbox]').first()).toHaveCSS('accent-color',rgb(appearanceTokens(palette,mode).primary));
@@ -182,8 +186,12 @@ for(const locale of ['ar','en'] as const)for(const mode of ['light','dark'] as c
     for(const name of ['login','register','forgot-password','reset-password','invite','verified'])await visit('/auth/'+name,'auth-'+name);
     await visit('/design-system-missing-page','not-found');
     await expect(page.locator('a.bg-primary')).toHaveCSS('background-color',rgb(expected.primary));
+    expect(visited).toEqual(frozenCoverage.views);
+    expect(Object.keys(BLOCK_REGISTRY)).toEqual(frozenCoverage.blockTypes);
     expect(errors).toEqual([]);
   }finally{
+    readiness.dispose();
+    ledger.write(`${locale}-${info.project.name}-${mode}`,{sourceRevision,locale,mode,project:info.project.name,elapsedMs:performance.now()-started,visited});
     writeFileSync(`${folder}/coverage.json`,JSON.stringify({sourceRevision,locale,mode,viewport:info.project.name,visited,errors,assertionErrors:info.errors.map(e=>e.message),blockTypes:Object.keys(BLOCK_REGISTRY)},null,2)+'\n');
     if(pageId){await db.query('DELETE FROM PageVersion WHERE pageId=?',[pageId]);await db.query('DELETE FROM Page WHERE id=?',[pageId]);await db.query('DELETE FROM AuditLog WHERE entityId=?',[pageId]);}
     await db.query('DELETE FROM ProjectRequest WHERE id=?',[id]);await db.query('DELETE FROM Inquiry WHERE id=?',[id]);

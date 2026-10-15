@@ -8,7 +8,7 @@ const origin=process.env.E2E_BASE_URL ?? 'https://127.0.0.1:3198';
 if (!['127.0.0.1','localhost'].includes(new URL(origin).hostname)) throw new Error('Browser acceptance may only target loopback');
 export default defineConfig({
   testDir:'./tests/e2e', globalSetup:'./tests/e2e/setup.ts', fullyParallel:false, workers:1,
-  timeout:30000, expect:{timeout:5000}, reporter:[['list'],['json',{outputFile:'test-results/e2e.json'}]],
+  timeout:30000, expect:{timeout:5000}, reporter:[['list'],['json',{outputFile:'test-results/e2e.json'}],['./tests/e2e/performance-reporter.ts']],
   use:{baseURL:origin,ignoreHTTPSErrors:true,headless:true,locale:'en-US',timezoneId:'Asia/Aden',trace:'retain-on-failure',screenshot:'only-on-failure'},
   projects:[{name:'desktop',use:{viewport:{width:1280,height:900}}},{name:'mobile',use:{viewport:{width:375,height:812}}}],
   webServer:{command:'node tools/test/e2e-server.mjs',ignoreHTTPSErrors:true,url:origin+'/api/health/ready',reuseExistingServer:process.env.SO7OB_E2E_EXTERNAL==='1',timeout:30000,

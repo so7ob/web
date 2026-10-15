@@ -1,0 +1,15 @@
+name: Locked Chromium workspace
+description: Exact Playwright browser cache with required operating-system libraries
+runs:
+  using: composite
+  steps:
+    - uses: ./.github/actions/setup-node
+    - id: version
+      shell: bash
+      run: node -e "console.log('playwright='+require('@playwright/test/package.json').version)" >> "$GITHUB_OUTPUT"
+    - uses: actions/cache@v4
+      with:
+        path: ~/.cache/ms-playwright
+        key: chromium-${{ runner.os }}-${{ runner.arch }}-node24.21.0-npm10.8.2-pw${{ steps.version.outputs.playwright }}-${{ hashFiles('package-lock.json') }}
+    - shell: bash
+      run: npx playwright install --with-deps chromium
