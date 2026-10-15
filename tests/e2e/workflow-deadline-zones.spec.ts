@@ -4,6 +4,7 @@ import { test } from './workflow-deadline-fixture';
 import { getPortalContent } from '../../apps/web/src/content/portal';
 test.use({ contextOptions: { reducedMotion: 'reduce' } });
 const checkTime = async (time: Locator, hour?: string) => {
+  time = time.filter({ visible: true });
   await expect(time).toBeVisible(); await expect(time).toContainText('Asia/Aden · UTC+03:00');
   if (hour) await expect(time).toContainText(hour);
   await expect(time.locator('bdi')).toHaveAttribute('dir', 'ltr');
@@ -19,8 +20,10 @@ for (const scope of ['requests', 'inquiries'] as const) for (const zone of ['Asi
       await checkTime(page.locator(`time[datetime="${record.response}"]`), record.responseHour);
       await checkTime(page.locator(`time[datetime="${record.stage}"]`), record.stageHour);
       await expect(page.getByRole('combobox', { name: getPortalContent(locale).admin.requests.changeStatus, exact: true })).toHaveCount(0);
-      const detail = await (await page.request.get(`/api/admin/${scope}/${record.id}`)).json();
-      expect(detail.workflow).toMatchObject({ versionId: deadlines.version, responseDueAt: record.response, stageDueAt: record.stage, calendarTimezone: 'Asia/Aden' });
+      const response = await page.request.get(`/api/admin/${scope}/${record.id}`);
+      expect(response.status()).toBe(200);
+      const detail = await response.json();
+      expect(detail[scope === 'requests' ? 'request' : 'inquiry'].workflow).toMatchObject({ versionId: deadlines.version, responseDueAt: record.response, stageDueAt: record.stage, calendarTimezone: 'Asia/Aden' });
       expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
     }
     expect((await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa', 'wcag21aa', 'wcag22aa']).analyze()).violations).toEqual([]);
