@@ -120,8 +120,6 @@ const STATUS_CHIP_TONES: Record<string, string> = {
   archived: "bg-muted text-muted-foreground",
 };
 
-const DUPLICATE_ATTEMPTS = 5;
-
 export function PagesClient({ me, locale }: PagesClientProps) {
   const t = getPortalContent(locale);
   const tp = t.admin.pages;
@@ -139,6 +137,7 @@ export function PagesClient({ me, locale }: PagesClientProps) {
   const [data, setData] = useState<PagesResponse | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [duplicatingId, setDuplicatingId] = useState<string | null>(null);
 
   const load = useCallback(
     async (signal: AbortSignal) => {
@@ -241,27 +240,17 @@ export function PagesClient({ me, locale }: PagesClientProps) {
 
   // ——— نسخ صفحة ———
   const duplicate = async (row: PageRow) => {
-    const base = row.slug || "home";
-    for (let attempt = 1; attempt <= DUPLICATE_ATTEMPTS; attempt++) {
-      const candidate =
-        attempt === 1 ? `${base}-copy` : `${base}-copy-${attempt}`;
-      if (!isValidSlug(candidate)) continue;
-      try {
-        await apiSend<CreatePageResponse>("/api/admin/pages", "POST", {
-          titleAr: row.titleAr,
-          titleEn: row.titleEn,
-          slug: candidate,
-        });
-        toast.success(tp.duplicate);
-        reload();
-        return;
-      } catch (err) {
-        if (err instanceof ApiError && err.code === "slug_taken") continue; // جرب اللحقة التالية
-        toast.error(apiErrorMessage(err, t.auth.errors));
-        return;
-      }
+    if (duplicatingId) return;
+    setDuplicatingId(row.id);
+    try {
+      await apiSend<CreatePageResponse>(`/api/admin/pages/${row.id}/duplicate`, "POST", {});
+      toast.success(tp.duplicateSuccess);
+      reload();
+    } catch (err) {
+      toast.error(apiErrorMessage(err, t.auth.errors));
+    } finally {
+      setDuplicatingId(null);
     }
-    toast.error(tp.slugHint);
   };
 
   // ——— تعيين رئيسية ———
@@ -538,7 +527,7 @@ export function PagesClient({ me, locale }: PagesClientProps) {
                           {canEdit && (
                             <DropdownMenuItem
                               onClick={() => void duplicate(row)}
-                              disabled={archived}
+                              disabled={archived || duplicatingId !== null}
                             >
                               <Copy className="size-4" aria-hidden="true" />
                               {tp.duplicate}
