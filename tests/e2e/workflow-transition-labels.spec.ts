@@ -2,6 +2,7 @@ import { expect, type Page } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
 import { test } from './workflow-transition-fixture';
 import { getPortalContent } from '../../apps/web/src/content/portal';
+import { selectByKeyboard } from './workflow-keyboard';
 test.use({ contextOptions: { reducedMotion: 'reduce' } });
 for (const scope of ['requests', 'inquiries'] as const) test.describe(scope, () => {
   test.use({ transitionScope: scope });
@@ -22,15 +23,6 @@ for (const scope of ['requests', 'inquiries'] as const) test.describe(scope, () 
       await expect(page.getByRole('option', { name: t('انتقال', 'Move'), exact: true })).toHaveCount(0);
       await expect(page.getByRole('option', { name: /Assignee only|خاص بالمسند إليه|Unpublished draft|مسودة غير منشورة/ })).toHaveCount(0);
       return control;
-    };
-    const selectByKeyboard = async (page: Page, label: string) => {
-      const option = page.getByRole('option', { name: label, exact: true });
-      const options = page.getByRole('option');
-      for (let index = 0; index < await options.count(); index++) {
-        if (await option.evaluate(element => element === document.activeElement)) break;
-        await page.keyboard.press('ArrowDown');
-      }
-      await expect(option).toBeFocused(); await page.keyboard.press('Enter');
     };
     test(`${locale}: inherited and custom actions expose pinned destinations and execute their own IDs`, async ({ page, actions }, info) => {
       const before = await actions.db.query('SELECT definition FROM WorkflowVersion WHERE id=?', [actions.version]);
@@ -113,4 +105,79 @@ for (const scope of ['requests', 'inquiries'] as const) test.describe(scope, () 
       expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
     });
   }
+});
+
+type HeldNavigation = { pending: Array<() => void>; arrows: number; restore: () => void };
+test.describe('deferred keyboard navigation', () => {
+  test.use({ transitionScope: 'inquiries' });
+  for (const locale of ['ar', 'en'] as const) test(`${locale}: each real arrow settles before the next after cancelling and reopening`, async ({ page, actions }, info) => {
+    const t = (ar: string, en: string) => locale === 'ar' ? ar : en;
+    const id = actions.records[2], label = t('انتقال إلى قائمة القرار', 'Move to Decision queue');
+    const before = await actions.db.query('SELECT stageId,revision FROM ConversationWorkflow WHERE recordId=?', [id]);
+    let posts = 0;
+    page.on('request', request => { if (request.method() === 'POST' && request.url().endsWith(`/workflows/inquiries/${id}/transition`)) posts++; });
+    await page.goto(`/${locale}/admin/inquiries/${id}`);
+    const control = page.getByRole('combobox', { name: getPortalContent(locale).admin.requests.changeStatus, exact: true });
+    const review = page.getByRole('option', { name: t('انتقال إلى فحص بشري', 'Move to Human review'), exact: true });
+    const custom = page.getByRole('option', { name: t('تدقيق مخصص إلى فحص بشري', 'Custom audit to Human review'), exact: true });
+    const decision = page.getByRole('option', { name: label, exact: true });
+    await control.focus(); await page.keyboard.press('ArrowDown');
+    await expect.poll(() => page.getByRole('listbox').evaluate(listbox => listbox.contains(document.activeElement))).toBe(true);
+    await page.keyboard.press('Home'); await expect(review).toBeFocused();
+    await page.keyboard.press('End'); await expect(custom).toBeFocused();
+    await page.keyboard.press('ArrowUp'); await expect(decision).toBeFocused();
+    await page.keyboard.press('Enter');
+    const dialog = page.getByRole('dialog', { name: t('تأكيد الانتقال', 'Confirm transition'), exact: true });
+    await expect(dialog).toHaveAccessibleDescription(label);
+    await page.keyboard.press('Escape'); await expect(dialog).toBeHidden(); expect(posts).toBe(0);
+    await control.focus(); await page.keyboard.press('ArrowDown');
+    await expect.poll(() => page.getByRole('listbox').evaluate(listbox => listbox.contains(document.activeElement))).toBe(true);
+    await page.keyboard.press('Home'); await expect(review).toBeFocused();
+
+    await page.evaluate(() => {
+      const driver = window as typeof window & { heldNavigation: HeldNavigation };
+      const original = window.setTimeout;
+      let capturing = false, nextId = 0;
+      const keydown = (event: KeyboardEvent) => {
+        if (event.key !== 'ArrowDown' || !(event.target instanceof Element) || !event.target.closest('[role="listbox"]')) return;
+        driver.heldNavigation.arrows++; capturing = true;
+      };
+      const finish = () => { capturing = false; };
+      driver.heldNavigation = { pending: [], arrows: 0, restore: () => {
+        window.setTimeout = original; document.removeEventListener('keydown', keydown, true);
+        document.removeEventListener('keydown', finish); document.removeEventListener('keyup', finish, true);
+      } };
+      document.addEventListener('keydown', keydown, true);
+      document.addEventListener('keydown', finish);
+      document.addEventListener('keyup', finish, true);
+      window.setTimeout = ((handler: TimerHandler, delay?: number, ...args: unknown[]) => {
+        if (capturing && !delay && typeof handler === 'function') {
+          driver.heldNavigation.pending.push(() => handler(...args));
+          return --nextId;
+        }
+        return original(handler, delay, ...args);
+      }) as typeof window.setTimeout;
+    });
+    const released: string[] = [];
+    try {
+      await selectByKeyboard(page, label, async option => {
+        const pending = await page.evaluate(() => (window as typeof window & { heldNavigation: HeldNavigation }).heldNavigation.pending.length);
+        await info.attach('pending-deferred-focus', { body: JSON.stringify({ pending, expectedOption: await option.textContent() }), contentType: 'application/json' });
+        // A second queued arrow is the race: its candidate was computed from stale focus.
+        expect(pending).toBe(1);
+        await page.evaluate(() => (window as typeof window & { heldNavigation: HeldNavigation }).heldNavigation.pending.shift()!());
+        released.push((await option.textContent())!);
+        await expect(option).toBeFocused();
+      });
+      await expect(dialog).toHaveAccessibleDescription(label);
+      expect(released).toHaveLength(3); expect(released.at(-1)).toBe(label);
+      expect(await page.evaluate(() => (window as typeof window & { heldNavigation: HeldNavigation }).heldNavigation.arrows)).toBe(3);
+      expect(posts).toBe(0);
+      await page.keyboard.press('Escape'); await expect(dialog).toBeHidden();
+      expect(await actions.db.query('SELECT stageId,revision FROM ConversationWorkflow WHERE recordId=?', [id])).toEqual(before);
+      await info.attach('serialized-real-keyboard-focus', { body: JSON.stringify({ locale, released, transitionPosts: posts, unchangedState: before }), contentType: 'application/json' });
+    } finally {
+      await page.evaluate(() => (window as typeof window & { heldNavigation: HeldNavigation }).heldNavigation.restore());
+    }
+  });
 });
