@@ -69,7 +69,7 @@ export function WorkflowWorkspace({ locale, me }: { locale: Locale; me: Me }) {
     [busy, setBusy] = useState(false),
     [notice, setNotice] = useState(""),
     [tab, setTab] = useState("flows");
-  const mutex = useRef(false);
+  const mutex = useRef(false), operationSequence = useRef(0);
   const readSequence = useRef(0), writeSequence = useRef(0);
   const confirmedWrites = useRef(new Map<string, { flow: Flow; sequence: number }>());
   const [active, setActive] = useState<Flow | null>(null),
@@ -150,7 +150,7 @@ export function WorkflowWorkspace({ locale, me }: { locale: Locale; me: Me }) {
   }, [load]);
   const run = async <T,>(work: () => Promise<T>): Promise<T | undefined> => {
     if (mutex.current || asApiError(error).uncertain) return;
-    mutex.current = true;
+    mutex.current = true; operationSequence.current++;
     setBusy(true);
     setError(null);
     setNotice("");
@@ -199,6 +199,7 @@ export function WorkflowWorkspace({ locale, me }: { locale: Locale; me: Me }) {
   };
   const guard = useWorkflowLeaveGuard({
     dirty, saving: savingDraft, busy, error, locale,
+    confirmation: () => writeSequence.current,
     shouldBlock: () => savingDraftRef.current || definitionKey(definitionRef.current) !== definitionKey(baselineRef.current),
     canSave: can(me, 'workflows.manage') && !asApiError(error).uncertain,
     save: () => run(async () => (await save()).unchanged),
@@ -311,8 +312,9 @@ export function WorkflowWorkspace({ locale, me }: { locale: Locale; me: Me }) {
           locale={locale}
           focusOnError={!guard.pending}
           onRefresh={async () => {
+            const operation = operationSequence.current;
             await load();
-            setError(null);
+            if (operation === operationSequence.current) setError(null);
           }}
         />
       ) : null}

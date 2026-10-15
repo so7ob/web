@@ -207,3 +207,29 @@ it('a refresh started before a save cannot restore the old workflow when it is s
  await waitFor(() => expect(screen.getByRole('option', { name: 'Fresh external draft' })).toBeInTheDocument());
  fireEvent.change(select, { target: { value: 'one' } }); expect(name).toHaveValue('Fresh external draft');
 });
+it('an older refresh cannot erase a newer save failure or release its pending route', async () => {
+ const read = deferred(), write = deferred();
+ send.mockRejectedValueOnce(new ApiError(400, 'invalid'));
+ const { router } = await setup();
+ fireEvent.click(screen.getByRole('button', { name: 'Validate workflow' }));
+ const refresh = await screen.findByRole('button', { name: 'Refresh data' });
+ get.mockReturnValueOnce(read.promise); fireEvent.click(refresh);
+ send.mockReturnValueOnce(write.promise);
+ fireEvent.click(screen.getByRole('button', { name: 'Save draft' }));
+ await act(async () => { await router.navigate('/en/admin'); });
+ await act(async () => write.reject(new ApiError(400, 'invalid')));
+ await act(async () => read.resolve(fixture()));
+ expect(router.state.location.pathname).toBe('/en/admin/workflows');
+ expect(screen.getByRole('alertdialog')).toBeVisible(); expect(screen.getAllByRole('alert').length).toBeGreaterThan(0);
+ fireEvent.click(screen.getByRole('button', { name: 'Stay' }));
+});
+
+it('a confirmed in-flight save can release the pending route when no newer edits remain', async () => {
+ const pending = deferred(); send.mockReturnValueOnce(pending.promise);
+ const { router } = await setup();
+ fireEvent.click(screen.getByRole('button', { name: 'Save draft' }));
+ await act(async () => { await router.navigate('/en/admin'); });
+ expect(screen.getByRole('alertdialog')).toBeVisible();
+ await act(async () => pending.resolve({ ok: true, id: 'one', revision: 1 }));
+ await waitFor(() => expect(router.state.location.pathname).toBe('/en/admin'));
+});

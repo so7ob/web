@@ -5,14 +5,14 @@ import { Button } from '@/components/ui/button';
 import { ErrorFeedback } from '@/components/errors/error-feedback';
 import type { Locale } from '@/lib/i18n';
 
-type Intent = { action: () => void; route: boolean };
-export function useWorkflowLeaveGuard({ dirty, saving, busy, canSave, error, save, discard, locale, shouldBlock }: {
+type Intent = { action: () => void; route: boolean; confirmedAtStart: number };
+export function useWorkflowLeaveGuard({ dirty, saving, busy, canSave, error, save, discard, locale, shouldBlock, confirmation }: {
   dirty: boolean; saving: boolean; busy: boolean; canSave: boolean; error: unknown;
-  save: () => Promise<boolean | undefined>; discard: () => void; locale: Locale; shouldBlock: () => boolean;
+  save: () => Promise<boolean | undefined>; discard: () => void; locale: Locale; shouldBlock: () => boolean; confirmation: () => number;
 }) {
   const t = (ar: string, en: string) => locale === 'ar' ? ar : en;
   const enabled = dirty || saving;
-  const current = useRef({ shouldBlock, discard }); current.current = { shouldBlock, discard };
+  const current = useRef({ shouldBlock, discard, confirmation }); current.current = { shouldBlock, discard, confirmation };
   const intent = useRef<Intent | null>(null);
   const [pending, setPending] = useState(false), [newer, setNewer] = useState(false);
   const bypass = useRef(false);
@@ -21,7 +21,7 @@ export function useWorkflowLeaveGuard({ dirty, saving, busy, canSave, error, sav
   const request = useCallback((action: () => void, route = false) => {
     if (intent.current) return;
     if (!current.current.shouldBlock()) { action(); return; }
-    intent.current = { action, route }; setPending(true); setNewer(false);
+    intent.current = { action, route, confirmedAtStart: current.current.confirmation() }; setPending(true); setNewer(false);
   }, []);
   const cancel = () => {
     intent.current = null; setPending(false); setNewer(false);
@@ -43,7 +43,7 @@ export function useWorkflowLeaveGuard({ dirty, saving, busy, canSave, error, sav
     }
   }, [blocker, request]);
   useEffect(() => {
-    if (pending && !enabled && !busy && !error) finish(false);
+    if (pending && !enabled && !busy && !error && intent.current && current.current.confirmation() > intent.current.confirmedAtStart) finish(false);
   });
   useEffect(() => {
     const unload = (event: BeforeUnloadEvent) => { if (current.current.shouldBlock() || intent.current) { event.preventDefault(); event.returnValue = ''; } };
