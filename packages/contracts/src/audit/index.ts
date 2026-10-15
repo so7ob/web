@@ -474,6 +474,7 @@ for (const [family, ar, en, category, fields] of families)
       category,
       fields,
       [
+        ...(family === "page" && operation === "created" ? ["sourcePageId"] : []),
         ...metadata,
         "roleKey",
         "fromRole",

@@ -543,6 +543,7 @@ export interface PortalContent {
       updated: string;
       edit: string;
       duplicate: string;
+      duplicateSuccess: string;
       archive: string;
       restore: string;
       preview: string;
