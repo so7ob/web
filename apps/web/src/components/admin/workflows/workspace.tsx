@@ -321,9 +321,9 @@ export function WorkflowWorkspace({ locale, me }: { locale: Locale; me: Me }) {
       {guard.dialog}
       <p role="status" className="text-sm font-medium">{dirty ? t('تعديلات مسار غير محفوظة', 'Unsaved workflow changes') : t('لا توجد تعديلات مسار غير محفوظة', 'No unsaved workflow changes')}</p>
         <p role="status" className="text-sm">
-        {busy ? t("جارٍ الحفظ…", "Saving…") : notice}
+        {guard.leaving ? t("جارٍ الانتقال…", "Navigating…") : busy ? t("جارٍ الحفظ…", "Saving…") : notice}
       </p>
-        <fieldset disabled={busy} className="min-w-0 space-y-5">
+        <fieldset disabled={busy || guard.leaving} inert={guard.leaving} className="min-w-0 space-y-5">
           {tab === "flows" ? (
             <>
               <section className={wfCard}>

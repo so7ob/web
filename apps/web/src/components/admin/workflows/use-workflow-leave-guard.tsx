@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { useBlocker, useLocation, useNavigate } from 'react-router-dom';
+import { useBlocker, useLocation, useNavigate, useNavigation } from 'react-router-dom';
 import { AlertDialog, AlertDialogContent, AlertDialogHeader, AlertDialogTitle, AlertDialogDescription, AlertDialogFooter, AlertDialogCancel } from '@/components/ui/alert-dialog';
 import { Button } from '@/components/ui/button';
 import { ErrorFeedback } from '@/components/errors/error-feedback';
@@ -16,7 +16,8 @@ export function useWorkflowLeaveGuard({ dirty, saving, busy, canSave, error, sav
   const intent = useRef<Intent | null>(null);
   const [pending, setPending] = useState(false), [newer, setNewer] = useState(false);
   const bypass = useRef(false);
-  const navigate = useNavigate(), location = useLocation();
+  const navigate = useNavigate(), location = useLocation(), navigation = useNavigation();
+  const leaving = navigation.state !== 'idle' && navigation.location?.pathname !== location.pathname;
   const blocker = useBlocker(({ currentLocation, nextLocation }) => !bypass.current && (current.current.shouldBlock() || intent.current !== null) && currentLocation.pathname !== nextLocation.pathname);
   const request = useCallback((action: () => void, route = false) => {
     if (intent.current) return;
@@ -80,5 +81,5 @@ export function useWorkflowLeaveGuard({ dirty, saving, busy, canSave, error, sav
       </AlertDialogFooter>
     </AlertDialogContent>
   </AlertDialog>;
-  return { request, dialog, pending };
+  return { request, dialog, pending, leaving };
 }

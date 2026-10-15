@@ -126,6 +126,28 @@ for (const locale of ['ar', 'en'] as const) {
   await page.getByRole('alertdialog').getByRole('button', { name: discardLabel, exact: true }).click(); await expect(page).toHaveURL(new RegExp(`/${locale}/admin$`));
   await page.goForward(); await select.selectOption(flows.one); await expect(name).toHaveValue('Saved before leaving');
  });
+ test(`${locale}: approved navigation freezes editing until the destination is ready`, async ({ page, flows }) => {
+  const other = locale === 'ar' ? 'en' : 'ar';
+  await page.goto(`/${locale}/admin/workflows`);
+  const select = page.getByLabel(flowLabel, { exact: true }), name = page.getByLabel(nameLabel, { exact: true });
+  await select.selectOption(flows.one); await name.fill('Saved before pending navigation');
+  let release!: () => void, started!: () => void;
+  const gate = new Promise<void>(resolve => { release = resolve; }), seen = new Promise<void>(resolve => { started = resolve; });
+  await page.route(/\/api\/v1\/public\/view\?/, async route => {
+   if (new URL(route.request().url()).searchParams.get('path') === `/${other}/admin/workflows`) { started(); await gate; }
+   await route.continue();
+  });
+  try {
+   await page.locator('a[hreflang]').filter({ visible: true }).click();
+   await page.getByRole('alertdialog').getByRole('button', { name: saveLabel, exact: true }).click(); await seen;
+   await expect(name).toBeDisabled(); await expect(name).toHaveValue('Saved before pending navigation');
+   expect(await page.getByLabel(t('مساحة المخطط القابلة للتمرير', 'Scrollable diagram'), { exact: true }).evaluate(element => { (element as HTMLElement).focus(); return document.activeElement === element; })).toBe(false);
+   release(); await expect(page).toHaveURL(new RegExp(`/${other}/admin/workflows$`));
+   const targetSelect = page.getByLabel(other === 'ar' ? 'المسار' : 'Workflow', { exact: true });
+   await expect(targetSelect).toBeEnabled(); await targetSelect.selectOption(flows.one);
+   await expect(page.getByLabel(other === 'ar' ? 'اسم المسار بالإنجليزية' : 'Workflow English name', { exact: true })).toHaveValue('Saved before pending navigation');
+  } finally { release(); }
+ });
  test(`${locale}: language navigation and reload protect the workflow without putting its content in URL`, async ({ page, flows }) => {
   const other = locale === 'ar' ? 'en' : 'ar';
   await page.goto(`/${locale}/admin/workflows`);

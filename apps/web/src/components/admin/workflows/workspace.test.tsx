@@ -12,8 +12,8 @@ const flows = ['one', 'two'].map(id => ({ id, revision: 0, scope: 'requests', dr
 const fixture = () => ({ ok: true, workflows: structuredClone(flows), versions: [], teams: [], calendars: [], staff: [], bindings: [] });
 beforeEach(() => { vi.clearAllMocks(); get.mockResolvedValue(fixture()); send.mockImplementation((_url, _method, body) => Promise.resolve({ ok: true, id: body.payload.id ?? 'created', revision: body.payload.revision === undefined ? 0 : body.payload.revision + 1 })); Element.prototype.scrollIntoView = vi.fn(); });
 afterEach(() => { cleanup(); vi.restoreAllMocks(); });
-async function setup(locale: 'ar' | 'en' = 'en', readOnly = false) {
- const router = createMemoryRouter([{ path: '/:locale/admin/workflows', element: <WorkflowWorkspace locale={locale} me={{ id: 'synthetic', email: 'synthetic@example.invalid', name: 'Synthetic', roleKey: readOnly ? 'staff' : 'super_admin', locale, permissions: readOnly ? ['workflows.view'] : ['workflows.view', 'workflows.manage', 'workflows.publish'] }} /> }, { path: '*', element: <p>Outside workflow editor</p> }], { initialEntries: [`/${locale}/admin/workflows`] });
+async function setup(locale: 'ar' | 'en' = 'en', readOnly = false, leaveLoader?: () => Promise<unknown>) {
+ const router = createMemoryRouter([{ path: '/:locale/admin/workflows', element: <WorkflowWorkspace locale={locale} me={{ id: 'synthetic', email: 'synthetic@example.invalid', name: 'Synthetic', roleKey: readOnly ? 'staff' : 'super_admin', locale, permissions: readOnly ? ['workflows.view'] : ['workflows.view', 'workflows.manage', 'workflows.publish'] }} /> }, { path: '*', loader: leaveLoader, element: <p>Outside workflow editor</p> }], { initialEntries: [`/${locale}/admin/workflows`] });
  render(<RouterProvider router={router} />);
  const select = await screen.findByRole('combobox', { name: locale === 'ar' ? 'المسار' : 'Workflow' });
  fireEvent.change(select, { target: { value: 'one' } });
@@ -232,4 +232,13 @@ it('a confirmed in-flight save can release the pending route when no newer edits
  expect(screen.getByRole('alertdialog')).toBeVisible();
  await act(async () => pending.resolve({ ok: true, id: 'one', revision: 1 }));
  await waitFor(() => expect(router.state.location.pathname).toBe('/en/admin'));
+});
+
+it('freezes the definition while an approved navigation is still waiting for its loader', async () => {
+ const destination = deferred(); const { router, name } = await setup('en', false, () => destination.promise);
+ fireEvent.change(name, { target: { value: 'Draft before leaving' } });
+ await act(async () => { await router.navigate('/en/admin'); });
+ fireEvent.click(screen.getByRole('button', { name: 'Discard changes and continue' }));
+ try { await waitFor(() => expect(name).toBeDisabled()); }
+ finally { await act(async () => destination.resolve(null)); }
 });
