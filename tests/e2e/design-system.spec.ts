@@ -10,6 +10,7 @@ import { getPortalContent } from '../../apps/web/src/content/portal';
 import { auditCopy } from '../../apps/web/src/components/admin/audit/copy';
 import { PerformanceLedger } from './performance';
 import { documentAudit, VisualReadiness } from './visual-checks';
+import { movePointerOutside } from './pointer-state';
 
 const frozenCoverage=JSON.parse(readFileSync(new URL('./fixtures/design-coverage.json',import.meta.url),'utf8')) as {views:string[];blockTypes:string[]};
 const palette = {
@@ -58,6 +59,11 @@ for(const locale of ['ar','en'] as const)for(const mode of ['light','dark'] as c
   mkdirSync(folder,{recursive:true});
   async function capture(name:string){
     await ledger.measure('ready',()=>readiness.wait());
+    if(name==='not-found-client-navigation'||name==='not-found'){
+      const primary=page.locator('a.bg-primary');
+      await movePointerOutside(page,primary);
+      await expect(primary).toHaveCSS('background-color',rgb(appearanceTokens(palette,mode).primary));
+    }
     await expect(page.locator('html')).toHaveAttribute('data-color-mode',mode);
     await expect(page.locator('html')).toHaveAttribute('dir',locale==='ar'?'rtl':'ltr');
     expect(errors,name+' failed responses or hydration').toEqual([]);
