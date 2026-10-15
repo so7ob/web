@@ -32,6 +32,25 @@ async function immediateSwitch(page: Page, text: string) {
 }
 for (const locale of ['ar', 'en'] as const) {
   const other = locale === 'ar' ? 'en' : 'ar';
+  test(`${locale}: SSR controls wait for hydration and draft recovery before accepting input`, async ({ page }) => {
+    let release!: () => void;
+    const gate = new Promise<void>(resolve => { release = resolve; });
+    await page.route('**/assets/index-*.js', async route => { await gate; await route.continue(); });
+    await page.addInitScript(({ draftKey, draftNote }) => sessionStorage.setItem(draftKey, JSON.stringify({ owner: 'guest', expiresAt: Date.now() + 60000, values: { description: draftNote, serviceType: 'mobile' } })), { draftKey: key, draftNote: note });
+    try {
+      await page.goto(`/${locale}/contact`, { waitUntil: 'commit' });
+      await expect(page.locator('#description')).toBeVisible();
+      await expect(page.locator('#description')).toBeDisabled();
+      await expect(page.locator('#email')).toBeDisabled();
+      await expect(page.locator('form button[type=submit]')).toBeDisabled();
+    } finally { release(); }
+    await expect(page.locator('#description')).toBeEnabled();
+    await expect(page.locator('#description')).toHaveValue(note);
+    await expect(page.locator('#serviceType')).toHaveValue('mobile');
+    await immediateSwitch(page, note + ' after hydration');
+    await expect(page).toHaveURL(new RegExp(`/${other}/contact$`));
+    await expect(page.locator('#description')).toHaveValue(note + ' after hydration');
+  });
   test(`${locale}: immediate language changes, back and refresh preserve the complete tab draft above CMS defaults`, async ({ page }) => {
     await page.goto(`/${locale}/contact?service=web&type=discussion`);
     await page.locator('#serviceType').selectOption('mobile');
@@ -87,15 +106,20 @@ for (const locale of ['ar', 'en'] as const) {
   test(`${locale}: failure retains input, successful submission and reset clear it without a delayed resurrection`, async ({ page, baseURL }, info) => {
     test.setTimeout(45000);
     const { prefix } = JSON.parse(readFileSync('.migration/e2e/run.json', 'utf8'));
-    const email = prefix + 'contact' + locale + info.project.name + '@example.invalid';
+    const email = prefix + 'contact' + locale + info.project.name + info.repeatEachIndex + '@example.invalid';
     await page.goto(`/${locale}/contact`);
     await page.locator('#serviceType').selectOption('mobile');
     await page.locator('#description').fill(note); await page.locator('#name').fill('Synthetic contact'); await page.locator('#email').fill(email);
     await page.route('**/api/requests', route => route.fulfill({ status: 503, contentType: 'application/json', body: JSON.stringify({ ok: false }) }), { times: 1 });
-    await page.locator('form button[type=submit]').click(); await expect(page.getByRole('alert')).toBeVisible();
-    await language(page).click(); await expect(page.locator('#description')).toHaveValue(note); await expect(page.locator('#email')).toHaveValue(email);
+    const rejected = page.waitForResponse(r => r.url().endsWith('/api/requests') && r.request().method() === 'POST');
+    await page.locator('form button[type=submit]').click(); expect((await rejected).status()).toBe(503);
+    await expect(page.getByRole('alert')).toBeVisible();
+    await language(page).click(); await expect(page).toHaveURL(new RegExp(`/${other}/contact$`));
+    await expect(page.locator('#description')).toHaveValue(note); await expect(page.locator('#email')).toHaveValue(email);
+    await expect(page.locator('#name')).toHaveValue('Synthetic contact'); await expect(page.locator('#serviceType')).toHaveValue('mobile');
     // Realistic typing respects the production form's minimum-fill guard after any remount.
     await page.locator('#description').fill(''); await page.locator('#description').pressSequentially(note, { delay: 25 });
+    await expect(page.locator('#name')).toHaveValue('Synthetic contact'); await expect(page.locator('#email')).toHaveValue(email);
     const sent = page.waitForResponse(r => r.url().endsWith('/api/requests') && r.request().method() === 'POST');
     await page.locator('form button[type=submit]').click(); expect((await sent).status()).toBe(201);
     await expect(page.getByRole('status')).toBeVisible();

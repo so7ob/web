@@ -2,6 +2,7 @@
 import { act, cleanup, fireEvent, render, screen } from '@testing-library/react';
 import { afterEach, beforeEach, expect, it, vi } from 'vitest';
 import { MemoryRouter, useNavigate } from 'react-router-dom';
+import { renderToString } from 'react-dom/server';
 import { clearRequestDraft, REQUEST_DRAFT_KEY, writeRequestDraft } from './request-draft';
 import { ProjectRequestForm } from './project-request-form';
 import { ar } from '@/content/ar';
@@ -108,4 +109,16 @@ it('applies deliberate same-page URL prefills only before editing or restoring a
   expect(container.querySelector('#description')).toHaveValue(text);
   expect(container.querySelector('#serviceType')).toHaveValue('mobile');
   expect(screen.getByRole('radio', { name: en.form.requestTypes.quote })).toHaveAttribute('aria-checked', 'true');
+});
+
+it('keeps SSR controls disabled until hydration has recovered the current draft', () => {
+  const ssr = document.createElement('div'); ssr.innerHTML = renderToString(view('en'));
+  expect(ssr.querySelector('#description')).toBeDisabled();
+  expect(ssr.querySelector('#email')).toBeDisabled();
+  expect(ssr.querySelector('button[type=submit]')).toBeDisabled();
+  writeRequestDraft('guest', { description: text, serviceType: 'mobile' });
+  const { container } = render(view('en'));
+  expect(container.querySelector('#description')).toBeEnabled();
+  expect(container.querySelector('#description')).toHaveValue(text);
+  expect(container.querySelector('#serviceType')).toHaveValue('mobile');
 });

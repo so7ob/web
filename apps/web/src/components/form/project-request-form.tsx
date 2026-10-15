@@ -93,6 +93,7 @@ export function ProjectRequestForm({
   const edited = useRef(false);
   const finished = useRef(false);
   const saveTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const [initialized, setInitialized] = useState(false);
   const [storageAvailable, setStorageAvailable] = useState(true);
   const initializedOwner = useRef<string | null>(null);
   const initialApplied = useRef(false);
@@ -136,6 +137,7 @@ export function ProjectRequestForm({
     const next = { ...EMPTY, ...defaults, ...sanitizeRequestDraft(initialValues), ...restoredDraft.values, locale };
     latestData.current = next; setData(next);
     setStorageAvailable(restoredDraft.available);
+    setInitialized(true);
     setRestored(Object.keys(restoredDraft.values).length > 0);
   }, [locale, draftOwner, suppressLocalDraft, params, preselectService, initialValues]);
 
@@ -170,7 +172,7 @@ export function ProjectRequestForm({
 
   async function onSubmit(ev: React.FormEvent<HTMLFormElement>) {
     ev.preventDefault();
-    if (status === "submitting") return; // منع الإرسال المتكرر غير المقصود
+    if (!initialized || status === "submitting") return; // منع الإرسال المتكرر غير المقصود
     setServerError(null);
     setRestored(false);
 
@@ -339,8 +341,9 @@ export function ProjectRequestForm({
   }
 
   return (
-    <form onSubmit={onSubmit} noValidate aria-labelledby="form-title">
+    <form onSubmit={onSubmit} noValidate aria-labelledby="form-title" aria-busy={!initialized}>
       <span id="form-top" className="sr-only">{t.title}</span>
+      <fieldset disabled={!initialized} className="min-w-0">
       <div className="rounded-3xl border border-border bg-card p-6 shadow-sm sm:p-9">
         <h2 id="form-title" className="text-xl font-bold text-navy">{t.title}</h2>
         <p className="mt-2 text-sm leading-7 text-muted-foreground">{t.requiredNote}</p>
@@ -617,6 +620,7 @@ export function ProjectRequestForm({
           </p>
         </div>
       </div>
+      </fieldset>
     </form>
   );
 }
