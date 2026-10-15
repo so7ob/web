@@ -144,3 +144,15 @@ it('a committed force-login change wins over a reply waiting behind the policy l
   expect(await db.query('SELECT id FROM RequestMessage WHERE requestId=?',[id])).toHaveLength(0);
  }finally{if(r.isTransactionActive)await r.rollbackTransaction();await pending?.catch(()=>{});await r.release();}
 });
+
+for (const scope of ['request', 'inquiry'] as const) it(`${scope}: view never offers a client reply to staff even when they own the card`, async () => {
+ const id = await card(scope), table = scope === 'request' ? 'ProjectRequest' : 'Inquiry';
+ const messages = scope === 'request' ? 'RequestMessage' : 'InquiryMessage', field = scope === 'request' ? 'requestId' : 'inquiryId';
+ await db.query(`UPDATE ${table} SET clientId=? WHERE id=?`, [admin.id, id]);
+ const ctx = { actor: admin, capability: null }, view = await svc.view(scope, id, ctx);
+ expect(view.ok).toBe(true);
+ await expect(svc.reply(scope, id, ctx, 'Synthetic staff must not impersonate a client117')).rejects.toMatchObject({ status: 403, code: 'policy_denied' });
+ expect(await db.query(`SELECT id FROM ${messages} WHERE ${field}=?`, [id])).toHaveLength(0);
+ expect(await db.query("SELECT id FROM AuditLog WHERE entityId=? AND action='track.guest_reply'", [id])).toHaveLength(0);
+ expect(view.policy?.canReplyByOwner).toBe(false);
+});
