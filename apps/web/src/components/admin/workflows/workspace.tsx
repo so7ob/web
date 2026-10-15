@@ -8,6 +8,7 @@ import {
   REQUEST_STATUSES,
   conditionFields,
   workflowTriggers,
+  workflowDefinitionSchema,
   type WorkflowDefinition,
   type WorkflowStage,
   type WorkflowTransition,
@@ -17,12 +18,13 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ErrorFeedback } from "@/components/errors/error-feedback";
-import { asApiError } from "@/lib/errors/transport";
+import { ApiError, asApiError } from "@/lib/errors/transport";
 import { getPortalContent } from "@/content/portal";
 import type { Locale } from "@/lib/i18n";
 import type { Me } from "../types";
 import { apiGet } from "../helpers";
 import { WorkflowGraph } from "./graph";
+import { useWorkflowLeaveGuard } from "./use-workflow-leave-guard";
 import { Field, wfControl, wfCard, words, workflowPost } from "./shared";
 interface Team {
   id: string;
@@ -68,8 +70,10 @@ export function WorkflowWorkspace({ locale, me }: { locale: Locale; me: Me }) {
     [notice, setNotice] = useState(""),
     [tab, setTab] = useState("flows");
   const mutex = useRef(false);
+  const readSequence = useRef(0), writeSequence = useRef(0);
+  const confirmedWrites = useRef(new Map<string, { flow: Flow; sequence: number }>());
   const [active, setActive] = useState<Flow | null>(null),
-    [definition, setDefinition] = useState<WorkflowDefinition>(() =>
+    [definition, commitDefinition] = useState<WorkflowDefinition>(() =>
       legacyWorkflow("requests"),
     ),
     [stageId, setStageId] = useState("new"),
@@ -80,6 +84,17 @@ export function WorkflowWorkspace({ locale, me }: { locale: Locale; me: Me }) {
     [trigger, setTrigger] =
       useState<(typeof workflowTriggers)[number]>("staff_reply"),
     [fields, setFields] = useState<Record<string, string>>({});
+  const definitionRef = useRef(definition);
+  const setDefinition = useCallback((value: WorkflowDefinition | ((previous: WorkflowDefinition) => WorkflowDefinition)) => {
+    const next = typeof value === 'function' ? value(definitionRef.current) : value;
+    definitionRef.current = next; commitDefinition(next);
+  }, []);
+  const [baseline, commitBaseline] = useState<WorkflowDefinition>(() => legacyWorkflow('requests'));
+  const baselineRef = useRef(baseline);
+  const setBaseline = (value: WorkflowDefinition) => { baselineRef.current = value; commitBaseline(value); };
+  const savingDraftRef = useRef(false);
+  const [savingDraft, setSavingDraft] = useState(false);
+  const dirty = definitionKey(definition) !== definitionKey(baseline);
   const [team, setTeam] = useState<Partial<Team>>({
                     nameAr: "",
                     nameEn: "",
@@ -121,9 +136,14 @@ export function WorkflowWorkspace({ locale, me }: { locale: Locale; me: Me }) {
     setPreview(null);
   };
   const load = useCallback(async () => {
+    const read = ++readSequence.current, startedAt = writeSequence.current;
     const next = await apiGet<Overview>("/api/admin/workflows");
-    setData(next);
-    return next;
+    // A response started before our save must not replace its confirmed draft.
+    const flows = new Map(next.workflows.map(flow => [flow.id, flow]));
+    for (const saved of confirmedWrites.current.values()) if (saved.sequence > startedAt) flows.set(saved.flow.id, saved.flow);
+    const merged = { ...next, workflows: [...flows.values()] };
+    if (read === readSequence.current) setData(merged);
+    return merged;
   }, []);
   useEffect(() => {
     void load().catch(setError);
@@ -148,21 +168,42 @@ export function WorkflowWorkspace({ locale, me }: { locale: Locale; me: Me }) {
   const choose = (flow: Flow) => {
     setActive(flow);
     setDefinition(structuredClone(flow.draft));
+    setBaseline(structuredClone(flow.draft));
     setStageId(flow.draft.initialStage);
     setTransitionId("");
     setValidation([]);
     setSimulation([]);
   };
   const save = async () => {
-    const result = await workflowPost<{ id: string }>("drafts", {
-      ...(active ? { id: active.id, revision: active.revision } : {}),
-      definition,
-    });
-    const next = await load();
-    const saved = next.workflows.find((f) => f.id === result.id)!;
-    setActive(saved);
-    return saved;
+    const submitted = structuredClone(definitionRef.current);
+    savingDraftRef.current = true; setSavingDraft(true);
+    try {
+      const result = await workflowPost<{ id: string; revision: number }>("drafts", {
+        ...(active ? { id: active.id, revision: active.revision } : {}),
+        definition: submitted,
+      });
+      if (typeof result.id !== 'string' || !result.id || !Number.isInteger(result.revision) || result.revision < 0) throw new ApiError(200, 'invalid_response', null, undefined, true);
+      const confirmed = workflowDefinitionSchema.parse(submitted);
+      const saved: Flow = { id: result.id, revision: result.revision, scope: confirmed.scope, draft: confirmed };
+      confirmedWrites.current.set(saved.id, { flow: saved, sequence: ++writeSequence.current });
+      setActive(saved); setBaseline(confirmed);
+      if (definitionKey(definitionRef.current) === definitionKey(submitted)) setDefinition(structuredClone(confirmed));
+      setData(previous => previous ? { ...previous, workflows: previous.workflows.some(flow => flow.id === saved.id) ? previous.workflows.map(flow => flow.id === saved.id ? saved : flow) : [...previous.workflows, saved] } : previous);
+      return { saved, unchanged: definitionKey(definitionRef.current) === definitionKey(confirmed) };
+    } finally { savingDraftRef.current = false; setSavingDraft(false); }
   };
+  const reset = (scope: WorkflowScope) => {
+    const blank = legacyWorkflow(scope);
+    setActive(null); setDefinition(blank); setBaseline(structuredClone(blank));
+    setStageId(blank.initialStage); setTransitionId(''); setValidation([]); setSimulation([]);
+  };
+  const guard = useWorkflowLeaveGuard({
+    dirty, saving: savingDraft, busy, error, locale,
+    shouldBlock: () => savingDraftRef.current || definitionKey(definitionRef.current) !== definitionKey(baselineRef.current),
+    canSave: can(me, 'workflows.manage') && !asApiError(error).uncertain,
+    save: () => run(async () => (await save()).unchanged),
+    discard: () => setDefinition(structuredClone(baseline)),
+  });
   const stage = definition.stages.find((s) => s.id === stageId),
     transition = definition.transitions.find((s) => s.id === transitionId);
   const updateStage = (patch: Partial<WorkflowStage>) =>
@@ -268,13 +309,15 @@ export function WorkflowWorkspace({ locale, me }: { locale: Locale; me: Me }) {
         <ErrorFeedback
           error={error}
           locale={locale}
-          focusOnError
+          focusOnError={!guard.pending}
           onRefresh={async () => {
             await load();
             setError(null);
           }}
         />
       ) : null}
+      {guard.dialog}
+      <p role="status" className="text-sm font-medium">{dirty ? t('تعديلات مسار غير محفوظة', 'Unsaved workflow changes') : t('لا توجد تعديلات مسار غير محفوظة', 'No unsaved workflow changes')}</p>
         <p role="status" className="text-sm">
         {busy ? t("جارٍ الحفظ…", "Saving…") : notice}
       </p>
@@ -291,7 +334,7 @@ export function WorkflowWorkspace({ locale, me }: { locale: Locale; me: Me }) {
                       const f = data.workflows.find(
                         (f) => f.id === e.target.value,
                       );
-                      if (f) choose(f);
+                      guard.request(() => { if (f) choose(f); else reset(definition.scope); });
                     }}
                   >
                     <option value="">{t("مسار جديد", "New workflow")}</option>
@@ -308,10 +351,8 @@ export function WorkflowWorkspace({ locale, me }: { locale: Locale; me: Me }) {
                     value={definition.scope}
                     disabled={!!active}
                     onChange={(e) => {
-                      setDefinition(
-                        legacyWorkflow(e.target.value as WorkflowScope),
-                      );
-                      setStageId("new");
+                      const scope = e.target.value as WorkflowScope;
+                      guard.request(() => reset(scope));
                     }}
                   >
                     <option value="requests">
@@ -329,6 +370,7 @@ export function WorkflowWorkspace({ locale, me }: { locale: Locale; me: Me }) {
                   disabled={!can(me, "workflows.manage")}
                   onClick={() => {
                     setActive(null);
+                    setBaseline(legacyWorkflow(definition.scope));
                     setDefinition({
                       ...structuredClone(definition),
                       nameAr: definition.nameAr + " — نسخة",
@@ -341,9 +383,7 @@ export function WorkflowWorkspace({ locale, me }: { locale: Locale; me: Me }) {
                 <Button
                   variant="outline"
                   onClick={() => {
-                    setActive(null);
-                    setDefinition(legacyWorkflow(definition.scope));
-                    setStageId("new");
+                    guard.request(() => reset(definition.scope));
                   }}
                 >
                   {t("مسار جديد", "New workflow")}
@@ -1151,7 +1191,7 @@ export function WorkflowWorkspace({ locale, me }: { locale: Locale; me: Me }) {
                 onClick={() =>
                   void run(async () => {
                     const saved = can(me, "workflows.manage")
-                      ? await save()
+                      ? (await save()).saved
                       : active!;
                     await workflowPost("publish", {
                       id: saved.id,
@@ -1734,4 +1774,10 @@ function Validation({ errors, locale }: { errors: string[]; locale: Locale }) {
       ))}
     </ul>
   ) : null;
+}
+
+/** Stable structural comparison: object property order is not an edit; array order is. */
+function definitionKey(definition: WorkflowDefinition): string {
+  return JSON.stringify(definition, (_key, value) => value && typeof value === 'object' && !Array.isArray(value)
+    ? Object.fromEntries(Object.entries(value).sort(([a], [b]) => a.localeCompare(b))) : value);
 }
