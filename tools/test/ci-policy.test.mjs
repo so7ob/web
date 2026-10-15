@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readdirSync } from 'node:fs';
-import { selectSuites, requiredJobs, checkGate, docsOnly } from './ci-policy.mjs';
+import { selectSuites, requiredJobs, checkGate, docsOnly, smoke } from './ci-policy.mjs';
 const specs = readdirSync('tests/e2e').filter(file => file.endsWith('.spec.ts'));
 const select = paths => selectSuites(paths,specs);
 test('only allowlisted documentation avoids application E2E', () => {
@@ -25,6 +25,7 @@ test('CMS and workflow UI preserve their dependency closure and design matrix', 
   assert.ok(plan.files.includes('media-alt-drafts.spec.ts'));
   assert.ok(plan.files.includes('publication.spec.ts')); assert.equal(plan.design,true);
   const workflow = select(['apps/web/src/components/admin/workflows/workspace.tsx']);
+  assert.ok(smoke.includes('workflow-drafts.spec.ts'));
   assert.equal(workflow.smoke,true); assert.equal(workflow.design,true);
 });
 test('permissions, shared modules, translation, configuration and unknown paths fail closed to full', () => {

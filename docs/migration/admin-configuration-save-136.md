@@ -1,6 +1,6 @@
 # Admin configuration acceptance isolation (#136)
 
-Base: fetched `develop` at `a6d17c9c73f459e6628c08f191caf45f66ac9e5d` on 2026-10-15. Independent of #131; no workflow editor files or product implementation changed.
+Original implementation base: fetched `develop` at `a6d17c9c73f459e6628c08f191caf45f66ac9e5d` on 2026-10-15. Independent of #131; no workflow editor files or product implementation changed.
 
 ## Failure and correction
 
@@ -26,4 +26,12 @@ Local Playwright's pinned Chromium 151 download is denied with HTTP 403 by the e
 
 The initial local full unit/integration run passed 1024/1025 tests in 64 files. The sole failure was the unchanged `identity.integration.test.ts` concurrent normalized-uniqueness case reaching its existing 5000ms deadline; a focused repeat passed 12/13 with the same timeout. Both ran alongside browser-runner startup. No unit timeout or assertion was changed; whether this is environmental is an inference, and the final CI result must be evaluated independently.
 
-Risk is confined to acceptance infrastructure. Rollback is a revert of this issue's test/evidence commit. No merge, release, deployment, permission change or production migration is authorized by these results.
+Risk is confined to acceptance infrastructure. Rollback is a revert of this issue's test/evidence commit. No PR merge, release, deployment, permission change or production migration is authorized by these results.
+
+## Synchronization after reviewed #140 merge
+
+Develop advanced to `a04e4bb64da6de427e1bcaf577d9a161d3088735`, containing the reviewed #131 and #137 fixes. It was merged normally into the published #138 branch with original head `dd7cef38b49f2337b97a4ed9488e45a87cd68058` as the first parent; published history was not rebased, amended or force-pushed. Git reported no conflicts.
+
+All six #136 test/helper files remain byte-for-byte identical to the original head. All incoming application, workflow tests, pointer tests/helpers, frozen design fixtures and CI policy/gate files remain identical to develop. The PR's incremental diff against the new base remains confined to #136's tests and evidence. Workflow draft cases remain in mandatory smoke, and pointer regressions remain in the eight-cell design matrix.
+
+The synchronized head is checked again with the ten configuration cases, eight pointer-state cases and canonical complete CI, including workflow smoke and all eight original design journeys. Results and exact synchronized SHA are recorded in the PR validation section; older passing checks are not presented as checks of the new head. Fresh isolated `so7ob_issue136_sync_browser_test` and `so7ob_issue136_sync_unit_test` databases are used for local revalidation. PR #138 stays Draft; this branch update does not merge the PR or deploy the site.

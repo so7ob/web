@@ -221,7 +221,9 @@ beforeAll(async () => {
     })
   ).id;
   calendarId = (await admin.calendar(root, calendar)).id;
-  flowId = (await admin.save(root, { definition: definition() })).id;
+  const initialSave = await admin.save(root, { definition: definition() });
+  expect(initialSave.revision).toBe(0);
+  flowId = initialSave.id;
   flows.push(flowId);
   versionId = (
     await admin.publish(root, { id: flowId, revision: 0, selector: prefix })
@@ -391,7 +393,9 @@ it("pins running instances while publication changes new records, and verifies t
   const id = await record();
   const changed = definition();
   changed.stages[0].nameEn = "New intake";
-  await admin.save(root, { id: flowId, revision: 0, definition: changed });
+  const saved = await admin.save(root, { id: flowId, revision: 0, definition: changed });
+  expect(saved.revision).toBe(1);
+  await expect(admin.save(root, { id: flowId, revision: 0, definition: changed })).rejects.toMatchObject({ code: "workflow_conflict" });
   const v2 = (
     await admin.publish(root, { id: flowId, revision: 1, selector: prefix })
   ).id;
