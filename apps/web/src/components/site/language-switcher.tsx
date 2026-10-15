@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
-import { usePathname } from "@/routing/navigation";
+import { usePathname, useSearchParams } from "@/routing/navigation";
 import { Languages } from "lucide-react";
 import { LOCALE_COOKIE, localeMeta, swapLocalePath, type Locale } from "@/lib/i18n";
 import type { SiteContent } from "@/content/types";
@@ -13,6 +13,19 @@ import type { SiteContent } from "@/content/types";
 export function LanguageSwitcher({ locale, common }: { locale: Locale; common: SiteContent["common"] }) {
   const pathname = usePathname() ?? `/${locale}`;
   const other: Locale = localeMeta[locale].other;
+  const searchParams = useSearchParams();
+  const tracking = /^\/(?:ar|en)\/track\/?$/.test(pathname);
+  // TrackClient exchanges t for a cookie before replacing it with card. Do not
+  // interrupt that exchange or put the capability in another navigation URL.
+  const exchanging = tracking && Boolean(searchParams.get("t"));
+  const rawCard = tracking && searchParams.getAll("card").length === 1 ? searchParams.get("card") : null;
+  const separator = rawCard?.indexOf(":") ?? -1;
+  const scope = rawCard?.slice(0, separator);
+  const id = rawCard?.slice(separator + 1) ?? "";
+  const validCard = (scope === "request" || scope === "inquiry") && id.length > 0 && id.length <= 64 && !Array.from(id).some(char => char.charCodeAt(0) < 32 || char.charCodeAt(0) === 127);
+  const destination = swapLocalePath(pathname, other) + (validCard
+    ? "?" + new URLSearchParams({ card: `${scope}:${id}` }).toString()
+    : "");
 
   useEffect(() => {
     // مزامنة الكوكي مع الصفحة الحالية عند كل تنقل
@@ -21,9 +34,16 @@ export function LanguageSwitcher({ locale, common }: { locale: Locale; common: S
 
   return (
     <a
-      href={swapLocalePath(pathname, other)}
+      href={exchanging ? undefined : destination}
+      role="link"
+      aria-disabled={exchanging || undefined}
+      tabIndex={exchanging ? -1 : undefined}
       hrefLang={other}
-      onClick={() => {
+      onClick={(event) => {
+        if (exchanging) {
+          event.preventDefault();
+          return;
+        }
         document.cookie = `${LOCALE_COOKIE}=${other}; path=/; max-age=31536000; samesite=Lax`;
       }}
       className="inline-flex min-h-11 items-center gap-2 rounded-lg border border-border bg-card/80 px-4 text-sm font-semibold text-navy transition-colors hover:border-brand hover:text-brand"

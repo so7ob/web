@@ -31,6 +31,11 @@ for(const locale of ['ar','en'] as const)test(`${locale}: guest tracking exchang
   const body='Synthetic guest reply '+id;await page.getByPlaceholder(t.replyPlaceholder).fill(body);await page.keyboard.press('Tab');await expect(page.getByRole('button',{name:t.send,exact:true})).toBeFocused();
   const sent=page.waitForResponse(r=>r.url().endsWith('/api/track/reply')&&r.request().method()==='POST');await page.keyboard.press('Enter');expect((await sent).status()).toBe(201);await expect(page.getByText(body,{exact:true})).toBeVisible();
   expect((await db.query(`SELECT authorId FROM ${message} WHERE ${field}=? AND body=?`,[id,body]))[0].authorId).toBeNull();
+  // Measure the visible success notice after its entrance/color transitions settle.
+  // Hover keeps it present for the complete axe scan; no content or rules are excluded.
+  const notice=page.locator('[data-sonner-toast][data-front="true"][data-removed="false"]');
+  await expect(notice).toHaveCSS('opacity','1');await notice.hover();
+  await notice.evaluate(async node=>{await Promise.all(node.getAnimations({subtree:true}).filter(animation=>animation.effect?.getTiming().iterations!==Infinity).map(animation=>animation.finished.catch(()=>undefined)));});
   const axe=await new AxeBuilder({page}).withTags(['wcag2a','wcag2aa','wcag21aa','wcag22aa']).analyze();expect(axe.violations).toEqual([]);expect(errors).toEqual([]);expect(failed).toEqual([]);
   const directory='.migration/tracking/browser';mkdirSync(directory,{recursive:true});await page.screenshot({path:`${directory}/${locale}-${info.project.name}.png`,fullPage:true});writeFileSync(`${directory}/${locale}-${info.project.name}.json`,JSON.stringify({locale,viewport:info.project.name,axe:axe.violations,errors,failed},null,2));
   await db.query("UPDATE TrackLink SET revokedAt=UTC_TIMESTAMP(3) WHERE id=?",[id]);
