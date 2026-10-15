@@ -66,6 +66,9 @@ export function InquiriesView({
 
   // حوار استفسار جديد
   const [createOpen, setCreateOpen] = useState(false);
+  // SSR precedes the lazy route chunk; expose creation only once its listener exists.
+  const [interactive, setInteractive] = useState(false);
+  useEffect(() => setInteractive(true), []);
 
   const load = useCallback(async (filterStatus: string, pageNumber: number, search: string) => {
     const seq = ++seqRef.current;
@@ -115,6 +118,9 @@ export function InquiriesView({
   return (
     <div className="space-y-6">
       <PageHeading title={t.title} description={t.subtitle} actions={<Button
+          disabled={!interactive}
+          aria-busy={!interactive}
+          aria-haspopup="dialog"
           onClick={() => setCreateOpen(true)}
           className="h-11 rounded-full bg-primary px-6 font-bold text-primary-foreground shadow-md shadow-brand/20 transition-[color,background-color,border-color,box-shadow,opacity,transform] hover:bg-primary-hover hover:text-primary-hover-foreground focus-visible:ring-2 focus-visible:ring-ring/40"
         >
@@ -195,6 +201,9 @@ export function InquiriesView({
               <EmptyState icon={MessageCircleQuestion} title={t.empty} body={t.emptyBody} />
               <div className="mt-6 flex justify-center">
                 <Button
+                  disabled={!interactive}
+                  aria-busy={!interactive}
+                  aria-haspopup="dialog"
                   onClick={() => setCreateOpen(true)}
                   className="h-11 rounded-full bg-primary px-6 font-bold text-primary-foreground shadow-md shadow-brand/20 transition-[color,background-color,border-color,box-shadow,opacity,transform] hover:bg-primary-hover hover:text-primary-hover-foreground focus-visible:ring-2 focus-visible:ring-ring/40"
                 >
