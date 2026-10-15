@@ -720,12 +720,26 @@ export class WorkflowEngine {
           : state.responseDueAt
         )?.toISOString() ?? null,
       stageDueAt: state.stageDueAt?.toISOString() ?? null,
-      transitions: await this.allowed(
+      transitions: (await this.allowed(
         this.db,
         { ...state, stageId: stage.id },
         record,
         actor,
-      ),
+      )).map((transition) => {
+        const destination = state.definition.stages.find(
+          (stage) => stage.id === transition.to,
+        );
+        return {
+          ...transition,
+          ...(destination ? {
+            targetStage: {
+              nameAr: destination.nameAr,
+              nameEn: destination.nameEn,
+              status: destination.status,
+            },
+          } : {}),
+        };
+      }),
       replyEffect: target
         ? {
             nameAr: target.nameAr,

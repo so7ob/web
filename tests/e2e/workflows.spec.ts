@@ -347,7 +347,7 @@ for (const locale of ["ar", "en"] as const)
       await stage.click();
       await page
         .getByRole("option", {
-          name: t("بدء المعالجة", "Start review"),
+          name: t("بدء المعالجة إلى معالجة", "Start review to Review"),
           exact: true,
         })
         .click();

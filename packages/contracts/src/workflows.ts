@@ -287,7 +287,8 @@ export interface WorkflowState {
   teamLabels: { nameAr: string; nameEn: string } | null;
   responseDueAt: string | null;
   stageDueAt: string | null;
-  transitions: WorkflowTransition[];
+  /** Response-only destination names from this record's pinned publication. */
+  transitions: Array<WorkflowTransition & { targetStage?: WorkflowPublicStage }>;
   replyEffect: WorkflowPublicStage | null;
   events: Array<{
     id: string;

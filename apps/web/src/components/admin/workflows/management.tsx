@@ -12,6 +12,7 @@ import { Label } from "@/components/ui/label";
 import {
   Dialog,
   DialogContent,
+  DialogDescription,
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
@@ -83,6 +84,14 @@ export function ConversationManagement({
     return () => c.abort();
   }, [scope, state?.teamId]);
   const locked = disabled || busy || asApiError(error).uncertain;
+  const transitionLabel = (transition: WorkflowState["transitions"][number]) =>
+    transition[locale === "ar" ? "nameAr" : "nameEn"] +
+    t(" إلى ", " to ") +
+    (transition.targetStage?.[locale === "ar" ? "nameAr" : "nameEn"] ??
+      t("المرحلة ", "stage ") + transition.to);
+  const selectedTransition = custom
+    ? state.transitions.find((transition) => transition.id === target)
+    : undefined;
   const perform = async (value: string, note?: string) => {
     if (locked) return;
     setBusy(true);
@@ -258,7 +267,7 @@ export function ConversationManagement({
                   </SelectItem>
                   {state.transitions.map((tr) => (
                     <SelectItem key={tr.id} value={tr.id}>
-                      {tr[locale === "ar" ? "nameAr" : "nameEn"]}
+                      {transitionLabel(tr)}
                     </SelectItem>
                   ))}
                 </>
@@ -347,9 +356,14 @@ export function ConversationManagement({
           if (!open && !busy) setTarget("");
         }}
       >
-        <DialogContent aria-describedby={undefined}>
+        <DialogContent>
           <DialogHeader>
-            <DialogTitle>{tr.closeReason}</DialogTitle>
+            <DialogTitle>
+              {custom ? t("تأكيد الانتقال", "Confirm transition") : tr.closeReason}
+            </DialogTitle>
+            <DialogDescription>
+              {selectedTransition ? transitionLabel(selectedTransition) : statuses[target]}
+            </DialogDescription>
           </DialogHeader>
           <Label htmlFor="close-reason">
             {t("سبب الانتقال", "Transition reason")}
