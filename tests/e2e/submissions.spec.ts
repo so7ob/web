@@ -36,7 +36,7 @@ test("the original public request form validates, preserves its draft and confir
     .poll(() =>
       page.evaluate(
         () =>
-          JSON.parse(localStorage.getItem("so7ob-request-draft") ?? "{}").email,
+          JSON.parse(sessionStorage.getItem("so7ob-request-session-draft-v1") ?? "{}").values?.email,
       ),
     )
     .toBe(email);
@@ -78,7 +78,7 @@ test("the original public request form validates, preserves its draft and confir
     await db.destroy();
   }
   expect(
-    await page.evaluate(() => localStorage.getItem("so7ob-request-draft")),
+    await page.evaluate(() => sessionStorage.getItem("so7ob-request-session-draft-v1")),
   ).toBeNull();
   expect(errors).toEqual([]);
 });

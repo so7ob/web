@@ -15,6 +15,7 @@ test('request UI selects smoke, all dependent request cases and the full visual 
   const plan = select(['apps/web/src/components/account/requests-view.tsx']);
   assert.equal(plan.mode,'affected'); assert.equal(plan.smoke,true); assert.equal(plan.design,true);
   assert.ok(plan.files.includes('account-inquiry-ownership.spec.ts'));
+  assert.ok(plan.files.includes('contact-draft.spec.ts'));
   assert.ok(plan.files.includes('tracking-language.spec.ts'));
   assert.ok(plan.files.includes('account-portal.spec.ts')); assert.ok(plan.files.includes('files-claims.spec.ts'));
   assert.ok(!plan.files.includes('tree-editor.spec.ts'));

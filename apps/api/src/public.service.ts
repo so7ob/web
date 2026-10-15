@@ -324,7 +324,7 @@ export class PublicService {
       canonicalOrigin: (
         process.env.SITE_URL ?? "http://127.0.0.1:3000"
       ).replace(/\/+$/, ""),
-      viewer: viewer ? { name: viewer.name, roleKey: viewer.roleKey, isStaff:can(viewer,"admin.dashboard") } : null,
+      viewer: viewer ? { id: viewer.id, name: viewer.name, roleKey: viewer.roleKey, isStaff:can(viewer,"admin.dashboard") } : null,
     };
   }
 }

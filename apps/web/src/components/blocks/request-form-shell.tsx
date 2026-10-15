@@ -1,7 +1,7 @@
 "use client";
 
-import { useEffect } from "react";
-import { usePathname, useRouter, useSearchParams } from "@/routing/navigation";
+import { useRouteLoaderData } from "react-router-dom";
+import type { PublicView } from "@so7ob/contracts";
 import { FlaskConical } from "lucide-react";
 import { ProjectRequestForm } from "@/components/form/project-request-form";
 import { ar } from "@/content/ar";
@@ -10,27 +10,18 @@ import type { Locale } from "@/lib/i18n";
 import { useRenderMode } from "./nested-context";
 
 /**
- * غلاف تفاعلي لنموذج طلب المشروع: يطبّق الخدمة المحددة مسبقًا من البلوك
- * عبر معامل الرابط ?service= (النموذج نفسه يقرأه)، دون تعديل ملف النموذج.
+ * غلاف تفاعلي لنموذج طلب المشروع: تمرير افتراض الخدمة وهوية صاحب مسودة التبويب
+ * دون كتابة الافتراضات داخل URL أو استبدال المدخلات المستعادة.
  *
  * وضع الاختبار (test): يعرض شارة واضحة ويحاكي الإرسال — لا يصل أي طلب
  * حقيقي إلى الخادم. وضع live كما هو تمامًا.
  */
 export function RequestFormShell({ locale, preselectService }: { locale: Locale; preselectService?: string }) {
   const content = locale === "en" ? en : ar;
-  const params = useSearchParams();
-  const pathname = usePathname();
-  const router = useRouter();
+  const root = useRouteLoaderData<PublicView>('root');
   const mode = useRenderMode();
   const simulate = mode === "test";
-
-  useEffect(() => {
-    if (!preselectService || !pathname) return;
-    if (params.get("service")) return; // لا نتدخل إن حدّد الزائر خدمة عبر الرابط
-    const next = new URLSearchParams(params.toString());
-    next.set("service", preselectService);
-    router.replace(`${pathname}?${next.toString()}`, { scroll: false });
-  }, [preselectService, params, pathname, router]);
+  const draftOwner = root?.viewer ? `user:${root.viewer.id}` : 'guest';
 
   if (simulate) {
     return (
@@ -41,10 +32,10 @@ export function RequestFormShell({ locale, preselectService }: { locale: Locale;
             ? "Interaction test — submission is simulated, no real request is sent."
             : "اختبار تفاعل — الإرسال محاكى ولا يُرسل أي طلب حقيقي."}
         </p>
-        <ProjectRequestForm locale={locale} content={content} simulate suppressLocalDraft />
+        <ProjectRequestForm locale={locale} content={content} preselectService={preselectService} simulate suppressLocalDraft />
       </div>
     );
   }
 
-  return <ProjectRequestForm locale={locale} content={content} />;
+  return <ProjectRequestForm key={draftOwner} locale={locale} content={content} preselectService={preselectService} draftOwner={draftOwner} />;
 }

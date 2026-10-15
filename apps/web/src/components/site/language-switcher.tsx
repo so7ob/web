@@ -2,6 +2,7 @@
 
 import { useEffect } from "react";
 import { usePathname, useSearchParams } from "@/routing/navigation";
+import { useNavigate } from "react-router-dom";
 import { Languages } from "lucide-react";
 import { LOCALE_COOKIE, localeMeta, swapLocalePath, type Locale } from "@/lib/i18n";
 import type { SiteContent } from "@/content/types";
@@ -12,6 +13,7 @@ import type { SiteContent } from "@/content/types";
  */
 export function LanguageSwitcher({ locale, common }: { locale: Locale; common: SiteContent["common"] }) {
   const pathname = usePathname() ?? `/${locale}`;
+  const navigate = useNavigate();
   const other: Locale = localeMeta[locale].other;
   const searchParams = useSearchParams();
   const tracking = /^\/(?:ar|en)\/track\/?$/.test(pathname);
@@ -45,6 +47,11 @@ export function LanguageSwitcher({ locale, common }: { locale: Locale; common: S
           return;
         }
         document.cookie = `${LOCALE_COOKIE}=${other}; path=/; max-age=31536000; samesite=Lax`;
+        // Contact-only SPA navigation also preserves the memory fallback when storage is blocked.
+        if (/^\/(?:ar|en)\/contact\/?$/.test(pathname) && event.button === 0 && !event.metaKey && !event.ctrlKey && !event.shiftKey && !event.altKey) {
+          event.preventDefault();
+          navigate(destination);
+        }
       }}
       className="inline-flex min-h-11 items-center gap-2 rounded-lg border border-border bg-card/80 px-4 text-sm font-semibold text-navy transition-colors hover:border-brand hover:text-brand"
       aria-label={common.switchLanguage}

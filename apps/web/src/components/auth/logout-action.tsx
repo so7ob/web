@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import { forgetRequestDraft } from "@/components/form/request-draft";
 import { signOut } from "@/routing/auth";
 import { Loader2 } from "lucide-react";
 import type { Locale } from "@/lib/i18n";
@@ -15,6 +16,7 @@ export function LogoutAction({ locale, label }: { locale: Locale; label: string 
   useEffect(() => {
     if (done.current) return;
     done.current = true;
+    forgetRequestDraft();
     try {
       localStorage.removeItem("so7ob-request-draft");
     } catch {
