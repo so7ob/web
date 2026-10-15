@@ -4,15 +4,17 @@
 
 Develop was fetched explicitly from `https://github.com/so7ob/web.git` at `761e229ad9dbb8b2dbcac2c91c4acd36566d2ca6`. The workspace was clean, no open PR or issue comment indicated overlapping work, no remote issue-110 branch existed, and a search of prior PRs found no implementation of #110. Work is on `fix/110-contact-language-draft`. An environment interruption notification was received during the task; subsequent filesystem/Git/Docker reads confirmed the existing environment and files were available, and completed test logs were inspected rather than inferred from message acceptance.
 
-Tested implementation/test source: `1df9357f7ff776b796e3ac011db15ab10b5d4817`; the following evidence commit changes this document only. Runtime: Node 24.21.0, npm 10.8.2, isolated MariaDB 10.11.18 on loopback 33110. Unit/integration database: `so7ob_issue110_unit_test`; browser database: `so7ob_issue110_browser_test`. All data, accounts and submissions are synthetic; no worker, external mail/webhook or paid API was used.
+Tested implementation/test source: `0149b72273b05304087fa5f9164e7eab6d11f74a`; the following evidence commit changes this document only. Runtime: Node 24.21.0, npm 10.8.2, isolated MariaDB 10.11.18 on loopback 33110. Unit/integration database: `so7ob_issue110_unit_test`; browser database: `so7ob_issue110_browser_test`. All data, accounts and submissions are synthetic; no worker, external mail/webhook or paid API was used.
 
 Both source hypotheses were reproduced before the fix. The original form loses the final change when unmounted before its 400ms localStorage timer. A separate integration test first confirmed a mobile-service draft was stored, then changed locale and observed CMS's automatic `service=web` URL rewrite replace it with web. Four of the first five form cases failed (one existing current-edit case passed), and the CMS-default integration case failed. On the original UI files from the base commit, browser native input/change and language activation in the same task lost the description in both AR→EN and EN→AR (`before-e2e-confirmed.log`). The initial browser harness incorrectly selected the request-type radio group as a select; that harness failure is not counted as defect reproduction and was corrected before the confirmed run.
 
 ## Behavior and privacy policy
 
-Priority is current edits, then a validated same-owner tab draft, initial/server values, valid explicit URL prefills, CMS defaults, and empty values. Changing locale does not rerun prefills over current state. The CMS shell passes its default directly rather than writing it into URL.
+Priority is current edits, then a validated same-owner tab draft, initial/server values, valid explicit URL prefills, CMS defaults, and empty values. Changing locale does not rerun prefills over current state. Deliberate same-page URL prefills still apply before editing or restoring a draft; once either has happened they cannot overwrite the form. The CMS shell passes its default directly rather than writing it into URL.
 
 Public form input is saved synchronously to tab memory and a versioned sessionStorage envelope, not the old unscoped localStorage key. Recovery snapshots expire 30 minutes after the last change, remain bounded and accept only known string fields and valid option IDs. Objects, unknown properties, client ownership fields, honeypot, locale and internal fill timing are excluded. Current live memory is preserved across client navigation even when a recovery snapshot expires; after reload, recovery requires an unexpired snapshot. The UI explains the retention period and account/send cleanup.
+
+SSR form controls stay disabled in a native fieldset until hydration has completed draft initialization; `aria-busy` exposes that pending state. This prevents edits from reaching markup before save handlers and recovered state are ready. A held-entry-script browser test verifies the disabled initial controls, recovery, enabling, and an immediate language change in both locales and viewports.
 
 A single active owner is identified as guest or by the authenticated viewer's own ID, never name/email or an inspected authentication token. SiteViewBase.viewer gains that one manually projected identity field; the existing authenticated public-view response is no-store. No permission, session validation, database schema or request-ownership rule changes. Identity transitions clear the preceding tab recovery even on routes without a form. Explicit logout clears tab memory/session recovery as well as keeping the existing legacy logout cleanup. A client-generated 404 lacks authoritative identity, so it does not infer logout and erase current input.
 
@@ -24,17 +26,17 @@ Account forms still suppress browser draft storage and use their existing accoun
 
 ## Verification
 
-Ignored evidence lives in `.migration/issue110/`. The final product build has also been exercised after adding the explicit logout cleanup.
+Ignored evidence lives in `.migration/issue110/`. The final product build has also been exercised after adding the explicit logout cleanup and preserving deliberate same-page URL prefills. The new same-page prefill regression failed before its correction (`prefill-before.log`). The SSR readiness regression failed in both unit and held-script browser checks before the readiness guard (`hydration-unit-before-confirmed.log`, `hydration-browser-before.log`); the earlier bare Vitest invocation missed the repository alias configuration and is not defect evidence. The focused form/storage/CMS/tracking-language suite now includes 37 cases (`hydration-unit-after.log`).
 
 | Check | Result |
 | --- | --- |
 | Before-fix component and CMS regressions | Four form failures plus one CMS failure; confirmed desktop browser reproduction in both directions |
-| Full unit/integration suite | 64 files / 1021 tests passed (`test-final.log`) |
+| Full unit/integration suite | 64 files / 1023 tests passed (`hydration-test.log`); earlier implementations passed 1021/1022 (`test-final.log`, `prefill-test.log`) |
 | Focused form/storage/locale unit checks | Passed, including malformed/expired/oversized snapshots, allowed fields, account separation, blocked storage, failed submission, delayed success, reset and logout |
 | Lint / typecheck / CI policy / build | Passed; independent ESLint, 13 CI policy cases, production client/SSR build |
 | Runtime independence / diff check | Passed |
 | Broad browser suite | 42 passed (`e2e-final.log`): new contact matrix, existing submissions, account portal/server drafts and #116 tracking-language matrix |
-| Latest-build focused browser suite | 18 passed (`e2e-complete.log`): complete new contact matrix and existing ar/en login/logout checks at 375/1280 |
+| Latest-build focused browser suite | 26 passed (`hydration-e2e.log`): complete new contact matrix including held-JS readiness and existing ar/en authentication/SSR navigation at 375/1280; earlier 18 passed (`e2e-complete.log`) |
 | Standard full browser local attempt | Blocked before journey: pinned headless shell v1234 absent; stopped at first environmental failure |
 | Local infrastructure check | Blocked before configuration validation because nginx is absent |
 
@@ -42,7 +44,7 @@ The contact matrix covers an immediate last edit and language click in the same 
 
 Axe scans pass for both normal and blocked-storage contact states in both locales and viewports. Existing account, submission and tracking tests also passed, including private-note/capability boundaries. Production rate limiters stay enabled; the new acceptance fixture snapshots/restores only synthetic loopback quota state so successful-form cases do not consume one another's quota assertions.
 
-New submission tests disable trace/screenshots because successful responses may contain synthetic tracking capabilities. No actual capability, credential or user data is included in this document or the PR. The browser runs used system Chromium 154.0.8037.57 via an ignored configuration; that success is separate from pinned-browser/full-suite CI. Remote CI is recorded against the final PR head in its description. The two earlier design-system QueryFailedError observations remain outside this issue and are not claimed fixed.
+New submission tests disable trace/screenshots because successful responses may contain synthetic tracking capabilities. No actual capability, credential or user data is included in this document or the PR. The browser runs used system Chromium 154.0.8037.57 via an ignored configuration; that success is separate from pinned-browser/full-suite CI. The initial remote CI run [194](https://github.com/so7ob/web/actions/runs/38678074391) failed four mobile contact cases: two blocked-storage losses and two submission waits. A local follow-up had 17 passes and one submission wait. The submission harness now requires the actual mocked 503 response (rather than any validation alert), waits for the destination locale, and asserts name/service/email retention. A diagnostic repeat initially hit the real duplicate guard twice because its synthetic address was reused; each repeat now has its own address, and the stronger journey passed five consecutive times. No duplicate/rate limiter or acceptance assertion was relaxed. These failed runs are retained as history, not reported as passing. Final-head remote CI is recorded in the PR description. The two earlier design-system QueryFailedError observations remain outside this issue and are not claimed fixed.
 
 ## Limits and rollback
 
