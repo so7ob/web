@@ -17,8 +17,13 @@ for (const locale of ['ar', 'en'] as const) {
       const schema = await (await request.get('/api/docs-json')).json();
       for (const prefix of ['/api/admin/pages/', '/api/v1/admin/pages/']) expect(schema.paths[prefix + '{id}/duplicate'].post).toBeTruthy();
       await page.goto(`/${locale}/admin/pages`);
-      await page.getByPlaceholder(t.title, { exact: true }).fill(fixture.slug);
       const actions = page.getByRole('button', { name: t.rowActions.replace('{title}', fixture.title), exact: true });
+      await expect(actions).toBeVisible();
+      const filtered = page.waitForResponse(response => new URL(response.url()).pathname === '/api/admin/pages' && new URL(response.url()).searchParams.get('q') === fixture.slug);
+      await page.getByPlaceholder(t.title, { exact: true }).fill(fixture.slug);
+      expect((await filtered).status()).toBe(200);
+      await expect(page.getByPlaceholder(t.title, { exact: true })).toHaveValue(fixture.slug);
+      await expect(page.locator('tbody tr')).toHaveCount(1);
       await expect(actions).toHaveCount(1);
       let posts = 0;
       await page.route('**/api/admin/pages/' + fixture.id + '/duplicate', async route => { posts++; received(); await gate; await route.continue(); });
@@ -33,6 +38,8 @@ for (const locale of ['ar', 'en'] as const) {
       const result = (await response.json()).page; expect(result.id).not.toBe(fixture.id); expect(result.slug).toBe(fixture.slug + '-copy');
       await expect(page.getByText(t.duplicateSuccess, { exact: true })).toBeVisible();
       await readiness.wait();
+      await expect(page.getByPlaceholder(t.title, { exact: true })).toHaveValue(fixture.slug);
+      await expect(page.locator('tbody tr')).toHaveCount(2);
       const toast = page.locator('[data-sonner-toast][data-front="true"][data-removed="false"]');
       if (await toast.count()) { await expect(toast).toHaveCSS('opacity', '1'); await toast.hover(); }
       const stored = (await fixture.db.query('SELECT * FROM Page WHERE id=?', [result.id]))[0];
@@ -44,7 +51,11 @@ for (const locale of ['ar', 'en'] as const) {
       expect((await documentAudit(page)).violations).toEqual([]);
       expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
       await info.attach('copied-draft-list', { body: await page.screenshot(), contentType: 'image/png' });
-      const edit = page.locator(`a[href="/${locale}/admin/pages/${result.id}/edit"]`).filter({ visible: true }).first();
+      const copiedRow = page.getByRole('row').filter({ has: page.getByText(result.slug, { exact: true }) });
+      await expect(copiedRow).toHaveCount(1);
+      await copiedRow.getByRole('button', { name: t.rowActions.replace('{title}', fixture.title), exact: true }).focus();
+      await page.keyboard.press('Enter');
+      const edit = page.getByRole('menuitem', { name: t.edit, exact: true });
       await edit.focus(); await expect(edit).toBeFocused(); await page.keyboard.press('Enter');
       await expect(page).toHaveURL(new RegExp(`/${locale}/admin/pages/${result.id}/edit$`));
       await expect(page.locator(`[data-editor-node="draft-${locale}"]`)).toContainText(locale === 'ar' ? 'محتوى المسودة المنسوخة' : 'Copied draft content');
@@ -56,8 +67,13 @@ for (const locale of ['ar', 'en'] as const) {
   test(`${locale}: copy failure never shows success or creates an empty destination`, async ({ page, copyFixture: fixture }) => {
     const t = getPortalContent(locale).admin.pages;
     await page.goto(`/${locale}/admin/pages`);
-    await page.getByPlaceholder(t.title, { exact: true }).fill(fixture.slug);
     const actions = page.getByRole('button', { name: t.rowActions.replace('{title}', fixture.title), exact: true });
+    await expect(actions).toBeVisible();
+    const filtered = page.waitForResponse(response => new URL(response.url()).pathname === '/api/admin/pages' && new URL(response.url()).searchParams.get('q') === fixture.slug);
+    await page.getByPlaceholder(t.title, { exact: true }).fill(fixture.slug);
+    expect((await filtered).status()).toBe(200);
+    await expect(page.getByPlaceholder(t.title, { exact: true })).toHaveValue(fixture.slug);
+    await expect(page.locator('tbody tr')).toHaveCount(1);
     await expect(actions).toHaveCount(1);
     await page.route('**/api/admin/pages/' + fixture.id + '/duplicate', route => route.fulfill({ status: 503, contentType: 'application/json', body: JSON.stringify({ ok: false, code: 'unavailable', category: 'temporary' }) }));
     const failed = page.waitForResponse(response => response.url().endsWith('/pages/' + fixture.id + '/duplicate'));
