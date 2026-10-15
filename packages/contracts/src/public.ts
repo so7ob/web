@@ -27,7 +27,7 @@ export interface SiteViewBase {
   }>;
   settings: Record<string, string>;
   canonicalOrigin: string;
-  viewer: { name: string; roleKey: string; isStaff?:boolean } | null;
+  viewer: { id: string; name: string; roleKey: string; isStaff?:boolean } | null;
 }
 export const authScreens = [
   "login",

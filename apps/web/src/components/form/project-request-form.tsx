@@ -23,7 +23,7 @@ import type { SiteContent } from "@/content/types";
 
 import { getPortalContent } from "@/content/portal";
 
-const DRAFT_KEY = "so7ob-request-draft";
+import { clearRequestDraft, readRequestDraft, sanitizeRequestDraft, writeRequestDraft } from "./request-draft";
 
 type FormState = Omit<ProjectRequestInput, "startedAt">;
 
@@ -36,10 +36,13 @@ export interface ProjectRequestFormProps {
   onSubmitted?: (refCode: string) => void;
   /** يُستدعى عند تغيّير القيم (بمهلة قصيرة) — للحفظ التلقائي الخارجي */
   onValuesChange?: (values: Partial<ProjectRequestInput>) => void;
-  /** تخطي مسودة localStorage (قراءة وكتابة) — للحسابات المسجلة التي تستخدم مسودات الخادم */
+  /** تخطي مسودة التبويب (قراءة وكتابة) — للحسابات المسجلة التي تستخدم مسودات الخادم */
   suppressLocalDraft?: boolean;
   /** Explicit editor test mode: validation runs but submission never reaches the API. */
   simulate?: boolean;
+  /** Browser draft scope uses only the authenticated viewer ID, never contact details. */
+  draftOwner?: string;
+  preselectService?: string;
 }
 
 const EMPTY: FormState = {
@@ -61,7 +64,7 @@ const EMPTY: FormState = {
 
 /**
  * نموذج طلب المشروع — تحقق في الواجهة بالمنطق المشترك نفسه المستخدم في الخادم،
- * حفظ مسودة محلي، منع الإرسال المتكرر، ولا يُعرض نجاح إلا بعد تأكيد الحفظ من الخادم.
+ * حفظ مسودة مؤقتة لهذا التبويب، منع الإرسال المتكرر، ولا يُعرض نجاح إلا بعد تأكيد الحفظ من الخادم.
  * الخصائص الإضافية اختيارية كليًا: غيابها يحافظ على السلوك العام كما هو.
  */
 export function ProjectRequestForm({
@@ -72,6 +75,8 @@ export function ProjectRequestForm({
   onValuesChange,
   suppressLocalDraft = false,
   simulate = false,
+  draftOwner = "guest",
+  preselectService,
 }: ProjectRequestFormProps) {
   const t = content.form;
   const params = useSearchParams();
@@ -83,7 +88,16 @@ export function ProjectRequestForm({
     valuesChangeListener.current = onValuesChange;
   }, [onValuesChange]);
 
-  const [data, setData] = useState<FormState>(EMPTY);
+  const [data, setData] = useState<FormState>({ ...EMPTY, locale });
+  const latestData = useRef<FormState>({ ...EMPTY, locale });
+  const edited = useRef(false);
+  const finished = useRef(false);
+  const saveTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const [initialized, setInitialized] = useState(false);
+  const [storageAvailable, setStorageAvailable] = useState(true);
+  const initializedOwner = useRef<string | null>(null);
+  const initialApplied = useRef(false);
+  const recoveredDraft = useRef(false);
   const [errors, setErrors] = useState<FieldErrors>({});
   const [serverError, setServerError] = useState<{ kind: "invalid" | "duplicate" | "rateLimited" | "generic"; message: string } | null>(null);
   const [status, setStatus] = useState<"idle" | "submitting" | "success">("idle");
@@ -103,69 +117,62 @@ export function ProjectRequestForm({
 
 
 
-  // تعبئة مبدئية من معاملات الرابط: ?type=quote|discussion&service=web
+  // Current edits > restored draft > explicit URL prefill > CMS default > empty.
+  // Locale changes only translate this mounted form; they never reapply defaults.
   useEffect(() => {
-    const type = params.get("type");
-    const service = params.get("service");
-    setData((d) => ({
-      ...d,
-      requestType: type === "quote" || type === "discussion" ? type : d.requestType,
-      serviceType: (SERVICE_TYPES as readonly string[]).includes(service ?? "") ? (service as FormState["serviceType"]) : d.serviceType,
-      locale,
-    }));
-  }, [params, locale]);
-
-  // القيم المبدئية (مسودة الخادم) — مرة واحدة فقط، وبعد معاملات الرابط
-  const initialApplied = useRef(false);
-  useEffect(() => {
-    if (initialApplied.current || !initialValues) return;
-    initialApplied.current = true;
-    setData((d) => ({ ...d, ...initialValues, website: "", locale }));
-  }, [initialValues, locale]);
-
-  // استعادة المسودة المحلية — تُتخطى للحسابات المسجلة (مسودات الخادم بديلًا)
-  useEffect(() => {
-    if (suppressLocalDraft) return;
-    try {
-      const raw = localStorage.getItem(DRAFT_KEY);
-      if (raw) {
-        const draft = JSON.parse(raw) as Partial<FormState>;
-        setData((d) => ({ ...d, ...draft, website: "", locale }));
-        if (draft.description || draft.email) setRestored(true);
-      }
-    } catch {
-      /* تجاهل مسودة تالفة */
+    const owner = suppressLocalDraft ? 'server' : draftOwner;
+    if (initializedOwner.current === owner) {
+      const explicit = !edited.current && !recoveredDraft.current && !initialValues && !finished.current
+        ? sanitizeRequestDraft({ requestType: params.get('type'), serviceType: params.get('service') }) : {};
+      const next = { ...latestData.current, ...explicit, locale };
+      latestData.current = next; setData(next);
+      return;
     }
-  }, [locale, suppressLocalDraft]);
+    initializedOwner.current = owner;
+    initialApplied.current = Boolean(initialValues);
+    edited.current = false; finished.current = false;
+    const restoredDraft = suppressLocalDraft ? { values: {}, available: true } : readRequestDraft(draftOwner);
+    recoveredDraft.current = Object.keys(restoredDraft.values).length > 0;
+    const defaults = { ...sanitizeRequestDraft({ serviceType: preselectService }), ...sanitizeRequestDraft({ requestType: params.get('type'), serviceType: params.get('service') }) };
+    const next = { ...EMPTY, ...defaults, ...sanitizeRequestDraft(initialValues), ...restoredDraft.values, locale };
+    latestData.current = next; setData(next);
+    setStorageAvailable(restoredDraft.available);
+    setInitialized(true);
+    setRestored(Object.keys(restoredDraft.values).length > 0);
+  }, [locale, draftOwner, suppressLocalDraft, params, preselectService, initialValues]);
 
-  // حفظ المسودة عند التغيير (محلية إن لم تُكبت) + إبلاغ المستمع الخارجي
   useEffect(() => {
-    const timer = setTimeout(() => {
-      const snapshot = { ...data, website: "" } as Partial<ProjectRequestInput>;
-      if (!suppressLocalDraft) {
-        try {
-          localStorage.setItem(DRAFT_KEY, JSON.stringify(snapshot));
-        } catch {
-          /* لا مساحة للتخزين */
-        }
-      }
-      valuesChangeListener.current?.(snapshot);
+    if (!suppressLocalDraft || initialApplied.current || !initialValues) return;
+    initialApplied.current = true;
+    if (!edited.current) {
+      const next = { ...latestData.current, ...sanitizeRequestDraft(initialValues), locale };
+      latestData.current = next; setData(next);
+    }
+  }, [initialValues, locale, suppressLocalDraft]);
+
+  // External account autosaves retain their debounce, but cannot outlive success/reset/unmount.
+  useEffect(() => {
+    if (!edited.current || finished.current || status !== 'idle' || !valuesChangeListener.current) return;
+    saveTimer.current = setTimeout(() => {
+      if (!finished.current && edited.current) valuesChangeListener.current?.({ ...latestData.current, website: '' });
     }, 400);
-    return () => clearTimeout(timer);
-  }, [data, suppressLocalDraft]);
+    return () => { if (saveTimer.current) clearTimeout(saveTimer.current); };
+  }, [data, status]);
 
   const currencyNeeded = data.budget !== "unspecified";
   const errorFor = (field: keyof FormState) => (errors[field] ? t.errors[errors[field] as keyof typeof t.errors] : undefined);
   const describedBy = (field: string, hasError: boolean) => (hasError ? `${field}-error` : undefined);
 
   function set<K extends keyof FormState>(key: K, value: FormState[K]) {
-    setData((d) => ({ ...d, [key]: value }));
+    const next = { ...latestData.current, [key]: value };
+    edited.current = true; latestData.current = next; setData(next);
+    if (!suppressLocalDraft) setStorageAvailable(writeRequestDraft(draftOwner, next));
     setErrors((e) => (e[key] ? { ...e, [key]: undefined } : e));
   }
 
   async function onSubmit(ev: React.FormEvent<HTMLFormElement>) {
     ev.preventDefault();
-    if (status === "submitting") return; // منع الإرسال المتكرر غير المقصود
+    if (!initialized || status === "submitting") return; // منع الإرسال المتكرر غير المقصود
     setServerError(null);
     setRestored(false);
 
@@ -178,9 +185,12 @@ export function ProjectRequestForm({
       return;
     }
 
+    const submittedDraft = sanitizeRequestDraft(data);
     setStatus("submitting");
     if (simulate) {
       const simulatedRef = `TEST-${Date.now().toString(36).toUpperCase()}`;
+      finished.current = true;
+      if (saveTimer.current) clearTimeout(saveTimer.current);
       setRefCode(simulatedRef); setStatus("success"); onSubmitted?.(simulatedRef);
       return;
     }
@@ -193,11 +203,9 @@ export function ProjectRequestForm({
       const body = (await res.json().catch(() => ({}))) as Record<string, unknown>;
 
       if (res.ok && body.ok && typeof body.ref === "string") {
-        if (!suppressLocalDraft) {
-          try {
-            localStorage.removeItem(DRAFT_KEY);
-          } catch {}
-        }
+        finished.current = true;
+        if (saveTimer.current) clearTimeout(saveTimer.current);
+        if (!suppressLocalDraft) clearRequestDraft(draftOwner, submittedDraft);
         setRefCode(body.ref);
         setTrackUrl(typeof body.trackUrl === "string" ? body.trackUrl : null);
         // The account parent owns its success state after draft cleanup completes.
@@ -224,7 +232,11 @@ export function ProjectRequestForm({
   }
 
   function resetForm() {
-    setData({ ...EMPTY, locale });
+    if (saveTimer.current) clearTimeout(saveTimer.current);
+    if (!suppressLocalDraft) clearRequestDraft(draftOwner);
+    edited.current = false; finished.current = false; recoveredDraft.current = false;
+    const next = { ...EMPTY, locale }; latestData.current = next; setData(next);
+    setRestored(false);
     setErrors({});
     setRefCode("");
     setTrackUrl(null);
@@ -329,15 +341,28 @@ export function ProjectRequestForm({
   }
 
   return (
-    <form onSubmit={onSubmit} noValidate aria-labelledby="form-title">
+    <form onSubmit={onSubmit} noValidate aria-labelledby="form-title" aria-busy={!initialized}>
       <span id="form-top" className="sr-only">{t.title}</span>
+      <fieldset disabled={!initialized} className="min-w-0">
       <div className="rounded-3xl border border-border bg-card p-6 shadow-sm sm:p-9">
         <h2 id="form-title" className="text-xl font-bold text-navy">{t.title}</h2>
         <p className="mt-2 text-sm leading-7 text-muted-foreground">{t.requiredNote}</p>
 
+        {!suppressLocalDraft && storageAvailable && (
+          <p className="mt-2 text-sm leading-7 text-muted-foreground">
+            {locale === "ar" ? "يمكن استعادة المسودة في هذا التبويب خلال 30 دقيقة من آخر تعديل. تُمسح عند تغيير الحساب أو إرسال الطلب." : "This tab can restore your draft within 30 minutes of your last edit. It is cleared when your account changes or the request is sent."}
+          </p>
+        )}
+
         {restored && (
           <p className="mt-4 rounded-lg bg-accent px-4 py-2.5 text-sm font-medium text-brand-strong" role="status">
-            {locale === "ar" ? "استُعيدت مسودة سابقة من متصفحك." : "A previous draft was restored from your browser."}
+            {locale === "ar" ? "استُعيدت مسودة مؤقتة من هذا التبويب." : "A temporary draft was restored from this tab."}
+          </p>
+        )}
+
+        {!suppressLocalDraft && !storageAvailable && (
+          <p className="mt-4 rounded-lg bg-accent px-4 py-2.5 text-sm font-medium text-brand-strong" role="status">
+            {locale === "ar" ? "التخزين غير متاح. تبقى المدخلات عند تبديل اللغة في هذا التبويب، وقد تُفقد عند تحديثه أو إغلاقه." : "Storage is unavailable. Language changes in this tab retain your input, but refreshing or closing it may lose it."}
           </p>
         )}
 
@@ -595,6 +620,7 @@ export function ProjectRequestForm({
           </p>
         </div>
       </div>
+      </fieldset>
     </form>
   );
 }

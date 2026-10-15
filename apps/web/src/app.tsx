@@ -1,3 +1,4 @@
+import {scopeRequestDraft} from './components/form/request-draft';
 import {AppearanceProvider} from './components/appearance/provider';
 import {useEffect,useMemo} from 'react';
 import {ClientErrors} from './components/errors/client-errors';
@@ -79,6 +80,8 @@ function presentation(data: PublicView) {
 }
 export function App() {
   const data = useLoaderData<PublicView>();
+  const draftOwner = data.viewer ? `user:${data.viewer.id}` : 'guest';
+  useEffect(() => { if (data.kind !== 'not-found') scopeRequestDraft(draftOwner); }, [draftOwner, data.kind]);
   return <AppDirectionProvider dir={data.locale === "ar" ? "rtl" : "ltr"}><ClientErrors locale={data.locale}/><AppearanceProvider><AppContent /></AppearanceProvider></AppDirectionProvider>;
 }
 function AppContent() {

@@ -23,9 +23,9 @@ for (const locale of ['ar','en']) {
     const {prefix,password}=fixture(); const errors:string[]=[]; page.on('pageerror',e=>errors.push(e.message));
     await page.goto(`/${locale}/auth/login?next=/${locale}`); await page.locator('#login-email').fill(prefix+'owner@example.invalid'); await page.locator('#login-password').fill(password); await page.locator('form button[type=submit]').click();
     await expect(page).toHaveURL(url=>url.pathname==='/'+locale && url.search===''); const session=await page.request.get('/api/auth/session'); expect((await session.json()).user.id).toBe(prefix+'owner');
-    await page.evaluate(()=>localStorage.setItem('so7ob-request-draft','synthetic draft'));
+    await page.evaluate(owner=>{localStorage.setItem('so7ob-request-draft','synthetic draft');sessionStorage.setItem('so7ob-request-session-draft-v1',JSON.stringify({owner:'user:'+owner,expiresAt:Date.now()+1800000,values:{description:'Synthetic transient draft'}}));},prefix+'owner');
     await page.goto(`/${locale}/auth/logout`); await expect(page).toHaveURL(url=>url.pathname==='/'+locale && url.search==='');
-    expect(await page.evaluate(()=>localStorage.getItem('so7ob-request-draft'))).toBeNull(); expect(await (await page.request.get('/api/auth/session')).json()).toEqual({}); expect(errors).toEqual([]);
+    expect(await page.evaluate(()=>localStorage.getItem('so7ob-request-draft'))).toBeNull();expect(await page.evaluate(()=>sessionStorage.getItem('so7ob-request-session-draft-v1'))).toBeNull(); expect(await (await page.request.get('/api/auth/session')).json()).toEqual({}); expect(errors).toEqual([]);
   });
 }
 test('registration and one-use verification use the encrypted outbox; no development link in production',async({page},info)=>{
