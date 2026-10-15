@@ -8,6 +8,7 @@ import {
   validateContent,
   countNodes,
   parsePageSettings,
+  serializePageSettings,
   hasUnpublishedChanges,
   type AuthUser,
   type Permission,
@@ -234,6 +235,40 @@ export class PageAdministrationService {
         undefined,{before:{},after:(await r.query("SELECT status,slug,titleAr,titleEn,draftRevision,visibility FROM Page WHERE id=?",[id]))[0]},
       );
       return { ok: true, page: { id, slug } };
+    });
+  }
+  /** Copy the current bilingual draft, never its publication, ACL or history. */
+  async duplicate(actor: AuthUser, sourceId: string) {
+    permit(actor, "pages.view");
+    permit(actor, "pages.edit");
+    return transaction(this.db, async (r) => {
+      const source = await this.locked(r, sourceId);
+      if (source.status === "archived") throw new AuthFault(409, "archived");
+      const ar = checkedDocument(source.draftBlocksAr), en = checkedDocument(source.draftBlocksEn);
+      const existing: Array<Pick<StoredPage, "slug" | "draftSettings">> = await r.query("SELECT slug,draftSettings FROM Page");
+      const reserved = new Set(existing.flatMap(page => [page.slug, parsePageSettings(page.draftSettings, page).slug]));
+      for (const redirect of await r.query("SELECT fromSlug FROM PageRedirect")) reserved.add(redirect.fromSlug);
+      let slug = "";
+      for (let attempt = 1; attempt <= 5; attempt++) {
+        const suffix = attempt === 1 ? "-copy" : `-copy-${attempt}`;
+        const candidate = (source.slug || "home").slice(0, 60 - suffix.length).replace(/-+$/, "") + suffix;
+        if (isValidSlug(candidate) && !reserved.has(candidate)) { slug = candidate; break; }
+      }
+      if (!slug) throw new AuthFault(409, "slug_taken");
+      const [max] = await r.query("SELECT MAX(`order`) n FROM Page");
+      const settings = { ...parsePageSettings(source.draftSettings, source), slug, visibility: "public", allowedRoles: [], order: Number(max.n ?? 0) + 1 };
+      const id = newId(), now = new Date();
+      await assertMediaReferences(r, { blocksAr: ar.json, blocksEn: en.json, ogMediaId: source.ogMediaId ?? "" });
+      await insertRecord(r, "Page", {
+        id, slug, titleAr: source.titleAr, titleEn: source.titleEn, status: "draft", isHome: false,
+        visibility: settings.visibility, allowedRoles: "[]", order: settings.order,
+        draftBlocksAr: ar.json, draftBlocksEn: en.json, draftSettings: serializePageSettings(settings), draftRevision: 0,
+        draftUpdatedAt: now, draftUpdatedById: actor.id, editorTouchedAt: now,
+        seoTitleAr: settings.seoTitleAr, seoTitleEn: settings.seoTitleEn, seoDescAr: settings.seoDescAr, seoDescEn: settings.seoDescEn, ogMediaId: source.ogMediaId,
+      });
+      await audit(r, "page.created", actor, { slug, sourcePageId: sourceId }, "page", id, undefined,
+        { before: {}, after: { status: "draft", slug, titleAr: source.titleAr, titleEn: source.titleEn, draftRevision: 0, visibility: settings.visibility } });
+      return { ok: true, page: { id, slug, status: "draft" } };
     });
   }
   async update(actor: AuthUser, id: string, body: Record<string, unknown>) {

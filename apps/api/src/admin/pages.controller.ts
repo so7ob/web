@@ -156,6 +156,11 @@ export class PageAdministrationController {
     body: PageCreateDto) {
         return this.pages.create(req.actor, { ...body });
     }
+    @Post(":id/duplicate")
+    @RequiresPermission("pages.edit")
+    duplicate(@Req() req: CmsRequest, @Param("id") id: string) {
+        return this.pages.duplicate(req.actor, id);
+    }
     @Get(":id")
     @RequiresPermission("pages.view")
     detail(
