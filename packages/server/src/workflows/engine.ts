@@ -14,6 +14,7 @@ import { AuthFault, audit, newId, transaction } from "../auth/persistence.js";
 import { insertRecord } from "../business/persistence.js";
 import { responsePolicy } from "../admin/response-policy.js";
 import { businessDeadline } from "./calendar.js";
+import { calendarTimezoneFor } from "./calendar-zone.js";
 import { conversationDueSql } from "./deadlines.js";
 import { names, assertWorkflowAccess } from "./access.js";
 export interface Instance {
@@ -720,6 +721,7 @@ export class WorkflowEngine {
           : state.responseDueAt
         )?.toISOString() ?? null,
       stageDueAt: state.stageDueAt?.toISOString() ?? null,
+      calendarTimezone: await calendarTimezoneFor(this.db, state.definition.calendarVersionId),
       transitions: (await this.allowed(
         this.db,
         { ...state, stageId: stage.id },

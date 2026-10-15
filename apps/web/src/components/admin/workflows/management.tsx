@@ -29,6 +29,7 @@ import type { Locale } from "@/lib/i18n";
 import { apiGet, fmtDateTime } from "../helpers";
 import type { Me, StaffOption, AttachmentRow } from "../types";
 import { words, wfCard, workflowPost } from "./shared";
+import { WorkflowDeadline } from "./deadline";
 import { ErrorFeedback } from "@/components/errors/error-feedback";
 import { asApiError } from "@/lib/errors/transport";
 export function ConversationManagement({
@@ -166,13 +167,13 @@ export function ConversationManagement({
           {state.responseDueAt ? (
             <p>
               {t("موعد الرد: ", "Response due: ")}
-              {fmtDateTime(state.responseDueAt, locale)}
+              <WorkflowDeadline value={state.responseDueAt} locale={locale} timeZone={state.calendarTimezone} />
             </p>
           ) : null}
           {state.stageDueAt ? (
             <p>
               {t("مهلة المرحلة: ", "Stage due: ")}
-              {fmtDateTime(state.stageDueAt, locale)}
+              <WorkflowDeadline value={state.stageDueAt} locale={locale} timeZone={state.calendarTimezone} />
             </p>
           ) : null}
         </div>

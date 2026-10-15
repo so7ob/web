@@ -14,6 +14,7 @@ import { AuthFault, audit, newId, transaction } from "../auth/persistence.js";
 import { requirePermission } from "../admin/operations.js";
 import { responsePolicy } from "../admin/response-policy.js";
 import { WorkflowEngine } from "./engine.js";
+import { calendarTimezoneFor } from "./calendar-zone.js";
 import { names, assertWorkflowAccess, workflowAccessSql } from "./access.js";
 const id = z.string().regex(/^[a-zA-Z0-9_-]{1,80}$/);
 const revision = z.number().int().nonnegative();
@@ -467,6 +468,7 @@ export class WorkflowAdministration {
       const def: WorkflowDefinition = JSON.parse(version.definition);
       if (def.scope !== data.scope)
         throw new AuthFault(400, "workflow_invalid");
+      const calendarTimezone = await calendarTimezoneFor(r, def.calendarVersionId);
       const rows = [];
       await r.query("SAVEPOINT preview_routes");
       for (const recordId of new Set(data.ids)) {
@@ -506,6 +508,7 @@ export class WorkflowAdministration {
           targetStatus: stage.status,
           responseDueAt: responseDueAt?.toISOString() ?? null,
           stageDueAt: stageDueAt?.toISOString() ?? null,
+          calendarTimezone,
           recordId,
           revision: state.revision,
           versionId: state.versionId,

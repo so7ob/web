@@ -67,6 +67,7 @@ let teamId = "",
 const records: string[] = [];
 let createdRootRole = false;
 const flows: string[] = [];
+const extraCalendars: string[] = [];
 const calendar: BusinessCalendar = {
   timezone: "Asia/Aden",
   week: Array.from({ length: 7 }, () => [{ start: "00:00", end: "24:00" }]),
@@ -255,6 +256,7 @@ afterAll(async () => {
     await db.query("DELETE FROM Workflow WHERE id=?", [id]);
   }
   await db.query("DELETE FROM WorkCalendar WHERE id=?", [calendarId]);
+  for (const id of extraCalendars) await db.query("DELETE FROM WorkCalendar WHERE id=?", [id]);
   await db.query("DELETE FROM WorkTeam WHERE id=?", [teamId]);
   await db.query("DELETE FROM AuditLog WHERE actorId LIKE ?", [prefix + "%"]);
   await db.query("DELETE FROM User WHERE id LIKE ?", [prefix + "%"]);
@@ -263,6 +265,35 @@ afterAll(async () => {
     await db.query("DELETE FROM Role WHERE `key`='super_admin'");
   await db.destroy();
 });
+for (const scope of ["requests", "inquiries"] as const)
+  it(`${scope}: calendar timezone follows the pinned publication and preview destination without rewriting deadlines`, async () => {
+    const selector = prefix + scope + "zones";
+    const definition = { ...legacyWorkflow(scope), calendarVersionId: calendarId };
+    const flow = (await admin.save(root, { definition })).id; flows.push(flow);
+    const firstVersion = (await admin.publish(root, { id: flow, revision: 0, selector })).id;
+    const first = await record(scope, selector);
+    const nextCalendar = (await admin.calendar(root, { ...calendar, timezone: "America/New_York" })).id;
+    extraCalendars.push(nextCalendar);
+    await admin.save(root, { id: flow, revision: 0, definition: { ...definition, calendarVersionId: nextCalendar } });
+    const nextVersion = (await admin.publish(root, { id: flow, revision: 1, selector })).id;
+    const second = await record(scope, selector);
+    const snapshot = () => db.query("SELECT versionId,stageId,revision,responseDueAt,stageDueAt FROM ConversationWorkflow WHERE scope=? AND recordId IN (?,?) ORDER BY recordId", [scope, first, second]);
+    const before = await snapshot();
+    const versions = await db.query("SELECT id,definition FROM WorkflowVersion WHERE id IN (?,?) ORDER BY id", [firstVersion, nextVersion]);
+    expect(a.permissions).not.toContain("workflows.view");
+    for (const [id, versionId, timezone] of [[first, firstVersion, "Asia/Aden"], [second, nextVersion, "America/New_York"]]) {
+      expect(await engine.state(a, scope, id)).toMatchObject({ versionId, calendarTimezone: timezone });
+      const list = await threads.list(a, scope, { q: id });
+      const rows = (scope === "requests" ? list.requests : list.inquiries) as Array<{ id: string; calendarTimezone: string }>;
+      expect(rows.find(row => row.id === id)?.calendarTimezone).toBe(timezone);
+    }
+    const preview = await admin.previewTransfer(root, { scope, ids: [first], versionId: nextVersion, mapping: { new: "new" } });
+    expect(preview.rows[0]).toMatchObject({ versionId: firstVersion, calendarTimezone: "America/New_York" });
+    expect(await snapshot()).toEqual(before);
+    expect(await db.query("SELECT id,definition FROM WorkflowVersion WHERE id IN (?,?) ORDER BY id", [firstVersion, nextVersion])).toEqual(versions);
+    await expect(threads.detail({ ...a, permissions: [] }, scope, first)).rejects.toMatchObject({ status: 403 });
+    await expect(threads.list({ ...a, permissions: [] }, scope, { q: first })).rejects.toMatchObject({ status: 403 });
+  });
 for (const scope of ["requests", "inquiries"] as const)
   it(`${scope}: projects only allowed destination names from the immutable pinned publication`, async () => {
     const selector = prefix + scope + "labels";
