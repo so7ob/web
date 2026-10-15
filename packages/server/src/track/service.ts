@@ -2,7 +2,7 @@ import {notifyStaff} from '../business/persistence.js';
 import {assertWorkflowAccess,publicWorkflowStage} from '../workflows/access.js';
 import {WorkflowEngine} from '../workflows/engine.js';
 import type {DataSource,QueryRunner} from 'typeorm';
-import {can,DEFAULT_TRACK_POLICY,TRACK_SETTING_KEYS,isTrackMode,isCardClosed,resolveTrackPolicy,type AuthUser,type TrackScope,type TrackPolicySettings,type TrackViewResult,type TrackMessageView} from '@so7ob/contracts';
+import {can,DEFAULT_TRACK_POLICY,TRACK_SETTING_KEYS,isTrackMode,isCardClosed,resolveTrackPolicy,type AuthUser,type TrackScope,type TrackPolicySettings,type TrackViewResult,type TrackMessageView,type EffectiveTrackPolicy,type TrackReplyDenial} from '@so7ob/contracts';
 import type {TrackLink} from '../database/models.js';
 import {AuthFault,audit,newId,sha256,transaction} from '../auth/persistence.js';
 import {insertRecord} from '../business/persistence.js';
@@ -128,6 +128,24 @@ export class TrackService {
   if(matched&&policy.canViewViaLink)return {card,link,policy,reason:null};
   return {card,link,policy,reason:matched?'policy_denied' as const:'owner_required' as const};
  }
+ // Match reply's existing authorization order; these reasons grant no access.
+ private replyDenial(scope:TrackScope,card:Card,policy:EffectiveTrackPolicy,ctx:TrackContext):TrackReplyDenial|null{
+  if(ctx.actor){
+   if(!['active','pending_verification'].includes(ctx.actor.status))return 'unavailable';
+   if(can(ctx.actor,names(scope).reply))return 'staff';
+   if(ctx.actor.id!==card.clientId)return 'owner_required';
+  }else if(!policy.canReplyViaLink)return policy.mode==='link_view'?'read_only':'login_required';
+  if(isCardClosed(card.status)||card.archivedAt)return 'closed';
+  return null;
+ }
+ private async canOpenStaffWorkspace(r:QueryRunner,scope:TrackScope,id:string,actor:AuthUser|null):Promise<boolean>{
+  if(!actor||!['active','pending_verification'].includes(actor.status)||(actor.credentialState&&actor.credentialState!=='ready')||!can(actor,'admin.dashboard')||!can(actor,names(scope).view))return false;
+  // Owner access to tracking must never bypass staff workflow visibility.
+  try{await assertWorkflowAccess(r,actor,scope==='request'?'requests':'inquiries',id);return true;}catch(error){
+   if(error instanceof AuthFault&&error.code==='not_found')return false;
+   throw error;
+  }
+ }
  async view(scope:TrackScope,id:string,ctx:TrackContext):Promise<TrackViewResult>{
   return this.run(async r=>{
    const access=await this.access(r,scope,id,ctx),{card,link,policy,reason}=access;
@@ -137,18 +155,18 @@ export class TrackService {
    const attachments:Array<{id:string;filename:string;size:number;mimeType:string;messageId:string}>=await r.query(`SELECT a.id,a.filename,a.size,a.mimeType,a.messageId FROM Attachment a JOIN ${n.message} m ON m.id=a.messageId AND m.${n.field}=a.${n.field} WHERE a.${n.field}=? AND m.kind<>'internal_note'`,[id]);
    const byMessage=new Map<string,TrackMessageView['attachments']>();for(const a of attachments){const items=byMessage.get(a.messageId)??[];items.push({id:a.id,filename:a.filename,size:a.size,mimeType:a.mimeType});byMessage.set(a.messageId,items);}
    const events:Array<{toStatus:string;createdAt:Date}>=scope==='request'?await r.query('SELECT toStatus,createdAt FROM RequestStatusEvent WHERE requestId=? ORDER BY createdAt,id',[id]):[{toStatus:card.status,createdAt:card.updatedAt}];
-   const closed=isCardClosed(card.status);
-   return {ok:true,link:record,policy:{...policy,cardClosed:closed,canReplyViaLink:policy.canReplyViaLink&&!closed,canReplyByOwner:policy.canReplyByOwner&&!closed},card:{workflowStage:await publicWorkflowStage(r,scope==='request'?'requests':'inquiries',id),scope,id:card.id,refCode:card.refCode,typeLabel:card.requestType??'general',subject:scope==='request'?'#'+card.refCode:card.subject??'#'+card.refCode,description:scope==='request'?card.description??'':card.subject??'',status:card.status,createdAt:card.createdAt.toISOString(),updatedAt:card.lastActivityAt.toISOString(),timeline:events.map(e=>({toStatus:e.toStatus,at:e.createdAt.toISOString()})),messages:messages.map(m=>({...m,createdAt:m.createdAt.toISOString(),attachments:byMessage.get(m.id)??[]}))}};
+   const closed=isCardClosed(card.status)||!!card.archivedAt,replyDenial=this.replyDenial(scope,card,policy,ctx);
+   const canOpenStaffWorkspace=await this.canOpenStaffWorkspace(r,scope,id,ctx.actor);
+   return {ok:true,link:record,policy:{...policy,cardClosed:closed,replyDenial,canOpenStaffWorkspace,canReplyViaLink:!ctx.actor&&policy.canReplyViaLink&&!replyDenial,canReplyByOwner:!!ctx.actor&&policy.canReplyByOwner&&!replyDenial},card:{workflowStage:await publicWorkflowStage(r,scope==='request'?'requests':'inquiries',id),scope,id:card.id,refCode:card.refCode,typeLabel:card.requestType??'general',subject:scope==='request'?'#'+card.refCode:card.subject??'#'+card.refCode,description:scope==='request'?card.description??'':card.subject??'',status:card.status,createdAt:card.createdAt.toISOString(),updatedAt:card.lastActivityAt.toISOString(),timeline:events.map(e=>({toStatus:e.toStatus,at:e.createdAt.toISOString()})),messages:messages.map(m=>({...m,createdAt:m.createdAt.toISOString(),attachments:byMessage.get(m.id)??[]}))}};
   });
  }
  async reply(scope:TrackScope,id:string,ctx:TrackContext,body:unknown){
   const text=typeof body==='string'?body.trim():'';if(!text)throw new AuthFault(400,'empty');if(text.length>5000)throw new AuthFault(400,'too_long');
   return this.run(async r=>{
    const {card,policy,reason}=await this.access(r,scope,id,ctx,true);
-   if(reason||!card)throw new AuthFault(reason==='not_found'?404:403,reason==='not_found'?'not_found':'policy_denied');
-   if(ctx.actor){if(!['active','pending_verification'].includes(ctx.actor.status)||can(ctx.actor,names(scope).reply)||ctx.actor.id!==card.clientId)throw new AuthFault(403,'policy_denied');}
-   else if(!policy.canReplyViaLink)throw new AuthFault(403,'policy_denied');
-   if(isCardClosed(card.status)||card.archivedAt)throw new AuthFault(403,'closed');
+   if(reason||!card)throw new AuthFault(reason==='not_found'?404:403,reason==='not_found'?'not_found':'policy_denied',{replyReason:(reason==='policy_denied'||reason==='owner_required')&&!ctx.actor?'login_required':'unavailable'});
+   const denial=this.replyDenial(scope,card,policy,ctx);
+   if(denial)throw new AuthFault(403,denial==='closed'?'closed':'policy_denied',{replyReason:denial,canOpenStaffWorkspace:denial==='staff'&&await this.canOpenStaffWorkspace(r,scope,id,ctx.actor)});
    const n=names(scope),recent:Array<{body:string}>=await r.query(`SELECT body FROM ${n.message} WHERE ${n.field}=? AND createdAt>=TIMESTAMPADD(MINUTE,-2,UTC_TIMESTAMP(3))`,[id]);
    if(recent.some(m=>m.body.trim()===text))throw new AuthFault(409,'duplicate');
    const mid=newId();await insertRecord(r,n.message,{id:mid,[n.field]:id,authorId:ctx.actor?.id??null,authorType:'client',kind:'message',body:text});

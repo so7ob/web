@@ -26,6 +26,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
+import { isTrackReplyDenial, type TrackReplyDenial } from "@so7ob/contracts";
 import type { Locale } from "@/lib/i18n";
 import type { PortalContent } from "@/content/portal/types";
 import { formatBytes, formatDate } from "@/components/account/format";
@@ -80,6 +81,8 @@ interface TrackPolicy {
   canReplyViaLink: boolean;
   canReplyByOwner: boolean;
   cardClosed: boolean;
+  replyDenial?: TrackReplyDenial | null;
+  canOpenStaffWorkspace?: boolean;
 }
 
 interface TrackLink {
@@ -171,7 +174,7 @@ export function TrackClient({
   const [cardKey, setCardKey] = useState<string | null>(null);
   const [reply, setReply] = useState("");
   const [sending, setSending] = useState(false);
-  const [replyBlocked, setReplyBlocked] = useState(false);
+  const [replyBlocked, setReplyBlocked] = useState<{ reason: TrackReplyDenial; canOpenStaffWorkspace: boolean } | null>(null);
   const [shareUrl, setShareUrl] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
 
@@ -182,11 +185,14 @@ export function TrackClient({
   const sendingRef = useRef(false);
   const copyTimerRef = useRef<number | null>(null);
   const conversationRef = useRef<HTMLDivElement>(null);
+  const unsentRef = useRef<HTMLTextAreaElement>(null);
+  useEffect(() => { if (replyBlocked) unsentRef.current?.focus(); }, [replyBlocked]);
 
   /** تحميل بطاقة عبر scope:id — يمنع الجلب المكرر لنفس المفتاح (force يتجاوز الحارس لمسار التبادل) */
   const loadCard = useCallback(async (scope: Scope, id: string, opts?: { force?: boolean }) => {
     const key = `${scope}:${id}`;
     if (!opts?.force && loadedCardRef.current === key) return;
+    if (loadedCardRef.current !== key) { setReply(""); setReplyBlocked(null); }
     loadedCardRef.current = key;
     setCardKey(key);
     setPhase("loading");
@@ -310,7 +316,8 @@ export function TrackClient({
   async function submitReply(ev: React.FormEvent<HTMLFormElement>) {
     ev.preventDefault();
     if (sendingRef.current || !data) return;
-    const body = reply.trim();
+    const submittedKey = `${data.card.scope}:${data.card.id}`, draft = reply;
+    const body = draft.trim();
     if (!body) return;
     sendingRef.current = true;
     setSending(true);
@@ -320,15 +327,17 @@ export function TrackClient({
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ scope: data.card.scope, id: data.card.id, body }),
       });
+      if (loadedCardRef.current !== submittedKey) return;
       if (res.ok) {
         const json = (await res.json().catch(() => null)) as { ok?: boolean; message?: TrackMessage } | null;
+        if (loadedCardRef.current !== submittedKey) return;
         if (json?.ok) {
-          setReply("");
+          setReply(current => current === draft ? "" : current);
           toast.success(t.replySent);
           if (json.message) {
             const sent = json.message;
             setData((prev) =>
-              prev ? { ...prev, card: { ...prev.card, messages: [...prev.card.messages, sent] } } : prev
+              prev && `${prev.card.scope}:${prev.card.id}` === submittedKey ? { ...prev, card: { ...prev.card, messages: [...prev.card.messages, sent] } } : prev
             );
           }
           return;
@@ -341,8 +350,10 @@ export function TrackClient({
         return;
       }
       if (res.status === 403) {
-        toast.error(t.replyDisabledLogin);
-        setReplyBlocked(true);
+        const error = await res.json().catch(() => null) as { code?: unknown; replyReason?: unknown; canOpenStaffWorkspace?: unknown } | null;
+        if (loadedCardRef.current !== submittedKey) return;
+        const reason = isTrackReplyDenial(error?.replyReason) ? error.replyReason : error?.code === "closed" ? "closed" : "unavailable";
+        setReplyBlocked({ reason, canOpenStaffWorkspace: reason === "staff" && error?.canOpenStaffWorkspace === true });
         return;
       }
       toast.error(t.replyFailed);
@@ -446,13 +457,12 @@ export function TrackClient({
     !replyBlocked &&
     !policy.cardClosed &&
     (viaLink ? policy.canReplyViaLink : policy.canReplyByOwner);
-  const replyDenial = replyBlocked
-    ? t.replyDisabledLogin
-    : policy.cardClosed
-      ? t.replyDisabledClosed
-      : viaLink
-        ? t.replyDisabledView
-        : t.replyDisabledClosed;
+  const reason = replyBlocked?.reason ?? policy.replyDenial ?? (policy.cardClosed ? "closed" : "unavailable");
+  const replyDenial = ({ staff: t.replyDisabledStaff, owner_required: t.replyDisabledOwner,
+    login_required: t.replyDisabledLogin, read_only: t.replyDisabledView,
+    closed: t.replyDisabledClosed, unavailable: t.replyDisabledUnavailable })[reason];
+  const canOpenStaffWorkspace = reason === "staff" && (replyBlocked ? replyBlocked.canOpenStaffWorkspace : policy.canOpenStaffWorkspace === true);
+
 
   return (
     <div className="w-full space-y-5">
@@ -655,12 +665,18 @@ export function TrackClient({
             </Toolbar>
           </form>
         ) : (
-          <div
-            role="status"
-            className="flex items-start gap-3 rounded-xl border border-border bg-muted/40 px-4 py-3 text-sm leading-7 text-muted-foreground"
-          >
-            <Info className="mt-1 size-4 shrink-0" aria-hidden="true" />
-            <p>{replyDenial}</p>
+          <div className="space-y-3">
+            <div role="status" className="flex items-start gap-3 rounded-xl border border-border bg-muted/40 px-4 py-3 text-sm leading-7 text-muted-foreground">
+              <Info className="mt-1 size-4 shrink-0" aria-hidden="true" />
+              <p>{replyDenial}</p>
+            </div>
+            {canOpenStaffWorkspace && <Link className="inline-flex min-h-11 items-center font-semibold text-brand underline" href={`/${locale}/admin/${card.scope === "request" ? "requests" : "inquiries"}/${encodeURIComponent(card.id)}`}>{t.openStaffWorkspace}</Link>}
+            {reason === "login_required" && <Link className="inline-flex min-h-11 items-center font-semibold text-brand underline" href={`/${locale}/auth/login?next=${encodeURIComponent(`/${locale}/track?card=${cardKey ?? ""}`)}`}>{t.signIn}</Link>}
+            {reply.length > 0 && <div className="space-y-2">
+              <label htmlFor="track-unsent-reply" className="block text-sm font-bold text-navy">{t.unsentReply}</label>
+              <p id="track-unsent-help" className="text-sm text-muted-foreground">{t.unsentReplyHint}</p>
+              <Textarea ref={unsentRef} id="track-unsent-reply" value={reply} readOnly rows={4} dir="auto" aria-describedby="track-unsent-help" className="min-h-28 resize-y leading-7" />
+            </div>}
           </div>
         )}
       </section>
