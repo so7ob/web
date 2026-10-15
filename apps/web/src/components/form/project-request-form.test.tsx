@@ -122,3 +122,22 @@ it('keeps SSR controls disabled until hydration has recovered the current draft'
   expect(container.querySelector('#description')).toHaveValue(text);
   expect(container.querySelector('#serviceType')).toHaveValue('mobile');
 });
+
+it('keeps the write-failure warning across remounts until a confirmed successful save', () => {
+  const write = vi.spyOn(Storage.prototype, 'setItem').mockImplementation(() => { throw new Error('Synthetic write quota failure'); });
+  const first = render(view('ar'));
+  fireEvent.change(first.container.querySelector('#description')!, { target: { value: text } }); first.unmount();
+  const second = render(view('en'));
+  expect(second.container.querySelector('#description')).toHaveValue(text);
+  expect(screen.getByText(/Storage is unavailable/)).toBeVisible();
+  expect(screen.queryByText(/This tab can restore/)).not.toBeInTheDocument();
+  write.mockRestore(); second.unmount();
+  const third = render(view('ar'));
+  expect(screen.getByText(/التخزين غير متاح/)).toBeVisible();
+  fireEvent.change(third.container.querySelector('#description')!, { target: { value: text + ' saved' } });
+  expect(screen.queryByText(/التخزين غير متاح/)).not.toBeInTheDocument();
+  third.unmount(); const fourth = render(view('en'));
+  expect(fourth.container.querySelector('#description')).toHaveValue(text + ' saved');
+  expect(screen.queryByText(/Storage is unavailable/)).not.toBeInTheDocument();
+  expect(screen.getByText(/This tab can restore/)).toBeVisible();
+});

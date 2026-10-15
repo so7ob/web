@@ -4,6 +4,8 @@ export const REQUEST_DRAFT_TTL = 30 * 60 * 1000;
 export type RequestDraft = Partial<Omit<ProjectRequestInput, 'website' | 'locale' | 'startedAt'>>;
 type Envelope = { owner: string; expiresAt: number; values: RequestDraft };
 let memory: Envelope | null = null;
+// Only an acknowledged write (or recovery read) confirms this exact snapshot.
+let confirmedStorage: string | null = null;
 const enums = { requestType: REQUEST_TYPES, serviceType: SERVICE_TYPES, budget: BUDGET_TIERS, currency: ['', ...CURRENCIES], timeline: TIMELINES, preferredContact: CONTACT_METHODS };
 const texts = { description: LIMITS.descriptionMax, name: LIMITS.nameMax, company: LIMITS.textMax, email: LIMITS.emailMax, phone: LIMITS.textMax, referenceUrl: LIMITS.urlMax };
 /** Incomplete text is valid as a draft; unknown fields, objects and invalid option IDs are not. */
@@ -19,7 +21,7 @@ function valid(value: Envelope | null, owner: string): value is Envelope {
 }
 /** Clear the previous identity even when the next route contains no public form. */
 export function scopeRequestDraft(owner: string): void {
-  if (memory?.owner !== owner) memory = null;
+  if (memory?.owner !== owner) { memory = null; confirmedStorage = null; }
   try {
     const raw = sessionStorage.getItem(REQUEST_DRAFT_KEY);
     if (raw && (raw.length > 20000 || (JSON.parse(raw) as Envelope)?.owner !== owner)) sessionStorage.removeItem(REQUEST_DRAFT_KEY);
@@ -27,30 +29,35 @@ export function scopeRequestDraft(owner: string): void {
 }
 export function readRequestDraft(owner: string): { values: RequestDraft; available: boolean } {
   // Mounted/tab-memory input remains current; expiry limits recovery from storage after reload.
-  if (memory?.owner !== owner) memory = null;
+  if (memory?.owner !== owner) { memory = null; confirmedStorage = null; }
   try {
     const raw = sessionStorage.getItem(REQUEST_DRAFT_KEY);
     if (!memory && raw && raw.length <= 20000) {
       let stored: Envelope | null = null;
       try { stored = JSON.parse(raw) as Envelope; } catch { /* Ignore corrupt recovery data. */ }
-      if (valid(stored, owner)) memory = { owner, expiresAt: stored.expiresAt, values: sanitizeRequestDraft(stored.values) };
+      if (valid(stored, owner)) {
+        memory = { owner, expiresAt: stored.expiresAt, values: sanitizeRequestDraft(stored.values) };
+        confirmedStorage = raw;
+      }
     }
     if (!memory && raw) sessionStorage.removeItem(REQUEST_DRAFT_KEY);
-    return { values: memory ? { ...memory.values } : {}, available: true };
+    return { values: memory ? { ...memory.values } : {}, available: !memory || (confirmedStorage !== null && raw === confirmedStorage) };
   } catch { return { values: memory ? { ...memory.values } : {}, available: false }; }
 }
 export function writeRequestDraft(owner: string, values: unknown): boolean {
   memory = { owner, expiresAt: Date.now() + REQUEST_DRAFT_TTL, values: sanitizeRequestDraft(values) };
+  confirmedStorage = null;
   try {
     const serialized = JSON.stringify(memory);
     sessionStorage.setItem(REQUEST_DRAFT_KEY, serialized);
     if (sessionStorage.getItem(REQUEST_DRAFT_KEY) !== serialized) throw new Error('Draft storage unavailable');
+    confirmedStorage = serialized;
     return true;
   } catch { try { sessionStorage.removeItem(REQUEST_DRAFT_KEY); } catch { /* Blocked storage. */ } return false; }
 }
 export function clearRequestDraft(owner: string, submitted?: unknown): void {
   const matches = (values: unknown) => submitted === undefined || JSON.stringify(sanitizeRequestDraft(values)) === JSON.stringify(sanitizeRequestDraft(submitted));
-  if (memory?.owner === owner && matches(memory.values)) memory = null;
+  if (memory?.owner === owner && matches(memory.values)) { memory = null; confirmedStorage = null; }
   try {
     const raw = sessionStorage.getItem(REQUEST_DRAFT_KEY);
     if (raw) { const stored = JSON.parse(raw) as Envelope; if (stored.owner === owner && matches(stored.values)) sessionStorage.removeItem(REQUEST_DRAFT_KEY); }
@@ -59,6 +66,6 @@ export function clearRequestDraft(owner: string, submitted?: unknown): void {
 
 /** Explicit sign-out discards the tab draft regardless of its previous owner. */
 export function forgetRequestDraft(): void {
-  memory = null;
+  memory = null; confirmedStorage = null;
   try { sessionStorage.removeItem(REQUEST_DRAFT_KEY); } catch { /* Memory is still cleared. */ }
 }

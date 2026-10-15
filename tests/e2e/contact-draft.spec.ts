@@ -103,6 +103,31 @@ for (const locale of ['ar', 'en'] as const) {
     await page.reload(); await expect(page.locator('#description')).toHaveValue('');
     expect((await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa', 'wcag21aa', 'wcag22aa']).analyze()).violations).toEqual([]);
   });
+  test(`${locale}: write-only storage failure stays visible across language changes until a confirmed save`, async ({ page }) => {
+    await page.addInitScript(() => {
+      let blocked = true;
+      window.addEventListener('synthetic-enable-draft-write', () => { blocked = false; });
+      const original = Storage.prototype.setItem;
+      Storage.prototype.setItem = function(key: string, value: string) {
+        if (this === sessionStorage && blocked) throw new Error('Synthetic write quota failure');
+        return original.call(this, key, value);
+      };
+    });
+    const warning = page.getByText(/Storage is unavailable|التخزين غير متاح/);
+    await page.goto(`/${locale}/contact`);
+    await page.locator('#description').fill(note); await expect(warning).toBeVisible();
+    await immediateSwitch(page, note + ' memory only');
+    await expect(page).toHaveURL(new RegExp(`/${other}/contact$`));
+    await expect(page.locator('#description')).toHaveValue(note + ' memory only');
+    await expect(warning).toBeVisible();
+    expect(await page.evaluate(draftKey => sessionStorage.getItem(draftKey), key)).toBeNull();
+    await page.evaluate(() => window.dispatchEvent(new Event('synthetic-enable-draft-write')));
+    await language(page).click(); await expect(page).toHaveURL(new RegExp(`/${locale}/contact$`));
+    await expect(warning).toBeVisible(); // Readable storage alone cannot confirm the unsaved memory snapshot.
+    await page.locator('#description').fill(note + ' confirmed save');
+    await expect(warning).toHaveCount(0);
+    await page.reload(); await expect(page.locator('#description')).toHaveValue(note + ' confirmed save');
+  });
   test(`${locale}: failure retains input, successful submission and reset clear it without a delayed resurrection`, async ({ page, baseURL }, info) => {
     test.setTimeout(45000);
     const { prefix } = JSON.parse(readFileSync('.migration/e2e/run.json', 'utf8'));

@@ -28,9 +28,14 @@ it('rejects a forged long-lived snapshot and malformed fields on recovery', () =
   expect(readRequestDraft('guest').values).toEqual({ budget: 'tier1' });
 });
 it('keeps memory current when writing storage fails and clears it after success', () => {
-  vi.spyOn(Storage.prototype, 'setItem').mockImplementation(() => { throw new Error('Synthetic quota failure'); });
+  const write = vi.spyOn(Storage.prototype, 'setItem').mockImplementation(() => { throw new Error('Synthetic quota failure'); });
   expect(writeRequestDraft('guest', { description: 'Current text' })).toBe(false);
-  expect(readRequestDraft('guest').values).toEqual({ description: 'Current text' });
+  expect(readRequestDraft('guest')).toEqual({ values: { description: 'Current text' }, available: false });
+  write.mockRestore();
+  // Successful reads alone do not prove that this memory snapshot is durable.
+  expect(readRequestDraft('guest').available).toBe(false);
+  expect(writeRequestDraft('guest', { description: 'Current text' })).toBe(true);
+  expect(readRequestDraft('guest')).toEqual({ values: { description: 'Current text' }, available: true });
   clearRequestDraft('guest');
   expect(readRequestDraft('guest').values).toEqual({});
 });
@@ -63,4 +68,13 @@ it('explicit logout clears memory and recovery even if storage removal is blocke
   vi.spyOn(Storage.prototype, 'removeItem').mockImplementation(() => { throw new Error('Blocked storage'); });
   forgetRequestDraft();
   expect(readRequestDraft('user:a').values).toEqual({});
+});
+
+it('keeps failed-write availability false when an older stored snapshot is still readable', () => {
+  writeRequestDraft('guest', { description: 'Old persisted snapshot' });
+  vi.spyOn(Storage.prototype, 'setItem').mockImplementation(() => { throw new Error('Synthetic quota failure'); });
+  vi.spyOn(Storage.prototype, 'removeItem').mockImplementation(() => { throw new Error('Synthetic removal blocked'); });
+  expect(writeRequestDraft('guest', { description: 'New memory snapshot' })).toBe(false);
+  expect(readRequestDraft('guest')).toEqual({ values: { description: 'New memory snapshot' }, available: false });
+  expect(readRequestDraft('guest')).toEqual({ values: { description: 'New memory snapshot' }, available: false });
 });
