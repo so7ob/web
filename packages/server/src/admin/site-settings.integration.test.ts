@@ -179,6 +179,7 @@ it("serializes a waiting identity save against media deletion", async () => {
       .finally(() => {
         done = true;
       });
+    void pending.catch(() => {}); // Keep the original rejection for the assertion below.
     await new Promise((resolve) => setTimeout(resolve, 30));
     expect(done).toBe(false);
     await r.commitTransaction();

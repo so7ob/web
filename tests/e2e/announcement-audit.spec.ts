@@ -1,10 +1,15 @@
 import { expect, type APIRequestContext } from '@playwright/test';
 import type { DataSource } from 'typeorm';
-import { test } from './admin-configuration-fixture';
+import { test } from './announcement-audit-fixture';
 import { getPortalContent } from '../../apps/web/src/content/portal';
 import { auditCopy } from '../../apps/web/src/components/admin/audit/copy';
 import { auditTerm } from '@so7ob/contracts';
 import { documentAudit, VisualReadiness } from './visual-checks';
+import { readFileSync } from 'node:fs';
+import { join } from 'node:path';
+import { execFile } from 'node:child_process';
+import { promisify } from 'node:util';
+import { createRequire } from 'node:module';
 
 const old = { 'announcement.enabled': 'false', 'announcement.messageAr': 'إعلان سابق اصطناعي 111', 'announcement.messageEn': 'Previous synthetic announcement111' };
 const next = { ar: 'إعلان جديد اصطناعي 111', en: 'Updated synthetic announcement111' };
@@ -22,6 +27,19 @@ async function confirmedEvent(request: APIRequestContext, db: DataSource, prefix
   expect((await response.json()).event.changes).toEqual(payload.changes);
   return row;
 }
+
+test('configuration authentication and cleanup preserve an already full login quota', async ({ configuration, quotaSnapshot }, info) => {
+  expect((await configuration.request.get('/api/admin/settings')).status()).toBe(200);
+  const { directory, key, before } = quotaSnapshot, report = join(directory, 'report.json');
+  const run = await promisify(execFile)(process.execPath, [createRequire(import.meta.url).resolve('@playwright/test/cli'), 'test', '--config=tests/e2e/support/announcement-quota.config.ts'], {
+    env: { ...process.env, SO7OB_CONFIGURATION_PROJECT: info.project.name, SO7OB_CONFIGURATION_OUTPUT: join(directory, 'output'), SO7OB_CONFIGURATION_REPORT: report, PLAYWRIGHT_JSON_OUTPUT_NAME: report },
+    timeout: info.timeout,
+  }).then(output => ({ code: 0, output: output.stdout + output.stderr }), error => ({ code: error.code, output: (error.stdout ?? '') + (error.stderr ?? '') }));
+  await info.attach('isolated-quota-runner', { body: run.output, contentType: 'text/plain' });
+  expect(run.code, run.output).toBe(0);
+  expect(await configuration.db.query('SELECT * FROM RateLimitBucket WHERE bucketKey=?', [key])).toEqual(before);
+  expect(JSON.parse(readFileSync(report, 'utf8')).errors).toEqual([]);
+});
 
 test.use({ contextOptions: { reducedMotion: 'reduce' } });
 for (const locale of ['ar', 'en'] as const) {
