@@ -21,6 +21,7 @@ test('request UI selects smoke, all dependent request cases and the full visual 
 });
 test('CMS and workflow UI preserve their dependency closure and design matrix', () => {
   const plan = select(['apps/web/src/components/editor/canvas.tsx']);
+  assert.ok(plan.files.includes('media-alt-drafts.spec.ts'));
   assert.ok(plan.files.includes('publication.spec.ts')); assert.equal(plan.design,true);
   const workflow = select(['apps/web/src/components/admin/workflows/workspace.tsx']);
   assert.equal(workflow.smoke,true); assert.equal(workflow.design,true);
