@@ -1,6 +1,5 @@
 import {WorkflowEngine} from '../workflows/engine.js';
-import {assertWorkflowAccess,workflowAccessSql,publicWorkflowStage,publicStageSql} from '../workflows/access.js';
-import { can } from "@so7ob/contracts";
+import {assertWorkflowAccess,publicWorkflowStage,publicStageSql} from '../workflows/access.js';
 import type { DataSource } from "typeorm";
 import type { AuthUser } from "@so7ob/contracts";
 import type { Inquiry, InquiryMessage } from "../database/models.js";
@@ -12,9 +11,8 @@ import { sqliteLike } from "./requests.js";
 export class InquiryService {
   constructor(private readonly db: DataSource) {}
   private owns(actor: AuthUser, row: Inquiry) {
-    return !can(actor, "inquiries.view.all")
-      ? row.clientId === actor.id
-      : row.assigneeId === actor.id;
+    // Account routes always act as the customer, including staff accounts.
+    return row.clientId === actor.id;
   }
   async list(
     actor: AuthUser,
@@ -24,10 +22,7 @@ export class InquiryService {
       page = pageNumber(query.page),
       pageSize = 20;
     const values: unknown[] = [actor.id];
-    let where =
-      (!can(actor, "inquiries.view.all") ? "i.clientId" : "i.assigneeId") +
-      "=? AND i.archivedAt IS NULL";
-    if(can(actor,'inquiries.view.all'))where += ' AND ('+workflowAccessSql(actor,'inquiries','i')+')';
+    let where = "i.clientId=? AND i.archivedAt IS NULL";
     if (query.status === "open")
       where +=
         " AND i.status IN ('new','in_review','awaiting_info','responded')";
@@ -73,14 +68,13 @@ export class InquiryService {
     );
     if (!inquiry || !this.owns(actor, inquiry))
       throw new AuthFault(404, "not_found");
-    const client = !can(actor, "inquiries.view.all");
     const [messages, attachments, assignees] = await Promise.all([
       this.db.query(
-        `SELECT m.*,u.name authorName,u.roleKey authorRole FROM InquiryMessage m LEFT JOIN User u ON u.id=m.authorId WHERE m.inquiryId=? ${client ? "AND m.kind<>'internal_note'" : ""} ORDER BY m.createdAt ASC`,
+        `SELECT m.*,u.name authorName,u.roleKey authorRole FROM InquiryMessage m LEFT JOIN User u ON u.id=m.authorId WHERE m.inquiryId=? AND m.kind<>'internal_note' ORDER BY m.createdAt ASC`,
         [id],
       ),
       this.db.query(
-        `SELECT a.* FROM Attachment a WHERE a.inquiryId=? ${client ? "AND (a.messageId IS NULL OR NOT EXISTS(SELECT 1 FROM InquiryMessage m WHERE m.id=a.messageId AND m.kind='internal_note'))" : ""}`,
+        `SELECT a.* FROM Attachment a WHERE a.inquiryId=? AND (a.messageId IS NULL OR NOT EXISTS(SELECT 1 FROM InquiryMessage m WHERE m.id=a.messageId AND m.kind='internal_note'))`,
         [id],
       ),
       this.db.query("SELECT id,name FROM User WHERE id=?", [
