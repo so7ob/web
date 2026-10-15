@@ -96,6 +96,7 @@ export function ProjectRequestForm({
   const [storageAvailable, setStorageAvailable] = useState(true);
   const initializedOwner = useRef<string | null>(null);
   const initialApplied = useRef(false);
+  const recoveredDraft = useRef(false);
   const [errors, setErrors] = useState<FieldErrors>({});
   const [serverError, setServerError] = useState<{ kind: "invalid" | "duplicate" | "rateLimited" | "generic"; message: string } | null>(null);
   const [status, setStatus] = useState<"idle" | "submitting" | "success">("idle");
@@ -120,7 +121,9 @@ export function ProjectRequestForm({
   useEffect(() => {
     const owner = suppressLocalDraft ? 'server' : draftOwner;
     if (initializedOwner.current === owner) {
-      const next = { ...latestData.current, locale };
+      const explicit = !edited.current && !recoveredDraft.current && !initialValues && !finished.current
+        ? sanitizeRequestDraft({ requestType: params.get('type'), serviceType: params.get('service') }) : {};
+      const next = { ...latestData.current, ...explicit, locale };
       latestData.current = next; setData(next);
       return;
     }
@@ -128,6 +131,7 @@ export function ProjectRequestForm({
     initialApplied.current = Boolean(initialValues);
     edited.current = false; finished.current = false;
     const restoredDraft = suppressLocalDraft ? { values: {}, available: true } : readRequestDraft(draftOwner);
+    recoveredDraft.current = Object.keys(restoredDraft.values).length > 0;
     const defaults = { ...sanitizeRequestDraft({ serviceType: preselectService }), ...sanitizeRequestDraft({ requestType: params.get('type'), serviceType: params.get('service') }) };
     const next = { ...EMPTY, ...defaults, ...sanitizeRequestDraft(initialValues), ...restoredDraft.values, locale };
     latestData.current = next; setData(next);
@@ -228,7 +232,7 @@ export function ProjectRequestForm({
   function resetForm() {
     if (saveTimer.current) clearTimeout(saveTimer.current);
     if (!suppressLocalDraft) clearRequestDraft(draftOwner);
-    edited.current = false; finished.current = false;
+    edited.current = false; finished.current = false; recoveredDraft.current = false;
     const next = { ...EMPTY, locale }; latestData.current = next; setData(next);
     setRestored(false);
     setErrors({});

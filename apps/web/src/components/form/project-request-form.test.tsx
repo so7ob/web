@@ -1,7 +1,7 @@
 // @vitest-environment jsdom
 import { act, cleanup, fireEvent, render, screen } from '@testing-library/react';
 import { afterEach, beforeEach, expect, it, vi } from 'vitest';
-import { MemoryRouter } from 'react-router-dom';
+import { MemoryRouter, useNavigate } from 'react-router-dom';
 import { clearRequestDraft, REQUEST_DRAFT_KEY, writeRequestDraft } from './request-draft';
 import { ProjectRequestForm } from './project-request-form';
 import { ar } from '@/content/ar';
@@ -92,4 +92,20 @@ it('takes restored draft above explicit prefills and newer edits above changed d
   const { container } = render(<MemoryRouter initialEntries={['/en/contact?service=web']}><ProjectRequestForm locale="en" content={en} preselectService="systems" /></MemoryRouter>);
   expect(container.querySelector('#serviceType')).toHaveValue('mobile');
   expect(container.querySelector('#description')).toHaveValue(text);
+});
+
+it('applies deliberate same-page URL prefills only before editing or restoring a draft', () => {
+  function Harness() {
+    const navigate = useNavigate();
+    return <><ProjectRequestForm locale="en" content={en} preselectService="web" /><button onClick={() => navigate('/en/contact?service=mobile&type=quote')}>Prefill mobile quote</button><button onClick={() => navigate('/en/contact?service=automation&type=discussion')}>Prefill automation</button></>;
+  }
+  const { container } = render(<MemoryRouter initialEntries={['/en/contact']}><Harness /></MemoryRouter>);
+  fireEvent.click(screen.getByRole('button', { name: 'Prefill mobile quote' }));
+  expect(container.querySelector('#serviceType')).toHaveValue('mobile');
+  expect(screen.getByRole('radio', { name: en.form.requestTypes.quote })).toHaveAttribute('aria-checked', 'true');
+  fireEvent.change(container.querySelector('#description')!, { target: { value: text } });
+  fireEvent.click(screen.getByRole('button', { name: 'Prefill automation' }));
+  expect(container.querySelector('#description')).toHaveValue(text);
+  expect(container.querySelector('#serviceType')).toHaveValue('mobile');
+  expect(screen.getByRole('radio', { name: en.form.requestTypes.quote })).toHaveAttribute('aria-checked', 'true');
 });
