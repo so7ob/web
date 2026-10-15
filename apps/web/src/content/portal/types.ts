@@ -231,6 +231,8 @@ export interface PortalContent {
       awaitingDays: string;
     };
     detail: {
+      originalRequest: string;
+      originalDescriptionUnavailable: string;
       conversation: string;
       internalHidden: string;
       replyPlaceholder: string;

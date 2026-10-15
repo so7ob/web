@@ -195,6 +195,8 @@ export const portalEn: PortalContent = {
       awaitingDays: "{n}d",
     },
     detail: {
+      originalRequest: "Original request",
+      originalDescriptionUnavailable: "No original description was recorded for this request.",
       conversation: "Conversation",
       openTracking: "Open follow-up card",
       internalHidden: "Internal team notes never appear here",

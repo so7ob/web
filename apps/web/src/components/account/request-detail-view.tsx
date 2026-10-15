@@ -244,6 +244,14 @@ export function RequestDetailView({
       <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_18rem] print:block print:space-y-6">
         {/* المحادثة */}
         <div className="min-w-0 space-y-4">
+          <section aria-labelledby="original-request-heading" className="rounded-2xl border border-border bg-card p-4 sm:p-6">
+            <h2 id="original-request-heading" className="mb-3 text-lg font-bold text-navy">{d.originalRequest}</h2>
+            {request.description?.trim() ? (
+              <p dir="auto" className="whitespace-pre-wrap break-words text-sm leading-7 text-foreground">{request.description}</p>
+            ) : (
+              <p className="text-sm text-muted-foreground">{d.originalDescriptionUnavailable}</p>
+            )}
+          </section>
           <section className="rounded-2xl border border-border bg-card p-4 sm:p-6">
             <div className="flex items-center justify-between gap-3">
               <h2 className="flex items-center gap-2 text-lg font-bold text-navy">
