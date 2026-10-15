@@ -331,7 +331,7 @@ const families: [string, string, string, string, string[]][] = [
   ],
   ["attachment", "المرفق", "Attachment", "files", []],
   ["track", "رابط المتابعة", "Tracking link", "security", ["exception"]],
-  ["settings", "الإعدادات", "Settings", "configuration", []],
+  ["settings", "الإعدادات", "Settings", "configuration", ["announcement.enabled", "announcement.messageAr", "announcement.messageEn"]],
   ["menu", "القائمة", "Menu", "configuration", ["items"]],
   [
     "saved_reply",
