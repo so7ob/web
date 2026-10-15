@@ -164,6 +164,7 @@ export function WorkflowGraph({
         className="overflow-auto rounded-xl border bg-muted/30"
         style={{ maxHeight: 500 }}
         tabIndex={0}
+        role="region"
         aria-label={t("مساحة المخطط القابلة للتمرير", "Scrollable diagram")}
         dir="ltr"
       >

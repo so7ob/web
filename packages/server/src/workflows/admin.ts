@@ -211,7 +211,7 @@ export class WorkflowAdministration {
         "workflow",
         key,
       );
-      return { ok: true, id: key };
+      return { ok: true, id: key, revision: data.id ? data.revision! + 1 : 0 };
     });
   }
   async validate(actor: AuthUser, input: unknown) {
