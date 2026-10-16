@@ -107,7 +107,7 @@ export function ProfileForm({
     <div className="space-y-6">
       <PageHeading title={t.title} />
 
-      <section className="max-w-2xl rounded-2xl border border-border bg-card p-6">
+      <section className="ds-card max-w-2xl rounded-2xl border border-border bg-card p-6">
         <ErrorFeedback error={formError} locale={locale} operation={t.title}/>
         <form onSubmit={onSubmit} noValidate className="space-y-5">
           <fieldset

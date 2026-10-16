@@ -1,5 +1,6 @@
 "use client";
 
+import { Timeline, TimelineItem } from "@/components/ui/timeline";
 import { Panel, PageHeading, Toolbar } from "@/components/ui/workspace";
 import {ErrorFeedback} from '@/components/errors/error-feedback';
 import {ApiError} from '@/lib/errors/transport';
@@ -244,7 +245,7 @@ export function RequestDetailView({
       <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_18rem] print:block print:space-y-6">
         {/* المحادثة */}
         <div className="min-w-0 space-y-4">
-          <section aria-labelledby="original-request-heading" className="rounded-2xl border border-border bg-card p-4 sm:p-6">
+          <section aria-labelledby="original-request-heading" className="ds-card rounded-2xl border border-border bg-card p-4 sm:p-6">
             <h2 id="original-request-heading" className="mb-3 text-lg font-bold text-navy">{d.originalRequest}</h2>
             {request.description?.trim() ? (
               <p dir="auto" className="whitespace-pre-wrap break-words text-sm leading-7 text-foreground">{request.description}</p>
@@ -252,7 +253,7 @@ export function RequestDetailView({
               <p className="text-sm text-muted-foreground">{d.originalDescriptionUnavailable}</p>
             )}
           </section>
-          <section className="rounded-2xl border border-border bg-card p-4 sm:p-6">
+          <section className="ds-card rounded-2xl border border-border bg-card p-4 sm:p-6">
             <div className="flex items-center justify-between gap-3">
               <h2 className="flex items-center gap-2 text-lg font-bold text-navy">
                 <MessageSquare className="h-5 w-5 text-brand" aria-hidden="true" />
@@ -288,24 +289,25 @@ export function RequestDetailView({
                   ) : (
                     <div key={message.id} className={cn("flex print:break-inside-avoid", message.authorType === "client" ? "justify-end" : "justify-start")}>
                       <div
+                        data-author={message.authorType === "client" ? "client" : "staff"}
                         className={cn(
-                          "max-w-[85%] rounded-2xl border px-4 py-3 text-sm leading-7 shadow-sm sm:max-w-[75%] print:border-border print:bg-transparent print:text-foreground print:shadow-none",
+                          "ds-direct-chat max-w-[85%] text-sm leading-7 sm:max-w-[75%] print:border-border print:bg-transparent print:text-foreground print:shadow-none",
                           message.authorType === "client"
-                            ? "rounded-se-sm border-brand/10 bg-accent/60 text-foreground"
-                            : "rounded-ss-sm border-navy bg-inverse text-inverse-foreground shadow-navy/10"
+                            ? "border-border"
+                            : "border-primary"
                         )}
                       >
                         <p
                           className={cn(
                             "mb-1 text-xs font-bold",
-                            message.authorType === "client" ? "text-brand-strong" : "text-skydrop print:text-navy"
+                            message.authorType === "client" ? "text-foreground" : "text-primary-foreground print:text-navy"
                           )}
                         >
                           {message.authorType === "client" ? d.you : d.staff}
                           <span
                             className={cn(
                               "ms-2 font-normal",
-                              message.authorType === "client" ? "text-muted-foreground" : "text-emphasis-muted print:text-muted-foreground"
+                              message.authorType === "client" ? "text-muted-foreground" : "text-primary-foreground print:text-muted-foreground"
                             )}
                           >
                             {formatRelative(message.createdAt, locale)}
@@ -321,7 +323,7 @@ export function RequestDetailView({
           </section>
 
           {/* ملحن الرد — مخفي عند الطباعة */}
-          <section className="rounded-2xl border border-border bg-card p-4 sm:p-6 print:hidden">
+          <section className="ds-card rounded-2xl border border-border bg-card p-4 sm:p-6 print:hidden">
             {conversationLocked ? (
               <div role="status" className="flex flex-col gap-2 rounded-xl bg-muted/40 px-4 py-6 text-center text-sm text-muted-foreground">
                 <p className="font-semibold text-foreground">{statusLabel}</p>
@@ -372,7 +374,7 @@ export function RequestDetailView({
 
         {/* العمود الجانبي: بيانات الطلب + المرفقات + المسار */}
         <div className="space-y-4">
-          <section className="rounded-2xl border border-border bg-card p-4 sm:p-6">
+          <section className="ds-card rounded-2xl border border-border bg-card p-4 sm:p-6">
             <h2 className="text-lg font-bold text-navy">{d.requestInfo}</h2>
             <dl className="mt-4 space-y-3 text-sm">
               <InfoRow label={t.status} value={<StatusBadge status={request.status} label={statusLabel} className="print:border print:border-border print:break-inside-avoid" />} />
@@ -416,7 +418,7 @@ export function RequestDetailView({
           </section>
 
           {request.attachments.length > 0 && (
-            <section className="rounded-2xl border border-border bg-card p-4 sm:p-6">
+            <section className="ds-card rounded-2xl border border-border bg-card p-4 sm:p-6">
               <h2 className="text-lg font-bold text-navy">{d.attachments}</h2>
               <ul className="mt-4 space-y-2">
                 {request.attachments.map((file) => (
@@ -437,23 +439,13 @@ export function RequestDetailView({
             </section>
           )}
 
-          <section className="rounded-2xl border border-border bg-card p-4 sm:p-6">
+          <section className="ds-card rounded-2xl border border-border bg-card p-4 sm:p-6">
             <h2 className="text-lg font-bold text-navy">{d.statusTimeline}</h2>
-            <ol className="mt-4 space-y-5">
+            <Timeline className="mt-4">
               {request.statusHistory.map((event, index) => {
                 const latest = index === request.statusHistory.length - 1;
                 return (
-                  <li key={event.id} className="relative ps-6 print:break-inside-avoid">
-                    {index < request.statusHistory.length - 1 && (
-                      <span className="absolute start-[0.3125rem] top-3 bottom-[-1.25rem] w-px bg-border" aria-hidden="true" />
-                    )}
-                    <span
-                      className={cn(
-                        "absolute start-0 top-1.5 size-2.5 rounded-full transition-[color,background-color,border-color,box-shadow,opacity,transform] duration-(--duration-panel)",
-                        latest ? "bg-brand ring-4 ring-brand/15" : "bg-border"
-                      )}
-                      aria-hidden="true"
-                    />
+                  <TimelineItem key={event.id} active={latest}>
                     <div className="min-w-0">
                       <p className="text-sm font-semibold text-navy">
                         {event.fromStatus ? `${t.statuses[event.fromStatus] ?? event.fromStatus} → ` : ""}
@@ -465,7 +457,7 @@ export function RequestDetailView({
                       </p>
                       {event.note && <p className="mt-1 text-sm leading-6 text-muted-foreground">{event.note}</p>}
                     </div>
-                  </li>
+                  </TimelineItem>
                 );
               })}
               {request.statusHistory.length === 0 && (
@@ -474,7 +466,7 @@ export function RequestDetailView({
                   {statusLabel} · {formatDate(request.createdAt, locale)}
                 </li>
               )}
-            </ol>
+            </Timeline>
           </section>
         </div>
       </div>

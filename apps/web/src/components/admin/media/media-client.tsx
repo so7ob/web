@@ -520,7 +520,7 @@ export function MediaClient({ me, locale }: MediaClientProps) {
           ))}
         </div>
       ) : media.length === 0 ? (
-        <div className="rounded-2xl border border-dashed border-border bg-card">
+        <div className="ds-card rounded-2xl border border-dashed border-border bg-card">
           <EmptyState
             icon={Images}
             title={search || folder || usage !== "all" ? tmed.noResults : tmed.empty}
@@ -529,7 +529,7 @@ export function MediaClient({ me, locale }: MediaClientProps) {
       ) : (
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           {media.map((item) => (
-            <article key={item.id} className="group flex flex-col overflow-hidden rounded-2xl border border-border bg-card transition-[color,background-color,border-color,box-shadow,opacity,transform] hover:border-brand/40 hover:shadow-sm">
+            <article key={item.id} className="ds-card group flex flex-col overflow-hidden rounded-2xl border border-border bg-card transition-[color,background-color,border-color,box-shadow,opacity,transform] hover:border-brand/40 hover:shadow-sm">
               <div className="relative m-3 mb-0 aspect-video overflow-hidden rounded-xl border border-border bg-muted">
                 <img
                   src={item.url}

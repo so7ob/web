@@ -171,7 +171,7 @@ export function InquiriesView({
         </div>
       </div>
 
-      <section className="rounded-2xl border border-border bg-card p-4 sm:p-6">
+      <section className="ds-card rounded-2xl border border-border bg-card p-4 sm:p-6">
         {loading ? (
           <div className="space-y-3" role="status" aria-busy="true" aria-label={t.title}>
             {[...Array(5)].map((_, i) => (

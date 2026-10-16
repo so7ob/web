@@ -1,0 +1,83 @@
+# Complete AdminLTE platform adaptation — #180
+
+## Source, scope and workflow
+
+Base: clean `develop` **`e8d0f6cf7367d8732abaa179a1c118010cd86f5e`**, also the observed remote head. #177 was merged on 2026-10-16; no later develop changes existed at inspection. Its scope was administration chrome, selected cards/tables and the appearance sample; its documentation explicitly left public content unchanged and retained the earlier palette and geometry. #180 already covered the missing follow-up and was expanded to the user's complete platform scope, rather than creating a duplicate issue. Branch: `feat/180-adminlte-platform`, rooted in develop. #147 / PR #178 and #179 remain separate test/transport work; no assertion there is represented as fixed by this design change.
+
+Read AGENTS.md, CONTRIBUTING.md, .github issue/PR templates, CI workflow and policy, package/build/browser configuration, design documentation and #176 evidence. Verified both origin URLs and remote repository identity as `https://github.com/so7ob/web.git` before the issue write; repeat this before publication. No Website/Rakim write or production operation. No schema/API/auth changes or real data fixtures.
+
+Reference: AdminLTE **v4.10.1**, annotated tag `3f819c27b3b8d9cf6c446281465dd3b05060d7b4`, source **`e13df78a4d0c287e5fa57308e293f63e44e9dd0f`**. A temporary checkout outside the product tree served its committed `dist` locally. Dashboard, UI, forms, tables and the upstream RTL layout were captured at 375×812 and 1280×900 in light/dark. The reference capture recorded zero failed asset requests. The moving live demo is not the sole reference. [Technical decision, extracted values, compatibility and licenses](../design-system/adminlte.md).
+
+## Mapping and completed implementation
+
+| So7ob element | AdminLTE counterpart | Difference on develop | Change | Verification |
+| --- | --- | --- | --- | --- |
+| Semantic theme | Bootstrap root/dark variables | Blue/slate palette and larger geometry from earlier system | Extracted neutral surfaces, borders, primary pair, status families and component values | Contract contrast/extreme-palette tests; mode screenshots |
+| Type and spacing | Source Sans 3, 16px/1.5, 28px content heading | IBM EN, bold titles, 14px tables and spacious cards | Local Source Sans 3; AR IBM retained; reference heading/control/table scale and 16px card padding | Font/box measurements, bilingual captures |
+| Admin shell | app-wrapper / navbar / sidebar | 256px sidebar, 64px header, 1024px boundary | 250px sidebar, measured 57px header, 992px transition, real account dropdown/footer | 991/992 boundary tests, collapse/drawer and focus checks |
+| Navigation | sidebar menu / treeview | Flat permission-filtered groups and solid brand active item | Neutral active/hover, real expandable identity subtree; permission filtering retained | Keyboard expansion, actual links, mobile drawer axe |
+| Dashboard/account metrics | info-box | Tall vertical cards, small floating icon, decorative stripes | Horizontal 80px minimum boxes with 70px icon blocks, actual metrics/deep links | Geometry assertions, functional metric routes, screenshots |
+| Content/list panels | card / card-header/body/footer | Partial outline adaptation; raw page-specific surfaces | Shared Panel slots/ListWorkspace and application-owned card surfaces; standard shadows | Every route tour, filters/pagination and role cases |
+| Buttons/forms | Bootstrap buttons/form controls | Earlier weights/size, inconsistent hover and modal surface | 16px controls, paired states and borders, existing 44px targets; native dates/files preserved | Save/failure/draft/hydration tests and state axe |
+| Tables/filters | table / striped / hover / pagination | Prior compact typography and underlines | 16px reference cells, 8px default padding, odd striping/selected/hover, contained scrolling | List geometry and full operational tests |
+| Tabs/accordions | nav-tabs / accordion | Underline tabs and a separate public FAQ implementation | Bordered selected tabs and one shared Radix accordion for public FAQ | Arrow/Home/End/RTL tests, actual public FAQ behavior |
+| Menus/dialogs/drawers | dropdown / modal / offcanvas | Previous floating palette; iframe portals could escape | Shared palette/geometry with an explicit preview portal owner and owner-document focus recovery | Real iframe dialog open/close/focus, body portal profile tests |
+| Badge/feedback/loading | badges / alerts / callout / placeholders | Mixed pill geometry and old palette | Shared semantic status pairs and radius; existing local error/recovery behavior retained | Invalid/disabled/busy examples and functional negative cases |
+| Conversations/history | direct-chat / timeline | Rounded inverse bubbles and separate narrow timelines | Shared direct-chat surfaces and logical-direction Timeline primitives | Request/inquiry/account journeys and screenshots |
+| Workflow/audit/media/CMS tools | Card + toolbar + form/table/tab composition | Specialized layouts retained earlier surfaces | Apply common card/field/tab/overlay language while keeping their business editors and state | Existing populated workflow, audit, IAM, media and editor suites |
+| Public/auth/account/error | Content header/card/callout/form composition | Mostly untouched by #176; large decorative surfaces | Common typography/cards/sections, simpler hero/service/CTA/footer; identity/content hierarchy retained | 104-view tour, 31 published block types, auth/account/tracking checks |
+| Draft page preview | Content canvas + toolbar | Negative margins assumed old shell padding; fixed pill bar | Contained canvas and normal-flow toolbar; no covering or page overflow | Desktop/mobile/device-preview tour |
+| Appearance | Actual application components | Partial inert sample and earlier defaults | Actual controls, tabs, choices, dialog and local sample feedback; all four profiles | Preview-no-mutation, old customization, independent drafts, persistence/system/conflicts |
+
+Default values are explicit opt-in settings values (`source`, `adminlte`) and missing-key defaults. Stored prior fonts, square/soft/round geometry, comfortable/compact density and saved colors keep their values; no database reset or rewriting occurs. The existing restore action proposes current defaults in the draft. Personal color-mode preference retains priority. Only four coordinated chrome profiles are claimed.
+
+Specialized business pages have no identical AdminLTE module. They intentionally compose its cards, tables, forms, toolbars, tabs, direct-chat and timeline patterns instead of copying demo sales/maps/mailbox data. CMS stored style JSON and responsive/explicit-device overrides are untouched. Application classes/slots are scoped, with no Bootstrap reboot or generic authored-HTML reset.
+
+## Route and screen coverage
+
+Every path below exists in `apps/web/src/app.tsx`; `:locale` is both AR/RTL and EN/LTR. The frozen design tour has **104 views** and **31 block types**, repeated for light/dark at 375/1280. Additional existing functional suites exercise populated specialized screens and failure/permission/concurrent states. New default-profile cases add measured geometry, 991/992, nested menu keyboard behavior, iframe dialog containment/focus and preview save/cancel without a network mutation. Final results are recorded below rather than inferred from shared-component changes.
+
+| Routes / screen states | Composition and evidence family | Status |
+| --- | --- | --- |
+| `/:locale/admin` | Dashboard info boxes/cards/real charts; admin-dashboard | Implemented; final matrix pending |
+| `/admin/users`, `/users/:id`, `/roles`, `/permissions`, `/invitations` | Lists, account detail, role editors and IAM dialogs | Implemented; final matrix pending |
+| `/admin/requests`, `/requests/:id` | Filters, sort, pagination, metadata, workflow, messages, notes, timeline | Implemented; final matrix pending |
+| `/admin/inquiries`, `/inquiries/:id` | Same shared vocabulary, both conversation tabs | Implemented; final matrix pending |
+| `/admin/notifications`, `/outbox` | List/empty/denied/status/export behaviors | Implemented; final matrix pending |
+| `/admin/audit` | Events/reports/reviews/alerts/rules/health and detail overlay | Implemented; final matrix pending |
+| `/admin/diagnostics` | Groups, filters, event details, safe failure feedback | Implemented; final matrix pending |
+| `/admin/workflows` | Workflows, graph, team editor, business hours, transfers, simulation | Implemented; final matrix pending |
+| `/admin/pages`, `/pages/:id/edit`, `/pages/:id/preview` | Library, properties, versions, templates, device and language states | Implemented; final matrix pending |
+| `/admin/media`, `/admin/menus` | Real upload/media selection and menu editor/preview tabs | Implemented; final matrix pending |
+| `/admin/settings?section=identity|appearance|contact|sharing|announcement|tracking` | All six independent sections, actual isolated appearance sample | Implemented; final matrix pending |
+| `/:locale/account`, `/requests`, `/requests/new`, `/requests/:id` | Info boxes, 9 list tabs, submission, conversation/history/actions | Implemented; final matrix pending |
+| `/account/inquiries`, `/inquiries/:id`, `/notifications` | 7 tabs, dialogs, conversation, read states | Implemented; final matrix pending |
+| `/account/profile`, `/security` | Profile, verification, credentials and pending/invalid/disabled states | Implemented; final matrix pending |
+| `/:locale/auth/:screen` | Login/register/forgot/reset/invite/verified and password/logout journeys | Implemented; final matrix pending |
+| `/:locale/track` | Lookup, access/eligibility/error/conversation views | Implemented; final matrix pending |
+| Public home/about/services/works/process/faq/contact | Content headers/cards/callouts/FAQ/forms; same content and URLs | Implemented; final matrix pending |
+| Published CMS, 31 block types, nested surfaces and explicit device previews | Shared components plus protected authored styles | Implemented; final matrix pending |
+| 404, client navigation, denied access and route failures | Common Panel/PageHeading/ErrorFeedback | Implemented; final matrix pending |
+
+## Validation record
+
+Initial baseline: the unchanged develop build completed a 104-view AR/light/1280 platform tour with axe/keyboard/device checks. PNGs were captured before source edits. A subsequent exploratory mobile baseline used the same old compiled application but was interrupted by a source-token expectation mismatch as work progressed; it is screenshot evidence only, not a passed baseline suite. Final acceptance must use the matching rebuilt application and source.
+
+During implementation:
+
+- Exploratory full unit/integration run: 1150 tests passed in 71 files, isolated MariaDB 10.11.18.
+- Shared preview/contracts unit follow-up: 13 tests passed in 3 files.
+- The iframe close-focus assertion reproduced the original parent-document recovery bug; `useOverlayFocus` now resolves the owner document. The new iframe dialog/geometry case then passed.
+- Full tour exposed the preview shell's obsolete negative margins after the shell padding changed; fixed the composition instead of hiding overflow.
+- The previous white-sidebar assertion was updated to the explicit administration profile token because the new missing-key default is semi-dark. The same test continues to assert the actual computed color.
+- ESLint/token guard, TypeScript, client+SSR build, independence, 14 CI-policy/gate tests and real Nginx/systemd syntax checks passed during implementation. These exploratory checks do not substitute for final-source evidence.
+
+Final source SHA, full checks, CI and reviewed visual/bundle results: **pending candidate verification/publication**. No pending result is claimed as passed. [Evidence index](evidence/adminlte-180/README.md).
+
+## Limits, risks and rollback
+
+Accessibility departures from literal demo defaults: retain 44px application control targets, strong input outlines/focus, opaque contrast-tested text, minimal primary adjustment and short reduced-motion-aware transitions. Arabic uses the installed Arabic font and logical-direction layout. Public identity illustration/content and existing Lucide icons intentionally differ from demo data/assets. No pixel-identity percentage is claimed for different business pages/text.
+
+The dependency install reported 12 high-severity advisory findings in the existing dependency graph. No automatic dependency remediation or unrelated framework upgrade was performed; final dependency review is recorded with the evidence. This is not represented as a clean security audit.
+
+Rollback is a reviewed revert of the presentation/contract defaults and added font. No schema or business-data rollback is needed. All earlier explicit settings enums remain supported. Merging, release, deployment, protection changes and production migration remain outside this authorization.

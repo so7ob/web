@@ -91,7 +91,7 @@ for (const locale of ["ar", "en"] as const)
             await expect(list.locator('[data-slot="table"]')).toHaveCount(1);
             await expect(list.locator("th").first()).toHaveCSS(
               "font-size",
-              "14px",
+              "16px",
             );
             if (path === "outbox" && info.project.name === "desktop") {
               const scroller = list.locator('[data-slot="table-container"]');

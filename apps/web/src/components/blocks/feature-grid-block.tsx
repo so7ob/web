@@ -15,11 +15,11 @@ export function FeatureGridBlock({ props }: { props: FeatureGridBlockProps; loca
   return (
     <Section>
       <SectionHeading kicker={props.kicker} title={props.title} />
-      <ol className={columns === "2" ? "mt-12 grid gap-8 md:grid-cols-2" : "mt-12 space-y-8"}>
+      <ol className={columns === "2" ? "mt-6 grid gap-8 md:grid-cols-2" : "mt-6 space-y-4"}>
         {items.map((item, i) => (
           <li
             key={`${i}-${item.title}`}
-            className="relative rounded-2xl border border-border bg-card p-7 sm:p-9 md:ms-16"
+            className="relative ds-card p-4 md:ms-16"
           >
             <span
               className="absolute -start-16 top-7 hidden h-12 w-12 select-none items-center justify-center rounded-xl bg-inverse font-mono text-2xl font-bold text-skydrop md:flex"

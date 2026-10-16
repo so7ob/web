@@ -345,7 +345,7 @@ export function InquiryDetailClient({
         <div className="min-w-0 space-y-4">
           <section
             aria-label={ti.conversation}
-            className="rounded-2xl border border-border bg-card p-4 sm:p-6"
+            className="ds-card rounded-2xl border border-border bg-card p-4 sm:p-6"
           >
             <h3 className="mb-3 text-sm font-semibold text-navy">
               {ti.conversation}
@@ -410,7 +410,7 @@ export function InquiryDetailClient({
 
         {/* عمود الإدارة */}
         <aside className="min-w-0 space-y-4">
-          <section className="rounded-2xl border border-border bg-card p-4">
+          <section className="ds-card rounded-2xl border border-border bg-card p-4">
             <h3 className="text-sm font-semibold text-navy">
               {t.admin.requests.client}
             </h3>

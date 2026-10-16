@@ -94,16 +94,19 @@ export const settingOptions: Record<string, Array<[string, string, string]>> = {
     ["system", "خط النظام", "System font"],
   ],
   "appearance.fontEn": [
+    ["source", "Source Sans 3 — AdminLTE", "Source Sans 3 — AdminLTE"],
     ["ibm", "IBM Plex Sans", "IBM Plex Sans"],
     ["inter", "Inter", "Inter"],
     ["system", "خط النظام", "System font"],
   ],
   "appearance.radius": [
+    ["adminlte", "AdminLTE (6px)", "AdminLTE (6px)"],
     ["square", "مستقيمة", "Square"],
     ["soft", "ناعمة", "Soft"],
     ["round", "أكثر استدارة", "Rounded"],
   ],
   "appearance.density": [
+    ["adminlte", "AdminLTE", "AdminLTE"],
     ["comfortable", "مريحة", "Comfortable"],
     ["compact", "مضغوطة", "Compact"],
   ],

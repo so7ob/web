@@ -131,7 +131,7 @@ export function NewRequestView({
           </div>
         </Panel>
       ) : phase === "loading" ? (
-        <div role="status" aria-busy="true" className="flex items-center justify-center gap-3 rounded-3xl border border-border bg-card p-12 text-sm font-medium text-muted-foreground">
+        <div role="status" aria-busy="true" className="ds-card flex items-center justify-center gap-3 rounded-3xl border border-border bg-card p-12 text-sm font-medium text-muted-foreground">
           <Loader2 className="h-5 w-5 animate-spin text-brand" aria-hidden="true" />
           {heading}
         </div>

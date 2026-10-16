@@ -47,10 +47,10 @@ export function PreviewShell({
   const [device, setDevice] = useState<PreviewDevice>(initialDevice);
 
   return (
-    <div className="-mx-4 pb-20 sm:-mx-6 lg:-mx-8">
+    <div className="flex min-w-0 flex-col gap-4">
       <div
         dir={locale === "ar" ? "rtl" : "ltr"}
-        className="mx-auto w-full max-w-7xl bg-card shadow-sm transition-[max-width] duration-(--duration-panel)"
+        className="ds-card mx-auto w-full max-w-7xl overflow-x-auto transition-[max-width] duration-(--duration-panel)"
       >
         <div className={cn("mx-auto w-full", DEVICE_WIDTHS[device])}>
           <PreviewDeviceContext.Provider value={device}>
@@ -71,9 +71,9 @@ export function PreviewShell({
       {/* الشريط العائم */}
       <div
         dir={uiLocale === "ar" ? "rtl" : "ltr"}
-        className="fixed bottom-5 left-1/2 z-40 flex -translate-x-1/2 items-center gap-2 rounded-full border border-border bg-card/95 px-3 py-2 shadow-lg backdrop-blur"
+        className="ds-card order-first flex flex-wrap items-center gap-2 px-3 py-2"
       >
-        <span className="flex items-center gap-1.5 rounded-full bg-warning-soft px-2.5 py-1 text-xs font-semibold text-warning-foreground">
+        <span className="flex items-center gap-1.5 rounded-lg bg-warning-soft px-2.5 py-1 text-xs font-semibold text-warning-foreground">
           <span
             className="size-1.5 rounded-full bg-warning"
             aria-hidden="true"
@@ -82,7 +82,7 @@ export function PreviewShell({
         </span>
 
         <div
-          className="flex items-center rounded-full border border-border p-0.5"
+          className="flex items-center rounded-lg border border-border p-0.5"
           role="group"
           aria-label={te.preview}
         >
@@ -99,7 +99,7 @@ export function PreviewShell({
               variant={device === d.key ? "secondary" : "ghost"}
               size="icon"
               className={cn(
-                "size-8 rounded-full",
+                "size-11",
                 device === d.key && "bg-accent text-brand-strong",
               )}
               onClick={() => setDevice(d.key)}
@@ -116,7 +116,7 @@ export function PreviewShell({
           asChild
           variant="outline"
           size="sm"
-          className="min-h-9 rounded-full"
+          className="min-h-11"
         >
           <Link href={`/${uiLocale}/admin/pages/${pageId}/edit`}>
             <Pencil className="size-3.5" aria-hidden="true" />

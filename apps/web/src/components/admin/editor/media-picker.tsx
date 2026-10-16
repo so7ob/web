@@ -201,7 +201,7 @@ export function MediaPicker({ open, onOpenChange, me, locale, onSelect }: MediaP
           <>
             <ul className="grid grid-cols-2 gap-3 sm:grid-cols-3">
               {data.media.map((item) => (
-                <li key={item.id} className="overflow-hidden rounded-xl border border-border bg-card transition-[color,background-color,border-color,box-shadow,opacity,transform] hover:border-brand/40 hover:shadow-sm">
+                <li key={item.id} className="ds-card overflow-hidden rounded-xl border border-border bg-card transition-[color,background-color,border-color,box-shadow,opacity,transform] hover:border-brand/40 hover:shadow-sm">
                   <button
                     type="button"
                     onClick={() => pick(item.url)}

@@ -11,9 +11,10 @@ export const fontFamilies: Record<string, string> = {
   "ar.tajawal": "Tajawal",
   "en.ibm": "IBM Plex Sans",
   "en.inter": "Inter",
+  "en.source": "Source Sans 3",
 };
 const fonts = import.meta.glob(
-  "../../../../node_modules/@fontsource/{ibm-plex-sans-arabic,ibm-plex-sans,cairo,tajawal,inter}/files/*-{arabic,latin}-{400,500,600,700}-normal.woff2",
+  "../../../../node_modules/@fontsource/{ibm-plex-sans-arabic,ibm-plex-sans,cairo,tajawal,inter,source-sans-3}/files/*-{arabic,latin}-{400,500,600,700}-normal.woff2",
   { eager: true, query: "?url", import: "default" },
 ) as Record<string, string>;
 export function fontStyles(settings: Record<string, string>) {
@@ -23,7 +24,7 @@ export function fontStyles(settings: Record<string, string>) {
       fontFamilies[
         lang +
           "." +
-          (settings["appearance.font" + (lang === "ar" ? "Ar" : "En")] ?? "ibm")
+          (settings["appearance.font" + (lang === "ar" ? "Ar" : "En")] ?? APPEARANCE_DEFAULTS["appearance.font" + (lang === "ar" ? "Ar" : "En")])
       ];
     if (!name) continue;
     const slug = name.toLowerCase().replaceAll(" ", "-");
@@ -56,7 +57,7 @@ export function themeStyles(
       fontFamilies[
         lang +
           "." +
-          (settings["appearance.font" + (lang === "ar" ? "Ar" : "En")] ?? "ibm")
+          (settings["appearance.font" + (lang === "ar" ? "Ar" : "En")] ?? APPEARANCE_DEFAULTS["appearance.font" + (lang === "ar" ? "Ar" : "En")])
       ];
     css += `${selector}[lang="${lang}"]{--site-font:${family ? '"' + family + '",' : ""}system-ui,sans-serif;}`;
   }

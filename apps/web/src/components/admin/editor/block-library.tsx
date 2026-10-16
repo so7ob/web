@@ -136,7 +136,7 @@ export function BlockLibrary({ locale, onAdd, className }: BlockLibraryProps) {
                         type="button"
                         onClick={() => onAdd(entry.type)}
                         title={t.addBlock}
-                        className="flex w-full min-h-11 cursor-pointer items-center gap-3 rounded-xl border border-border/70 bg-card px-3 text-start text-sm font-medium text-navy transition-[color,background-color,border-color,box-shadow,opacity,transform] hover:border-brand hover:bg-accent/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
+                        className="ds-card flex w-full min-h-11 cursor-pointer items-center gap-3 rounded-xl border border-border/70 bg-card px-3 text-start text-sm font-medium text-navy transition-[color,background-color,border-color,box-shadow,opacity,transform] hover:border-brand hover:bg-accent/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
                       >
                         <span
                           className={cn(

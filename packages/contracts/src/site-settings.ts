@@ -1,3 +1,4 @@
+import { ADMINLTE } from "./adminlte-tokens.js";
 /** Public presentation settings. No arbitrary CSS, URLs or executable font definitions. */
 export const SOCIAL_CHANNELS = [
   "github",
@@ -28,15 +29,15 @@ export const IDENTITY_MEDIA_KEYS = [
 ] as const;
 export const APPEARANCE_DEFAULTS: Record<string, string> = {
   "appearance.mode": "light",
-  "appearance.adminStyle": "light",
-  "appearance.primaryLight": "#0369a1",
+  "appearance.adminStyle": "semi-dark",
+  "appearance.primaryLight": ADMINLTE.primary,
   "appearance.accentLight": "#6d28d9",
-  "appearance.primaryDark": "#38bdf8",
+  "appearance.primaryDark": ADMINLTE.primaryDark,
   "appearance.accentDark": "#c4b5fd",
   "appearance.fontAr": "ibm",
-  "appearance.fontEn": "ibm",
-  "appearance.radius": "soft",
-  "appearance.density": "comfortable",
+  "appearance.fontEn": "source",
+  "appearance.radius": "adminlte",
+  "appearance.density": "adminlte",
 };
 export const PRESENTATION_DEFAULTS: Record<string, string> = {
   "site.nameAr": "سُحُب التقنية",
@@ -111,6 +112,12 @@ export const SETTINGS_DEFAULTS: Record<string, string> = {
   "track.allowGuestAttachments": "false",
 };
 export const PALETTE_PRESETS = {
+  adminlte: {
+    primaryLight: ADMINLTE.primary,
+    accentLight: "#6d28d9",
+    primaryDark: ADMINLTE.primaryDark,
+    accentDark: "#c4b5fd",
+  },
   blue: {
     primaryLight: "#0369a1",
     accentLight: "#6d28d9",
@@ -182,9 +189,8 @@ export function appearanceTokens(
 ): Record<string, string> {
   const s = { ...APPEARANCE_DEFAULTS, ...raw },
     dark = mode === "dark";
-  const bg = dark ? "#0b1220" : "#f8fafc",
-    card = dark ? "#131f32" : "#ffffff",
-    fg = dark ? "#e2e8f0" : "#0b1f3a";
+  const palette = dark ? ADMINLTE.dark : ADMINLTE.light;
+  const bg = palette.canvas, card = palette.card, fg = palette.text;
   const p = s[dark ? "appearance.primaryDark" : "appearance.primaryLight"],
     a = s[dark ? "appearance.accentDark" : "appearance.accentLight"];
   const primary = readable(
@@ -193,7 +199,7 @@ export function appearanceTokens(
       : APPEARANCE_DEFAULTS[
           dark ? "appearance.primaryDark" : "appearance.primaryLight"
         ],
-    card,
+    bg,
   );
   const accent = readable(
     isHexColor(a)
@@ -204,17 +210,17 @@ export function appearanceTokens(
     card,
   );
   const onPrimary = contrast(primary, "#ffffff") >= 4.5 ? "#ffffff" : "#0b1220";
-  const muted = dark ? "#a9b8cd" : "#475569",
-    surface = dark ? "#1c2b40" : "#f1f5f9",
+  const muted = palette.muted,
+    surface = palette.surface,
     soft = mix(primary, card, 0.9);
   // Semantic pairs are shared by SSR, the live UI and sandboxed previews.
   const emphasis = mix(primary, "#08121d", 0.72);
   const tones: Record<string, string> = {};
   for (const [name, color] of Object.entries({
-    success: dark ? "#86efac" : "#15803d",
-    warning: dark ? "#fcd34d" : "#92400e",
-    info: dark ? "#93c5fd" : "#1d4ed8",
-    danger: dark ? "#fca5a5" : "#b91c1c",
+    success: dark ? "#75b798" : "#198754",
+    warning: dark ? "#ffda6a" : "#997404",
+    info: dark ? "#6edff6" : "#087990",
+    danger: dark ? "#ea868f" : "#dc3545",
     highlight: accent,
   })) {
     const solid = readable(color, card);
@@ -227,19 +233,23 @@ export function appearanceTokens(
   }
   return {
     ...tones,
-    "admin-sidebar": ["semi-dark", "colored"].includes(s["appearance.adminStyle"]) ? emphasis : card,
-    "admin-sidebar-foreground": ["semi-dark", "colored"].includes(s["appearance.adminStyle"]) ? "#ffffff" : fg,
-    "admin-sidebar-muted": ["semi-dark", "colored"].includes(s["appearance.adminStyle"]) ? mix("#ffffff", emphasis, 0.16) : muted,
-    "admin-sidebar-active": ["semi-dark", "colored"].includes(s["appearance.adminStyle"]) ? mix(primary, "#ffffff", 0.78) : primary,
-    "admin-sidebar-on-active": ["semi-dark", "colored"].includes(s["appearance.adminStyle"]) ? readable(emphasis, mix(primary, "#ffffff", 0.78)) : onPrimary,
-    "admin-sidebar-hover": ["semi-dark", "colored"].includes(s["appearance.adminStyle"]) ? mix(emphasis, "#ffffff", 0.12) : soft,
+    "admin-sidebar": ["semi-dark", "colored"].includes(s["appearance.adminStyle"]) ? ADMINLTE.sidebar : card,
+    "admin-sidebar-foreground": ["semi-dark", "colored"].includes(s["appearance.adminStyle"]) ? ADMINLTE.sidebarText : fg,
+    "admin-sidebar-muted": ["semi-dark", "colored"].includes(s["appearance.adminStyle"]) ? ADMINLTE.sidebarText : muted,
+    "admin-sidebar-active": ["semi-dark", "colored"].includes(s["appearance.adminStyle"]) ? mix(ADMINLTE.sidebar, "#ffffff", 0.1) : mix(card, fg, 0.1),
+    "admin-sidebar-on-active": ["semi-dark", "colored"].includes(s["appearance.adminStyle"]) ? "#ffffff" : fg,
+    "admin-sidebar-hover": ["semi-dark", "colored"].includes(s["appearance.adminStyle"]) ? mix(ADMINLTE.sidebar, "#ffffff", 0.1) : soft,
     "admin-header": s["appearance.adminStyle"] === "colored" ? primary : card,
     "admin-header-foreground": s["appearance.adminStyle"] === "colored" ? onPrimary : fg,
-    "overlay": "#020617",
+    "overlay": "#000000",
     "selection": soft,
     "selection-foreground": readable(primary, soft),
     "shimmer": dark ? "#ffffff" : primary,
-    "shadow-color": dark ? "#000000" : "#0b1f3a",
+    "shadow-color": fg,
+    "panel-shadow": ADMINLTE.cardShadow,
+    "sidebar-width": ADMINLTE.sidebarWidth,
+    "header-height": ADMINLTE.headerHeight,
+    "card-header-padding": "0.5rem 1rem",
     "primary-hover": readable(mix(primary, fg, 0.12), card),
     "primary-hover-foreground": contrast(readable(mix(primary, fg, 0.12), card), "#ffffff") >= 4.5 ? "#ffffff" : "#0b1220",
     "emphasis": emphasis,
@@ -252,14 +262,14 @@ export function appearanceTokens(
     "duration-normal": APPEARANCE_MOTION.normal + "ms",
     "duration-panel": APPEARANCE_MOTION.panel + "ms",
     "ease-standard": "cubic-bezier(0.2, 0, 0, 1)",
-    "space-panel": s["appearance.density"] === "compact" ? "1rem" : "1.5rem",
-    "space-section": s["appearance.density"] === "compact" ? "1.25rem" : "2rem",
+    "space-panel": s["appearance.density"] === "comfortable" ? "1.5rem" : ADMINLTE.panelPadding,
+    "space-section": s["appearance.density"] === "comfortable" ? "2rem" : "1.5rem",
     "base-foreground": fg,
     "base-muted-foreground": muted,
     "base-primary": primary,
     "base-primary-foreground": onPrimary,
     "base-brand-strong": readable(mix(primary, fg, 0.15), card),
-    "base-border": dark ? "#35465e" : "#e2e8f0",
+    "base-border": palette.border,
     background: bg,
     foreground: fg,
     card: card,
@@ -276,8 +286,8 @@ export function appearanceTokens(
     "accent-foreground": readable(primary, soft),
     destructive: dark ? "#fca5a5" : "#b91c1c",
     "destructive-foreground": dark ? "#450a0a" : "#ffffff",
-    border: dark ? "#35465e" : "#e2e8f0",
-    input: "#64748b",
+    border: palette.border,
+    input: palette.input,
     ring: primary,
     brand: primary,
     "brand-strong": readable(mix(primary, fg, 0.15), card),
@@ -295,30 +305,30 @@ export function appearanceTokens(
         ? "0rem"
         : s["appearance.radius"] === "round"
           ? "1.25rem"
-          : "0.75rem",
+          : s["appearance.radius"] === "soft" ? "0.75rem" : ADMINLTE.radius,
     "panel-radius":
       s["appearance.radius"] === "square"
         ? "0rem"
         : s["appearance.radius"] === "round"
           ? "1.5rem"
-          : "1rem",
+          : s["appearance.radius"] === "soft" ? "1rem" : ADMINLTE.radius,
     "panel-radius-large":
       s["appearance.radius"] === "square"
         ? "0rem"
         : s["appearance.radius"] === "round"
           ? "2rem"
-          : "1.5rem",
+          : s["appearance.radius"] === "soft" ? "1.5rem" : "0.5rem",
     "control-padding":
-      s["appearance.density"] === "compact" ? "0.375rem" : "0.625rem",
+      s["appearance.density"] === "comfortable" ? "0.625rem" : ADMINLTE.controlPadding,
     "row-padding":
-      s["appearance.density"] === "compact" ? "0.5rem" : "0.875rem",
+      s["appearance.density"] === "comfortable" ? "0.875rem" : ADMINLTE.rowPadding,
     sidebar: card,
     "sidebar-foreground": fg,
     "sidebar-primary": primary,
     "sidebar-primary-foreground": onPrimary,
     "sidebar-accent": soft,
     "sidebar-accent-foreground": fg,
-    "sidebar-border": dark ? "#35465e" : "#e2e8f0",
+    "sidebar-border": palette.border,
     "sidebar-ring": primary,
     "chart-1": primary,
     "chart-2": accent,
@@ -404,9 +414,9 @@ export function validateSiteSettings(
     "appearance.mode": ["light", "dark", "system"],
     "appearance.adminStyle": ["light", "semi-dark", "dark", "colored"],
     "appearance.fontAr": ["ibm", "cairo", "tajawal", "system"],
-    "appearance.fontEn": ["ibm", "inter", "system"],
-    "appearance.radius": ["square", "soft", "round"],
-    "appearance.density": ["comfortable", "compact"],
+    "appearance.fontEn": ["source", "ibm", "inter", "system"],
+    "appearance.radius": ["adminlte", "square", "soft", "round"],
+    "appearance.density": ["adminlte", "comfortable", "compact"],
     "identity.showName": ["true", "false"],
     "announcement.enabled": ["true", "false"],
     "announcement.variant": ["info", "warning", "success", "brand"],

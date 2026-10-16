@@ -8,15 +8,16 @@ export function useOverlayFocus({ onOpenAutoFocus, onCloseAutoFocus }: {
   const opener = useRef<HTMLElement | null>(null);
   return {
     onOpenAutoFocus(event: Event) {
-      const active = document.activeElement;
-      opener.current = active instanceof HTMLElement && active !== document.body ? active : null;
+      const owner = (event.target as HTMLElement | null)?.ownerDocument ?? document;
+      const active = owner.activeElement;
+      opener.current = active && active !== owner.body && "focus" in active ? active as HTMLElement : null;
       onOpenAutoFocus?.(event);
     },
     onCloseAutoFocus(event: Event) {
       onCloseAutoFocus?.(event);
       if (!event.defaultPrevented && opener.current?.isConnected) {
         opener.current.focus({ preventScroll: true });
-        if (document.activeElement === opener.current) event.preventDefault();
+        if (opener.current.ownerDocument.activeElement === opener.current) event.preventDefault();
       }
     },
   };

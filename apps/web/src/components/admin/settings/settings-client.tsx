@@ -622,7 +622,7 @@ export function SettingsClient({ me, locale }: { me: Me; locale: Locale }) {
           {(failure || loadError) && (
             <p
               role="alert"
-              className="rounded-xl border border-destructive/40 bg-card p-4 text-sm text-destructive"
+              className="ds-card rounded-xl border border-destructive/40 bg-card p-4 text-sm text-destructive"
             >
               {failure || loadError}
             </p>
@@ -718,6 +718,7 @@ export function SettingsClient({ me, locale }: { me: Me; locale: Locale }) {
                         />
                         {
                           ({
+                            adminlte: ["AdminLTE", "AdminLTE"],
                             blue: ["الأزرق الحالي", "Current blue"],
                             teal: ["الأخضر المزرق", "Teal"],
                             violet: ["البنفسجي", "Violet"],

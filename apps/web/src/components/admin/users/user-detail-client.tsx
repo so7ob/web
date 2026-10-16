@@ -232,7 +232,7 @@ export function UserDetailClient({ locale, userId }: UserDetailClientProps) {
 
       <div className="grid grid-cols-1 min-w-0 items-start gap-6 lg:grid-cols-[minmax(0,1fr)_360px]">
         {/* طلبات المستخدم */}
-        <section className="overflow-hidden rounded-2xl border border-border bg-card">
+        <section className="ds-card overflow-hidden rounded-2xl border border-border bg-card">
           <div className="border-b border-border px-4 py-3">
             <h2 className="text-sm font-semibold text-navy">
               {tud.userRequests}
@@ -308,7 +308,7 @@ export function UserDetailClient({ locale, userId }: UserDetailClientProps) {
 
         <aside className="min-w-0 space-y-4">
           {/* بيانات الحساب */}
-          <section className="rounded-2xl border border-border bg-card p-4">
+          <section className="ds-card rounded-2xl border border-border bg-card p-4">
             <h2 className="mb-3 text-sm font-semibold text-navy">
               {tud.accountInfo}
             </h2>
@@ -393,7 +393,7 @@ export function UserDetailClient({ locale, userId }: UserDetailClientProps) {
           </section>
 
           {/* آخر الأنشطة */}
-          <section className="rounded-2xl border border-border bg-card p-4">
+          <section className="ds-card rounded-2xl border border-border bg-card p-4">
             <h2 className="mb-3 text-sm font-semibold text-navy">
               {tud.activityLog}
             </h2>

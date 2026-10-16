@@ -9,12 +9,32 @@ import {
   mediaSettingId,
 } from "./site-settings.js";
 describe("site presentation contracts", () => {
+  it("uses pinned AdminLTE defaults while retaining every stored customization", () => {
+    const reference = appearanceTokens({}, "light");
+    expect(reference.card).toBe("#ffffff");
+    expect(reference.background).toBe("#f8f9fa");
+    expect(reference.foreground).toBe("#212529");
+    expect(reference.radius).toBe("0.375rem");
+    expect(reference["sidebar-width"]).toBe("250px");
+    expect(reference["space-panel"]).toBe("1rem");
+    expect(reference["row-padding"]).toBe("0.5rem");
+    const stored = { "appearance.radius":"soft", "appearance.density":"comfortable", "appearance.primaryLight":"#0369a1", "appearance.fontEn":"ibm" };
+    const frozen = JSON.stringify(stored);
+    const custom = appearanceTokens(stored, "light");
+    expect(custom.radius).toBe("0.75rem");
+    expect(custom["panel-radius"]).toBe("1rem");
+    expect(custom["space-panel"]).toBe("1.5rem");
+    expect(custom["row-padding"]).toBe("0.875rem");
+    expect(custom.primary).toBe("#0369a1");
+    expect(JSON.stringify(stored)).toBe(frozen);
+    expect(validateSiteSettings({ "appearance.fontEn":"source", "appearance.radius":"adminlte", "appearance.density":"adminlte" })).toEqual({});
+  });
   it("keeps all administration profiles readable with extreme palettes and preserves absent-key defaults", () => {
     for (const style of ["light", "semi-dark", "dark", "colored"])
       for (const mode of ["light", "dark"] as const)
         for (const primary of ["#ffffff", "#000000", "#ffff00", "#ff00ff", "#00ff00", "#0369a1"])
           expect(paletteChecks({"appearance.adminStyle": style, "appearance.primaryLight": primary, "appearance.primaryDark": primary}, mode).every(check => check.ratio >= check.minimum)).toBe(true);
-    expect(appearanceTokens({}, "light")).toEqual(appearanceTokens({"appearance.adminStyle":"light"}, "light"));
+    expect(appearanceTokens({}, "light")).toEqual(appearanceTokens({"appearance.adminStyle":"semi-dark"}, "light"));
     expect(validateSiteSettings({"appearance.adminStyle":"untrusted"})).toHaveProperty("appearance.adminStyle", "choice");
     for (const style of ["light", "semi-dark", "dark", "colored"])
       expect(validateSiteSettings({"appearance.adminStyle":style})).toEqual({});

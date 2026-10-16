@@ -186,7 +186,7 @@ for(const locale of ['ar','en'] as const)for(const mode of ['light','dark'] as c
     await capture('not-found-client-navigation');
     await expect(page.locator('a.bg-primary')).toHaveCSS('background-color',rgb(expected.primary));
     await page.goto(`/${locale}/admin`);
-    if(info.project.name==='desktop')await expect(page.locator('aside')).toHaveCSS('background-color',rgb(expected.sidebar));
+    if(info.project.name==='desktop')await expect(page.locator('aside')).toHaveCSS('background-color',rgb(expected['admin-sidebar']));
     const primary=page.locator('[data-slot="button"].bg-primary').first();if(await primary.count())await expect(primary).toHaveCSS('background-color',rgb(expected.primary));
     expect(await colorOf('body')).toBe(rgb(expected.background));
     await page.context().clearCookies();

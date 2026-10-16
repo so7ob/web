@@ -1,4 +1,4 @@
-import { PageHeading, TableScroll } from "@/components/ui/workspace";
+import { PageHeading, TableScroll, InfoBoxContent } from "@/components/ui/workspace";
 import Link from '@/routing/link';
 import { Bell,FilePlus2,FolderOpen,Inbox,Layers,LayoutDashboard,MessageCircle,MessageCircleQuestion } from 'lucide-react';
 import type { AccountDashboardData } from '@so7ob/contracts';
@@ -13,13 +13,12 @@ interface StatDef {
   value: number;
   icon: typeof FolderOpen;
   tone: string;
-  bar: string;
   href?: string;
 }
 
 /** فئات بطاقة المؤشر — البطاقة نفسها بلا تغيير بصري، والرابط يضيف حلقة تركيز فقط */
 const STAT_CARD_CLASS =
-  "relative overflow-hidden rounded-2xl border border-border bg-card p-4 transition-[color,background-color,border-color,box-shadow,opacity,transform] duration-(--duration-panel) hover:-translate-y-0.5 hover:shadow-lg hover:shadow-navy/10 sm:p-6";
+  "ds-info-box transition-colors hover:border-primary";
 
 /** لوحة حساب العميل — مؤشرات وآخر التحديثات من قاعدة البيانات مباشرة */
 export function AccountDashboard({locale,user,data}:{locale:Locale;user:{name:string};data:AccountDashboardData}) {
@@ -28,13 +27,13 @@ export function AccountDashboard({locale,user,data}:{locale:Locale;user:{name:st
   const {openRequests,awaitingReply,unreadNotifications,openInquiries,totalInquiries,recent,totalRequests}=data;
   const isEmpty=totalRequests===0;
   const stats: StatDef[] = [
-    { label: t.openRequests, value: openRequests, icon: FolderOpen, tone: "bg-brand-soft text-brand-strong", bar: "bg-gradient-to-r from-brand to-skydrop", href: `/${locale}/account/requests` },
+    { label: t.openRequests, value: openRequests, icon: FolderOpen, tone: "bg-brand-soft text-brand-strong", href: `/${locale}/account/requests` },
     // «بانتظار ردك» — التصفية الدقيقة (آخر ردٍّ من الطاقم) عبر معامل awaiting=you
-    { label: t.awaitingReply, value: awaitingReply, icon: MessageCircle, tone: "bg-warning-soft text-warning-foreground", bar: "bg-gradient-to-r from-warning to-warning", href: `/${locale}/account/requests?awaiting=you` },
-    { label: t.unreadNotifications, value: unreadNotifications, icon: Bell, tone: "bg-highlight-soft text-highlight-foreground", bar: "bg-gradient-to-r from-highlight to-highlight", href: `/${locale}/account/notifications` },
-    { label: t.openInquiries, value: openInquiries, icon: MessageCircleQuestion, tone: "bg-success-soft text-success-foreground", bar: "bg-gradient-to-r from-success to-success", href: `/${locale}/account/inquiries?status=open` },
-    { label: t.totalInquiries, value: totalInquiries, icon: Inbox, tone: "bg-muted text-muted-foreground", bar: "bg-gradient-to-r from-muted to-success", href: `/${locale}/account/inquiries` },
-    { label: t.totalRequests, value: totalRequests, icon: Layers, tone: "bg-muted text-muted-foreground", bar: "bg-gradient-to-r from-inverse/60 to-muted", href: `/${locale}/account/requests` },
+    { label: t.awaitingReply, value: awaitingReply, icon: MessageCircle, tone: "bg-warning-soft text-warning-foreground", href: `/${locale}/account/requests?awaiting=you` },
+    { label: t.unreadNotifications, value: unreadNotifications, icon: Bell, tone: "bg-highlight-soft text-highlight-foreground", href: `/${locale}/account/notifications` },
+    { label: t.openInquiries, value: openInquiries, icon: MessageCircleQuestion, tone: "bg-success-soft text-success-foreground", href: `/${locale}/account/inquiries?status=open` },
+    { label: t.totalInquiries, value: totalInquiries, icon: Inbox, tone: "bg-muted text-muted-foreground", href: `/${locale}/account/inquiries` },
+    { label: t.totalRequests, value: totalRequests, icon: Layers, tone: "bg-muted text-muted-foreground", href: `/${locale}/account/requests` },
   ];
 
   return (
@@ -50,18 +49,11 @@ export function AccountDashboard({locale,user,data}:{locale:Locale;user:{name:st
         </Button>} />
 
       {/* بطاقات المؤشرات — ذات الرابط تفتح القائمة المقابلة (روابط عميقة بلغة لوحة الإدارة) */}
-      <section aria-label={t.title} className="grid grid-cols-2 gap-4 lg:grid-cols-3 xl:grid-cols-6">
+      <section aria-label={t.title} className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3">
         {stats.map((s) => {
           const Icon = s.icon;
           const card = (
-            <>
-              <span aria-hidden="true" className={`absolute inset-x-0 top-0 h-1 ${s.bar}`} />
-              <span className={`inline-flex h-10 w-10 items-center justify-center rounded-xl ${s.tone}`}>
-                <Icon className="h-5 w-5" aria-hidden="true" />
-              </span>
-              <p className="mt-3 text-2xl font-bold text-navy tabular-nums">{s.value}</p>
-              <p className="mt-1 text-xs font-medium text-muted-foreground sm:text-sm">{s.label}</p>
-            </>
+            <InfoBoxContent icon={<Icon />} label={s.label} value={s.value} tone={s.tone} />
           );
           return s.href ? (
             <Link
@@ -81,7 +73,7 @@ export function AccountDashboard({locale,user,data}:{locale:Locale;user:{name:st
       </section>
 
       {isEmpty ? (
-        <section className="rounded-3xl border border-border bg-card p-8 text-center sm:p-12">
+        <section className="ds-card rounded-3xl border border-border bg-card p-8 text-center sm:p-12">
           <span className="mx-auto flex size-14 items-center justify-center rounded-full bg-accent text-brand-strong ring-8 ring-accent/50">
             <FolderOpen className="size-7" aria-hidden="true" />
           </span>
@@ -100,7 +92,7 @@ export function AccountDashboard({locale,user,data}:{locale:Locale;user:{name:st
           </div>
         </section>
       ) : (
-        <section className="rounded-2xl border border-border bg-card p-4 sm:p-6">
+        <section className="ds-card rounded-2xl border border-border bg-card p-4 sm:p-6">
           <div className="flex items-center justify-between gap-4">
             <h2 className="text-lg font-bold text-navy">{t.recentUpdates}</h2>
             <Link

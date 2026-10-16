@@ -202,7 +202,7 @@ export function DiagnosticsClient({
         <div aria-busy={loading} className="space-y-4 p-4">
           {data?.rows.length === 0 ? <p>{t.empty}</p> : null}
           {data?.rows.map((row) => (
-            <article key={row.fingerprint} className="space-y-3 rounded-2xl border border-border bg-card p-4">
+            <article key={row.fingerprint} className="ds-card space-y-3 rounded-2xl border border-border bg-card p-4">
               <h2 className="break-all text-base font-semibold"><bdi>{row.event.operation}</bdi> · <bdi>{row.event.code}</bdi></h2>
               <p>
                 {t.component}: {row.event.component} · {t.level}:{" "}

@@ -35,14 +35,8 @@ export function HeroBlock({
   const support = props.support ?? [];
 
   return (
-    <section className="relative overflow-hidden">
-      {/* خلفية زخرفية خفيفة */}
-      <div className="pointer-events-none absolute inset-0" aria-hidden="true">
-        <div className="absolute -top-24 start-[-8%] h-72 w-72 rounded-full bg-brand-soft blur-3xl opacity-70" />
-        <div className="absolute top-40 end-[-6%] h-80 w-80 rounded-full bg-skydrop/10 blur-3xl" />
-      </div>
-
-      <div className="relative mx-auto grid max-w-7xl items-center gap-12 px-4 pb-16 pt-12 sm:px-6 sm:pb-20 sm:pt-16 lg:grid-cols-[1.05fr_0.95fr] lg:gap-8 lg:px-8 lg:pb-28 lg:pt-24">
+    <section className="border-b border-border bg-card">
+      <div className="relative mx-auto grid max-w-7xl items-center gap-6 px-4 py-8 sm:px-6 lg:grid-cols-[1.05fr_0.95fr] lg:px-8 lg:py-10">
         <motion.div
           {...(reduce
             ? {
@@ -56,14 +50,14 @@ export function HeroBlock({
                 transition: { duration: APPEARANCE_MOTION.panel / 1000, ease: "easeOut" },
               })}
         >
-          <p className="mb-5 inline-flex items-center gap-2 rounded-full border border-skydrop/40 bg-card px-4 py-2 text-sm font-semibold text-brand-strong shadow-sm">
+          <p className="mb-3 inline-flex items-center gap-2 rounded-lg bg-accent px-2 py-1 text-sm text-accent-foreground">
             <span
               className="inline-block h-2 w-2 rounded-full bg-skydrop"
               aria-hidden="true"
             />
             {props.kicker}
           </p>
-          <h1 className="text-balance text-4xl font-bold leading-[1.25] text-navy sm:text-5xl lg:text-[3.4rem]">
+          <h1 className="text-balance text-4xl font-normal leading-[1.25] text-navy sm:text-5xl lg:text-[3.4rem]">
             {props.title}{" "}
             <span className="relative inline-block text-brand">
               {props.titleAccent}
@@ -84,14 +78,14 @@ export function HeroBlock({
               </svg>
             </span>
           </h1>
-          <p className="mt-7 max-w-xl text-pretty text-base leading-8 text-muted-foreground sm:text-lg sm:leading-9">
+          <p className="mt-4 max-w-xl text-pretty text-base leading-8 text-muted-foreground sm:text-lg sm:leading-9">
             {props.description}
           </p>
 
-          <div className="mt-9 flex flex-col gap-3 sm:flex-row sm:items-center">
+          <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:items-center">
             <Link
               href={`${localePath(locale, "contact")}?type=discussion`}
-              className="inline-flex min-h-12 items-center justify-center gap-2 rounded-lg bg-primary px-7 text-base font-semibold text-primary-foreground shadow-md shadow-brand/20 transition-[color,background-color,border-color,box-shadow,opacity,transform] hover:bg-primary-hover hover:text-primary-hover-foreground hover:shadow-lg"
+              className="inline-flex min-h-12 items-center justify-center gap-2 rounded-lg bg-primary px-7 text-base font-semibold text-primary-foreground shadow-sm transition-[color,background-color,border-color,box-shadow,opacity,transform] hover:bg-primary-hover hover:text-primary-hover-foreground hover:shadow-sm"
             >
               {t.actions.discuss}
               {arrow}
@@ -104,7 +98,7 @@ export function HeroBlock({
             </Link>
           </div>
 
-          <ul className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-2">
+          <ul className="mt-4 flex flex-wrap items-center gap-x-6 gap-y-2">
             {support.map((item) => (
               <li
                 key={item}

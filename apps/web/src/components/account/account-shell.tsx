@@ -53,7 +53,7 @@ function UserCard({ user }: { user: AccountShellUser }) {
   return (
     <Panel className="flex items-center gap-3 rounded-2xl border border-border bg-card p-4">
       <span
-        className="flex size-9 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-brand to-inverse text-sm font-bold text-inverse-foreground"
+        className="flex size-9 shrink-0 items-center justify-center rounded-full bg-primary text-sm font-bold text-primary-foreground"
         aria-hidden="true"
       >
         {user.name.trim().slice(0, 1).toUpperCase() || "·"}
@@ -199,13 +199,13 @@ export function AccountShell({
   const sheetSide = locale === "ar" ? "right" : "left";
 
   return (
-    <div id="account-shell" className="mx-auto w-full max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
+    <div id="account-shell" className="mx-auto w-full max-w-7xl px-3 py-6 sm:px-4">
       {/* الطباعة: بوابة الحساب تطبيق — تُطبع صفحة المحتوى وحدها بلا ترويسة/تذييل الموقع وشريط الإعلان
           (إخفاء طباعي فقط؛ على الشاشة تبقى البوابة مدمجة في هيكل الموقع العام) */}
       <style>{`@media print { body:has(#account-shell) > header, body:has(#account-shell) > footer, body:has(#account-shell) > #site-announcement { display: none !important; } #account-shell { padding: 0 !important; } }`}</style>
-      <div className="grid gap-8 lg:grid-cols-[15rem_minmax(0,1fr)]">
+      <div className="grid gap-6 min-[992px]:grid-cols-[250px_minmax(0,1fr)]">
         {/* القائمة الجانبية — جهة البداية (مخفية عند الطباعة) */}
-        <aside className="hidden print:hidden lg:block">
+        <aside className="ds-card hidden p-2 print:hidden min-[992px]:block">
           <div className="sticky top-24 flex flex-col gap-4">
             <UserCard user={user} />
             <NavList items={items} pathname={pathname} unread={unread} nav={nav} locale={locale} />
@@ -214,7 +214,7 @@ export function AccountShell({
 
         <div className="min-w-0">
           {/* شريط الجوال (مخفي عند الطباعة) */}
-          <div className="mb-4 flex items-center justify-between gap-3 print:hidden lg:hidden">
+          <div className="mb-4 flex items-center justify-between gap-3 print:hidden min-[992px]:hidden">
             <Sheet open={open} onOpenChange={setOpen}>
               <SheetTrigger asChild>
                 <Button

@@ -102,13 +102,13 @@
 }
 
 :root {
-  --radius: 0.75rem;
-  --panel-radius: 1rem;
-  --panel-radius-large: 1.5rem;
-  --control-padding: 0.625rem;
-  --row-padding: 0.875rem;
-  --space-panel: 1.5rem;
-  --space-section: 2rem;
+  --radius: 0.375rem;
+  --panel-radius: 0.375rem;
+  --panel-radius-large: 0.5rem;
+  --control-padding: 0.375rem;
+  --row-padding: 0.5rem;
+  --space-panel: 1rem;
+  --space-section: 1.5rem;
   --duration-fast: 150ms;
   --duration-normal: 200ms;
   --duration-panel: 250ms;
@@ -224,7 +224,6 @@
 [data-color-mode="light"] .logo-for-dark { display:none; }
 
 html { scroll-padding-block: 6rem 10rem; }
-#admin-shell table td, #admin-shell table th { padding-block:var(--row-padding); }
 
 /* Shared layout and interaction vocabulary. Components own their presentation;
    content blocks retain their authored spacing and geometry. */
@@ -235,23 +234,17 @@ html { scroll-padding-block: 6rem 10rem; }
   .ds-page-actions { display:flex; flex-wrap:wrap; align-items:center; gap:0.5rem; min-width:0; }
   .ds-page-back { flex-shrink:0; }
   .ds-page-metadata { display:flex; flex-wrap:wrap; align-items:center; gap:0.5rem; margin-top:0.5rem; font-size:0.75rem; color:var(--muted-foreground); }
-  .ds-page-title { min-width:0; max-width:100%; overflow-wrap:anywhere; font-size:clamp(1.375rem, 2vw, 1.625rem); font-weight:700; line-height:1.5; color:var(--foreground); }
+  .ds-page-title { min-width:0; max-width:100%; overflow-wrap:anywhere; font-size:1.75rem; font-weight:400; line-height:1.2; color:var(--foreground); }
   .ds-page-description { overflow-wrap:anywhere; margin-top:0.375rem; font-size:0.875rem; line-height:1.75; color:var(--muted-foreground); max-width:65ch; }
-  .ds-panel { min-width:0; border:1px solid var(--border); border-radius:var(--radius); background:var(--card); color:var(--card-foreground); padding:var(--space-panel); }
+  .ds-panel { min-width:0; border:1px solid var(--border); border-radius:var(--radius); background:var(--card); color:var(--card-foreground); padding:var(--space-panel); box-shadow:var(--panel-shadow); }
   .ds-toolbar { display:flex; flex-wrap:wrap; align-items:center; gap:0.75rem; min-width:0; }
   .ds-field { display:grid; gap:0.5rem; min-width:0; font-size:0.875rem; font-weight:500; }
-  .ds-control { min-height:2.75rem; min-width:0; width:100%; border:1px solid var(--input); border-radius:var(--radius); background:var(--card); color:var(--card-foreground); padding:var(--control-padding) 0.75rem; font-size:0.875rem; }
-  .ds-section-nav { display:flex; flex-wrap:wrap; gap:0.25rem; padding:0; border-bottom:1px solid var(--border); background:transparent; }
-  .ds-section-nav > a, .ds-section-nav > button { position:relative; display:inline-flex; min-height:2.75rem; align-items:center; justify-content:center; gap:0.5rem; border:0; border-bottom:2px solid transparent; border-radius:0; padding:0.625rem 1rem; color:var(--muted-foreground); font-size:0.875rem; font-weight:500; text-decoration:none; transition:background-color var(--duration-fast),color var(--duration-fast); }
-  .ds-section-nav > [aria-current="page"], .ds-section-nav > [aria-selected="true"] { background:transparent; color:var(--primary); border-bottom-color:var(--primary); font-weight:600; }
-  .ds-section-nav > a:hover, .ds-section-nav > button:hover { background:var(--accent); color:var(--accent-foreground); }
+  .ds-control { min-height:2.75rem; min-width:0; width:100%; border:1px solid var(--input); border-radius:var(--radius); background:var(--card); color:var(--card-foreground); padding:var(--control-padding) 0.75rem; font-size:1rem; }
+  .ds-section-nav { display:flex; flex-wrap:wrap; }
   .ds-table-scroll { max-width:100%; overflow-x:auto; border:1px solid var(--border); border-radius:var(--panel-radius); background:var(--card); }
   .ds-table-scroll table { width:100%; font-size:0.875rem; }
-  .ds-table-scroll th { text-align:start; color:var(--muted-foreground); background:var(--muted); font-weight:500; }
-  .ds-table-scroll td, .ds-table-scroll th { padding:var(--row-padding) 1rem; }
   .ds-table-scroll tbody tr + tr { border-top:1px solid var(--border); }
-  .ds-list-workspace { min-width:0; overflow:clip; background:var(--card); color:var(--card-foreground); border:1px solid var(--border); border-radius:var(--radius); }
-  .ds-list-workspace > .ds-list-filters { padding:1rem; border-bottom:1px solid var(--border); }
+  .ds-list-workspace { min-width:0; overflow:clip; background:var(--card); color:var(--card-foreground); border:1px solid var(--border); border-radius:var(--radius); box-shadow:var(--panel-shadow); }
   .ds-list-workspace > .ds-pagination { margin:0; padding:0.75rem 1rem; border-top:1px solid var(--border); }
   .ds-pagination { padding-block:0.75rem; font-size:0.875rem; }
 }
@@ -305,86 +298,93 @@ html { scroll-padding-block: 6rem 10rem; }
 /* Native choices share identity colors while retaining browser semantics. */
 :where(input[type="checkbox"], input[type="radio"], input[type="range"], progress) { accent-color:var(--primary); }
 
-/* Administration is a single workspace. Content-canvas descendants retain
-   their authored layout; these rules target shared application components. */
-.admin-workspace > :first-child { row-gap:1.5rem; }
-.admin-workspace .ds-section-nav { padding:0; border:0; border-bottom:1px solid var(--border); border-radius:0; background:transparent; }
-.admin-workspace .ds-section-nav > :is(a,button) { border-radius:0; background:transparent; box-shadow:none; }
-.admin-workspace .ds-section-nav > [aria-current="page"] { border-bottom:2px solid var(--primary); }
-.admin-workspace [data-slot="tabs-list"] { width:100%; justify-content:flex-start; gap:0.25rem; padding:0; border:0; border-bottom:1px solid var(--border); border-radius:0; background:transparent; }
-.admin-workspace [data-slot="tabs-trigger"] { flex:0 1 auto; border:0; border-bottom:2px solid transparent; border-radius:0; padding:0.625rem 1rem; background:transparent; box-shadow:none; }
-.admin-workspace [data-slot="tabs-trigger"][data-state="active"] { border-bottom-color:var(--primary); color:var(--primary); font-weight:600; }
-.admin-workspace [data-slot="tabs-trigger"]:hover { background:var(--accent); }
-.admin-workspace .ds-list-workspace .ds-table-scroll { border:0; border-radius:0; }
-.admin-workspace .ds-table-scroll th { font-size:0.875rem; letter-spacing:normal; text-transform:none; font-weight:600; background:var(--background); }
-.admin-workspace .ds-table-scroll :is(td,th) { padding:var(--row-padding) 1rem; }
-.admin-workspace .ds-table-scroll { border-radius:var(--radius); }
-.admin-workspace .ds-table-scroll:focus-visible { outline-offset:-3px; }
-.admin-workspace .ds-list-workspace > [role="status"]:empty { display:none; }
-.admin-workspace [data-slot="button"] { box-shadow:none; }
-@media (max-width:639px) {
-  .ds-page-header { align-items:flex-start; }
-  .ds-page-actions { width:100%; }
-  .ds-page-heading { flex-basis:100%; }
-  .ds-page-back { align-self:flex-start; }
-  .ds-section-nav > :is(a,button), .admin-workspace [data-slot="tabs-trigger"] { padding-inline:0.75rem; }
+/* AdminLTE 4.10.1 component compositions. Raw values/provenance live in contracts.
+   Application slots alone are styled: CMS-authored HTML keeps its own layout. */
+@layer components {
+  .ds-card { min-width:0; border:1px solid var(--border); border-radius:var(--radius); background:var(--card); color:var(--card-foreground); box-shadow:var(--panel-shadow); }
+  .ds-panel:has(> .ds-panel-header) { padding:0; }
+  .ds-panel-header { display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:0.75rem; padding:var(--card-header-padding); border-block-end:1px solid var(--border); }
+  .ds-panel-body { padding:var(--space-panel); }
+  .ds-panel-footer { padding:0.5rem 1rem; border-block-start:1px solid var(--border); background:var(--muted); border-end-start-radius:var(--radius); border-end-end-radius:var(--radius); }
+  .ds-info-box { position:relative; display:flex; align-items:stretch; min-width:0; min-height:80px; padding:0.5rem; border:0; border-radius:var(--radius); background:var(--card); color:var(--card-foreground); box-shadow:var(--panel-shadow); text-decoration:none; }
+  .ds-info-icon { display:flex; align-items:center; justify-content:center; width:70px; flex:0 0 70px; border-radius:var(--radius); background:var(--primary); color:var(--primary-foreground); }
+  .ds-info-icon > svg { width:1.875rem; height:1.875rem; }
+  .ds-info-content { display:flex; justify-content:center; flex:1; flex-direction:column; min-width:0; padding:0 10px; line-height:1.8; }
+  .ds-info-label { font-size:1rem; overflow-wrap:anywhere; }
+  .ds-info-value { margin-block-start:0.25rem; font-size:1.125rem; font-weight:700; font-variant-numeric:tabular-nums; }
+  .ds-info-hint { font-size:0.75rem; color:var(--muted-foreground); overflow-wrap:anywhere; }
+  .ds-auth-card { width:100%; border-block-start:3px solid var(--primary); }
+  .ds-direct-chat { border:1px solid var(--border); border-radius:var(--radius); padding:0.5rem 0.75rem; background:var(--secondary); color:var(--secondary-foreground); }
+  .ds-direct-chat[data-author="staff"] { background:var(--primary); color:var(--primary-foreground); border-color:var(--primary); }
+  .ds-timeline { position:relative; margin-inline-start:0.5rem; padding:0; list-style:none; }
+  .ds-timeline::before { position:absolute; content:""; inset-block:0; inset-inline-start:14px; width:4px; border-radius:var(--radius); background:var(--border); }
+  .ds-timeline-item { position:relative; min-width:0; padding-inline-start:45px; padding-block-end:1rem; break-inside:avoid; }
+  .ds-timeline-marker { position:absolute; inset-inline-start:0; top:0; display:grid; place-items:center; width:30px; height:30px; border-radius:50%; background:var(--secondary); color:var(--secondary-foreground); }
+  .ds-timeline-event { min-width:0; padding:0.75rem; border:1px solid var(--border); border-radius:var(--radius); background:var(--card); box-shadow:var(--panel-shadow); overflow-wrap:anywhere; }
+  .ds-callout { border-inline-start:5px solid var(--primary); border-radius:var(--radius); }
 }
 
-/* AdminLTE 4.10.1 adaptation: see docs/design-system/adminlte.md and MIT notice.
-   Scoped to administration; semantic palette and saved geometry remain authoritative. */
-.admin-lte .admin-sidebar { box-shadow: 2px 0 8px color-mix(in srgb, var(--foreground) 8%, transparent); }
-.admin-lte .admin-navigation { min-height:0; overscroll-behavior:contain; }
-.admin-lte .admin-nav-link { border-inline-start:3px solid transparent; border-radius:var(--radius); }
-.admin-lte .admin-nav-link[aria-current="page"] { border-inline-start-color:var(--sidebar-primary); background:var(--sidebar-primary); color:var(--sidebar-primary-foreground); }
-.admin-lte .admin-nav-link[aria-current="page"] > span:last-child[aria-hidden] { background:currentColor; }
-.admin-lte .admin-topbar { box-shadow:0 1px 3px color-mix(in srgb, var(--foreground) 5%, transparent); }
-.admin-lte .admin-main { background:var(--muted); }
-.admin-lte .ds-page-header { padding-block:0.5rem 1rem; }
-.admin-lte :is(.ds-panel,.ds-list-workspace,.admin-info-box) { border-block-start:3px solid var(--primary); box-shadow:0 2px 4px color-mix(in srgb, var(--foreground) 7%, transparent); }
-.ds-panel:has(> .ds-panel-header) { padding:0; }
-.ds-panel-header { display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:0.75rem; padding:1rem var(--space-panel); border-block-end:1px solid var(--border); }
-.ds-panel-body { padding:var(--space-panel); }
-.ds-panel-footer { padding:0.75rem var(--space-panel); border-block-start:1px solid var(--border); background:var(--muted); border-end-start-radius:var(--radius); border-end-end-radius:var(--radius); }
-.admin-lte .ds-list-workspace > .ds-list-filters { padding:var(--space-panel); background:var(--card); }
-.admin-lte .ds-table-scroll th { background:var(--muted); border-block-end:2px solid var(--border); }
-.admin-lte .ds-table-scroll tbody tr:nth-child(even) { background:color-mix(in srgb,var(--muted) 45%,var(--card)); }
-.admin-lte .ds-table-scroll tbody tr:is(:hover,:focus-within), .admin-lte .ds-table-scroll tr[data-state="selected"] { background:var(--accent); color:var(--accent-foreground); }
-.admin-lte :is(input,textarea,select)[aria-invalid="true"] { border-color:var(--danger); outline-color:var(--danger); }
-.admin-lte :is(input,textarea,select):disabled { background:var(--muted); cursor:not-allowed; }
-.admin-lte [aria-busy="true"] { cursor:progress; }
-.admin-lte .admin-info-box { padding:var(--space-panel); }
-.admin-lte .admin-info-icon { inline-size:2.75rem; block-size:2.75rem; padding:0.625rem; background:var(--accent); color:var(--accent-foreground); border-radius:var(--radius); }
-@media (min-width:1024px) { .admin-lte[data-sidebar-collapsed="true"] > .admin-sidebar { display:none; } }
-@media print { .admin-lte .admin-main { background:var(--background); } }
+/* Shared controls and floating surfaces also work in body portals and preview documents. */
+[data-slot="button"] { font-size:1rem; font-weight:400; }
+[data-slot="input"], [data-slot="textarea"], [data-slot="native-select"], [data-slot="select-trigger"] { font-size:1rem; box-shadow:none; }
+[data-slot="badge"] { border-radius:var(--radius); }
+[data-slot="dialog-content"], [data-slot="alert-dialog-content"], [data-slot="sheet-content"], [data-slot="popover-content"], [data-slot="dropdown-menu-content"], [data-slot="select-content"] { border-radius:var(--radius); }
+[data-slot="dialog-header"], [data-slot="alert-dialog-header"] { padding-block-end:1rem; border-block-end:1px solid var(--border); }
+[data-slot="dialog-footer"], [data-slot="alert-dialog-footer"] { padding-block-start:1rem; border-block-start:1px solid var(--border); }
+[data-slot="dialog-title"], [data-slot="alert-dialog-title"] { font-size:1.25rem; font-weight:500; line-height:1.5; }
+[data-slot="dropdown-menu-content"], [data-slot="popover-content"], [data-slot="select-content"] { box-shadow:var(--panel-shadow); }
+[data-slot="accordion-trigger"] { text-align:start; min-height:2.75rem; }
+[data-slot="accordion-trigger"][data-state="open"] { color:var(--accent-foreground); background:var(--accent); }
+[data-slot="tabs-list"], .ds-section-nav { height:auto; width:100%; justify-content:flex-start; gap:0; padding:0; border:0; border-block-end:1px solid var(--border); border-radius:0; background:transparent; }
+[data-slot="tabs-trigger"], .ds-section-nav > :is(a,button) { font-size:1rem; flex:0 1 auto; min-width:0; white-space:normal; border:1px solid transparent; border-block-end:0; border-radius:var(--radius) var(--radius) 0 0; padding:0.5rem 1rem; background:transparent; box-shadow:none; color:var(--primary); font-weight:400; }
+[data-slot="tabs-trigger"][data-state="active"], .ds-section-nav > [aria-current="page"] { margin-block-end:-1px; border-color:var(--border); border-block-end:1px solid var(--card); background:var(--card); color:var(--card-foreground); font-weight:400; }
+[data-slot="tabs-trigger"]:hover, .ds-section-nav > :is(a,button):hover { background:var(--accent); color:var(--accent-foreground); }
+.ds-table-scroll th { background:var(--card); color:var(--card-foreground); font-weight:600; border-block-end:2px solid var(--border); }
+.ds-table-scroll tbody tr:nth-child(odd) { background:color-mix(in srgb,var(--foreground) 5%,var(--card)); }
+.ds-table-scroll tbody tr:is(:hover,:focus-within), .ds-table-scroll tr[data-state="selected"] { background:var(--accent); }
+.ds-table-scroll :is(td,th) { padding:var(--row-padding) 0.5rem; font-size:1rem; }
+.ds-table-scroll:focus-visible { outline-offset:-3px; }
+.ds-list-workspace .ds-table-scroll { border:0; border-radius:0; }
+.ds-list-workspace > .ds-list-filters { padding:var(--space-panel); border-block-end:1px solid var(--border); }
+.ds-list-workspace > [role="status"]:empty { display:none; }
+:where(input,textarea,select)[aria-invalid="true"] { border-color:var(--danger); outline-color:var(--danger); }
+:where(input,textarea,select):disabled { background:var(--muted); cursor:not-allowed; }
+[aria-busy="true"] { cursor:progress; }
 
-/* Coordinated chrome profiles derive from the same saved semantic palette. */
+/* AdminLTE shell. React owns the push menu; Radix owns mobile focus and dismissal. */
+.admin-lte .admin-navigation { min-height:0; overscroll-behavior:contain; }
+.admin-lte .admin-nav-link { border-radius:var(--radius); font-size:1rem; font-weight:400; padding:0.5rem 1rem; }
+.admin-lte .admin-nav-link[aria-current="page"], .admin-lte .admin-nav-child[aria-current="page"] { background:var(--sidebar-primary); color:var(--sidebar-primary-foreground); }
+.admin-lte .admin-main { background:var(--background); }
+.admin-lte .admin-sidebar { box-shadow:0 0.5rem 1rem color-mix(in srgb,var(--shadow-color) 15%,transparent); }
+.admin-lte .ds-page-header { padding-block:0.5rem 1rem; }
+.admin-workspace { min-width:0; }
 .admin-lte .admin-sidebar, .admin-lte.admin-mobile-sidebar {
   --sidebar:var(--admin-sidebar); --sidebar-foreground:var(--admin-sidebar-foreground);
   --sidebar-primary:var(--admin-sidebar-active); --sidebar-primary-foreground:var(--admin-sidebar-on-active);
   --sidebar-accent:var(--admin-sidebar-hover); --sidebar-accent-foreground:var(--admin-sidebar-foreground);
   --sidebar-border:color-mix(in srgb,var(--admin-sidebar-foreground) 22%,var(--admin-sidebar));
   --foreground:var(--admin-sidebar-foreground); --muted-foreground:var(--admin-sidebar-muted);
-  background:var(--sidebar); color:var(--sidebar-foreground);
+  --ring:var(--admin-sidebar-foreground); background:var(--sidebar); color:var(--sidebar-foreground);
 }
 .admin-lte[data-admin-style="colored"] .admin-topbar {
   --background:var(--admin-header); --card:var(--admin-header); --muted:var(--admin-header);
   --foreground:var(--admin-header-foreground); --navy:var(--admin-header-foreground); --muted-foreground:var(--admin-header-foreground);
-  --border:color-mix(in srgb,var(--admin-header-foreground) 45%,var(--admin-header));
-  background:var(--admin-header); color:var(--admin-header-foreground);
-}
-.admin-lte .admin-sidebar, .admin-lte.admin-mobile-sidebar { --ring:var(--admin-sidebar-active); }
-.admin-lte[data-admin-style="colored"] .admin-topbar { --primary:var(--admin-header-foreground); --primary-foreground:var(--admin-header); --ring:var(--admin-header-foreground); }
-/* Nested outline controls use surface-card's reset aliases; keep the colored
-   header's paired foreground when that reset is applied inside the header. */
-.admin-lte[data-admin-style="colored"] .admin-topbar {
+  --primary:var(--admin-header-foreground); --primary-foreground:var(--admin-header); --ring:var(--admin-header-foreground);
   --card-foreground:var(--admin-header-foreground);
   --base-foreground:var(--admin-header-foreground); --base-muted-foreground:var(--admin-header-foreground);
   --base-primary:var(--admin-header-foreground); --base-primary-foreground:var(--admin-header);
   --base-brand-strong:var(--admin-header-foreground);
-  --base-border:color-mix(in srgb,var(--admin-header-foreground) 45%,var(--admin-header));
+  --base-border:color-mix(in srgb,var(--admin-header-foreground) 45%,var(--admin-header)); --border:var(--base-border);
+  background:var(--admin-header); color:var(--admin-header-foreground);
 }
-/* Ghost controls must not blend a dark hover surface with the colored header;
-   the accent foreground is paired with the opaque accent surface. */
-.admin-lte[data-admin-style="colored"] .admin-topbar [data-slot="button"]:hover {
-  background-color:var(--accent); color:var(--accent-foreground);
+.admin-lte[data-admin-style="colored"] .admin-topbar [data-slot="button"]:hover { background:var(--accent); color:var(--accent-foreground); }
+@media (min-width:992px) { .admin-lte[data-sidebar-collapsed="true"] > .admin-sidebar { display:none; } }
+@media (max-width:639px) {
+  .ds-page-header { align-items:flex-start; }
+  .ds-page-actions { width:100%; }
+  .ds-page-heading { flex-basis:100%; }
+  .ds-page-back { align-self:flex-start; }
+  [data-slot="tabs-trigger"], .ds-section-nav > :is(a,button) { padding-inline:0.75rem; }
 }
+@media print { .admin-lte .admin-main { background:var(--card); } }

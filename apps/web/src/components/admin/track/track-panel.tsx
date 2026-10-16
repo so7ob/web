@@ -190,7 +190,7 @@ export function TrackPanel({ scope, cardId, locale, t }: TrackPanelProps) {
   const sourceLabel = t.policySource[(data?.policy.source ?? "") as keyof typeof t.policySource] ?? "";
 
   return (
-    <section aria-label={t.section} className="rounded-2xl border border-border bg-card p-4">
+    <section aria-label={t.section} className="ds-card rounded-2xl border border-border bg-card p-4">
       <h2 className="flex items-center gap-2 text-sm font-semibold text-navy">
         <Link2 className="size-4 text-brand" aria-hidden="true" />
         {t.section}

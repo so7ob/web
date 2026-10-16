@@ -424,7 +424,7 @@ export function TemplatesDialog({
               return (
                 <article
                   key={tpl.id}
-                  className="group relative flex gap-3.5 rounded-2xl border border-border/70 bg-card p-4 shadow-sm transition-[color,background-color,border-color,box-shadow,opacity,transform] hover:-translate-y-0.5 hover:border-brand/40 hover:shadow-md"
+                  className="ds-card group relative flex gap-3.5 rounded-2xl border border-border/70 bg-card p-4 shadow-sm transition-[color,background-color,border-color,box-shadow,opacity,transform] hover:-translate-y-0.5 hover:border-brand/40 hover:shadow-md"
                 >
                   {/* شعار النوع */}
                   <span

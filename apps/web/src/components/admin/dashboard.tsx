@@ -1,4 +1,4 @@
-import { PageHeading, PanelHeader } from "@/components/ui/workspace";
+import { PageHeading, PanelHeader, InfoBoxContent } from "@/components/ui/workspace";
 /**
  * لوحة الإدارة الرئيسية: البيانات وتسميات الوقت تأتي من الخادم، مع الحفاظ
  * على العرض الأصلي دون استيراد قاعدة البيانات في المتصفح. كل الأرقام حقيقية.
@@ -38,17 +38,17 @@ interface StatDef {
 
 /** AdminLTE-inspired info boxes retain real metrics and existing deep links. */
 const STAT_CARD_CLASS =
-  "admin-info-box group relative min-w-0 rounded-lg border border-border bg-card p-5 transition-colors hover:border-primary/40 hover:bg-accent/20";
+  "ds-info-box group transition-colors hover:border-primary focus-visible:ring-2 focus-visible:ring-ring";
 
 /** تدرجات أشرطة الحالة — نفس عائلات ألوان شارات الحالة */
 const STATUS_BAR: Record<string, string> = {
-  new: "bg-gradient-to-r from-skydrop to-brand",
-  in_review: "bg-gradient-to-r from-muted to-muted",
-  awaiting_info: "bg-gradient-to-r from-warning to-warning",
-  in_progress: "bg-gradient-to-r from-brand to-brand-strong",
-  responded: "bg-gradient-to-r from-success to-success",
-  closed: "bg-gradient-to-r from-muted to-muted",
-  cancelled: "bg-gradient-to-r from-danger to-danger",
+  new: "bg-primary",
+  in_review: "bg-muted-foreground",
+  awaiting_info: "bg-warning",
+  in_progress: "bg-primary",
+  responded: "bg-success",
+  closed: "bg-muted-foreground",
+  cancelled: "bg-danger",
 };
 
 export function AdminDashboard({
@@ -194,31 +194,13 @@ export function AdminDashboard({
           ذات الرابط تفتح القائمة المفلترة المقابلة (روابط اللوحة العميقة) */}
       <section
         aria-label={t.title}
-        className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4"
+        className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4"
       >
         {stats
           .filter((stat) => stat.permitted)
           .map((stat) => {
             const card = (
-              <>
-                <div className="flex items-start justify-between gap-3">
-                  <p className="text-sm font-medium text-muted-foreground">
-                    {stat.label}
-                  </p>
-                  <stat.icon
-                    className="admin-info-icon size-4 shrink-0 text-muted-foreground"
-                    aria-hidden="true"
-                  />
-                </div>
-                <p className="mt-4 text-3xl font-semibold tabular-nums tracking-tight text-foreground">
-                  {stat.value}
-                </p>
-                {stat.hint ? (
-                  <p className="mt-2 text-xs tabular-nums text-muted-foreground">
-                    {stat.hint}
-                  </p>
-                ) : null}
-              </>
+              <InfoBoxContent icon={<stat.icon />} label={stat.label} value={stat.value} hint={stat.hint} />
             );
             return stat.href ? (
               <Link
@@ -272,7 +254,7 @@ export function AdminDashboard({
                           className={cn(
                             "h-full rounded-full transition-[color,background-color,border-color,box-shadow,opacity,transform] duration-(--duration-panel)",
                             STATUS_BAR[row.status] ??
-                              "bg-gradient-to-r from-brand to-brand-strong",
+                              "bg-primary",
                           )}
                           style={{
                             width: `${Math.max(row.count > 0 ? 4 : 0, Math.round((row.count / maxStatus) * 100))}%`,

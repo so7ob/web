@@ -65,6 +65,16 @@ export function Panel({ className, ...props }: ComponentProps<"div">) {
     <div data-slot="panel" className={cn("ds-panel", className)} {...props} />
   );
 }
+/** AdminLTE info-box composition. The caller keeps the real value and link. */
+export function InfoBoxContent({ icon, label, value, hint, tone }: {
+  icon: ReactNode; label: ReactNode; value: ReactNode; hint?: ReactNode; tone?: string;
+}) {
+  return <><span className={cn("ds-info-icon", tone)} aria-hidden="true">{icon}</span>
+    <span className="ds-info-content"><span className="ds-info-label">{label}</span>
+      <strong className="ds-info-value">{value}</strong>
+      {hint && <span className="ds-info-hint">{hint}</span>}
+    </span></>;
+}
 export function Toolbar({ className, ...props }: ComponentProps<"div">) {
   return (
     <div

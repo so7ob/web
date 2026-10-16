@@ -112,11 +112,12 @@ export function MessageBubble({
         {author} · {authorRole}
       </p>
       <div
+        data-author={staff ? "staff" : "client"}
         className={cn(
-          "max-w-[85%] rounded-2xl border px-4 py-3 shadow-sm sm:max-w-[75%]",
+          "ds-direct-chat max-w-[85%] sm:max-w-[75%]",
           staff
-            ? "rounded-se-sm border-navy bg-inverse text-inverse-foreground shadow-navy/10"
-            : "rounded-ss-sm border-info-border/70 bg-accent/60 text-foreground",
+            ? "border-primary"
+            : "border-border",
         )}
       >
         <p className="whitespace-pre-wrap break-words [overflow-wrap:anywhere] text-sm leading-relaxed">
