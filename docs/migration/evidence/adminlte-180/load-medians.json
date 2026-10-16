@@ -3,17 +3,17 @@
     "size": "desktop",
     "route": "admin",
     "before": {
-      "domContentLoadedMs": 406.3,
-      "loadMs": 419.8,
-      "readyMs": 1127.08,
+      "domContentLoadedMs": 273.5,
+      "loadMs": 274.4,
+      "readyMs": 968.66,
       "resourceBytes": 1298247,
       "resourceCount": 75
     },
     "after": {
-      "domContentLoadedMs": 347.3,
-      "loadMs": 348,
-      "readyMs": 1153.93,
-      "resourceBytes": 1335679,
+      "domContentLoadedMs": 295.1,
+      "loadMs": 295.3,
+      "readyMs": 1019.36,
+      "resourceBytes": 1335991,
       "resourceCount": 83
     }
   },
@@ -21,53 +21,53 @@
     "size": "desktop",
     "route": "admin/settings?section=appearance",
     "before": {
-      "domContentLoadedMs": 251,
-      "loadMs": 251.2,
-      "readyMs": 1016.54,
+      "domContentLoadedMs": 209.5,
+      "loadMs": 209.8,
+      "readyMs": 984.6,
       "resourceBytes": 1367394,
       "resourceCount": 86
     },
     "after": {
-      "domContentLoadedMs": 320.3,
-      "loadMs": 320.4,
-      "readyMs": 1134.86,
-      "resourceBytes": 1429854,
-      "resourceCount": 98
+      "domContentLoadedMs": 221.1,
+      "loadMs": 221.3,
+      "readyMs": 1072.21,
+      "resourceBytes": 1441270,
+      "resourceCount": 99
     }
   },
   {
     "size": "desktop",
     "route": "admin/settings?section=adminAppearance",
     "before": {
-      "domContentLoadedMs": 244.8,
-      "loadMs": 244.8,
-      "readyMs": 1044.22,
+      "domContentLoadedMs": 226.7,
+      "loadMs": 226.7,
+      "readyMs": 1002.81,
       "resourceBytes": 1367394,
       "resourceCount": 86
     },
     "after": {
-      "domContentLoadedMs": 280.1,
-      "loadMs": 280.5,
-      "readyMs": 1129.26,
-      "resourceBytes": 1429854,
-      "resourceCount": 98
+      "domContentLoadedMs": 210.8,
+      "loadMs": 222.2,
+      "readyMs": 1066.35,
+      "resourceBytes": 1441270,
+      "resourceCount": 99
     }
   },
   {
     "size": "desktop",
     "route": "account",
     "before": {
-      "domContentLoadedMs": 248.9,
-      "loadMs": 253.9,
-      "readyMs": 886.47,
+      "domContentLoadedMs": 239.5,
+      "loadMs": 242.4,
+      "readyMs": 884.28,
       "resourceBytes": 1248222,
       "resourceCount": 60
     },
     "after": {
-      "domContentLoadedMs": 275.8,
-      "loadMs": 276.1,
-      "readyMs": 942.93,
-      "resourceBytes": 1225895,
+      "domContentLoadedMs": 243.1,
+      "loadMs": 244.8,
+      "readyMs": 890.76,
+      "resourceBytes": 1226207,
       "resourceCount": 61
     }
   },
@@ -75,17 +75,17 @@
     "size": "desktop",
     "route": "contact",
     "before": {
-      "domContentLoadedMs": 286,
-      "loadMs": 287.8,
-      "readyMs": 833.01,
+      "domContentLoadedMs": 237.2,
+      "loadMs": 237.3,
+      "readyMs": 800.4,
       "resourceBytes": 1472254,
       "resourceCount": 63
     },
     "after": {
-      "domContentLoadedMs": 264.8,
-      "loadMs": 264.8,
-      "readyMs": 842.16,
-      "resourceBytes": 1448180,
+      "domContentLoadedMs": 254,
+      "loadMs": 254.3,
+      "readyMs": 817.67,
+      "resourceBytes": 1448492,
       "resourceCount": 63
     }
   },
@@ -93,17 +93,17 @@
     "size": "desktop",
     "route": "auth/login",
     "before": {
-      "domContentLoadedMs": 241.9,
-      "loadMs": 242.1,
-      "readyMs": 798.69,
+      "domContentLoadedMs": 271.3,
+      "loadMs": 275.7,
+      "readyMs": 851.54,
       "resourceBytes": 1269466,
       "resourceCount": 56
     },
     "after": {
-      "domContentLoadedMs": 214.1,
-      "loadMs": 214.7,
-      "readyMs": 768.71,
-      "resourceBytes": 1246672,
+      "domContentLoadedMs": 294.6,
+      "loadMs": 294.9,
+      "readyMs": 840.27,
+      "resourceBytes": 1246984,
       "resourceCount": 57
     }
   },
@@ -111,17 +111,17 @@
     "size": "desktop",
     "route": "",
     "before": {
-      "domContentLoadedMs": 268.6,
-      "loadMs": 268.7,
-      "readyMs": 828.34,
+      "domContentLoadedMs": 265.8,
+      "loadMs": 275.7,
+      "readyMs": 849.2,
       "resourceBytes": 1472254,
       "resourceCount": 63
     },
     "after": {
-      "domContentLoadedMs": 285.5,
-      "loadMs": 285.7,
-      "readyMs": 853.15,
-      "resourceBytes": 1448180,
+      "domContentLoadedMs": 275.9,
+      "loadMs": 285.6,
+      "readyMs": 843.93,
+      "resourceBytes": 1448492,
       "resourceCount": 63
     }
   },
@@ -129,17 +129,17 @@
     "size": "mobile",
     "route": "admin",
     "before": {
-      "domContentLoadedMs": 255,
-      "loadMs": 255.2,
-      "readyMs": 963.41,
+      "domContentLoadedMs": 245.4,
+      "loadMs": 246.9,
+      "readyMs": 969.95,
       "resourceBytes": 1298247,
       "resourceCount": 75
     },
     "after": {
-      "domContentLoadedMs": 277.4,
-      "loadMs": 277.5,
-      "readyMs": 1031.38,
-      "resourceBytes": 1335679,
+      "domContentLoadedMs": 301.9,
+      "loadMs": 302.2,
+      "readyMs": 971.75,
+      "resourceBytes": 1335991,
       "resourceCount": 83
     }
   },
@@ -147,53 +147,53 @@
     "size": "mobile",
     "route": "admin/settings?section=appearance",
     "before": {
-      "domContentLoadedMs": 224.1,
-      "loadMs": 226.3,
-      "readyMs": 1019.43,
+      "domContentLoadedMs": 246.8,
+      "loadMs": 246.9,
+      "readyMs": 1036.2,
       "resourceBytes": 1367394,
       "resourceCount": 86
     },
     "after": {
-      "domContentLoadedMs": 227.6,
-      "loadMs": 227.6,
-      "readyMs": 1047.97,
-      "resourceBytes": 1429854,
-      "resourceCount": 98
+      "domContentLoadedMs": 212.2,
+      "loadMs": 216.5,
+      "readyMs": 1092.92,
+      "resourceBytes": 1441270,
+      "resourceCount": 99
     }
   },
   {
     "size": "mobile",
     "route": "admin/settings?section=adminAppearance",
     "before": {
-      "domContentLoadedMs": 268,
-      "loadMs": 268.2,
-      "readyMs": 1082.59,
+      "domContentLoadedMs": 173.2,
+      "loadMs": 175.7,
+      "readyMs": 995.83,
       "resourceBytes": 1367394,
       "resourceCount": 86
     },
     "after": {
-      "domContentLoadedMs": 244.6,
-      "loadMs": 246.3,
-      "readyMs": 1097.19,
-      "resourceBytes": 1429854,
-      "resourceCount": 98
+      "domContentLoadedMs": 247.6,
+      "loadMs": 247.8,
+      "readyMs": 1136.06,
+      "resourceBytes": 1441270,
+      "resourceCount": 99
     }
   },
   {
     "size": "mobile",
     "route": "account",
     "before": {
-      "domContentLoadedMs": 303.9,
-      "loadMs": 304,
-      "readyMs": 928.35,
+      "domContentLoadedMs": 258.4,
+      "loadMs": 260.9,
+      "readyMs": 918.99,
       "resourceBytes": 1248222,
       "resourceCount": 60
     },
     "after": {
-      "domContentLoadedMs": 238.4,
-      "loadMs": 247,
-      "readyMs": 882.21,
-      "resourceBytes": 1210243,
+      "domContentLoadedMs": 230,
+      "loadMs": 230.7,
+      "readyMs": 874.25,
+      "resourceBytes": 1210555,
       "resourceCount": 60
     }
   },
@@ -201,17 +201,17 @@
     "size": "mobile",
     "route": "contact",
     "before": {
-      "domContentLoadedMs": 271.1,
-      "loadMs": 275.6,
-      "readyMs": 817.39,
+      "domContentLoadedMs": 218.9,
+      "loadMs": 219,
+      "readyMs": 787.97,
       "resourceBytes": 1448070,
       "resourceCount": 62
     },
     "after": {
-      "domContentLoadedMs": 242.9,
-      "loadMs": 243.3,
-      "readyMs": 837.15,
-      "resourceBytes": 1432528,
+      "domContentLoadedMs": 214.7,
+      "loadMs": 214.8,
+      "readyMs": 797.73,
+      "resourceBytes": 1432840,
       "resourceCount": 62
     }
   },
@@ -219,17 +219,17 @@
     "size": "mobile",
     "route": "auth/login",
     "before": {
-      "domContentLoadedMs": 252.4,
-      "loadMs": 252.6,
-      "readyMs": 794.51,
+      "domContentLoadedMs": 234,
+      "loadMs": 234.2,
+      "readyMs": 772.76,
       "resourceBytes": 1245282,
       "resourceCount": 55
     },
     "after": {
-      "domContentLoadedMs": 220.5,
-      "loadMs": 228.4,
-      "readyMs": 761.37,
-      "resourceBytes": 1231020,
+      "domContentLoadedMs": 240,
+      "loadMs": 242.2,
+      "readyMs": 779.1,
+      "resourceBytes": 1231332,
       "resourceCount": 56
     }
   },
@@ -237,17 +237,17 @@
     "size": "mobile",
     "route": "",
     "before": {
-      "domContentLoadedMs": 286.3,
-      "loadMs": 286.6,
-      "readyMs": 853.43,
+      "domContentLoadedMs": 339.8,
+      "loadMs": 339.9,
+      "readyMs": 957.33,
       "resourceBytes": 1472254,
       "resourceCount": 63
     },
     "after": {
-      "domContentLoadedMs": 256.9,
-      "loadMs": 257.1,
-      "readyMs": 821.81,
-      "resourceBytes": 1448180,
+      "domContentLoadedMs": 334.1,
+      "loadMs": 334.4,
+      "readyMs": 908.43,
+      "resourceBytes": 1448492,
       "resourceCount": 63
     }
   }

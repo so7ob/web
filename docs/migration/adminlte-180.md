@@ -102,7 +102,13 @@ Additional observed verification and fixes before the final candidate:
 
 - A subsequent **28-case** run on compiled c1e517e passed both languages/viewports for geometry, independent themes, menus, media, original client text and back/forward draft protection. Later visual review identified Radix asChild replacing data-slot, which let trigger buttons retain old typography/corners. A stable shared button class fixes the component identity. Tooltip defaults now use the pinned neutral inverse pair rather than the old primary bubble; the actual preview exercises a tooltip and dialog on the same trigger, with literal reference color/type/radius and containment assertions.
 
-Final source SHA, remaining full checks, CI and refreshed visual/bundle results: **pending candidate verification/publication**. No pending result is claimed as passed. [Evidence index](evidence/adminlte-180/README.md).
+Final local build **1753607e533fc3b65b4c9769b78918706df3ef75**: lint, typecheck, **1154 unit/integration tests in 71 files**, build, independence, infrastructure syntax/operational configuration, 14 CI-policy tests and diff whitespace checks passed. Browser verification: **16 controls/scope/menu cases**, **3 targeted regressions** (including the complete EN/dark/375 tour), **6 cross-project draft/creation/ownership cases**, and the complete **AR/light/1280 tour** passed with retry=0. These are separate executions with one overlapping case, not an inflated distinct-case total. No further driver-code error was observed in the isolated focused runs; the original unexplained failures remain recorded above.
+
+The new tooltip hover test initially reproduced Radix's module-document pointer-grace bug in the iframe (one failed, 15 unrun), with the trace retained. The iframe wrapper now owns its controlled state and listens in that document, preserves movement onto tooltip content and closes on departure; ordinary tooltips retain Radix behavior. The unchanged final 16-case matrix passed.
+
+The local development preview was restarted on this same compiled build after the compatibility repair; readiness passed. Final evidence contains **94 native PNGs**, an offline comparison viewer, verified artifact hashes, eight fixed-fixture dashboard pairs, populated Arabic specialized-page pairs, actual dropdown/tooltip/dialog states, geometry and **140 interleaved load samples**. Raw asset hashes, gzip sizes, import closures and timing limits are in the [evidence index](evidence/adminlte-180/README.md).
+
+Final PR-head CI: **pending publication and exact-head verification**. No pending result is claimed as passed. [Evidence index](evidence/adminlte-180/README.md).
 
 ## Limits, risks and rollback
 

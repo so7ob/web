@@ -2,33 +2,33 @@
 
 [Open the offline comparison viewer](comparison.html). Select a route and viewport for the original screenshots; the dashboard also includes the pinned v1/v2/v3 reference. Images retain their native pixels and can be opened individually. [SHA-256 and dimensions](manifest.json).
 
-Sources: develop `e8d0f6cf7367d8732abaa179a1c118010cd86f5e`; client candidate `551b17f7c4378a3fb1428ff49fb87c2f33650421`; AdminLTE v4.10.1 `e13df78a4d0c287e5fa57308e293f63e44e9dd0f`. Local comparison build predates the later server-only legacy-settings validation correction. The final validation record must verify client asset hashes against this build and identify the exact final CI head. All fixture records, identities, uploads and text are synthetic.
+Sources: develop `e8d0f6cf7367d8732abaa179a1c118010cd86f5e`; client candidate `1753607e533fc3b65b4c9769b78918706df3ef75`; AdminLTE v4.10.1 `e13df78a4d0c287e5fa57308e293f63e44e9dd0f`. The comparison uses the complete application build including the legacy-settings validation correction and stable dark-mode metric fill. Later commits publish evidence and validation text; exact CI head and compiled revision are recorded in the implementation report. All fixture records, identities, uploads and text are synthetic.
 
 ## What to inspect
 
 - Dashboard: four colored Small Boxes, three secondary Info Boxes, count chart/status progress, striped requests, activity cards; 250px sidebar, 57px navbar, 24px gutters, Source Sans 3/IBM Arabic, 6px radius.
 - Site appearance versus administration appearance: separate tabs, drafts, previews, saved defaults and personal modes. Site preview omits administration chrome. All 29 presets include independent sidebar/navbar/footer region mode/background controls and primary color.
-- Eight bilingual light/dark dashboard captures; gradient-indigo and original yellow-light show regional palette application. Existing design CI artifacts cover all 105 screens, 31 block types, interactive/permission/error states.
+- Eight bilingual light/dark dashboard captures; gradient-indigo and original yellow-light show regional palette application. Custom-preset captures explicitly choose a steel/dark footer to demonstrate independent footer settings; a preset leaves footer choices intact. Existing design CI artifacts cover all 105 screens, 31 block types, interactive/permission/error states.
 
 ## Deliberate differences
 
 So7ob keeps its logo, names, content, Lucide icons, actual metric links and business data. Its seven metrics combine v1 Small Boxes with v2 Info Boxes above a v2/v3 report composition; no demo sales, maps or invented trend series. The chart includes an accessible data table. Arabic uses the existing licensed Arabic font and logical RTL layout. 44px targets, focus outlines, readable semantic text and AA-enforced regional gradients are retained even where the demo is denser. The administration heading and Info Boxes may grow for translated text. So7ob cards use the semantic border #dee2e6; the pinned reference card uses Bootstrap's translucent black border. No pixel-identity score is claimed for different content.
 
-Reference screenshots: AdminLTE MIT, see [license/source notice](../../../design-system/adminlte.md). Source Sans 3 OFL and existing icon notices are recorded there. The reference checkout and demo controllers are absent from the runtime and build.
+Extracted AdminLTE styles/layout: MIT, see [license/source notice](../../../design-system/adminlte.md). Reference screenshots also show upstream demo media; its README credits Pixeden, Graphicsfuel, Pickaface, Unsplash, Uifaces and Unavatar. Those assets are not shipped in the So7ob application. Source Sans 3 OFL and existing icon notices are recorded there. The reference checkout and demo controllers are absent from the runtime and build.
 
 ## Bundle size
 
-Production Vite manifest, bytes on disk and deterministic gzip level 6; route chunks are not total page payloads. [Complete static import closures](bundles.json).
+Production Vite manifest, bytes on disk and Node zlib.gzipSync level 6; route chunks are not total page payloads. [Complete static import closures](bundles.json).
 
 | Asset | Before raw / gzip bytes | After raw / gzip bytes | Raw delta |
 | --- | ---: | ---: | ---: |
-| Entry JS | 211863 / 66933 | 212191 / 67009 | 328 |
-| Application CSS | 169442 / 24566 | 165785 / 24834 | -3657 |
-| src/screens/admin/dashboard.tsx | 11116 / 3278 | 10723 / 3502 | -393 |
-| src/screens/admin/layout.tsx | 21304 / 6129 | 25902 / 7119 | 4598 |
-| src/screens/admin/settings.tsx | 33255 / 11509 | 46963 / 15369 | 13708 |
-| src/screens/account/dashboard.tsx | 7208 / 2164 | 6340 / 1951 | -868 |
-| src/screens/account/layout.tsx | 7520 / 2592 | 7575 / 2610 | 55 |
+| Entry JS | 211863 / 67019 | 212265 / 67081 | 402 |
+| Application CSS | 169442 / 24599 | 165852 / 24845 | -3590 |
+| src/screens/admin/dashboard.tsx | 11116 / 3287 | 10723 / 3514 | -393 |
+| src/screens/admin/layout.tsx | 21304 / 6147 | 25902 / 7151 | 4598 |
+| src/screens/admin/settings.tsx | 33255 / 11617 | 47112 / 15518 | 13857 |
+| src/screens/account/dashboard.tsx | 7208 / 2150 | 6340 / 1940 | -868 |
+| src/screens/account/layout.tsx | 7520 / 2581 | 7575 / 2599 | 55 |
 
 ## Local load samples
 
@@ -36,26 +36,51 @@ Production Vite manifest, bytes on disk and deterministic gzip level 6; route ch
 
 | Width / route | DCL ms before → after | Ready ms before → after | Subresource bytes before → after | Requests before → after |
 | --- | ---: | ---: | ---: | ---: |
-| 1280 / admin | 406.3 → 347.3 | 1127.08 → 1153.93 | 1298247 → 1335679 | 75 → 83 |
-| 1280 / admin/settings?section=appearance | 251 → 320.3 | 1016.54 → 1134.86 | 1367394 → 1429854 | 86 → 98 |
-| 1280 / admin/settings?section=adminAppearance | 244.8 → 280.1 | 1044.22 → 1129.26 | 1367394 → 1429854 | 86 → 98 |
-| 1280 / account | 248.9 → 275.8 | 886.47 → 942.93 | 1248222 → 1225895 | 60 → 61 |
-| 1280 / contact | 286 → 264.8 | 833.01 → 842.16 | 1472254 → 1448180 | 63 → 63 |
-| 1280 / auth/login | 241.9 → 214.1 | 798.69 → 768.71 | 1269466 → 1246672 | 56 → 57 |
-| 1280 /  | 268.6 → 285.5 | 828.34 → 853.15 | 1472254 → 1448180 | 63 → 63 |
-| 375 / admin | 255 → 277.4 | 963.41 → 1031.38 | 1298247 → 1335679 | 75 → 83 |
-| 375 / admin/settings?section=appearance | 224.1 → 227.6 | 1019.43 → 1047.97 | 1367394 → 1429854 | 86 → 98 |
-| 375 / admin/settings?section=adminAppearance | 268 → 244.6 | 1082.59 → 1097.19 | 1367394 → 1429854 | 86 → 98 |
-| 375 / account | 303.9 → 238.4 | 928.35 → 882.21 | 1248222 → 1210243 | 60 → 60 |
-| 375 / contact | 271.1 → 242.9 | 817.39 → 837.15 | 1448070 → 1432528 | 62 → 62 |
-| 375 / auth/login | 252.4 → 220.5 | 794.51 → 761.37 | 1245282 → 1231020 | 55 → 56 |
-| 375 /  | 286.3 → 256.9 | 853.43 → 821.81 | 1472254 → 1448180 | 63 → 63 |
+| 1280 / admin | 273.5 → 295.1 | 968.66 → 1019.36 | 1298247 → 1335991 | 75 → 83 |
+| 1280 / admin/settings?section=appearance | 209.5 → 221.1 | 984.6 → 1072.21 | 1367394 → 1441270 | 86 → 99 |
+| 1280 / admin/settings?section=adminAppearance | 226.7 → 210.8 | 1002.81 → 1066.35 | 1367394 → 1441270 | 86 → 99 |
+| 1280 / account | 239.5 → 243.1 | 884.28 → 890.76 | 1248222 → 1226207 | 60 → 61 |
+| 1280 / contact | 237.2 → 254 | 800.4 → 817.67 | 1472254 → 1448492 | 63 → 63 |
+| 1280 / auth/login | 271.3 → 294.6 | 851.54 → 840.27 | 1269466 → 1246984 | 56 → 57 |
+| 1280 /  | 265.8 → 275.9 | 849.2 → 843.93 | 1472254 → 1448492 | 63 → 63 |
+| 375 / admin | 245.4 → 301.9 | 969.95 → 971.75 | 1298247 → 1335991 | 75 → 83 |
+| 375 / admin/settings?section=appearance | 246.8 → 212.2 | 1036.2 → 1092.92 | 1367394 → 1441270 | 86 → 99 |
+| 375 / admin/settings?section=adminAppearance | 173.2 → 247.6 | 995.83 → 1136.06 | 1367394 → 1441270 | 86 → 99 |
+| 375 / account | 258.4 → 230 | 918.99 → 874.25 | 1248222 → 1210555 | 60 → 60 |
+| 375 / contact | 218.9 → 214.7 | 787.97 → 797.73 | 1448070 → 1432840 | 62 → 62 |
+| 375 / auth/login | 234 → 240 | 772.76 → 779.1 | 1245282 → 1231332 | 55 → 56 |
+| 375 /  | 339.8 → 334.1 | 957.33 → 908.43 | 1472254 → 1448492 | 63 → 63 |
 
 The settings route adds the actual generator, catalog, scoped preview and independent settings controls; dashboard route JS is smaller. Shared CSS decreases. Locally served fonts remain part of the measured requests. [Computed reference/product geometry](measurements.json) includes all eight product dashboard cells and both widths of all three reference dashboards. Browser/functional/CI acceptance is recorded in the [implementation report](../../adminlte-180.md), not inferred from these images.
 
+## Fixed-fixture dashboard matrix
+
+All eight before/after cells use the unchanged develop build versus the final candidate. These baseline cells were reconstructed from the pinned old build; the original 104-view AR/light baseline was captured before implementation.
+
+| Language / mode / width | Before | After |
+| --- | --- | --- |
+| ar / light / 1280 | [PNG](before/dashboard-ar-light-desktop.png) | [PNG](after/dashboard-ar-light-desktop.png) |
+| ar / light / 375 | [PNG](before/dashboard-ar-light-mobile.png) | [PNG](after/dashboard-ar-light-mobile.png) |
+| ar / dark / 1280 | [PNG](before/dashboard-ar-dark-desktop.png) | [PNG](after/dashboard-ar-dark-desktop.png) |
+| ar / dark / 375 | [PNG](before/dashboard-ar-dark-mobile.png) | [PNG](after/dashboard-ar-dark-mobile.png) |
+| en / light / 1280 | [PNG](before/dashboard-en-light-desktop.png) | [PNG](after/dashboard-en-light-desktop.png) |
+| en / light / 375 | [PNG](before/dashboard-en-light-mobile.png) | [PNG](after/dashboard-en-light-mobile.png) |
+| en / dark / 1280 | [PNG](before/dashboard-en-dark-desktop.png) | [PNG](after/dashboard-en-dark-desktop.png) |
+| en / dark / 375 | [PNG](before/dashboard-en-dark-mobile.png) | [PNG](after/dashboard-en-dark-mobile.png) |
+
+## Interactive state captures
+
+| State | EN light / 1280 | AR dark / 375 |
+| --- | --- | --- |
+| User dropdown | [PNG](after/dashboard-menu-en-light-desktop.png) | [PNG](after/dashboard-menu-ar-dark-mobile.png) |
+| Preview tooltip | [PNG](after/appearance-tooltip-en-light-desktop.png) | [PNG](after/appearance-tooltip-ar-dark-mobile.png) |
+| Preview dialog | [PNG](after/appearance-dialog-en-light-desktop.png) | [PNG](after/appearance-dialog-ar-dark-mobile.png) |
+
+Additional tooltip pairs: [EN dark / 1280](after/appearance-tooltip-en-dark-desktop.png), [AR light / 375](after/appearance-tooltip-ar-light-mobile.png). These are actual body/iframe portals using shared React components; preview actions are local.
+
 ## Arabic platform tour selections
 
-Original develop captures were taken before implementation. Candidate captures are from the completed AR/light/1280 105-view tour, client 551b17f. These intentionally exercise the tour's custom rose palette in both independent scopes, rather than the default blue shown above. They use independently generated synthetic tour fixtures, so dynamic timestamps and counts may differ; the fixed-fixture dashboard/load comparison above is the data-controlled comparison.
+Original develop captures were taken before implementation. Candidate captures are from the completed AR/light/1280 105-view tour, client 1753607. These intentionally exercise the tour's custom rose palette in both independent scopes, rather than the default blue shown above. They use independently generated synthetic tour fixtures, so dynamic timestamps and counts may differ; the fixed-fixture dashboard/load comparison above is the data-controlled comparison.
 
 | View | Before | After |
 | --- | --- | --- |
