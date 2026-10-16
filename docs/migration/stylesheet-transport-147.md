@@ -27,8 +27,8 @@ Deterministic browser cases cover a held stylesheet, aborted load, HTTP failure,
 empty CSS, a successful later XHR, and a healthy later navigation. Negative
 cases assert that the readiness check fails rather than suppressing failures.
 
-The affected browser workers record default-mode Chromium NetLog (20 MiB bound
-per worker) under ignored `.migration/e2e/netlog`. CI retains those synthetic
+Browser workers record default-mode Chromium NetLog (20 MiB bound
+per worker process), retaining the original shared browser lifecycle, under ignored `.migration/e2e/netlog`. CI retains those synthetic
 logs with its existing browser artifacts. Browser close flushes each worker's
 file. Use `node tools/test/stylesheet-netlog.mjs <file>` for a redacted event/error
 summary; inspect the linked source IDs in the raw synthetic log to distinguish
@@ -37,13 +37,27 @@ prove causality. Do not run these fixtures against production or real data.
 
 ## Validation in progress
 
-Local build, lint, typecheck, independence and the NetLog summary unit test pass.
-The focused account/deadline/readiness browser suite and full unit/integration
-suite are running on separate isolated MariaDB 10.11.18 databases. Local browser
-is Chromium 154; the pinned Chromium 151 download is denied HTTP 403 even after
-an approved escalation. Node initially is 24.19; Node 24.21 was obtained via npm.
-Infrastructure syntax validation cannot complete locally because nginx is absent.
-Required CI must be tracked on the exact published head; no passing CI claim yet.
+Local build, lint, typecheck, independence, 15 CI-policy/summary tests and all
+1149 unit/integration tests pass. The first focused account/deadline/readiness
+run passed 40/40 in 4.8 minutes on isolated MariaDB 10.11.18. After moving NetLog
+from a browser fixture override into the existing launch configuration (to
+preserve browser lifecycle), the same 40-case suite is being checked again.
+
+A separate bounded probe loaded the real built CSS 80 times in each of 15 fresh
+contexts (1200 stylesheet loads), through synthetic loopback HTTPS. There were
+zero terminal request failures. The retained NetLog contains certificate errors
+but no ERR_TOO_MANY_RETRIES: this does not establish the CI retry cause.
+
+Local browser is Chromium 154; pinned Chromium 151 download is denied HTTP 403
+even after approved escalation and at the official Chrome-for-Testing mirror.
+Node initially is 24.19; Node 24.21 was obtained via npm. Infrastructure checks
+pass with Node 24.21 and an nginx binary extracted from the official nginx:stable
+container, using only relocated temporary directories in the generated local
+configuration. No service was started. CI supplies the canonical environment.
+
+PR #178 is draft. Required CI must be tracked on the exact published head; no
+passing CI claim yet. Neither local success nor a single green CI run resolves
+the intermittent transport cause.
 
 ## Remaining work and review boundary
 
