@@ -68,6 +68,7 @@ class SettingsBody {
   @Allow() "sharing.descriptionAr"?: unknown;
   @Allow() "sharing.descriptionEn"?: unknown;
   @Allow() "appearance.mode"?: unknown;
+  @Allow() "appearance.adminStyle"?: unknown;
   @Allow() "appearance.primaryLight"?: unknown;
   @Allow() "appearance.accentLight"?: unknown;
   @Allow() "appearance.primaryDark"?: unknown;

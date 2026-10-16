@@ -190,3 +190,15 @@ it("serializes a waiting identity save against media deletion", async () => {
     await r.release();
   }
 });
+it("persists administration style through checked settings without resetting the existing appearance keys", async () => {
+  const original = await ops.settings(actor);
+  const old = { ...original.settings };
+  const saved = await ops.updateSettings(actor, { "appearance.adminStyle": "semi-dark", baseRevisions: original.revisions }, true);
+  expect(saved.settings["appearance.adminStyle"]).toBe("semi-dark");
+  const read = await ops.settings(actor);
+  expect(read.settings["appearance.adminStyle"]).toBe("semi-dark");
+  for (const key of Object.keys(old).filter(key => key.startsWith("appearance.") && key !== "appearance.adminStyle")) expect(read.settings[key]).toBe(old[key]);
+  await expect(ops.updateSettings(actor, { "appearance.adminStyle":"colored", baseRevisions:original.revisions }, true)).rejects.toMatchObject({status:409});
+  await expect(ops.updateSettings({ ...actor, roleKey:"client", permissions:[] }, {"appearance.adminStyle":"dark"})).rejects.toMatchObject({status:403});
+  await expect(ops.updateSettings(actor, {"appearance.adminStyle":"invalid"})).rejects.toMatchObject({code:"invalid_settings"});
+});

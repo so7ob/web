@@ -1,4 +1,4 @@
-import { PageHeading } from "@/components/ui/workspace";
+import { PageHeading, PanelHeader } from "@/components/ui/workspace";
 /**
  * لوحة الإدارة الرئيسية: البيانات وتسميات الوقت تأتي من الخادم، مع الحفاظ
  * على العرض الأصلي دون استيراد قاعدة البيانات في المتصفح. كل الأرقام حقيقية.
@@ -36,9 +36,9 @@ interface StatDef {
   href?: string;
 }
 
-/** فئات بطاقات المؤشرات — البطاقة نفسها بلا تغيير بصري، والرابط يضيف حلقة تركيز فقط */
+/** AdminLTE-inspired info boxes retain real metrics and existing deep links. */
 const STAT_CARD_CLASS =
-  "group relative min-w-0 rounded-lg border border-border bg-card p-5 transition-colors hover:border-primary/40 hover:bg-accent/20";
+  "admin-info-box group relative min-w-0 rounded-lg border border-border bg-card p-5 transition-colors hover:border-primary/40 hover:bg-accent/20";
 
 /** تدرجات أشرطة الحالة — نفس عائلات ألوان شارات الحالة */
 const STATUS_BAR: Record<string, string> = {
@@ -206,7 +206,7 @@ export function AdminDashboard({
                     {stat.label}
                   </p>
                   <stat.icon
-                    className="size-4 shrink-0 text-muted-foreground"
+                    className="admin-info-icon size-4 shrink-0 text-muted-foreground"
                     aria-hidden="true"
                   />
                 </div>
@@ -355,8 +355,8 @@ export function AdminDashboard({
       <div className="grid gap-4 print:block print:space-y-4 lg:grid-cols-2">
         {/* أحدث الطلبات */}
         {access.requests && (
-          <section className="overflow-hidden rounded-lg border border-border bg-card">
-            <div className="flex items-center justify-between gap-2 border-b border-border px-5 py-4">
+          <section className="ds-panel overflow-hidden">
+            <PanelHeader>
               <div className="flex min-w-0 items-center gap-2.5">
                 <span className="flex size-5 shrink-0 items-center justify-center text-muted-foreground">
                   <Inbox className="size-4" aria-hidden="true" />
@@ -372,7 +372,7 @@ export function AdminDashboard({
                 {t.viewAll}
                 <ArrowUpRight className="size-3.5" aria-hidden="true" />
               </Link>
-            </div>
+            </PanelHeader>
             {recentRequests.length === 0 ? (
               <EmptyState icon={Inbox} title={t.noData} />
             ) : (
@@ -413,8 +413,8 @@ export function AdminDashboard({
 
         {/* أحدث الأحداث (سجل التدقيق) */}
         {access.audit && (
-          <section className="overflow-hidden rounded-lg border border-border bg-card">
-            <div className="flex items-center justify-between gap-2 border-b border-border px-5 py-4">
+          <section className="ds-panel overflow-hidden">
+            <PanelHeader>
               <div className="flex min-w-0 items-center gap-2.5">
                 <span className="flex size-5 shrink-0 items-center justify-center text-muted-foreground">
                   <ScrollText className="size-4" aria-hidden="true" />
@@ -430,7 +430,7 @@ export function AdminDashboard({
                 {t.viewAll}
                 <ArrowUpRight className="size-3.5" aria-hidden="true" />
               </Link>
-            </div>
+            </PanelHeader>
             {recentAudit.length === 0 ? (
               <EmptyState icon={Inbox} title={t.noData} />
             ) : (

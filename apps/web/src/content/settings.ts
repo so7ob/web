@@ -29,6 +29,7 @@ export const settingLabels: Record<string, [string, string]> = {
   ],
   "identity.icon": ["أيقونة الموقع (PNG)", "Site icon (PNG)"],
   "appearance.mode": ["وضع العرض الافتراضي", "Default color mode"],
+  "appearance.adminStyle": ["نمط الإدارة", "Administration style"],
   "appearance.primaryLight": ["اللون الأساسي — فاتح", "Primary color — light"],
   "appearance.accentLight": [
     "اللون المساند — فاتح",
@@ -75,6 +76,12 @@ export const settingLabels: Record<string, [string, string]> = {
   ],
 };
 export const settingOptions: Record<string, Array<[string, string, string]>> = {
+  "appearance.adminStyle": [
+    ["light", "فاتح", "Light"],
+    ["semi-dark", "شريط جانبي داكن", "Semi-dark sidebar"],
+    ["dark", "داكن كامل", "Full dark"],
+    ["colored", "ترويسة ملوّنة وشريط داكن", "Colored header & dark sidebar"],
+  ],
   "appearance.mode": [
     ["light", "فاتح", "Light"],
     ["dark", "داكن", "Dark"],

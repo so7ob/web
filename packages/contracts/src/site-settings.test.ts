@@ -9,6 +9,16 @@ import {
   mediaSettingId,
 } from "./site-settings.js";
 describe("site presentation contracts", () => {
+  it("keeps all administration profiles readable with extreme palettes and preserves absent-key defaults", () => {
+    for (const style of ["light", "semi-dark", "dark", "colored"])
+      for (const mode of ["light", "dark"] as const)
+        for (const primary of ["#ffffff", "#000000", "#ffff00", "#ff00ff", "#00ff00", "#0369a1"])
+          expect(paletteChecks({"appearance.adminStyle": style, "appearance.primaryLight": primary, "appearance.primaryDark": primary}, mode).every(check => check.ratio >= check.minimum)).toBe(true);
+    expect(appearanceTokens({}, "light")).toEqual(appearanceTokens({"appearance.adminStyle":"light"}, "light"));
+    expect(validateSiteSettings({"appearance.adminStyle":"untrusted"})).toHaveProperty("appearance.adminStyle", "choice");
+    for (const style of ["light", "semi-dark", "dark", "colored"])
+      expect(validateSiteSettings({"appearance.adminStyle":style})).toEqual({});
+  });
   it("derives accessible paired palettes including extreme custom colors", () => {
     for (const palette of Object.values(PALETTE_PRESETS))
       for (const mode of ["light", "dark"] as const) {

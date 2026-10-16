@@ -1,3 +1,4 @@
+import { AppearancePreview } from "./appearance-preview";
 import { NativeSelect } from "@/components/ui/native-select";
 import { Panel, PageHeading, Toolbar } from "@/components/ui/workspace";
 import { siteConfig } from "@/config/site";
@@ -208,7 +209,11 @@ export function SettingsClient({ me, locale }: { me: Me; locale: Locale }) {
     settingsErrors[code]?.[li] ??
     (ar ? "تحقق من القيمة المدخلة" : "Check the entered value");
   const set = (key: string, value: string) => {
-    setForm((p) => ({ ...p, [key]: value }));
+    if (key === "appearance.adminStyle") {
+      const mode = value === "dark" ? "dark" : "light";
+      setForm((p) => ({ ...p, [key]: value, "appearance.mode": mode }));
+      setPreviewMode(mode);
+    } else setForm((p) => ({ ...p, [key]: value }));
     setErrors((p) => {
       const n = { ...p };
       delete n[key];
@@ -529,6 +534,7 @@ export function SettingsClient({ me, locale }: { me: Me; locale: Locale }) {
             <Button
               className="min-h-11"
               onClick={() => void save()}
+              aria-busy={saving}
               disabled={
                 saving ||
                 !currentDirty ||
@@ -722,6 +728,9 @@ export function SettingsClient({ me, locale }: { me: Me; locale: Locale }) {
                   </div>
                 </div>
               )}
+              {section === "appearance" && <p className="mb-4 text-sm text-muted-foreground">
+                {ar ? "اختيار النمط يغيّر نمط الإدارة ووضع العرض الافتراضي في هذه المسودة فقط. تبقى الألوان والخطوط والكثافة، ويبقى اختيار الزائر الشخصي لوضع العرض أسبق من الافتراضي." : "Choosing a style changes administration chrome and default color mode in this draft only. Colors, fonts and density are retained; a visitor’s personal color-mode choice still takes precedence."}
+              </p>}
               <div className="grid gap-5 sm:grid-cols-2">
                 {SECTION_KEYS[section].map(field)}
               </div>
@@ -843,7 +852,7 @@ export function SettingsClient({ me, locale }: { me: Me; locale: Locale }) {
                           : "Dark"}</option>
                   </NativeSelect>
                 </div>
-                <iframe
+                {section === "appearance" ? <AppearancePreview settings={form} locale={previewLocale} mode={previewMode} title={ar ? "معاينة الإعدادات" : "Settings preview"} /> : <iframe
                   title={ar ? "معاينة الإعدادات" : "Settings preview"}
                   sandbox="allow-same-origin"
                   srcDoc={previewHtml(
@@ -853,7 +862,7 @@ export function SettingsClient({ me, locale }: { me: Me; locale: Locale }) {
                     section,
                   )}
                   className="h-[560px] w-full rounded-lg border bg-background"
-                />
+                />}
                 <p className="text-xs text-muted-foreground">
                   {ar
                     ? "بيانات نموذجية؛ لا تُرسل أي طلبات من المعاينة."
