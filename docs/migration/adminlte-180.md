@@ -26,7 +26,7 @@ Reference: AdminLTE **v4.10.1**, annotated tag `3f819c27b3b8d9cf6c446281465dd3b0
 | Badge/feedback/loading | badges / alerts / callout / placeholders | Mixed pill geometry and old palette | Shared semantic status pairs and radius; existing local error/recovery behavior retained | Invalid/disabled/busy examples and functional negative cases |
 | Conversations/history | direct-chat / timeline | Rounded inverse bubbles and separate narrow timelines | Shared direct-chat surfaces and logical-direction Timeline primitives | Request/inquiry/account journeys and screenshots |
 | Workflow/audit/media/CMS tools | Card + toolbar + form/table/tab composition | Specialized layouts retained earlier surfaces | Apply common card/field/tab/overlay language while keeping their business editors and state | Existing populated workflow, audit, IAM, media and editor suites |
-| Public/auth/account/error | Content header/card/callout/form composition | Mostly untouched by #176; large decorative surfaces | Common typography/cards/sections, simpler hero/service/CTA/footer; identity/content hierarchy retained | 104-view tour, 31 published block types, auth/account/tracking checks |
+| Public/auth/account/error | Content header/card/callout/form composition | Mostly untouched by #176; large decorative surfaces | Common typography/cards/sections, simpler hero/service/CTA/footer; identity/content hierarchy retained | 105-view tour, 31 published block types, auth/account/tracking checks |
 | Draft page preview | Content canvas + toolbar | Negative margins assumed old shell padding; fixed pill bar | Contained canvas and normal-flow toolbar; no covering or page overflow | Desktop/mobile/device-preview tour |
 | Appearance | generate/theme.html | Four profiles and a partial sample | 29 presets, both source palettes (14/18), independent sidebar/navbar/footer backgrounds, gradients and modes, actual React sample | Every preset through draft controls, persistence/revert/no-mutation, contrast and existing system/conflict tests |
 
@@ -91,7 +91,13 @@ Additional observed verification and fixes before the final candidate:
 
 - The first full split-theme unit run at `551b17f` reported 1153 passed and one genuine compatibility-validation failure: an old presentation key remained accepted by the API but its validation error was filtered after its UI control moved sections. Include submitted keys themselves in the validated error set as well as related-section keys. The unchanged five-case settings integration suite then passed, including the invalid-value and permission negative cases. No validation assertion was weakened.
 
-Final source SHA, full checks, CI and reviewed visual/bundle results: **pending candidate verification/publication**. No pending result is claimed as passed. [Evidence index](evidence/adminlte-180/README.md).
+- CI at `484487d2d981958244adfd040a1f459eca7831f5` passed all actual browser jobs (**570 cases**) and rejected incomplete accounting: four new scope-independence journeys had no design-cell prefix. Register their cross-mode journeys in each locale's light cell using the existing convention. Discovery then accounts for all **574** cases exactly once; the unchanged aggregate gate must still verify the actual final run. No case or rule was dropped.
+
+- User-reported local preview error `23bfa7f1-3214-435b-8622-9d38bdbe3632`: PATCH checked settings returned 400 for baseRevisions from the still-running **e8d0f6c** backend while Vite served the new interface. Confirmed local development on loopback port 3108, with only the two new appearance migrations pending. Apply those explicit migrations and restart the preview backend; compare unrelated settings before/after in memory (unchanged), verify schema and readiness, and keep actual development data out of committed evidence. This is a local development operation, not production migration. Backend/shared-contract changes require a matching rebuild/restart alongside frontend HMR.
+
+- Visual review of dark mode exposed a solid-primary Small Box using dark link emphasis. Give metrics the chosen solid primaryLight in both modes, as Bootstrap does; preserve readable link/action emphasis. The existing default/custom token test now asserts both mode pairs; eight geometry cases also assert the actual blue/white DOM colors. Full unit/integration verification after this correction: **1154 tests in 71 files passed**.
+
+Final source SHA, remaining full checks, CI and refreshed visual/bundle results: **pending candidate verification/publication**. No pending result is claimed as passed. [Evidence index](evidence/adminlte-180/README.md).
 
 ## Limits, risks and rollback
 
