@@ -41,6 +41,8 @@ for (const locale of ['ar', 'en'] as const) for (const mode of ['light', 'dark']
       await page.goto(`/${locale}/admin/settings?section=appearance`);
       await ready.wait();
       const preview = page.frameLocator('iframe');
+      await page.getByRole('combobox', { name: locale === 'ar' ? 'وضع المعاينة' : 'Preview color mode', exact: true }).selectOption(mode);
+      await expect(preview.locator('html')).toHaveAttribute('data-color-mode', mode);
       await expect(preview.locator('[data-slot="panel"]').first()).toHaveCSS('border-radius', '6px');
       page.on('request', request => { if (['POST','PATCH','DELETE'].includes(request.method())) mutations.push(new URL(request.url()).pathname); });
       const search = preview.getByRole('button', { name: locale === 'ar' ? 'بحث' : 'Search', exact: true });
