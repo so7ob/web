@@ -148,8 +148,23 @@ for (const locale of ["ar", "en"] as const) {
         const preview = await page
           .getByRole("complementary", { name: tm.preview })
           .boundingBox();
-        const header = await page.locator("header.sticky").boundingBox();
-        expect(preview!.y).toBeGreaterThanOrEqual(header!.y + header!.height);
+        const header = await page.locator("header.admin-topbar").boundingBox();
+        // The pinned AdminLTE layout keeps the navbar in normal flow. The
+        // preview must stay in the visible viewport after that header scrolls.
+        expect(preview!.y).toBeGreaterThanOrEqual(
+          Math.max(0, header!.y + header!.height),
+        );
+        await expect(page.locator("#menu-preview-title")).toBeInViewport();
+        expect(
+          await page.locator("#menu-preview-title").evaluate((node) => {
+            const box = node.getBoundingClientRect();
+            const top = document.elementFromPoint(
+              box.x + box.width / 2,
+              box.y + box.height / 2,
+            );
+            return top === node || node.contains(top);
+          }),
+        ).toBe(true);
       }
 
       expect(

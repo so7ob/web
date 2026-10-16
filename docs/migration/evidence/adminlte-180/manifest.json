@@ -1,0 +1,558 @@
+{
+  "reference": "e13df78a4d0c287e5fa57308e293f63e44e9dd0f",
+  "baseline": "e8d0f6cf7367d8732abaa179a1c118010cd86f5e",
+  "clientCandidate": "551b17f7c4378a3fb1428ff49fb87c2f33650421",
+  "method": "Native Playwright full-page PNGs, unchanged pixels. Synthetic data only. Actual document height is recorded per PNG. Viewports match by comparison pair.",
+  "files": [
+    {
+      "file": "before/admin-en-light-desktop.png",
+      "source": "e8d0f6cf7367d8732abaa179a1c118010cd86f5e",
+      "sha256": "ed5d0c88ecd524dae9419caf3f03c7f3dc4804ec77c733d368861b943b6d354a",
+      "bytes": 165569,
+      "width": 1280,
+      "height": 1533,
+      "viewport": "1280x900",
+      "locale": "en",
+      "mode": "light"
+    },
+    {
+      "file": "before/admin-en-light-mobile.png",
+      "source": "e8d0f6cf7367d8732abaa179a1c118010cd86f5e",
+      "sha256": "03615c7fa644dbfbaac96454879c0feb08b2fcfa831b7761506cbde1211bdd08",
+      "bytes": 137175,
+      "width": 375,
+      "height": 2836,
+      "viewport": "375x812",
+      "locale": "en",
+      "mode": "light"
+    },
+    {
+      "file": "before/admin-settings-appearance-en-light-desktop.png",
+      "source": "e8d0f6cf7367d8732abaa179a1c118010cd86f5e",
+      "sha256": "96ccde65b62717482553995c17fe0ce8951e1dd2703c34bf993df62ba34e2244",
+      "bytes": 152029,
+      "width": 1280,
+      "height": 1337,
+      "viewport": "1280x900",
+      "locale": "en",
+      "mode": "light"
+    },
+    {
+      "file": "before/admin-settings-appearance-en-light-mobile.png",
+      "source": "e8d0f6cf7367d8732abaa179a1c118010cd86f5e",
+      "sha256": "820fc77940b244bf2bdbf9d9dac125087003bbdf5d422a6a5b3746b7d84a0350",
+      "bytes": 124728,
+      "width": 375,
+      "height": 2908,
+      "viewport": "375x812",
+      "locale": "en",
+      "mode": "light"
+    },
+    {
+      "file": "before/admin-settings-adminAppearance-en-light-desktop.png",
+      "source": "e8d0f6cf7367d8732abaa179a1c118010cd86f5e",
+      "sha256": "96ccde65b62717482553995c17fe0ce8951e1dd2703c34bf993df62ba34e2244",
+      "bytes": 152029,
+      "width": 1280,
+      "height": 1337,
+      "viewport": "1280x900",
+      "locale": "en",
+      "mode": "light",
+      "note": "Before: the existing combined appearance tab."
+    },
+    {
+      "file": "before/admin-settings-adminAppearance-en-light-mobile.png",
+      "source": "e8d0f6cf7367d8732abaa179a1c118010cd86f5e",
+      "sha256": "820fc77940b244bf2bdbf9d9dac125087003bbdf5d422a6a5b3746b7d84a0350",
+      "bytes": 124728,
+      "width": 375,
+      "height": 2908,
+      "viewport": "375x812",
+      "locale": "en",
+      "mode": "light",
+      "note": "Before: the existing combined appearance tab."
+    },
+    {
+      "file": "before/account-en-light-desktop.png",
+      "source": "e8d0f6cf7367d8732abaa179a1c118010cd86f5e",
+      "sha256": "70f155ee5b90e17ae596826e8d4f1aa648eea3556ece3f7da458abdedf6225a6",
+      "bytes": 110956,
+      "width": 1280,
+      "height": 1261,
+      "viewport": "1280x900",
+      "locale": "en",
+      "mode": "light"
+    },
+    {
+      "file": "before/account-en-light-mobile.png",
+      "source": "e8d0f6cf7367d8732abaa179a1c118010cd86f5e",
+      "sha256": "fb5990f59b33f2d87a8304ae0fe4f6b691ffe4ab50c7d9857d639a6320415435",
+      "bytes": 84972,
+      "width": 375,
+      "height": 2192,
+      "viewport": "375x812",
+      "locale": "en",
+      "mode": "light"
+    },
+    {
+      "file": "before/contact-en-light-desktop.png",
+      "source": "e8d0f6cf7367d8732abaa179a1c118010cd86f5e",
+      "sha256": "8aadb791e99271e4f102dba46ae3632be8e81335ccc033a4c176861783ed325d",
+      "bytes": 247834,
+      "width": 1280,
+      "height": 2383,
+      "viewport": "1280x900",
+      "locale": "en",
+      "mode": "light"
+    },
+    {
+      "file": "before/contact-en-light-mobile.png",
+      "source": "e8d0f6cf7367d8732abaa179a1c118010cd86f5e",
+      "sha256": "21565790a62db2d5cf7ba481a8edb1e826549ade90bfdbbaa211ea973135d354",
+      "bytes": 220217,
+      "width": 375,
+      "height": 4424,
+      "viewport": "375x812",
+      "locale": "en",
+      "mode": "light"
+    },
+    {
+      "file": "before/auth-login-en-light-desktop.png",
+      "source": "e8d0f6cf7367d8732abaa179a1c118010cd86f5e",
+      "sha256": "be306fe95f642d9561369e888d82b6a0ff7f0d0dde75da2e4addb626fe66aaac",
+      "bytes": 109878,
+      "width": 1280,
+      "height": 1261,
+      "viewport": "1280x900",
+      "locale": "en",
+      "mode": "light"
+    },
+    {
+      "file": "before/auth-login-en-light-mobile.png",
+      "source": "e8d0f6cf7367d8732abaa179a1c118010cd86f5e",
+      "sha256": "282297ab9667b28540735415610f071743375bccd78f3f37b2190b62d74c8ba0",
+      "bytes": 90803,
+      "width": 375,
+      "height": 1732,
+      "viewport": "375x812",
+      "locale": "en",
+      "mode": "light"
+    },
+    {
+      "file": "before/home-en-light-desktop.png",
+      "source": "e8d0f6cf7367d8732abaa179a1c118010cd86f5e",
+      "sha256": "a8c3a2951e8b679b22643d150c2717e144bf8c07e05bef2ea8d075178aee8005",
+      "bytes": 623624,
+      "width": 1280,
+      "height": 5877,
+      "viewport": "1280x900",
+      "locale": "en",
+      "mode": "light"
+    },
+    {
+      "file": "before/home-en-light-mobile.png",
+      "source": "e8d0f6cf7367d8732abaa179a1c118010cd86f5e",
+      "sha256": "f79f92f564afa023288787ba1043b9e36939d100914c13dd3243498071be9f8e",
+      "bytes": 641357,
+      "width": 375,
+      "height": 10247,
+      "viewport": "375x812",
+      "locale": "en",
+      "mode": "light"
+    },
+    {
+      "file": "after/admin-en-light-desktop.png",
+      "source": "551b17f7c4378a3fb1428ff49fb87c2f33650421",
+      "sha256": "6fe900ee4e6a77adfbe0a1ecc52d7110d993cf831873182457212ca9f3f2e9cd",
+      "bytes": 192027,
+      "width": 1280,
+      "height": 1685,
+      "viewport": "1280x900",
+      "locale": "en",
+      "mode": "light"
+    },
+    {
+      "file": "after/admin-en-light-mobile.png",
+      "source": "551b17f7c4378a3fb1428ff49fb87c2f33650421",
+      "sha256": "e05d3fb381435bf0c4c7ee71cdfcbe68d2fa49bd61de346b79a0f503e7d1cde3",
+      "bytes": 145848,
+      "width": 375,
+      "height": 2824,
+      "viewport": "375x812",
+      "locale": "en",
+      "mode": "light"
+    },
+    {
+      "file": "after/admin-settings-appearance-en-light-desktop.png",
+      "source": "551b17f7c4378a3fb1428ff49fb87c2f33650421",
+      "sha256": "f650876fc5a3d0a9f01503bdfc91f5070c348899650e67068f17c0d39c508f8e",
+      "bytes": 151657,
+      "width": 1280,
+      "height": 1249,
+      "viewport": "1280x900",
+      "locale": "en",
+      "mode": "light"
+    },
+    {
+      "file": "after/admin-settings-appearance-en-light-mobile.png",
+      "source": "551b17f7c4378a3fb1428ff49fb87c2f33650421",
+      "sha256": "c6da5dd4718e4569f9b29b0fd4066d5ace5996ada0e538a96512424855dc9ef9",
+      "bytes": 119473,
+      "width": 375,
+      "height": 2735,
+      "viewport": "375x812",
+      "locale": "en",
+      "mode": "light"
+    },
+    {
+      "file": "after/admin-settings-adminAppearance-en-light-desktop.png",
+      "source": "551b17f7c4378a3fb1428ff49fb87c2f33650421",
+      "sha256": "99b1d346be25e4cc27f5e16a29b775ce2d45915299e3fa30ba76bf521b26795b",
+      "bytes": 246310,
+      "width": 1280,
+      "height": 2932,
+      "viewport": "1280x900",
+      "locale": "en",
+      "mode": "light"
+    },
+    {
+      "file": "after/admin-settings-adminAppearance-en-light-mobile.png",
+      "source": "551b17f7c4378a3fb1428ff49fb87c2f33650421",
+      "sha256": "86e2aa7eadcb477de451a5033820f3a462a8da30c4ba0621cfb81a6e6c96c92b",
+      "bytes": 221665,
+      "width": 375,
+      "height": 5272,
+      "viewport": "375x812",
+      "locale": "en",
+      "mode": "light"
+    },
+    {
+      "file": "after/account-en-light-desktop.png",
+      "source": "551b17f7c4378a3fb1428ff49fb87c2f33650421",
+      "sha256": "02b5c710f6fd22b51d542739d5d908f5638cfaa094091d02ad3a96e13315fece",
+      "bytes": 111034,
+      "width": 1280,
+      "height": 1112,
+      "viewport": "1280x900",
+      "locale": "en",
+      "mode": "light"
+    },
+    {
+      "file": "after/account-en-light-mobile.png",
+      "source": "551b17f7c4378a3fb1428ff49fb87c2f33650421",
+      "sha256": "0d3322bbd8bd372234a74f9e42be345a92ca6cb75ce5f2420589811beec5220d",
+      "bytes": 89181,
+      "width": 375,
+      "height": 2180,
+      "viewport": "375x812",
+      "locale": "en",
+      "mode": "light"
+    },
+    {
+      "file": "after/contact-en-light-desktop.png",
+      "source": "551b17f7c4378a3fb1428ff49fb87c2f33650421",
+      "sha256": "66fd3cbf752b0fa209c0c5f6d5c4fbdd6334131053b4e0d94a7ccd80c427d886",
+      "bytes": 176498,
+      "width": 1280,
+      "height": 1921,
+      "viewport": "1280x900",
+      "locale": "en",
+      "mode": "light"
+    },
+    {
+      "file": "after/contact-en-light-mobile.png",
+      "source": "551b17f7c4378a3fb1428ff49fb87c2f33650421",
+      "sha256": "c7c3ed3578617248d1b90187fc70eeee597298dab3ecb0c60e348a19fbd49097",
+      "bytes": 162371,
+      "width": 375,
+      "height": 3955,
+      "viewport": "375x812",
+      "locale": "en",
+      "mode": "light"
+    },
+    {
+      "file": "after/auth-login-en-light-desktop.png",
+      "source": "551b17f7c4378a3fb1428ff49fb87c2f33650421",
+      "sha256": "24b142241e7a6f93de6530ebe6fe5c370b97a016eb6f415a8a4175683ddcc0b6",
+      "bytes": 71303,
+      "width": 1280,
+      "height": 1157,
+      "viewport": "1280x900",
+      "locale": "en",
+      "mode": "light"
+    },
+    {
+      "file": "after/auth-login-en-light-mobile.png",
+      "source": "551b17f7c4378a3fb1428ff49fb87c2f33650421",
+      "sha256": "e61373095aae809d89ce7ad2af90c07cacde27b903c261980010e9f77dfa3783",
+      "bytes": 60818,
+      "width": 375,
+      "height": 1613,
+      "viewport": "375x812",
+      "locale": "en",
+      "mode": "light"
+    },
+    {
+      "file": "after/home-en-light-desktop.png",
+      "source": "551b17f7c4378a3fb1428ff49fb87c2f33650421",
+      "sha256": "06014991b75099407c91ad14d76fde3e838928e329dd6163ec7f9adc149a24d7",
+      "bytes": 393632,
+      "width": 1280,
+      "height": 4382,
+      "viewport": "1280x900",
+      "locale": "en",
+      "mode": "light"
+    },
+    {
+      "file": "after/home-en-light-mobile.png",
+      "source": "551b17f7c4378a3fb1428ff49fb87c2f33650421",
+      "sha256": "709491d7726c6718c1ae6bd8d0c1b72a98b7b1f9e100329f1d8dfec38626c01e",
+      "bytes": 395505,
+      "width": 375,
+      "height": 8677,
+      "viewport": "375x812",
+      "locale": "en",
+      "mode": "light"
+    },
+    {
+      "file": "after/dashboard-ar-dark-desktop.png",
+      "source": "551b17f7c4378a3fb1428ff49fb87c2f33650421",
+      "sha256": "1ca23502d4dc992d04eed1b7c4d60ef4ddc19200eacb3b38e9a4ccfbe6587789",
+      "bytes": 190582,
+      "width": 1280,
+      "height": 1685
+    },
+    {
+      "file": "after/dashboard-ar-dark-mobile.png",
+      "source": "551b17f7c4378a3fb1428ff49fb87c2f33650421",
+      "sha256": "ee06174f18fd33a5bed53d4d60b1f96bc5cf1f7b051aa8a033cf4424ae536594",
+      "bytes": 161623,
+      "width": 375,
+      "height": 3466
+    },
+    {
+      "file": "after/dashboard-ar-light-desktop.png",
+      "source": "551b17f7c4378a3fb1428ff49fb87c2f33650421",
+      "sha256": "3fd3735308fa0bb857feaedce49c3949d151c7137417a14cf98c61bdfad5438e",
+      "bytes": 188613,
+      "width": 1280,
+      "height": 1685
+    },
+    {
+      "file": "after/dashboard-ar-light-mobile.png",
+      "source": "551b17f7c4378a3fb1428ff49fb87c2f33650421",
+      "sha256": "a22f2c115159909c34a06368512282bd87ddc9eb0ac7a2b2ebaefdad9a795abf",
+      "bytes": 159404,
+      "width": 375,
+      "height": 3466
+    },
+    {
+      "file": "after/dashboard-designed-gradient-indigo-desktop.png",
+      "source": "551b17f7c4378a3fb1428ff49fb87c2f33650421",
+      "sha256": "0421c5883632d4c0f891d1c94bb40f7cd49f9f5305876f4142a85456aeda8a66",
+      "bytes": 216119,
+      "width": 1280,
+      "height": 1685
+    },
+    {
+      "file": "after/dashboard-designed-gradient-indigo-mobile.png",
+      "source": "551b17f7c4378a3fb1428ff49fb87c2f33650421",
+      "sha256": "86dd4fbc0ffff52099e4eedaa3acdc7d37ff5e9203b2847c9f232fa193b73cfa",
+      "bytes": 178953,
+      "width": 375,
+      "height": 3573
+    },
+    {
+      "file": "after/dashboard-en-dark-desktop.png",
+      "source": "551b17f7c4378a3fb1428ff49fb87c2f33650421",
+      "sha256": "d9e083b2c85c6a09b96f6faba9068b88358b78ba7d23d5a668ae198763fa4a50",
+      "bytes": 204823,
+      "width": 1280,
+      "height": 1685
+    },
+    {
+      "file": "after/dashboard-en-dark-mobile.png",
+      "source": "551b17f7c4378a3fb1428ff49fb87c2f33650421",
+      "sha256": "d1f22aa4f0c85edae1ac76932be2f017c47aac91751430bbcbb7ec31f0ec1de6",
+      "bytes": 177808,
+      "width": 375,
+      "height": 3466
+    },
+    {
+      "file": "after/dashboard-en-light-desktop.png",
+      "source": "551b17f7c4378a3fb1428ff49fb87c2f33650421",
+      "sha256": "f01d244bc89a78e2de5f0565846594fd2b5a7bb8217e9e8c9763e528fafd95c7",
+      "bytes": 202853,
+      "width": 1280,
+      "height": 1685
+    },
+    {
+      "file": "after/dashboard-en-light-mobile.png",
+      "source": "551b17f7c4378a3fb1428ff49fb87c2f33650421",
+      "sha256": "7e1e9508c71ff09cefa5b1608ab43859e23c269f6607f5137cc064cdbb3a86e5",
+      "bytes": 174002,
+      "width": 375,
+      "height": 3466
+    },
+    {
+      "file": "after/dashboard-v3-yellow-light-desktop.png",
+      "source": "551b17f7c4378a3fb1428ff49fb87c2f33650421",
+      "sha256": "098e5c72c183c50ff0e5066ad4fe3eabc801e41dbf7b8652efa1312852f2dbae",
+      "bytes": 209189,
+      "width": 1280,
+      "height": 1685
+    },
+    {
+      "file": "after/dashboard-v3-yellow-light-mobile.png",
+      "source": "551b17f7c4378a3fb1428ff49fb87c2f33650421",
+      "sha256": "c5964758a6742a54645af4f62c78c4fc0be5cf85bc648f33b64836e7e37730f1",
+      "bytes": 184575,
+      "width": 375,
+      "height": 3680
+    },
+    {
+      "file": "reference/dashboard-en-light-desktop.png",
+      "source": "e13df78a4d0c287e5fa57308e293f63e44e9dd0f",
+      "sha256": "b250292b23ea7a803775c23c79123e4de3f297e457a8902e7d755f592e950dd7",
+      "bytes": 201035,
+      "width": 1280,
+      "height": 1161,
+      "viewport": "1280x900"
+    },
+    {
+      "file": "reference/dashboard-en-light-mobile.png",
+      "source": "e13df78a4d0c287e5fa57308e293f63e44e9dd0f",
+      "sha256": "eebafc3b414e770ead2e0df38064bfe05b1c8d40900ae0ac89b5666c606ee4e2",
+      "bytes": 123525,
+      "width": 375,
+      "height": 1771,
+      "viewport": "375x812"
+    },
+    {
+      "file": "reference/dashboard-en-dark-desktop.png",
+      "source": "e13df78a4d0c287e5fa57308e293f63e44e9dd0f",
+      "sha256": "f5be63361dc1759afc9422397e1a4d55e0b409106deb5ac78e8fcd05dcbe4187",
+      "bytes": 201731,
+      "width": 1280,
+      "height": 1161,
+      "viewport": "1280x900"
+    },
+    {
+      "file": "reference/dashboard-en-dark-mobile.png",
+      "source": "e13df78a4d0c287e5fa57308e293f63e44e9dd0f",
+      "sha256": "45b6b20022c018325883c060746567616dea5f620c9e2e4f8f109a79f5dd5426",
+      "bytes": 124078,
+      "width": 375,
+      "height": 1771,
+      "viewport": "375x812"
+    },
+    {
+      "file": "reference/dashboard-info-boxes-en-light-desktop.png",
+      "source": "e13df78a4d0c287e5fa57308e293f63e44e9dd0f",
+      "sha256": "47f45eac77344b7a6a9025e66a14fc83d93c81674fc16fc407419279399f69aa",
+      "bytes": 325337,
+      "width": 1280,
+      "height": 2058,
+      "viewport": "1280x900"
+    },
+    {
+      "file": "reference/dashboard-info-boxes-en-light-mobile.png",
+      "source": "e13df78a4d0c287e5fa57308e293f63e44e9dd0f",
+      "sha256": "7e5ac664e1f3cbd13840a8afe83187944c069808d7555f2a48a6e64fe229f322",
+      "bytes": 281775,
+      "width": 375,
+      "height": 4097,
+      "viewport": "375x812"
+    },
+    {
+      "file": "reference/dashboard-v3-en-light-desktop.png",
+      "source": "e13df78a4d0c287e5fa57308e293f63e44e9dd0f",
+      "sha256": "a107567be6c98c067e32c02cceee18c33432583367d178cde8f3ee6c17092dd2",
+      "bytes": 142071,
+      "width": 1280,
+      "height": 1037,
+      "viewport": "1280x900"
+    },
+    {
+      "file": "reference/dashboard-v3-en-light-mobile.png",
+      "source": "e13df78a4d0c287e5fa57308e293f63e44e9dd0f",
+      "sha256": "07c017fa965d6d7380028730fcce2efd7121777ffc9227f6d4ac34fe4e683d0b",
+      "bytes": 100317,
+      "width": 375,
+      "height": 1941,
+      "viewport": "375x812"
+    },
+    {
+      "file": "reference/theme-generator-en-light-desktop.png",
+      "source": "e13df78a4d0c287e5fa57308e293f63e44e9dd0f",
+      "sha256": "4c03ffdd344b53f1ee9f450aef7bdaf8b2f9bf5ef7d049398729b38ce49e7472",
+      "bytes": 245986,
+      "width": 1280,
+      "height": 2338,
+      "viewport": "1280x900"
+    },
+    {
+      "file": "reference/theme-generator-en-light-mobile.png",
+      "source": "e13df78a4d0c287e5fa57308e293f63e44e9dd0f",
+      "sha256": "ce2c4947c2053da6cb3b6782086af17e50e3554044f573bbdf59ca516b8ca52f",
+      "bytes": 235281,
+      "width": 375,
+      "height": 4246,
+      "viewport": "375x812"
+    },
+    {
+      "file": "reference/theme-designed-gradient-indigo-en-light-desktop.png",
+      "source": "e13df78a4d0c287e5fa57308e293f63e44e9dd0f",
+      "sha256": "ac1dd22c5af324976aee6d717d72998bc0349905fb395715d6b38533a4709c83",
+      "bytes": 260491,
+      "width": 1280,
+      "height": 2338,
+      "viewport": "1280x900"
+    },
+    {
+      "file": "reference/theme-designed-gradient-indigo-en-light-mobile.png",
+      "source": "e13df78a4d0c287e5fa57308e293f63e44e9dd0f",
+      "sha256": "80a509fc6ec20688259d15e7dc4f9e133c82149570b915c52fea2524b69217d1",
+      "bytes": 235041,
+      "width": 375,
+      "height": 4246,
+      "viewport": "375x812"
+    },
+    {
+      "file": "reference/theme-v3-yellow-light-en-light-desktop.png",
+      "source": "e13df78a4d0c287e5fa57308e293f63e44e9dd0f",
+      "sha256": "37d11245956e30618fe4010e36995cce8e9ff75ec2d2dec687bae9bb4364bcc3",
+      "bytes": 226669,
+      "width": 1280,
+      "height": 2027,
+      "viewport": "1280x900"
+    },
+    {
+      "file": "reference/theme-v3-yellow-light-en-light-mobile.png",
+      "source": "e13df78a4d0c287e5fa57308e293f63e44e9dd0f",
+      "sha256": "005e6cbe3599e354d854c72a3de84f97135d7a45dea4ffc467fa831db678917f",
+      "bytes": 213997,
+      "width": 375,
+      "height": 3709,
+      "viewport": "375x812"
+    },
+    {
+      "file": "measurements.json",
+      "source": "551b17f7c4378a3fb1428ff49fb87c2f33650421",
+      "sha256": "9af50ace0133792675384f05588d3d20123ae89da02b0ad41705a54917f8d39a",
+      "bytes": 44198
+    },
+    {
+      "file": "bundles.json",
+      "source": "551b17f7c4378a3fb1428ff49fb87c2f33650421",
+      "sha256": "5b1cfc40eff0af0e007185acd9de49c50740f6f30bc7722d63419aad40eb992d",
+      "bytes": 4617
+    },
+    {
+      "file": "load.json",
+      "source": "551b17f7c4378a3fb1428ff49fb87c2f33650421",
+      "sha256": "4bfc09e1585d5db8b43f3cc6a5fe215ea02637411477cfca38e575c30a7d0029",
+      "bytes": 55050
+    }
+  ]
+}

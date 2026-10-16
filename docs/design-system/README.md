@@ -1,11 +1,11 @@
 # So7ob design system
 
-The public website, account, authentication, tracking, administration and editor share the pinned [AdminLTE 4.10.1 design system](adminlte.md): neutral surfaces, Source Sans 3 / IBM Plex Sans Arabic, compact card compositions and So7ob identity assets. Layout follows the task; shared primitives and tokens determine component styling. Previously stored appearance customizations remain supported.
+The public website, account, authentication, tracking, administration and editor share the pinned [AdminLTE 4.10.1 design system](adminlte.md): neutral surfaces, Source Sans 3 / IBM Plex Sans Arabic, compact card compositions and So7ob identity assets. Layout follows the task; shared primitives and tokens determine component styling. The explicit #180 baseline upgrade replaces earlier appearance choices once; supported options remain available for later deliberate choices. Administration and visitor-facing appearance are configured and saved independently.
 
 ## Sources of truth
 
 - `packages/contracts/src/site-settings.ts`: `appearanceTokens(settings, mode)` supplies the complete semantic palette, geometry, density and motion timings. `APPEARANCE_MOTION` is also available to React animations. Raw palette values belong here.
-- `apps/web/src/lib/appearance.ts`: the same tokens generate SSR CSS, live settings and sandboxed previews. Existing storage keys, public settings and light/dark/system precedence remain compatible.
+- `apps/web/src/lib/appearance.ts`: the same tokens generate SSR CSS, live settings and sandboxed previews. `appearanceForScope` resolves visitor/account/auth/CMS versus administration settings, SSR CSS/fonts and pre-paint mode. Each has its own light/dark/system default and personal storage key; do not synchronize them.
 - `apps/web/src/styles.css`: Tailwind aliases and shared component/layout styles. Do not create another theme provider or a page-specific palette.
 - `apps/web/src/components/ui`: Radix primitives plus workspace compositions. Existing feature modules own fetching, permissions, writes and failure recovery.
 
@@ -57,7 +57,7 @@ Administration headings must use `PageHeading`. Its typed slots keep the title a
 
 Lists use `ListWorkspace` for filters, locally scrolling results, feedback and pagination. Roles and invitations use the same table vocabulary as users and outbox. Diagnostic records retain their expandable details. `Table` already owns scrolling; avoid adding a second decorated container. Use the reference's 16px column headings and body cells, with smaller type only for supplementary metadata.
 
-Section links and content tabs share the reference's bordered tab treatment while keeping distinct link/tab semantics. Settings use horizontal section navigation, an independent preview beside the form, and save/revert/default actions in the heading. No floating save bar covers form fields. Dashboard and account metrics use `InfoBoxContent` with real values and existing deep links. `Timeline` supplies the shared record-history composition.
+Section links and content tabs share the reference's bordered tab treatment while keeping distinct link/tab semantics. Settings use horizontal section navigation, an independent preview beside the form, and save/revert/default actions in the heading. No floating save bar covers form fields. Dashboard headline metrics use colored `SmallBoxContent`, with `InfoBoxContent` for secondary and account metrics with real values and existing deep links. `Timeline` supplies the shared record-history composition.
 
 Administration now follows the explicit [AdminLTE 4.10.1 adaptation](adminlte.md). The previous structure followed the reusable list/form/workspace principle documented by [Frappe Desk](https://docs.frappe.io/framework/user/en/desk). [Odoo's search and filter guidance](https://www.odoo.com/documentation/saas-18.2/applications/essentials/search.html) also informs keeping list tools directly above results. These are adaptations to So7ob's existing React components, permissions, stored theme settings and Arabic/English layouts.
 

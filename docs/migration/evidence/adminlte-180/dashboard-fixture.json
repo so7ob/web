@@ -1,0 +1,154 @@
+[
+  {
+    "variant": "before",
+    "source": "e8d0f6cf7367d8732abaa179a1c118010cd86f5e",
+    "metrics": {
+      "totalUsers": 1,
+      "activeUsers": 1,
+      "pendingUsers": 0,
+      "suspendedUsers": 0,
+      "openRequests": 57,
+      "newRequests": 12,
+      "awaitingInfo": 11,
+      "openInquiries": 0,
+      "publishedPages": 7,
+      "draftPages": 0
+    },
+    "requestsByStatus": [
+      {
+        "status": "new",
+        "count": 12
+      },
+      {
+        "status": "in_review",
+        "count": 11
+      },
+      {
+        "status": "awaiting_info",
+        "count": 11
+      },
+      {
+        "status": "in_progress",
+        "count": 12
+      },
+      {
+        "status": "responded",
+        "count": 11
+      },
+      {
+        "status": "closed",
+        "count": 12
+      },
+      {
+        "status": "cancelled",
+        "count": 12
+      }
+    ],
+    "last7days": [
+      {
+        "date": "2026-10-09",
+        "count": 8
+      },
+      {
+        "date": "2026-10-10",
+        "count": 12
+      },
+      {
+        "date": "2026-10-11",
+        "count": 6
+      },
+      {
+        "date": "2026-10-12",
+        "count": 15
+      },
+      {
+        "date": "2026-10-13",
+        "count": 10
+      },
+      {
+        "date": "2026-10-14",
+        "count": 18
+      },
+      {
+        "date": "2026-10-15",
+        "count": 12
+      }
+    ]
+  },
+  {
+    "variant": "after",
+    "source": "551b17f7c4378a3fb1428ff49fb87c2f33650421",
+    "metrics": {
+      "totalUsers": 1,
+      "activeUsers": 1,
+      "pendingUsers": 0,
+      "suspendedUsers": 0,
+      "openRequests": 57,
+      "newRequests": 12,
+      "awaitingInfo": 11,
+      "openInquiries": 0,
+      "publishedPages": 7,
+      "draftPages": 0
+    },
+    "requestsByStatus": [
+      {
+        "status": "new",
+        "count": 12
+      },
+      {
+        "status": "in_review",
+        "count": 11
+      },
+      {
+        "status": "awaiting_info",
+        "count": 11
+      },
+      {
+        "status": "in_progress",
+        "count": 12
+      },
+      {
+        "status": "responded",
+        "count": 11
+      },
+      {
+        "status": "closed",
+        "count": 12
+      },
+      {
+        "status": "cancelled",
+        "count": 12
+      }
+    ],
+    "last7days": [
+      {
+        "date": "2026-10-09",
+        "count": 8
+      },
+      {
+        "date": "2026-10-10",
+        "count": 12
+      },
+      {
+        "date": "2026-10-11",
+        "count": 6
+      },
+      {
+        "date": "2026-10-12",
+        "count": 15
+      },
+      {
+        "date": "2026-10-13",
+        "count": 10
+      },
+      {
+        "date": "2026-10-14",
+        "count": 18
+      },
+      {
+        "date": "2026-10-15",
+        "count": 12
+      }
+    ]
+  }
+]

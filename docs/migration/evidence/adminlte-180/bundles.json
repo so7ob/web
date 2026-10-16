@@ -1,0 +1,137 @@
+{
+  "baseline": "e8d0f6cf7367d8732abaa179a1c118010cd86f5e",
+  "candidate": "551b17f7c4378a3fb1428ff49fb87c2f33650421",
+  "method": "production Vite client manifest; bytes on disk and deterministic gzip level 6; no sourcemaps; route static imports deduplicated",
+  "variants": {
+    "before": {
+      "entry": {
+        "file": "assets/index-Bs7-TZCh.js",
+        "bytes": 211863,
+        "gzipBytes": 66933,
+        "sha256": "299da06bcbb788324ffb0ed093c4f54b410e2c1ff9c239374449bd80a511eb29"
+      },
+      "css": [
+        {
+          "file": "assets/index-CH9RDN56.css",
+          "bytes": 169442,
+          "gzipBytes": 24566,
+          "sha256": "a2d20ff6364bbd4b7e1e2bf2d1cace0663175e7ba7890dfd2d6e7aecdb7ddf20"
+        }
+      ],
+      "chunks": {
+        "src/screens/admin/dashboard.tsx": {
+          "file": "assets/dashboard-B32G_9JM.js",
+          "bytes": 11116,
+          "gzipBytes": 3278,
+          "sha256": "63547375cae8e806ef26be5d034fc378d22aa125ca409bbc11c32e22daaaf76a"
+        },
+        "src/screens/admin/layout.tsx": {
+          "file": "assets/layout-DusPnKsC.js",
+          "bytes": 21304,
+          "gzipBytes": 6129,
+          "sha256": "6118c2f1cc624994c135ae29391684905e34eff7231419fbe06cb8dbab440750"
+        },
+        "src/screens/admin/settings.tsx": {
+          "file": "assets/settings-jddZqEjL.js",
+          "bytes": 33255,
+          "gzipBytes": 11509,
+          "sha256": "19c3dcb83496cc5209cf3a8a80fc7bdd7dd6317646a808826eddfd99395628a6"
+        },
+        "src/screens/account/dashboard.tsx": {
+          "file": "assets/dashboard-CVEG2XNY.js",
+          "bytes": 7208,
+          "gzipBytes": 2164,
+          "sha256": "f4422999d51f95c4a636cae7773b656a82a6477fa75786efa2fc2845df6e25dd"
+        },
+        "src/screens/account/layout.tsx": {
+          "file": "assets/layout-DujyYkDn.js",
+          "bytes": 7520,
+          "gzipBytes": 2592,
+          "sha256": "703e2d8dd4f0f9eb4276d50b2b840b1834b078c6958159487b1869033e78c8a7"
+        }
+      },
+      "routeStaticClosure": {
+        "src/screens/admin/dashboard.tsx": {
+          "bytes": 868004,
+          "gzipBytes": 257547,
+          "files": 68
+        },
+        "src/screens/admin/settings.tsx": {
+          "bytes": 935782,
+          "gzipBytes": 281268,
+          "files": 78
+        },
+        "src/screens/account/dashboard.tsx": {
+          "bytes": 817979,
+          "gzipBytes": 239789,
+          "files": 53
+        }
+      }
+    },
+    "after": {
+      "entry": {
+        "file": "assets/index-LqwyEFPa.js",
+        "bytes": 212191,
+        "gzipBytes": 67009,
+        "sha256": "d17676e1661584b418de245036ba72715aece6b6024138ba819945c660e508ca"
+      },
+      "css": [
+        {
+          "file": "assets/index-Ba7QkzGr.css",
+          "bytes": 165785,
+          "gzipBytes": 24834,
+          "sha256": "30e5c31ce5dfe2985acb4dfc2f17f1018fef266ce9523ea4171eebdffd9ff479"
+        }
+      ],
+      "chunks": {
+        "src/screens/admin/dashboard.tsx": {
+          "file": "assets/dashboard-Ds9b27GE.js",
+          "bytes": 10723,
+          "gzipBytes": 3502,
+          "sha256": "a7fe8324c0eb90ec3669f73a0a09eb024ad6860bcea47d0c2afda2a86f848a8a"
+        },
+        "src/screens/admin/layout.tsx": {
+          "file": "assets/layout-yxjqZsm8.js",
+          "bytes": 25902,
+          "gzipBytes": 7119,
+          "sha256": "2914b7ca1aa36728129a2954a392f4909783d93b53b2aadfa989af3171ec616a"
+        },
+        "src/screens/admin/settings.tsx": {
+          "file": "assets/settings-BpU3hM2K.js",
+          "bytes": 46963,
+          "gzipBytes": 15369,
+          "sha256": "8fbc7348a74a4140df5615b6526eac4b94fadb4417715b86b1104dd649d6a5f4"
+        },
+        "src/screens/account/dashboard.tsx": {
+          "file": "assets/dashboard-Dt8EWXdI.js",
+          "bytes": 6340,
+          "gzipBytes": 1951,
+          "sha256": "136d4a31a2b1ff171a6721fa433e82e87e2f6d98988d9f8bcde0622bc59e9631"
+        },
+        "src/screens/account/layout.tsx": {
+          "file": "assets/layout-BQ7DoB88.js",
+          "bytes": 7575,
+          "gzipBytes": 2610,
+          "sha256": "1990a26e9dc63143dffac19a641a133125fda24c2b2cb904e20b14df0e43c8ce"
+        }
+      },
+      "routeStaticClosure": {
+        "src/screens/admin/dashboard.tsx": {
+          "bytes": 936680,
+          "gzipBytes": 282900,
+          "files": 76
+        },
+        "src/screens/admin/settings.tsx": {
+          "bytes": 1028767,
+          "gzipBytes": 314975,
+          "files": 90
+        },
+        "src/screens/account/dashboard.tsx": {
+          "bytes": 826896,
+          "gzipBytes": 243543,
+          "files": 54
+        }
+      }
+    }
+  }
+}
