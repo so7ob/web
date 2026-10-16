@@ -2,7 +2,7 @@
 
 [Open the offline comparison viewer](comparison.html). Select a route and viewport for the original screenshots; the dashboard also includes the pinned v1/v2/v3 reference. Images retain their native pixels and can be opened individually. [SHA-256 and dimensions](manifest.json).
 
-Sources: develop `e8d0f6cf7367d8732abaa179a1c118010cd86f5e`; client candidate `1753607e533fc3b65b4c9769b78918706df3ef75`; AdminLTE v4.10.1 `e13df78a4d0c287e5fa57308e293f63e44e9dd0f`. The comparison uses the complete application build including the legacy-settings validation correction and stable dark-mode metric fill. Later commits publish evidence and validation text; exact CI head and compiled revision are recorded in the implementation report. All fixture records, identities, uploads and text are synthetic.
+Sources: develop `e8d0f6cf7367d8732abaa179a1c118010cd86f5e`; client candidate `1753607e533fc3b65b4c9769b78918706df3ef75`; AdminLTE v4.10.1 `e13df78a4d0c287e5fa57308e293f63e44e9dd0f`. The comparison uses the complete application build including the legacy-settings validation correction and stable dark-mode metric fill. Later commits publish evidence and validation text; exact CI head and compiled revision are recorded in the implementation report. All fixture records, identities, uploads and text are synthetic. Final bundle/load measurements use `acd4cf3c2d106d520c153925c55401c08c48ab2b` (140 fresh samples); the later change only restores iframe keyboard tooltips and does not alter the captured visual styles. The native visual/geometry evidence remains explicitly attributed to `1753607e533fc3b65b4c9769b78918706df3ef75`.
 
 ## What to inspect
 
@@ -22,7 +22,7 @@ Production Vite manifest, bytes on disk and Node zlib.gzipSync level 6; route ch
 
 | Asset | Before raw / gzip bytes | After raw / gzip bytes | Raw delta |
 | --- | ---: | ---: | ---: |
-| Entry JS | 211863 / 67019 | 212265 / 67081 | 402 |
+| Entry JS | 211863 / 67019 | 212265 / 67082 | 402 |
 | Application CSS | 169442 / 24599 | 165852 / 24845 | -3590 |
 | src/screens/admin/dashboard.tsx | 11116 / 3287 | 10723 / 3514 | -393 |
 | src/screens/admin/layout.tsx | 21304 / 6147 | 25902 / 7151 | 4598 |
@@ -36,20 +36,20 @@ Production Vite manifest, bytes on disk and Node zlib.gzipSync level 6; route ch
 
 | Width / route | DCL ms before → after | Ready ms before → after | Subresource bytes before → after | Requests before → after |
 | --- | ---: | ---: | ---: | ---: |
-| 1280 / admin | 273.5 → 295.1 | 968.66 → 1019.36 | 1298247 → 1335991 | 75 → 83 |
-| 1280 / admin/settings?section=appearance | 209.5 → 221.1 | 984.6 → 1072.21 | 1367394 → 1441270 | 86 → 99 |
-| 1280 / admin/settings?section=adminAppearance | 226.7 → 210.8 | 1002.81 → 1066.35 | 1367394 → 1441270 | 86 → 99 |
-| 1280 / account | 239.5 → 243.1 | 884.28 → 890.76 | 1248222 → 1226207 | 60 → 61 |
-| 1280 / contact | 237.2 → 254 | 800.4 → 817.67 | 1472254 → 1448492 | 63 → 63 |
-| 1280 / auth/login | 271.3 → 294.6 | 851.54 → 840.27 | 1269466 → 1246984 | 56 → 57 |
-| 1280 /  | 265.8 → 275.9 | 849.2 → 843.93 | 1472254 → 1448492 | 63 → 63 |
-| 375 / admin | 245.4 → 301.9 | 969.95 → 971.75 | 1298247 → 1335991 | 75 → 83 |
-| 375 / admin/settings?section=appearance | 246.8 → 212.2 | 1036.2 → 1092.92 | 1367394 → 1441270 | 86 → 99 |
-| 375 / admin/settings?section=adminAppearance | 173.2 → 247.6 | 995.83 → 1136.06 | 1367394 → 1441270 | 86 → 99 |
-| 375 / account | 258.4 → 230 | 918.99 → 874.25 | 1248222 → 1210555 | 60 → 60 |
-| 375 / contact | 218.9 → 214.7 | 787.97 → 797.73 | 1448070 → 1432840 | 62 → 62 |
-| 375 / auth/login | 234 → 240 | 772.76 → 779.1 | 1245282 → 1231332 | 55 → 56 |
-| 375 /  | 339.8 → 334.1 | 957.33 → 908.43 | 1472254 → 1448492 | 63 → 63 |
+| 1280 / admin | 305.2 → 364.1 | 988.35 → 1127.13 | 1298247 → 1335991 | 75 → 83 |
+| 1280 / admin/settings?section=appearance | 274.1 → 264.2 | 1034.13 → 1156.05 | 1367394 → 1441730 | 86 → 99 |
+| 1280 / admin/settings?section=adminAppearance | 360.5 → 277.5 | 1188.1 → 1219.22 | 1367394 → 1441730 | 86 → 99 |
+| 1280 / account | 275.9 → 314.4 | 951.64 → 999.23 | 1248222 → 1226207 | 60 → 61 |
+| 1280 / contact | 276 → 246.5 | 833.71 → 816.51 | 1472254 → 1448492 | 63 → 63 |
+| 1280 / auth/login | 281.8 → 324.6 | 822.84 → 890.22 | 1269466 → 1246984 | 56 → 57 |
+| 1280 /  | 289.3 → 265.1 | 872.44 → 835.9 | 1472254 → 1448492 | 63 → 63 |
+| 375 / admin | 260.1 → 266.6 | 934.08 → 1017.63 | 1298247 → 1335991 | 75 → 83 |
+| 375 / admin/settings?section=appearance | 254.9 → 284.2 | 1100.82 → 1169.99 | 1367394 → 1441730 | 86 → 99 |
+| 375 / admin/settings?section=adminAppearance | 363.2 → 312.3 | 1173.68 → 1366.11 | 1367394 → 1441730 | 86 → 99 |
+| 375 / account | 276.7 → 244.6 | 936.73 → 928.01 | 1248222 → 1210555 | 60 → 60 |
+| 375 / contact | 518.3 → 411.7 | 1081.37 → 966.81 | 1448070 → 1432840 | 62 → 62 |
+| 375 / auth/login | 544.8 → 621.4 | 1089.53 → 1209.01 | 1245282 → 1231332 | 55 → 56 |
+| 375 /  | 627.9 → 588.5 | 1272.45 → 1221.24 | 1472254 → 1448492 | 63 → 63 |
 
 The settings route adds the actual generator, catalog, scoped preview and independent settings controls; dashboard route JS is smaller. Shared CSS decreases. Locally served fonts remain part of the measured requests. [Computed reference/product geometry](measurements.json) includes all eight product dashboard cells and both widths of all three reference dashboards. Browser/functional/CI acceptance is recorded in the [implementation report](../../adminlte-180.md), not inferred from these images.
 

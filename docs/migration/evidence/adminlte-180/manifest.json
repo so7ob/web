@@ -716,15 +716,15 @@
     },
     {
       "file": "bundles.json",
-      "source": "1753607e533fc3b65b4c9769b78918706df3ef75",
-      "sha256": "a61b63edeaba9c7c4ab619fe955ab5f35d65722b1603eb26c5ef4cc90495241b",
+      "source": "acd4cf3c2d106d520c153925c55401c08c48ab2b",
+      "sha256": "ca1b3b84a6b5e9fc0023f2e82e64857f2716cf610669d8078878baa777ae1c94",
       "bytes": 4691
     },
     {
       "file": "load.json",
-      "source": "1753607e533fc3b65b4c9769b78918706df3ef75",
-      "sha256": "784d7dd0e672dfdabaf446e8e6449af67d4618265083fc56e9d4163fd26b7223",
-      "bytes": 55040
+      "source": "acd4cf3c2d106d520c153925c55401c08c48ab2b",
+      "sha256": "351ab56c087fc9e291725e0ab45b10abef8bebdf744070179c6adf54c869176c",
+      "bytes": 55022
     },
     {
       "file": "before/tour-admin-requests-ar-light-desktop.png",
@@ -936,5 +936,6 @@
       "height": 1181,
       "note": "Final AR/light/1280 tour, custom rose palette in both independent scopes; synthetic fixtures and timestamps differ from baseline."
     }
-  ]
+  ],
+  "measurementCandidate": "acd4cf3c2d106d520c153925c55401c08c48ab2b"
 }

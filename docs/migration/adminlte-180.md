@@ -108,6 +108,10 @@ The new tooltip hover test initially reproduced Radix's module-document pointer-
 
 The local development preview was restarted on this same compiled build after the compatibility repair; readiness passed. Final evidence contains **94 native PNGs**, an offline comparison viewer, verified artifact hashes, eight fixed-fixture dashboard pairs, populated Arabic specialized-page pairs, actual dropdown/tooltip/dialog states, geometry and **140 interleaved load samples**. Raw asset hashes, gzip sizes, import closures and timing limits are in the [evidence index](evidence/adminlte-180/README.md).
 
+Final interaction candidate **acd4cf3c2d106d520c153925c55401c08c48ab2b** additionally fixes an iframe keyboard tooltip regression reproduced after clicking and closing the example dialog. The unchanged parent-document pointer-up listener left Radix's pointer-down flag set; the iframe trigger now owns focus/pointer bookkeeping and preserves caller handlers. All **12** geometry/tooltip/dialog/scope-independence cases passed across both languages, modes and widths, without retries. Lint, typecheck, build, independence, infra, 14 CI-policy checks and 140 fresh load samples passed. The visual styles are unchanged from the explicitly attributed 1753607 captures; final bundle/load files record acd4cf3 separately.
+
+The acd4cf3 full local unit attempt was blocked by host disk capacity: MariaDB reported `Errcode: 28` / no space for its temporary/transaction files. Result: 55 files passed, 16 failed; 1030 tests passed, 2 failed and 122 could not run after setup failures. This does not replace the earlier 1154/1154 pass or establish final acceptance. A later exploratory camera run was also interrupted by the same database write limitation and is not published as completed evidence. Existing native captures and their source metadata remain intact. No unrelated checkout, cache or database was deleted to work around the host limit.
+
 Final PR-head CI: **pending publication and exact-head verification**. No pending result is claimed as passed. [Evidence index](evidence/adminlte-180/README.md).
 
 ## Limits, risks and rollback

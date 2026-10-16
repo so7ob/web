@@ -1,6 +1,6 @@
 {
   "baseline": "e8d0f6cf7367d8732abaa179a1c118010cd86f5e",
-  "candidate": "1753607e533fc3b65b4c9769b78918706df3ef75",
+  "candidate": "acd4cf3c2d106d520c153925c55401c08c48ab2b",
   "method": "production Vite client manifest; bytes on disk and deterministic gzip level 6; no sourcemaps; entry + route static imports/CSS deduplicated; font/image URLs inside CSS excluded from this static closure",
   "variants": {
     "before": {
@@ -70,10 +70,10 @@
     },
     "after": {
       "entry": {
-        "file": "assets/index-CFkrGg1A.js",
+        "file": "assets/index-C8YDB2O0.js",
         "bytes": 212265,
-        "gzipBytes": 67081,
-        "sha256": "8c27cebbcc4791caa7e44318487bbb4d75572f7059a28315fb4741e079b64c65"
+        "gzipBytes": 67082,
+        "sha256": "499adacd738d78fb666dcb6abc6109494d3ccf8ee5d41c6a41b48d60dd9c9f1e"
       },
       "css": [
         {
@@ -97,10 +97,10 @@
           "sha256": "251e9ae80ff6a8093998cb78488fdb3f2cf069df11ba98af589cf2b7dd78ce45"
         },
         "src/screens/admin/settings.tsx": {
-          "file": "assets/settings-gpPkTt74.js",
+          "file": "assets/settings-DkNI8LMU.js",
           "bytes": 47112,
           "gzipBytes": 15518,
-          "sha256": "262400466ec488afca810f2ab579ff4d0255e01c54ef12b20806234e01fe8ac7"
+          "sha256": "d151566dc33efc403f6f4cb445aef5b00f4a2ed0757d07314261ab6e99b63592"
         },
         "src/screens/account/dashboard.tsx": {
           "file": "assets/dashboard-DNbreWEc.js",
@@ -118,17 +118,17 @@
       "routeStaticClosure": {
         "src/screens/admin/dashboard.tsx": {
           "bytes": 936992,
-          "gzipBytes": 283392,
+          "gzipBytes": 283393,
           "files": 76
         },
         "src/screens/admin/settings.tsx": {
-          "bytes": 1039543,
-          "gzipBytes": 319384,
+          "bytes": 1040003,
+          "gzipBytes": 319528,
           "files": 91
         },
         "src/screens/account/dashboard.tsx": {
           "bytes": 827208,
-          "gzipBytes": 243879,
+          "gzipBytes": 243880,
           "files": 54
         }
       }
