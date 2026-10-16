@@ -93,6 +93,7 @@ for (const locale of ['ar', 'en'] as const) for (const mode of ['light', 'dark']
           await page.keyboard.press('Shift');
           await search.focus();
           await expect(search).toBeFocused();
+          expect(await search.evaluate(button => button.matches(':focus-visible'))).toBe(true);
           await expect(search).not.toHaveCSS('box-shadow', 'none');
           expect((await documentAudit(page,true)).violations).toEqual([]);
           await search.hover();
@@ -105,6 +106,9 @@ for (const locale of ['ar', 'en'] as const) for (const mode of ['light', 'dark']
           await page.screenshot({path:`${folder}/colored-search-hover-focus.png`,fullPage:false});
           for (const control of await page.locator('.admin-topbar [data-slot="button"]:visible').all()) {
             await control.hover();
+            await control.evaluate(async element => {
+              await Promise.all(element.getAnimations().map(animation => animation.finished));
+            });
             expect((await documentAudit(page,true)).violations).toEqual([]);
           }
           await page.mouse.move(0,0);

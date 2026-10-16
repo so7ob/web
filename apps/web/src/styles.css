@@ -383,3 +383,8 @@ html { scroll-padding-block: 6rem 10rem; }
   --base-brand-strong:var(--admin-header-foreground);
   --base-border:color-mix(in srgb,var(--admin-header-foreground) 45%,var(--admin-header));
 }
+/* Ghost controls must not blend a dark hover surface with the colored header;
+   the accent foreground is paired with the opaque accent surface. */
+.admin-lte[data-admin-style="colored"] .admin-topbar [data-slot="button"]:hover {
+  background-color:var(--accent); color:var(--accent-foreground);
+}
