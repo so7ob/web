@@ -59,7 +59,7 @@ Lists use `ListWorkspace` for filters, locally scrolling results, feedback and p
 
 Administration section links and content tabs share an underline treatment. They keep distinct link/tab semantics. Settings use horizontal section navigation, an independent preview beside the form, and save/revert/default actions in the heading. No floating save bar covers form fields. Dashboard metrics use restrained identity accents and real values, without decorative animated stripes or invented trends.
 
-The structure follows the reusable list/form/workspace principle documented by [Frappe Desk](https://docs.frappe.io/framework/user/en/desk). [Odoo's search and filter guidance](https://www.odoo.com/documentation/saas-18.2/applications/essentials/search.html) also informs keeping list tools directly above results. These are adaptations to So7ob's existing React components, permissions, stored theme settings and Arabic/English layouts.
+Administration now follows the explicit [AdminLTE 4.10.1 adaptation](adminlte.md). The previous structure followed the reusable list/form/workspace principle documented by [Frappe Desk](https://docs.frappe.io/framework/user/en/desk). [Odoo's search and filter guidance](https://www.odoo.com/documentation/saas-18.2/applications/essentials/search.html) also informs keeping list tools directly above results. These are adaptations to So7ob's existing React components, permissions, stored theme settings and Arabic/English layouts.
 
 Keep confirmed-only success, preserved form drafts, server authorization and uncertain-write recovery in their existing feature services. Presentation components do not retry writes or clear form state.
 

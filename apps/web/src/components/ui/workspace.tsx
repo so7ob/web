@@ -114,3 +114,14 @@ export function FormSection({
     </fieldset>
   );
 }
+
+/** AdminLTE card header/body/footer composition; actions remain feature-owned. */
+export function PanelHeader({ className, ...props }: ComponentProps<"div">) {
+  return <div data-slot="panel-header" className={cn("ds-panel-header", className)} {...props} />;
+}
+export function PanelBody({ className, ...props }: ComponentProps<"div">) {
+  return <div data-slot="panel-body" className={cn("ds-panel-body", className)} {...props} />;
+}
+export function PanelFooter({ className, ...props }: ComponentProps<"div">) {
+  return <div data-slot="panel-footer" className={cn("ds-panel-footer", className)} {...props} />;
+}

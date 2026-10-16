@@ -1,3 +1,4 @@
+import { AppearancePreview } from "./appearance-preview";
 import { NativeSelect } from "@/components/ui/native-select";
 import { Panel, PageHeading, Toolbar } from "@/components/ui/workspace";
 import { siteConfig } from "@/config/site";
@@ -529,6 +530,7 @@ export function SettingsClient({ me, locale }: { me: Me; locale: Locale }) {
             <Button
               className="min-h-11"
               onClick={() => void save()}
+              aria-busy={saving}
               disabled={
                 saving ||
                 !currentDirty ||
@@ -843,7 +845,7 @@ export function SettingsClient({ me, locale }: { me: Me; locale: Locale }) {
                           : "Dark"}</option>
                   </NativeSelect>
                 </div>
-                <iframe
+                {section === "appearance" ? <AppearancePreview settings={form} locale={previewLocale} mode={previewMode} title={ar ? "معاينة الإعدادات" : "Settings preview"} /> : <iframe
                   title={ar ? "معاينة الإعدادات" : "Settings preview"}
                   sandbox="allow-same-origin"
                   srcDoc={previewHtml(
@@ -853,7 +855,7 @@ export function SettingsClient({ me, locale }: { me: Me; locale: Locale }) {
                     section,
                   )}
                   className="h-[560px] w-full rounded-lg border bg-background"
-                />
+                />}
                 <p className="text-xs text-muted-foreground">
                   {ar
                     ? "بيانات نموذجية؛ لا تُرسل أي طلبات من المعاينة."

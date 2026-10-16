@@ -70,6 +70,7 @@ const subscribePlatform = () => () => {};
 export function AdminShell({ me, locale, children }: AdminShellProps) {
   const pathname = usePathname() ?? `/${locale}/admin`;
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   // لوحة البحث الشاملة (Ctrl+K) — الحالة هنا ليصل إليها الزر ومستمع المفاتيح داخلها
   const [paletteOpen, setPaletteOpen] = useState(false);
   const [unread, setUnread] = useState(0);
@@ -257,7 +258,7 @@ export function AdminShell({ me, locale, children }: AdminShellProps) {
   const navList = (onNavigate?: () => void) => (
     <nav
       aria-label={locale === "ar" ? "أقسام الإدارة" : "Administration"}
-      className="flex-1 space-y-4 overflow-y-auto px-3 py-4"
+      className="admin-navigation flex-1 space-y-4 overflow-y-auto px-3 py-4"
     >
       {groups.map((group) => {
         const links = group.paths.flatMap((path) =>
@@ -281,7 +282,7 @@ export function AdminShell({ me, locale, children }: AdminShellProps) {
                       onClick={onNavigate}
                       aria-current={active ? "page" : undefined}
                       className={cn(
-                        "relative flex min-h-11 items-center gap-3 rounded-lg px-3 text-sm font-medium transition-colors duration-(--duration-fast)",
+                        "admin-nav-link relative flex min-h-11 items-center gap-3 rounded-lg px-3 text-sm font-medium transition-colors duration-(--duration-fast)",
                         active ? "bg-sidebar-accent text-sidebar-primary" : "text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground",
                       )}
                     >
@@ -337,12 +338,12 @@ export function AdminShell({ me, locale, children }: AdminShellProps) {
   );
 
   return (
-    <div id="admin-shell" className="flex min-h-dvh bg-background">
+    <div id="admin-shell" data-sidebar-collapsed={sidebarCollapsed} className="admin-lte flex min-h-dvh bg-background">
       {/* إخفاء ترويسة وتذييل الموقع العام وشريط الإعلان داخل اللوحة — اللوحة تطبيق مستقل */}
       <style>{`body:has(#admin-shell) > header, body:has(#admin-shell) > footer, body:has(#admin-shell) > #site-announcement { display: none !important; }`}</style>
 
       {/* الشريط الجانبي — سطح المكتب (مخفي عند الطباعة) */}
-      <aside className="sticky top-0 hidden h-dvh w-60 shrink-0 flex-col border-e border-sidebar-border bg-sidebar text-sidebar-foreground print:hidden lg:flex">
+      <aside id="admin-desktop-sidebar" className="admin-sidebar sticky top-0 hidden h-dvh w-64 shrink-0 flex-col border-e border-sidebar-border bg-sidebar text-sidebar-foreground print:hidden lg:flex">
         <div className="flex h-16 items-center gap-3 border-b border-sidebar-border px-5">
           <Logo size="sm" nameLang={locale}/>
         </div>
@@ -352,7 +353,13 @@ export function AdminShell({ me, locale, children }: AdminShellProps) {
 
       <div className="flex min-w-0 flex-1 flex-col">
         {/* الشريط العلوي (مخفي عند الطباعة) */}
-        <header className="sticky top-0 z-30 flex h-16 items-center gap-2 sm:gap-3 border-b border-border bg-card px-3 print:hidden sm:px-6">
+        <header className="admin-topbar sticky top-0 z-30 flex h-16 items-center gap-2 sm:gap-3 border-b border-border bg-card px-3 print:hidden sm:px-6">
+          <Button variant="ghost" size="icon" className="hidden lg:inline-flex"
+            aria-controls="admin-desktop-sidebar" aria-expanded={!sidebarCollapsed}
+            aria-label={locale === "ar" ? "تبديل الشريط الجانبي" : "Toggle sidebar"}
+            onClick={() => setSidebarCollapsed(value => !value)}>
+            <Menu className="size-5" aria-hidden="true" />
+          </Button>
           <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
             <SheetTrigger asChild>
               <Button
@@ -366,7 +373,7 @@ export function AdminShell({ me, locale, children }: AdminShellProps) {
             </SheetTrigger>
             <SheetContent
               side={sheetSide}
-              className="w-72 gap-0 bg-sidebar p-0 text-sidebar-foreground"
+              className="admin-lte admin-mobile-sidebar w-72 gap-0 bg-sidebar p-0 text-sidebar-foreground"
             >
               <SheetHeader className="border-b border-sidebar-border p-0">
                 <SheetTitle className="flex h-16 items-center gap-3 px-5 text-sidebar-foreground">
@@ -378,9 +385,10 @@ export function AdminShell({ me, locale, children }: AdminShellProps) {
             </SheetContent>
           </Sheet>
 
-          <h2 className="hidden truncate text-sm font-semibold text-navy sm:block sm:text-base">
-            {titleFor(pathname)}
-          </h2>
+          <nav aria-label={locale === "ar" ? "مسار التنقل" : "Breadcrumb"} className="hidden min-w-0 items-center gap-2 text-sm sm:flex">
+            <Link href={`/${locale}/admin`} className="text-muted-foreground hover:text-primary">{t.dashboard}</Link>
+            {pathname !== `/${locale}/admin` && <><span aria-hidden="true">/</span><span aria-current="page" className="truncate">{titleFor(pathname)}</span></>}
+          </nav>
 
           <div className="ms-auto flex items-center gap-2">
             <ThemeToggle locale={locale} compact />
@@ -389,7 +397,7 @@ export function AdminShell({ me, locale, children }: AdminShellProps) {
               variant="outline"
               onClick={() => setPaletteOpen(true)}
               aria-keyshortcuts={isMac ? "Meta+k" : "Control+k"}
-              className="hidden h-10 min-h-10 items-center gap-2 rounded-lg px-3 focus-visible:ring-2 focus-visible:ring-ring/40 sm:flex"
+              className="hidden h-11 min-h-11 items-center gap-2 rounded-lg px-3 focus-visible:ring-2 focus-visible:ring-ring/40 sm:flex"
             >
               <Search
                 className="size-4 text-muted-foreground"
@@ -436,7 +444,7 @@ export function AdminShell({ me, locale, children }: AdminShellProps) {
               asChild
               variant="ghost"
               size="sm"
-              className="min-h-9 rounded-lg px-3 text-xs font-semibold"
+              className="min-h-11 rounded-lg px-3 text-xs font-semibold"
             >
               <Link href={otherLocaleHref} hrefLang={localeMeta[locale].other}>
                 {localeMeta[locale].otherLabel}
