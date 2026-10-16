@@ -58,6 +58,12 @@ for (const locale of ['ar', 'en'] as const) for (const mode of ['light', 'dark']
       await expect(tooltip).toHaveCSS('font-size', '14px');
       await expect(tooltip).toHaveCSS('border-radius', '6px');
       await expect(page.locator('[data-slot="tooltip-content"]')).toHaveCount(0);
+      await tooltip.hover();
+      await expect(tooltip).toBeVisible();
+      await preview.locator('main input').first().hover();
+      await expect(tooltip).toBeHidden();
+      await search.hover();
+      await expect(tooltip).toBeVisible();
       await page.mouse.move(0, 0);
       await expect(tooltip).toBeHidden();
       await search.click();
