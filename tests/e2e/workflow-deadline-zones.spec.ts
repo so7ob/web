@@ -1,3 +1,4 @@
+import { assertStylesheetsApplied } from './stylesheet-readiness';
 import { expect, type Locator } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
 import { test } from './workflow-deadline-fixture';
@@ -24,8 +25,10 @@ for (const scope of ['requests', 'inquiries'] as const) for (const zone of ['Asi
       expect(response.status()).toBe(200);
       const detail = await response.json();
       expect(detail[scope === 'requests' ? 'request' : 'inquiry'].workflow).toMatchObject({ versionId: deadlines.version, responseDueAt: record.response, stageDueAt: record.stage, calendarTimezone: 'Asia/Aden' });
+      await assertStylesheetsApplied(page);
       expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
     }
+    await assertStylesheetsApplied(page);
     expect((await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa', 'wcag21aa', 'wcag22aa']).analyze()).violations).toEqual([]);
     await info.attach('deadline-detail', { body: await page.screenshot(), contentType: 'image/png' });
     const back = page.locator(`main a[href="/${locale}/admin/${scope}"]`);
@@ -36,6 +39,7 @@ for (const scope of ['requests', 'inquiries'] as const) for (const zone of ['Asi
       await expect(page.getByRole('link', { name: record.ref, exact: true })).toBeVisible();
       await checkTime(page.locator(`time[datetime="${record.response}"]`), record.responseHour);
     }
+    await assertStylesheetsApplied(page);
     expect((await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa', 'wcag21aa', 'wcag22aa']).analyze()).violations).toEqual([]);
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
     expect(await deadlines.db.query('SELECT * FROM ConversationWorkflow WHERE versionId=? ORDER BY recordId', [deadlines.version])).toEqual(before);
@@ -68,6 +72,7 @@ for (const zone of ['Asia/Aden', 'America/New_York']) test.describe(`preview/${z
     }
     await expect(page.getByRole('button', { name: t('تأكيد النقل المعاين', 'Confirm previewed transfer'), exact: true })).toBeVisible();
     expect(await deadlines.db.query('SELECT * FROM ConversationWorkflow WHERE versionId=? ORDER BY recordId', [deadlines.version])).toEqual(before);
+    await assertStylesheetsApplied(page);
     expect((await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa', 'wcag21aa', 'wcag22aa']).analyze()).violations).toEqual([]);
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
     await info.attach('deadline-preview', { body: await page.screenshot(), contentType: 'image/png' });

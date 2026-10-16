@@ -1,5 +1,8 @@
 import { expect } from '@playwright/test';
-import { test as base } from './quota-fixture';
+import { test as quota } from './quota-fixture';
+import { test as stylesheets } from './stylesheet-fixture';
+import { mergeTests } from '@playwright/test';
+const base = mergeTests(quota, stylesheets);
 import { randomBytes } from 'node:crypto';
 import { readFileSync } from 'node:fs';
 import { createDataSource, WorkflowEngine, transaction } from '@so7ob/server';
