@@ -32,6 +32,7 @@ Primitive source: `packages/contracts/src/adminlte-tokens.ts`. Semantic and comp
 | Sidebar | 250px, transition at 992px; 8px wrapper padding | Same; logical start/end and Radix drawer for small screens |
 | Header | measured 57px including its border | Same measured height; controls retain 44px targets |
 | Active navigation | neutral emphasis in pinned default | Neutral active/hover pairs; identity remains in the logo and primary actions |
+| Tooltip | emphasis/body-bg inverse pair; 14px; 4px × 8px; max 200px; 6px radius | Same neutral pair, dimensions and triangular arrow; opaque for predictable contrast |
 | Layers | header below sidebar/backdrop/modal | Existing application layer scale 30/40/50/100; preserves editor and Radix stacking rather than importing Bootstrap's competing 1000+ scale |
 | Motion | `.3s ease-in-out` sidebar; Bootstrap `.15s` controls | Existing short 150/200/250ms React/Radix transitions; nonessential motion disabled for reduced motion |
 
@@ -61,6 +62,8 @@ Personal light/dark/system still takes precedence over the site's proposal. All 
 ## Components, state and isolation
 
 `Panel`, `PanelHeader/Body/Footer`, `ListWorkspace`, `PageHeading`, `SmallBoxContent`, `InfoBoxContent`, `Timeline` and `TimelineItem` define the card, list, metric and activity compositions. Shared Buttons, fields, native and Radix selects, choices, tabs, accordion, menus, tooltips, dialogs, sheets, tables, badges and feedback use the same tokens. Administration groups retain permission filtering; identity has a real expandable nested navigation list, and the sidebar filter searches only permitted destinations. Breadcrumbs sit alongside content headings. The dashboard combines v1 small boxes, v2 report/status progress and v3 table/card compositions using actual API counts and a single-series SVG area chart; its accessible data table lists the same values. There are no invented sales, map, prior-period series or demo links. The user dropdown contains real account/site/logout destinations. Search and notification controls retain their real features.
+
+Shared button identity uses a stable class because Radix asChild can replace data-slot on a trigger; the configured type, geometry, targets and hover styles therefore apply to actual dialog/menu/tooltip triggers too.
 
 React owns navigation/collapse and feature state. Radix owns disclosure, keyboard interaction, focus and dismissal. No Bootstrap/AdminLTE controller is attached. `PortalContainerProvider` defaults to the normal document; the appearance preview supplies its own body, so shared floating controls stay inside its theme/document. Focus recovery uses the overlay's owner document; iframe Tab edges are handled against that same document because Radix FocusScope checks the module-global document. Caller-prevented events and ordinary document dialogs retain their normal Radix handling. The preview renders actual components, has local example save/cancel feedback and supports a real dialog, tabs and choices; it never posts settings or business data. Busy/invalid/disabled examples are explicit.
 

@@ -345,6 +345,8 @@ export function appearanceTokens(
     "card-foreground": fg,
     popover: card,
     "popover-foreground": fg,
+    tooltip: palette.emphasis,
+    "tooltip-foreground": card,
     primary: primary,
     "primary-foreground": onPrimary,
     secondary: surface,
@@ -414,6 +416,7 @@ export function paletteChecks(
   return [
     ["text", t.foreground, t.background, 4.5],
     ["muted", t["muted-foreground"], t.card, 4.5],
+    ["tooltip", t["tooltip-foreground"], t.tooltip, 4.5],
     ["button", t["primary-foreground"], t.primary, 4.5],
     ["link", t.primary, t.card, 4.5],
     ["link-neutral", t.primary, t.secondary, 4.5],

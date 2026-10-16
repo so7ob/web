@@ -14,6 +14,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Switch } from "@/components/ui/switch";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogTrigger } from "@/components/ui/dialog";
+import { Tooltip, TooltipTrigger, TooltipContent } from "@/components/ui/tooltip";
 import { PortalContainerProvider } from "@/components/ui/portal-container";
 import { AppDirectionProvider } from "@/components/ui/app-direction-provider";
 import { APPEARANCE_DEFAULTS, appearanceForScope, type AppearanceScope } from "@so7ob/contracts";
@@ -26,7 +27,7 @@ export function AppearanceSample({ locale, profile = APPEARANCE_DEFAULTS["appear
   const [title, setTitle] = useState<string | null>(null);
   return <div className={scope === "admin" ? "admin-lte" : "site-appearance-sample"} data-admin-style={scope === "admin" ? profile : undefined}>
     <header className={`${scope === "admin" ? "admin-topbar" : ""} flex min-h-(--header-height) items-center justify-between gap-2 border-b bg-card px-3`}>
-      <strong>{scope === "admin" ? ar ? "لوحة الإدارة" : "Administration" : ar ? "سُحُب" : "So7ob"}</strong><Dialog><DialogTrigger asChild><Button type="button" variant="outline" size="sm">{ar ? "بحث" : "Search"}</Button></DialogTrigger>
+      <strong>{scope === "admin" ? ar ? "لوحة الإدارة" : "Administration" : ar ? "سُحُب" : "So7ob"}</strong><Dialog><Tooltip><TooltipTrigger asChild><DialogTrigger asChild><Button type="button" variant="outline" size="sm">{ar ? "بحث" : "Search"}</Button></DialogTrigger></TooltipTrigger><TooltipContent>{ar ? "معاينة الحوار" : "Dialog preview"}</TooltipContent></Tooltip>
         <DialogContent><DialogHeader><DialogTitle>{ar ? "معاينة الحوار" : "Dialog preview"}</DialogTitle><DialogDescription>{ar ? "تستخدم هذه المعاينة المكونات الفعلية. إجراءاتها محلية فقط." : "This preview uses the actual components. Its actions stay local."}</DialogDescription></DialogHeader></DialogContent>
       </Dialog>
     </header>

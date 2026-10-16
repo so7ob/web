@@ -50,6 +50,16 @@ for (const locale of ['ar', 'en'] as const) for (const mode of ['light', 'dark']
       const search = preview.getByRole('button', { name: locale === 'ar' ? 'بحث' : 'Search', exact: true });
       await expect(search).toHaveCSS('font-size', '16px');
       await expect(search).toHaveCSS('border-radius', '6px');
+      await search.hover();
+      const tooltip = preview.locator('[data-slot="tooltip-content"]');
+      await expect(tooltip).toBeVisible();
+      await expect(tooltip).toHaveCSS('background-color', mode === 'light' ? 'rgb(0, 0, 0)' : 'rgb(255, 255, 255)');
+      await expect(tooltip).toHaveCSS('color', mode === 'light' ? 'rgb(255, 255, 255)' : 'rgb(33, 37, 41)');
+      await expect(tooltip).toHaveCSS('font-size', '14px');
+      await expect(tooltip).toHaveCSS('border-radius', '6px');
+      await expect(page.locator('[data-slot="tooltip-content"]')).toHaveCount(0);
+      await page.mouse.move(0, 0);
+      await expect(tooltip).toBeHidden();
       await search.click();
       const dialog = preview.getByRole('dialog');
       await expect(dialog).toBeVisible();
