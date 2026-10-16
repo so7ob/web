@@ -137,7 +137,7 @@ export function SecurityView({
 
       <div className="grid gap-6 lg:grid-cols-2">
         {/* تغيير كلمة المرور */}
-        <section className="rounded-2xl border border-border bg-card p-6">
+        <section className="ds-card rounded-2xl border border-border bg-card p-6">
           <h2 className="flex items-center gap-2.5 text-base font-semibold text-navy">
             <span className="flex size-9 shrink-0 items-center justify-center rounded-xl bg-accent text-brand-strong">
               <KeyRound className="size-4" aria-hidden="true" />
@@ -182,7 +182,7 @@ export function SecurityView({
         </section>
 
         {/* الجلسات النشطة */}
-        <section className="rounded-2xl border border-border bg-card p-6">
+        <section className="ds-card rounded-2xl border border-border bg-card p-6">
           <Toolbar className="flex flex-wrap items-center justify-between gap-3">
             <h2 className="flex items-center gap-2.5 text-base font-semibold text-navy">
               <span className="flex size-9 shrink-0 items-center justify-center rounded-xl bg-accent text-brand-strong">

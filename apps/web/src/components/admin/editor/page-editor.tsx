@@ -1361,7 +1361,7 @@ export function PageEditor({ me, locale, pageId }: PageEditorProps) {
       <div className="flex flex-col gap-3">
         <PageHeading title={pageTitle} />
         {/* ——— الشريط العلوي ——— */}
-        <div className="flex flex-wrap items-center gap-2 rounded-2xl border border-border bg-card p-2 shadow-sm">
+        <div className="ds-card flex flex-wrap items-center gap-2 rounded-2xl border border-border bg-card p-2 shadow-sm">
           <Button
             asChild
             variant="ghost"
@@ -1720,7 +1720,7 @@ export function PageEditor({ me, locale, pageId }: PageEditorProps) {
         {/* ——— اللوحات الثلاث ——— */}
         <div className="grid min-h-0 gap-3 lg:grid-cols-[14rem_1fr] xl:grid-cols-[14rem_1fr_20rem]">
           {/* المكتبة */}
-          <aside aria-label={te.library} className="hidden min-h-0 flex-col overflow-hidden rounded-2xl border border-border bg-card shadow-sm lg:flex">
+          <aside aria-label={te.library} className="ds-card hidden min-h-0 flex-col overflow-hidden rounded-2xl border border-border bg-card shadow-sm lg:flex">
             <header className="flex items-start justify-between gap-2 border-b border-border px-3 py-2.5">
               <div className="min-w-0">
                 <h2 className="text-sm font-bold text-navy">{te.library}</h2>
@@ -1774,7 +1774,7 @@ export function PageEditor({ me, locale, pageId }: PageEditorProps) {
           </aside>
 
           {/* الرسم */}
-          <section role="tabpanel" id={`editor-draft-${pageId}`} aria-labelledby={`editor-language-${draftLocale}-${pageId}`} tabIndex={0} className="flex min-h-[24rem] min-w-0 flex-col overflow-hidden rounded-2xl border border-border bg-card shadow-sm">
+          <section role="tabpanel" id={`editor-draft-${pageId}`} aria-labelledby={`editor-language-${draftLocale}-${pageId}`} tabIndex={0} className="ds-card flex min-h-[24rem] min-w-0 flex-col overflow-hidden rounded-2xl border border-border bg-card shadow-sm">
             <header className="flex items-center justify-between border-b border-border px-3 py-2">
               <h2 className="text-sm font-bold text-navy">{te.canvas}</h2>
               <p className="text-xs text-muted-foreground">
@@ -1823,7 +1823,7 @@ export function PageEditor({ me, locale, pageId }: PageEditorProps) {
           </section>
 
           {/* الخصائص — ثابتة على xl+ */}
-          <aside aria-label={te.properties} className="hidden min-h-0 flex-col overflow-hidden rounded-2xl border border-border bg-card shadow-sm xl:flex">
+          <aside aria-label={te.properties} className="ds-card hidden min-h-0 flex-col overflow-hidden rounded-2xl border border-border bg-card shadow-sm xl:flex">
             {selectedNode ? (
               <PropertiesPanel
                 node={selectedNode}
@@ -2279,7 +2279,7 @@ function IframePreview({
       {/* إطار بعرض حقيقي — استعلامات الوسوم تستجيب لعرض iframe الفعلي */}
       <div className="min-h-0 flex-1 overflow-auto bg-muted/50 p-3">
         {fullWidth ? (
-          <div dir={draftLocale === "ar" ? "rtl" : "ltr"} className="h-full w-full overflow-hidden rounded-xl border border-border bg-card shadow-sm">
+          <div dir={draftLocale === "ar" ? "rtl" : "ltr"} className="ds-card h-full w-full overflow-hidden rounded-xl border border-border bg-card shadow-sm">
             <iframe
               key={frameKey}
               src={src}
@@ -2298,7 +2298,7 @@ function IframePreview({
                 transform: `scale(${scale})`,
                 transformOrigin: "top left",
               }}
-              className="overflow-hidden rounded-xl border border-border bg-card shadow-sm"
+              className="ds-card overflow-hidden rounded-xl border border-border bg-card shadow-sm"
             >
               <iframe
                 key={frameKey}

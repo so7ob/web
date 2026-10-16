@@ -7,7 +7,7 @@ export function Logo({
   showName = true,
   nameLang = "ar",
 }: {
-  variant?: "dark" | "light";
+  variant?: "dark" | "light" | "chrome";
   size?: "sm" | "md" | "lg";
   showName?: boolean;
   nameLang?: "ar" | "en";
@@ -42,14 +42,14 @@ export function Logo({
           <img
             src={light}
             alt=""
-            className={`${dims} logo-for-light max-w-32 w-auto object-contain`}
+            className={`${dims} ${variant === "chrome" ? "logo-for-chrome-light" : "logo-for-light"} max-w-32 w-auto object-contain`}
             width={40}
             height={40}
           />
           <img
             src={dark}
             alt=""
-            className={`${dims} logo-for-dark max-w-32 w-auto object-contain`}
+            className={`${dims} ${variant === "chrome" ? "logo-for-chrome-dark" : "logo-for-dark"} max-w-32 w-auto object-contain`}
             width={40}
             height={40}
           />

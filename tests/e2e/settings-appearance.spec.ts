@@ -3,7 +3,7 @@ import { test } from "./quota-fixture";
 import AxeBuilder from "@axe-core/playwright";
 import { mkdirSync, readFileSync } from "node:fs";
 import { createDataSource } from "@so7ob/server";
-import { SECTION_KEYS } from "@so7ob/contracts";
+import { SECTION_KEYS, ADMIN_APPEARANCE_DEFAULTS } from "@so7ob/contracts";
 import { getPortalContent } from "../../apps/web/src/content/portal";
 async function login(page: Page) {
   const { prefix, password } = JSON.parse(
@@ -88,6 +88,7 @@ for (const locale of ["ar", "en"] as const)
           await page.request.patch("/api/admin/settings", {
             headers,
             data: {
+              ...ADMIN_APPEARANCE_DEFAULTS,
               "appearance.mode": "light",
               "appearance.primaryLight": "#0369a1",
               "appearance.fontAr": "ibm",
@@ -115,7 +116,7 @@ for (const locale of ["ar", "en"] as const)
       await save(page, locale);
       await expect(page.locator("html")).toHaveAttribute(
         "data-color-mode",
-        "dark",
+        "light",
       );
       await section(page, "identity");
       await expect(page.locator("#site-name-en")).toHaveValue(
@@ -137,19 +138,14 @@ for (const locale of ["ar", "en"] as const)
         .fill("Synthetic search description");
       await save(page, locale);
       await page.unroute("**/api/v1/public/view?**");
-      await page.evaluate(() => document.fonts.ready);
-      expect(
-        await page.evaluate(() => getComputedStyle(document.body).fontFamily),
-      ).toContain(locale === "ar" ? "Cairo" : "Inter");
-      expect(
-        await page.evaluate(
-          (font) =>
-            Array.from(document.fonts).some(
-              (f) => f.family === font && f.status === "loaded",
-            ),
-          locale === "ar" ? "Cairo" : "Inter",
-        ),
-      ).toBe(true);
+      const publicPage = await page.context().newPage();
+      try {
+        await publicPage.goto(`/${locale}`, {waitUntil:"networkidle"});
+        await publicPage.evaluate(() => document.fonts.ready);
+        expect(await publicPage.evaluate(() => getComputedStyle(document.body).fontFamily)).toContain(locale === "ar" ? "Cairo" : "Inter");
+        expect(await publicPage.evaluate(font => Array.from(document.fonts).some(f => f.family === font && f.status === "loaded"), locale === "ar" ? "Cairo" : "Inter")).toBe(true);
+        await expect(publicPage.locator("html")).toHaveAttribute("data-color-mode","dark");
+      } finally { await publicPage.close(); }
       const html = await (await page.request.get("/en")).text();
       expect(html).toContain("Synthetic identity");
       expect(html).toContain("Synthetic search description");
@@ -464,7 +460,7 @@ for (const locale of ["ar", "en"] as const)
     test.setTimeout(120000);
     await login(page);
     await page.addInitScript(() =>
-      localStorage.setItem("so7ob-appearance-mode", "dark"),
+      localStorage.setItem("so7ob-admin-appearance-mode", "dark"),
     );
     for (const screen of [
       "requests",

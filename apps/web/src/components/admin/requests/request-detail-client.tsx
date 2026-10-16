@@ -1,5 +1,6 @@
 "use client";
 
+import { Timeline, TimelineItem } from "@/components/ui/timeline";
 import { PageHeading, Toolbar } from "@/components/ui/workspace";
 import { TrackPanel } from "@/components/admin/track/track-panel";
 import { ErrorFeedback } from "@/components/errors/error-feedback";
@@ -554,7 +555,7 @@ export function RequestDetailClient({
         {/* عمود المعلومات */}
         <aside className="min-w-0 space-y-4">
           {/* العميل */}
-          <section className="rounded-2xl border border-border bg-card p-4">
+          <section className="ds-card rounded-2xl border border-border bg-card p-4">
             <h2 className="text-sm font-semibold text-navy">{tr.client}</h2>
             <dl className="mt-3 space-y-2 text-sm">
               <div className="flex items-start justify-between gap-3">
@@ -633,7 +634,7 @@ export function RequestDetailClient({
           </section>
 
           {/* بيانات الطلب */}
-          <section className="rounded-2xl border border-border bg-card p-4">
+          <section className="ds-card rounded-2xl border border-border bg-card p-4">
             <h2 className="text-sm font-semibold text-navy">
               {td.requestInfo}
             </h2>
@@ -733,7 +734,7 @@ export function RequestDetailClient({
             locale={locale}
           />
           {/* الخط الزمني للحالة */}
-          <section className="rounded-2xl border border-border bg-card p-4">
+          <section className="ds-card rounded-2xl border border-border bg-card p-4">
             <h2 className="flex items-center gap-2 text-sm font-semibold text-navy">
               <History className="size-4 text-brand" aria-hidden="true" />
               {td.statusTimeline}
@@ -741,22 +742,9 @@ export function RequestDetailClient({
             {detail.statusHistory.length === 0 ? (
               <p className="mt-2 text-xs text-muted-foreground">{tr.none}</p>
             ) : (
-              <ol className="mt-3 space-y-0">
+              <Timeline className="mt-3">
                 {detail.statusHistory.map((event) => (
-                  <li
-                    key={event.id}
-                    className="relative border-s-2 border-border ps-4 pb-4 last:pb-0 print:break-inside-avoid"
-                  >
-                    <span
-                      className={cn(
-                        "absolute -start-[5px] top-1 size-2 rounded-full",
-                        event.toStatus === "closed" ||
-                          event.toStatus === "cancelled"
-                          ? "bg-muted-foreground"
-                          : "bg-brand",
-                      )}
-                      aria-hidden="true"
-                    />
+                  <TimelineItem key={event.id} active={event.toStatus !== "closed" && event.toStatus !== "cancelled"}>
                     <p className="text-xs font-semibold text-navy">
                       {event.fromStatus
                         ? `${tr.statuses[event.fromStatus] ?? event.fromStatus} → `
@@ -772,9 +760,9 @@ export function RequestDetailClient({
                         {event.note}
                       </p>
                     ) : null}
-                  </li>
+                  </TimelineItem>
                 ))}
-              </ol>
+              </Timeline>
             )}
             {detail.resolutionNote ? (
               <p className="mt-2 rounded-xl bg-muted px-3 py-2 text-xs text-muted-foreground">

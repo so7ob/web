@@ -28,7 +28,7 @@ function ToneBadge({
   className?: string;
 }) {
   return (
-    <Badge className={cn("gap-1.5 rounded-full", tone.chip, className)}>
+    <Badge className={cn("gap-1.5", tone.chip, className)}>
       <span
         aria-hidden="true"
         className={cn("size-1.5 shrink-0 rounded-full", tone.dot)}

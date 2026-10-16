@@ -49,7 +49,8 @@ for(const locale of ['ar','en'] as const)for(const mode of ['light','dark'] as c
   const ledger=new PerformanceLedger(), readiness=new VisualReadiness(page), started=performance.now();
   const {prefix,password}=JSON.parse(readFileSync('.migration/e2e/run.json','utf8'));
   const db=await createDataSource().initialize(),id=prefix+'design'+randomBytes(4).toString('hex');
-  const keys=Object.keys(palette),saved=await db.query('SELECT * FROM SiteSetting WHERE `key` IN (?,?,?,?)',keys);
+  const bothPalettes = {...palette,...Object.fromEntries(Object.entries(palette).map(([key,value])=>[key.replace('appearance.','adminAppearance.'),value]))};
+  const keys=Object.keys(bothPalettes),saved=await db.query('SELECT * FROM SiteSetting WHERE `key` IN ('+keys.map(()=>'?').join(',')+')',keys);
   const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));page.on('console',m=>{if(m.type()==='error'&&/hydration|did not match|server rendered/i.test(m.text()))errors.push(m.text());});
   page.on('response',response=>{if(response.status()>=500)errors.push(`HTTP ${response.status()} ${new URL(response.url()).pathname}`);});
   const {csrfToken}=await(await page.request.get('/api/auth/csrf')).json();
@@ -123,8 +124,8 @@ for(const locale of ['ar','en'] as const)for(const mode of ['light','dark'] as c
     }
   }
   try{
-    expect((await page.request.patch('/api/admin/settings',{headers,data:palette})).status()).toBe(200);
-    await page.addInitScript(mode=>localStorage.setItem('so7ob-appearance-mode',mode),mode);
+    expect((await page.request.patch('/api/admin/settings',{headers,data:bothPalettes})).status()).toBe(200);
+    await page.addInitScript(mode=>{localStorage.setItem('so7ob-appearance-mode',mode);localStorage.setItem('so7ob-admin-appearance-mode',mode);},mode);
     await db.query("INSERT INTO ProjectRequest(id,refCode,requestType,serviceType,description,descriptionHash,budget,timeline,name,email,preferredContact,locale,clientId) VALUES(?,?,'quote','web','Synthetic design review','synthetic','unspecified','flexible','Synthetic',?,'email',?,?)",[id,id,prefix+'admin@example.invalid',locale,prefix+'admin']);
     await db.query("INSERT INTO Inquiry(id,refCode,subject,name,email,category,locale,clientId,assigneeId) VALUES(?,?,'Synthetic design review','Synthetic',?,'general',?,?,?)",[id,id,prefix+'admin@example.invalid',locale,prefix+'admin',prefix+'admin']);
     const created=await page.request.post('/api/admin/pages',{headers,data:{slug:id,titleAr:'معاينة نظام التصميم',titleEn:'Design system preview'}});
@@ -186,7 +187,7 @@ for(const locale of ['ar','en'] as const)for(const mode of ['light','dark'] as c
     await capture('not-found-client-navigation');
     await expect(page.locator('a.bg-primary')).toHaveCSS('background-color',rgb(expected.primary));
     await page.goto(`/${locale}/admin`);
-    if(info.project.name==='desktop')await expect(page.locator('aside')).toHaveCSS('background-color',rgb(expected.sidebar));
+    if(info.project.name==='desktop')await expect(page.locator('aside')).toHaveCSS('background-color',rgb(expected['admin-sidebar']));
     const primary=page.locator('[data-slot="button"].bg-primary').first();if(await primary.count())await expect(primary).toHaveCSS('background-color',rgb(expected.primary));
     expect(await colorOf('body')).toBe(rgb(expected.background));
     await page.context().clearCookies();
@@ -244,13 +245,13 @@ test('saved density and geometry reach shared and native controls without reduci
   const {prefix,password}=JSON.parse(readFileSync('.migration/e2e/run.json','utf8'));
   const {csrfToken}=await(await page.request.get('/api/auth/csrf')).json();
   expect((await page.request.post('/api/auth/callback/credentials',{form:{email:prefix+'admin@example.invalid',password,csrfToken,json:'true'}})).status()).toBe(200);
-  const db=await createDataSource().initialize(),keys=['appearance.radius','appearance.density'];
+  const db=await createDataSource().initialize(),keys=['adminAppearance.radius','adminAppearance.density'];
   const saved=await db.query('SELECT * FROM SiteSetting WHERE `key` IN (?,?)',keys);
   try{
     for(const radius of ['square','soft','round'])for(const density of ['comfortable','compact']){
-      expect((await page.request.patch('/api/admin/settings',{headers:{'x-csrf-token':csrfToken},data:{'appearance.radius':radius,'appearance.density':density}})).status()).toBe(200);
-      await page.goto('/en/admin/settings?section=appearance');
-      const input=page.locator('#appearance-primary-light'),select=page.locator('#appearance-radius');
+      expect((await page.request.patch('/api/admin/settings',{headers:{'x-csrf-token':csrfToken},data:{'adminAppearance.radius':radius,'adminAppearance.density':density}})).status()).toBe(200);
+      await page.goto('/en/admin/settings?section=adminAppearance');
+      const input=page.locator('#admin-appearance-primary-light'),select=page.locator('#admin-appearance-radius');
       const px=radius==='square'?'0px':radius==='soft'?'12px':'20px';
       await expect(input).toHaveCSS('border-radius',px);await expect(select).toHaveCSS('border-radius',px);
       await expect(select).toHaveCSS('padding-top',density==='compact'?'6px':'10px');

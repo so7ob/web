@@ -203,7 +203,7 @@ export function InquiryDetailView({
       <div className="grid items-start gap-5 lg:grid-cols-[minmax(0,1fr)_320px] print:block print:space-y-6">
         {/* المحادثة + ملحن الرد */}
         <div className="min-w-0 space-y-4">
-          <section className="rounded-2xl border border-border bg-card p-4 sm:p-6">
+          <section className="ds-card rounded-2xl border border-border bg-card p-4 sm:p-6">
             <h2 className="flex items-center gap-2 text-lg font-bold text-navy">
               <MessageSquare className="h-5 w-5 text-brand" aria-hidden="true" />
               {t.conversation}
@@ -226,24 +226,25 @@ export function InquiryDetailView({
                       className={cn("flex print:break-inside-avoid", message.authorType === "client" ? "justify-end" : "justify-start")}
                     >
                       <div
+                        data-author={message.authorType === "client" ? "client" : "staff"}
                         className={cn(
-                          "max-w-[85%] rounded-2xl border px-4 py-3 text-sm leading-7 shadow-sm sm:max-w-[75%] print:border-border print:bg-transparent print:text-foreground print:shadow-none",
+                          "ds-direct-chat max-w-[85%] text-sm leading-7 sm:max-w-[75%] print:border-border print:bg-transparent print:text-foreground print:shadow-none",
                           message.authorType === "client"
-                            ? "rounded-se-sm border-brand/10 bg-accent/60 text-foreground"
-                            : "rounded-ss-sm border-navy bg-inverse text-inverse-foreground shadow-navy/10"
+                            ? "border-border"
+                            : "border-primary"
                         )}
                       >
                         <p
                           className={cn(
                             "mb-1 text-xs font-bold",
-                            message.authorType === "client" ? "text-brand-strong" : "text-skydrop print:text-navy"
+                            message.authorType === "client" ? "text-foreground" : "text-primary-foreground print:text-navy"
                           )}
                         >
                           {message.authorType === "client" ? t.you : (message.author?.name ?? t.team)}
                           <span
                             className={cn(
                               "ms-2 font-normal",
-                              message.authorType === "client" ? "text-muted-foreground" : "text-emphasis-muted print:text-muted-foreground"
+                              message.authorType === "client" ? "text-muted-foreground" : "text-primary-foreground print:text-muted-foreground"
                             )}
                           >
                             {formatRelative(message.createdAt, locale)}
@@ -259,7 +260,7 @@ export function InquiryDetailView({
           </section>
 
           {/* ملحن الرد — مخفي عند الطباعة */}
-          <section className="rounded-2xl border border-border bg-card p-4 sm:p-6 print:hidden">
+          <section className="ds-card rounded-2xl border border-border bg-card p-4 sm:p-6 print:hidden">
             {conversationLocked ? (
               <div
                 role="status"
@@ -297,7 +298,7 @@ export function InquiryDetailView({
 
         {/* العمود الجانبي: بيانات الاستفسار + المرفقات */}
         <div className="space-y-4">
-          <section className="rounded-2xl border border-border bg-card p-4 sm:p-6">
+          <section className="ds-card rounded-2xl border border-border bg-card p-4 sm:p-6">
             <h2 className="text-lg font-bold text-navy">{t.meta}</h2>
             <dl className="mt-4 space-y-3 text-sm">
               <InfoRow
@@ -335,7 +336,7 @@ export function InquiryDetailView({
           </section>
 
           {inquiry.attachments.length > 0 && (
-            <section className="rounded-2xl border border-border bg-card p-4 sm:p-6">
+            <section className="ds-card rounded-2xl border border-border bg-card p-4 sm:p-6">
               <h2 className="text-lg font-bold text-navy">{t.attachments}</h2>
               <ul className="mt-4 space-y-2">
                 {inquiry.attachments.map((file) => {

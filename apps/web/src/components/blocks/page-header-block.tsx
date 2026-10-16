@@ -16,26 +16,23 @@ export function PageHeaderBlock({ props, locale }: { props: PageHeaderBlockProps
   const quickLinks = props.quickLinks ?? [];
 
   return (
-    <header className="relative overflow-hidden border-b border-border bg-card">
-      <div className="pointer-events-none absolute inset-0" aria-hidden="true">
-        <div className="absolute -top-16 end-[8%] h-56 w-56 rounded-full bg-brand-soft blur-3xl opacity-70" />
-      </div>
-      <div className="relative mx-auto max-w-4xl px-4 py-14 text-center sm:px-6 sm:py-20">
-        <p className="mb-4 inline-block rounded-full bg-accent px-4 py-1.5 text-sm font-semibold text-brand-strong">
+    <header className="border-b border-border bg-card">
+      <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 sm:py-8">
+        <p className="mb-2 inline-block rounded-lg bg-accent px-2 py-1 text-xs font-semibold text-brand-strong">
           {props.kicker}
         </p>
-        <h1 className="text-balance text-3xl font-bold leading-snug text-navy sm:text-4xl lg:text-[2.75rem]">
+        <h1 className="text-balance text-[1.75rem] font-normal leading-snug text-navy">
           {props.title}
         </h1>
-        <div className="mx-auto mt-7 max-w-2xl space-y-4">
+        <div className="mt-4 max-w-3xl space-y-3">
           {intro.map((p, i) => (
-            <p key={i} className="text-pretty text-base leading-9 text-muted-foreground">
+            <p key={i} className="text-pretty text-base leading-7 text-muted-foreground">
               {p}
             </p>
           ))}
         </div>
         {quickLinks.length > 0 && (
-          <nav aria-label={props.kicker} className="mt-8 flex flex-wrap justify-center gap-2">
+          <nav aria-label={props.kicker} className="mt-4 flex flex-wrap gap-2">
             {quickLinks.map((l, i) => (
               <BlockLink
                 key={`${i}-${l.label}`}

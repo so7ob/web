@@ -137,7 +137,7 @@ export function NotificationsView({
         )} />
 
       <ErrorFeedback error={failure} locale={locale} operation={t.title} onRefresh={async()=>{setPage(1);await load(1,false);}}/>
-      <section className="rounded-2xl border border-border bg-card p-4 sm:p-6">
+      <section className="ds-card rounded-2xl border border-border bg-card p-4 sm:p-6">
         {loading && items.length === 0 ? (
           <div className="space-y-3" role="status" aria-busy="true" aria-label={t.title}>
             {[...Array(5)].map((_, i) => (

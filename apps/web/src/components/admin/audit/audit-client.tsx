@@ -425,7 +425,7 @@ export function AuditClient({ me, locale }: { me: Me; locale: "ar" | "en" }) {
               : ""}
           </p>
             <section
-            className="space-y-4 rounded-2xl border bg-card p-4"
+            className="ds-card space-y-4 rounded-2xl border bg-card p-4"
             aria-label={t.filters}
           >
               <div className="flex flex-wrap gap-3">
@@ -845,12 +845,12 @@ export function AuditClient({ me, locale }: { me: Me; locale: "ar" | "en" }) {
             {loading && !current ? (
             <div
               role="status"
-              className="rounded-2xl border bg-card p-12 text-center"
+              className="ds-card rounded-2xl border bg-card p-12 text-center"
             >
               {t.loading}
             </div>
           ) : !rows.length && !error ? (
-            <div className="rounded-2xl border bg-card px-6 py-16 text-center">
+            <div className="ds-card rounded-2xl border bg-card px-6 py-16 text-center">
               <ScrollText
                 aria-hidden="true"
                 className="mx-auto mb-4 size-10 text-muted-foreground"
@@ -862,7 +862,7 @@ export function AuditClient({ me, locale }: { me: Me; locale: "ar" | "en" }) {
           ) : (
               rows.length > 0 && (
                 <div
-                className="overflow-hidden rounded-2xl border bg-card"
+                className="ds-card overflow-hidden rounded-2xl border bg-card"
                 aria-busy={loading}
               >
                   <TableScroll className="hidden overflow-x-auto md:block">
