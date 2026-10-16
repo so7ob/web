@@ -1,6 +1,8 @@
 import AxeBuilder from "@axe-core/playwright";
 import type { Page } from "@playwright/test";
-import { test, expect } from "@playwright/test";
+import { expect } from "@playwright/test";
+import { test } from "./stylesheet-fixture";
+import { assertStylesheetsApplied } from "./stylesheet-readiness";
 import { readFileSync } from "node:fs";
 import { createDataSource, PayloadCipher, sha256 } from "@so7ob/server";
 import { getPortalContent } from "../../apps/web/src/content/portal";
@@ -12,6 +14,7 @@ const fixture = () =>
     password: string;
   };
 async function assertPortalAxe(page: Page, locale: string, name: string) {
+  await assertStylesheetsApplied(page);
   const toast = page.locator(
     '[data-sonner-toast][data-front="true"][data-removed="false"]',
   );

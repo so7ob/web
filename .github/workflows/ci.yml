@@ -259,6 +259,7 @@ jobs:
           name: synthetic-smoke-${{ matrix.project }}
           path: |
             test-results/
+            .migration/e2e/netlog/*.json
             .migration/iam/*.png
             .migration/workflows/*.png
             .migration/menus/*.png
@@ -328,6 +329,7 @@ jobs:
           name: synthetic-functional-${{ matrix.shard }}
           path: |
             test-results/
+            .migration/e2e/netlog/*.json
             .migration/iam/*.png
             .migration/workflows/*.png
             .migration/menus/*.png
@@ -400,6 +402,7 @@ jobs:
           name: synthetic-design-${{ matrix.project }}-${{ matrix.locale }}-${{ matrix.mode }}
           path: |
             test-results/
+            .migration/e2e/netlog/*.json
             .migration/iam/*.png
             .migration/workflows/*.png
             .migration/menus/*.png
