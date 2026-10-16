@@ -125,7 +125,10 @@ export class AdminOperationsService {
       // An unchanged public field must not imply that an excluded setting was unchanged.
       const captureAnnouncement=auditedKeys.length>0 && (JSON.stringify(before)!==JSON.stringify(after) || updates.every(update=>update.key!=='response.hours' && current[update.key]===update.value));
       const announcementOnly=updates.every(update=>update.key.startsWith('announcement.'));
-      const affected=new Set(Object.values(SECTION_KEYS).filter(keys=>updates.some(u=>keys.includes(u.key))).flat());
+      // Legacy presentation keys remain accepted by the API even when their
+      // controls moved to a separate section. Validate the submitted key itself
+      // as well as cross-field errors in its current section.
+      const affected=new Set([...updates.map(update=>update.key), ...Object.values(SECTION_KEYS).filter(keys=>updates.some(u=>keys.includes(u.key))).flat()]);
       const fields=Object.fromEntries(Object.entries(validateSiteSettings(merged)).filter(([key])=>affected.has(key)));
       if(Object.keys(fields).length)throw new AuthFault(400,"invalid_settings",{fields});
       for(const update of updates){
