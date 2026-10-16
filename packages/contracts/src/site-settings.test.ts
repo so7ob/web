@@ -50,6 +50,12 @@ describe("site presentation contracts", () => {
     expect(reference["sidebar-width"]).toBe("250px");
     expect(reference["space-panel"]).toBe("1rem");
     expect(reference["row-padding"]).toBe("0.5rem");
+    for (const mode of ["light", "dark"] as const) {
+      const tokens = appearanceTokens({}, mode);
+      expect(tokens["metric-primary"]).toBe("#0d6efd");
+      expect(tokens["metric-on-primary"]).toBe("#ffffff");
+      expect(appearanceTokens({"appearance.primaryLight":"#c84e10"}, mode)["metric-primary"]).toBe("#c84e10");
+    }
     const stored = { "appearance.radius":"soft", "appearance.density":"comfortable", "appearance.primaryLight":"#0369a1", "appearance.fontEn":"ibm" };
     const frozen = JSON.stringify(stored);
     const custom = appearanceTokens(stored, "light");

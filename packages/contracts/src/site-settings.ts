@@ -304,7 +304,10 @@ export function appearanceTokens(
     "admin-header-foreground": s["appearance.adminStyle"] === "colored" ? onPrimary : fg,
     ...chrome,
     ...Object.fromEntries(Object.entries(ADMINLTE_BASE_COLORS).flatMap(([name, base]) => {
-      const color = name === "primary" && isHexColor(p) ? p : base;
+      // Bootstrap's solid Small Box colors remain the same in dark mode;
+      // primaryDark is the readable emphasis for links on dark surfaces.
+      const metricPrimary = s["appearance.primaryLight"];
+      const color = name === "primary" && isHexColor(metricPrimary) ? metricPrimary : base;
       return [[`metric-${name}`, color], [`metric-on-${name}`, contrast(color, "#ffffff") >= 4.5 ? "#ffffff" : "#000000"]];
     })),
     "overlay": "#000000",

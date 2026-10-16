@@ -26,7 +26,7 @@ Primitive source: `packages/contracts/src/adminlte-tokens.ts`. Semantic and comp
 | Typography | Source Sans 3; 16px / 1.5; 28px page heading | Source Sans 3 locally for EN; IBM Plex Sans Arabic for AR; 16px tables/controls; 28px normal-weight page titles |
 | Radius | 6px | 6px baseline; square/soft/round remain optional choices |
 | Cards | 16px body; 8px × 16px header; two subtle shadows | Same defaults / composed headers, body, footer |
-| Small Box | primary/success/warning/danger fills; 2.2rem value, subdued large icon, footer | Same composition; four real permission-filtered headline metrics, two columns at 375px and four at 1280px |
+| Small Box | primary/success/warning/danger fills; 2.2rem value, subdued large icon, footer | Same composition; solid primary uses the chosen primaryLight in both modes, independently from readable dark-surface emphasis; four real permission-filtered headline metrics, two columns at 375px and four at 1280px |
 | Info Box | min 80px; 8px padding; 70px icon block | Same structure; real metrics and existing deep links |
 | Table cells | 8px vertical/horizontal; stripe / hover / selected | Same defaults, with existing contained scrolling and semantic badges |
 | Sidebar | 250px, transition at 992px; 8px wrapper padding | Same; logical start/end and Radix drawer for small screens |
