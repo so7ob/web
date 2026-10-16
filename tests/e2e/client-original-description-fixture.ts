@@ -12,6 +12,7 @@ export const test = base.extend<{ originalRequest: Fixture }>({
     const db = await createDataSource().initialize(), contexts: APIRequestContext[] = [];
     const quotaKey = sha256('request:' + sha256('ip:127.0.0.1'));
     const [quota] = await db.query('SELECT timestamps,updatedAt FROM RateLimitBucket WHERE bucketKey=?', [quotaKey]);
+    const [previousDraft] = await db.query('SELECT * FROM RequestDraft WHERE userId=?', [prefix + 'owner']);
     const login = async (request: APIRequestContext, actor: string) => {
       const { csrfToken } = await (await request.get('/api/auth/csrf')).json();
       expect((await request.post('/api/auth/callback/credentials', { form: { email: prefix + actor + '@example.invalid', password, csrfToken, json: 'true' } })).status()).toBe(200);
@@ -19,6 +20,9 @@ export const test = base.extend<{ originalRequest: Fixture }>({
     };
     try {
       await db.query('DELETE FROM RateLimitBucket WHERE bucketKey=?', [quotaKey]);
+      // Another project can intentionally leave this shared synthetic owner's
+      // server draft. This journey creates a new request from an empty draft.
+      await db.query('DELETE FROM RequestDraft WHERE userId=?', [prefix + 'owner']);
       const headers = await login(page.request, 'owner');
       expect((await db.query('SELECT roleKey FROM User WHERE id=?', [prefix + 'owner']))[0].roleKey).toBe('client');
       await use({ db, prefix, headers, email: prefix + 'owner@example.invalid',
@@ -34,6 +38,8 @@ export const test = base.extend<{ originalRequest: Fixture }>({
       });
     } finally {
       try {
+        await db.query('DELETE FROM RequestDraft WHERE userId=?', [prefix + 'owner']);
+        if (previousDraft) await db.query('INSERT INTO RequestDraft(id,userId,data,updatedAt) VALUES(?,?,?,?)', [previousDraft.id,previousDraft.userId,previousDraft.data,previousDraft.updatedAt]);
         if (quota) await db.query('INSERT INTO RateLimitBucket(bucketKey,timestamps,updatedAt) VALUES(?,?,?) ON DUPLICATE KEY UPDATE timestamps=VALUES(timestamps),updatedAt=VALUES(updatedAt)', [quotaKey, quota.timestamps, quota.updatedAt]);
         else await db.query('DELETE FROM RateLimitBucket WHERE bucketKey=?', [quotaKey]);
       } finally { for (const request of contexts) await request.dispose(); await db.destroy(); }
