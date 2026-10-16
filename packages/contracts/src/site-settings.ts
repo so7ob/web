@@ -1,4 +1,5 @@
 import { ADMINLTE } from "./adminlte-tokens.js";
+import { ADMINLTE_BACKGROUNDS, ADMINLTE_BASE_COLORS, ADMINLTE_CHROME_KEYS, ADMINLTE_PALETTES } from "./adminlte-themes.js";
 /** Public presentation settings. No arbitrary CSS, URLs or executable font definitions. */
 export const SOCIAL_CHANNELS = [
   "github",
@@ -38,6 +39,9 @@ export const APPEARANCE_DEFAULTS: Record<string, string> = {
   "appearance.fontEn": "source",
   "appearance.radius": "adminlte",
   "appearance.density": "adminlte",
+  ...Object.fromEntries(ADMINLTE_CHROME_KEYS.flatMap(region => [
+    [`appearance.${region}Background`, "inherit"], [`appearance.${region}Mode`, "inherit"],
+  ])),
 };
 export const PRESENTATION_DEFAULTS: Record<string, string> = {
   "site.nameAr": "سُحُب التقنية",
@@ -223,13 +227,49 @@ export function appearanceTokens(
     danger: dark ? "#ea868f" : "#dc3545",
     highlight: accent,
   })) {
-    const solid = readable(color, card);
+    const solid = readable(color, palette.surface);
     const subtle = mix(solid, card, dark ? 0.88 : 0.94);
     tones[name] = solid;
     tones[name + "-soft"] = subtle;
     tones[name + "-foreground"] = readable(solid, subtle);
     tones[name + "-border"] = mix(solid, card, dark ? 0.48 : 0.66);
     tones["on-" + name] = contrast(solid, "#ffffff") >= 4.5 ? "#ffffff" : "#0b1220";
+  }
+  const chrome: Record<string, string> = {};
+  for (const region of ADMINLTE_CHROME_KEYS) {
+    const name = s[`appearance.${region}Background`];
+    const regionMode = s[`appearance.${region}Mode`];
+    const regionPalette = regionMode === "light" ? ADMINLTE.light : regionMode === "dark" ? ADMINLTE.dark : palette;
+    const defaultSidebar = ["semi-dark", "colored"].includes(s["appearance.adminStyle"]);
+    let color = region === "sidebar" && defaultSidebar ? ADMINLTE.sidebar : region === "header" && s["appearance.adminStyle"] === "colored" ? primary : card;
+    let text = region === "sidebar" && defaultSidebar ? ADMINLTE.sidebarText : region === "header" && s["appearance.adminStyle"] === "colored" ? onPrimary : fg;
+    if (name !== "inherit") {
+      const [family, key] = name.split(":");
+      const extended = ADMINLTE_PALETTES[family as keyof typeof ADMINLTE_PALETTES] as Record<string, string> | undefined;
+      const base = ADMINLTE_BASE_COLORS[name.replace(/-subtle$/, "")];
+      color = extended?.[key] ?? (name === "body" ? regionPalette.card : name === "body-secondary" ? regionPalette.surface : name === "body-tertiary" ? regionPalette.canvas : base ? (name.endsWith("-subtle") ? mix(base, regionPalette.card, 0.8) : base) : color);
+      text = contrast(color, "#ffffff") >= 4.5 ? "#ffffff" : "#000000";
+    }
+    // Upstream uses a 15% white gradient. Bound its highlight only when AA
+    // would otherwise fail (notably the designed indigo/violet palettes).
+    let top = color;
+    if (name.endsWith(":gradient")) for (let step = 15; step >= 0; step--) {
+      top = mix(color, "#ffffff", step / 100);
+      if (contrast(text, top) >= 4.5) break;
+    }
+    const hover = mix(color, text, 0.08);
+    const hoverText = readable(text, hover);
+    chrome[`admin-${region}`] = color;
+    chrome[`admin-${region}-image`] = name.endsWith(":gradient") ? `linear-gradient(180deg, ${top}, ${color})` : "none";
+    chrome[`admin-${region}-gradient-top`] = top;
+    chrome[`admin-${region}-foreground`] = text;
+    chrome[`admin-${region}-muted`] = text;
+    chrome[`admin-${region}-hover`] = hover;
+    chrome[`admin-${region}-hover-foreground`] = hoverText;
+    chrome[`admin-${region}-active`] = hover;
+    chrome[`admin-${region}-on-active`] = hoverText;
+    chrome[`admin-${region}-logo-light`] = contrast(color, "#ffffff") >= 4.5 ? "none" : "inline-block";
+    chrome[`admin-${region}-logo-dark`] = contrast(color, "#ffffff") >= 4.5 ? "inline-block" : "none";
   }
   return {
     ...tones,
@@ -241,6 +281,8 @@ export function appearanceTokens(
     "admin-sidebar-hover": ["semi-dark", "colored"].includes(s["appearance.adminStyle"]) ? mix(ADMINLTE.sidebar, "#ffffff", 0.1) : soft,
     "admin-header": s["appearance.adminStyle"] === "colored" ? primary : card,
     "admin-header-foreground": s["appearance.adminStyle"] === "colored" ? onPrimary : fg,
+    ...chrome,
+    ...Object.fromEntries(Object.entries(ADMINLTE_BASE_COLORS).flatMap(([name, color]) => [[`metric-${name}`, color], [`metric-on-${name}`, contrast(color, "#ffffff") >= 4.5 ? "#ffffff" : "#000000"]])),
     "overlay": "#000000",
     "selection": soft,
     "selection-foreground": readable(primary, soft),
@@ -352,8 +394,10 @@ export function paletteChecks(
     ["admin-sidebar", t["admin-sidebar-foreground"], t["admin-sidebar"], 4.5],
     ["admin-sidebar-muted", t["admin-sidebar-muted"], t["admin-sidebar"], 4.5],
     ["admin-sidebar-active", t["admin-sidebar-on-active"], t["admin-sidebar-active"], 4.5],
-    ["admin-sidebar-hover", t["admin-sidebar-foreground"], t["admin-sidebar-hover"], 4.5],
+    ["admin-sidebar-hover", t["admin-sidebar-hover-foreground"], t["admin-sidebar-hover"], 4.5],
     ["admin-header", t["admin-header-foreground"], t["admin-header"], 4.5],
+    ["admin-footer", t["admin-footer-foreground"], t["admin-footer"], 4.5],
+    ...ADMINLTE_CHROME_KEYS.map(region => [`${region}-gradient`, t[`admin-${region}-foreground`], t[`admin-${region}-gradient-top`], 4.5]),
   ].map(([name, a, b, min]) => ({
     name: String(name),
     ratio: contrast(String(a), String(b)),
@@ -412,6 +456,10 @@ export function validateSiteSettings(
     if (k.startsWith("social.") && !safeSettingUrl(v)) errors[k] = "url";
   }
   const enums: Record<string, readonly string[]> = {
+    ...Object.fromEntries(ADMINLTE_CHROME_KEYS.flatMap(region => [
+      [`appearance.${region}Background`, ADMINLTE_BACKGROUNDS],
+      [`appearance.${region}Mode`, ["inherit", "light", "dark"]],
+    ])),
     "appearance.mode": ["light", "dark", "system"],
     "appearance.adminStyle": ["light", "semi-dark", "dark", "colored"],
     "appearance.fontAr": ["ibm", "cairo", "tajawal", "system"],

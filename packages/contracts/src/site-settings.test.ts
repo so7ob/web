@@ -1,4 +1,5 @@
 import { describe, it, expect } from "vitest";
+import { ADMINLTE_THEME_PRESETS, ADMINLTE_BACKGROUNDS, adminltePresetSettings } from "./adminlte-themes.js";
 import {
   appearanceTokens,
   paletteChecks,
@@ -9,6 +10,21 @@ import {
   mediaSettingId,
 } from "./site-settings.js";
 describe("site presentation contracts", () => {
+  it("validates all pinned presets and region colors with AA pairs in both modes", () => {
+    expect(ADMINLTE_THEME_PRESETS).toHaveLength(29);
+    for (const preset of ADMINLTE_THEME_PRESETS) {
+      const settings = adminltePresetSettings(preset);
+      expect(validateSiteSettings(settings), preset.id).toEqual({});
+      for (const mode of ["light", "dark"] as const)
+        expect(paletteChecks(settings, mode).filter(check => check.ratio < check.minimum), `${preset.id}/${mode}`).toEqual([]);
+    }
+    for (const background of ADMINLTE_BACKGROUNDS) for (const mode of ["light", "dark"] as const) {
+      const settings = Object.fromEntries(["sidebar", "header", "footer"].map(region => [`appearance.${region}Background`, background]));
+      expect(paletteChecks(settings, mode).filter(check => check.ratio < check.minimum), `${background}/${mode}`).toEqual([]);
+    }
+    expect(validateSiteSettings({ "appearance.headerBackground": "url(https://example.invalid/x)" })).toHaveProperty("appearance.headerBackground", "choice");
+    expect(validateSiteSettings({ "appearance.sidebarMode": "untrusted" })).toHaveProperty("appearance.sidebarMode", "choice");
+  });
   it("uses pinned AdminLTE defaults while retaining every stored customization", () => {
     const reference = appearanceTokens({}, "light");
     expect(reference.card).toBe("#ffffff");

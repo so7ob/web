@@ -77,6 +77,12 @@ class SettingsBody {
   @Allow() "appearance.fontEn"?: unknown;
   @Allow() "appearance.radius"?: unknown;
   @Allow() "appearance.density"?: unknown;
+  @Allow() "appearance.sidebarBackground"?: unknown;
+  @Allow() "appearance.sidebarMode"?: unknown;
+  @Allow() "appearance.headerBackground"?: unknown;
+  @Allow() "appearance.headerMode"?: unknown;
+  @Allow() "appearance.footerBackground"?: unknown;
+  @Allow() "appearance.footerMode"?: unknown;
   @Allow() "social.linkedin"?: unknown;
   @Allow() "social.x"?: unknown;
   @Allow() "social.facebook"?: unknown;

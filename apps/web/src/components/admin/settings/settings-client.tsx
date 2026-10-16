@@ -1,3 +1,4 @@
+import { ThemeGenerator } from "./theme-generator";
 import { AppearancePreview } from "./appearance-preview";
 import { NativeSelect } from "@/components/ui/native-select";
 import { Panel, PageHeading, Toolbar } from "@/components/ui/workspace";
@@ -211,7 +212,7 @@ export function SettingsClient({ me, locale }: { me: Me; locale: Locale }) {
   const set = (key: string, value: string) => {
     if (key === "appearance.adminStyle") {
       const mode = value === "dark" ? "dark" : "light";
-      setForm((p) => ({ ...p, [key]: value, "appearance.mode": mode }));
+      setForm((p) => ({ ...p, [key]: value, "appearance.mode": mode, ...Object.fromEntries(["sidebar", "header", "footer"].flatMap(region => [[`appearance.${region}Background`, "inherit"], [`appearance.${region}Mode`, "inherit"]])) }));
       setPreviewMode(mode);
     } else setForm((p) => ({ ...p, [key]: value }));
     setErrors((p) => {
@@ -689,6 +690,7 @@ export function SettingsClient({ me, locale }: { me: Me; locale: Locale }) {
                   </ul>
                 </div>
               )}
+              {section === "appearance" && <ThemeGenerator settings={form} locale={locale} disabled={saving} onChange={patch => { setForm(previous => ({ ...previous, ...patch })); setErrors({}); setFailure(null); }} />}
               {section === "appearance" && (
                 <div className="mb-6">
                   <p className="mb-2 text-sm font-medium">
@@ -733,7 +735,7 @@ export function SettingsClient({ me, locale }: { me: Me; locale: Locale }) {
                 {ar ? "اختيار النمط يغيّر نمط الإدارة ووضع العرض الافتراضي في هذه المسودة فقط. تبقى الألوان والخطوط والكثافة، ويبقى اختيار الزائر الشخصي لوضع العرض أسبق من الافتراضي." : "Choosing a style changes administration chrome and default color mode in this draft only. Colors, fonts and density are retained; a visitor’s personal color-mode choice still takes precedence."}
               </p>}
               <div className="grid gap-5 sm:grid-cols-2">
-                {SECTION_KEYS[section].map(field)}
+                {SECTION_KEYS[section].filter(key => !/appearance\.(sidebar|header|footer)(Background|Mode)/.test(key)).map(field)}
               </div>
               {section === "tracking" && (
                 <div className="mt-5 space-y-4 rounded-xl border bg-muted/30 p-4">

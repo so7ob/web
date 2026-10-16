@@ -4,7 +4,7 @@ import { readFileSync, mkdirSync } from 'node:fs';
 import { createDataSource } from '@so7ob/server';
 import { getPortalContent } from '../../apps/web/src/content/portal';
 import { documentAudit, VisualReadiness } from './visual-checks';
-import { APPEARANCE_DEFAULTS } from '@so7ob/contracts';
+import { APPEARANCE_DEFAULTS, ADMINLTE_THEME_PRESETS, adminltePresetSettings, appearanceTokens } from '@so7ob/contracts';
 
 // A reference/default profile must be measurable, while the saved legacy
 // geometry remains an explicit supported customization rather than a DB reset.
@@ -82,7 +82,7 @@ for (const locale of ['ar', 'en'] as const) for (const mode of ['light', 'dark']
       ready.dispose();
     } finally {
       await db.query("DELETE FROM SiteSetting WHERE `key` LIKE 'appearance.%'");
-      for (const row of saved) await db.query('INSERT INTO SiteSetting (`key`,value,revision,updatedAt) VALUES(?,?,?,?)', [row.key,row.value,row.revision,row.updatedAt]);
+      for (const row of saved) await db.query('INSERT INTO SiteSetting (`key`,value,updatedById,updatedAt) VALUES(?,?,?,?)', [row.key,row.value,row.updatedById,row.updatedAt]);
       await db.destroy();
     }
   });
@@ -233,6 +233,81 @@ for (const locale of ['ar', 'en'] as const) for (const mode of ['light', 'dark']
       for (const row of saved) {
         const keys = Object.keys(row);
         await db.query('INSERT INTO SiteSetting ('+keys.map(k=>'`'+k+'`').join(',')+') VALUES ('+keys.map(()=>'?').join(',')+')',keys.map(k=>row[k]));
+      }
+      await db.destroy();
+    }
+  });
+}
+
+// Exercise every pinned preset through the real draft controls, including both
+// optional palette families, then verify persistence and an independent revert.
+for (const locale of ['ar', 'en'] as const) for (const mode of ['light', 'dark'] as const) {
+  test(`${locale}/${mode}: all 29 AdminLTE theme presets preview and save`, async ({ page }, info) => {
+    test.setTimeout(180000);
+    const { prefix, password } = JSON.parse(readFileSync('.migration/e2e/run.json', 'utf8'));
+    const { csrfToken } = await (await page.request.get('/api/auth/csrf')).json();
+    expect((await page.request.post('/api/auth/callback/credentials', { form: { email: prefix + 'admin@example.invalid', password, csrfToken, json: 'true' } })).status()).toBe(200);
+    await page.addInitScript(value => localStorage.setItem('so7ob-appearance-mode', value), mode);
+    const db = await createDataSource().initialize();
+    const saved = await db.query("SELECT * FROM SiteSetting WHERE `key` LIKE 'appearance.%'");
+    const mutations: string[] = [];
+    const folder = `.migration/design-system/screenshots/adminlte-180/${locale}-${mode}-${info.project.name}/themes`;
+    mkdirSync(folder, {recursive:true});
+    const ready = new VisualReadiness(page);
+    const rgb = (hex: string) => `rgb(${[1,3,5].map(i => parseInt(hex.slice(i,i+2),16)).join(', ')})`;
+    try {
+      expect((await page.request.patch('/api/admin/settings', { headers: {'x-csrf-token':csrfToken}, data: APPEARANCE_DEFAULTS })).status()).toBe(200);
+      await page.goto(`/${locale}/admin/settings?section=appearance`); await ready.wait();
+      page.on('request', request => { if (['POST','PATCH','DELETE'].includes(request.method())) mutations.push(new URL(request.url()).pathname); });
+      await page.getByRole('combobox', { name: locale === 'ar' ? 'وضع المعاينة' : 'Preview color mode', exact:true }).selectOption(mode);
+      const sample = page.frameLocator('iframe');
+      for (const family of ['designed','v3']) {
+        await page.getByRole('button', {name: family === 'designed' ? locale === 'ar' ? 'الألوان المصمّمة لـ AdminLTE 4' : 'AdminLTE 4 designed palette' : locale === 'ar' ? 'ألوان AdminLTE 3 الأصلية' : 'AdminLTE 3 originals', exact:true}).click();
+        for (const preset of ADMINLTE_THEME_PRESETS.filter(item => item.family === family)) {
+          await page.locator(`[data-theme-preset="${preset.id}"]`).click();
+          const expected = appearanceTokens({...APPEARANCE_DEFAULTS, ...adminltePresetSettings(preset)}, mode);
+          await expect(sample.locator('.admin-topbar')).toHaveCSS('background-color', rgb(expected['admin-header']));
+          await expect(sample.locator('.admin-sidebar')).toHaveCSS('background-color', rgb(expected['admin-sidebar']));
+          await expect(sample.locator('.admin-footer')).toHaveCSS('background-color', rgb(expected['admin-footer']));
+          await expect(page.locator('html')).toHaveAttribute('data-color-mode',mode);
+          expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), preset.id).toBe(true);
+          expect(await sample.locator('html').evaluate(element => element.scrollWidth <= element.clientWidth), preset.id).toBe(true);
+          await page.locator('iframe').screenshot({path:`${folder}/${preset.id}.png`});
+        }
+      }
+      expect(mutations).toEqual([]);
+      // Independent footer backgrounds, including the brightest original color.
+      await page.locator('#theme-footer-background').selectOption('v3:lime');
+      await expect(sample.locator('.admin-footer')).toHaveCSS('background-color','rgb(1, 255, 112)');
+      await expect(sample.locator('.admin-footer')).toHaveCSS('color','rgb(0, 0, 0)');
+      const isolated = await page.context().newPage();
+      try {
+        await isolated.goto(new URL('/api/health/ready',page.url()).href);
+        await isolated.setContent(await page.locator('iframe').evaluate((frame:HTMLIFrameElement) => frame.contentDocument!.documentElement.outerHTML));
+        await isolated.evaluate(() => document.fonts.ready);
+        expect((await documentAudit(isolated)).violations).toEqual([]);
+      } finally { await isolated.close(); }
+      const save = page.getByRole('button',{name:getPortalContent(locale).admin.settings.save,exact:true});
+      const response = page.waitForResponse(response => response.request().method() === 'PATCH' && response.url().endsWith('/settings/checked'));
+      await save.click(); const result = await response; expect(result.status()).toBe(200); expect((await result.json()).settings['appearance.footerBackground']).toBe('v3:lime'); await expect(save).toBeDisabled();
+      await page.reload(); await ready.wait();
+      await expect(page.locator('#theme-footer-background')).toHaveValue('v3:lime');
+      await page.locator('#theme-footer-background').selectOption('designed:indigo:gradient');
+      page.once('dialog', dialog => dialog.dismiss());
+      await page.getByRole('button',{name:locale === 'ar' ? 'التراجع' : 'Revert',exact:true}).click();
+      await expect(page.locator('#theme-footer-background')).toHaveValue('designed:indigo:gradient');
+      page.once('dialog', dialog => dialog.accept());
+      await page.getByRole('button',{name:locale === 'ar' ? 'التراجع' : 'Revert',exact:true}).click();
+      await expect(page.locator('#theme-footer-background')).toHaveValue('v3:lime');
+      await expect(save).toBeDisabled();
+      expect((await documentAudit(page,true)).violations).toEqual([]);
+      await page.screenshot({path:`${folder}/saved.png`,fullPage:true});
+    } finally {
+      ready.dispose();
+      await db.query("DELETE FROM SiteSetting WHERE `key` LIKE 'appearance.%'");
+      for (const row of saved) {
+        const keys = Object.keys(row);
+        await db.query('INSERT INTO SiteSetting ('+keys.map(key=>'`'+key+'`').join(',')+') VALUES ('+keys.map(()=>'?').join(',')+')',keys.map(key=>row[key]));
       }
       await db.destroy();
     }

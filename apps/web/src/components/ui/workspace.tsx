@@ -1,5 +1,8 @@
 import type { ComponentProps, ReactNode } from "react";
+import { createContext, useContext } from "react";
 import { cn } from "@/lib/utils";
+
+export const PageBreadcrumbContext = createContext<ReactNode>(null);
 
 /** Shared page composition; feature components retain data and action ownership. */
 export function PageTitle({ className, ...props }: ComponentProps<"h1">) {
@@ -34,6 +37,7 @@ export function PageHeading({
   back?: ReactNode;
   metadata?: ReactNode;
 }) {
+  const breadcrumb = useContext(PageBreadcrumbContext);
   return (
     <PageHeader>
       <div className="ds-page-heading">
@@ -46,7 +50,7 @@ export function PageHeading({
           {metadata && <div className="ds-page-metadata">{metadata}</div>}
         </div>
       </div>
-      {actions && <div className="ds-page-actions">{actions}</div>}
+      {(actions || breadcrumb) && <div className="ds-page-tools">{breadcrumb}{actions && <div className="ds-page-actions">{actions}</div>}</div>}
     </PageHeader>
   );
 }
@@ -74,6 +78,10 @@ export function InfoBoxContent({ icon, label, value, hint, tone }: {
       <strong className="ds-info-value">{value}</strong>
       {hint && <span className="ds-info-hint">{hint}</span>}
     </span></>;
+}
+/** AdminLTE small-box: genuine value, subdued icon and an optional link footer. */
+export function SmallBoxContent({ icon, label, value, hint, footer }: { icon: ReactNode; label: ReactNode; value: ReactNode; hint?: ReactNode; footer?: ReactNode }) {
+  return <><span className="ds-small-inner" title={typeof hint === "string" ? hint : undefined}><strong className="ds-small-value">{value}</strong><span className="ds-small-label">{label}</span>{hint && <span className="ds-small-hint">{hint}</span>}</span><span className="ds-small-icon" aria-hidden="true">{icon}</span>{footer && <span className="ds-small-footer">{footer}</span>}</>;
 }
 export function Toolbar({ className, ...props }: ComponentProps<"div">) {
   return (

@@ -1,5 +1,6 @@
 import { ThemeToggle, useSitePresentation } from "@/components/appearance/provider";
 import { Logo } from "@/components/site/logo";
+import { PageBreadcrumbContext } from "@/components/ui/workspace";
 
 import { diagnosticsCopy } from "@/content/diagnostics";
 
@@ -74,11 +75,11 @@ const subscribePlatform = () => () => {};
 export function AdminShell({ me, locale, siteName, children }: AdminShellProps) {
   const settings = useSitePresentation();
   const adminStyle = settings["appearance.adminStyle"] ?? APPEARANCE_DEFAULTS["appearance.adminStyle"];
-  const darkSidebar = ["semi-dark", "colored"].includes(adminStyle);
   const pathname = usePathname() ?? `/${locale}/admin`;
   const [mobileOpen, setMobileOpen] = useState(false);
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [identityOpen, setIdentityOpen] = useState(false);
+  const [navigationFilter, setNavigationFilter] = useState("");
   // لوحة البحث الشاملة (Ctrl+K) — الحالة هنا ليصل إليها الزر ومستمع المفاتيح داخلها
   const [paletteOpen, setPaletteOpen] = useState(false);
   const [unread, setUnread] = useState(0);
@@ -209,7 +210,9 @@ export function AdminShell({ me, locale, siteName, children }: AdminShellProps) 
     },
   ];
   const visibleItems = items.filter(
-    (item) => !item.permission || can(me, item.permission),
+    (item) => (!item.permission || can(me, item.permission)) &&
+      (!navigationFilter.trim() || item.label.toLocaleLowerCase(locale).includes(navigationFilter.trim().toLocaleLowerCase(locale)) ||
+        (item.href === identityHref && identityLinks.some(child => child.label.toLocaleLowerCase(locale).includes(navigationFilter.trim().toLocaleLowerCase(locale))))),
   );
 
   const isActive = (href: string) =>
@@ -273,10 +276,13 @@ export function AdminShell({ me, locale, siteName, children }: AdminShellProps) 
     },
   ];
   const navList = (onNavigate?: () => void) => (
+    <>
+    <div className="px-3 py-2"><label className="sr-only" htmlFor={onNavigate ? "mobile-nav-filter" : "desktop-nav-filter"}>{locale === "ar" ? "تصفية القائمة" : "Filter menu"}</label><input id={onNavigate ? "mobile-nav-filter" : "desktop-nav-filter"} type="search" value={navigationFilter} onChange={event => setNavigationFilter(event.target.value)} placeholder={locale === "ar" ? "تصفية القائمة…" : "Filter menu…"} className="admin-nav-filter w-full rounded-full border border-sidebar-border bg-sidebar-accent px-3 py-1.5 text-sm text-sidebar-accent-foreground placeholder:text-sidebar-accent-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring" /></div>
     <nav
       aria-label={locale === "ar" ? "أقسام الإدارة" : "Administration"}
       className="admin-navigation flex-1 space-y-3 overflow-y-auto p-2"
     >
+      {visibleItems.length === 0 && <p role="status" className="p-3 text-sm">{locale === "ar" ? "لا توجد نتائج" : "No results"}</p>}
       {groups.map((group) => {
         const links = group.paths.flatMap((path) =>
           visibleItems.filter(
@@ -303,12 +309,12 @@ export function AdminShell({ me, locale, siteName, children }: AdminShellProps) 
                       <span className="truncate">{item.label}</span>
                     </Link></AdminNavigationItem>
                     {item.href === identityHref && identityLinks.length > 1 && <button type="button"
-                      className="admin-nav-expand grid size-11 shrink-0 place-items-center rounded-lg hover:bg-sidebar-accent"
+                      className="admin-nav-expand grid size-11 shrink-0 place-items-center rounded-lg hover:bg-sidebar-accent hover:text-sidebar-accent-foreground"
                       aria-label={locale === "ar" ? "أقسام الهوية" : "Identity sections"}
                       aria-expanded={identityOpen} aria-controls={onNavigate ? "mobile-identity-tree" : "desktop-identity-tree"}
                       onClick={() => setIdentityOpen(value => !value)}><ChevronDown className={`size-4 transition-transform ${identityOpen ? "rotate-180" : ""}`} aria-hidden="true" /></button>}
                     </div>
-                    {item.href === identityHref && identityLinks.length > 1 && <ul id={onNavigate ? "mobile-identity-tree" : "desktop-identity-tree"} hidden={!identityOpen} className="admin-nav-tree ms-4 border-s border-sidebar-border ps-2">
+                    {item.href === identityHref && identityLinks.length > 1 && <ul id={onNavigate ? "mobile-identity-tree" : "desktop-identity-tree"} hidden={!identityOpen && !navigationFilter} className="admin-nav-tree ms-4 border-s border-sidebar-border ps-2">
                       {identityLinks.map(child => <li key={child.path}><Link href={`/${locale}/admin/${child.path}`} onClick={onNavigate}
                         className="admin-nav-child flex min-h-11 items-center gap-2 rounded-lg px-3 text-sm hover:bg-sidebar-accent"
                         aria-current={pathname === `/${locale}/admin/${child.path}` ? "page" : undefined}>
@@ -323,6 +329,7 @@ export function AdminShell({ me, locale, siteName, children }: AdminShellProps) 
         );
       })}
     </nav>
+    </>
   );
 
   const sidebarFooter = (onNavigate?: () => void) => (
@@ -368,7 +375,7 @@ export function AdminShell({ me, locale, siteName, children }: AdminShellProps) 
       {/* الشريط الجانبي — سطح المكتب (مخفي عند الطباعة) */}
       <aside id="admin-desktop-sidebar" className="admin-sidebar sticky top-0 hidden h-dvh w-(--sidebar-width) shrink-0 flex-col border-e border-sidebar-border bg-sidebar text-sidebar-foreground print:hidden min-[992px]:flex">
         <div className="flex h-(--header-height) items-center gap-3 border-b border-sidebar-border px-4">
-          <Logo size="sm" nameLang={locale} variant={darkSidebar ? "light" : "dark"}/>
+          <Logo size="sm" nameLang={locale} variant="chrome"/>
         </div>
         {navList()}
         {sidebarFooter()}
@@ -401,7 +408,7 @@ export function AdminShell({ me, locale, siteName, children }: AdminShellProps) 
             >
               <SheetHeader className="border-b border-sidebar-border p-0">
                 <SheetTitle className="flex h-(--header-height) items-center gap-3 px-4 text-sidebar-foreground">
-                  <Logo size="sm" nameLang={locale} variant={darkSidebar ? "light" : "dark"}/>
+                  <Logo size="sm" nameLang={locale} variant="chrome"/>
                 </SheetTitle>
               </SheetHeader>
               {navList(() => setMobileOpen(false))}
@@ -409,10 +416,7 @@ export function AdminShell({ me, locale, siteName, children }: AdminShellProps) 
             </SheetContent>
           </Sheet>
 
-          <nav aria-label={locale === "ar" ? "مسار التنقل" : "Breadcrumb"} className="hidden min-w-0 items-center gap-2 text-sm sm:flex">
-            <Link href={`/${locale}/admin`} className="text-muted-foreground hover:text-primary">{t.dashboard}</Link>
-            {pathname !== `/${locale}/admin` && <><span aria-hidden="true">/</span><span aria-current="page" className="truncate">{titleFor(pathname)}</span></>}
-          </nav>
+          <Link href={`/${locale}`} className="hidden min-h-11 items-center gap-2 text-sm min-[992px]:inline-flex"><Home className="size-4" aria-hidden="true" />{t.backSite}</Link>
 
           <div className="ms-auto flex items-center gap-2">
             <ThemeToggle locale={locale} compact />
@@ -505,10 +509,12 @@ export function AdminShell({ me, locale, siteName, children }: AdminShellProps) 
 
         <main
           id="main-content"
-          className="admin-main flex-1 p-3 sm:p-4"
+          className="admin-main flex-1 px-5 pb-4"
         >
           <div className="admin-workspace mx-auto w-full max-w-[1440px]">
-            {children}
+            <PageBreadcrumbContext.Provider value={<nav aria-label={locale === "ar" ? "مسار التنقل" : "Breadcrumb"} className="flex min-w-0 flex-wrap items-center gap-2 text-sm"><Link href={`/${locale}`} className="text-primary hover:underline">{locale === "ar" ? "الرئيسية" : "Home"}</Link><span aria-hidden="true">/</span>{pathname !== `/${locale}/admin` && <><Link href={`/${locale}/admin`} className="text-primary hover:underline">{t.dashboard}</Link><span aria-hidden="true">/</span></>}<span aria-current="page" className="text-muted-foreground">{titleFor(pathname)}</span></nav>}>
+              {children}
+            </PageBreadcrumbContext.Provider>
           </div>
         </main>
         <footer className="admin-footer flex flex-wrap justify-between gap-2 border-t bg-card px-4 py-3 text-sm text-muted-foreground print:hidden"><Link href={`/${locale}`} className="font-semibold text-primary">{siteName}</Link><span>{locale === "ar" ? "مساحة إدارة المنصة" : "Platform administration"}</span></footer>

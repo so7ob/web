@@ -65,7 +65,7 @@ export function SiteHeader({ locale, content, items, auth }: SiteHeaderProps) {
       }`}
     >
       <div className="mx-auto flex min-h-(--header-height) max-w-7xl items-center justify-between gap-4 px-4 sm:px-6 lg:px-8">
-        <Link href={homePath} aria-label={brandName} className="shrink-0 rounded-md">
+        <Link href={homePath} aria-label={brandName} className="min-w-0 flex-1 rounded-md xl:flex-none">
           <Logo size="md" nameLang={locale === "ar" ? "ar" : "en"} />
         </Link>
 

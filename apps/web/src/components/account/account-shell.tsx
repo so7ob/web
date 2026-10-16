@@ -214,7 +214,7 @@ export function AccountShell({
 
         <div className="min-w-0">
           {/* شريط الجوال (مخفي عند الطباعة) */}
-          <div className="mb-4 flex items-center justify-between gap-3 print:hidden min-[992px]:hidden">
+          <div className="sticky top-(--header-height) z-20 mb-4 flex items-center justify-between gap-3 bg-background py-2 print:hidden min-[992px]:hidden">
             <Sheet open={open} onOpenChange={setOpen}>
               <SheetTrigger asChild>
                 <Button

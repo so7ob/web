@@ -1,9 +1,11 @@
-import { PageHeading, PanelHeader, InfoBoxContent } from "@/components/ui/workspace";
+import { PageHeading, PanelHeader, PanelBody, InfoBoxContent, SmallBoxContent } from "@/components/ui/workspace";
 /**
  * لوحة الإدارة الرئيسية: البيانات وتسميات الوقت تأتي من الخادم، مع الحفاظ
  * على العرض الأصلي دون استيراد قاعدة البيانات في المتصفح. كل الأرقام حقيقية.
  */
 import Link from "@/routing/link";
+import { useId } from "react";
+import { Table, TableHeader, TableBody, TableHead, TableRow, TableCell } from "@/components/ui/table";
 import {
   Users,
   Clock,
@@ -13,8 +15,6 @@ import {
   FileText,
   Timer,
   ArrowUpRight,
-  ChartBar,
-  CalendarDays,
   ScrollText,
   type LucideIcon,
 } from "lucide-react";
@@ -28,6 +28,7 @@ import { cn } from "@/lib/utils";
 import type { AdminDashboardView } from "@so7ob/contracts";
 interface StatDef {
   icon: LucideIcon;
+  tone: "primary" | "success" | "warning" | "danger" | "info";
   permitted: boolean;
   value: number;
   label: string;
@@ -37,8 +38,7 @@ interface StatDef {
 }
 
 /** AdminLTE-inspired info boxes retain real metrics and existing deep links. */
-const STAT_CARD_CLASS =
-  "ds-info-box group transition-colors hover:border-primary focus-visible:ring-2 focus-visible:ring-ring";
+const STAT_CARD_CLASS = "ds-info-box group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring";
 
 /** تدرجات أشرطة الحالة — نفس عائلات ألوان شارات الحالة */
 const STATUS_BAR: Record<string, string> = {
@@ -86,6 +86,7 @@ export function AdminDashboard({
   const chartBars = data.presentation.chartBars;
   const rangeTotal = chartBars.reduce((sum, bar) => sum + bar.count, 0);
   const maxBar = Math.max(1, ...chartBars.map((bar) => bar.count));
+  const chartId = useId();
 
   const byStatus = REQUEST_STATUSES.map((status) => ({
     status,
@@ -95,6 +96,7 @@ export function AdminDashboard({
 
   const stats: StatDef[] = [
     {
+      tone: "success",
       icon: Users,
       permitted: access.users,
       value: totalUsers,
@@ -103,6 +105,7 @@ export function AdminDashboard({
       href: `/${locale}/admin/users`,
     },
     {
+      tone: "warning",
       icon: Clock,
       permitted: access.users,
       value: pendingUsers,
@@ -110,6 +113,7 @@ export function AdminDashboard({
       href: `/${locale}/admin/users?status=pending_verification`,
     },
     {
+      tone: "primary",
       icon: Inbox,
       permitted: access.requests,
       value: openRequests,
@@ -118,6 +122,7 @@ export function AdminDashboard({
       href: `/${locale}/admin/requests`,
     },
     {
+      tone: "warning",
       icon: Hourglass,
       permitted: access.requests,
       value: awaitingInfo,
@@ -125,6 +130,7 @@ export function AdminDashboard({
       href: `/${locale}/admin/requests?status=awaiting_info`,
     },
     {
+      tone: "danger",
       icon: Timer,
       permitted: access.requests,
       value: overdueReplies,
@@ -133,6 +139,7 @@ export function AdminDashboard({
       href: `/${locale}/admin/requests?overdue=1`,
     },
     {
+      tone: "info",
       icon: MessageSquareText,
       permitted: access.inquiries,
       value: openInquiries,
@@ -142,300 +149,101 @@ export function AdminDashboard({
       href: `/${locale}/admin/inquiries?status=open`,
     },
     {
+      tone: "success",
       icon: FileText,
       permitted: access.pages,
       value: publishedPages,
       label: t.publishedPages,
       hint: `${draftPages} · ${t.draftPages}`,
+      href: `/${locale}/admin/pages`,
     },
   ];
 
-  return (
-    <div className="space-y-6">
-      <PageHeading
-        title={t.title}
-        description={
-          locale === "ar"
-            ? "نظرة على نشاط المنصة والعمليات التي تحتاج إلى متابعتك."
-            : "An overview of platform activity and operations that need your attention."
-        }
-        actions={
-          access.requests && (
-            <div
-            role="group"
-            aria-label={t.rangeLabel}
-            className="flex flex-wrap items-center gap-2 print:hidden"
-          >
-              {rangeOptions.map((option) => {
-                const active = option.days === rangeDays;
-                return (
-                  <Link
-                    key={option.days}
-                    href={`/${locale}/admin?range=${option.days}`}
-                    scroll={false}
-                    aria-current={active ? "page" : undefined}
-                    className={cn(
-                      "inline-flex min-h-11 items-center rounded-lg border px-4 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/40",
-                      active
-                      ? "border-brand bg-accent text-brand-strong"
-                      : "border-border bg-card text-muted-foreground hover:bg-muted/50 hover:text-foreground",
-                    )}
-                  >
-                    {option.label}
-                  </Link>
-                );
-              })}
-            </div>
-          )
-        }
-      />
+  const visibleStats = stats.filter(stat => stat.permitted);
+  const primaryStats = [t.openRequests, t.totalUsers, t.pendingUsers, t.overdueReplies].flatMap(label => visibleStats.filter(stat => stat.label === label));
+  const secondaryStats = visibleStats.filter(stat => !primaryStats.includes(stat));
+  const points = chartBars.map((bar, index) => `${(index / Math.max(chartBars.length - 1, 1)) * 600},${200 - (bar.count / maxBar) * 180}`);
+  const chartLine = points.length ? `M ${points.join(" L ")}` : "";
+  const area = points.length ? `${chartLine} L 600,200 L 0,200 Z` : "";
+  const details = locale === "ar" ? "تفاصيل" : "More info";
 
-      {/* بطاقات المؤشرات — 7 بطاقات: صف 4+3 على الشاشات الواسعة؛
-          ذات الرابط تفتح القائمة المفلترة المقابلة (روابط اللوحة العميقة) */}
-      <section
-        aria-label={t.title}
-        className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4"
-      >
-        {stats
-          .filter((stat) => stat.permitted)
-          .map((stat) => {
-            const card = (
-              <InfoBoxContent icon={<stat.icon />} label={stat.label} value={stat.value} hint={stat.hint} />
-            );
-            return stat.href ? (
-              <Link
-                key={stat.label}
-                href={stat.href}
-                aria-label={`${stat.label}: ${stat.value}`}
-                className={cn(
-                  STAT_CARD_CLASS,
-                  "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/40",
-                )}
-              >
-                {card}
-              </Link>
-            ) : (
-              <div key={stat.label} className={STAT_CARD_CLASS}>
-                {card}
-              </div>
-            );
-          })}
-      </section>
-
-      {access.requests && (
-        <div className="grid gap-4 print:block print:space-y-4 lg:grid-cols-2">
-          {/* الطلبات حسب الحالة — أشرطة أفقية */}
-          <section className="ds-panel">
-            <div className="flex items-center gap-2.5">
-              <span className="flex size-5 shrink-0 items-center justify-center text-muted-foreground">
-                <ChartBar className="size-4" aria-hidden="true" />
-              </span>
-              <h2 className="text-base font-semibold text-foreground">
-                {t.requestsByStatus}
-              </h2>
-            </div>
-            {byStatus.every((s) => s.count === 0) ? (
-              <EmptyState icon={Inbox} title={t.noData} className="py-8" />
-            ) : (
-              <ul className="mt-4 space-y-1">
-                {byStatus.map((row) => (
-                  <li key={row.status}>
-                    <Link
-                      href={`/${locale}/admin/requests?status=${row.status}`}
-                      aria-label={`${requestLabels.statuses[row.status] ?? row.status}: ${row.count}`}
-                      className="flex min-h-11 items-center gap-3 rounded-lg px-2.5 py-1.5 transition-colors hover:bg-muted/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/40"
-                    >
-                      <p className="w-28 shrink-0 truncate text-xs text-muted-foreground">
-                        {requestLabels.statuses[row.status] ?? row.status}
-                      </p>
-                      <div className="h-2.5 flex-1 overflow-hidden rounded-full bg-muted">
-                        <div
-                          title={`${requestLabels.statuses[row.status] ?? row.status}: ${row.count}`}
-                          className={cn(
-                            "h-full rounded-full transition-[color,background-color,border-color,box-shadow,opacity,transform] duration-(--duration-panel)",
-                            STATUS_BAR[row.status] ??
-                              "bg-primary",
-                          )}
-                          style={{
-                            width: `${Math.max(row.count > 0 ? 4 : 0, Math.round((row.count / maxStatus) * 100))}%`,
-                          }}
-                        />
-                      </div>
-                      <span className="inline-flex min-w-8 shrink-0 items-center justify-center rounded-full bg-muted px-2 py-0.5 text-xs font-bold tabular-nums text-navy">
-                        {row.count}
-                      </span>
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            )}
-          </section>
-
-          {/* المدى المختار — أعمدة مصغرة (أيام لـ 7/30، أسابيع لـ 90) — تُخفى عند الطباعة */}
-          <section className="ds-panel print:hidden">
-            <div className="flex items-center gap-2.5">
-              <span className="flex size-5 shrink-0 items-center justify-center text-muted-foreground">
-                <CalendarDays className="size-4" aria-hidden="true" />
-              </span>
-              <h2 className="text-base font-semibold text-foreground">
-                {rangeLabel}
-              </h2>
-            </div>
-            {rangeTotal === 0 ? (
-              <EmptyState icon={Inbox} title={t.noData} className="py-8" />
-            ) : (
-              <div
-                className={cn(
-                  "mt-6 flex h-64 items-end border-b border-border pb-3",
-                  rangeDays === 30 ? "gap-1" : "gap-2 sm:gap-3",
-                )}
-              >
-                {chartBars.map((bar) => (
-                  <div
-                    key={bar.key}
-                    className="flex min-w-0 flex-1 flex-col items-center gap-1.5"
-                  >
-                    <p
-                      className="text-[10px] font-semibold tabular-nums text-muted-foreground"
-                      title={bar.title}
-                    >
-                      {bar.count > 0 ? bar.count : ""}
-                    </p>
-                    <div
-                      title={bar.title}
-                      className={cn(
-                        "rounded-t-sm transition-[color,background-color,border-color,box-shadow,opacity,transform] duration-(--duration-panel) hover:brightness-125",
-                        rangeDays === 30 ? "w-full" : "w-full max-w-10",
-                        bar.count === 0
-                          ? "bg-muted hover:brightness-100"
-                          : "bg-primary",
-                      )}
-                      style={{
-                        height: `${Math.max(4, Math.round((bar.count / maxBar) * 180))}px`,
-                      }}
-                    />
-                    {bar.label !== null ? (
-                      <p className="text-[10px] tabular-nums text-muted-foreground">
-                        {bar.label}
-                      </p>
-                    ) : (
-                      <p
-                        aria-hidden="true"
-                        className="text-[10px] text-muted-foreground"
-                      >
-                        &nbsp;
-                      </p>
-                    )}
-                  </div>
-                ))}
-              </div>
-            )}
-          </section>
+  return <div className="admin-dashboard space-y-6">
+    <PageHeading title={t.title} />
+    <section aria-label={t.title} className="grid grid-cols-2 gap-6 xl:grid-cols-4">
+      {primaryStats.map(stat => <Link key={stat.label} href={stat.href!} aria-label={`${stat.label}: ${stat.value}`} className="ds-small-box" data-tone={stat.tone}>
+        <SmallBoxContent icon={<stat.icon />} value={stat.value} label={stat.label} hint={stat.hint} footer={<>{details}<ArrowUpRight aria-hidden="true" className="size-4" /></>} />
+      </Link>)}
+    </section>
+    {secondaryStats.length > 0 && <section aria-label={locale === "ar" ? "مؤشرات إضافية" : "Additional metrics"} className="grid grid-cols-1 gap-6 sm:grid-cols-2 xl:grid-cols-3">
+      {secondaryStats.map(stat => <Link key={stat.label} href={stat.href!} aria-label={`${stat.label}: ${stat.value}`} className={STAT_CARD_CLASS}>
+        <InfoBoxContent icon={<stat.icon />} value={stat.value} label={stat.label} hint={stat.hint} tone={`ds-metric-${stat.tone}`} />
+      </Link>)}
+    </section>}
+    {access.requests && <section className="ds-card overflow-hidden" aria-label={locale === "ar" ? "تقرير الطلبات" : "Request report"}>
+      <PanelHeader><h2>{locale === "ar" ? "تقرير الطلبات" : "Request report"}</h2>
+        <div role="group" aria-label={t.rangeLabel} className="flex flex-wrap print:hidden">
+          {rangeOptions.map(option => <Link key={option.days} href={`/${locale}/admin?range=${option.days}`} scroll={false} aria-current={option.days === rangeDays ? "page" : undefined}
+            className={cn("inline-flex min-h-11 items-center border px-3 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring", option.days === rangeDays ? "border-primary bg-primary text-primary-foreground" : "border-border bg-card text-foreground hover:bg-muted")}>
+            {option.label}
+          </Link>)}
         </div>
-      )}
-
-      <div className="grid gap-4 print:block print:space-y-4 lg:grid-cols-2">
-        {/* أحدث الطلبات */}
-        {access.requests && (
-          <section className="ds-panel overflow-hidden">
-            <PanelHeader>
-              <div className="flex min-w-0 items-center gap-2.5">
-                <span className="flex size-5 shrink-0 items-center justify-center text-muted-foreground">
-                  <Inbox className="size-4" aria-hidden="true" />
-                </span>
-                <h2 className="text-base font-semibold text-foreground">
-                  {t.recentRequests}
-                </h2>
+      </PanelHeader>
+      <div className="grid min-w-0 lg:grid-cols-3">
+        <PanelBody className="min-w-0 lg:col-span-2">
+          <figure aria-labelledby={chartId}>
+            <figcaption id={chartId} className="mb-3 flex items-center justify-between gap-3"><span>{rangeLabel}</span><strong className="text-xl tabular-nums">{rangeTotal}</strong></figcaption>
+            {rangeTotal === 0 ? <EmptyState icon={Inbox} title={t.noData} className="py-12" /> : <>
+              <div className="ds-area-chart" dir="ltr">
+                <div className="ds-chart-axis" aria-hidden="true">{[1, .75, .5, .25, 0].map(fraction => <span key={fraction}>{Math.round(maxBar * fraction)}</span>)}</div>
+                <div className="ds-chart-plot">
+                  <div className="ds-chart-grid" aria-hidden="true">{[0,1,2,3,4].map(index => <span key={index} />)}</div>
+                  <svg viewBox="0 0 600 200" preserveAspectRatio="none" aria-hidden="true">
+                    <defs><linearGradient id={`${chartId}-fill`} x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stopColor="var(--chart-1)" stopOpacity=".4" /><stop offset="100%" stopColor="var(--chart-1)" stopOpacity=".03" /></linearGradient></defs>
+                    <path d={area} fill={`url(#${chartId}-fill)`} />
+                    <path d={chartLine} fill="none" stroke="var(--chart-1)" strokeWidth="2" vectorEffect="non-scaling-stroke" />
+                    {chartBars.map((bar,index) => <circle key={bar.key} cx={index / Math.max(chartBars.length - 1, 1) * 600} cy={200 - bar.count / maxBar * 180} r="3" fill="var(--chart-1)"><title>{bar.title}</title></circle>)}
+                  </svg>
+                  <div className="ds-chart-labels" aria-hidden="true">{chartBars.filter(bar => bar.label !== null).map(bar => <span key={bar.key}>{bar.label}</span>)}</div>
+                </div>
               </div>
-              <Link
-                href={`/${locale}/admin/requests`}
-                className="inline-flex min-h-11 shrink-0 items-center gap-1 rounded-full px-3 text-xs font-semibold text-brand transition-colors hover:bg-accent hover:text-brand-strong focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/40"
-              >
-                {t.viewAll}
-                <ArrowUpRight className="size-3.5" aria-hidden="true" />
-              </Link>
-            </PanelHeader>
-            {recentRequests.length === 0 ? (
-              <EmptyState icon={Inbox} title={t.noData} />
-            ) : (
-              <ul className="divide-y divide-border">
-                {recentRequests.map((r) => (
-                  <li
-                    key={r.id}
-                    className="transition-colors hover:bg-muted/50"
-                  >
-                    <Link
-                      href={`/${locale}/admin/requests/${r.id}`}
-                      className="flex flex-wrap items-center gap-x-3 gap-y-1.5 px-5 py-3"
-                    >
-                      <p className="font-mono text-sm font-bold text-navy ltr-isolate">
-                        {r.refCode}
-                      </p>
-                      <p className="min-w-0 flex-1 truncate text-sm text-foreground">
-                        {r.name}
-                      </p>
-                      <StatusBadge
-                        status={r.status}
-                        label={requestLabels.statuses[r.status] ?? r.status}
-                      />
-                      <p className="w-full text-xs tabular-nums text-muted-foreground sm:w-auto">
-                        {requestLabels.services[r.serviceType] ?? r.serviceType}
-                        {" · "}
-                        {r.assignee?.name ?? requestLabels.none}
-                        {" · "}
-                        {data.presentation.requestDates[r.id]}
-                      </p>
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            )}
-          </section>
-        )}
-
-        {/* أحدث الأحداث (سجل التدقيق) */}
-        {access.audit && (
-          <section className="ds-panel overflow-hidden">
-            <PanelHeader>
-              <div className="flex min-w-0 items-center gap-2.5">
-                <span className="flex size-5 shrink-0 items-center justify-center text-muted-foreground">
-                  <ScrollText className="size-4" aria-hidden="true" />
-                </span>
-                <h2 className="text-base font-semibold text-foreground">
-                  {t.recentActivity}
-                </h2>
-              </div>
-              <Link
-                href={`/${locale}/admin/audit`}
-                className="inline-flex min-h-11 shrink-0 items-center gap-1 rounded-full px-3 text-xs font-semibold text-brand transition-colors hover:bg-accent hover:text-brand-strong focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/40"
-              >
-                {t.viewAll}
-                <ArrowUpRight className="size-3.5" aria-hidden="true" />
-              </Link>
-            </PanelHeader>
-            {recentAudit.length === 0 ? (
-              <EmptyState icon={Inbox} title={t.noData} />
-            ) : (
-              <ul className="divide-y divide-border">
-                {recentAudit.map((log) => (
-                  <li
-                    key={log.id}
-                    className="flex flex-wrap items-center gap-x-3 gap-y-1 px-5 py-3 transition-colors hover:bg-muted/50"
-                  >
-                    <ActionBadge action={log.action} />
-                    <p className="min-w-0 flex-1 truncate text-sm text-foreground">
-                      {log.actor?.name ?? log.actorEmail ?? "—"}
-                    </p>
-                    <p className="text-xs tabular-nums text-muted-foreground">
-                      {data.presentation.auditTimes[log.id]}
-                    </p>
-                  </li>
-                ))}
-              </ul>
-            )}
-          </section>
-        )}
+              <details className="mt-4 text-sm"><summary className="min-h-11 cursor-pointer py-3 text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">{locale === "ar" ? "عرض بيانات الرسم" : "View chart data"}</summary>
+                <Table><TableHeader><TableRow><TableHead>{locale === "ar" ? "الفترة" : "Period"}</TableHead><TableHead>{requestLabels.title}</TableHead></TableRow></TableHeader><TableBody>
+                  {chartBars.map(bar => <TableRow key={bar.key}><TableCell>{bar.title}</TableCell><TableCell className="tabular-nums">{bar.count}</TableCell></TableRow>)}
+                </TableBody></Table>
+              </details>
+            </>}
+          </figure>
+        </PanelBody>
+        <PanelBody className="border-t lg:border-s lg:border-t-0">
+          <h3 className="mb-3 font-semibold">{t.requestsByStatus}</h3>
+          {byStatus.every(row => row.count === 0) ? <EmptyState icon={Inbox} title={t.noData} className="py-8" /> : <ul>
+            {byStatus.map(row => <li key={row.status}><Link href={`/${locale}/admin/requests?status=${row.status}`} aria-label={`${requestLabels.statuses[row.status] ?? row.status}: ${row.count}`}
+              className="block min-h-11 rounded-lg py-1.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring hover:bg-muted">
+              <span className="mb-1 flex justify-between gap-2 text-sm"><span>{requestLabels.statuses[row.status] ?? row.status}</span><strong className="tabular-nums">{row.count}</strong></span>
+              <span className="block h-2.5 overflow-hidden bg-muted" aria-hidden="true"><span className={cn("block h-full", STATUS_BAR[row.status] ?? "bg-primary")} style={{ width: `${Math.round(row.count / maxStatus * 100)}%` }} /></span>
+            </Link></li>)}
+          </ul>}
+        </PanelBody>
       </div>
+    </section>}
+    <div className="grid gap-6 print:block print:space-y-4 lg:grid-cols-2">
+      {access.requests && <section className="ds-card min-w-0 overflow-hidden">
+        <PanelHeader><h2>{t.recentRequests}</h2><Link href={`/${locale}/admin/requests`} className="inline-flex min-h-11 items-center gap-1 text-primary underline-offset-4 hover:underline">{t.viewAll}<ArrowUpRight className="size-4" aria-hidden="true" /></Link></PanelHeader>
+        {recentRequests.length === 0 ? <EmptyState icon={Inbox} title={t.noData} /> : <Table>
+          <TableHeader><TableRow><TableHead>{locale === "ar" ? "الطلب" : "Request"}</TableHead><TableHead>{locale === "ar" ? "الحالة" : "Status"}</TableHead><TableHead>{locale === "ar" ? "المتابعة" : "Follow-up"}</TableHead></TableRow></TableHeader>
+          <TableBody>{recentRequests.map(request => <TableRow key={request.id}>
+            <TableCell><Link href={`/${locale}/admin/requests/${request.id}`} className="inline-flex min-h-11 flex-col justify-center text-primary hover:underline"><span className="font-mono ltr-isolate">{request.refCode}</span><span className="text-sm text-foreground">{request.name}</span></Link><span className="block text-xs text-muted-foreground">{requestLabels.services[request.serviceType] ?? request.serviceType}</span></TableCell>
+            <TableCell><StatusBadge status={request.status} label={requestLabels.statuses[request.status] ?? request.status} /></TableCell>
+            <TableCell className="text-sm"><span className="block">{request.assignee?.name ?? requestLabels.none}</span><span className="text-xs text-muted-foreground">{data.presentation.requestDates[request.id]}</span></TableCell>
+          </TableRow>)}</TableBody>
+        </Table>}
+      </section>}
+      {access.audit && <section className="ds-card min-w-0 overflow-hidden">
+        <PanelHeader><h2>{t.recentActivity}</h2><Link href={`/${locale}/admin/audit`} className="inline-flex min-h-11 items-center gap-1 text-primary underline-offset-4 hover:underline">{t.viewAll}<ArrowUpRight className="size-4" aria-hidden="true" /></Link></PanelHeader>
+        {recentAudit.length === 0 ? <EmptyState icon={ScrollText} title={t.noData} /> : <ul className="divide-y divide-border">{recentAudit.map(log => <li key={log.id} className="flex flex-wrap items-center gap-3 px-4 py-3 hover:bg-muted">
+          <ActionBadge action={log.action} /><span className="min-w-0 basis-full break-words text-sm sm:flex-1 sm:basis-0">{log.actor?.name ?? log.actorEmail ?? "—"}</span><span className="text-xs tabular-nums text-muted-foreground">{data.presentation.auditTimes[log.id]}</span>
+        </li>)}</ul>}
+      </section>}
     </div>
-  );
+  </div>;
 }

@@ -6,7 +6,7 @@ import type { Locale } from "@/lib/i18n";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Panel, PanelHeader, PanelBody, PanelFooter, ListWorkspace, Toolbar } from "@/components/ui/workspace";
+import { Panel, PanelHeader, PanelBody, PanelFooter, ListWorkspace, Toolbar, SmallBoxContent, InfoBoxContent } from "@/components/ui/workspace";
 import { Table, TableHeader, TableBody, TableRow, TableHead, TableCell } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { NativeSelect } from "@/components/ui/native-select";
@@ -36,6 +36,8 @@ export function AppearanceSample({ locale, profile = APPEARANCE_DEFAULTS["appear
         <AdminNavigationItem active={active === "requests"} className="whitespace-normal px-2"><button type="button" onClick={() => setActive("requests")}>{ar ? "الطلبات" : "Requests"}</button></AdminNavigationItem>
       </nav></aside>
       <main className="admin-main admin-workspace min-w-0 flex-1 space-y-4 p-3">
+    <div className="ds-small-box" data-tone="primary"><SmallBoxContent value={4} label={ar ? "الطلبات المفتوحة" : "Open requests"} icon={null} /></div>
+    <div className="ds-info-box"><InfoBoxContent icon={<span>✓</span>} label={ar ? "طلبات مكتملة" : "Completed requests"} value={12} tone="ds-metric-success" /></div>
     <Panel>
       <PanelHeader><h1 className="text-lg font-semibold">{ar ? "معاينة المظهر" : "Appearance preview"}</h1></PanelHeader>
       <PanelBody className="space-y-3">
@@ -65,7 +67,7 @@ export function AppearanceSample({ locale, profile = APPEARANCE_DEFAULTS["appear
           <TableRow><TableCell>{ar ? "استفسار عام" : "General inquiry"}</TableCell><TableCell>{ar ? "تم الرد" : "Replied"}</TableCell></TableRow></TableBody>
       </Table>
     </ListWorkspace>
-  </main></div></div>;
+  </main></div><footer className="admin-footer border-t px-3 py-3 text-sm">{ar ? "سُحُب · إدارة المنصة" : "So7ob · Platform administration"}</footer></div>;
 }
 export function AppearancePreview({ settings, locale, mode, title }: { settings: Record<string,string>; locale: Locale; mode: "light" | "dark"; title: string }) {
   const [styles, setStyles] = useState("");

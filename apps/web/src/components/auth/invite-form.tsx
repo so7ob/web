@@ -101,7 +101,7 @@ export function InviteForm({ locale, t, token, nameLabel }: { locale: Locale; t:
           {t.haveAccount}{" "}
           <Link
             href={`/${locale}/auth/login`}
-            className="font-semibold text-brand underline decoration-brand/40 underline-offset-4 hover:text-brand-strong"
+            className="inline-flex min-h-11 items-center px-1 font-semibold text-brand underline decoration-brand/40 underline-offset-4 hover:text-brand-strong"
           >
             {t.loginTitle}
           </Link>
