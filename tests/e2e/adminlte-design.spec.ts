@@ -48,6 +48,7 @@ for (const locale of ['ar', 'en'] as const) for (const mode of ['light', 'dark']
       await expect(title).toHaveAttribute('aria-expanded', 'false');
       await expect(page.locator('#admin-desktop-sidebar')).toBeHidden();
       await expect(title).toBeFocused();
+      await expect(title).not.toHaveCSS('box-shadow', 'none');
       await page.keyboard.press('Enter');
       await expect(page.locator('#admin-desktop-sidebar')).toBeVisible();
     } else {
@@ -58,6 +59,7 @@ for (const locale of ['ar', 'en'] as const) for (const mode of ['light', 'dark']
       await expect(page.getByRole('dialog')).toBeHidden();
       await expect(toggle).toBeFocused();
     }
+    await expect(page.locator('#appearance-density')).toHaveValue('compact');
     expect(errors).toEqual([]);
   });
 }
@@ -85,10 +87,33 @@ for (const locale of ['ar', 'en'] as const) for (const mode of ['light', 'dark']
         expect(await page.evaluate(() => localStorage.getItem('so7ob-appearance-mode'))).toBe(mode);
         expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
         expect((await documentAudit(page,true)).violations).toEqual([]);
+        if (profile === 'colored') {
+          // Exercise actual topbar interaction states, including nested search text/icons.
+          const search = page.locator('.admin-topbar button[aria-keyshortcuts]:visible');
+          await page.keyboard.press('Shift');
+          await search.focus();
+          await expect(search).toBeFocused();
+          await expect(search).not.toHaveCSS('box-shadow', 'none');
+          expect((await documentAudit(page,true)).violations).toEqual([]);
+          await search.hover();
+          await expect.poll(() => search.evaluate(button => {
+            const foreground = getComputedStyle(button).color;
+            return [...button.querySelectorAll('svg, span:not([aria-hidden])')]
+              .every(child => getComputedStyle(child).color === foreground);
+          })).toBe(true);
+          expect((await documentAudit(page,true)).violations).toEqual([]);
+          await page.screenshot({path:`${folder}/colored-search-hover-focus.png`,fullPage:false});
+          for (const control of await page.locator('.admin-topbar [data-slot="button"]:visible').all()) {
+            await control.hover();
+            expect((await documentAudit(page,true)).violations).toEqual([]);
+          }
+          await page.mouse.move(0,0);
+          await search.blur();
+        }
         if (info.project.name === 'mobile') {
           await page.locator('header [data-slot="sheet-trigger"]').click();
           expect((await documentAudit(page,true)).violations).toEqual([]);
-          await page.screenshot({path:`${folder}/${profile}-navigation.png`,fullPage:true});
+          await page.screenshot({path:`${folder}/${profile}-navigation.png`,fullPage:false});
           await page.keyboard.press('Escape');
         }
         await page.locator('#appearance-admin-style').selectOption(profile === 'dark' ? 'light' : 'dark');

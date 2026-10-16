@@ -400,14 +400,14 @@ export function AdminShell({ me, locale, children }: AdminShellProps) {
               className="hidden h-11 min-h-11 items-center gap-2 rounded-lg px-3 focus-visible:ring-2 focus-visible:ring-ring/40 sm:flex"
             >
               <Search
-                className="size-4 text-muted-foreground"
+                className="size-4"
                 aria-hidden="true"
               />
-              <span className="text-xs font-semibold text-muted-foreground">
+              <span className="text-xs font-semibold">
                 {ts.trigger}
               </span>
               <span className="ltr-isolate" aria-hidden="true">
-                <kbd className="rounded-md border border-border bg-muted px-1.5 py-0.5 font-mono text-[10px] text-muted-foreground">
+                <kbd className="rounded-md border border-border bg-accent px-1.5 py-0.5 font-mono text-[10px] text-accent-foreground">
                   {isMac ? "⌘ K" : "Ctrl K"}
                 </kbd>
               </span>
