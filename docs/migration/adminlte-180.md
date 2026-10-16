@@ -2,7 +2,7 @@
 
 ## Source, scope and workflow
 
-Base: clean `develop` **`e8d0f6cf7367d8732abaa179a1c118010cd86f5e`**, also the observed remote head. #177 was merged on 2026-10-16; no later develop changes existed at inspection. Its scope was administration chrome, selected cards/tables and the appearance sample; its documentation explicitly left public content unchanged and retained the earlier palette and geometry. #180 already covered the missing follow-up and was expanded to the user's complete platform scope, rather than creating a duplicate issue. Branch: `feat/180-adminlte-platform`, rooted in develop. #147 / PR #178 and #179 remain separate test/transport work; no assertion there is represented as fixed by this design change.
+Base: clean `develop` **`e8d0f6cf7367d8732abaa179a1c118010cd86f5e`**, also the observed remote head. #177 was merged on 2026-10-16; no later develop changes existed at inspection. Its scope was administration chrome, selected cards/tables and the appearance sample; its documentation explicitly left public content unchanged and retained the earlier palette and geometry. #180 already covered the missing follow-up and was expanded to the user's complete platform scope, rather than creating a duplicate issue. Branch: `feat/180-adminlte-platform`, rooted in develop. #147 / PR #178 and Issue #179 remain separate test/transport work; no assertion there is represented as fixed by this design change.
 
 Read AGENTS.md, CONTRIBUTING.md, .github issue/PR templates, CI workflow and policy, package/build/browser configuration, design documentation and #176 evidence. Verified both origin URLs and remote repository identity as `https://github.com/so7ob/web.git` before the issue write; repeat this before publication. No Website/Rakim write or production operation. No auth/business API changes or real data fixtures. Appearance DTOs accept six additional validated region settings and a separately namespaced administration appearance contract; an explicit appearance-only baseline migration follows the user’s later authorization to replace previous customizations.
 
@@ -43,25 +43,25 @@ Every path below exists in `apps/web/src/app.tsx`; `:locale` is both AR/RTL and 
 
 | Routes / screen states | Composition and evidence family | Status |
 | --- | --- | --- |
-| `/:locale/admin` | Dashboard colored Small Boxes, Info Boxes/report/real chart/table; admin-dashboard | Implemented; final matrix pending |
-| `/admin/users`, `/users/:id`, `/roles`, `/permissions`, `/invitations` | Lists, account detail, role editors and IAM dialogs | Implemented; final matrix pending |
-| `/admin/requests`, `/requests/:id` | Filters, sort, pagination, metadata, workflow, messages, notes, timeline | Implemented; final matrix pending |
-| `/admin/inquiries`, `/inquiries/:id` | Same shared vocabulary, both conversation tabs | Implemented; final matrix pending |
-| `/admin/notifications`, `/outbox` | List/empty/denied/status/export behaviors | Implemented; final matrix pending |
-| `/admin/audit` | Events/reports/reviews/alerts/rules/health and detail overlay | Implemented; final matrix pending |
-| `/admin/diagnostics` | Groups, filters, event details, safe failure feedback | Implemented; final matrix pending |
-| `/admin/workflows` | Workflows, graph, team editor, business hours, transfers, simulation | Implemented; final matrix pending |
-| `/admin/pages`, `/pages/:id/edit`, `/pages/:id/preview` | Library, properties, versions, templates, device and language states | Implemented; final matrix pending |
-| `/admin/media`, `/admin/menus` | Real upload/media selection and menu editor/preview tabs | Implemented; final matrix pending |
-| `/admin/settings?section=identity|appearance|adminAppearance|contact|sharing|announcement|tracking` | All seven independent sections, actual isolated appearance sample | Implemented; final matrix pending |
-| `/:locale/account`, `/requests`, `/requests/new`, `/requests/:id` | Info boxes, 9 list tabs, submission, conversation/history/actions | Implemented; final matrix pending |
-| `/account/inquiries`, `/inquiries/:id`, `/notifications` | 7 tabs, dialogs, conversation, read states | Implemented; final matrix pending |
-| `/account/profile`, `/security` | Profile, verification, credentials and pending/invalid/disabled states | Implemented; final matrix pending |
-| `/:locale/auth/:screen` | Login/register/forgot/reset/invite/verified and password/logout journeys | Implemented; final matrix pending |
-| `/:locale/track` | Lookup, access/eligibility/error/conversation views | Implemented; final matrix pending |
-| Public home/about/services/works/process/faq/contact | Content headers/cards/callouts/FAQ/forms; same content and URLs | Implemented; final matrix pending |
-| Published CMS, 31 block types, nested surfaces and explicit device previews | Shared components plus protected authored styles | Implemented; final matrix pending |
-| 404, client navigation, denied access and route failures | Common Panel/PageHeading/ErrorFeedback | Implemented; final matrix pending |
+| `/:locale/admin` | Dashboard colored Small Boxes, Info Boxes/report/real chart/table; admin-dashboard | Verified: 105-view matrix and full functional CI |
+| `/admin/users`, `/users/:id`, `/roles`, `/permissions`, `/invitations` | Lists, account detail, role editors and IAM dialogs | Verified: 105-view matrix and full functional CI |
+| `/admin/requests`, `/requests/:id` | Filters, sort, pagination, metadata, workflow, messages, notes, timeline | Verified: 105-view matrix and full functional CI |
+| `/admin/inquiries`, `/inquiries/:id` | Same shared vocabulary, both conversation tabs | Verified: 105-view matrix and full functional CI |
+| `/admin/notifications`, `/outbox` | List/empty/denied/status/export behaviors | Verified: 105-view matrix and full functional CI |
+| `/admin/audit` | Events/reports/reviews/alerts/rules/health and detail overlay | Verified: 105-view matrix and full functional CI |
+| `/admin/diagnostics` | Groups, filters, event details, safe failure feedback | Verified: 105-view matrix and full functional CI |
+| `/admin/workflows` | Workflows, graph, team editor, business hours, transfers, simulation | Verified: 105-view matrix and full functional CI |
+| `/admin/pages`, `/pages/:id/edit`, `/pages/:id/preview` | Library, properties, versions, templates, device and language states | Verified: 105-view matrix and full functional CI |
+| `/admin/media`, `/admin/menus` | Real upload/media selection and menu editor/preview tabs | Verified: 105-view matrix and full functional CI |
+| `/admin/settings?section=identity|appearance|adminAppearance|contact|sharing|announcement|tracking` | All seven independent sections, actual isolated appearance sample | Verified: 105-view matrix and full functional CI |
+| `/:locale/account`, `/requests`, `/requests/new`, `/requests/:id` | Info boxes, 9 list tabs, submission, conversation/history/actions | Verified: 105-view matrix and full functional CI |
+| `/account/inquiries`, `/inquiries/:id`, `/notifications` | 7 tabs, dialogs, conversation, read states | Verified: 105-view matrix and full functional CI |
+| `/account/profile`, `/security` | Profile, verification, credentials and pending/invalid/disabled states | Verified: 105-view matrix and full functional CI |
+| `/:locale/auth/:screen` | Login/register/forgot/reset/invite/verified and password/logout journeys | Verified: 105-view matrix and full functional CI |
+| `/:locale/track` | Lookup, access/eligibility/error/conversation views | Verified: 105-view matrix and full functional CI |
+| Public home/about/services/works/process/faq/contact | Content headers/cards/callouts/FAQ/forms; same content and URLs | Verified: 105-view matrix and full functional CI |
+| Published CMS, 31 block types, nested surfaces and explicit device previews | Shared components plus protected authored styles | Verified: 105-view matrix and full functional CI |
+| 404, client navigation, denied access and route failures | Common Panel/PageHeading/ErrorFeedback | Verified: 105-view matrix and full functional CI |
 
 ## Validation record
 
@@ -102,7 +102,7 @@ Additional observed verification and fixes before the final candidate:
 
 - A subsequent **28-case** run on compiled c1e517e passed both languages/viewports for geometry, independent themes, menus, media, original client text and back/forward draft protection. Later visual review identified Radix asChild replacing data-slot, which let trigger buttons retain old typography/corners. A stable shared button class fixes the component identity. Tooltip defaults now use the pinned neutral inverse pair rather than the old primary bubble; the actual preview exercises a tooltip and dialog on the same trigger, with literal reference color/type/radius and containment assertions.
 
-Final local build **1753607e533fc3b65b4c9769b78918706df3ef75**: lint, typecheck, **1154 unit/integration tests in 71 files**, build, independence, infrastructure syntax/operational configuration, 14 CI-policy tests and diff whitespace checks passed. Browser verification: **16 controls/scope/menu cases**, **3 targeted regressions** (including the complete EN/dark/375 tour), **6 cross-project draft/creation/ownership cases**, and the complete **AR/light/1280 tour** passed with retry=0. These are separate executions with one overlapping case, not an inflated distinct-case total. No further driver-code error was observed in the isolated focused runs; the original unexplained failures remain recorded above.
+Verified local build **1753607e533fc3b65b4c9769b78918706df3ef75**: lint, typecheck, **1154 unit/integration tests in 71 files**, build, independence, infrastructure syntax/operational configuration, 14 CI-policy tests and diff whitespace checks passed. Browser verification: **16 controls/scope/menu cases**, **3 targeted regressions** (including the complete EN/dark/375 tour), **6 cross-project draft/creation/ownership cases**, and the complete **AR/light/1280 tour** passed with retry=0. These are separate executions with one overlapping case, not an inflated distinct-case total. No further driver-code error was observed in the isolated focused runs; the original unexplained failures remain recorded above.
 
 The new tooltip hover test initially reproduced Radix's module-document pointer-grace bug in the iframe (one failed, 15 unrun), with the trace retained. The iframe wrapper now owns its controlled state and listens in that document, preserves movement onto tooltip content and closes on departure; ordinary tooltips retain Radix behavior. The unchanged final 16-case matrix passed.
 
@@ -112,7 +112,11 @@ Final interaction candidate **acd4cf3c2d106d520c153925c55401c08c48ab2b** additio
 
 The acd4cf3 full local unit attempt was blocked by host disk capacity: MariaDB reported `Errcode: 28` / no space for its temporary/transaction files. Result: 55 files passed, 16 failed; 1030 tests passed, 2 failed and 122 could not run after setup failures. This does not replace the earlier 1154/1154 pass or establish final acceptance. A later exploratory camera run was also interrupted by the same database write limitation and is not published as completed evidence. Existing native captures and their source metadata remain intact. No unrelated checkout, cache or database was deleted to work around the host limit.
 
-Final PR-head CI: **pending publication and exact-head verification**. No pending result is claimed as passed. [Evidence index](evidence/adminlte-180/README.md).
+PR-head CI [38958236548](https://github.com/so7ob/web/actions/runs/38958236548), head **c1c885ca32d329733a5ecb06e189cb10609c5781**, actual clean synthetic merge checkout **81127e9e2017daefc5a04d96235aef3795562595**, base **e8d0f6cf7367d8732abaa179a1c118010cd86f5e**: the first attempt passed 1154/1154 unit/integration tests, all eight complete design cells and operational/migration/recovery gates. Browser reports account for all 574 unique cases, with **572 passed / 2 failed**. The login-error accessibility trace proves the original stylesheet failed with Chromium `net::ERR_TOO_MANY_RETRIES` (unstyled screenshot); the separate template size-limit request failed with `ECONNRESET` before an HTTP response. These are retained transport failures, not represented as passed accessibility/security assertions. Attempt 2 repeated only those two shards (208 cases) in fresh isolated environments on the unchanged head, with browser retry=0 and every assertion intact. They passed. The final aggregate verified **574 expected / 574 passed**, 14 reports, unique case IDs, no skips, expected failures or browser retries. The proof records identical head/checkout fingerprints `746a857813980b8db399762b6242ecb5f6829d4617d5bbb6c3e131812c736583`. The underlying Chromium retry trigger and original reset are not claimed fixed; #147 / PR #178 remain separate work. [Evidence index](evidence/adminlte-180/README.md).
+
+After the user explicitly authorized clearing only `/root/.npm/_cacache`, its disposable contents were removed; no checkout, database, project files or other cache was deleted. Available filesystem space recovered to about 2.1 GiB. The unchanged acd4cf3 local unit/integration suite then passed **1154/1154 in 71 files**, and **10/10** browser cases passed for independent administration/visitor settings saves, bilingual safe login errors and template auth/byte limits at both widths. The development API remained on the matching acd4cf3 build and readiness passed. This supersedes the local disk-related validation block without relabeling the earlier failed attempts.
+
+All required application, operational, visual and coverage gates are now verified through the linked full CI run. The final documentation-only update is checked using the repository's existing source/base/suite/workflow evidence-reuse mechanism; no test selection or gate is weakened. Review remains pending in [PR #181](https://github.com/so7ob/web/pull/181). No merge or deployment was performed.
 
 ## Limits, risks and rollback
 

@@ -94,3 +94,7 @@ Original develop captures were taken before implementation. Candidate captures a
 | public-home | [PNG](before/tour-public-home-ar-light-desktop.png) | [PNG](after/tour-public-home-ar-light-desktop.png) |
 | auth-login | [PNG](before/tour-auth-login-ar-light-desktop.png) | [PNG](after/tour-auth-login-ar-light-desktop.png) |
 | settings-appearance | [PNG](before/tour-settings-appearance-ar-light-desktop.png) | [PNG](after/tour-settings-appearance-ar-light-desktop.png) |
+
+## Final validation
+
+[Full CI 38958236548](https://github.com/so7ob/web/actions/runs/38958236548), head c1c885ca32d329733a5ecb06e189cb10609c5781 / compiled merge 81127e9e2017daefc5a04d96235aef3795562595, verified 1154 unit/integration tests and **574 expected / 574 passed** browser cases. All eight 105-view design cells passed. Attempt 1 retained two transport failures; only the affected functional shards were repeated in fresh environments on the same source in attempt 2. No browser retries, removed assertions or repaired historical outcome. Operational/migration/recovery/worker/infra gates passed. [Complete results and limits](../../adminlte-180.md).
