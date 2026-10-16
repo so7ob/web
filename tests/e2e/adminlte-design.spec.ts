@@ -49,6 +49,16 @@ for (const locale of ['ar', 'en'] as const) for (const mode of ['light', 'dark']
       await expect(dialog).toBeVisible();
       await expect(page.getByRole('dialog')).toHaveCount(0);
       await expect(dialog).toHaveCSS('background-color', mode === 'light' ? 'rgb(255, 255, 255)' : 'rgb(33, 37, 41)');
+      const close = preview.locator('[data-slot="dialog-close"]');
+      await close.focus();
+      await page.keyboard.press('Tab');
+      await expect(close).toBeFocused();
+      await page.keyboard.press('Shift+Tab');
+      await expect(close).toBeFocused();
+      await page.keyboard.press('Escape');
+      await expect(dialog).toBeHidden();
+      await expect(search).toBeFocused();
+      await search.click();
       await preview.locator('[data-slot="dialog-close"]').click();
       await expect(dialog).toBeHidden();
       await expect(search).toBeFocused();

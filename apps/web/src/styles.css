@@ -303,9 +303,9 @@ html { scroll-padding-block: 6rem 10rem; }
 @layer components {
   .ds-card { min-width:0; border:1px solid var(--border); border-radius:var(--radius); background:var(--card); color:var(--card-foreground); box-shadow:var(--panel-shadow); }
   .ds-panel:has(> .ds-panel-header) { padding:0; }
-  .ds-panel-header { display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:0.75rem; padding:var(--card-header-padding); border-block-end:1px solid var(--border); }
+  .ds-panel-header { display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:0.75rem; padding:var(--card-header-padding); border-block-end:1px solid var(--border); background:color-mix(in srgb,var(--foreground) 3%,var(--card)); }
   .ds-panel-body { padding:var(--space-panel); }
-  .ds-panel-footer { padding:0.5rem 1rem; border-block-start:1px solid var(--border); background:var(--muted); border-end-start-radius:var(--radius); border-end-end-radius:var(--radius); }
+  .ds-panel-footer { padding:0.5rem 1rem; border-block-start:1px solid var(--border); background:color-mix(in srgb,var(--foreground) 3%,var(--card)); border-end-start-radius:var(--radius); border-end-end-radius:var(--radius); }
   .ds-info-box { position:relative; display:flex; align-items:stretch; min-width:0; min-height:80px; padding:0.5rem; border:0; border-radius:var(--radius); background:var(--card); color:var(--card-foreground); box-shadow:var(--panel-shadow); text-decoration:none; }
   .ds-info-icon { display:flex; align-items:center; justify-content:center; width:70px; flex:0 0 70px; border-radius:var(--radius); background:var(--primary); color:var(--primary-foreground); }
   .ds-info-icon > svg { width:1.875rem; height:1.875rem; }
@@ -325,6 +325,7 @@ html { scroll-padding-block: 6rem 10rem; }
 }
 
 /* Shared controls and floating surfaces also work in body portals and preview documents. */
+.ds-panel-header :is(h2,h3) { font-size:1.1rem; font-weight:400; }
 [data-slot="button"] { font-size:1rem; font-weight:400; }
 [data-slot="input"], [data-slot="textarea"], [data-slot="native-select"], [data-slot="select-trigger"] { font-size:1rem; box-shadow:none; }
 [data-slot="badge"] { border-radius:var(--radius); }

@@ -199,7 +199,7 @@ export function appearanceTokens(
       : APPEARANCE_DEFAULTS[
           dark ? "appearance.primaryDark" : "appearance.primaryLight"
         ],
-    bg,
+    palette.surface,
   );
   const accent = readable(
     isHexColor(a)
@@ -207,7 +207,7 @@ export function appearanceTokens(
       : APPEARANCE_DEFAULTS[
           dark ? "appearance.accentDark" : "appearance.accentLight"
         ],
-    card,
+    palette.surface,
   );
   const onPrimary = contrast(primary, "#ffffff") >= 4.5 ? "#ffffff" : "#0b1220";
   const muted = palette.muted,
@@ -347,6 +347,7 @@ export function paletteChecks(
     ["muted", t["muted-foreground"], t.card, 4.5],
     ["button", t["primary-foreground"], t.primary, 4.5],
     ["link", t.primary, t.card, 4.5],
+    ["link-neutral", t.primary, t.secondary, 4.5],
     ["focus", t.ring, t.card, 3],
     ["admin-sidebar", t["admin-sidebar-foreground"], t["admin-sidebar"], 4.5],
     ["admin-sidebar-muted", t["admin-sidebar-muted"], t["admin-sidebar"], 4.5],

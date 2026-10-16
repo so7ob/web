@@ -541,7 +541,7 @@ export function MediaClient({ me, locale }: MediaClientProps) {
                 <span
                   className={cn(
                     "absolute end-2 top-2 inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[10px] font-semibold shadow-sm backdrop-blur",
-                    item.usageCount > 0 ? "bg-success/90 text-on-success" : "bg-card/90 text-muted-foreground",
+                    item.usageCount > 0 ? "bg-success text-on-success" : "bg-card/90 text-muted-foreground",
                   )}
                 >
                   {item.usageCount > 0 ? (

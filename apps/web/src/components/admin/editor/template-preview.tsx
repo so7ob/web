@@ -148,7 +148,7 @@ const PATTERNS: Record<string, () => React.ReactNode> = {
     <span className="flex h-full items-stretch gap-1.5">
       {[1, 2].map((n) => (
         <Card key={n} className="flex flex-1 items-center gap-1.5 px-1.5">
-          <span className="flex size-3 shrink-0 items-center justify-center rounded-full bg-brand/15 text-[6px] font-bold text-brand">{n}</span>
+          <span className="flex size-3 shrink-0 items-center justify-center rounded-full bg-accent text-[6px] font-bold text-accent-foreground">{n}</span>
           <Line w="w-1/2" tone="strong" />
         </Card>
       ))}
@@ -215,7 +215,7 @@ const PATTERNS: Record<string, () => React.ReactNode> = {
     <span className="flex h-full flex-col justify-center gap-[3px]">
       {[1, 2, 3].map((n) => (
         <span key={n} className="flex items-center gap-1.5">
-          <span className="flex size-2.5 shrink-0 items-center justify-center rounded-full bg-brand/15 text-[5px] font-bold text-brand">{n}</span>
+          <span className="flex size-2.5 shrink-0 items-center justify-center rounded-full bg-accent text-[5px] font-bold text-accent-foreground">{n}</span>
           <Line w={n === 2 ? "w-1/2" : "w-2/3"} tone="strong" />
         </span>
       ))}

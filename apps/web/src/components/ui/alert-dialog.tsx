@@ -51,9 +51,10 @@ function AlertDialogContent({
   className,
   onOpenAutoFocus,
   onCloseAutoFocus,
+  onKeyDown,
   ...props
 }: React.ComponentProps<typeof AlertDialogPrimitive.Content>) {
-  const focus = useOverlayFocus({ onOpenAutoFocus, onCloseAutoFocus });
+  const focus = useOverlayFocus({ onOpenAutoFocus, onCloseAutoFocus, onKeyDown });
   return (
     <AlertDialogPortal>
       <AlertDialogOverlay />

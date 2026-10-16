@@ -545,7 +545,7 @@ export function MenusClient({ me, locale }: { me: Me; locale: Locale }) {
                               />
                             </button>
                             <span
-                              className={`rounded-full px-2.5 py-1 text-xs ${item.enabled ? "bg-primary/10 text-primary" : "bg-muted text-muted-foreground"}`}
+                              className={`rounded-full px-2.5 py-1 text-xs ${item.enabled ? "bg-accent text-accent-foreground" : "bg-muted text-muted-foreground"}`}
                             >
                               {item.enabled ? tm.visible : tm.hidden}
                             </span>
@@ -675,7 +675,7 @@ export function MenusClient({ me, locale }: { me: Me; locale: Locale }) {
                                   <label
                                     key={type}
                                     htmlFor={`link-${type}-${index}`}
-                                    className={`flex min-h-11 cursor-pointer items-center gap-2 rounded-lg border px-3 text-sm ${item.linkType === type ? "border-primary bg-primary/5 text-primary" : "border-border"}`}
+                                    className={`flex min-h-11 cursor-pointer items-center gap-2 rounded-lg border px-3 text-sm ${item.linkType === type ? "border-primary bg-accent text-accent-foreground" : "border-border"}`}
                                   >
                                     <RadioGroupItem
                                       value={type}

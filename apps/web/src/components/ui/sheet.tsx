@@ -52,12 +52,13 @@ function SheetContent({
   children,
   onOpenAutoFocus,
   onCloseAutoFocus,
+  onKeyDown,
   side = "right",
   ...props
 }: React.ComponentProps<typeof SheetPrimitive.Content> & {
   side?: "top" | "right" | "bottom" | "left"
 }) {
-  const focus = useOverlayFocus({ onOpenAutoFocus, onCloseAutoFocus });
+  const focus = useOverlayFocus({ onOpenAutoFocus, onCloseAutoFocus, onKeyDown });
   return (
     <SheetPortal>
       <SheetOverlay />

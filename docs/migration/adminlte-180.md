@@ -69,6 +69,7 @@ During implementation:
 - Shared preview/contracts unit follow-up: 13 tests passed in 3 files.
 - The iframe close-focus assertion reproduced the original parent-document recovery bug; `useOverlayFocus` now resolves the owner document. The new iframe dialog/geometry case then passed.
 - Full tour exposed the preview shell's obsolete negative margins after the shell padding changed; fixed the composition instead of hiding overflow.
+- First complete-browser attempt at `9eb15c7`: interrupted after 25 passes, three contrast failures (account link and menu badges), one interrupted and 533 unrun. The link was 4.36:1 on a striped row; the menu badge was 4.03:1 on a layered translucent background. Resolve primary/accent against the neutral surface and use explicit accent/foreground pairs for these badges. A focused four-case run then passed account, both stale-write/conflict journeys and the iframe geometry/Tab/Shift+Tab/Escape/close-focus case. No assertion was removed or retried.
 - The previous white-sidebar assertion was updated to the explicit administration profile token because the new missing-key default is semi-dark. The same test continues to assert the actual computed color.
 - ESLint/token guard, TypeScript, client+SSR build, independence, 14 CI-policy/gate tests and real Nginx/systemd syntax checks passed during implementation. These exploratory checks do not substitute for final-source evidence.
 
