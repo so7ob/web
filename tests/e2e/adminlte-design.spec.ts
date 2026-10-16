@@ -1,6 +1,8 @@
 import { expect } from '@playwright/test';
 import { test } from './quota-fixture';
 import { readFileSync, mkdirSync } from 'node:fs';
+import { createDataSource } from '@so7ob/server';
+import { getPortalContent } from '../../apps/web/src/content/portal';
 import { documentAudit, VisualReadiness } from './visual-checks';
 
 for (const locale of ['ar', 'en'] as const) for (const mode of ['light', 'dark'] as const) {
@@ -34,7 +36,7 @@ for (const locale of ['ar', 'en'] as const) for (const mode of ['light', 'dark']
     expect((await preview.locator('[data-slot="input"]').first().boundingBox())!.height).toBeGreaterThanOrEqual(44);
     const isolated = await page.context().newPage();
     await isolated.goto(new URL('/api/health/ready', page.url()).href);
-    await isolated.setContent((await page.locator('iframe').getAttribute('srcdoc'))!);
+    await isolated.setContent(await page.locator('iframe').evaluate((element: HTMLIFrameElement) => element.contentDocument!.documentElement.outerHTML));
     await isolated.evaluate(() => document.fonts.ready);
     expect((await documentAudit(isolated)).violations).toEqual([]);
     await isolated.close();
@@ -57,5 +59,70 @@ for (const locale of ['ar', 'en'] as const) for (const mode of ['light', 'dark']
       await expect(toggle).toBeFocused();
     }
     expect(errors).toEqual([]);
+  });
+}
+
+for (const locale of ['ar', 'en'] as const) for (const mode of ['light', 'dark'] as const) {
+  test(`${locale}/${mode}: AdminLTE coordinated profiles persist without resetting appearance`, async ({ page }, info) => {
+    test.setTimeout(120000);
+    const {prefix,password} = JSON.parse(readFileSync('.migration/e2e/run.json','utf8'));
+    const {csrfToken} = await (await page.request.get('/api/auth/csrf')).json();
+    expect((await page.request.post('/api/auth/callback/credentials',{form:{email:prefix+'admin@example.invalid',password,csrfToken,json:'true'}})).status()).toBe(200);
+    await page.addInitScript(value => localStorage.setItem('so7ob-appearance-mode',value),mode);
+    const db = await createDataSource().initialize();
+    const key = 'appearance.adminStyle';
+    const saved = await db.query("SELECT * FROM SiteSetting WHERE `key` LIKE 'appearance.%'");
+    const folder = `.migration/adminlte-176/profiles/${locale}-${mode}-${info.project.name}`;
+    mkdirSync(folder,{recursive:true});
+    try {
+      for (const profile of ['light','semi-dark','dark','colored']) {
+        expect((await page.request.patch('/api/admin/settings',{headers:{'x-csrf-token':csrfToken},data:{[key]:profile}})).status()).toBe(200);
+        await page.goto(`/${locale}/admin/settings?section=appearance`);
+        await new VisualReadiness(page).wait();
+        await expect(page.locator('#admin-shell')).toHaveAttribute('data-admin-style',profile);
+        await expect(page.locator('#appearance-admin-style')).toHaveValue(profile);
+        await expect(page.locator('html')).toHaveAttribute('data-color-mode',mode);
+        expect(await page.evaluate(() => localStorage.getItem('so7ob-appearance-mode'))).toBe(mode);
+        expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+        expect((await documentAudit(page,true)).violations).toEqual([]);
+        if (info.project.name === 'mobile') {
+          await page.locator('header [data-slot="sheet-trigger"]').click();
+          expect((await documentAudit(page,true)).violations).toEqual([]);
+          await page.screenshot({path:`${folder}/${profile}-navigation.png`,fullPage:true});
+          await page.keyboard.press('Escape');
+        }
+        await page.locator('#appearance-admin-style').selectOption(profile === 'dark' ? 'light' : 'dark');
+        await page.locator('#appearance-admin-style').selectOption(profile);
+        const expectedMode = profile === 'dark' ? 'dark' : 'light';
+        await expect(page.locator('#appearance-mode')).toHaveValue(expectedMode);
+        const sample = page.frameLocator('iframe');
+        await expect(sample.locator('.admin-lte')).toHaveAttribute('data-admin-style',profile);
+        await expect(sample.locator('html')).toHaveAttribute('data-color-mode',expectedMode);
+        const isolated = await page.context().newPage();
+        await isolated.goto(new URL('/api/health/ready',page.url()).href);
+        await isolated.setContent(await page.locator('iframe').evaluate((element:HTMLIFrameElement)=>element.contentDocument!.documentElement.outerHTML));
+        expect((await documentAudit(isolated)).violations).toEqual([]);
+        await isolated.close();
+        await page.screenshot({path:`${folder}/${profile}.png`,fullPage:true});
+        const save = page.getByRole('button',{name:getPortalContent(locale).admin.settings.save,exact:true});
+        if (await save.isEnabled()) {
+          const response = page.waitForResponse(response=>response.request().method()==='PATCH' && response.url().endsWith('/settings/checked'));
+          await save.click();
+          expect((await response).status()).toBe(200);
+          await expect(save).toBeDisabled();
+        }
+        await page.reload();
+        await expect(page.locator('#appearance-admin-style')).toHaveValue(profile);
+        await expect(page.locator('#appearance-mode')).toHaveValue(expectedMode);
+        await expect(page.locator('html')).toHaveAttribute('data-color-mode',mode);
+      }
+    } finally {
+      await db.query("DELETE FROM SiteSetting WHERE `key` LIKE 'appearance.%'");
+      for (const row of saved) {
+        const keys = Object.keys(row);
+        await db.query('INSERT INTO SiteSetting ('+keys.map(k=>'`'+k+'`').join(',')+') VALUES ('+keys.map(()=>'?').join(',')+')',keys.map(k=>row[k]));
+      }
+      await db.destroy();
+    }
   });
 }

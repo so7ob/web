@@ -335,7 +335,7 @@ html { scroll-padding-block: 6rem 10rem; }
 .admin-lte .admin-sidebar { box-shadow: 2px 0 8px color-mix(in srgb, var(--foreground) 8%, transparent); }
 .admin-lte .admin-navigation { min-height:0; overscroll-behavior:contain; }
 .admin-lte .admin-nav-link { border-inline-start:3px solid transparent; border-radius:var(--radius); }
-.admin-lte .admin-nav-link[aria-current="page"] { border-inline-start-color:var(--primary); background:var(--primary); color:var(--primary-foreground); }
+.admin-lte .admin-nav-link[aria-current="page"] { border-inline-start-color:var(--sidebar-primary); background:var(--sidebar-primary); color:var(--sidebar-primary-foreground); }
 .admin-lte .admin-nav-link[aria-current="page"] > span:last-child[aria-hidden] { background:currentColor; }
 .admin-lte .admin-topbar { box-shadow:0 1px 3px color-mix(in srgb, var(--foreground) 5%, transparent); }
 .admin-lte .admin-main { background:var(--muted); }
@@ -356,3 +356,30 @@ html { scroll-padding-block: 6rem 10rem; }
 .admin-lte .admin-info-icon { inline-size:2.75rem; block-size:2.75rem; padding:0.625rem; background:var(--accent); color:var(--accent-foreground); border-radius:var(--radius); }
 @media (min-width:1024px) { .admin-lte[data-sidebar-collapsed="true"] > .admin-sidebar { display:none; } }
 @media print { .admin-lte .admin-main { background:var(--background); } }
+
+/* Coordinated chrome profiles derive from the same saved semantic palette. */
+.admin-lte .admin-sidebar, .admin-lte.admin-mobile-sidebar {
+  --sidebar:var(--admin-sidebar); --sidebar-foreground:var(--admin-sidebar-foreground);
+  --sidebar-primary:var(--admin-sidebar-active); --sidebar-primary-foreground:var(--admin-sidebar-on-active);
+  --sidebar-accent:var(--admin-sidebar-hover); --sidebar-accent-foreground:var(--admin-sidebar-foreground);
+  --sidebar-border:color-mix(in srgb,var(--admin-sidebar-foreground) 22%,var(--admin-sidebar));
+  --foreground:var(--admin-sidebar-foreground); --muted-foreground:var(--admin-sidebar-muted);
+  background:var(--sidebar); color:var(--sidebar-foreground);
+}
+.admin-lte[data-admin-style="colored"] .admin-topbar {
+  --background:var(--admin-header); --card:var(--admin-header); --muted:var(--admin-header);
+  --foreground:var(--admin-header-foreground); --navy:var(--admin-header-foreground); --muted-foreground:var(--admin-header-foreground);
+  --border:color-mix(in srgb,var(--admin-header-foreground) 45%,var(--admin-header));
+  background:var(--admin-header); color:var(--admin-header-foreground);
+}
+.admin-lte .admin-sidebar, .admin-lte.admin-mobile-sidebar { --ring:var(--admin-sidebar-active); }
+.admin-lte[data-admin-style="colored"] .admin-topbar { --primary:var(--admin-header-foreground); --primary-foreground:var(--admin-header); --ring:var(--admin-header-foreground); }
+/* Nested outline controls use surface-card's reset aliases; keep the colored
+   header's paired foreground when that reset is applied inside the header. */
+.admin-lte[data-admin-style="colored"] .admin-topbar {
+  --card-foreground:var(--admin-header-foreground);
+  --base-foreground:var(--admin-header-foreground); --base-muted-foreground:var(--admin-header-foreground);
+  --base-primary:var(--admin-header-foreground); --base-primary-foreground:var(--admin-header);
+  --base-brand-strong:var(--admin-header-foreground);
+  --base-border:color-mix(in srgb,var(--admin-header-foreground) 45%,var(--admin-header));
+}

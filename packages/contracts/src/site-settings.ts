@@ -28,6 +28,7 @@ export const IDENTITY_MEDIA_KEYS = [
 ] as const;
 export const APPEARANCE_DEFAULTS: Record<string, string> = {
   "appearance.mode": "light",
+  "appearance.adminStyle": "light",
   "appearance.primaryLight": "#0369a1",
   "appearance.accentLight": "#6d28d9",
   "appearance.primaryDark": "#38bdf8",
@@ -226,6 +227,14 @@ export function appearanceTokens(
   }
   return {
     ...tones,
+    "admin-sidebar": ["semi-dark", "colored"].includes(s["appearance.adminStyle"]) ? emphasis : card,
+    "admin-sidebar-foreground": ["semi-dark", "colored"].includes(s["appearance.adminStyle"]) ? "#ffffff" : fg,
+    "admin-sidebar-muted": ["semi-dark", "colored"].includes(s["appearance.adminStyle"]) ? mix("#ffffff", emphasis, 0.16) : muted,
+    "admin-sidebar-active": ["semi-dark", "colored"].includes(s["appearance.adminStyle"]) ? mix(primary, "#ffffff", 0.78) : primary,
+    "admin-sidebar-on-active": ["semi-dark", "colored"].includes(s["appearance.adminStyle"]) ? readable(emphasis, mix(primary, "#ffffff", 0.78)) : onPrimary,
+    "admin-sidebar-hover": ["semi-dark", "colored"].includes(s["appearance.adminStyle"]) ? mix(emphasis, "#ffffff", 0.12) : soft,
+    "admin-header": s["appearance.adminStyle"] === "colored" ? primary : card,
+    "admin-header-foreground": s["appearance.adminStyle"] === "colored" ? onPrimary : fg,
     "overlay": "#020617",
     "selection": soft,
     "selection-foreground": readable(primary, soft),
@@ -329,6 +338,11 @@ export function paletteChecks(
     ["button", t["primary-foreground"], t.primary, 4.5],
     ["link", t.primary, t.card, 4.5],
     ["focus", t.ring, t.card, 3],
+    ["admin-sidebar", t["admin-sidebar-foreground"], t["admin-sidebar"], 4.5],
+    ["admin-sidebar-muted", t["admin-sidebar-muted"], t["admin-sidebar"], 4.5],
+    ["admin-sidebar-active", t["admin-sidebar-on-active"], t["admin-sidebar-active"], 4.5],
+    ["admin-sidebar-hover", t["admin-sidebar-foreground"], t["admin-sidebar-hover"], 4.5],
+    ["admin-header", t["admin-header-foreground"], t["admin-header"], 4.5],
   ].map(([name, a, b, min]) => ({
     name: String(name),
     ratio: contrast(String(a), String(b)),
@@ -388,6 +402,7 @@ export function validateSiteSettings(
   }
   const enums: Record<string, readonly string[]> = {
     "appearance.mode": ["light", "dark", "system"],
+    "appearance.adminStyle": ["light", "semi-dark", "dark", "colored"],
     "appearance.fontAr": ["ibm", "cairo", "tajawal", "system"],
     "appearance.fontEn": ["ibm", "inter", "system"],
     "appearance.radius": ["square", "soft", "round"],

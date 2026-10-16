@@ -33,10 +33,11 @@ async function audit(page: Page, label: string, ledger: PerformanceLedger) {
   expect.soft(result.violations.map(v=>({id:v.id,nodes:v.nodes.map(n=>({target:n.target,summary:n.failureSummary}))})),label).toEqual([]);
   for(const frame of await page.locator('iframe[srcdoc]').all()){
     await expect(frame).toHaveAttribute('title',/.+/);
+    await expect.poll(() => frame.evaluate((element: HTMLIFrameElement) => element.contentDocument?.body?.childElementCount ?? 0)).toBeGreaterThan(0);
     const preview=await ledger.measure('preview-open',()=>page.context().newPage());
     try {
       await ledger.measure('preview-navigation',()=>preview.goto(new URL('/api/health/ready',page.url()).href));
-      await preview.setContent((await frame.getAttribute('srcdoc'))!);
+      await preview.setContent(await frame.evaluate((element: HTMLIFrameElement) => element.contentDocument!.documentElement.outerHTML));
       await preview.evaluate(()=>document.fonts.ready);
       expect.soft((await ledger.measure('axe-preview',()=>documentAudit(preview))).violations,label+' preview').toEqual([]);
     } finally {await preview.close();}

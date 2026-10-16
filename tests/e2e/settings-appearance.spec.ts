@@ -56,7 +56,8 @@ async function auditSettings(page: Page) {
   const preview = await page.context().newPage();
   try {
     await preview.goto(new URL("/api/health/ready", page.url()).href);
-    const markup = await page.locator("iframe").getAttribute("srcdoc");
+    await expect.poll(() => page.locator("iframe").evaluate((element: HTMLIFrameElement) => element.contentDocument?.body?.childElementCount ?? 0)).toBeGreaterThan(0);
+    const markup = await page.locator("iframe").evaluate((element: HTMLIFrameElement) => element.contentDocument!.documentElement.outerHTML);
     expect(markup).toBeTruthy();
     await preview.setContent(markup!);
     await preview.evaluate(() => document.fonts.ready);

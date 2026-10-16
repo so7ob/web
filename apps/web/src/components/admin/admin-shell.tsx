@@ -1,4 +1,4 @@
-import { ThemeToggle } from "@/components/appearance/provider";
+import { ThemeToggle, useSitePresentation } from "@/components/appearance/provider";
 import { Logo } from "@/components/site/logo";
 
 import { diagnosticsCopy } from "@/content/diagnostics";
@@ -47,7 +47,7 @@ import { localeMeta, swapLocalePath, type Locale } from "@/lib/i18n";
 import { roleLabel } from "./badges";
 import type { Me } from "./types";
 import { CommandPalette } from "./command-palette";
-import { cn } from "@/lib/utils";
+import { AdminNavigationItem } from "./navigation-item";
 
 interface AdminShellProps {
   me: Me;
@@ -68,6 +68,9 @@ interface NavItem {
 const subscribePlatform = () => () => {};
 
 export function AdminShell({ me, locale, children }: AdminShellProps) {
+  const settings = useSitePresentation();
+  const adminStyle = settings["appearance.adminStyle"] ?? "light";
+  const darkSidebar = ["semi-dark", "colored"].includes(adminStyle);
   const pathname = usePathname() ?? `/${locale}/admin`;
   const [mobileOpen, setMobileOpen] = useState(false);
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
@@ -277,21 +280,17 @@ export function AdminShell({ me, locale, children }: AdminShellProps) {
                 const active = isActive(item.href);
                 return (
                   <li key={item.href}>
-                    <Link
+                    <AdminNavigationItem active={active}><Link
                       href={item.href}
                       onClick={onNavigate}
                       aria-current={active ? "page" : undefined}
-                      className={cn(
-                        "admin-nav-link relative flex min-h-11 items-center gap-3 rounded-lg px-3 text-sm font-medium transition-colors duration-(--duration-fast)",
-                        active ? "bg-sidebar-accent text-sidebar-primary" : "text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground",
-                      )}
                     >
                       <item.icon className="size-4 shrink-0" aria-hidden="true" />
                       <span className="truncate">{item.label}</span>
                       {active && (
                         <span aria-hidden="true" className="ms-auto size-1.5 shrink-0 rounded-full bg-sidebar-primary" />
                       )}
-                    </Link>
+                    </Link></AdminNavigationItem>
                   </li>
                 );
               })}
@@ -338,14 +337,14 @@ export function AdminShell({ me, locale, children }: AdminShellProps) {
   );
 
   return (
-    <div id="admin-shell" data-sidebar-collapsed={sidebarCollapsed} className="admin-lte flex min-h-dvh bg-background">
+    <div id="admin-shell" data-admin-style={adminStyle} data-sidebar-collapsed={sidebarCollapsed} className="admin-lte flex min-h-dvh bg-background">
       {/* إخفاء ترويسة وتذييل الموقع العام وشريط الإعلان داخل اللوحة — اللوحة تطبيق مستقل */}
       <style>{`body:has(#admin-shell) > header, body:has(#admin-shell) > footer, body:has(#admin-shell) > #site-announcement { display: none !important; }`}</style>
 
       {/* الشريط الجانبي — سطح المكتب (مخفي عند الطباعة) */}
       <aside id="admin-desktop-sidebar" className="admin-sidebar sticky top-0 hidden h-dvh w-64 shrink-0 flex-col border-e border-sidebar-border bg-sidebar text-sidebar-foreground print:hidden lg:flex">
         <div className="flex h-16 items-center gap-3 border-b border-sidebar-border px-5">
-          <Logo size="sm" nameLang={locale}/>
+          <Logo size="sm" nameLang={locale} variant={darkSidebar ? "light" : "dark"}/>
         </div>
         {navList()}
         {sidebarFooter()}
@@ -373,11 +372,12 @@ export function AdminShell({ me, locale, children }: AdminShellProps) {
             </SheetTrigger>
             <SheetContent
               side={sheetSide}
+              data-admin-style={adminStyle}
               className="admin-lte admin-mobile-sidebar w-72 gap-0 bg-sidebar p-0 text-sidebar-foreground"
             >
               <SheetHeader className="border-b border-sidebar-border p-0">
                 <SheetTitle className="flex h-16 items-center gap-3 px-5 text-sidebar-foreground">
-                  <Logo size="sm" nameLang={locale}/>
+                  <Logo size="sm" nameLang={locale} variant={darkSidebar ? "light" : "dark"}/>
                 </SheetTitle>
               </SheetHeader>
               {navList(() => setMobileOpen(false))}

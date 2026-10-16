@@ -52,3 +52,10 @@ test('every required failure, cancellation, omission or unexpected skip fails th
     assert.equal(checkGate(plan,{...results,extra:'failure'}),false);
   }
 });
+test('AdminLTE coverage participates in the mandatory design matrix', async () => {
+  const { design } = await import('./ci-policy.mjs');
+  assert.ok(design.includes('adminlte-design.spec.ts'));
+  const plan = select(['apps/web/src/components/account/requests-view.tsx']);
+  assert.equal(plan.design, true);
+  assert.ok(!plan.files.includes('adminlte-design.spec.ts'), 'design job owns these cases exactly once');
+});
