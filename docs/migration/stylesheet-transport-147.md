@@ -41,7 +41,8 @@ Local build, lint, typecheck, independence, 15 CI-policy/summary tests and all
 1149 unit/integration tests pass. The first focused account/deadline/readiness
 run passed 40/40 in 4.8 minutes on isolated MariaDB 10.11.18. After moving NetLog
 from a browser fixture override into the existing launch configuration (to
-preserve browser lifecycle), the same 40-case suite is being checked again.
+preserve browser lifecycle), the same 40-case suite passed again (40/40,
+4.5 minutes; no skipped, flaky or unexpected cases).
 
 A separate bounded probe loaded the real built CSS 80 times in each of 15 fresh
 contexts (1200 stylesheet loads), through synthetic loopback HTTPS. There were
@@ -55,9 +56,31 @@ pass with Node 24.21 and an nginx binary extracted from the official nginx:stabl
 container, using only relocated temporary directories in the generated local
 configuration. No service was started. CI supplies the canonical environment.
 
-PR #178 is draft. Required CI must be tracked on the exact published head; no
-passing CI claim yet. Neither local success nor a single green CI run resolves
-the intermittent transport cause.
+PR #178 is draft. CI run 38911421562 at ca518b4 passed build, operations,
+all eight design matrices, both smoke jobs and functional shards 1, 2 and 4.
+Shard 3 passed 109 cases and failed the English mobile identity accessibility
+check; the aggregate correctly failed. This failure was not rerun blindly.
+
+### Related readiness defect (#179)
+
+The failing Add user button had contrast 3.47 (#fbfcfd on #448fb9) at
+identity-management.spec.ts:150 after reload. UsersClient starts roles=[] and
+loads role options independently; CreateUser disables the button while that
+list is empty. The button transitions opacity from its disabled 0.5 state.
+The old test checked the users API but not completion of role loading or that
+opacity transition before axe.
+
+A controlled role-options response gate now proves the reloaded button is
+disabled at opacity 0.5, then releases the real request and requires enabled,
+fully opaque rendering before the unchanged axe check. All four AR/EN and
+mobile/desktop identity journeys pass locally with that gate. This preserves
+all role, account, password, revocation and accessibility assertions; it changes
+no product colors, motion preferences or timeout. Issue #179 records the CI
+failure and the separate scope. This is not a transport fix for #147.
+
+Required CI for the new head must still be tracked; no passing aggregate claim
+yet. Neither local success nor a single green CI run resolves the intermittent
+transport cause.
 
 ## Remaining work and review boundary
 
