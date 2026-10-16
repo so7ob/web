@@ -6,7 +6,7 @@ import * as TooltipPrimitive from "@radix-ui/react-tooltip"
 
 import { cn } from "@/lib/utils"
 
-const TooltipFrame = React.createContext<string | null>(null)
+const TooltipFrame = React.createContext<{ id: string; requestOpen: () => void } | null>(null)
 
 function TooltipProvider({
   delayDuration = 0,
@@ -66,7 +66,7 @@ function Tooltip({
   }, [framed, owner, open, id, change])
   return (
     <TooltipProvider>
-      <TooltipFrame.Provider value={framed ? id : null}>
+      <TooltipFrame.Provider value={framed ? { id, requestOpen: () => change(true) } : null}>
         <TooltipPrimitive.Root data-slot="tooltip" defaultOpen={defaultOpen} open={framed ? open : suppliedOpen} onOpenChange={framed ? change : onOpenChange} {...props} />
       </TooltipFrame.Provider>
     </TooltipProvider>
@@ -76,7 +76,22 @@ function Tooltip({
 function TooltipTrigger({
   ...props
 }: React.ComponentProps<typeof TooltipPrimitive.Trigger>) {
-  return <TooltipPrimitive.Trigger data-slot="tooltip-trigger" data-tooltip-trigger={React.useContext(TooltipFrame) ?? undefined} {...props} />
+  const frame = React.useContext(TooltipFrame)
+  const pointerDown = React.useRef(false)
+  return <TooltipPrimitive.Trigger data-slot="tooltip-trigger" data-tooltip-trigger={frame?.id} {...props}
+    onPointerDown={frame ? event => { props.onPointerDown?.(event); if (!event.defaultPrevented) pointerDown.current = true } : props.onPointerDown}
+    onPointerUp={frame ? event => { pointerDown.current = false; props.onPointerUp?.(event) } : props.onPointerUp}
+    onPointerCancel={frame ? event => { pointerDown.current = false; props.onPointerCancel?.(event) } : props.onPointerCancel}
+    onPointerLeave={frame ? event => { pointerDown.current = false; props.onPointerLeave?.(event) } : props.onPointerLeave}
+    onFocus={frame ? event => {
+      props.onFocus?.(event)
+      if (event.defaultPrevented) return
+      // Radix clears its pointer-down flag on the parent document's pointerup.
+      // Use this trigger's events for keyboard focus inside the preview instead.
+      if (!pointerDown.current) frame.requestOpen()
+      event.preventDefault()
+    } : props.onFocus}
+  />
 }
 
 function TooltipContent({
@@ -89,7 +104,7 @@ function TooltipContent({
     <TooltipPrimitive.Portal container={usePortalContainer()}>
       <TooltipPrimitive.Content
         data-slot="tooltip-content"
-        data-tooltip-content={React.useContext(TooltipFrame) ?? undefined}
+        data-tooltip-content={React.useContext(TooltipFrame)?.id}
         sideOffset={sideOffset}
         className={cn(
           "bg-tooltip text-tooltip-foreground animate-in fade-in-0 data-[state=closed]:animate-out data-[state=closed]:fade-out-0 z-50 w-fit max-w-[200px] origin-(--radix-tooltip-content-transform-origin) rounded-lg px-2 py-1 text-sm text-center",

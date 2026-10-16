@@ -80,6 +80,10 @@ for (const locale of ['ar', 'en'] as const) for (const mode of ['light', 'dark']
       await page.keyboard.press('Escape');
       await expect(dialog).toBeHidden();
       await expect(search).toBeFocused();
+      await expect(tooltip).toBeVisible();
+      await page.keyboard.press('Escape');
+      await expect(tooltip).toBeHidden();
+      await expect(search).toBeFocused();
       await search.click();
       await preview.locator('[data-slot="dialog-close"]').click();
       await expect(dialog).toBeHidden();
