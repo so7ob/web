@@ -35,6 +35,8 @@ for (const locale of ['ar', 'en'] as const) for (const mode of ['light', 'dark']
         await expect(page.locator('#desktop-identity-tree')).toBeHidden();
       }
       await expect(page.locator('.admin-topbar')).toHaveCSS('height', '57px');
+      await expect(page.locator('.ds-small-box[data-tone="primary"]')).toHaveCSS('background-color', 'rgb(13, 110, 253)');
+      await expect(page.locator('.ds-small-box[data-tone="primary"]')).toHaveCSS('color', 'rgb(255, 255, 255)');
       await expect(page.locator('.ds-info-icon').first()).toHaveCSS('width', '70px');
       expect((await documentAudit(page, true)).violations).toEqual([]);
       await page.screenshot({ path: `${folder}/dashboard.png`, fullPage: true });
@@ -324,7 +326,9 @@ for (const locale of ['ar', 'en'] as const) for (const mode of ['light', 'dark']
   });
 }
 
-for (const locale of ['ar','en'] as const) test(`${locale}: administration and visitor themes have independent drafts, persistence and mode preferences`, async ({page}, info) => {
+// This cross-mode journey belongs to each locale's light CI cell. It switches
+// both scopes through personal light/dark/system choices within the same case.
+for (const locale of ['ar','en'] as const) test(`${locale}/light: administration and visitor themes have independent drafts, persistence and mode preferences`, async ({page}, info) => {
   test.setTimeout(120000);
   const {prefix,password}=JSON.parse(readFileSync('.migration/e2e/run.json','utf8'));
   const {csrfToken}=await(await page.request.get('/api/auth/csrf')).json();
