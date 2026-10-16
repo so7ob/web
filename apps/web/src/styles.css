@@ -216,8 +216,9 @@
   border-radius: 4px;
 }
 
-/* Shared controls use the configured geometry without reducing pointer targets. */
-[data-slot="input"], [data-slot="textarea"], [data-slot="select-trigger"], [data-slot="button"] { border-radius:var(--radius); }
+/* Stable component classes survive Radix asChild replacing data-slot on triggers.
+   Shared controls use configured geometry without reducing pointer targets. */
+[data-slot="input"], [data-slot="textarea"], [data-slot="select-trigger"], :is([data-slot="button"], .ds-button) { border-radius:var(--radius); }
 [data-slot="input"], [data-slot="native-select"], [data-slot="select-trigger"] { min-height:2.75rem; padding-block:var(--control-padding); height:auto; }
 [data-slot="table-cell"], [data-slot="table-head"] { padding-block:var(--row-padding); }
 [data-color-mode="dark"] .logo-for-light { display:none; }
@@ -271,8 +272,8 @@ html { scroll-padding-block: 6rem 10rem; }
   --border:var(--emphasis-border);
   color:var(--emphasis-foreground);
 }
-[data-slot="button"] { min-height:2.75rem; transition-duration:var(--duration-fast); }
-[data-slot="button"]:has(> svg:only-child) { min-width:2.75rem; }
+:is([data-slot="button"], .ds-button) { min-height:2.75rem; transition-duration:var(--duration-fast); }
+:is([data-slot="button"], .ds-button):has(> svg:only-child) { min-width:2.75rem; }
 [data-slot="dialog-content"], [data-slot="alert-dialog-content"], [data-slot="sheet-content"] { animation-duration:var(--duration-panel); }
 [data-slot="dropdown-menu-content"], [data-slot="popover-content"], [data-slot="tooltip-content"] { animation-duration:var(--duration-normal); }
 [data-slot="tabs-trigger"] { min-height:2.75rem; }
@@ -351,7 +352,7 @@ html { scroll-padding-block: 6rem 10rem; }
 
 /* Shared controls and floating surfaces also work in body portals and preview documents. */
 .ds-panel-header :is(h2,h3) { font-size:1.1rem; font-weight:400; }
-[data-slot="button"] { font-size:1rem; font-weight:400; }
+:is([data-slot="button"], .ds-button) { font-size:1rem; font-weight:400; }
 [data-slot="input"], [data-slot="textarea"], [data-slot="native-select"], [data-slot="select-trigger"] { font-size:1rem; box-shadow:none; }
 [data-slot="badge"] { border-radius:var(--radius); }
 [data-slot="dialog-content"], [data-slot="alert-dialog-content"], [data-slot="sheet-content"], [data-slot="popover-content"], [data-slot="dropdown-menu-content"], [data-slot="select-content"] { border-radius:var(--radius); }
@@ -404,7 +405,7 @@ html { scroll-padding-block: 6rem 10rem; }
   --base-border:color-mix(in srgb,var(--admin-header-foreground) 45%,var(--admin-header)); --border:var(--base-border);
   background:var(--admin-header); background-image:var(--admin-header-image); color:var(--admin-header-foreground);
 }
-.admin-lte .admin-topbar [data-slot="button"]:hover { background:var(--accent); color:var(--accent-foreground); }
+.admin-lte .admin-topbar :is([data-slot="button"], .ds-button):hover { background:var(--accent); color:var(--accent-foreground); }
 @media (min-width:992px) { .admin-lte[data-sidebar-collapsed="true"] > .admin-sidebar { display:none; } }
 @media (max-width:639px) {
   .ds-page-header { align-items:flex-start; }

@@ -48,6 +48,8 @@ for (const locale of ['ar', 'en'] as const) for (const mode of ['light', 'dark']
       await expect(preview.locator('[data-slot="panel"]').first()).toHaveCSS('border-radius', '6px');
       page.on('request', request => { if (['POST','PATCH','DELETE'].includes(request.method())) mutations.push(new URL(request.url()).pathname); });
       const search = preview.getByRole('button', { name: locale === 'ar' ? 'بحث' : 'Search', exact: true });
+      await expect(search).toHaveCSS('font-size', '16px');
+      await expect(search).toHaveCSS('border-radius', '6px');
       await search.click();
       const dialog = preview.getByRole('dialog');
       await expect(dialog).toBeVisible();
@@ -72,6 +74,7 @@ for (const locale of ['ar', 'en'] as const) for (const mode of ['light', 'dark']
       await expect(preview.getByRole('status')).toHaveCount(0);
       await page.locator('#admin-appearance-radius').selectOption('soft');
       await expect(preview.locator('[data-slot="panel"]').first()).toHaveCSS('border-radius', '12px');
+      await expect(search).toHaveCSS('border-radius', '12px');
       expect(mutations).toEqual([]);
       await page.screenshot({ path: `${folder}/adminAppearance.png`, fullPage: true });
       // The exact sidebar transition is 992px in the pinned source.

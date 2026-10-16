@@ -411,7 +411,7 @@
       "height": 3680
     },
     {
-      "file": "reference/dashboard-en-light-desktop.png",
+      "file": "upstream/dashboard-en-light-desktop.png",
       "source": "e13df78a4d0c287e5fa57308e293f63e44e9dd0f",
       "sha256": "b250292b23ea7a803775c23c79123e4de3f297e457a8902e7d755f592e950dd7",
       "bytes": 201035,
@@ -420,7 +420,7 @@
       "viewport": "1280x900"
     },
     {
-      "file": "reference/dashboard-en-light-mobile.png",
+      "file": "upstream/dashboard-en-light-mobile.png",
       "source": "e13df78a4d0c287e5fa57308e293f63e44e9dd0f",
       "sha256": "eebafc3b414e770ead2e0df38064bfe05b1c8d40900ae0ac89b5666c606ee4e2",
       "bytes": 123525,
@@ -429,7 +429,7 @@
       "viewport": "375x812"
     },
     {
-      "file": "reference/dashboard-en-dark-desktop.png",
+      "file": "upstream/dashboard-en-dark-desktop.png",
       "source": "e13df78a4d0c287e5fa57308e293f63e44e9dd0f",
       "sha256": "f5be63361dc1759afc9422397e1a4d55e0b409106deb5ac78e8fcd05dcbe4187",
       "bytes": 201731,
@@ -438,7 +438,7 @@
       "viewport": "1280x900"
     },
     {
-      "file": "reference/dashboard-en-dark-mobile.png",
+      "file": "upstream/dashboard-en-dark-mobile.png",
       "source": "e13df78a4d0c287e5fa57308e293f63e44e9dd0f",
       "sha256": "45b6b20022c018325883c060746567616dea5f620c9e2e4f8f109a79f5dd5426",
       "bytes": 124078,
@@ -447,7 +447,7 @@
       "viewport": "375x812"
     },
     {
-      "file": "reference/dashboard-info-boxes-en-light-desktop.png",
+      "file": "upstream/dashboard-info-boxes-en-light-desktop.png",
       "source": "e13df78a4d0c287e5fa57308e293f63e44e9dd0f",
       "sha256": "47f45eac77344b7a6a9025e66a14fc83d93c81674fc16fc407419279399f69aa",
       "bytes": 325337,
@@ -456,7 +456,7 @@
       "viewport": "1280x900"
     },
     {
-      "file": "reference/dashboard-info-boxes-en-light-mobile.png",
+      "file": "upstream/dashboard-info-boxes-en-light-mobile.png",
       "source": "e13df78a4d0c287e5fa57308e293f63e44e9dd0f",
       "sha256": "7e5ac664e1f3cbd13840a8afe83187944c069808d7555f2a48a6e64fe229f322",
       "bytes": 281775,
@@ -465,7 +465,7 @@
       "viewport": "375x812"
     },
     {
-      "file": "reference/dashboard-v3-en-light-desktop.png",
+      "file": "upstream/dashboard-v3-en-light-desktop.png",
       "source": "e13df78a4d0c287e5fa57308e293f63e44e9dd0f",
       "sha256": "a107567be6c98c067e32c02cceee18c33432583367d178cde8f3ee6c17092dd2",
       "bytes": 142071,
@@ -474,7 +474,7 @@
       "viewport": "1280x900"
     },
     {
-      "file": "reference/dashboard-v3-en-light-mobile.png",
+      "file": "upstream/dashboard-v3-en-light-mobile.png",
       "source": "e13df78a4d0c287e5fa57308e293f63e44e9dd0f",
       "sha256": "07c017fa965d6d7380028730fcce2efd7121777ffc9227f6d4ac34fe4e683d0b",
       "bytes": 100317,
@@ -483,7 +483,7 @@
       "viewport": "375x812"
     },
     {
-      "file": "reference/theme-generator-en-light-desktop.png",
+      "file": "upstream/theme-generator-en-light-desktop.png",
       "source": "e13df78a4d0c287e5fa57308e293f63e44e9dd0f",
       "sha256": "4c03ffdd344b53f1ee9f450aef7bdaf8b2f9bf5ef7d049398729b38ce49e7472",
       "bytes": 245986,
@@ -492,7 +492,7 @@
       "viewport": "1280x900"
     },
     {
-      "file": "reference/theme-generator-en-light-mobile.png",
+      "file": "upstream/theme-generator-en-light-mobile.png",
       "source": "e13df78a4d0c287e5fa57308e293f63e44e9dd0f",
       "sha256": "ce2c4947c2053da6cb3b6782086af17e50e3554044f573bbdf59ca516b8ca52f",
       "bytes": 235281,
@@ -501,7 +501,7 @@
       "viewport": "375x812"
     },
     {
-      "file": "reference/theme-designed-gradient-indigo-en-light-desktop.png",
+      "file": "upstream/theme-designed-gradient-indigo-en-light-desktop.png",
       "source": "e13df78a4d0c287e5fa57308e293f63e44e9dd0f",
       "sha256": "ac1dd22c5af324976aee6d717d72998bc0349905fb395715d6b38533a4709c83",
       "bytes": 260491,
@@ -510,7 +510,7 @@
       "viewport": "1280x900"
     },
     {
-      "file": "reference/theme-designed-gradient-indigo-en-light-mobile.png",
+      "file": "upstream/theme-designed-gradient-indigo-en-light-mobile.png",
       "source": "e13df78a4d0c287e5fa57308e293f63e44e9dd0f",
       "sha256": "80a509fc6ec20688259d15e7dc4f9e133c82149570b915c52fea2524b69217d1",
       "bytes": 235041,
@@ -519,7 +519,7 @@
       "viewport": "375x812"
     },
     {
-      "file": "reference/theme-v3-yellow-light-en-light-desktop.png",
+      "file": "upstream/theme-v3-yellow-light-en-light-desktop.png",
       "source": "e13df78a4d0c287e5fa57308e293f63e44e9dd0f",
       "sha256": "37d11245956e30618fe4010e36995cce8e9ff75ec2d2dec687bae9bb4364bcc3",
       "bytes": 226669,
@@ -528,7 +528,7 @@
       "viewport": "1280x900"
     },
     {
-      "file": "reference/theme-v3-yellow-light-en-light-mobile.png",
+      "file": "upstream/theme-v3-yellow-light-en-light-mobile.png",
       "source": "e13df78a4d0c287e5fa57308e293f63e44e9dd0f",
       "sha256": "005e6cbe3599e354d854c72a3de84f97135d7a45dea4ffc467fa831db678917f",
       "bytes": 213997,
