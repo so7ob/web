@@ -14,6 +14,7 @@ export const SOCIAL_CHANNELS = [
 export const SETTING_SECTIONS = [
   "identity",
   "appearance",
+  "adminAppearance",
   "contact",
   "sharing",
   "announcement",
@@ -43,12 +44,24 @@ export const APPEARANCE_DEFAULTS: Record<string, string> = {
     [`appearance.${region}Background`, "inherit"], [`appearance.${region}Mode`, "inherit"],
   ])),
 };
+export type AppearanceScope = "site" | "admin";
+export const ADMIN_APPEARANCE_DEFAULTS: Record<string, string> = Object.fromEntries(
+  Object.entries(APPEARANCE_DEFAULTS).map(([key, value]) => [key.replace("appearance.", "adminAppearance."), value]),
+);
+/** Resolve one independent theme without allowing site values to bleed into administration. */
+export function appearanceForScope(raw: Record<string, string>, scope: AppearanceScope): Record<string, string> {
+  if (scope === "site") return { ...APPEARANCE_DEFAULTS, ...raw };
+  return { ...raw, ...APPEARANCE_DEFAULTS, ...Object.fromEntries(Object.entries(raw)
+    .filter(([key]) => key.startsWith("adminAppearance."))
+    .map(([key, value]) => [key.replace("adminAppearance.", "appearance."), value])) };
+}
 export const PRESENTATION_DEFAULTS: Record<string, string> = {
   "site.nameAr": "سُحُب التقنية",
   "site.nameEn": "so7ob",
   "identity.showName": "true",
   ...Object.fromEntries(IDENTITY_MEDIA_KEYS.map((k) => [k, ""])),
   ...APPEARANCE_DEFAULTS,
+  ...ADMIN_APPEARANCE_DEFAULTS,
   "sharing.descriptionAr": "",
   "sharing.descriptionEn": "",
   ...Object.fromEntries(SOCIAL_CHANNELS.map((k) => ["social." + k, ""])),
@@ -60,7 +73,8 @@ export const SECTION_KEYS: Record<SettingSection, string[]> = {
     "identity.showName",
     ...IDENTITY_MEDIA_KEYS.filter((k) => k !== "sharing.image"),
   ],
-  appearance: Object.keys(APPEARANCE_DEFAULTS),
+  appearance: Object.keys(APPEARANCE_DEFAULTS).filter(key => !/adminStyle|(?:sidebar|header|footer)(?:Background|Mode)/.test(key)),
+  adminAppearance: Object.keys(ADMIN_APPEARANCE_DEFAULTS),
   contact: [
     "contact.email",
     "contact.phone",
@@ -91,6 +105,8 @@ export const SECTION_KEYS: Record<SettingSection, string[]> = {
 export const PRESENTATION_KEYS = [
   ...SECTION_KEYS.identity,
   ...SECTION_KEYS.appearance,
+  ...Object.keys(APPEARANCE_DEFAULTS),
+  ...SECTION_KEYS.adminAppearance,
   ...SECTION_KEYS.sharing,
   ...SOCIAL_CHANNELS.map((k) => "social." + k),
 ];
@@ -243,11 +259,16 @@ export function appearanceTokens(
     const defaultSidebar = ["semi-dark", "colored"].includes(s["appearance.adminStyle"]);
     let color = region === "sidebar" && defaultSidebar ? ADMINLTE.sidebar : region === "header" && s["appearance.adminStyle"] === "colored" ? primary : card;
     let text = region === "sidebar" && defaultSidebar ? ADMINLTE.sidebarText : region === "header" && s["appearance.adminStyle"] === "colored" ? onPrimary : fg;
-    if (name !== "inherit") {
+    if (name === "inherit" && regionMode !== "inherit") {
+      color = regionPalette.card;
+      text = regionPalette.text;
+    } else if (name !== "inherit") {
       const [family, key] = name.split(":");
       const extended = ADMINLTE_PALETTES[family as keyof typeof ADMINLTE_PALETTES] as Record<string, string> | undefined;
-      const base = ADMINLTE_BASE_COLORS[name.replace(/-subtle$/, "")];
-      color = extended?.[key] ?? (name === "body" ? regionPalette.card : name === "body-secondary" ? regionPalette.surface : name === "body-tertiary" ? regionPalette.canvas : base ? (name.endsWith("-subtle") ? mix(base, regionPalette.card, 0.8) : base) : color);
+      const base = name.startsWith("primary") ? (isHexColor(p) ? p : ADMINLTE.primary) : ADMINLTE_BASE_COLORS[name.replace(/-subtle$/, "")];
+      const regionDark = regionMode === "dark" || (regionMode === "inherit" && dark);
+      const subtle = name === "light-subtle" ? regionDark ? "#343a40" : "#fcfcfd" : name === "dark-subtle" ? regionDark ? "#1a1d20" : "#ced4da" : base ? mix(base, regionDark ? "#000000" : "#ffffff", 0.8) : color;
+      color = extended?.[key] ?? (name === "transparent" ? bg : name === "body" ? regionPalette.card : name === "body-secondary" ? regionPalette.surface : name === "body-tertiary" ? regionPalette.canvas : base ? (name.endsWith("-subtle") ? subtle : base) : color);
       text = contrast(color, "#ffffff") >= 4.5 ? "#ffffff" : "#000000";
     }
     // Upstream uses a 15% white gradient. Bound its highlight only when AA
@@ -282,7 +303,10 @@ export function appearanceTokens(
     "admin-header": s["appearance.adminStyle"] === "colored" ? primary : card,
     "admin-header-foreground": s["appearance.adminStyle"] === "colored" ? onPrimary : fg,
     ...chrome,
-    ...Object.fromEntries(Object.entries(ADMINLTE_BASE_COLORS).flatMap(([name, color]) => [[`metric-${name}`, color], [`metric-on-${name}`, contrast(color, "#ffffff") >= 4.5 ? "#ffffff" : "#000000"]])),
+    ...Object.fromEntries(Object.entries(ADMINLTE_BASE_COLORS).flatMap(([name, base]) => {
+      const color = name === "primary" && isHexColor(p) ? p : base;
+      return [[`metric-${name}`, color], [`metric-on-${name}`, contrast(color, "#ffffff") >= 4.5 ? "#ffffff" : "#000000"]];
+    })),
     "overlay": "#000000",
     "selection": soft,
     "selection-foreground": readable(primary, soft),
@@ -442,7 +466,7 @@ export function validateSiteSettings(
     if (!Object.values(SECTION_KEYS).flat().includes(k)) continue;
     if (v.length > 300) errors[k] = "length";
     if (
-      k.startsWith("appearance.") &&
+      /^(?:appearance|adminAppearance)\./.test(k) &&
       /primary|accent/.test(k) &&
       !isHexColor(v)
     )
@@ -470,6 +494,7 @@ export function validateSiteSettings(
     "announcement.enabled": ["true", "false"],
     "announcement.variant": ["info", "warning", "success", "brand"],
   };
+  Object.assign(enums, Object.fromEntries(Object.entries(enums).filter(([key]) => key.startsWith("appearance.")).map(([key, values]) => [key.replace("appearance.", "adminAppearance."), values])));
   for (const [k, values] of Object.entries(enums))
     if (s[k] !== undefined && !values.includes(s[k])) errors[k] = "choice";
   if (
@@ -512,9 +537,8 @@ export function validateSiteSettings(
       Number(s["response.hours"]) > 720)
   )
     errors["response.hours"] = "hours";
-  for (const mode of ["light", "dark"] as const)
-    if (paletteChecks(s, mode).some((c) => c.ratio < c.minimum))
-      errors["appearance.primary" + (mode === "light" ? "Light" : "Dark")] =
-        "contrast";
+  for (const scope of ["site", "admin"] as const) for (const mode of ["light", "dark"] as const)
+    if (paletteChecks(appearanceForScope(s, scope), mode).some((c) => c.ratio < c.minimum))
+      errors[(scope === "admin" ? "adminAppearance" : "appearance") + ".primary" + (mode === "light" ? "Light" : "Dark")] = "contrast";
   return errors;
 }

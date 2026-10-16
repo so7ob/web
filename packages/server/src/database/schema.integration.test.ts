@@ -4,6 +4,7 @@ import { createDataSource, assertSchema } from './data-source.js';
 import { schema } from './schema.js';
 import { SourceV21791072000000 } from './migrations/1791072000000-source-v2.js';
 import { AdminlteAppearance1792195200000, ADMINLTE_180_BACKUP, ADMINLTE_180_DEFAULTS } from './migrations/1792195200000-adminlte-appearance.js';
+import { IndependentAdminAppearance1792195201000 } from './migrations/1792195201000-independent-admin-appearance.js';
 const env = { ...process.env, DATABASE_NAME: process.env.TEST_DATABASE_NAME };
 if (!env.DATABASE_NAME || !/^so7ob_[a-z0-9_]+_test$/.test(env.DATABASE_NAME)) throw new Error('TEST_DATABASE_NAME must name an isolated so7ob_*_test database');
 const db = createDataSource(env);
@@ -19,6 +20,21 @@ afterAll(async () => {
   }
 });
 describe('Website schema on real MariaDB', () => {
+  it('bootstraps the separate administration settings without synchronizing later visitor or admin edits', async () => {
+    const runner = db.createQueryRunner(); await runner.connect(); await runner.startTransaction();
+    try {
+      await runner.query("DELETE FROM SiteSetting WHERE `key` LIKE 'adminAppearance.%'");
+      await runner.query("INSERT INTO SiteSetting(`key`,value) VALUES('appearance.primaryLight','#0f766e') ON DUPLICATE KEY UPDATE value=VALUES(value)");
+      const migration = new IndependentAdminAppearance1792195201000(); await migration.up(runner);
+      const [admin] = await runner.query("SELECT value FROM SiteSetting WHERE `key`='adminAppearance.primaryLight'");
+      expect(admin.value).toBe('#0d6efd');
+      await runner.query("UPDATE SiteSetting SET value='#c84e10' WHERE `key`='adminAppearance.primaryLight'");
+      await migration.up(runner);
+      const [site] = await runner.query("SELECT value FROM SiteSetting WHERE `key`='appearance.primaryLight'");
+      const [again] = await runner.query("SELECT value FROM SiteSetting WHERE `key`='adminAppearance.primaryLight'");
+      expect(site.value).toBe('#0f766e'); expect(again.value).toBe('#c84e10');
+    } finally { await runner.rollbackTransaction(); await runner.release(); }
+  });
   it('adopts the authorized AdminLTE baseline once, archives old appearance and preserves other settings', async () => {
     const runner = db.createQueryRunner(); await runner.connect(); await runner.startTransaction();
     try {

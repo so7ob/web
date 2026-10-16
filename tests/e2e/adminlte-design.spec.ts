@@ -4,7 +4,7 @@ import { readFileSync, mkdirSync } from 'node:fs';
 import { createDataSource } from '@so7ob/server';
 import { getPortalContent } from '../../apps/web/src/content/portal';
 import { documentAudit, VisualReadiness } from './visual-checks';
-import { APPEARANCE_DEFAULTS, ADMINLTE_THEME_PRESETS, adminltePresetSettings, appearanceTokens } from '@so7ob/contracts';
+import { ADMIN_APPEARANCE_DEFAULTS, appearanceForScope, ADMINLTE_THEME_PRESETS, adminltePresetSettings, appearanceTokens } from '@so7ob/contracts';
 
 // A reference/default profile must be measurable, while the saved legacy
 // geometry remains an explicit supported customization rather than a DB reset.
@@ -14,14 +14,14 @@ for (const locale of ['ar', 'en'] as const) for (const mode of ['light', 'dark']
     const { prefix, password } = JSON.parse(readFileSync('.migration/e2e/run.json', 'utf8'));
     const { csrfToken } = await (await page.request.get('/api/auth/csrf')).json();
     expect((await page.request.post('/api/auth/callback/credentials', { form: { email: prefix + 'admin@example.invalid', password, csrfToken, json: 'true' } })).status()).toBe(200);
-    await page.addInitScript(value => localStorage.setItem('so7ob-appearance-mode', value), mode);
+    await page.addInitScript(value => localStorage.setItem('so7ob-admin-appearance-mode', value), mode);
     const db = await createDataSource().initialize();
-    const saved = await db.query("SELECT * FROM SiteSetting WHERE `key` LIKE 'appearance.%'");
+    const saved = await db.query("SELECT * FROM SiteSetting WHERE `key` LIKE 'adminAppearance.%'");
     const folder = `.migration/design-system/screenshots/adminlte-180/${locale}-${mode}-${info.project.name}`;
     mkdirSync(folder, { recursive: true });
     const mutations: string[] = [];
     try {
-      expect((await page.request.patch('/api/admin/settings', { headers: { 'x-csrf-token': csrfToken }, data: APPEARANCE_DEFAULTS })).status()).toBe(200);
+      expect((await page.request.patch('/api/admin/settings', { headers: { 'x-csrf-token': csrfToken }, data: ADMIN_APPEARANCE_DEFAULTS })).status()).toBe(200);
       await page.goto(`/${locale}/admin`);
       const ready = new VisualReadiness(page);
       await ready.wait();
@@ -38,7 +38,7 @@ for (const locale of ['ar', 'en'] as const) for (const mode of ['light', 'dark']
       await expect(page.locator('.ds-info-icon').first()).toHaveCSS('width', '70px');
       expect((await documentAudit(page, true)).violations).toEqual([]);
       await page.screenshot({ path: `${folder}/dashboard.png`, fullPage: true });
-      await page.goto(`/${locale}/admin/settings?section=appearance`);
+      await page.goto(`/${locale}/admin/settings?section=adminAppearance`);
       await ready.wait();
       const preview = page.frameLocator('iframe');
       await page.getByRole('combobox', { name: locale === 'ar' ? 'وضع المعاينة' : 'Preview color mode', exact: true }).selectOption(mode);
@@ -68,10 +68,10 @@ for (const locale of ['ar', 'en'] as const) for (const mode of ['light', 'dark']
       await expect(preview.getByRole('status')).toBeVisible();
       await preview.getByRole('button', { name: locale === 'ar' ? 'إلغاء' : 'Cancel', exact: true }).click();
       await expect(preview.getByRole('status')).toHaveCount(0);
-      await page.locator('#appearance-radius').selectOption('soft');
+      await page.locator('#admin-appearance-radius').selectOption('soft');
       await expect(preview.locator('[data-slot="panel"]').first()).toHaveCSS('border-radius', '12px');
       expect(mutations).toEqual([]);
-      await page.screenshot({ path: `${folder}/appearance.png`, fullPage: true });
+      await page.screenshot({ path: `${folder}/adminAppearance.png`, fullPage: true });
       // The exact sidebar transition is 992px in the pinned source.
       for (const width of [991, 992]) {
         await page.setViewportSize({ width, height: 900 });
@@ -81,7 +81,7 @@ for (const locale of ['ar', 'en'] as const) for (const mode of ['light', 'dark']
       }
       ready.dispose();
     } finally {
-      await db.query("DELETE FROM SiteSetting WHERE `key` LIKE 'appearance.%'");
+      await db.query("DELETE FROM SiteSetting WHERE `key` LIKE 'adminAppearance.%'");
       for (const row of saved) await db.query('INSERT INTO SiteSetting (`key`,value,updatedById,updatedAt) VALUES(?,?,?,?)', [row.key,row.value,row.updatedById,row.updatedAt]);
       await db.destroy();
     }
@@ -94,13 +94,13 @@ for (const locale of ['ar', 'en'] as const) for (const mode of ['light', 'dark']
     const { prefix, password } = JSON.parse(readFileSync('.migration/e2e/run.json', 'utf8'));
     const { csrfToken } = await (await page.request.get('/api/auth/csrf')).json();
     expect((await page.request.post('/api/auth/callback/credentials', { form: { email: prefix + 'admin@example.invalid', password, csrfToken, json: 'true' } })).status()).toBe(200);
-    await page.addInitScript(value => localStorage.setItem('so7ob-appearance-mode', value), mode);
+    await page.addInitScript(value => localStorage.setItem('so7ob-admin-appearance-mode', value), mode);
     const errors: string[] = [];
     page.on('pageerror', error => errors.push(error.message));
     const ready = new VisualReadiness(page);
     const folder = `.migration/adminlte-176/after/${locale}-${mode}-${info.project.name}`;
     mkdirSync(folder, { recursive: true });
-    for (const route of ['admin', 'admin/users', 'admin/settings?section=appearance']) {
+    for (const route of ['admin', 'admin/users', 'admin/settings?section=adminAppearance']) {
       await page.goto(`/${locale}/${route}`);
       await ready.wait();
       await expect(page.locator('html')).toHaveAttribute('dir', locale === 'ar' ? 'rtl' : 'ltr');
@@ -114,7 +114,7 @@ for (const locale of ['ar', 'en'] as const) for (const mode of ['light', 'dark']
     await expect(preview.locator('[data-slot="input"]')).toHaveCount(2);
     await expect(preview.locator('[data-slot="button"][aria-busy="true"]')).toBeDisabled();
     // Draft-only density changes update real controls, without a settings write.
-    await page.locator('#appearance-density').selectOption('compact');
+    await page.locator('#admin-appearance-density').selectOption('compact');
     await expect(preview.locator('[data-slot="input"]').first()).toHaveCSS('padding-top', '6px');
     expect((await preview.locator('[data-slot="input"]').first().boundingBox())!.height).toBeGreaterThanOrEqual(44);
     const isolated = await page.context().newPage();
@@ -142,7 +142,7 @@ for (const locale of ['ar', 'en'] as const) for (const mode of ['light', 'dark']
       await expect(page.getByRole('dialog')).toBeHidden();
       await expect(toggle).toBeFocused();
     }
-    await expect(page.locator('#appearance-density')).toHaveValue('compact');
+    await expect(page.locator('#admin-appearance-density')).toHaveValue('compact');
     expect(errors).toEqual([]);
   });
 }
@@ -153,21 +153,21 @@ for (const locale of ['ar', 'en'] as const) for (const mode of ['light', 'dark']
     const {prefix,password} = JSON.parse(readFileSync('.migration/e2e/run.json','utf8'));
     const {csrfToken} = await (await page.request.get('/api/auth/csrf')).json();
     expect((await page.request.post('/api/auth/callback/credentials',{form:{email:prefix+'admin@example.invalid',password,csrfToken,json:'true'}})).status()).toBe(200);
-    await page.addInitScript(value => localStorage.setItem('so7ob-appearance-mode',value),mode);
+    await page.addInitScript(value => localStorage.setItem('so7ob-admin-appearance-mode',value),mode);
     const db = await createDataSource().initialize();
-    const key = 'appearance.adminStyle';
-    const saved = await db.query("SELECT * FROM SiteSetting WHERE `key` LIKE 'appearance.%'");
+    const key = 'adminAppearance.adminStyle';
+    const saved = await db.query("SELECT * FROM SiteSetting WHERE `key` LIKE 'adminAppearance.%'");
     const folder = `.migration/adminlte-176/profiles/${locale}-${mode}-${info.project.name}`;
     mkdirSync(folder,{recursive:true});
     try {
       for (const profile of ['light','semi-dark','dark','colored']) {
         expect((await page.request.patch('/api/admin/settings',{headers:{'x-csrf-token':csrfToken},data:{[key]:profile}})).status()).toBe(200);
-        await page.goto(`/${locale}/admin/settings?section=appearance`);
+        await page.goto(`/${locale}/admin/settings?section=adminAppearance`);
         await new VisualReadiness(page).wait();
         await expect(page.locator('#admin-shell')).toHaveAttribute('data-admin-style',profile);
-        await expect(page.locator('#appearance-admin-style')).toHaveValue(profile);
+        await expect(page.locator('#admin-appearance-admin-style')).toHaveValue(profile);
         await expect(page.locator('html')).toHaveAttribute('data-color-mode',mode);
-        expect(await page.evaluate(() => localStorage.getItem('so7ob-appearance-mode'))).toBe(mode);
+        expect(await page.evaluate(() => localStorage.getItem('so7ob-admin-appearance-mode'))).toBe(mode);
         expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
         expect((await documentAudit(page,true)).violations).toEqual([]);
         if (profile === 'colored') {
@@ -203,10 +203,10 @@ for (const locale of ['ar', 'en'] as const) for (const mode of ['light', 'dark']
           await page.screenshot({path:`${folder}/${profile}-navigation.png`,fullPage:false});
           await page.keyboard.press('Escape');
         }
-        await page.locator('#appearance-admin-style').selectOption(profile === 'dark' ? 'light' : 'dark');
-        await page.locator('#appearance-admin-style').selectOption(profile);
+        await page.locator('#admin-appearance-admin-style').selectOption(profile === 'dark' ? 'light' : 'dark');
+        await page.locator('#admin-appearance-admin-style').selectOption(profile);
         const expectedMode = profile === 'dark' ? 'dark' : 'light';
-        await expect(page.locator('#appearance-mode')).toHaveValue(expectedMode);
+        await expect(page.locator('#admin-appearance-mode')).toHaveValue(expectedMode);
         const sample = page.frameLocator('iframe');
         await expect(sample.locator('.admin-lte')).toHaveAttribute('data-admin-style',profile);
         await expect(sample.locator('html')).toHaveAttribute('data-color-mode',expectedMode);
@@ -224,12 +224,12 @@ for (const locale of ['ar', 'en'] as const) for (const mode of ['light', 'dark']
           await expect(save).toBeDisabled();
         }
         await page.reload();
-        await expect(page.locator('#appearance-admin-style')).toHaveValue(profile);
-        await expect(page.locator('#appearance-mode')).toHaveValue(expectedMode);
+        await expect(page.locator('#admin-appearance-admin-style')).toHaveValue(profile);
+        await expect(page.locator('#admin-appearance-mode')).toHaveValue(expectedMode);
         await expect(page.locator('html')).toHaveAttribute('data-color-mode',mode);
       }
     } finally {
-      await db.query("DELETE FROM SiteSetting WHERE `key` LIKE 'appearance.%'");
+      await db.query("DELETE FROM SiteSetting WHERE `key` LIKE 'adminAppearance.%'");
       for (const row of saved) {
         const keys = Object.keys(row);
         await db.query('INSERT INTO SiteSetting ('+keys.map(k=>'`'+k+'`').join(',')+') VALUES ('+keys.map(()=>'?').join(',')+')',keys.map(k=>row[k]));
@@ -247,17 +247,17 @@ for (const locale of ['ar', 'en'] as const) for (const mode of ['light', 'dark']
     const { prefix, password } = JSON.parse(readFileSync('.migration/e2e/run.json', 'utf8'));
     const { csrfToken } = await (await page.request.get('/api/auth/csrf')).json();
     expect((await page.request.post('/api/auth/callback/credentials', { form: { email: prefix + 'admin@example.invalid', password, csrfToken, json: 'true' } })).status()).toBe(200);
-    await page.addInitScript(value => localStorage.setItem('so7ob-appearance-mode', value), mode);
+    await page.addInitScript(value => localStorage.setItem('so7ob-admin-appearance-mode', value), mode);
     const db = await createDataSource().initialize();
-    const saved = await db.query("SELECT * FROM SiteSetting WHERE `key` LIKE 'appearance.%'");
+    const saved = await db.query("SELECT * FROM SiteSetting WHERE `key` LIKE 'adminAppearance.%'");
     const mutations: string[] = [];
     const folder = `.migration/design-system/screenshots/adminlte-180/${locale}-${mode}-${info.project.name}/themes`;
     mkdirSync(folder, {recursive:true});
     const ready = new VisualReadiness(page);
     const rgb = (hex: string) => `rgb(${[1,3,5].map(i => parseInt(hex.slice(i,i+2),16)).join(', ')})`;
     try {
-      expect((await page.request.patch('/api/admin/settings', { headers: {'x-csrf-token':csrfToken}, data: APPEARANCE_DEFAULTS })).status()).toBe(200);
-      await page.goto(`/${locale}/admin/settings?section=appearance`); await ready.wait();
+      expect((await page.request.patch('/api/admin/settings', { headers: {'x-csrf-token':csrfToken}, data: ADMIN_APPEARANCE_DEFAULTS })).status()).toBe(200);
+      await page.goto(`/${locale}/admin/settings?section=adminAppearance`); await ready.wait();
       page.on('request', request => { if (['POST','PATCH','DELETE'].includes(request.method())) mutations.push(new URL(request.url()).pathname); });
       await page.getByRole('combobox', { name: locale === 'ar' ? 'وضع المعاينة' : 'Preview color mode', exact:true }).selectOption(mode);
       const sample = page.frameLocator('iframe');
@@ -265,7 +265,7 @@ for (const locale of ['ar', 'en'] as const) for (const mode of ['light', 'dark']
         await page.getByRole('button', {name: family === 'designed' ? locale === 'ar' ? 'الألوان المصمّمة لـ AdminLTE 4' : 'AdminLTE 4 designed palette' : locale === 'ar' ? 'ألوان AdminLTE 3 الأصلية' : 'AdminLTE 3 originals', exact:true}).click();
         for (const preset of ADMINLTE_THEME_PRESETS.filter(item => item.family === family)) {
           await page.locator(`[data-theme-preset="${preset.id}"]`).click();
-          const expected = appearanceTokens({...APPEARANCE_DEFAULTS, ...adminltePresetSettings(preset)}, mode);
+          const expected = appearanceTokens({...appearanceForScope(ADMIN_APPEARANCE_DEFAULTS, "admin"), ...adminltePresetSettings(preset)}, mode);
           await expect(sample.locator('.admin-topbar')).toHaveCSS('background-color', rgb(expected['admin-header']));
           await expect(sample.locator('.admin-sidebar')).toHaveCSS('background-color', rgb(expected['admin-sidebar']));
           await expect(sample.locator('.admin-footer')).toHaveCSS('background-color', rgb(expected['admin-footer']));
@@ -289,9 +289,19 @@ for (const locale of ['ar', 'en'] as const) for (const mode of ['light', 'dark']
       } finally { await isolated.close(); }
       const save = page.getByRole('button',{name:getPortalContent(locale).admin.settings.save,exact:true});
       const response = page.waitForResponse(response => response.request().method() === 'PATCH' && response.url().endsWith('/settings/checked'));
-      await save.click(); const result = await response; expect(result.status()).toBe(200); expect((await result.json()).settings['appearance.footerBackground']).toBe('v3:lime'); await expect(save).toBeDisabled();
+      await save.click(); const result = await response; expect(result.status()).toBe(200); expect((await result.json()).settings['adminAppearance.footerBackground']).toBe('v3:lime'); await expect(save).toBeDisabled();
       await page.reload(); await ready.wait();
       await expect(page.locator('#theme-footer-background')).toHaveValue('v3:lime');
+      const accountMenu = page.getByRole('button',{name:locale === 'ar' ? 'قائمة الحساب' : 'Account menu',exact:true});
+      await accountMenu.click();
+      await expect(page.locator('[data-slot="dropdown-menu-content"]')).toHaveCSS('background-color','rgb(255, 255, 255)');
+      await page.keyboard.press('Escape');await expect(accountMenu).toBeFocused();
+      expect((await page.request.patch('/api/admin/settings',{headers:{'x-csrf-token':csrfToken},data:{'adminAppearance.headerMode':'dark'}})).status()).toBe(200);
+      await page.reload();await ready.wait();
+      await accountMenu.click();
+      await expect(page.locator('[data-slot="dropdown-menu-content"]')).toHaveCSS('background-color','rgb(33, 37, 41)');
+      expect((await documentAudit(page,true)).violations).toEqual([]);
+      await page.keyboard.press('Escape');await expect(accountMenu).toBeFocused();
       await page.locator('#theme-footer-background').selectOption('designed:indigo:gradient');
       page.once('dialog', dialog => dialog.dismiss());
       await page.getByRole('button',{name:locale === 'ar' ? 'التراجع' : 'Revert',exact:true}).click();
@@ -304,7 +314,7 @@ for (const locale of ['ar', 'en'] as const) for (const mode of ['light', 'dark']
       await page.screenshot({path:`${folder}/saved.png`,fullPage:true});
     } finally {
       ready.dispose();
-      await db.query("DELETE FROM SiteSetting WHERE `key` LIKE 'appearance.%'");
+      await db.query("DELETE FROM SiteSetting WHERE `key` LIKE 'adminAppearance.%'");
       for (const row of saved) {
         const keys = Object.keys(row);
         await db.query('INSERT INTO SiteSetting ('+keys.map(key=>'`'+key+'`').join(',')+') VALUES ('+keys.map(()=>'?').join(',')+')',keys.map(key=>row[key]));
@@ -313,3 +323,63 @@ for (const locale of ['ar', 'en'] as const) for (const mode of ['light', 'dark']
     }
   });
 }
+
+for (const locale of ['ar','en'] as const) test(`${locale}: administration and visitor themes have independent drafts, persistence and mode preferences`, async ({page}, info) => {
+  test.setTimeout(120000);
+  const {prefix,password}=JSON.parse(readFileSync('.migration/e2e/run.json','utf8'));
+  const {csrfToken}=await(await page.request.get('/api/auth/csrf')).json();
+  expect((await page.request.post('/api/auth/callback/credentials',{form:{email:prefix+'admin@example.invalid',password,csrfToken,json:'true'}})).status()).toBe(200);
+  const headers={'x-csrf-token':csrfToken},db=await createDataSource().initialize();
+  const saved=await db.query("SELECT * FROM SiteSetting WHERE `key` LIKE 'appearance.%' OR `key` LIKE 'adminAppearance.%'");
+  const ready=new VisualReadiness(page), publicPage=await page.context().newPage();
+  const folder=`.migration/design-system/screenshots/adminlte-180/${locale}-${info.project.name}`;
+  mkdirSync(folder,{recursive:true});
+  try {
+    expect((await page.request.patch('/api/admin/settings',{headers,data:{...ADMIN_APPEARANCE_DEFAULTS,'appearance.mode':'dark','appearance.primaryLight':'#0f766e','appearance.fontEn':'inter','adminAppearance.primaryLight':'#c84e10'}})).status()).toBe(200);
+    await page.addInitScript(()=>{
+      if(!localStorage.getItem('so7ob-admin-appearance-mode'))localStorage.setItem('so7ob-admin-appearance-mode','dark');
+      if(!localStorage.getItem('so7ob-appearance-mode'))localStorage.setItem('so7ob-appearance-mode','light');
+    });
+    await page.goto(`/${locale}/admin/settings?section=adminAppearance`); await ready.wait();
+    await expect(page.locator('html')).toHaveAttribute('data-theme-scope','admin');
+    await expect(page.locator('html')).toHaveAttribute('data-color-mode','dark');
+    await page.locator('a[href="?section=appearance"]').click();
+    await page.locator('#appearance-primary-light').fill('#9553db');
+    await page.locator('a[href="?section=adminAppearance"]').click();
+    await page.locator('#admin-appearance-primary-light').fill('#12827d');
+    const response=page.waitForResponse(response=>response.request().method()==='PATCH'&&response.url().endsWith('/settings/checked'));
+    await page.getByRole('button',{name:getPortalContent(locale).admin.settings.save,exact:true}).click();
+    const result=await response;expect(result.status()).toBe(200);
+    expect(Object.keys((await result.json()).settings)).toEqual(['adminAppearance.primaryLight']);
+    await page.locator('a[href="?section=appearance"]').click();
+    await expect(page.locator('#appearance-primary-light')).toHaveValue('#9553db');
+    const current=(await(await page.request.get('/api/admin/settings')).json()).settings;
+    expect(current['appearance.primaryLight']).toBe('#0f766e');expect(current['adminAppearance.primaryLight']).toBe('#12827d');
+    page.once('dialog',dialog=>dialog.accept());
+    await page.getByRole('button',{name:locale==='ar'?'التراجع':'Revert',exact:true}).click();
+    const toggle=page.getByRole('combobox',{name:locale==='ar'?'وضع العرض':'Color mode',exact:true}).filter({visible:true});
+    await toggle.selectOption('light');
+    await publicPage.goto(`/${locale}`,{waitUntil:'networkidle'});
+    await expect(publicPage.locator('html')).toHaveAttribute('data-theme-scope','site');
+    await expect(publicPage.locator('html')).toHaveAttribute('data-color-mode','light');
+    await publicPage.getByRole('combobox',{name:locale==='ar'?'وضع العرض':'Color mode',exact:true}).filter({visible:true}).selectOption('dark');
+    await expect(publicPage.locator('html')).toHaveAttribute('data-color-mode','dark');
+    await expect(page.locator('html')).toHaveAttribute('data-color-mode','light');
+    await page.reload(); await ready.wait();
+    await expect(page.locator('html')).toHaveAttribute('data-color-mode','light');
+    expect(await page.evaluate(()=>({site:localStorage.getItem('so7ob-appearance-mode'),admin:localStorage.getItem('so7ob-admin-appearance-mode')}))).toEqual({site:'dark',admin:'light'});
+    await toggle.selectOption('system');
+    await page.emulateMedia({colorScheme:'dark'});await expect(page.locator('html')).toHaveAttribute('data-color-mode','dark');
+    await page.emulateMedia({colorScheme:'light'});await expect(page.locator('html')).toHaveAttribute('data-color-mode','light');
+    await expect(publicPage.locator('html')).toHaveAttribute('data-color-mode','dark');
+    expect((await page.request.patch('/api/admin/settings',{headers,data:{'adminAppearance.headerBackground':'url(untrusted)','adminAppearance.mode':'light'}})).status()).toBe(400);
+    expect((await documentAudit(page,true)).violations).toEqual([]);
+    await page.screenshot({path:`${folder}/independent-admin.png`,fullPage:true});
+    await publicPage.screenshot({path:`${folder}/independent-site.png`,fullPage:true});
+  } finally {
+    ready.dispose();await publicPage.close();
+    await db.query("DELETE FROM SiteSetting WHERE `key` LIKE 'appearance.%' OR `key` LIKE 'adminAppearance.%'");
+    for(const row of saved){const keys=Object.keys(row);await db.query('INSERT INTO SiteSetting ('+keys.map(key=>'`'+key+'`').join(',')+') VALUES ('+keys.map(()=>'?').join(',')+')',keys.map(key=>row[key]));}
+    await db.destroy();
+  }
+});

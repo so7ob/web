@@ -8,8 +8,24 @@ import {
   validateSiteSettings,
   safeSettingUrl,
   mediaSettingId,
+  appearanceForScope,
 } from "./site-settings.js";
 describe("site presentation contracts", () => {
+  it("resolves administration and visitor modes, colors and geometry independently", () => {
+    const settings = { "appearance.mode":"dark", "appearance.primaryLight":"#0f766e", "appearance.radius":"round", "adminAppearance.mode":"light", "adminAppearance.primaryLight":"#c84e10", "adminAppearance.radius":"square" };
+    const site = appearanceForScope(settings,"site"), admin = appearanceForScope(settings,"admin");
+    expect(site["appearance.mode"]).toBe("dark"); expect(admin["appearance.mode"]).toBe("light");
+    expect(appearanceTokens(site,"light").radius).toBe("1.25rem");
+    expect(appearanceTokens(admin,"light").radius).toBe("0rem");
+    expect(appearanceTokens(admin,"light").primary).not.toBe(appearanceTokens(site,"light").primary);
+    expect(appearanceForScope({"appearance.fontEn":"inter"},"admin")["appearance.fontEn"]).toBe("source");
+    expect(validateSiteSettings({"adminAppearance.primaryLight":"url(untrusted)","adminAppearance.mode":"untrusted"})).toMatchObject({"adminAppearance.primaryLight":"color","adminAppearance.mode":"choice"});
+    for (const region of ["sidebar","header","footer"]) {
+      const light = appearanceTokens({[`appearance.${region}Mode`]:"light"},"dark");
+      const dark = appearanceTokens({[`appearance.${region}Mode`]:"dark"},"light");
+      expect(light[`admin-${region}`]).toBe("#ffffff"); expect(dark[`admin-${region}`]).toBe("#212529");
+    }
+  });
   it("validates all pinned presets and region colors with AA pairs in both modes", () => {
     expect(ADMINLTE_THEME_PRESETS).toHaveLength(29);
     for (const preset of ADMINLTE_THEME_PRESETS) {

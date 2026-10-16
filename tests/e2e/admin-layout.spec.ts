@@ -33,7 +33,7 @@ for (const locale of ["ar", "en"] as const)
         ).status(),
       ).toBe(200);
       await page.addInitScript(
-        (colorMode) => localStorage.setItem("so7ob-appearance-mode", colorMode),
+        (colorMode) => localStorage.setItem("so7ob-admin-appearance-mode", colorMode),
         mode,
       );
       const folder = `.migration/design-system/refined/${locale}-${info.project.name}-${mode}`;
@@ -64,17 +64,16 @@ for (const locale of ["ar", "en"] as const)
           await expect(heading).toHaveCount(1);
           await expect(heading.locator("h1")).toBeVisible();
           const title = (await heading.locator("h1").boundingBox())!;
-          const description = (await heading
-            .locator(".ds-page-description")
-            .boundingBox())!;
           const edge = locale === "ar" ? title.x + title.width : title.x;
-          const descriptionEdge =
-            locale === "ar" ? description.x + description.width : description.x;
-          expect(
-            Math.abs(edge - descriptionEdge),
-            `${path}: title and description share their leading edge`,
-          ).toBeLessThan(1);
-          expect(description.y).toBeGreaterThan(title.y);
+          if (path === "") {
+            // The pinned dashboard has a title/breadcrumb header without a subtitle.
+            await expect(heading.locator(".ds-page-description")).toHaveCount(0);
+          } else {
+            const description = (await heading.locator(".ds-page-description").boundingBox())!;
+            const descriptionEdge = locale === "ar" ? description.x + description.width : description.x;
+            expect(Math.abs(edge-descriptionEdge), `${path}: title and description share their leading edge`).toBeLessThan(1);
+            expect(description.y).toBeGreaterThan(title.y);
+          }
           headingEdge ??= edge;
           expect(
             Math.abs(edge - headingEdge),

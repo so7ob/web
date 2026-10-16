@@ -53,7 +53,9 @@ try {
     "Never resets existing data",
   );
   const migrations = db.migrations;
-  db.migrations = migrations.filter((m) => m.name !== "Workflows1792108800000");
+  const workflowIndex = migrations.findIndex(m => m.name === "Workflows1792108800000");
+  assert(workflowIndex > 0, "The historical migration prefix precedes workflows");
+  db.migrations = migrations.slice(0, workflowIndex);
   await db.runMigrations();
   await db.query(
     "INSERT INTO Role(`key`,nameAr,nameEn,permissions) VALUES('super_admin','مدير اصطناعي','Synthetic admin','[]')",

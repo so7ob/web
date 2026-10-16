@@ -1,5 +1,6 @@
 import { ThemeToggle, useSitePresentation } from "@/components/appearance/provider";
 import { Logo } from "@/components/site/logo";
+import { regionalPortalStyle } from "@/lib/appearance";
 import { PageBreadcrumbContext } from "@/components/ui/workspace";
 
 import { diagnosticsCopy } from "@/content/diagnostics";
@@ -52,7 +53,7 @@ import { roleLabel } from "./badges";
 import type { Me } from "./types";
 import { CommandPalette } from "./command-palette";
 import { AdminNavigationItem } from "./navigation-item";
-import { APPEARANCE_DEFAULTS } from "@so7ob/contracts";
+import { APPEARANCE_DEFAULTS, appearanceForScope } from "@so7ob/contracts";
 
 interface AdminShellProps {
   me: Me;
@@ -73,7 +74,7 @@ interface NavItem {
 const subscribePlatform = () => () => {};
 
 export function AdminShell({ me, locale, siteName, children }: AdminShellProps) {
-  const settings = useSitePresentation();
+  const settings = appearanceForScope(useSitePresentation(), "admin");
   const adminStyle = settings["appearance.adminStyle"] ?? APPEARANCE_DEFAULTS["appearance.adminStyle"];
   const pathname = usePathname() ?? `/${locale}/admin`;
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -383,7 +384,7 @@ export function AdminShell({ me, locale, siteName, children }: AdminShellProps) 
 
       <div className="flex min-w-0 flex-1 flex-col">
         {/* الشريط العلوي (مخفي عند الطباعة) */}
-        <header className="admin-topbar sticky top-0 z-30 flex h-(--header-height) items-center gap-2 border-b border-border bg-card px-2 print:hidden sm:px-4">
+        <header className="admin-topbar relative z-30 flex h-(--header-height) items-center gap-2 border-b border-border bg-card px-2 print:hidden sm:px-4">
           <Button variant="ghost" size="icon" className="hidden min-[992px]:inline-flex"
             aria-controls="admin-desktop-sidebar" aria-expanded={!sidebarCollapsed}
             aria-label={locale === "ar" ? "تبديل الشريط الجانبي" : "Toggle sidebar"}
@@ -478,7 +479,7 @@ export function AdminShell({ me, locale, siteName, children }: AdminShellProps) 
                 {localeMeta[locale].otherLabel}
               </Link>
             </Button>
-            <DropdownMenu><DropdownMenuTrigger asChild><Button variant="ghost" aria-label={locale === "ar" ? "قائمة الحساب" : "Account menu"} className="gap-2 px-2">
+            <DropdownMenu modal={false}><DropdownMenuTrigger asChild><Button variant="ghost" aria-label={locale === "ar" ? "قائمة الحساب" : "Account menu"} className="gap-2 px-2">
               <span
                 className="flex size-7 items-center justify-center rounded-full bg-primary text-xs font-bold text-primary-foreground"
                 aria-hidden="true"
@@ -488,7 +489,7 @@ export function AdminShell({ me, locale, siteName, children }: AdminShellProps) 
               <span className="hidden max-w-32 truncate text-sm font-normal sm:block">
                 {me.name}
               </span>
-            </Button></DropdownMenuTrigger><DropdownMenuContent align="end" className="w-64">
+            </Button></DropdownMenuTrigger><DropdownMenuContent align="end" className="w-64" style={regionalPortalStyle(settings, "header")}>
               <DropdownMenuLabel className="break-words">{me.name}<span className="mt-1 block text-xs font-normal text-muted-foreground">{roleLabel(me.roleKey, locale)}</span></DropdownMenuLabel>
               <DropdownMenuSeparator />
               <DropdownMenuItem asChild><Link href={`/${locale}/account/profile`}><UserRound aria-hidden="true" />{locale === "ar" ? "حسابي" : "My account"}</Link></DropdownMenuItem>
@@ -512,7 +513,7 @@ export function AdminShell({ me, locale, siteName, children }: AdminShellProps) 
           className="admin-main flex-1 px-5 pb-4"
         >
           <div className="admin-workspace mx-auto w-full max-w-[1440px]">
-            <PageBreadcrumbContext.Provider value={<nav aria-label={locale === "ar" ? "مسار التنقل" : "Breadcrumb"} className="flex min-w-0 flex-wrap items-center gap-2 text-sm"><Link href={`/${locale}`} className="text-primary hover:underline">{locale === "ar" ? "الرئيسية" : "Home"}</Link><span aria-hidden="true">/</span>{pathname !== `/${locale}/admin` && <><Link href={`/${locale}/admin`} className="text-primary hover:underline">{t.dashboard}</Link><span aria-hidden="true">/</span></>}<span aria-current="page" className="text-muted-foreground">{titleFor(pathname)}</span></nav>}>
+            <PageBreadcrumbContext.Provider value={<nav aria-label={locale === "ar" ? "مسار التنقل" : "Breadcrumb"} className="flex min-w-0 flex-wrap items-center gap-2 text-sm"><Link href={`/${locale}`} className="inline-flex min-h-11 items-center px-1 text-primary hover:underline">{locale === "ar" ? "الرئيسية" : "Home"}</Link><span aria-hidden="true">/</span>{pathname !== `/${locale}/admin` && <><Link href={`/${locale}/admin`} className="inline-flex min-h-11 items-center px-1 text-primary hover:underline">{t.dashboard}</Link><span aria-hidden="true">/</span></>}<span aria-current="page" className="text-muted-foreground">{titleFor(pathname)}</span></nav>}>
               {children}
             </PageBreadcrumbContext.Provider>
           </div>

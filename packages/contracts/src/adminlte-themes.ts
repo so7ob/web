@@ -46,8 +46,8 @@ export const ADMINLTE_BASE_COLORS: Record<string, string> = {
 };
 export const ADMINLTE_CHROME_KEYS = ["sidebar", "header", "footer"] as const;
 export const ADMINLTE_BACKGROUNDS = [
-  "inherit", "body", "body-secondary", "body-tertiary",
-  ...Object.keys(ADMINLTE_BASE_COLORS).flatMap(name => [name, `${name}-subtle`]),
+  "inherit", "transparent", "body", "body-secondary", "body-tertiary",
+  ...Object.keys(ADMINLTE_BASE_COLORS).flatMap(name => ["black", "white"].includes(name) ? [name] : [name, `${name}-subtle`]),
   ...Object.entries(ADMINLTE_PALETTES).flatMap(([family, colors]) => Object.keys(colors).flatMap(name => [`${family}:${name}`, `${family}:${name}:gradient`])),
 ];
 export const ADMINLTE_THEME_PRESETS = [
@@ -86,7 +86,6 @@ export function adminltePresetSettings(preset: typeof ADMINLTE_THEME_PRESETS[num
     "appearance.adminStyle": preset.sidebarMode === "light" ? "light" : "semi-dark",
     "appearance.sidebarBackground": preset.sidebar, "appearance.sidebarMode": preset.sidebarMode,
     "appearance.headerBackground": preset.header, "appearance.headerMode": preset.headerMode,
-    "appearance.footerBackground": "body", "appearance.footerMode": "light",
     "appearance.primaryLight": preset.primary, "appearance.primaryDark": preset.primary,
   };
 }

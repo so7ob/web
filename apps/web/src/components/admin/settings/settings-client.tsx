@@ -17,6 +17,7 @@ import {
   ChevronLeft,
 } from "lucide-react";
 import {
+  appearanceForScope,
   SETTING_SECTIONS,
   SECTION_KEYS,
   SETTINGS_DEFAULTS,
@@ -118,7 +119,13 @@ export function SettingsClient({ me, locale }: { me: Me; locale: Locale }) {
     );
   const [picker, setPicker] = useState<string | null>(null),
     [previewLocale, setPreviewLocale] = useState<Locale>(locale),
-    [previewMode, setPreviewMode] = useState<"light" | "dark">("light");
+    [previewModes, setPreviewModes] = useState<Partial<Record<SettingSection, "light" | "dark">>>({});
+  const previewMode = previewModes[section] ?? (form[`${section === "adminAppearance" ? "adminAppearance" : "appearance"}.mode`] === "dark" ? "dark" : "light");
+  const setPreviewMode = (value: "light" | "dark") => setPreviewModes(previous => ({...previous,[section]:value}));
+  const isAppearance = section === "appearance" || section === "adminAppearance";
+  const appearanceScope = section === "adminAppearance" ? "admin" : "site";
+  const appearancePrefix = section === "adminAppearance" ? "adminAppearance." : "appearance.";
+  const scopedAppearance = appearanceForScope(form, appearanceScope);
   const summary = useRef<HTMLDivElement>(null),
     formRef = useRef(form);
   formRef.current = form;
@@ -210,11 +217,15 @@ export function SettingsClient({ me, locale }: { me: Me; locale: Locale }) {
     settingsErrors[code]?.[li] ??
     (ar ? "تحقق من القيمة المدخلة" : "Check the entered value");
   const set = (key: string, value: string) => {
-    if (key === "appearance.adminStyle") {
+    if (key === "adminAppearance.adminStyle") {
       const mode = value === "dark" ? "dark" : "light";
-      setForm((p) => ({ ...p, [key]: value, "appearance.mode": mode, ...Object.fromEntries(["sidebar", "header", "footer"].flatMap(region => [[`appearance.${region}Background`, "inherit"], [`appearance.${region}Mode`, "inherit"]])) }));
+      setForm((p) => ({ ...p, [key]: value, "adminAppearance.mode": mode, ...Object.fromEntries(["sidebar", "header", "footer"].flatMap(region => [[`adminAppearance.${region}Background`, "inherit"], [`adminAppearance.${region}Mode`, "inherit"]])) }));
       setPreviewMode(mode);
-    } else setForm((p) => ({ ...p, [key]: value }));
+    } else {
+      setForm((p) => ({ ...p, [key]: value }));
+      if (key === "appearance.mode" || key === "adminAppearance.mode")
+        setPreviewMode(value === "dark" || (value === "system" && window.matchMedia("(prefers-color-scheme: dark)").matches) ? "dark" : "light");
+    }
     setErrors((p) => {
       const n = { ...p };
       delete n[key];
@@ -358,7 +369,7 @@ export function SettingsClient({ me, locale }: { me: Me; locale: Locale }) {
       error = errors[key],
       value = form[key] ?? "",
       media = (IDENTITY_MEDIA_KEYS as readonly string[]).includes(key),
-      color = key.startsWith("appearance.") && /primary|accent/.test(key);
+      color = /^(appearance|adminAppearance)\./.test(key) && /primary|accent/.test(key);
     return (
       <div
         key={key}
@@ -641,10 +652,10 @@ export function SettingsClient({ me, locale }: { me: Me; locale: Locale }) {
                   {sectionLabels[section][li]}
                 </h2>
                 <p className="mt-2 text-sm leading-6 text-muted-foreground">
-                  {section === "appearance"
+                  {isAppearance
                     ? ar
-                      ? "اختيارات موحدة للموقع وحساب العميل ولوحة الإدارة. يحتفظ الزائر باختياره لوضع العرض."
-                      : "Shared across the site, accounts and administration. Visitors retain their own color-mode preference."
+                      ? section === "adminAppearance" ? "ألوان وأوضاع مستقلة للوحة الإدارة. لا تغيّر مظهر الموقع الذي يراه الزوار." : "مظهر الموقع العام وحساب العميل. لا يغيّر إعدادات مظهر الإدارة."
+                      : section === "adminAppearance" ? "Independent administration colors and modes. Visitor-facing appearance is separate." : "Appearance for the public site and client accounts. Administration appearance stays independent."
                     : section === "identity"
                       ? ar
                         ? "أصول الهوية من مكتبة الوسائط. الشعار الحالي بديل عند غياب صورة مخصصة."
@@ -690,8 +701,8 @@ export function SettingsClient({ me, locale }: { me: Me; locale: Locale }) {
                   </ul>
                 </div>
               )}
-              {section === "appearance" && <ThemeGenerator settings={form} locale={locale} disabled={saving} onChange={patch => { setForm(previous => ({ ...previous, ...patch })); setErrors({}); setFailure(null); }} />}
-              {section === "appearance" && (
+              {section === "adminAppearance" && <ThemeGenerator settings={scopedAppearance} locale={locale} disabled={saving} onChange={patch => { setForm(previous => ({ ...previous, ...Object.fromEntries(Object.entries(patch).map(([key,value]) => [key.replace("appearance.","adminAppearance."), value])) })); setErrors({}); setFailure(null); }} />}
+              {isAppearance && (
                 <div className="mb-6">
                   <p className="mb-2 text-sm font-medium">
                     {ar ? "قوالب الألوان" : "Color presets"}
@@ -707,7 +718,7 @@ export function SettingsClient({ me, locale }: { me: Me; locale: Locale }) {
                             ...p,
                             ...Object.fromEntries(
                               Object.entries(palette).map(([k, v]) => [
-                                "appearance." + k,
+                                appearancePrefix + k,
                                 v,
                               ]),
                             ),
@@ -731,11 +742,11 @@ export function SettingsClient({ me, locale }: { me: Me; locale: Locale }) {
                   </div>
                 </div>
               )}
-              {section === "appearance" && <p className="mb-4 text-sm text-muted-foreground">
+              {section === "adminAppearance" && <p className="mb-4 text-sm text-muted-foreground">
                 {ar ? "اختيار النمط يغيّر نمط الإدارة ووضع العرض الافتراضي في هذه المسودة فقط. تبقى الألوان والخطوط والكثافة، ويبقى اختيار الزائر الشخصي لوضع العرض أسبق من الافتراضي." : "Choosing a style changes administration chrome and default color mode in this draft only. Colors, fonts and density are retained; a visitor’s personal color-mode choice still takes precedence."}
               </p>}
               <div className="grid gap-5 sm:grid-cols-2">
-                {SECTION_KEYS[section].filter(key => !/appearance\.(sidebar|header|footer)(Background|Mode)/.test(key)).map(field)}
+                {SECTION_KEYS[section].filter(key => !/adminAppearance\.(sidebar|header|footer)(Background|Mode)/.test(key)).map(field)}
               </div>
               {section === "tracking" && (
                 <div className="mt-5 space-y-4 rounded-xl border bg-muted/30 p-4">
@@ -778,7 +789,7 @@ export function SettingsClient({ me, locale }: { me: Me; locale: Locale }) {
                   )}
                 </div>
               )}
-              {section === "appearance" && (
+              {isAppearance && (
                 <div className="mt-6 rounded-xl border bg-muted/30 p-4">
                   <h3 className="text-sm font-semibold">
                     {ar
@@ -800,7 +811,7 @@ export function SettingsClient({ me, locale }: { me: Me; locale: Locale }) {
                           ? "داكن"
                           : "Dark"}
                       :{" "}
-                      {paletteChecks(form, mode).every(
+                      {paletteChecks(scopedAppearance, mode).every(
                         (c) => c.ratio >= c.minimum,
                       )
                         ? ar
@@ -811,7 +822,7 @@ export function SettingsClient({ me, locale }: { me: Me; locale: Locale }) {
                           : "Needs adjustment"}{" "}
                       ·{" "}
                       {Math.min(
-                        ...paletteChecks(form, mode)
+                        ...paletteChecks(scopedAppearance, mode)
                           .filter((c) => c.minimum === 4.5)
                           .map((c) => c.ratio),
                       ).toFixed(2)}
@@ -821,7 +832,7 @@ export function SettingsClient({ me, locale }: { me: Me; locale: Locale }) {
                 </div>
               )}
             </section>
-            {["identity", "appearance", "sharing", "announcement"].includes(
+            {["identity", "appearance", "adminAppearance", "sharing", "announcement"].includes(
               section,
             ) && (
               <aside className="min-w-0 space-y-4 xl:sticky xl:top-24">
@@ -855,7 +866,7 @@ export function SettingsClient({ me, locale }: { me: Me; locale: Locale }) {
                           : "Dark"}</option>
                   </NativeSelect>
                 </div>
-                {section === "appearance" ? <AppearancePreview settings={form} locale={previewLocale} mode={previewMode} title={ar ? "معاينة الإعدادات" : "Settings preview"} /> : <iframe
+                {isAppearance ? <AppearancePreview settings={form} scope={appearanceScope} locale={previewLocale} mode={previewMode} title={ar ? "معاينة الإعدادات" : "Settings preview"} /> : <iframe
                   title={ar ? "معاينة الإعدادات" : "Settings preview"}
                   sandbox="allow-same-origin"
                   srcDoc={previewHtml(

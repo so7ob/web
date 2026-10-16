@@ -1,7 +1,8 @@
 import type { SettingSection } from "@so7ob/contracts";
 export const sectionLabels: Record<SettingSection, [string, string]> = {
   identity: ["الهوية", "Identity"],
-  appearance: ["المظهر", "Appearance"],
+  appearance: ["مظهر الموقع", "Site appearance"],
+  adminAppearance: ["مظهر الإدارة", "Administration appearance"],
   contact: ["التواصل", "Contact"],
   sharing: ["المشاركة والبحث", "Sharing & search"],
   announcement: ["الإعلانات", "Announcements"],
@@ -127,6 +128,8 @@ export const settingOptions: Record<string, Array<[string, string, string]>> = {
     ],
   ],
 };
+for (const [key, labels] of Object.entries(settingLabels)) if (key.startsWith("appearance.")) settingLabels[key.replace("appearance.", "adminAppearance.")] = labels;
+for (const [key, options] of Object.entries(settingOptions)) if (key.startsWith("appearance.")) settingOptions[key.replace("appearance.", "adminAppearance.")] = options;
 settingOptions["track.inquiriesMode"] = settingOptions["track.requestsMode"];
 export const settingsErrors: Record<string, [string, string]> = {
   required: ["هذا الحقل مطلوب", "This field is required"],

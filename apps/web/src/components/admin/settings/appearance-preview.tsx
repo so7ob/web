@@ -16,30 +16,30 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogTrigger } from "@/components/ui/dialog";
 import { PortalContainerProvider } from "@/components/ui/portal-container";
 import { AppDirectionProvider } from "@/components/ui/app-direction-provider";
-import { APPEARANCE_DEFAULTS } from "@so7ob/contracts";
+import { APPEARANCE_DEFAULTS, appearanceForScope, type AppearanceScope } from "@so7ob/contracts";
 
 /** Actual shared primitives, rendered without submission handlers into an isolated document. No theme writes. */
-export function AppearanceSample({ locale, profile = APPEARANCE_DEFAULTS["appearance.adminStyle"] }: { locale: Locale; profile?: string }) {
+export function AppearanceSample({ locale, profile = APPEARANCE_DEFAULTS["appearance.adminStyle"], scope = "admin" }: { locale: Locale; profile?: string; scope?: AppearanceScope }) {
   const ar = locale === "ar";
   const [active, setActive] = useState("home");
   const [saved, setSaved] = useState(false);
   const [title, setTitle] = useState<string | null>(null);
-  return <div className="admin-lte" data-admin-style={profile}>
-    <header className="admin-topbar flex min-h-(--header-height) items-center justify-between gap-2 border-b bg-card px-3">
-      <strong>{ar ? "لوحة الإدارة" : "Administration"}</strong><Dialog><DialogTrigger asChild><Button type="button" variant="outline" size="sm">{ar ? "بحث" : "Search"}</Button></DialogTrigger>
+  return <div className={scope === "admin" ? "admin-lte" : "site-appearance-sample"} data-admin-style={scope === "admin" ? profile : undefined}>
+    <header className={`${scope === "admin" ? "admin-topbar" : ""} flex min-h-(--header-height) items-center justify-between gap-2 border-b bg-card px-3`}>
+      <strong>{scope === "admin" ? ar ? "لوحة الإدارة" : "Administration" : ar ? "سُحُب" : "So7ob"}</strong><Dialog><DialogTrigger asChild><Button type="button" variant="outline" size="sm">{ar ? "بحث" : "Search"}</Button></DialogTrigger>
         <DialogContent><DialogHeader><DialogTitle>{ar ? "معاينة الحوار" : "Dialog preview"}</DialogTitle><DialogDescription>{ar ? "تستخدم هذه المعاينة المكونات الفعلية. إجراءاتها محلية فقط." : "This preview uses the actual components. Its actions stay local."}</DialogDescription></DialogHeader></DialogContent>
       </Dialog>
     </header>
     <div className="flex min-w-0">
-      <aside className="admin-sidebar w-24 shrink-0 p-2"><nav aria-label={ar ? "معاينة التنقل" : "Sample navigation"} className="grid gap-2">
+      {scope === "admin" && <aside className="admin-sidebar w-24 shrink-0 p-2"><nav aria-label={ar ? "معاينة التنقل" : "Sample navigation"} className="grid gap-2">
         <AdminNavigationItem active={active === "home"} className="whitespace-normal px-2"><button type="button" onClick={() => setActive("home")}>{ar ? "الرئيسية" : "Home"}</button></AdminNavigationItem>
         <AdminNavigationItem active={active === "requests"} className="whitespace-normal px-2"><button type="button" onClick={() => setActive("requests")}>{ar ? "الطلبات" : "Requests"}</button></AdminNavigationItem>
-      </nav></aside>
+      </nav></aside>}
       <main className="admin-main admin-workspace min-w-0 flex-1 space-y-4 p-3">
     <div className="ds-small-box" data-tone="primary"><SmallBoxContent value={4} label={ar ? "الطلبات المفتوحة" : "Open requests"} icon={null} /></div>
     <div className="ds-info-box"><InfoBoxContent icon={<span>✓</span>} label={ar ? "طلبات مكتملة" : "Completed requests"} value={12} tone="ds-metric-success" /></div>
     <Panel>
-      <PanelHeader><h1 className="text-lg font-semibold">{ar ? "معاينة المظهر" : "Appearance preview"}</h1></PanelHeader>
+      <PanelHeader><h1 className="text-lg font-semibold">{scope === "admin" ? ar ? "معاينة مظهر الإدارة" : "Administration preview" : ar ? "معاينة مظهر الموقع" : "Site preview"}</h1></PanelHeader>
       <PanelBody className="space-y-3">
         <p className="text-sm text-muted-foreground">{ar ? "مكونات الإدارة الفعلية؛ بيانات نموذجية." : "Actual administration components; sample content."}</p>
         <Label htmlFor="sample-title">{ar ? "عنوان الطلب" : "Request title"}</Label>
@@ -67,9 +67,10 @@ export function AppearanceSample({ locale, profile = APPEARANCE_DEFAULTS["appear
           <TableRow><TableCell>{ar ? "استفسار عام" : "General inquiry"}</TableCell><TableCell>{ar ? "تم الرد" : "Replied"}</TableCell></TableRow></TableBody>
       </Table>
     </ListWorkspace>
-  </main></div><footer className="admin-footer border-t px-3 py-3 text-sm">{ar ? "سُحُب · إدارة المنصة" : "So7ob · Platform administration"}</footer></div>;
+  </main></div><footer className={`${scope === "admin" ? "admin-footer" : "bg-card"} border-t px-3 py-3 text-sm`}>{ar ? "سُحُب · إدارة المنصة" : "So7ob · Platform administration"}</footer></div>;
 }
-export function AppearancePreview({ settings, locale, mode, title }: { settings: Record<string,string>; locale: Locale; mode: "light" | "dark"; title: string }) {
+export function AppearancePreview({ settings, locale, mode, title, scope = "admin" }: { settings: Record<string,string>; locale: Locale; mode: "light" | "dark"; title: string; scope?: AppearanceScope }) {
+  const scoped = appearanceForScope(settings, scope);
   const [styles, setStyles] = useState("");
   const frame = useRef<HTMLIFrameElement>(null);
   const [mount, setMount] = useState<HTMLElement | null>(null);
@@ -78,6 +79,6 @@ export function AppearancePreview({ settings, locale, mode, title }: { settings:
     // Production's Vite styles and development's injected styles use the same compiled CSS.
     setStyles(Array.from(document.head.querySelectorAll('link[rel="stylesheet"], style')).map(node => node.outerHTML).join(""));
   }, []);
-  const srcDoc = `<!doctype html><html lang="${locale}" dir="${locale === "ar" ? "rtl" : "ltr"}" data-color-mode="${mode}" class="${mode === "dark" ? "dark" : ""}"><head><meta name="viewport" content="width=device-width,initial-scale=1"><title>${locale === "ar" ? "معاينة المظهر" : "Appearance preview"}</title>${styles}<style>${themeStyles(settings)}body{margin:0;font-family:var(--site-font);background:var(--background);color:var(--foreground)}</style></head><body></body></html>`;
-  return <><iframe ref={frame} title={title} sandbox="allow-same-origin" srcDoc={srcDoc} onLoad={() => setMount(frame.current?.contentDocument?.body ?? null)} className="h-[560px] w-full rounded-lg border bg-background" />{mount && createPortal(<PortalContainerProvider container={mount}><AppDirectionProvider dir={locale === "ar" ? "rtl" : "ltr"}><AppearanceSample locale={locale} profile={settings["appearance.adminStyle"] ?? APPEARANCE_DEFAULTS["appearance.adminStyle"]} /></AppDirectionProvider></PortalContainerProvider>, mount)}</>;
+  const srcDoc = `<!doctype html><html lang="${locale}" dir="${locale === "ar" ? "rtl" : "ltr"}" data-color-mode="${mode}" class="${mode === "dark" ? "dark" : ""}"><head><meta name="viewport" content="width=device-width,initial-scale=1"><title>${locale === "ar" ? "معاينة المظهر" : "Appearance preview"}</title>${styles}<style>${themeStyles(scoped)}body{margin:0;font-family:var(--site-font);background:var(--background);color:var(--foreground)}</style></head><body></body></html>`;
+  return <><iframe ref={frame} title={title} sandbox="allow-same-origin" srcDoc={srcDoc} onLoad={() => setMount(frame.current?.contentDocument?.body ?? null)} className="h-[560px] w-full rounded-lg border bg-background" />{mount && createPortal(<PortalContainerProvider container={mount}><AppDirectionProvider dir={locale === "ar" ? "rtl" : "ltr"}><AppearanceSample locale={locale} scope={scope} profile={scoped["appearance.adminStyle"] ?? APPEARANCE_DEFAULTS["appearance.adminStyle"]} /></AppDirectionProvider></PortalContainerProvider>, mount)}</>;
 }

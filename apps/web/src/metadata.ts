@@ -1,5 +1,5 @@
 import {themeStyles} from './lib/appearance';
-import {PRESENTATION_DEFAULTS,mediaSettingId} from '@so7ob/contracts';
+import {PRESENTATION_DEFAULTS,mediaSettingId,appearanceForScope} from '@so7ob/contracts';
 import type { PublicView } from "@so7ob/contracts";
 import { ar } from "./content/ar";
 import { en } from "./content/en";
@@ -88,7 +88,7 @@ export function headMarkup(data: PublicView): string {
   const image=(data.kind==="cms"?data.page.ogImage:null)||data.settings["sharing.image"];
   const icon=data.settings["identity.icon"];
   return (
-    `<style data-so7ob-meta>${themeStyles(data.settings)}</style>`+
+    `<style data-so7ob-meta>${themeStyles(appearanceForScope(data.settings, data.kind === "admin" ? "admin" : "site"))}</style>`+
     `<link data-so7ob-meta rel="icon" href="${escape(icon&&mediaSettingId(icon)?icon:"/icon.png")}" type="image/png"><link data-so7ob-meta rel="apple-touch-icon" href="${escape(icon&&mediaSettingId(icon)?icon:"/apple-icon.png")}">`+
     (image&&mediaSettingId(image)?tag("og:image",data.canonicalOrigin+image,true)+tag("twitter:image",data.canonicalOrigin+image):"")+
     `<title data-so7ob-meta>${escape(title)}</title>` +
