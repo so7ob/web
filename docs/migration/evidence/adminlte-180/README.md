@@ -52,3 +52,20 @@ Production Vite manifest, bytes on disk and deterministic gzip level 6; route ch
 | 375 /  | 286.3 → 256.9 | 853.43 → 821.81 | 1472254 → 1448180 | 63 → 63 |
 
 The settings route adds the actual generator, catalog, scoped preview and independent settings controls; dashboard route JS is smaller. Shared CSS decreases. Locally served fonts remain part of the measured requests. [Computed reference/product geometry](measurements.json) includes all eight product dashboard cells and both widths of all three reference dashboards. Browser/functional/CI acceptance is recorded in the [implementation report](../../adminlte-180.md), not inferred from these images.
+
+## Arabic platform tour selections
+
+Original develop captures were taken before implementation. Candidate captures are from the completed AR/light/1280 105-view tour, client 551b17f. These intentionally exercise the tour's custom rose palette in both independent scopes, rather than the default blue shown above. They use independently generated synthetic tour fixtures, so dynamic timestamps and counts may differ; the fixed-fixture dashboard/load comparison above is the data-controlled comparison.
+
+| View | Before | After |
+| --- | --- | --- |
+| admin-requests | [PNG](before/tour-admin-requests-ar-light-desktop.png) | [PNG](after/tour-admin-requests-ar-light-desktop.png) |
+| admin-request-detail | [PNG](before/tour-admin-request-detail-ar-light-desktop.png) | [PNG](after/tour-admin-request-detail-ar-light-desktop.png) |
+| admin-audit | [PNG](before/tour-admin-audit-ar-light-desktop.png) | [PNG](after/tour-admin-audit-ar-light-desktop.png) |
+| admin-workflows | [PNG](before/tour-admin-workflows-ar-light-desktop.png) | [PNG](after/tour-admin-workflows-ar-light-desktop.png) |
+| admin-media | [PNG](before/tour-admin-media-ar-light-desktop.png) | [PNG](after/tour-admin-media-ar-light-desktop.png) |
+| admin-pages | [PNG](before/tour-admin-pages-ar-light-desktop.png) | [PNG](after/tour-admin-pages-ar-light-desktop.png) |
+| editor-device-desktop | [PNG](before/tour-editor-device-desktop-ar-light-desktop.png) | [PNG](after/tour-editor-device-desktop-ar-light-desktop.png) |
+| public-home | [PNG](before/tour-public-home-ar-light-desktop.png) | [PNG](after/tour-public-home-ar-light-desktop.png) |
+| auth-login | [PNG](before/tour-auth-login-ar-light-desktop.png) | [PNG](after/tour-auth-login-ar-light-desktop.png) |
+| settings-appearance | [PNG](before/tour-settings-appearance-ar-light-desktop.png) | [PNG](after/tour-settings-appearance-ar-light-desktop.png) |
