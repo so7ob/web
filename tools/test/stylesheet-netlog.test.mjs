@@ -1,4 +1,5 @@
 import { test } from 'node:test';
+import { spawnSync } from 'node:child_process';
 import assert from 'node:assert/strict';
 import { mkdtempSync, mkdirSync, readFileSync, readdirSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
@@ -40,4 +41,17 @@ test('CI publishes only summaries; local NetLog capture requires explicit opt-in
   assert.equal(workflow.match(/netlog-summary\/\*\.json/g)?.length,3);
   assert.equal(workflow.match(/stylesheet-netlog.mjs --directory/g)?.length,3);
   assert(readFileSync('playwright.config.ts','utf8').includes("process.env.SO7OB_E2E_NETLOG === '1'"));
+});
+
+test('single-file CLI also redacts malformed JSON parser errors', () => {
+  const root = mkdtempSync(join(tmpdir(), 'web-netlog-cli-'));
+  try {
+    const file = join(root, 'process-1.json');
+    writeFileSync(file, '["PRIVATE_SECRET');
+    const result = spawnSync(process.execPath, ['tools/test/stylesheet-netlog.mjs', file], { encoding: 'utf8' });
+    assert.equal(result.status, 0);
+    assert.equal(result.stderr, '');
+    assert.deepEqual(JSON.parse(result.stdout), { status: 'unreadable-or-incomplete' });
+    assert(!result.stdout.includes('PRIVATE_SECRET'));
+  } finally { rmSync(root, { recursive: true, force: true }); }
 });

@@ -34,7 +34,8 @@ this combined candidate.
   (`SO7OB_E2E_NETLOG=1`, owner-only directory); CI captures bounded synthetic
   logs but exports only allowlisted event/error counters. Raw files are ignored
   and excluded from all three artifact paths. Unknown event/error labels become
-  numeric IDs. Incomplete logs produce a fixed status, never a parser excerpt.
+  numeric IDs. Incomplete logs produce a fixed status, never a parser excerpt, in both
+  directory exports and the standalone single-file CLI.
   Regression cases include malicious constants, truncated private content and
   the actual workflow artifact configuration. Counts alone do not prove a
   transport cause; raw logs remain local for a separately reviewed investigation.

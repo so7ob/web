@@ -27,13 +27,15 @@ export function summarizeNetlog(log) {
   }
   return { events: events.length, counts, failures };
 }
+export function summarizeFile(file) {
+  try { return summarizeNetlog(JSON.parse(readFileSync(file, 'utf8'))); }
+  catch { return { status: 'unreadable-or-incomplete' }; }
+}
 export function summarizeDirectory(input, output) {
   if (!existsSync(input)) return;
   mkdirSync(output, { recursive: true, mode: 0o700 });
   for (const file of readdirSync(input).filter(name => /^process-\d+\.json$/.test(name))) {
-    let result;
-    try { result = summarizeNetlog(JSON.parse(readFileSync(join(input, file), 'utf8'))); }
-    catch { result = { status: 'unreadable-or-incomplete' }; }
+    const result = summarizeFile(join(input, file));
     // A killed browser may leave incomplete JSON. Report that fact, never copy
     // raw content or parser messages (which can contain request fragments).
     writeFileSync(join(output, file), JSON.stringify(result, null, 2) + '\n', { mode: 0o600 });
@@ -41,6 +43,6 @@ export function summarizeDirectory(input, output) {
 }
 if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
   if (process.argv.length === 5 && process.argv[2] === '--directory') summarizeDirectory(process.argv[3], process.argv[4]);
-  else if (process.argv.length === 3) console.log(JSON.stringify(summarizeNetlog(JSON.parse(readFileSync(process.argv[2], 'utf8'))), null, 2));
+  else if (process.argv.length === 3) console.log(JSON.stringify(summarizeFile(process.argv[2]), null, 2));
   else throw new Error('Usage: stylesheet-netlog.mjs <file> | --directory <input> <summary-output>');
 }
