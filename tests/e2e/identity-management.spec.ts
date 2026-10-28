@@ -123,7 +123,27 @@ for (const locale of ["ar", "en"] as const)
       ).toBeVisible();
       // Do not capture the one-time credential in screenshots or exported evidence.
       await dialog.getByRole("button", { name: t.cancel, exact: true }).click();
-      await page.reload();
+      // Role options load independently of the users list. Holding that real
+      // response proves the action is unavailable before readiness; after it
+      // becomes enabled, its disabled-opacity transition must also complete.
+      let releaseRoles!: () => void;
+      const rolesGate = new Promise<void>(resolve => { releaseRoles = resolve; });
+      await page.route('**/api/admin/users/roles?*', async route => {
+        await rolesGate;
+        await route.continue();
+      });
+      const addUser = page.getByRole("button", { name: t.add, exact: true });
+      try {
+        await page.reload();
+        await expect(addUser).toBeDisabled();
+        await expect(addUser).toHaveCSS('opacity', '0.5');
+        releaseRoles();
+        await expect(addUser).toBeEnabled();
+        await expect(addUser).toHaveCSS('opacity', '1');
+      } finally {
+        releaseRoles();
+        await page.unroute('**/api/admin/users/roles?*');
+      }
       await page
         .getByPlaceholder(
           locale === "ar"
