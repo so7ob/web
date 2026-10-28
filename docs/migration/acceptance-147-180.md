@@ -92,3 +92,26 @@ Rollback is a reviewed revert of these incremental changes. Retain migration
 archives and completion metadata; do not restore a whole database or rewrite
 business data to undo appearance. No production migration, main write, deployment,
 branch deletion or automatic merge/issue closure is part of this acceptance work.
+
+## Repeated iframe dialog readiness
+
+The first combined-head local browser run on `70b7bd8` was stopped after 42
+passes, two 90-second geometry timeouts and one interrupted case (539 unrun).
+The trace stops after the close button is moving and Playwright logs its 20ms
+retry wait. A script-free minimal sandboxed iframe with only a 300ms CSS button
+animation reproduces that wait on Chromium154. Polling the real Web Animations
+state from the runner completes the same ordinary click; enabling scripts also
+changes the outcome but is deliberately **not** applied to the product.
+
+The repeated-dialog test now asserts visibility and completed/nonpending dialog
+animations before the original close-button click. All keyboard, pointer,
+Escape, focus-return, tooltip, geometry and no-mutation assertions remain.
+No forced click, animation disablement, sandbox expansion, sleep, retry of the
+journey or timeout increase is used. This is a separate actionability-readiness
+correction, not evidence about #147's stylesheet retry cause.
+
+The initial new CI run 40759087586 passed build/lint/type/unit acceptance, then
+one design job failed before tests while installing browser dependencies:
+`packages.microsoft.com/ubuntu/24.04/prod` returned HTTP403 during apt update.
+That environment failure is retained; no repository trust or network setting is
+changed to bypass it, and no blind rerun is requested.

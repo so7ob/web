@@ -85,6 +85,12 @@ for (const locale of ['ar', 'en'] as const) for (const mode of ['light', 'dark']
       await expect(tooltip).toBeHidden();
       await expect(search).toBeFocused();
       await search.click();
+      await expect(dialog).toBeVisible();
+      // Poll actual motion from the runner. In script-disabled iframe worlds,
+      // Chromium can stall the driver's timer after its first unstable click.
+      // Keep the sandbox, animation, real click and all focus checks intact.
+      await expect.poll(() => dialog.evaluate(node => node.getAnimations().every(animation =>
+        !animation.pending && animation.playState !== 'running'))).toBe(true);
       await preview.locator('[data-slot="dialog-close"]').click();
       await expect(dialog).toBeHidden();
       await expect(search).toBeFocused();
