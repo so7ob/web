@@ -1,7 +1,7 @@
 import { test, expect } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
-import { readFileSync } from 'node:fs';
-import { createDataSource, PayloadCipher } from '@so7ob/server';
+import { mkdirSync, readFileSync } from 'node:fs';
+import { createDataSource, PayloadCipher, sha256 } from '@so7ob/server';
 const fixture=()=>JSON.parse(readFileSync('.migration/e2e/run.json','utf8')) as {prefix:string;password:string};
 for (const locale of ['ar','en']) {
   test(`${locale}: SSR, direct reload, language and authentication navigation`,async({page})=>{
@@ -68,6 +68,11 @@ for (const locale of ['ar', 'en'] as const) {
   test(`${locale}: delayed registration hydration retains first keyboard input and validation recovery`, async ({ page }, info) => {
     const { prefix, password } = fixture();
     const email = prefix + 'hydrated-' + locale + '-' + info.project.name + '@example.invalid';
+    // Restore only this test's extra attempt; keep earlier synthetic attempts and
+    // the real production three-attempt limit intact for all existing tests.
+    const db = await createDataSource().initialize();
+    const bucketKey = sha256('register:127.0.0.1');
+    const [savedBucket] = await db.query('SELECT timestamps,updatedAt FROM RateLimitBucket WHERE bucketKey=?', [bucketKey]);
     let release!: () => void;
     const gate = new Promise<void>(resolve => { release = resolve; });
     let intercepted = 0, registrations = 0;
@@ -91,6 +96,9 @@ for (const locale of ['ar', 'en'] as const) {
       await expect(form).toHaveAttribute('aria-busy', 'false');
       await expect(submit).toHaveCSS('opacity', '1');
       expect((await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa', 'wcag21aa', 'wcag22aa']).analyze()).violations).toEqual([]);
+      const screenshots = '.migration/design-system/screenshots/registration-hydration';
+      mkdirSync(screenshots, { recursive: true });
+      await page.screenshot({ path: `${screenshots}/${locale}-${info.project.name}.png`, fullPage: true });
       await name.focus(); await page.keyboard.type('Synthetic First Input');
       await page.keyboard.press('Tab'); await expect(address).toBeFocused(); await page.keyboard.type(email);
       await page.keyboard.press('Tab'); await expect(secret).toBeFocused(); await page.keyboard.type(password);
@@ -109,6 +117,14 @@ for (const locale of ['ar', 'en'] as const) {
       expect(payload).toEqual({ name: 'Synthetic First Input', email, password, locale });
       await expect(form).toHaveCount(0);
       expect(registrations).toBe(1); expect(errors).toEqual([]);
-    } finally { release(); await page.unroute('**/assets/auth-*.js'); }
+      const [consumed] = await db.query('SELECT timestamps FROM RateLimitBucket WHERE bucketKey=?', [bucketKey]);
+      expect(JSON.parse(consumed.timestamps)).toHaveLength((savedBucket ? JSON.parse(savedBucket.timestamps).length : 0) + 1);
+    } finally {
+      release(); await page.unroute('**/assets/auth-*.js');
+      try {
+        if (savedBucket) await db.query('UPDATE RateLimitBucket SET timestamps=?,updatedAt=? WHERE bucketKey=?', [savedBucket.timestamps, savedBucket.updatedAt, bucketKey]);
+        else await db.query('DELETE FROM RateLimitBucket WHERE bucketKey=?', [bucketKey]);
+      } finally { await db.destroy(); }
+    }
   });
 }

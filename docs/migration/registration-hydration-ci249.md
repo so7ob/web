@@ -41,3 +41,10 @@ same information through a different route. The exact rejection and local
 results are retained under ignored .migration/acceptance/ci249. Final pass/fail
 counts and tested source must be reported there; no pending check is claimed
 successful. Issues #179/#180/#147 remain open. No production or main change occurs.
+
+The first post-fix focused run passed 15 cases and failed 3 with real HTTP429:
+the four extra successful registrations exceeded the unchanged three-attempt
+shared-IP limit across projects. Each new synthetic test now snapshots the exact
+registration bucket, verifies its one actual attempt was counted, and restores
+only that test's contribution afterward. Earlier attempts and all original
+assertions remain; no rate limit, proxy identity or auth policy is changed.
