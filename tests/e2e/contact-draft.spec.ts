@@ -101,6 +101,10 @@ for (const locale of ['ar', 'en'] as const) {
     await expect.poll(() => new URL(page.url()).pathname).toBe(`/${locale}/contact`);
     await expect(page.locator('#description')).toHaveValue(note + ' memory');
     await page.reload(); await expect(page.locator('#description')).toHaveValue('');
+    // Empty SSR input alone does not establish restored, interactive form state.
+    await expect(page.locator('form[aria-labelledby="form-title"]')).toHaveAttribute('aria-busy', 'false');
+    await expect(page.locator('form button[type=submit]')).toBeEnabled();
+    await expect(page.locator('form button[type=submit]')).toHaveCSS('opacity', '1');
     expect((await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa', 'wcag21aa', 'wcag22aa']).analyze()).violations).toEqual([]);
   });
   test(`${locale}: write-only storage failure stays visible across language changes until a confirmed save`, async ({ page }) => {

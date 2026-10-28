@@ -102,6 +102,7 @@ for (const locale of ['ar', 'en'] as const) for (const mode of ['light', 'dark']
       await expect(preview.locator('[data-slot="panel"]').first()).toHaveCSS('border-radius', '12px');
       await expect(search).toHaveCSS('border-radius', '12px');
       expect(mutations).toEqual([]);
+      await expect(page.getByRole('alert')).toHaveCount(0);
       await page.screenshot({ path: `${folder}/adminAppearance.png`, fullPage: true });
       // The exact sidebar transition is 992px in the pinned source.
       for (const width of [991, 992]) {

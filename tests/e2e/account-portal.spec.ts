@@ -254,6 +254,12 @@ for (const locale of ["ar", "en"] as const)
       await page.goto("/" + locale + "/account/inquiries");
       try {
         await expect(page.getByRole("status", {name: t.inquiries.title, exact: true})).toBeVisible();
+        // The list stays pending, but its independent creation control must finish
+        // hydration and its disabled-to-enabled opacity transition before axe.
+        const createInquiry = page.getByRole("button", { name: t.inquiries.create, exact: true }).first();
+        await expect(createInquiry).toBeEnabled();
+        await expect(createInquiry).toHaveCSS("opacity", "1");
+        await expect(page.getByRole("status", {name: t.inquiries.title, exact: true})).toBeVisible();
         await assertPortalAxe(page, locale, "inquiries-loading");
       } finally { releaseInquiries(); }
       await expect(page.locator('[aria-busy="true"]')).toHaveCount(0);

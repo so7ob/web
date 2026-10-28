@@ -115,3 +115,31 @@ one design job failed before tests while installing browser dependencies:
 `packages.microsoft.com/ubuntu/24.04/prod` returned HTTP403 during apt update.
 That environment failure is retained; no repository trust or network setting is
 changed to bypass it, and no blind rerun is requested.
+
+## Visual and hydration follow-up
+
+Visual inspection of the Arabic dark mobile appearance screenshot found a false
+fatal banner even though geometry assertions passed. Instrumented native events
+in an isolated build identified `ResizeObserver loop completed with undelivered
+notifications.` without an Error object. Such delivery warnings defer layout;
+ClientErrors now leaves only the two exact native ResizeObserver warnings
+uncancelled for browser diagnostics. Real exceptions, including the same message
+with an Error object, still report. Three regression tests cover both warnings,
+the next real failure and unknown native errors. Appearance screenshots now also
+require no parent-document error alert.
+
+CI run 40760702997 on 013bf26 passed all eight design cells, build/unit and
+operations, but exposed three readiness gaps. Contact reload's empty SSR field
+was not a hydration signal; inquiry list loading was independent of its dialog
+trigger's enabled opacity transition; workflow back/forward required an SPA
+history entry, which clicking an SSR link cannot guarantee. Tests now assert
+interactive form state and full trigger opacity while preserving the loading
+response gate, and establish hydrated navigation plus unchanged document time
+origin before exercising the original back/save/forward/discard assertions.
+No axe rules, color requirements, transport failures or dirty-draft assertions
+are removed. These are test preconditions, not a claimed #147 transport fix.
+
+The local 013bf26 full run was intentionally interrupted for this verified
+product correction after 183 passes, no failures, one interrupted case and
+400 unrun cases. It is not recorded as a full-suite pass. Final-head evidence
+must supersede it without erasing its outcome.
