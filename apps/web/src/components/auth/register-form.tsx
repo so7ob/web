@@ -2,7 +2,7 @@
 import {ErrorFeedback} from "@/components/errors/error-feedback";
 import {ApiError} from "@/lib/errors/transport";
 
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "@/routing/link";
 import { CheckCircle2, Loader2, UserPlus } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -24,6 +24,8 @@ export function RegisterForm({ locale, t, nameLabel }: { locale: Locale; t: Port
   const [fieldErrors, setFieldErrors] = useState<{ name?: string; email?: string; password?: string; confirm?: string }>({});
   const [submitting, setSubmitting] = useState(false);
   const pending=useRef(false);
+  const [interactive, setInteractive] = useState(false);
+  useEffect(() => { setInteractive(true); }, []);
   const [failure,setFailure]=useState<ApiError|null>(null);
   const [success, setSuccess] = useState<{ devVerifyUrl?: string } | null>(null);
 
@@ -121,16 +123,16 @@ export function RegisterForm({ locale, t, nameLabel }: { locale: Locale; t: Port
         </p>
       }
     >
-      <form onSubmit={onSubmit} noValidate className="mt-6 space-y-5">
+      <form onSubmit={onSubmit} noValidate aria-busy={!interactive || submitting} className="mt-6 space-y-5">
         <ErrorFeedback focusOnError error={failure} locale={locale} operation={t.registerTitle}/>
 
-        <TextField id="register-name" label={nameLabel} value={name} onChange={setName} autoComplete="name" error={fieldErrors.name} maxLength={100} />
-        <TextField id="register-email" label={t.email} type="email" value={email} onChange={setEmail} autoComplete="email" dir="ltr" error={fieldErrors.email} />
-        <TextField id="register-password" label={t.password} type="password" value={password} onChange={setPassword} autoComplete="new-password" hint={t.passwordHint} error={fieldErrors.password} />
-        <TextField id="register-confirm" label={t.confirmPassword} type="password" value={confirm} onChange={setConfirm} autoComplete="new-password" error={fieldErrors.confirm} />
+        <TextField disabled={!interactive} id="register-name" label={nameLabel} value={name} onChange={setName} autoComplete="name" error={fieldErrors.name} maxLength={100} />
+        <TextField disabled={!interactive} id="register-email" label={t.email} type="email" value={email} onChange={setEmail} autoComplete="email" dir="ltr" error={fieldErrors.email} />
+        <TextField disabled={!interactive} id="register-password" label={t.password} type="password" value={password} onChange={setPassword} autoComplete="new-password" hint={t.passwordHint} error={fieldErrors.password} />
+        <TextField disabled={!interactive} id="register-confirm" label={t.confirmPassword} type="password" value={confirm} onChange={setConfirm} autoComplete="new-password" error={fieldErrors.confirm} />
         <Button
           type="submit"
-          disabled={submitting}
+          disabled={!interactive || submitting}
           className="h-12 w-full rounded-full bg-primary text-base font-bold text-primary-foreground shadow-md shadow-brand/20 transition-[color,background-color,border-color,box-shadow,opacity,transform] hover:bg-primary-hover hover:text-primary-hover-foreground"
         >
           {submitting ? <Loader2 className="h-5 w-5 animate-spin" aria-hidden="true" /> : <UserPlus className="h-5 w-5" aria-hidden="true" />}
