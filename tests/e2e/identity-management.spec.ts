@@ -64,6 +64,8 @@ for (const locale of ["ar", "en"] as const)
         await page.unroute('**/assets/identity-*.js');
       }
       let dialog = page.getByRole("dialog");
+      await expect(dialog.getByRole("group", { name: locale === "ar" ? "سير العمل" : "workflows", exact: true })).toBeVisible();
+      await expect(dialog.getByRole("group", { name: locale === "ar" ? "فرق العمل" : "teams", exact: true })).toBeVisible();
       await dialog.getByLabel(t.key, { exact: true }).fill(key);
       await dialog
         .getByLabel(t.nameAr, { exact: true })

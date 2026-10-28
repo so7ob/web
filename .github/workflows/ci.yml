@@ -233,6 +233,7 @@ jobs:
       SO7OB_E2E_PROJECT: ${{ matrix.project }}
       SO7OB_E2E_RESULT_FILE: .migration/ci/results/smoke-${{ matrix.project }}.cases.json
       SO7OB_E2E_PROFILE_DIR: .migration/ci/profiles
+      SO7OB_E2E_NETLOG: '1'
     steps:
       - uses: actions/checkout@v4
       - uses: ./.github/actions/setup-browser
@@ -243,6 +244,8 @@ jobs:
       - run: tar -xzf .migration/ci/build/build.tgz
       - run: npm run db:migrate
       - run: npm run test:e2e:ci
+      - run: node tools/test/stylesheet-netlog.mjs --directory .migration/e2e/netlog .migration/e2e/netlog-summary
+        if: always()
       - uses: actions/upload-artifact@v4
         if: always()
         with:
@@ -259,7 +262,7 @@ jobs:
           name: synthetic-smoke-${{ matrix.project }}
           path: |
             test-results/
-            .migration/e2e/netlog/*.json
+            .migration/e2e/netlog-summary/*.json
             .migration/iam/*.png
             .migration/workflows/*.png
             .migration/menus/*.png
@@ -303,6 +306,7 @@ jobs:
       SO7OB_E2E_FILES: ${{ needs.plan.outputs.files }}
       SO7OB_E2E_RESULT_FILE: .migration/ci/results/functional-${{ matrix.shard }}.cases.json
       SO7OB_E2E_PROFILE_DIR: .migration/ci/profiles
+      SO7OB_E2E_NETLOG: '1'
     steps:
       - uses: actions/checkout@v4
       - uses: ./.github/actions/setup-browser
@@ -313,6 +317,8 @@ jobs:
       - run: tar -xzf .migration/ci/build/build.tgz
       - run: npm run db:migrate
       - run: npm run test:e2e:ci
+      - run: node tools/test/stylesheet-netlog.mjs --directory .migration/e2e/netlog .migration/e2e/netlog-summary
+        if: always()
       - uses: actions/upload-artifact@v4
         if: always()
         with:
@@ -329,7 +335,7 @@ jobs:
           name: synthetic-functional-${{ matrix.shard }}
           path: |
             test-results/
-            .migration/e2e/netlog/*.json
+            .migration/e2e/netlog-summary/*.json
             .migration/iam/*.png
             .migration/workflows/*.png
             .migration/menus/*.png
@@ -376,6 +382,7 @@ jobs:
       SO7OB_E2E_MODE: ${{ matrix.mode }}
       SO7OB_E2E_RESULT_FILE: .migration/ci/results/design-${{ matrix.project }}-${{ matrix.locale }}-${{ matrix.mode }}.cases.json
       SO7OB_E2E_PROFILE_DIR: .migration/ci/profiles
+      SO7OB_E2E_NETLOG: '1'
     steps:
       - uses: actions/checkout@v4
       - uses: ./.github/actions/setup-browser
@@ -386,6 +393,8 @@ jobs:
       - run: tar -xzf .migration/ci/build/build.tgz
       - run: npm run db:migrate
       - run: npm run test:e2e:ci
+      - run: node tools/test/stylesheet-netlog.mjs --directory .migration/e2e/netlog .migration/e2e/netlog-summary
+        if: always()
       - uses: actions/upload-artifact@v4
         if: always()
         with:
@@ -402,7 +411,7 @@ jobs:
           name: synthetic-design-${{ matrix.project }}-${{ matrix.locale }}-${{ matrix.mode }}
           path: |
             test-results/
-            .migration/e2e/netlog/*.json
+            .migration/e2e/netlog-summary/*.json
             .migration/iam/*.png
             .migration/workflows/*.png
             .migration/menus/*.png

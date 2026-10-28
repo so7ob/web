@@ -29,7 +29,7 @@ cases assert that the readiness check fails rather than suppressing failures.
 
 Browser workers record default-mode Chromium NetLog (20 MiB bound
 per worker process), retaining the original shared browser lifecycle, under ignored `.migration/e2e/netlog`. CI retains those synthetic
-logs with its existing browser artifacts. Browser close flushes each worker's
+redacted counter summaries only; raw logs are never included in CI artifacts. Local capture requires `SO7OB_E2E_NETLOG=1`. Browser close flushes each worker's
 file. Use `node tools/test/stylesheet-netlog.mjs <file>` for a redacted event/error
 summary; inspect the linked source IDs in the raw synthetic log to distinguish
 certificate/auth restarts from connection-error retries. Counts alone do not

@@ -13,6 +13,7 @@ export const ADMINLTE_180_DEFAULTS: Record<string, string> = {
   "appearance.footerBackground": "inherit", "appearance.footerMode": "inherit",
 };
 export const ADMINLTE_180_BACKUP = "migration.adminlte180.appearanceBackup";
+export const ADMINLTE_180_MARKER = "migration:adminlte180:appearance";
 export class AdminlteAppearance1792195200000 implements MigrationInterface {
   name = "AdminlteAppearance1792195200000";
   transaction = false;
@@ -21,15 +22,20 @@ export class AdminlteAppearance1792195200000 implements MigrationInterface {
     if (ownsTransaction) await r.startTransaction();
     try {
       const existing = await r.query("SELECT `key` FROM SiteSetting WHERE `key`=?", [ADMINLTE_180_BACKUP]);
-      if (!existing.length) {
-        const previous = await r.query("SELECT `key`,value,updatedById,updatedAt FROM SiteSetting WHERE `key` LIKE 'appearance.%'");
+      const completed = await r.query("SELECT scope FROM AdminRevision WHERE scope=?", [ADMINLTE_180_MARKER]);
+      if (!existing.length && !completed.length) {
+        const keys = Object.keys(ADMINLTE_180_DEFAULTS);
+        const previous = await r.query(`SELECT \`key\`,value,updatedById,updatedAt FROM SiteSetting WHERE \`key\` IN (${keys.map(() => "?").join(",")})`, keys);
         if (previous.length) {
-        await r.query("INSERT INTO SiteSetting(`key`,value) VALUES(?,?)", [ADMINLTE_180_BACKUP, JSON.stringify(previous)]);
-        for (const [key, value] of Object.entries(ADMINLTE_180_DEFAULTS)) {
-          await r.query("INSERT INTO SiteSetting(`key`,value) VALUES(?,?) ON DUPLICATE KEY UPDATE value=VALUES(value),updatedById=NULL,updatedAt=UTC_TIMESTAMP(3)", [key, value]);
-          await r.query("INSERT INTO AdminRevision(scope,revision) VALUES(?,1) ON DUPLICATE KEY UPDATE revision=revision+1", ["setting:" + key]);
+          await r.query("INSERT INTO SiteSetting(`key`,value) VALUES(?,?)", [ADMINLTE_180_BACKUP, JSON.stringify(previous)]);
+          for (const [key, value] of Object.entries(ADMINLTE_180_DEFAULTS)) {
+            await r.query("INSERT INTO SiteSetting(`key`,value) VALUES(?,?) ON DUPLICATE KEY UPDATE value=VALUES(value),updatedById=NULL,updatedAt=UTC_TIMESTAMP(3)", [key, value]);
+            await r.query("INSERT INTO AdminRevision(scope,revision) VALUES(?,1) ON DUPLICATE KEY UPDATE revision=revision+1", ["setting:" + key]);
+          }
         }
-        }
+        // Migration metadata must not make an empty site appear populated to
+        // initialization or source transfer. Never store an empty SiteSetting.
+        await r.query("INSERT INTO AdminRevision(scope,revision) VALUES(?,1)", [ADMINLTE_180_MARKER]);
       }
       if (ownsTransaction) await r.commitTransaction();
     } catch (error) {

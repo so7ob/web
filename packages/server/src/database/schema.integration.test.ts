@@ -3,7 +3,7 @@ import { randomBytes } from 'node:crypto';
 import { createDataSource, assertSchema } from './data-source.js';
 import { schema } from './schema.js';
 import { SourceV21791072000000 } from './migrations/1791072000000-source-v2.js';
-import { AdminlteAppearance1792195200000, ADMINLTE_180_BACKUP, ADMINLTE_180_DEFAULTS } from './migrations/1792195200000-adminlte-appearance.js';
+import { AdminlteAppearance1792195200000, ADMINLTE_180_BACKUP, ADMINLTE_180_DEFAULTS, ADMINLTE_180_MARKER } from './migrations/1792195200000-adminlte-appearance.js';
 import { IndependentAdminAppearance1792195201000 } from './migrations/1792195201000-independent-admin-appearance.js';
 const env = { ...process.env, DATABASE_NAME: process.env.TEST_DATABASE_NAME };
 if (!env.DATABASE_NAME || !/^so7ob_[a-z0-9_]+_test$/.test(env.DATABASE_NAME)) throw new Error('TEST_DATABASE_NAME must name an isolated so7ob_*_test database');
@@ -20,6 +20,27 @@ afterAll(async () => {
   }
 });
 describe('Website schema on real MariaDB', () => {
+  it('records an empty appearance migration and never resets later choices on repetition', async () => {
+    const runner = db.createQueryRunner(); await runner.connect(); await runner.startTransaction();
+    try {
+      await runner.query("DELETE FROM SiteSetting WHERE `key` LIKE 'appearance.%' OR `key`=?", [ADMINLTE_180_BACKUP]);
+      await runner.query("DELETE FROM AdminRevision WHERE scope=?", [ADMINLTE_180_MARKER]);
+      await runner.query("INSERT INTO SiteSetting(`key`,value) VALUES('appearance.extension','preserve')");
+      const migration = new AdminlteAppearance1792195200000();
+      await migration.up(runner);
+      expect(await runner.query('SELECT value FROM SiteSetting WHERE `key`=?', [ADMINLTE_180_BACKUP])).toEqual([]);
+      expect(await runner.query('SELECT scope FROM AdminRevision WHERE scope=?', [ADMINLTE_180_MARKER])).toHaveLength(1);
+      expect(await runner.query("SELECT `key` FROM SiteSetting WHERE `key`='appearance.radius'")).toEqual([]);
+      await runner.query("INSERT INTO SiteSetting(`key`,value) VALUES('appearance.radius','square')");
+      await runner.query("INSERT INTO AdminRevision(scope,revision) VALUES('setting:appearance.radius',42) ON DUPLICATE KEY UPDATE revision=42");
+      await migration.up(runner);
+      const [radius] = await runner.query("SELECT value FROM SiteSetting WHERE `key`='appearance.radius'");
+      const [revision] = await runner.query("SELECT revision FROM AdminRevision WHERE scope='setting:appearance.radius'");
+      const [extension] = await runner.query("SELECT value FROM SiteSetting WHERE `key`='appearance.extension'");
+      expect(radius.value).toBe('square'); expect(Number(revision.revision)).toBe(42); expect(extension.value).toBe('preserve');
+    } finally { await runner.rollbackTransaction(); await runner.release(); }
+  });
+
   it('bootstraps the separate administration settings without synchronizing later visitor or admin edits', async () => {
     const runner = db.createQueryRunner(); await runner.connect(); await runner.startTransaction();
     try {
@@ -39,6 +60,7 @@ describe('Website schema on real MariaDB', () => {
     const runner = db.createQueryRunner(); await runner.connect(); await runner.startTransaction();
     try {
       await runner.query('DELETE FROM SiteSetting WHERE `key`=?', [ADMINLTE_180_BACKUP]);
+      await runner.query('DELETE FROM AdminRevision WHERE scope=?', [ADMINLTE_180_MARKER]);
       await runner.query("INSERT INTO SiteSetting(`key`,value) VALUES('appearance.radius','round'),('contact.email','synthetic@example.invalid') ON DUPLICATE KEY UPDATE value=VALUES(value)");
       const migration = new AdminlteAppearance1792195200000();
       await migration.up(runner);

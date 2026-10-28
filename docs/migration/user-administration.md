@@ -1,5 +1,11 @@
 # User administration — phase C portion (#4)
 
+> Historical server-only milestone. The current users/roles/permissions/invitations UI
+> is implemented in [identity-management-84.md](identity-management-84.md); see
+> [integrated acceptance](acceptance-147-180.md) for the current coverage matrix.
+> Pending UI statements below describe this earlier milestone, not the current product.
+
+
 Stacked on client portal PR #16 (`659edbd`, plus its toast-transition test correction). Source: Website `5321b7fd11db421c83290b262f276811e5f04e5f`, specifically `src/app/api/admin/users/route.ts` and `src/app/api/admin/users/[id]/route.ts`. No original repository files or deployment settings are changed.
 
 `UserAdministrationService` implements the four original HTTP operations under both `/api/admin/users` and `/api/v1/admin/users`. Nest controllers expose Swagger metadata and DTOs; permission guards check the current server session and operation, while services enforce field-specific permissions. Database access stays in the server workspace. The original admin UI is still pending; these endpoints are working operations, not a claim of full administration parity.
