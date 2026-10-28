@@ -107,7 +107,7 @@ export function UserSecurity({
     | "temporary"
     | "setup_pending";
   return (
-    <section className="rounded-2xl border bg-card p-5 space-y-4">
+    <section className="ds-card rounded-2xl border bg-card p-5 space-y-4">
       <h2 className="font-semibold">
         {t.credentialState}: {t[state] ?? state}
       </h2>

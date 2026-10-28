@@ -1,0 +1,254 @@
+[
+  {
+    "size": "desktop",
+    "route": "admin",
+    "before": {
+      "domContentLoadedMs": 305.2,
+      "loadMs": 312.1,
+      "readyMs": 988.35,
+      "resourceBytes": 1298247,
+      "resourceCount": 75
+    },
+    "after": {
+      "domContentLoadedMs": 364.1,
+      "loadMs": 364.3,
+      "readyMs": 1127.13,
+      "resourceBytes": 1335991,
+      "resourceCount": 83
+    }
+  },
+  {
+    "size": "desktop",
+    "route": "admin/settings?section=appearance",
+    "before": {
+      "domContentLoadedMs": 274.1,
+      "loadMs": 274.3,
+      "readyMs": 1034.13,
+      "resourceBytes": 1367394,
+      "resourceCount": 86
+    },
+    "after": {
+      "domContentLoadedMs": 264.2,
+      "loadMs": 270.9,
+      "readyMs": 1156.05,
+      "resourceBytes": 1441730,
+      "resourceCount": 99
+    }
+  },
+  {
+    "size": "desktop",
+    "route": "admin/settings?section=adminAppearance",
+    "before": {
+      "domContentLoadedMs": 360.5,
+      "loadMs": 361.5,
+      "readyMs": 1188.1,
+      "resourceBytes": 1367394,
+      "resourceCount": 86
+    },
+    "after": {
+      "domContentLoadedMs": 277.5,
+      "loadMs": 278.7,
+      "readyMs": 1219.22,
+      "resourceBytes": 1441730,
+      "resourceCount": 99
+    }
+  },
+  {
+    "size": "desktop",
+    "route": "account",
+    "before": {
+      "domContentLoadedMs": 275.9,
+      "loadMs": 280.4,
+      "readyMs": 951.64,
+      "resourceBytes": 1248222,
+      "resourceCount": 60
+    },
+    "after": {
+      "domContentLoadedMs": 314.4,
+      "loadMs": 314.7,
+      "readyMs": 999.23,
+      "resourceBytes": 1226207,
+      "resourceCount": 61
+    }
+  },
+  {
+    "size": "desktop",
+    "route": "contact",
+    "before": {
+      "domContentLoadedMs": 276,
+      "loadMs": 276.4,
+      "readyMs": 833.71,
+      "resourceBytes": 1472254,
+      "resourceCount": 63
+    },
+    "after": {
+      "domContentLoadedMs": 246.5,
+      "loadMs": 248.4,
+      "readyMs": 816.51,
+      "resourceBytes": 1448492,
+      "resourceCount": 63
+    }
+  },
+  {
+    "size": "desktop",
+    "route": "auth/login",
+    "before": {
+      "domContentLoadedMs": 281.8,
+      "loadMs": 282,
+      "readyMs": 822.84,
+      "resourceBytes": 1269466,
+      "resourceCount": 56
+    },
+    "after": {
+      "domContentLoadedMs": 324.6,
+      "loadMs": 324.6,
+      "readyMs": 890.22,
+      "resourceBytes": 1246984,
+      "resourceCount": 57
+    }
+  },
+  {
+    "size": "desktop",
+    "route": "",
+    "before": {
+      "domContentLoadedMs": 289.3,
+      "loadMs": 289.5,
+      "readyMs": 872.44,
+      "resourceBytes": 1472254,
+      "resourceCount": 63
+    },
+    "after": {
+      "domContentLoadedMs": 265.1,
+      "loadMs": 265.5,
+      "readyMs": 835.9,
+      "resourceBytes": 1448492,
+      "resourceCount": 63
+    }
+  },
+  {
+    "size": "mobile",
+    "route": "admin",
+    "before": {
+      "domContentLoadedMs": 260.1,
+      "loadMs": 260.6,
+      "readyMs": 934.08,
+      "resourceBytes": 1298247,
+      "resourceCount": 75
+    },
+    "after": {
+      "domContentLoadedMs": 266.6,
+      "loadMs": 268.3,
+      "readyMs": 1017.63,
+      "resourceBytes": 1335991,
+      "resourceCount": 83
+    }
+  },
+  {
+    "size": "mobile",
+    "route": "admin/settings?section=appearance",
+    "before": {
+      "domContentLoadedMs": 254.9,
+      "loadMs": 266.2,
+      "readyMs": 1100.82,
+      "resourceBytes": 1367394,
+      "resourceCount": 86
+    },
+    "after": {
+      "domContentLoadedMs": 284.2,
+      "loadMs": 291.4,
+      "readyMs": 1169.99,
+      "resourceBytes": 1441730,
+      "resourceCount": 99
+    }
+  },
+  {
+    "size": "mobile",
+    "route": "admin/settings?section=adminAppearance",
+    "before": {
+      "domContentLoadedMs": 363.2,
+      "loadMs": 363.8,
+      "readyMs": 1173.68,
+      "resourceBytes": 1367394,
+      "resourceCount": 86
+    },
+    "after": {
+      "domContentLoadedMs": 312.3,
+      "loadMs": 312.4,
+      "readyMs": 1366.11,
+      "resourceBytes": 1441730,
+      "resourceCount": 99
+    }
+  },
+  {
+    "size": "mobile",
+    "route": "account",
+    "before": {
+      "domContentLoadedMs": 276.7,
+      "loadMs": 278,
+      "readyMs": 936.73,
+      "resourceBytes": 1248222,
+      "resourceCount": 60
+    },
+    "after": {
+      "domContentLoadedMs": 244.6,
+      "loadMs": 244.8,
+      "readyMs": 928.01,
+      "resourceBytes": 1210555,
+      "resourceCount": 60
+    }
+  },
+  {
+    "size": "mobile",
+    "route": "contact",
+    "before": {
+      "domContentLoadedMs": 518.3,
+      "loadMs": 532.1,
+      "readyMs": 1081.37,
+      "resourceBytes": 1448070,
+      "resourceCount": 62
+    },
+    "after": {
+      "domContentLoadedMs": 411.7,
+      "loadMs": 422.3,
+      "readyMs": 966.81,
+      "resourceBytes": 1432840,
+      "resourceCount": 62
+    }
+  },
+  {
+    "size": "mobile",
+    "route": "auth/login",
+    "before": {
+      "domContentLoadedMs": 544.8,
+      "loadMs": 544.9,
+      "readyMs": 1089.53,
+      "resourceBytes": 1245282,
+      "resourceCount": 55
+    },
+    "after": {
+      "domContentLoadedMs": 621.4,
+      "loadMs": 621.5,
+      "readyMs": 1209.01,
+      "resourceBytes": 1231332,
+      "resourceCount": 56
+    }
+  },
+  {
+    "size": "mobile",
+    "route": "",
+    "before": {
+      "domContentLoadedMs": 627.9,
+      "loadMs": 628.4,
+      "readyMs": 1272.45,
+      "resourceBytes": 1472254,
+      "resourceCount": 63
+    },
+    "after": {
+      "domContentLoadedMs": 588.5,
+      "loadMs": 590.7,
+      "readyMs": 1221.24,
+      "resourceBytes": 1448492,
+      "resourceCount": 63
+    }
+  }
+]

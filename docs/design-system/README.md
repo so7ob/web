@@ -1,11 +1,11 @@
 # So7ob design system
 
-The public website, account, authentication, tracking, administration and editor share one visual language: restrained surfaces, readable bilingual typography, purposeful identity accents and short interactions. Layout follows the task; component styling follows this system.
+The public website, account, authentication, tracking, administration and editor share the pinned [AdminLTE 4.10.1 design system](adminlte.md): neutral surfaces, Source Sans 3 / IBM Plex Sans Arabic, compact card compositions and So7ob identity assets. Layout follows the task; shared primitives and tokens determine component styling. The explicit #180 baseline upgrade replaces earlier appearance choices once; supported options remain available for later deliberate choices. Administration and visitor-facing appearance are configured and saved independently.
 
 ## Sources of truth
 
 - `packages/contracts/src/site-settings.ts`: `appearanceTokens(settings, mode)` supplies the complete semantic palette, geometry, density and motion timings. `APPEARANCE_MOTION` is also available to React animations. Raw palette values belong here.
-- `apps/web/src/lib/appearance.ts`: the same tokens generate SSR CSS, live settings and sandboxed previews. Existing storage keys, public settings and light/dark/system precedence remain compatible.
+- `apps/web/src/lib/appearance.ts`: the same tokens generate SSR CSS, live settings and sandboxed previews. `appearanceForScope` resolves visitor/account/auth/CMS versus administration settings, SSR CSS/fonts and pre-paint mode. Each has its own light/dark/system default and personal storage key; do not synchronize them.
 - `apps/web/src/styles.css`: Tailwind aliases and shared component/layout styles. Do not create another theme provider or a page-specific palette.
 - `apps/web/src/components/ui`: Radix primitives plus workspace compositions. Existing feature modules own fetching, permissions, writes and failure recovery.
 
@@ -55,9 +55,9 @@ Use `SectionNav` with real links and `aria-current="page"` for URL navigation. U
 
 Administration headings must use `PageHeading`. Its typed slots keep the title and description together, secondary metadata below them, and actions at the opposite edge. Detail screens use the `back` and `metadata` slots. Do not manually arrange a `PageHeader` or `PageTitle` in an administration page; lint rejects that regression. Account pages use the same heading slots. The lower-level title remains available for public/authentication compositions.
 
-Lists use `ListWorkspace` for filters, locally scrolling results, feedback and pagination. Roles and invitations use the same table vocabulary as users and outbox. Diagnostic records retain their expandable details. `Table` already owns scrolling; avoid adding a second decorated container. Use 14px column headings and body cells, with smaller type only for supplementary metadata.
+Lists use `ListWorkspace` for filters, locally scrolling results, feedback and pagination. Roles and invitations use the same table vocabulary as users and outbox. Diagnostic records retain their expandable details. `Table` already owns scrolling; avoid adding a second decorated container. Use the reference's 16px column headings and body cells, with smaller type only for supplementary metadata.
 
-Administration section links and content tabs share an underline treatment. They keep distinct link/tab semantics. Settings use horizontal section navigation, an independent preview beside the form, and save/revert/default actions in the heading. No floating save bar covers form fields. Dashboard metrics use restrained identity accents and real values, without decorative animated stripes or invented trends.
+Section links and content tabs share the reference's bordered tab treatment while keeping distinct link/tab semantics. Settings use horizontal section navigation, an independent preview beside the form, and save/revert/default actions in the heading. No floating save bar covers form fields. Dashboard headline metrics use colored `SmallBoxContent`, with `InfoBoxContent` for secondary and account metrics with real values and existing deep links. `Timeline` supplies the shared record-history composition.
 
 Administration now follows the explicit [AdminLTE 4.10.1 adaptation](adminlte.md). The previous structure followed the reusable list/form/workspace principle documented by [Frappe Desk](https://docs.frappe.io/framework/user/en/desk). [Odoo's search and filter guidance](https://www.odoo.com/documentation/saas-18.2/applications/essentials/search.html) also informs keeping list tools directly above results. These are adaptations to So7ob's existing React components, permissions, stored theme settings and Arabic/English layouts.
 
@@ -65,7 +65,7 @@ Keep confirmed-only success, preserved form drafts, server authorization and unc
 
 ## Geometry and movement
 
-Spacing uses a 4/8px rhythm. Body text is 16px; tables and controls use 14px; supporting labels use the secondary text scale. `--space-panel` and `--space-section` support comfortable/compact density. Control targets remain at least 44px; changing density changes padding, not operability. Geometry follows the saved square/soft/round preference. Circular avatars and status dots retain their semantic shape.
+Spacing uses a 4/8px rhythm. Body, tables and controls use 16px; supporting labels use the secondary text scale. New defaults use 16px card padding and 6px corners. `--space-panel` and `--space-section` also retain the saved comfortable/compact options. Control targets remain at least 44px; changing density changes padding, not operability. Existing square/soft/round choices retain their former geometry. Circular avatars and status dots retain their semantic shape.
 
 Motion uses 150ms for direct interaction, 200ms for tabs/menus and 250ms for dialogs/drawers/entry. Animate named properties, not `all`. `prefers-reduced-motion` removes nonessential movement. The hero illustration is static and adopts the current identity palette.
 

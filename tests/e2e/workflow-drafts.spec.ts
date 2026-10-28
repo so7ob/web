@@ -113,9 +113,14 @@ for (const locale of ['ar', 'en'] as const) {
  });
  test(`${locale}: browser back and forward retain edits until save or explicit discard`, async ({ page, flows }) => {
   await page.goto(`/${locale}/admin`);
+  // Establish an SPA history entry: an SSR link before hydration starts a new
+  // document, whose previous entry cannot be handled by an in-app blocker.
+  await expect(page.getByRole('combobox', { name: locale === 'ar' ? 'وضع العرض' : 'Color mode', exact: true }).filter({ visible: true }).first()).toBeEnabled();
+  const documentOrigin = await page.evaluate(() => performance.timeOrigin);
   const workflowLink = page.locator(`a[href="/${locale}/admin/workflows"]`).filter({ visible: true }).first();
   if (!(await workflowLink.isVisible())) await page.getByRole('button', { name: (locale === 'ar' ? ar : en).common.openMenu, exact: true }).click();
   await workflowLink.click(); await expect(page).toHaveURL(new RegExp(`/${locale}/admin/workflows$`));
+  expect(await page.evaluate(() => performance.timeOrigin)).toBe(documentOrigin);
   const select = page.getByLabel(flowLabel, { exact: true }), name = page.getByLabel(nameLabel, { exact: true });
   await select.selectOption(flows.one); await name.fill('Saved before leaving');
   await page.evaluate(() => history.back()); await expect(page.getByRole('alertdialog')).toBeVisible();

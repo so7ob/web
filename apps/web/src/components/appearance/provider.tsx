@@ -3,33 +3,37 @@ import { createContext, useContext, useEffect, useState, useMemo } from "react";
 import { useLoaderData } from "react-router-dom";
 import {
   isThemeMode,
+  appearanceForScope,
+  type AppearanceScope,
   PRESENTATION_KEYS,
   type PublicView,
 } from "@so7ob/contracts";
-import { THEME_STORAGE_KEY, defaultMode } from "@/lib/appearance";
+import { themeStorageKey, defaultMode } from "@/lib/appearance";
 import { SunMoon } from "lucide-react";
-let transientPreference: string | null = null;
+const transientPreference: Record<AppearanceScope, string | null> = {site:null,admin:null};
 let storageUnavailable = false;
-function preference() {
+function preference(scope: AppearanceScope) {
   try {
     return storageUnavailable
-      ? transientPreference
-      : localStorage.getItem(THEME_STORAGE_KEY);
+      ? transientPreference[scope]
+      : localStorage.getItem(themeStorageKey(scope));
   } catch {
-    return transientPreference;
+    return transientPreference[scope];
   }
 }
-function storePreference(value: string | null) {
-  transientPreference = value;
+function storePreference(scope: AppearanceScope, value: string | null) {
+  transientPreference[scope] = value;
   try {
-    if (value === null) localStorage.removeItem(THEME_STORAGE_KEY);
-    else localStorage.setItem(THEME_STORAGE_KEY, value);
+    if (value === null) localStorage.removeItem(themeStorageKey(scope));
+    else localStorage.setItem(themeStorageKey(scope), value);
     storageUnavailable = false;
   } catch {
     storageUnavailable = true;
   }
 }
 const SettingsContext = createContext<Record<string, string>>({});
+const AppearanceScopeContext = createContext<AppearanceScope>("site");
+export const useAppearanceScope = () => useContext(AppearanceScopeContext);
 export const useSitePresentation = () => useContext(SettingsContext);
 export function AppearanceProvider({
   children,
@@ -37,6 +41,7 @@ export function AppearanceProvider({
   children: React.ReactNode;
 }) {
   const data = useLoaderData<PublicView>();
+  const scope: AppearanceScope = data.kind === "admin" ? "admin" : "site";
   const [overrides, setOverrides] = useState<Record<string, string>>({});
   const settings = useMemo(
     () => ({ ...data.settings, ...overrides }),
@@ -65,14 +70,15 @@ export function AppearanceProvider({
   useEffect(() => {
     const query = window.matchMedia("(prefers-color-scheme: dark)");
     const apply = () => {
-      let mode = defaultMode(settings);
+      let mode = defaultMode(appearanceForScope(settings, scope));
       try {
-        const stored = preference();
+        const stored = preference(scope);
         if (isThemeMode(stored)) mode = stored;
       } catch {
         /* use site default */
       }
       const dark = mode === "dark" || (mode === "system" && query.matches);
+      document.documentElement.dataset.themeScope = scope;
       document.documentElement.dataset.colorMode = dark ? "dark" : "light";
       document.documentElement.classList.toggle("dark", dark);
     };
@@ -85,11 +91,11 @@ export function AppearanceProvider({
       window.removeEventListener("storage", apply);
       window.removeEventListener("so7ob-theme", apply);
     };
-  }, [settings]);
+  }, [settings, scope]);
   return (
-    <SettingsContext.Provider value={settings}>
+    <SettingsContext.Provider value={settings}><AppearanceScopeContext.Provider value={scope}>
       {children}
-    </SettingsContext.Provider>
+    </AppearanceScopeContext.Provider></SettingsContext.Provider>
   );
 }
 export function ThemeToggle({
@@ -99,13 +105,14 @@ export function ThemeToggle({
   locale: "ar" | "en";
   compact?: boolean;
 }) {
+  const scope = useAppearanceScope();
   const ar = locale === "ar",
     [mode, setMode] = useState("default"),
     [interactive, setInteractive] = useState(false);
   useEffect(() => {
     const update = () => {
       try {
-        const value = preference();
+        const value = preference(scope);
         setMode(isThemeMode(value) ? value : "default");
       } catch {
         /* default */
@@ -119,7 +126,7 @@ export function ThemeToggle({
       window.removeEventListener("storage", update);
       window.removeEventListener("so7ob-theme", update);
     };
-  }, []);
+  }, [scope]);
   return (
     <label
       title={ar ? "وضع العرض" : "Color mode"}
@@ -142,12 +149,12 @@ export function ThemeToggle({
         value={mode}
         onChange={(e) => {
           setMode(e.target.value);
-          storePreference(e.target.value === "default" ? null : e.target.value);
+          storePreference(scope, e.target.value === "default" ? null : e.target.value);
           window.dispatchEvent(new Event("so7ob-theme"));
         }}
       >
         {[
-          ["default", ar ? "افتراضي الموقع" : "Site default"],
+          ["default", scope === "admin" ? ar ? "افتراضي الإدارة" : "Administration default" : ar ? "افتراضي الموقع" : "Site default"],
           ["light", ar ? "فاتح" : "Light"],
           ["dark", ar ? "داكن" : "Dark"],
           ["system", ar ? "تلقائي" : "System"],

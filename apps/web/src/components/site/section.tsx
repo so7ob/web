@@ -3,7 +3,7 @@
 import type { ReactNode } from "react";
 import { useIsNestedBlock } from "@/components/blocks/nested-context";
 
-/** ترويسة قسم موحدة: شارة علوية + عنوان + وصف اختياري، بمحاذاة تعتمد الاتجاه */
+/** Public content header composed from the shared AdminLTE heading/badge language. */
 export function SectionHeading({
   kicker,
   title,
@@ -21,18 +21,18 @@ export function SectionHeading({
   return (
     <div className={`max-w-2xl ${align === "center" ? "mx-auto text-center" : ""}`}>
       <p
-        className={`mb-3 inline-flex items-center gap-2 rounded-full px-3.5 py-1.5 text-sm font-semibold ${
+        className={`mb-2 inline-flex items-center gap-2 rounded-lg px-2 py-1 text-xs font-semibold ${
           isDark ? "bg-card/10 text-skydrop" : "bg-accent text-brand-strong"
         }`}
       >
         <KickerDot />
         {kicker}
       </p>
-      <h2 className={`text-balance text-3xl font-bold leading-snug sm:text-4xl ${isDark ? "text-inverse-foreground" : "text-navy"}`}>
+      <h2 className={`text-balance text-[1.75rem] font-normal leading-snug ${isDark ? "text-inverse-foreground" : "text-navy"}`}>
         {title}
       </h2>
       {description && (
-        <p className={`mt-4 text-pretty text-base leading-8 ${isDark ? "text-emphasis-muted" : "text-muted-foreground"}`}>
+        <p className={`mt-3 text-pretty text-base leading-7 ${isDark ? "text-emphasis-muted" : "text-muted-foreground"}`}>
           {description}
         </p>
       )}
@@ -57,7 +57,7 @@ export function Section({ children, className = "", id }: { children: ReactNode;
     );
   }
   return (
-    <section id={id} className={`py-16 sm:py-20 lg:py-24 ${className}`}>
+    <section id={id} className={`py-6 sm:py-8 lg:py-10 ${className}`}>
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">{children}</div>
     </section>
   );

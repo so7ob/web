@@ -1,0 +1,941 @@
+{
+  "reference": "e13df78a4d0c287e5fa57308e293f63e44e9dd0f",
+  "baseline": "e8d0f6cf7367d8732abaa179a1c118010cd86f5e",
+  "clientCandidate": "1753607e533fc3b65b4c9769b78918706df3ef75",
+  "method": "Native Playwright full-page PNGs, unchanged pixels. Synthetic data only. Actual document height is recorded per PNG. Viewports match by comparison pair.",
+  "files": [
+    {
+      "file": "before/admin-en-light-desktop.png",
+      "source": "e8d0f6cf7367d8732abaa179a1c118010cd86f5e",
+      "sha256": "86cd34a629bcfab00abc5229bbe03adf3246db06f3eaef404757ec52a450ceed",
+      "bytes": 173546,
+      "width": 1280,
+      "height": 1533,
+      "viewport": "1280x900",
+      "locale": "en",
+      "mode": "light"
+    },
+    {
+      "file": "before/admin-en-light-mobile.png",
+      "source": "e8d0f6cf7367d8732abaa179a1c118010cd86f5e",
+      "sha256": "cc2541e3fb61d7135d1f681db22d1dae3122974f3a5277b9726b555645afc85e",
+      "bytes": 148322,
+      "width": 375,
+      "height": 2977,
+      "viewport": "375x812",
+      "locale": "en",
+      "mode": "light"
+    },
+    {
+      "file": "before/admin-settings-appearance-en-light-desktop.png",
+      "source": "e8d0f6cf7367d8732abaa179a1c118010cd86f5e",
+      "sha256": "96ccde65b62717482553995c17fe0ce8951e1dd2703c34bf993df62ba34e2244",
+      "bytes": 152029,
+      "width": 1280,
+      "height": 1337,
+      "viewport": "1280x900",
+      "locale": "en",
+      "mode": "light"
+    },
+    {
+      "file": "before/admin-settings-appearance-en-light-mobile.png",
+      "source": "e8d0f6cf7367d8732abaa179a1c118010cd86f5e",
+      "sha256": "820fc77940b244bf2bdbf9d9dac125087003bbdf5d422a6a5b3746b7d84a0350",
+      "bytes": 124728,
+      "width": 375,
+      "height": 2908,
+      "viewport": "375x812",
+      "locale": "en",
+      "mode": "light"
+    },
+    {
+      "file": "before/admin-settings-adminAppearance-en-light-desktop.png",
+      "source": "e8d0f6cf7367d8732abaa179a1c118010cd86f5e",
+      "sha256": "96ccde65b62717482553995c17fe0ce8951e1dd2703c34bf993df62ba34e2244",
+      "bytes": 152029,
+      "width": 1280,
+      "height": 1337,
+      "viewport": "1280x900",
+      "locale": "en",
+      "mode": "light",
+      "note": "Before: the existing combined appearance tab."
+    },
+    {
+      "file": "before/admin-settings-adminAppearance-en-light-mobile.png",
+      "source": "e8d0f6cf7367d8732abaa179a1c118010cd86f5e",
+      "sha256": "820fc77940b244bf2bdbf9d9dac125087003bbdf5d422a6a5b3746b7d84a0350",
+      "bytes": 124728,
+      "width": 375,
+      "height": 2908,
+      "viewport": "375x812",
+      "locale": "en",
+      "mode": "light",
+      "note": "Before: the existing combined appearance tab."
+    },
+    {
+      "file": "before/account-en-light-desktop.png",
+      "source": "e8d0f6cf7367d8732abaa179a1c118010cd86f5e",
+      "sha256": "d63bc7deb55c0da2341e3c7187ffb83e40956adb6088e1e6e2decd241391b72f",
+      "bytes": 110941,
+      "width": 1280,
+      "height": 1261,
+      "viewport": "1280x900",
+      "locale": "en",
+      "mode": "light"
+    },
+    {
+      "file": "before/account-en-light-mobile.png",
+      "source": "e8d0f6cf7367d8732abaa179a1c118010cd86f5e",
+      "sha256": "fb5990f59b33f2d87a8304ae0fe4f6b691ffe4ab50c7d9857d639a6320415435",
+      "bytes": 84972,
+      "width": 375,
+      "height": 2192,
+      "viewport": "375x812",
+      "locale": "en",
+      "mode": "light"
+    },
+    {
+      "file": "before/contact-en-light-desktop.png",
+      "source": "e8d0f6cf7367d8732abaa179a1c118010cd86f5e",
+      "sha256": "8aadb791e99271e4f102dba46ae3632be8e81335ccc033a4c176861783ed325d",
+      "bytes": 247834,
+      "width": 1280,
+      "height": 2383,
+      "viewport": "1280x900",
+      "locale": "en",
+      "mode": "light"
+    },
+    {
+      "file": "before/contact-en-light-mobile.png",
+      "source": "e8d0f6cf7367d8732abaa179a1c118010cd86f5e",
+      "sha256": "21565790a62db2d5cf7ba481a8edb1e826549ade90bfdbbaa211ea973135d354",
+      "bytes": 220217,
+      "width": 375,
+      "height": 4424,
+      "viewport": "375x812",
+      "locale": "en",
+      "mode": "light"
+    },
+    {
+      "file": "before/auth-login-en-light-desktop.png",
+      "source": "e8d0f6cf7367d8732abaa179a1c118010cd86f5e",
+      "sha256": "be306fe95f642d9561369e888d82b6a0ff7f0d0dde75da2e4addb626fe66aaac",
+      "bytes": 109878,
+      "width": 1280,
+      "height": 1261,
+      "viewport": "1280x900",
+      "locale": "en",
+      "mode": "light"
+    },
+    {
+      "file": "before/auth-login-en-light-mobile.png",
+      "source": "e8d0f6cf7367d8732abaa179a1c118010cd86f5e",
+      "sha256": "282297ab9667b28540735415610f071743375bccd78f3f37b2190b62d74c8ba0",
+      "bytes": 90803,
+      "width": 375,
+      "height": 1732,
+      "viewport": "375x812",
+      "locale": "en",
+      "mode": "light"
+    },
+    {
+      "file": "before/home-en-light-desktop.png",
+      "source": "e8d0f6cf7367d8732abaa179a1c118010cd86f5e",
+      "sha256": "a8c3a2951e8b679b22643d150c2717e144bf8c07e05bef2ea8d075178aee8005",
+      "bytes": 623624,
+      "width": 1280,
+      "height": 5877,
+      "viewport": "1280x900",
+      "locale": "en",
+      "mode": "light"
+    },
+    {
+      "file": "before/home-en-light-mobile.png",
+      "source": "e8d0f6cf7367d8732abaa179a1c118010cd86f5e",
+      "sha256": "f79f92f564afa023288787ba1043b9e36939d100914c13dd3243498071be9f8e",
+      "bytes": 641357,
+      "width": 375,
+      "height": 10247,
+      "viewport": "375x812",
+      "locale": "en",
+      "mode": "light"
+    },
+    {
+      "file": "after/admin-en-light-desktop.png",
+      "source": "1753607e533fc3b65b4c9769b78918706df3ef75",
+      "sha256": "658567ed488cf33d098195389a804354bcf757cea5303ddfab2936b9c8ea55e2",
+      "bytes": 225132,
+      "width": 1280,
+      "height": 1685,
+      "viewport": "1280x900",
+      "locale": "en",
+      "mode": "light"
+    },
+    {
+      "file": "after/admin-en-light-mobile.png",
+      "source": "1753607e533fc3b65b4c9769b78918706df3ef75",
+      "sha256": "d3aab0e39b0315de2fca3bb82856881bf414fa57c88bb7d090fce73fe7ff0fee",
+      "bytes": 182948,
+      "width": 375,
+      "height": 3680,
+      "viewport": "375x812",
+      "locale": "en",
+      "mode": "light"
+    },
+    {
+      "file": "after/admin-settings-appearance-en-light-desktop.png",
+      "source": "1753607e533fc3b65b4c9769b78918706df3ef75",
+      "sha256": "4d3b7d4a7a6efef56f182423b6d08b72642b69f6cb814c57640fd236dba984f1",
+      "bytes": 151817,
+      "width": 1280,
+      "height": 1249,
+      "viewport": "1280x900",
+      "locale": "en",
+      "mode": "light"
+    },
+    {
+      "file": "after/admin-settings-appearance-en-light-mobile.png",
+      "source": "1753607e533fc3b65b4c9769b78918706df3ef75",
+      "sha256": "9d0c532eca33a99f0218d1bfd0e9d10ad4436c4b35c02d51666a68bd2c271213",
+      "bytes": 119541,
+      "width": 375,
+      "height": 2735,
+      "viewport": "375x812",
+      "locale": "en",
+      "mode": "light"
+    },
+    {
+      "file": "after/admin-settings-adminAppearance-en-light-desktop.png",
+      "source": "1753607e533fc3b65b4c9769b78918706df3ef75",
+      "sha256": "7d3dbe1eb6bc251ef468cd473ba60927c78875a0cec89db577f37fbfaaf102bf",
+      "bytes": 246494,
+      "width": 1280,
+      "height": 2932,
+      "viewport": "1280x900",
+      "locale": "en",
+      "mode": "light"
+    },
+    {
+      "file": "after/admin-settings-adminAppearance-en-light-mobile.png",
+      "source": "1753607e533fc3b65b4c9769b78918706df3ef75",
+      "sha256": "947a3e8eaf12dabdb82709a46e45883457ed1293b6f60f7c88ffa3a4937bd498",
+      "bytes": 221724,
+      "width": 375,
+      "height": 5272,
+      "viewport": "375x812",
+      "locale": "en",
+      "mode": "light"
+    },
+    {
+      "file": "after/account-en-light-desktop.png",
+      "source": "1753607e533fc3b65b4c9769b78918706df3ef75",
+      "sha256": "02b5c710f6fd22b51d542739d5d908f5638cfaa094091d02ad3a96e13315fece",
+      "bytes": 111034,
+      "width": 1280,
+      "height": 1112,
+      "viewport": "1280x900",
+      "locale": "en",
+      "mode": "light"
+    },
+    {
+      "file": "after/account-en-light-mobile.png",
+      "source": "1753607e533fc3b65b4c9769b78918706df3ef75",
+      "sha256": "6e1385435d5936a33da948e426e3f3c2e34071a298ecaedddc91db6e5d54e646",
+      "bytes": 88744,
+      "width": 375,
+      "height": 2184,
+      "viewport": "375x812",
+      "locale": "en",
+      "mode": "light"
+    },
+    {
+      "file": "after/contact-en-light-desktop.png",
+      "source": "1753607e533fc3b65b4c9769b78918706df3ef75",
+      "sha256": "66fd3cbf752b0fa209c0c5f6d5c4fbdd6334131053b4e0d94a7ccd80c427d886",
+      "bytes": 176498,
+      "width": 1280,
+      "height": 1921,
+      "viewport": "1280x900",
+      "locale": "en",
+      "mode": "light"
+    },
+    {
+      "file": "after/contact-en-light-mobile.png",
+      "source": "1753607e533fc3b65b4c9769b78918706df3ef75",
+      "sha256": "c7c3ed3578617248d1b90187fc70eeee597298dab3ecb0c60e348a19fbd49097",
+      "bytes": 162371,
+      "width": 375,
+      "height": 3955,
+      "viewport": "375x812",
+      "locale": "en",
+      "mode": "light"
+    },
+    {
+      "file": "after/auth-login-en-light-desktop.png",
+      "source": "1753607e533fc3b65b4c9769b78918706df3ef75",
+      "sha256": "24b142241e7a6f93de6530ebe6fe5c370b97a016eb6f415a8a4175683ddcc0b6",
+      "bytes": 71303,
+      "width": 1280,
+      "height": 1157,
+      "viewport": "1280x900",
+      "locale": "en",
+      "mode": "light"
+    },
+    {
+      "file": "after/auth-login-en-light-mobile.png",
+      "source": "1753607e533fc3b65b4c9769b78918706df3ef75",
+      "sha256": "e61373095aae809d89ce7ad2af90c07cacde27b903c261980010e9f77dfa3783",
+      "bytes": 60818,
+      "width": 375,
+      "height": 1613,
+      "viewport": "375x812",
+      "locale": "en",
+      "mode": "light"
+    },
+    {
+      "file": "after/home-en-light-desktop.png",
+      "source": "1753607e533fc3b65b4c9769b78918706df3ef75",
+      "sha256": "123451e17d6ffe937a37157d74fdddafe1f6efc011a8e3502f651d43dc82db91",
+      "bytes": 394227,
+      "width": 1280,
+      "height": 4382,
+      "viewport": "1280x900",
+      "locale": "en",
+      "mode": "light"
+    },
+    {
+      "file": "after/home-en-light-mobile.png",
+      "source": "1753607e533fc3b65b4c9769b78918706df3ef75",
+      "sha256": "87f2462a94915320c19bbaa8ae88f35877b2950ee076cbff8978436025dbc25b",
+      "bytes": 396111,
+      "width": 375,
+      "height": 8678,
+      "viewport": "375x812",
+      "locale": "en",
+      "mode": "light"
+    },
+    {
+      "file": "before/dashboard-ar-dark-desktop.png",
+      "source": "e8d0f6cf7367d8732abaa179a1c118010cd86f5e",
+      "sha256": "cc819079cdbedc386ea3abfd42a6678370ece8dc62636b94968c885b340b90a0",
+      "bytes": 165053,
+      "width": 1280,
+      "height": 1517,
+      "note": "Reconstructed from the unchanged pinned develop build with the fixed synthetic dashboard fixture."
+    },
+    {
+      "file": "before/dashboard-ar-dark-mobile.png",
+      "source": "e8d0f6cf7367d8732abaa179a1c118010cd86f5e",
+      "sha256": "d05dd822b4fd6124a939f56242fd1f789465be1afb5478390aa0a1bc5a0d89ca",
+      "bytes": 139289,
+      "width": 375,
+      "height": 2843,
+      "note": "Reconstructed from the unchanged pinned develop build with the fixed synthetic dashboard fixture."
+    },
+    {
+      "file": "before/dashboard-ar-light-desktop.png",
+      "source": "e8d0f6cf7367d8732abaa179a1c118010cd86f5e",
+      "sha256": "ae9a833f74dc1e92afb38bacabb3fd5aa78c593b1cd215ad28a85e218b57268b",
+      "bytes": 160660,
+      "width": 1280,
+      "height": 1517,
+      "note": "Reconstructed from the unchanged pinned develop build with the fixed synthetic dashboard fixture."
+    },
+    {
+      "file": "before/dashboard-ar-light-mobile.png",
+      "source": "e8d0f6cf7367d8732abaa179a1c118010cd86f5e",
+      "sha256": "3be076fb3d3e4ac25322235cbc2ac38119fbdbec52e72593cd51bb9226639e44",
+      "bytes": 134589,
+      "width": 375,
+      "height": 2843,
+      "note": "Reconstructed from the unchanged pinned develop build with the fixed synthetic dashboard fixture."
+    },
+    {
+      "file": "before/dashboard-en-dark-desktop.png",
+      "source": "e8d0f6cf7367d8732abaa179a1c118010cd86f5e",
+      "sha256": "c3f1c4559c70df571ec4e16543db9b075c8fd9c3a6e1dfce9984b7933a6c4c26",
+      "bytes": 172755,
+      "width": 1280,
+      "height": 1533,
+      "note": "Reconstructed from the unchanged pinned develop build with the fixed synthetic dashboard fixture."
+    },
+    {
+      "file": "before/dashboard-en-dark-mobile.png",
+      "source": "e8d0f6cf7367d8732abaa179a1c118010cd86f5e",
+      "sha256": "e2d99c5abb6a6ee6704c5470cb332e89fe5c1f959cb952ec17507dc7b78d093e",
+      "bytes": 145713,
+      "width": 375,
+      "height": 2883,
+      "note": "Reconstructed from the unchanged pinned develop build with the fixed synthetic dashboard fixture."
+    },
+    {
+      "file": "before/dashboard-en-light-desktop.png",
+      "source": "e8d0f6cf7367d8732abaa179a1c118010cd86f5e",
+      "sha256": "6f6be2a940b7139ffc62149561021fd4fcc575e56ef0afa00e21c3d5e01b9afa",
+      "bytes": 168222,
+      "width": 1280,
+      "height": 1533,
+      "note": "Reconstructed from the unchanged pinned develop build with the fixed synthetic dashboard fixture."
+    },
+    {
+      "file": "before/dashboard-en-light-mobile.png",
+      "source": "e8d0f6cf7367d8732abaa179a1c118010cd86f5e",
+      "sha256": "b98c114bbecdfd8678a618205f77f5da51131df30037b733c1c6ac4552e9997e",
+      "bytes": 140676,
+      "width": 375,
+      "height": 2883,
+      "note": "Reconstructed from the unchanged pinned develop build with the fixed synthetic dashboard fixture."
+    },
+    {
+      "file": "after/appearance-dialog-ar-dark-mobile.png",
+      "source": "1753607e533fc3b65b4c9769b78918706df3ef75",
+      "sha256": "377ae7816431a2c43108d6bdba897d46ef066daebf2fdda802ef62627e70a59f",
+      "bytes": 211638,
+      "width": 375,
+      "height": 5046
+    },
+    {
+      "file": "after/appearance-dialog-en-light-desktop.png",
+      "source": "1753607e533fc3b65b4c9769b78918706df3ef75",
+      "sha256": "5aa1a48835f84ac74ddbf12903ada9768aa5cf3a87c8cea72e9f5d76107c0188",
+      "bytes": 249640,
+      "width": 1280,
+      "height": 2932
+    },
+    {
+      "file": "after/appearance-tooltip-ar-dark-mobile.png",
+      "source": "1753607e533fc3b65b4c9769b78918706df3ef75",
+      "sha256": "481b3e5ef658a1240edd5230fa0586a048f06d1c22b523e6aebd492ea4bb592a",
+      "bytes": 211672,
+      "width": 375,
+      "height": 5046
+    },
+    {
+      "file": "after/appearance-tooltip-ar-light-mobile.png",
+      "source": "1753607e533fc3b65b4c9769b78918706df3ef75",
+      "sha256": "5e16a00ec0d86e58a92288fa420bdce6bbb6e6cf18ff9c7cc57f7f77b250b87a",
+      "bytes": 207985,
+      "width": 375,
+      "height": 5046
+    },
+    {
+      "file": "after/appearance-tooltip-en-dark-desktop.png",
+      "source": "1753607e533fc3b65b4c9769b78918706df3ef75",
+      "sha256": "cae108b76ba8ac49677e1173e8bc4ed167bfab04061e734dabac6dd52c00b381",
+      "bytes": 251502,
+      "width": 1280,
+      "height": 2932
+    },
+    {
+      "file": "after/appearance-tooltip-en-light-desktop.png",
+      "source": "1753607e533fc3b65b4c9769b78918706df3ef75",
+      "sha256": "997d22a7b7cda5cbf296d9c18e71473b7399ceaf9c8720c38791ea5303dd06d2",
+      "bytes": 248208,
+      "width": 1280,
+      "height": 2932
+    },
+    {
+      "file": "after/dashboard-ar-dark-desktop.png",
+      "source": "1753607e533fc3b65b4c9769b78918706df3ef75",
+      "sha256": "9f6e9a4480666ef1b3fc0f832261b27079ee110ca3c8e42967fd7ff61fde721a",
+      "bytes": 215029,
+      "width": 1280,
+      "height": 1685
+    },
+    {
+      "file": "after/dashboard-ar-dark-mobile.png",
+      "source": "1753607e533fc3b65b4c9769b78918706df3ef75",
+      "sha256": "8a036730a5e9b63962697427a5f3ae1fcd2f3019d3efd25cab9b2bbcfadf609a",
+      "bytes": 173600,
+      "width": 375,
+      "height": 3680
+    },
+    {
+      "file": "after/dashboard-ar-light-desktop.png",
+      "source": "1753607e533fc3b65b4c9769b78918706df3ef75",
+      "sha256": "9350454db87afe316da354b88161a0f31d663103c75103f5c92263dc8cc56d80",
+      "bytes": 213160,
+      "width": 1280,
+      "height": 1685
+    },
+    {
+      "file": "after/dashboard-ar-light-mobile.png",
+      "source": "1753607e533fc3b65b4c9769b78918706df3ef75",
+      "sha256": "e1aa65510bab58341d163c43945bc1bafaf8818683e638f26655884abfeee5f2",
+      "bytes": 171606,
+      "width": 375,
+      "height": 3680
+    },
+    {
+      "file": "after/dashboard-designed-gradient-indigo-desktop.png",
+      "source": "1753607e533fc3b65b4c9769b78918706df3ef75",
+      "sha256": "d552d3cd7c23870adc158d2cb1bd28a9d918996ededad6daea0dbadab51ce8b6",
+      "bytes": 234366,
+      "width": 1280,
+      "height": 1685
+    },
+    {
+      "file": "after/dashboard-designed-gradient-indigo-mobile.png",
+      "source": "1753607e533fc3b65b4c9769b78918706df3ef75",
+      "sha256": "c4f24d1c879ba2e750c565a40031972f8388d31cb3702573e8f9d908166aab3b",
+      "bytes": 184495,
+      "width": 375,
+      "height": 3680
+    },
+    {
+      "file": "after/dashboard-en-dark-desktop.png",
+      "source": "1753607e533fc3b65b4c9769b78918706df3ef75",
+      "sha256": "2559bf0f9a6198a404d8d671319444642cd8e723faa664b66579685abfa22934",
+      "bytes": 226542,
+      "width": 1280,
+      "height": 1685
+    },
+    {
+      "file": "after/dashboard-en-dark-mobile.png",
+      "source": "1753607e533fc3b65b4c9769b78918706df3ef75",
+      "sha256": "62a763c1d60904f55b1cf6770d9182619058a800226a50117d30cd60283832cf",
+      "bytes": 187928,
+      "width": 375,
+      "height": 3680
+    },
+    {
+      "file": "after/dashboard-en-light-desktop.png",
+      "source": "1753607e533fc3b65b4c9769b78918706df3ef75",
+      "sha256": "7dc693ccd4be84b8efe47383377dc9d331e6b728ac83bf133830878574c1c2ea",
+      "bytes": 224830,
+      "width": 1280,
+      "height": 1685
+    },
+    {
+      "file": "after/dashboard-en-light-mobile.png",
+      "source": "1753607e533fc3b65b4c9769b78918706df3ef75",
+      "sha256": "c7ccf4d85b2b90bca22e208c86882e996c62f00f38d9085853080fe47853366b",
+      "bytes": 184215,
+      "width": 375,
+      "height": 3680
+    },
+    {
+      "file": "after/dashboard-menu-ar-dark-mobile.png",
+      "source": "1753607e533fc3b65b4c9769b78918706df3ef75",
+      "sha256": "ffa74360e108cfaeb29924eea1d56dbddb79abb22b445f2076e06d30bd2c8f78",
+      "bytes": 175119,
+      "width": 375,
+      "height": 3680
+    },
+    {
+      "file": "after/dashboard-menu-en-light-desktop.png",
+      "source": "1753607e533fc3b65b4c9769b78918706df3ef75",
+      "sha256": "3ac84c9f18c8573c8bb79a4cd595c9ce5d53af55a3806f84326791cad593d75c",
+      "bytes": 225842,
+      "width": 1280,
+      "height": 1685
+    },
+    {
+      "file": "after/dashboard-v3-yellow-light-desktop.png",
+      "source": "1753607e533fc3b65b4c9769b78918706df3ef75",
+      "sha256": "07cd50f4cf88683ed1d6d46c9ca7286f0d7ad26652375f86d6190433285f60c2",
+      "bytes": 222718,
+      "width": 1280,
+      "height": 1685
+    },
+    {
+      "file": "after/dashboard-v3-yellow-light-mobile.png",
+      "source": "1753607e533fc3b65b4c9769b78918706df3ef75",
+      "sha256": "489413a8bc4509db9a66ff7dba9c95229d68036977b732efa357d9186a0737f0",
+      "bytes": 185464,
+      "width": 375,
+      "height": 3680
+    },
+    {
+      "file": "upstream/dashboard-en-light-desktop.png",
+      "source": "e13df78a4d0c287e5fa57308e293f63e44e9dd0f",
+      "sha256": "b250292b23ea7a803775c23c79123e4de3f297e457a8902e7d755f592e950dd7",
+      "bytes": 201035,
+      "width": 1280,
+      "height": 1161,
+      "viewport": "1280x900"
+    },
+    {
+      "file": "upstream/dashboard-en-light-mobile.png",
+      "source": "e13df78a4d0c287e5fa57308e293f63e44e9dd0f",
+      "sha256": "eebafc3b414e770ead2e0df38064bfe05b1c8d40900ae0ac89b5666c606ee4e2",
+      "bytes": 123525,
+      "width": 375,
+      "height": 1771,
+      "viewport": "375x812"
+    },
+    {
+      "file": "upstream/dashboard-en-dark-desktop.png",
+      "source": "e13df78a4d0c287e5fa57308e293f63e44e9dd0f",
+      "sha256": "f5be63361dc1759afc9422397e1a4d55e0b409106deb5ac78e8fcd05dcbe4187",
+      "bytes": 201731,
+      "width": 1280,
+      "height": 1161,
+      "viewport": "1280x900"
+    },
+    {
+      "file": "upstream/dashboard-en-dark-mobile.png",
+      "source": "e13df78a4d0c287e5fa57308e293f63e44e9dd0f",
+      "sha256": "45b6b20022c018325883c060746567616dea5f620c9e2e4f8f109a79f5dd5426",
+      "bytes": 124078,
+      "width": 375,
+      "height": 1771,
+      "viewport": "375x812"
+    },
+    {
+      "file": "upstream/dashboard-info-boxes-en-light-desktop.png",
+      "source": "e13df78a4d0c287e5fa57308e293f63e44e9dd0f",
+      "sha256": "47f45eac77344b7a6a9025e66a14fc83d93c81674fc16fc407419279399f69aa",
+      "bytes": 325337,
+      "width": 1280,
+      "height": 2058,
+      "viewport": "1280x900"
+    },
+    {
+      "file": "upstream/dashboard-info-boxes-en-light-mobile.png",
+      "source": "e13df78a4d0c287e5fa57308e293f63e44e9dd0f",
+      "sha256": "7e5ac664e1f3cbd13840a8afe83187944c069808d7555f2a48a6e64fe229f322",
+      "bytes": 281775,
+      "width": 375,
+      "height": 4097,
+      "viewport": "375x812"
+    },
+    {
+      "file": "upstream/dashboard-v3-en-light-desktop.png",
+      "source": "e13df78a4d0c287e5fa57308e293f63e44e9dd0f",
+      "sha256": "a107567be6c98c067e32c02cceee18c33432583367d178cde8f3ee6c17092dd2",
+      "bytes": 142071,
+      "width": 1280,
+      "height": 1037,
+      "viewport": "1280x900"
+    },
+    {
+      "file": "upstream/dashboard-v3-en-light-mobile.png",
+      "source": "e13df78a4d0c287e5fa57308e293f63e44e9dd0f",
+      "sha256": "07c017fa965d6d7380028730fcce2efd7121777ffc9227f6d4ac34fe4e683d0b",
+      "bytes": 100317,
+      "width": 375,
+      "height": 1941,
+      "viewport": "375x812"
+    },
+    {
+      "file": "upstream/layout-rtl-light-desktop.png",
+      "source": "e13df78a4d0c287e5fa57308e293f63e44e9dd0f",
+      "sha256": "80ef2703243b80bdd50ddc603f442b3cc970b774f08910a8d574d919c340f038",
+      "bytes": 78348,
+      "width": 1280,
+      "height": 900,
+      "viewport": "1280x900"
+    },
+    {
+      "file": "upstream/layout-rtl-light-mobile.png",
+      "source": "e13df78a4d0c287e5fa57308e293f63e44e9dd0f",
+      "sha256": "9f9aa4011431cef95ee5059def435d663a531bb6eddacc39687fa0ac211f3147",
+      "bytes": 23163,
+      "width": 375,
+      "height": 812,
+      "viewport": "375x812"
+    },
+    {
+      "file": "upstream/layout-rtl-dark-desktop.png",
+      "source": "e13df78a4d0c287e5fa57308e293f63e44e9dd0f",
+      "sha256": "52c3b25345702625903a309cce68bddd6f1674b015f9cece2ac58b168a29f56f",
+      "bytes": 77507,
+      "width": 1280,
+      "height": 900,
+      "viewport": "1280x900"
+    },
+    {
+      "file": "upstream/layout-rtl-dark-mobile.png",
+      "source": "e13df78a4d0c287e5fa57308e293f63e44e9dd0f",
+      "sha256": "8831eb52119a9e63f58328c6af8cad904726ff453f2b04b0b88c6a53af516c8b",
+      "bytes": 22461,
+      "width": 375,
+      "height": 812,
+      "viewport": "375x812"
+    },
+    {
+      "file": "upstream/theme-generator-en-light-desktop.png",
+      "source": "e13df78a4d0c287e5fa57308e293f63e44e9dd0f",
+      "sha256": "4c03ffdd344b53f1ee9f450aef7bdaf8b2f9bf5ef7d049398729b38ce49e7472",
+      "bytes": 245986,
+      "width": 1280,
+      "height": 2338,
+      "viewport": "1280x900"
+    },
+    {
+      "file": "upstream/theme-generator-en-light-mobile.png",
+      "source": "e13df78a4d0c287e5fa57308e293f63e44e9dd0f",
+      "sha256": "ce2c4947c2053da6cb3b6782086af17e50e3554044f573bbdf59ca516b8ca52f",
+      "bytes": 235281,
+      "width": 375,
+      "height": 4246,
+      "viewport": "375x812"
+    },
+    {
+      "file": "upstream/theme-designed-gradient-indigo-en-light-desktop.png",
+      "source": "e13df78a4d0c287e5fa57308e293f63e44e9dd0f",
+      "sha256": "ac1dd22c5af324976aee6d717d72998bc0349905fb395715d6b38533a4709c83",
+      "bytes": 260491,
+      "width": 1280,
+      "height": 2338,
+      "viewport": "1280x900"
+    },
+    {
+      "file": "upstream/theme-designed-gradient-indigo-en-light-mobile.png",
+      "source": "e13df78a4d0c287e5fa57308e293f63e44e9dd0f",
+      "sha256": "80a509fc6ec20688259d15e7dc4f9e133c82149570b915c52fea2524b69217d1",
+      "bytes": 235041,
+      "width": 375,
+      "height": 4246,
+      "viewport": "375x812"
+    },
+    {
+      "file": "upstream/theme-v3-yellow-light-en-light-desktop.png",
+      "source": "e13df78a4d0c287e5fa57308e293f63e44e9dd0f",
+      "sha256": "37d11245956e30618fe4010e36995cce8e9ff75ec2d2dec687bae9bb4364bcc3",
+      "bytes": 226669,
+      "width": 1280,
+      "height": 2027,
+      "viewport": "1280x900"
+    },
+    {
+      "file": "upstream/theme-v3-yellow-light-en-light-mobile.png",
+      "source": "e13df78a4d0c287e5fa57308e293f63e44e9dd0f",
+      "sha256": "005e6cbe3599e354d854c72a3de84f97135d7a45dea4ffc467fa831db678917f",
+      "bytes": 213997,
+      "width": 375,
+      "height": 3709,
+      "viewport": "375x812"
+    },
+    {
+      "file": "measurements.json",
+      "source": "1753607e533fc3b65b4c9769b78918706df3ef75",
+      "sha256": "700e4b242a8f659346e112a14bfdab43e9e4156bcaa495bd0c402f64cf6f4c9f",
+      "bytes": 44194
+    },
+    {
+      "file": "bundles.json",
+      "source": "acd4cf3c2d106d520c153925c55401c08c48ab2b",
+      "sha256": "ca1b3b84a6b5e9fc0023f2e82e64857f2716cf610669d8078878baa777ae1c94",
+      "bytes": 4691
+    },
+    {
+      "file": "load.json",
+      "source": "acd4cf3c2d106d520c153925c55401c08c48ab2b",
+      "sha256": "351ab56c087fc9e291725e0ab45b10abef8bebdf744070179c6adf54c869176c",
+      "bytes": 55022
+    },
+    {
+      "file": "before/tour-admin-requests-ar-light-desktop.png",
+      "source": "e8d0f6cf7367d8732abaa179a1c118010cd86f5e",
+      "sha256": "801c750c534db818dd8ded90ccf2f2c98ecbd1b5ef7c599fb7b318edd5896b2b",
+      "bytes": 91264,
+      "width": 1280,
+      "height": 900,
+      "viewport": "1280x900",
+      "locale": "ar",
+      "mode": "light",
+      "note": "Independent synthetic tour fixtures; same catalog view, dynamic timestamps/counts may differ."
+    },
+    {
+      "file": "after/tour-admin-requests-ar-light-desktop.png",
+      "source": "1753607e533fc3b65b4c9769b78918706df3ef75",
+      "sha256": "f5699a2eacd9c06f88181089d77bdda3dd08c68fa2becfe3aba3174c9dd9789b",
+      "bytes": 95676,
+      "width": 1280,
+      "height": 900,
+      "note": "Final AR/light/1280 tour, custom rose palette in both independent scopes; synthetic fixtures and timestamps differ from baseline."
+    },
+    {
+      "file": "before/tour-admin-request-detail-ar-light-desktop.png",
+      "source": "e8d0f6cf7367d8732abaa179a1c118010cd86f5e",
+      "sha256": "e8ff19de533a055c1ff6b5a81c0a142038f3607f87d4d574efacf884aaf62508",
+      "bytes": 134757,
+      "width": 1280,
+      "height": 1544,
+      "viewport": "1280x900",
+      "locale": "ar",
+      "mode": "light",
+      "note": "Independent synthetic tour fixtures; same catalog view, dynamic timestamps/counts may differ."
+    },
+    {
+      "file": "after/tour-admin-request-detail-ar-light-desktop.png",
+      "source": "1753607e533fc3b65b4c9769b78918706df3ef75",
+      "sha256": "42231c6e9b44ec32021f62c92a434c20ca24ad4b15886f33ed61354dc76c6de8",
+      "bytes": 137077,
+      "width": 1280,
+      "height": 1533,
+      "note": "Final AR/light/1280 tour, custom rose palette in both independent scopes; synthetic fixtures and timestamps differ from baseline."
+    },
+    {
+      "file": "before/tour-admin-audit-ar-light-desktop.png",
+      "source": "e8d0f6cf7367d8732abaa179a1c118010cd86f5e",
+      "sha256": "1193d22502328aee7d314fbd8398cbdf93e053e4f3e4de2a4a29ab9987b54777",
+      "bytes": 160163,
+      "width": 1280,
+      "height": 1356,
+      "viewport": "1280x900",
+      "locale": "ar",
+      "mode": "light",
+      "note": "Independent synthetic tour fixtures; same catalog view, dynamic timestamps/counts may differ."
+    },
+    {
+      "file": "after/tour-admin-audit-ar-light-desktop.png",
+      "source": "1753607e533fc3b65b4c9769b78918706df3ef75",
+      "sha256": "377021ec9fb88a3f3312dc9c2d930e6e68c270eb54605610fa865fbc03181fd8",
+      "bytes": 166491,
+      "width": 1280,
+      "height": 1261,
+      "note": "Final AR/light/1280 tour, custom rose palette in both independent scopes; synthetic fixtures and timestamps differ from baseline."
+    },
+    {
+      "file": "before/tour-admin-workflows-ar-light-desktop.png",
+      "source": "e8d0f6cf7367d8732abaa179a1c118010cd86f5e",
+      "sha256": "1a40a223cefb9bbb73badb4d25d883ff90622535e288ed5c6121a25eb0f4c60d",
+      "bytes": 218975,
+      "width": 1280,
+      "height": 3084,
+      "viewport": "1280x900",
+      "locale": "ar",
+      "mode": "light",
+      "note": "Independent synthetic tour fixtures; same catalog view, dynamic timestamps/counts may differ."
+    },
+    {
+      "file": "after/tour-admin-workflows-ar-light-desktop.png",
+      "source": "1753607e533fc3b65b4c9769b78918706df3ef75",
+      "sha256": "b04bc93799b54127d263be832962f23118c70d656b347ab802d7de2060df5d18",
+      "bytes": 215512,
+      "width": 1280,
+      "height": 2949,
+      "note": "Final AR/light/1280 tour, custom rose palette in both independent scopes; synthetic fixtures and timestamps differ from baseline."
+    },
+    {
+      "file": "before/tour-admin-media-ar-light-desktop.png",
+      "source": "e8d0f6cf7367d8732abaa179a1c118010cd86f5e",
+      "sha256": "fe25a09343a9be1f228447d76401a168a02c78220ca653d1b3660fb3214ddc6b",
+      "bytes": 75763,
+      "width": 1280,
+      "height": 900,
+      "viewport": "1280x900",
+      "locale": "ar",
+      "mode": "light",
+      "note": "Independent synthetic tour fixtures; same catalog view, dynamic timestamps/counts may differ."
+    },
+    {
+      "file": "after/tour-admin-media-ar-light-desktop.png",
+      "source": "1753607e533fc3b65b4c9769b78918706df3ef75",
+      "sha256": "967be26f223d3330f5c92bfcf9e48df673c5f9e6bdc7024451e04792ddb05125",
+      "bytes": 80718,
+      "width": 1280,
+      "height": 900,
+      "note": "Final AR/light/1280 tour, custom rose palette in both independent scopes; synthetic fixtures and timestamps differ from baseline."
+    },
+    {
+      "file": "before/tour-admin-pages-ar-light-desktop.png",
+      "source": "e8d0f6cf7367d8732abaa179a1c118010cd86f5e",
+      "sha256": "dc15b02864afd76eb49d2e511f64b3661fe6bce9c55d03d5b495b8629025eeb4",
+      "bytes": 114270,
+      "width": 1280,
+      "height": 921,
+      "viewport": "1280x900",
+      "locale": "ar",
+      "mode": "light",
+      "note": "Independent synthetic tour fixtures; same catalog view, dynamic timestamps/counts may differ."
+    },
+    {
+      "file": "after/tour-admin-pages-ar-light-desktop.png",
+      "source": "1753607e533fc3b65b4c9769b78918706df3ef75",
+      "sha256": "0432dfe97f387b8d47189e9b410dbeec26f1256c58e556e19182e62fb981a6d7",
+      "bytes": 116709,
+      "width": 1280,
+      "height": 900,
+      "note": "Final AR/light/1280 tour, custom rose palette in both independent scopes; synthetic fixtures and timestamps differ from baseline."
+    },
+    {
+      "file": "before/tour-editor-device-desktop-ar-light-desktop.png",
+      "source": "e8d0f6cf7367d8732abaa179a1c118010cd86f5e",
+      "sha256": "6e0e0bb248e71710be5117513e67535276c3104183535060a537cf4abbdbc623",
+      "bytes": 207605,
+      "width": 1280,
+      "height": 2101,
+      "viewport": "1280x900",
+      "locale": "ar",
+      "mode": "light",
+      "note": "Independent synthetic tour fixtures; same catalog view, dynamic timestamps/counts may differ."
+    },
+    {
+      "file": "after/tour-editor-device-desktop-ar-light-desktop.png",
+      "source": "1753607e533fc3b65b4c9769b78918706df3ef75",
+      "sha256": "4553ec9c79fa93e1b4f6096c314abe410f50c828fe8dcf2b46c5c225d9e003f7",
+      "bytes": 199057,
+      "width": 1280,
+      "height": 2097,
+      "note": "Final AR/light/1280 tour, custom rose palette in both independent scopes; synthetic fixtures and timestamps differ from baseline."
+    },
+    {
+      "file": "before/tour-public-home-ar-light-desktop.png",
+      "source": "e8d0f6cf7367d8732abaa179a1c118010cd86f5e",
+      "sha256": "3b3977033f1779b3a590884ea3b00ae2d0bd91e885f546d7e08c86a901a629a5",
+      "bytes": 606468,
+      "width": 1280,
+      "height": 5545,
+      "viewport": "1280x900",
+      "locale": "ar",
+      "mode": "light",
+      "note": "Independent synthetic tour fixtures; same catalog view, dynamic timestamps/counts may differ."
+    },
+    {
+      "file": "after/tour-public-home-ar-light-desktop.png",
+      "source": "1753607e533fc3b65b4c9769b78918706df3ef75",
+      "sha256": "7906c854df2325ed1985698d9e34f09bfe93f02ac498eb71ccccc41570e6656e",
+      "bytes": 373281,
+      "width": 1280,
+      "height": 4082,
+      "note": "Final AR/light/1280 tour, custom rose palette in both independent scopes; synthetic fixtures and timestamps differ from baseline."
+    },
+    {
+      "file": "before/tour-auth-login-ar-light-desktop.png",
+      "source": "e8d0f6cf7367d8732abaa179a1c118010cd86f5e",
+      "sha256": "a127573a9292b300b457119bebaa1642aed4b2e486e2f3279b755cf34f14e0d7",
+      "bytes": 110830,
+      "width": 1280,
+      "height": 1261,
+      "viewport": "1280x900",
+      "locale": "ar",
+      "mode": "light",
+      "note": "Independent synthetic tour fixtures; same catalog view, dynamic timestamps/counts may differ."
+    },
+    {
+      "file": "after/tour-auth-login-ar-light-desktop.png",
+      "source": "1753607e533fc3b65b4c9769b78918706df3ef75",
+      "sha256": "9e8cfae21813df12f3cbf16646400ba43e7ce56fd1a3153cee2277c2ad168017",
+      "bytes": 69377,
+      "width": 1280,
+      "height": 1157,
+      "note": "Final AR/light/1280 tour, custom rose palette in both independent scopes; synthetic fixtures and timestamps differ from baseline."
+    },
+    {
+      "file": "before/tour-settings-appearance-ar-light-desktop.png",
+      "source": "e8d0f6cf7367d8732abaa179a1c118010cd86f5e",
+      "sha256": "d6e7dc99b0266b78c0c6c2ff0cfb734f0b2d1952ff9f498750a627a406c416f9",
+      "bytes": 148523,
+      "width": 1280,
+      "height": 1272,
+      "viewport": "1280x900",
+      "locale": "ar",
+      "mode": "light",
+      "note": "Independent synthetic tour fixtures; same catalog view, dynamic timestamps/counts may differ."
+    },
+    {
+      "file": "after/tour-settings-appearance-ar-light-desktop.png",
+      "source": "1753607e533fc3b65b4c9769b78918706df3ef75",
+      "sha256": "d8a7ae62d03f34beeabb61e0d018a90bf5a457c64ee0169b13051c1f8189dbe3",
+      "bytes": 143752,
+      "width": 1280,
+      "height": 1181,
+      "note": "Final AR/light/1280 tour, custom rose palette in both independent scopes; synthetic fixtures and timestamps differ from baseline."
+    }
+  ],
+  "measurementCandidate": "acd4cf3c2d106d520c153925c55401c08c48ab2b"
+}

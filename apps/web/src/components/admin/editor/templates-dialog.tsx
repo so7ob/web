@@ -378,7 +378,7 @@ export function TemplatesDialog({
                     </span>
                     {tt.saveFromCurrent}
                   </span>
-                  <span className="rounded-full bg-brand/10 px-3 py-1 text-xs font-bold text-brand">
+                  <span className="rounded-lg bg-accent px-3 py-1 text-xs font-bold text-accent-foreground">
                     {draftLocale === "ar" ? te.ar : te.en}
                   </span>
                 </button>
@@ -424,7 +424,7 @@ export function TemplatesDialog({
               return (
                 <article
                   key={tpl.id}
-                  className="group relative flex gap-3.5 rounded-2xl border border-border/70 bg-card p-4 shadow-sm transition-[color,background-color,border-color,box-shadow,opacity,transform] hover:-translate-y-0.5 hover:border-brand/40 hover:shadow-md"
+                  className="ds-card group relative flex gap-3.5 rounded-2xl border border-border/70 bg-card p-4 shadow-sm transition-[color,background-color,border-color,box-shadow,opacity,transform] hover:-translate-y-0.5 hover:border-brand/40 hover:shadow-md"
                 >
                   {/* شعار النوع */}
                   <span
@@ -443,7 +443,7 @@ export function TemplatesDialog({
                       <span
                         className={cn(
                           "rounded-full px-2 py-0.5 text-[10px] font-bold leading-none",
-                          tpl.kind === "builtin" ? "bg-inverse/10 text-navy" : "bg-brand/10 text-brand"
+                          tpl.kind === "builtin" ? "bg-inverse/10 text-navy" : "bg-accent text-accent-foreground"
                         )}
                       >
                         {tpl.kind === "builtin" ? tt.builtin : tt.custom}

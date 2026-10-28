@@ -364,7 +364,7 @@ export function PagesClient({ me, locale }: PagesClientProps) {
       ) : rows.length === 0 ? (
         <EmptyState icon={FileText} title={tp.empty} body={tp.emptyBody} />
       ) : (
-          <div className="overflow-x-auto rounded-2xl border border-border bg-card shadow-sm">
+          <div className="ds-card overflow-x-auto rounded-2xl border border-border bg-card shadow-sm">
             <Table>
               <TableHeader>
                 <TableRow className="bg-muted/50 hover:bg-muted/50">

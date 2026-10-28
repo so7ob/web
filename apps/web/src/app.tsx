@@ -5,6 +5,7 @@ import {ClientErrors} from './components/errors/client-errors';
 import {ErrorFeedback} from './components/errors/error-feedback';
 import {ApiError,asApiError} from './lib/errors/transport';
 import { AppDirectionProvider } from "./components/ui/app-direction-provider";
+import { PageHeading, Panel } from "./components/ui/workspace";
 import {
   useLoaderData,
   useLocation,
@@ -152,10 +153,11 @@ function RouteError() {
   return status === 404 ? (
     <NotFound locale={locale} />
   ) : (
-    <main id="main-content" className="p-12">
-      <h1>{locale==='ar'?'تعذر عرض الصفحة':'Unable to display the page'}</h1>
+    <main id="main-content" className="mx-auto w-full max-w-3xl p-4 py-12">
+      <Panel className="space-y-4"><PageHeading title={locale==='ar'?'تعذر عرض الصفحة':'Unable to display the page'}/>
       <ErrorFeedback error={failure} locale={locale}/>
       <a href="/ar">سُحُب — so7ob</a>
+      </Panel>
     </main>
   );
 }

@@ -28,7 +28,7 @@
     "test:cms-boundaries": "node --max-old-space-size=3072 tools/migration/cms-boundary-smoke.mjs",
     "db:check-cms": "node --env-file-if-exists=.env --import tsx packages/server/src/database/cli.ts check-cms",
     "test:independence": "node --test tools/test/runtime-independence.test.mjs && node tools/test/runtime-independence.mjs",
-    "test:ci-policy": "node --test tools/test/ci-policy.test.mjs tools/test/ci-gate.test.mjs tools/test/ci-evidence.test.mjs tools/test/docs-check.test.mjs",
+    "test:ci-policy": "node --test tools/test/ci-policy.test.mjs tools/test/ci-gate.test.mjs tools/test/ci-evidence.test.mjs tools/test/docs-check.test.mjs tools/test/stylesheet-netlog.test.mjs",
     "test:e2e:ci": "node tools/test/run-e2e-job.mjs"
   },
   "dependencies": {
@@ -39,6 +39,7 @@
     "@fontsource/ibm-plex-sans": "5.3.0",
     "@fontsource/ibm-plex-sans-arabic": "5.3.0",
     "@fontsource/inter": "5.3.0",
+    "@fontsource/source-sans-3": "5.3.0",
     "@fontsource/tajawal": "5.3.0",
     "@radix-ui/react-accordion": "1.2.12",
     "@radix-ui/react-alert-dialog": "1.1.15",

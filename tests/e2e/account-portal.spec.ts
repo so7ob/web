@@ -1,6 +1,8 @@
 import AxeBuilder from "@axe-core/playwright";
 import type { Page } from "@playwright/test";
-import { test, expect } from "@playwright/test";
+import { expect } from "@playwright/test";
+import { test } from "./stylesheet-fixture";
+import { assertStylesheetsApplied } from "./stylesheet-readiness";
 import { readFileSync } from "node:fs";
 import { createDataSource, PayloadCipher, sha256 } from "@so7ob/server";
 import { getPortalContent } from "../../apps/web/src/content/portal";
@@ -12,6 +14,7 @@ const fixture = () =>
     password: string;
   };
 async function assertPortalAxe(page: Page, locale: string, name: string) {
+  await assertStylesheetsApplied(page);
   const toast = page.locator(
     '[data-sonner-toast][data-front="true"][data-removed="false"]',
   );
@@ -250,6 +253,12 @@ for (const locale of ["ar", "en"] as const)
       await page.route("**/api/account/inquiries?**", async route => { await inquiriesGate; await route.continue(); });
       await page.goto("/" + locale + "/account/inquiries");
       try {
+        await expect(page.getByRole("status", {name: t.inquiries.title, exact: true})).toBeVisible();
+        // The list stays pending, but its independent creation control must finish
+        // hydration and its disabled-to-enabled opacity transition before axe.
+        const createInquiry = page.getByRole("button", { name: t.inquiries.create, exact: true }).first();
+        await expect(createInquiry).toBeEnabled();
+        await expect(createInquiry).toHaveCSS("opacity", "1");
         await expect(page.getByRole("status", {name: t.inquiries.title, exact: true})).toBeVisible();
         await assertPortalAxe(page, locale, "inquiries-loading");
       } finally { releaseInquiries(); }

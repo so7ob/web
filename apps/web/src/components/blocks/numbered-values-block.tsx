@@ -19,7 +19,7 @@ export function NumberedValuesBlock({ props }: { props: NumberedValuesBlockProps
         {props.intro && <p className="mt-3 max-w-2xl leading-8 text-muted-foreground">{props.intro}</p>}
         <ul className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {items.map((v, i) => (
-            <li key={`${i}-${v.title}`} className="rounded-2xl border border-border bg-card p-6">
+            <li key={`${i}-${v.title}`} className="ds-card p-4">
               <span className="font-mono text-sm font-bold text-brand" aria-hidden="true">
                 0{i + 1}
               </span>

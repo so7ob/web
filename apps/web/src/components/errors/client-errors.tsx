@@ -8,6 +8,12 @@ export function ClientErrors({locale}:{locale:'ar'|'en'}){
  const [error,setError]=useState<ApiError|null>(null),last=useRef(0);
  useEffect(()=>{
   const report=(event:ErrorEvent|PromiseRejectionEvent)=>{
+   // Native ResizeObserver delivery warnings defer layout to the next frame.
+   // Keep browser diagnostics intact; real exceptions must still be reported.
+   if ('message' in event && !event.error && [
+    'ResizeObserver loop completed with undelivered notifications.',
+    'ResizeObserver loop limit exceeded',
+   ].includes(event.message)) return;
    const reason='reason' in event?event.reason:event.error;
    if(reason instanceof Error&&reason.name==='AbortError'||reason instanceof ApiError&&reason.category==='cancelled')return;
    event.preventDefault();if(Date.now()-last.current<30000)return;last.current=Date.now();

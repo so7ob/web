@@ -3,7 +3,9 @@
     "baseSha": "d09aaf2ac2e045696b280aeb5d4fe60dd0ec2c80",
     "baselineRun": 38645921669,
     "testBlob": "afbf852e9675b523c9b623890fe86b6db63c97ef",
-    "capture": "successful pre-optimization ar/desktop/light run; matrix has identical view labels"
+    "capture": "successful pre-optimization ar/desktop/light run; matrix has identical view labels",
+    "extensionIssue": 180,
+    "extension": "Adds the independent administration appearance section; retains all 104 frozen view labels."
   },
   "views": [
     "admin-dashboard",
@@ -26,6 +28,7 @@
     "admin-outbox",
     "settings-identity",
     "settings-appearance",
+    "settings-adminAppearance",
     "settings-contact",
     "settings-sharing",
     "settings-announcement",

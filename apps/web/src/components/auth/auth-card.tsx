@@ -21,7 +21,7 @@ export function AuthCard({
     </>
   );
   return (
-    <section className="rounded-2xl border border-border bg-card p-6 shadow-sm sm:p-8">
+    <section className="ds-panel ds-auth-card">
       {icon ? (
         <div className="flex items-center gap-3">
           {icon}

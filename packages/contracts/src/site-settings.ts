@@ -1,3 +1,5 @@
+import { ADMINLTE } from "./adminlte-tokens.js";
+import { ADMINLTE_BACKGROUNDS, ADMINLTE_BASE_COLORS, ADMINLTE_CHROME_KEYS, ADMINLTE_PALETTES } from "./adminlte-themes.js";
 /** Public presentation settings. No arbitrary CSS, URLs or executable font definitions. */
 export const SOCIAL_CHANNELS = [
   "github",
@@ -12,6 +14,7 @@ export const SOCIAL_CHANNELS = [
 export const SETTING_SECTIONS = [
   "identity",
   "appearance",
+  "adminAppearance",
   "contact",
   "sharing",
   "announcement",
@@ -28,22 +31,37 @@ export const IDENTITY_MEDIA_KEYS = [
 ] as const;
 export const APPEARANCE_DEFAULTS: Record<string, string> = {
   "appearance.mode": "light",
-  "appearance.adminStyle": "light",
-  "appearance.primaryLight": "#0369a1",
+  "appearance.adminStyle": "semi-dark",
+  "appearance.primaryLight": ADMINLTE.primary,
   "appearance.accentLight": "#6d28d9",
-  "appearance.primaryDark": "#38bdf8",
+  "appearance.primaryDark": ADMINLTE.primaryDark,
   "appearance.accentDark": "#c4b5fd",
   "appearance.fontAr": "ibm",
-  "appearance.fontEn": "ibm",
-  "appearance.radius": "soft",
-  "appearance.density": "comfortable",
+  "appearance.fontEn": "source",
+  "appearance.radius": "adminlte",
+  "appearance.density": "adminlte",
+  ...Object.fromEntries(ADMINLTE_CHROME_KEYS.flatMap(region => [
+    [`appearance.${region}Background`, "inherit"], [`appearance.${region}Mode`, "inherit"],
+  ])),
 };
+export type AppearanceScope = "site" | "admin";
+export const ADMIN_APPEARANCE_DEFAULTS: Record<string, string> = Object.fromEntries(
+  Object.entries(APPEARANCE_DEFAULTS).map(([key, value]) => [key.replace("appearance.", "adminAppearance."), value]),
+);
+/** Resolve one independent theme without allowing site values to bleed into administration. */
+export function appearanceForScope(raw: Record<string, string>, scope: AppearanceScope): Record<string, string> {
+  if (scope === "site") return { ...APPEARANCE_DEFAULTS, ...raw };
+  return { ...raw, ...APPEARANCE_DEFAULTS, ...Object.fromEntries(Object.entries(raw)
+    .filter(([key]) => key.startsWith("adminAppearance."))
+    .map(([key, value]) => [key.replace("adminAppearance.", "appearance."), value])) };
+}
 export const PRESENTATION_DEFAULTS: Record<string, string> = {
   "site.nameAr": "سُحُب التقنية",
   "site.nameEn": "so7ob",
   "identity.showName": "true",
   ...Object.fromEntries(IDENTITY_MEDIA_KEYS.map((k) => [k, ""])),
   ...APPEARANCE_DEFAULTS,
+  ...ADMIN_APPEARANCE_DEFAULTS,
   "sharing.descriptionAr": "",
   "sharing.descriptionEn": "",
   ...Object.fromEntries(SOCIAL_CHANNELS.map((k) => ["social." + k, ""])),
@@ -55,7 +73,8 @@ export const SECTION_KEYS: Record<SettingSection, string[]> = {
     "identity.showName",
     ...IDENTITY_MEDIA_KEYS.filter((k) => k !== "sharing.image"),
   ],
-  appearance: Object.keys(APPEARANCE_DEFAULTS),
+  appearance: Object.keys(APPEARANCE_DEFAULTS).filter(key => !/adminStyle|(?:sidebar|header|footer)(?:Background|Mode)/.test(key)),
+  adminAppearance: Object.keys(ADMIN_APPEARANCE_DEFAULTS),
   contact: [
     "contact.email",
     "contact.phone",
@@ -86,6 +105,8 @@ export const SECTION_KEYS: Record<SettingSection, string[]> = {
 export const PRESENTATION_KEYS = [
   ...SECTION_KEYS.identity,
   ...SECTION_KEYS.appearance,
+  ...Object.keys(APPEARANCE_DEFAULTS),
+  ...SECTION_KEYS.adminAppearance,
   ...SECTION_KEYS.sharing,
   ...SOCIAL_CHANNELS.map((k) => "social." + k),
 ];
@@ -111,6 +132,12 @@ export const SETTINGS_DEFAULTS: Record<string, string> = {
   "track.allowGuestAttachments": "false",
 };
 export const PALETTE_PRESETS = {
+  adminlte: {
+    primaryLight: ADMINLTE.primary,
+    accentLight: "#6d28d9",
+    primaryDark: ADMINLTE.primaryDark,
+    accentDark: "#c4b5fd",
+  },
   blue: {
     primaryLight: "#0369a1",
     accentLight: "#6d28d9",
@@ -182,9 +209,8 @@ export function appearanceTokens(
 ): Record<string, string> {
   const s = { ...APPEARANCE_DEFAULTS, ...raw },
     dark = mode === "dark";
-  const bg = dark ? "#0b1220" : "#f8fafc",
-    card = dark ? "#131f32" : "#ffffff",
-    fg = dark ? "#e2e8f0" : "#0b1f3a";
+  const palette = dark ? ADMINLTE.dark : ADMINLTE.light;
+  const bg = palette.canvas, card = palette.card, fg = palette.text;
   const p = s[dark ? "appearance.primaryDark" : "appearance.primaryLight"],
     a = s[dark ? "appearance.accentDark" : "appearance.accentLight"];
   const primary = readable(
@@ -193,7 +219,7 @@ export function appearanceTokens(
       : APPEARANCE_DEFAULTS[
           dark ? "appearance.primaryDark" : "appearance.primaryLight"
         ],
-    card,
+    palette.surface,
   );
   const accent = readable(
     isHexColor(a)
@@ -201,23 +227,23 @@ export function appearanceTokens(
       : APPEARANCE_DEFAULTS[
           dark ? "appearance.accentDark" : "appearance.accentLight"
         ],
-    card,
+    palette.surface,
   );
   const onPrimary = contrast(primary, "#ffffff") >= 4.5 ? "#ffffff" : "#0b1220";
-  const muted = dark ? "#a9b8cd" : "#475569",
-    surface = dark ? "#1c2b40" : "#f1f5f9",
+  const muted = palette.muted,
+    surface = palette.surface,
     soft = mix(primary, card, 0.9);
   // Semantic pairs are shared by SSR, the live UI and sandboxed previews.
   const emphasis = mix(primary, "#08121d", 0.72);
   const tones: Record<string, string> = {};
   for (const [name, color] of Object.entries({
-    success: dark ? "#86efac" : "#15803d",
-    warning: dark ? "#fcd34d" : "#92400e",
-    info: dark ? "#93c5fd" : "#1d4ed8",
-    danger: dark ? "#fca5a5" : "#b91c1c",
+    success: dark ? "#75b798" : "#198754",
+    warning: dark ? "#ffda6a" : "#997404",
+    info: dark ? "#6edff6" : "#087990",
+    danger: dark ? "#ea868f" : "#dc3545",
     highlight: accent,
   })) {
-    const solid = readable(color, card);
+    const solid = readable(color, palette.surface);
     const subtle = mix(solid, card, dark ? 0.88 : 0.94);
     tones[name] = solid;
     tones[name + "-soft"] = subtle;
@@ -225,21 +251,74 @@ export function appearanceTokens(
     tones[name + "-border"] = mix(solid, card, dark ? 0.48 : 0.66);
     tones["on-" + name] = contrast(solid, "#ffffff") >= 4.5 ? "#ffffff" : "#0b1220";
   }
+  const chrome: Record<string, string> = {};
+  for (const region of ADMINLTE_CHROME_KEYS) {
+    const name = s[`appearance.${region}Background`];
+    const regionMode = s[`appearance.${region}Mode`];
+    const regionPalette = regionMode === "light" ? ADMINLTE.light : regionMode === "dark" ? ADMINLTE.dark : palette;
+    const defaultSidebar = ["semi-dark", "colored"].includes(s["appearance.adminStyle"]);
+    let color = region === "sidebar" && defaultSidebar ? ADMINLTE.sidebar : region === "header" && s["appearance.adminStyle"] === "colored" ? primary : card;
+    let text = region === "sidebar" && defaultSidebar ? ADMINLTE.sidebarText : region === "header" && s["appearance.adminStyle"] === "colored" ? onPrimary : fg;
+    if (name === "inherit" && regionMode !== "inherit") {
+      color = regionPalette.card;
+      text = regionPalette.text;
+    } else if (name !== "inherit") {
+      const [family, key] = name.split(":");
+      const extended = ADMINLTE_PALETTES[family as keyof typeof ADMINLTE_PALETTES] as Record<string, string> | undefined;
+      const base = name.startsWith("primary") ? (isHexColor(p) ? p : ADMINLTE.primary) : ADMINLTE_BASE_COLORS[name.replace(/-subtle$/, "")];
+      const regionDark = regionMode === "dark" || (regionMode === "inherit" && dark);
+      const subtle = name === "light-subtle" ? regionDark ? "#343a40" : "#fcfcfd" : name === "dark-subtle" ? regionDark ? "#1a1d20" : "#ced4da" : base ? mix(base, regionDark ? "#000000" : "#ffffff", 0.8) : color;
+      color = extended?.[key] ?? (name === "transparent" ? bg : name === "body" ? regionPalette.card : name === "body-secondary" ? regionPalette.surface : name === "body-tertiary" ? regionPalette.canvas : base ? (name.endsWith("-subtle") ? subtle : base) : color);
+      text = contrast(color, "#ffffff") >= 4.5 ? "#ffffff" : "#000000";
+    }
+    // Upstream uses a 15% white gradient. Bound its highlight only when AA
+    // would otherwise fail (notably the designed indigo/violet palettes).
+    let top = color;
+    if (name.endsWith(":gradient")) for (let step = 15; step >= 0; step--) {
+      top = mix(color, "#ffffff", step / 100);
+      if (contrast(text, top) >= 4.5) break;
+    }
+    const hover = mix(color, text, 0.08);
+    const hoverText = readable(text, hover);
+    chrome[`admin-${region}`] = color;
+    chrome[`admin-${region}-image`] = name.endsWith(":gradient") ? `linear-gradient(180deg, ${top}, ${color})` : "none";
+    chrome[`admin-${region}-gradient-top`] = top;
+    chrome[`admin-${region}-foreground`] = text;
+    chrome[`admin-${region}-muted`] = text;
+    chrome[`admin-${region}-hover`] = hover;
+    chrome[`admin-${region}-hover-foreground`] = hoverText;
+    chrome[`admin-${region}-active`] = hover;
+    chrome[`admin-${region}-on-active`] = hoverText;
+    chrome[`admin-${region}-logo-light`] = contrast(color, "#ffffff") >= 4.5 ? "none" : "inline-block";
+    chrome[`admin-${region}-logo-dark`] = contrast(color, "#ffffff") >= 4.5 ? "inline-block" : "none";
+  }
   return {
     ...tones,
-    "admin-sidebar": ["semi-dark", "colored"].includes(s["appearance.adminStyle"]) ? emphasis : card,
-    "admin-sidebar-foreground": ["semi-dark", "colored"].includes(s["appearance.adminStyle"]) ? "#ffffff" : fg,
-    "admin-sidebar-muted": ["semi-dark", "colored"].includes(s["appearance.adminStyle"]) ? mix("#ffffff", emphasis, 0.16) : muted,
-    "admin-sidebar-active": ["semi-dark", "colored"].includes(s["appearance.adminStyle"]) ? mix(primary, "#ffffff", 0.78) : primary,
-    "admin-sidebar-on-active": ["semi-dark", "colored"].includes(s["appearance.adminStyle"]) ? readable(emphasis, mix(primary, "#ffffff", 0.78)) : onPrimary,
-    "admin-sidebar-hover": ["semi-dark", "colored"].includes(s["appearance.adminStyle"]) ? mix(emphasis, "#ffffff", 0.12) : soft,
+    "admin-sidebar": ["semi-dark", "colored"].includes(s["appearance.adminStyle"]) ? ADMINLTE.sidebar : card,
+    "admin-sidebar-foreground": ["semi-dark", "colored"].includes(s["appearance.adminStyle"]) ? ADMINLTE.sidebarText : fg,
+    "admin-sidebar-muted": ["semi-dark", "colored"].includes(s["appearance.adminStyle"]) ? ADMINLTE.sidebarText : muted,
+    "admin-sidebar-active": ["semi-dark", "colored"].includes(s["appearance.adminStyle"]) ? mix(ADMINLTE.sidebar, "#ffffff", 0.1) : mix(card, fg, 0.1),
+    "admin-sidebar-on-active": ["semi-dark", "colored"].includes(s["appearance.adminStyle"]) ? "#ffffff" : fg,
+    "admin-sidebar-hover": ["semi-dark", "colored"].includes(s["appearance.adminStyle"]) ? mix(ADMINLTE.sidebar, "#ffffff", 0.1) : soft,
     "admin-header": s["appearance.adminStyle"] === "colored" ? primary : card,
     "admin-header-foreground": s["appearance.adminStyle"] === "colored" ? onPrimary : fg,
-    "overlay": "#020617",
+    ...chrome,
+    ...Object.fromEntries(Object.entries(ADMINLTE_BASE_COLORS).flatMap(([name, base]) => {
+      // Bootstrap's solid Small Box colors remain the same in dark mode;
+      // primaryDark is the readable emphasis for links on dark surfaces.
+      const metricPrimary = s["appearance.primaryLight"];
+      const color = name === "primary" && isHexColor(metricPrimary) ? metricPrimary : base;
+      return [[`metric-${name}`, color], [`metric-on-${name}`, contrast(color, "#ffffff") >= 4.5 ? "#ffffff" : "#000000"]];
+    })),
+    "overlay": "#000000",
     "selection": soft,
     "selection-foreground": readable(primary, soft),
     "shimmer": dark ? "#ffffff" : primary,
-    "shadow-color": dark ? "#000000" : "#0b1f3a",
+    "shadow-color": fg,
+    "panel-shadow": ADMINLTE.cardShadow,
+    "sidebar-width": ADMINLTE.sidebarWidth,
+    "header-height": ADMINLTE.headerHeight,
+    "card-header-padding": "0.5rem 1rem",
     "primary-hover": readable(mix(primary, fg, 0.12), card),
     "primary-hover-foreground": contrast(readable(mix(primary, fg, 0.12), card), "#ffffff") >= 4.5 ? "#ffffff" : "#0b1220",
     "emphasis": emphasis,
@@ -252,20 +331,22 @@ export function appearanceTokens(
     "duration-normal": APPEARANCE_MOTION.normal + "ms",
     "duration-panel": APPEARANCE_MOTION.panel + "ms",
     "ease-standard": "cubic-bezier(0.2, 0, 0, 1)",
-    "space-panel": s["appearance.density"] === "compact" ? "1rem" : "1.5rem",
-    "space-section": s["appearance.density"] === "compact" ? "1.25rem" : "2rem",
+    "space-panel": s["appearance.density"] === "comfortable" ? "1.5rem" : ADMINLTE.panelPadding,
+    "space-section": s["appearance.density"] === "comfortable" ? "2rem" : "1.5rem",
     "base-foreground": fg,
     "base-muted-foreground": muted,
     "base-primary": primary,
     "base-primary-foreground": onPrimary,
     "base-brand-strong": readable(mix(primary, fg, 0.15), card),
-    "base-border": dark ? "#35465e" : "#e2e8f0",
+    "base-border": palette.border,
     background: bg,
     foreground: fg,
     card: card,
     "card-foreground": fg,
     popover: card,
     "popover-foreground": fg,
+    tooltip: palette.emphasis,
+    "tooltip-foreground": card,
     primary: primary,
     "primary-foreground": onPrimary,
     secondary: surface,
@@ -276,8 +357,8 @@ export function appearanceTokens(
     "accent-foreground": readable(primary, soft),
     destructive: dark ? "#fca5a5" : "#b91c1c",
     "destructive-foreground": dark ? "#450a0a" : "#ffffff",
-    border: dark ? "#35465e" : "#e2e8f0",
-    input: "#64748b",
+    border: palette.border,
+    input: palette.input,
     ring: primary,
     brand: primary,
     "brand-strong": readable(mix(primary, fg, 0.15), card),
@@ -295,30 +376,30 @@ export function appearanceTokens(
         ? "0rem"
         : s["appearance.radius"] === "round"
           ? "1.25rem"
-          : "0.75rem",
+          : s["appearance.radius"] === "soft" ? "0.75rem" : ADMINLTE.radius,
     "panel-radius":
       s["appearance.radius"] === "square"
         ? "0rem"
         : s["appearance.radius"] === "round"
           ? "1.5rem"
-          : "1rem",
+          : s["appearance.radius"] === "soft" ? "1rem" : ADMINLTE.radius,
     "panel-radius-large":
       s["appearance.radius"] === "square"
         ? "0rem"
         : s["appearance.radius"] === "round"
           ? "2rem"
-          : "1.5rem",
+          : s["appearance.radius"] === "soft" ? "1.5rem" : "0.5rem",
     "control-padding":
-      s["appearance.density"] === "compact" ? "0.375rem" : "0.625rem",
+      s["appearance.density"] === "comfortable" ? "0.625rem" : ADMINLTE.controlPadding,
     "row-padding":
-      s["appearance.density"] === "compact" ? "0.5rem" : "0.875rem",
+      s["appearance.density"] === "comfortable" ? "0.875rem" : ADMINLTE.rowPadding,
     sidebar: card,
     "sidebar-foreground": fg,
     "sidebar-primary": primary,
     "sidebar-primary-foreground": onPrimary,
     "sidebar-accent": soft,
     "sidebar-accent-foreground": fg,
-    "sidebar-border": dark ? "#35465e" : "#e2e8f0",
+    "sidebar-border": palette.border,
     "sidebar-ring": primary,
     "chart-1": primary,
     "chart-2": accent,
@@ -335,14 +416,18 @@ export function paletteChecks(
   return [
     ["text", t.foreground, t.background, 4.5],
     ["muted", t["muted-foreground"], t.card, 4.5],
+    ["tooltip", t["tooltip-foreground"], t.tooltip, 4.5],
     ["button", t["primary-foreground"], t.primary, 4.5],
     ["link", t.primary, t.card, 4.5],
+    ["link-neutral", t.primary, t.secondary, 4.5],
     ["focus", t.ring, t.card, 3],
     ["admin-sidebar", t["admin-sidebar-foreground"], t["admin-sidebar"], 4.5],
     ["admin-sidebar-muted", t["admin-sidebar-muted"], t["admin-sidebar"], 4.5],
     ["admin-sidebar-active", t["admin-sidebar-on-active"], t["admin-sidebar-active"], 4.5],
-    ["admin-sidebar-hover", t["admin-sidebar-foreground"], t["admin-sidebar-hover"], 4.5],
+    ["admin-sidebar-hover", t["admin-sidebar-hover-foreground"], t["admin-sidebar-hover"], 4.5],
     ["admin-header", t["admin-header-foreground"], t["admin-header"], 4.5],
+    ["admin-footer", t["admin-footer-foreground"], t["admin-footer"], 4.5],
+    ...ADMINLTE_CHROME_KEYS.map(region => [`${region}-gradient`, t[`admin-${region}-foreground`], t[`admin-${region}-gradient-top`], 4.5]),
   ].map(([name, a, b, min]) => ({
     name: String(name),
     ratio: contrast(String(a), String(b)),
@@ -387,7 +472,7 @@ export function validateSiteSettings(
     if (!Object.values(SECTION_KEYS).flat().includes(k)) continue;
     if (v.length > 300) errors[k] = "length";
     if (
-      k.startsWith("appearance.") &&
+      /^(?:appearance|adminAppearance)\./.test(k) &&
       /primary|accent/.test(k) &&
       !isHexColor(v)
     )
@@ -401,16 +486,21 @@ export function validateSiteSettings(
     if (k.startsWith("social.") && !safeSettingUrl(v)) errors[k] = "url";
   }
   const enums: Record<string, readonly string[]> = {
+    ...Object.fromEntries(ADMINLTE_CHROME_KEYS.flatMap(region => [
+      [`appearance.${region}Background`, ADMINLTE_BACKGROUNDS],
+      [`appearance.${region}Mode`, ["inherit", "light", "dark"]],
+    ])),
     "appearance.mode": ["light", "dark", "system"],
     "appearance.adminStyle": ["light", "semi-dark", "dark", "colored"],
     "appearance.fontAr": ["ibm", "cairo", "tajawal", "system"],
-    "appearance.fontEn": ["ibm", "inter", "system"],
-    "appearance.radius": ["square", "soft", "round"],
-    "appearance.density": ["comfortable", "compact"],
+    "appearance.fontEn": ["source", "ibm", "inter", "system"],
+    "appearance.radius": ["adminlte", "square", "soft", "round"],
+    "appearance.density": ["adminlte", "comfortable", "compact"],
     "identity.showName": ["true", "false"],
     "announcement.enabled": ["true", "false"],
     "announcement.variant": ["info", "warning", "success", "brand"],
   };
+  Object.assign(enums, Object.fromEntries(Object.entries(enums).filter(([key]) => key.startsWith("appearance.")).map(([key, values]) => [key.replace("appearance.", "adminAppearance."), values])));
   for (const [k, values] of Object.entries(enums))
     if (s[k] !== undefined && !values.includes(s[k])) errors[k] = "choice";
   if (
@@ -453,9 +543,8 @@ export function validateSiteSettings(
       Number(s["response.hours"]) > 720)
   )
     errors["response.hours"] = "hours";
-  for (const mode of ["light", "dark"] as const)
-    if (paletteChecks(s, mode).some((c) => c.ratio < c.minimum))
-      errors["appearance.primary" + (mode === "light" ? "Light" : "Dark")] =
-        "contrast";
+  for (const scope of ["site", "admin"] as const) for (const mode of ["light", "dark"] as const)
+    if (paletteChecks(appearanceForScope(s, scope), mode).some((c) => c.ratio < c.minimum))
+      errors[(scope === "admin" ? "adminAppearance" : "appearance") + ".primary" + (mode === "light" ? "Light" : "Dark")] = "contrast";
   return errors;
 }

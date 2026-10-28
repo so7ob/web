@@ -1,4 +1,5 @@
 import { describe, it, expect } from "vitest";
+import { ADMINLTE_THEME_PRESETS, ADMINLTE_BACKGROUNDS, adminltePresetSettings } from "./adminlte-themes.js";
 import {
   appearanceTokens,
   paletteChecks,
@@ -7,14 +8,71 @@ import {
   validateSiteSettings,
   safeSettingUrl,
   mediaSettingId,
+  appearanceForScope,
 } from "./site-settings.js";
 describe("site presentation contracts", () => {
+  it("resolves administration and visitor modes, colors and geometry independently", () => {
+    const settings = { "appearance.mode":"dark", "appearance.primaryLight":"#0f766e", "appearance.radius":"round", "adminAppearance.mode":"light", "adminAppearance.primaryLight":"#c84e10", "adminAppearance.radius":"square" };
+    const site = appearanceForScope(settings,"site"), admin = appearanceForScope(settings,"admin");
+    expect(site["appearance.mode"]).toBe("dark"); expect(admin["appearance.mode"]).toBe("light");
+    expect(appearanceTokens(site,"light").radius).toBe("1.25rem");
+    expect(appearanceTokens(admin,"light").radius).toBe("0rem");
+    expect(appearanceTokens(admin,"light").primary).not.toBe(appearanceTokens(site,"light").primary);
+    expect(appearanceForScope({"appearance.fontEn":"inter"},"admin")["appearance.fontEn"]).toBe("source");
+    expect(validateSiteSettings({"adminAppearance.primaryLight":"url(untrusted)","adminAppearance.mode":"untrusted"})).toMatchObject({"adminAppearance.primaryLight":"color","adminAppearance.mode":"choice"});
+    for (const region of ["sidebar","header","footer"]) {
+      const light = appearanceTokens({[`appearance.${region}Mode`]:"light"},"dark");
+      const dark = appearanceTokens({[`appearance.${region}Mode`]:"dark"},"light");
+      expect(light[`admin-${region}`]).toBe("#ffffff"); expect(dark[`admin-${region}`]).toBe("#212529");
+    }
+  });
+  it("validates all pinned presets and region colors with AA pairs in both modes", () => {
+    expect(ADMINLTE_THEME_PRESETS).toHaveLength(29);
+    for (const preset of ADMINLTE_THEME_PRESETS) {
+      const settings = adminltePresetSettings(preset);
+      expect(validateSiteSettings(settings), preset.id).toEqual({});
+      for (const mode of ["light", "dark"] as const)
+        expect(paletteChecks(settings, mode).filter(check => check.ratio < check.minimum), `${preset.id}/${mode}`).toEqual([]);
+    }
+    for (const background of ADMINLTE_BACKGROUNDS) for (const mode of ["light", "dark"] as const) {
+      const settings = Object.fromEntries(["sidebar", "header", "footer"].map(region => [`appearance.${region}Background`, background]));
+      expect(paletteChecks(settings, mode).filter(check => check.ratio < check.minimum), `${background}/${mode}`).toEqual([]);
+    }
+    expect(validateSiteSettings({ "appearance.headerBackground": "url(https://example.invalid/x)" })).toHaveProperty("appearance.headerBackground", "choice");
+    expect(validateSiteSettings({ "appearance.sidebarMode": "untrusted" })).toHaveProperty("appearance.sidebarMode", "choice");
+  });
+  it("uses pinned AdminLTE defaults while retaining every stored customization", () => {
+    const reference = appearanceTokens({}, "light");
+    expect(reference.card).toBe("#ffffff");
+    expect(reference.background).toBe("#f8f9fa");
+    expect(reference.foreground).toBe("#212529");
+    expect(reference.radius).toBe("0.375rem");
+    expect(reference["sidebar-width"]).toBe("250px");
+    expect(reference["space-panel"]).toBe("1rem");
+    expect(reference["row-padding"]).toBe("0.5rem");
+    for (const mode of ["light", "dark"] as const) {
+      const tokens = appearanceTokens({}, mode);
+      expect(tokens["metric-primary"]).toBe("#0d6efd");
+      expect(tokens["metric-on-primary"]).toBe("#ffffff");
+      expect(appearanceTokens({"appearance.primaryLight":"#c84e10"}, mode)["metric-primary"]).toBe("#c84e10");
+    }
+    const stored = { "appearance.radius":"soft", "appearance.density":"comfortable", "appearance.primaryLight":"#0369a1", "appearance.fontEn":"ibm" };
+    const frozen = JSON.stringify(stored);
+    const custom = appearanceTokens(stored, "light");
+    expect(custom.radius).toBe("0.75rem");
+    expect(custom["panel-radius"]).toBe("1rem");
+    expect(custom["space-panel"]).toBe("1.5rem");
+    expect(custom["row-padding"]).toBe("0.875rem");
+    expect(custom.primary).toBe("#0369a1");
+    expect(JSON.stringify(stored)).toBe(frozen);
+    expect(validateSiteSettings({ "appearance.fontEn":"source", "appearance.radius":"adminlte", "appearance.density":"adminlte" })).toEqual({});
+  });
   it("keeps all administration profiles readable with extreme palettes and preserves absent-key defaults", () => {
     for (const style of ["light", "semi-dark", "dark", "colored"])
       for (const mode of ["light", "dark"] as const)
         for (const primary of ["#ffffff", "#000000", "#ffff00", "#ff00ff", "#00ff00", "#0369a1"])
           expect(paletteChecks({"appearance.adminStyle": style, "appearance.primaryLight": primary, "appearance.primaryDark": primary}, mode).every(check => check.ratio >= check.minimum)).toBe(true);
-    expect(appearanceTokens({}, "light")).toEqual(appearanceTokens({"appearance.adminStyle":"light"}, "light"));
+    expect(appearanceTokens({}, "light")).toEqual(appearanceTokens({"appearance.adminStyle":"semi-dark"}, "light"));
     expect(validateSiteSettings({"appearance.adminStyle":"untrusted"})).toHaveProperty("appearance.adminStyle", "choice");
     for (const style of ["light", "semi-dark", "dark", "colored"])
       expect(validateSiteSettings({"appearance.adminStyle":style})).toEqual({});

@@ -20,6 +20,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import Link from "@/routing/link";
+import { permissionGroupLabel } from "@/content/permission-groups";
 import { identityCopy } from "@/content/identity";
 import { apiGet, apiSend } from "../helpers";
 import { IdentityNav, identityError, type RoleOption } from "./shared";
@@ -90,26 +91,7 @@ export function PermissionEditor({
         return (
           <fieldset key={group} className="rounded-xl border p-3">
             <legend className="px-2 font-semibold">
-              {locale === "ar"
-                ? (
-                    {
-                      admin: "الإدارة",
-                      users: "المستخدمون",
-                      roles: "الأدوار",
-                      invitations: "الدعوات",
-                      requests: "الطلبات",
-                      inquiries: "الاستفسارات",
-                      pages: "المحتوى",
-                      media: "الملفات",
-                      menus: "القوائم",
-                      settings: "الإعدادات",
-                      notifications: "الإشعارات",
-                      email: "البريد",
-                      diagnostics: "التشخيص",
-                      audit: "التدقيق",
-                    } as Record<string, string>
-                  )[group]
-                : group}
+              {permissionGroupLabel(group, locale)}
             </legend>
             <label className="flex items-center min-h-11 gap-2">
               <Checkbox

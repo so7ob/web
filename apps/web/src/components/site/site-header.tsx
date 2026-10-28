@@ -60,16 +60,16 @@ export function SiteHeader({ locale, content, items, auth }: SiteHeaderProps) {
 
   return (
     <header
-      className={`sticky top-0 z-50 w-full border-b bg-card/90 backdrop-blur transition-shadow ${
+      className={`sticky top-0 z-40 w-full border-b bg-card transition-shadow ${
         scrolled ? "border-border shadow-sm" : "border-transparent"
       }`}
     >
-      <div className="mx-auto flex h-16 max-w-7xl items-center justify-between gap-4 px-4 sm:px-6 lg:px-8">
-        <Link href={homePath} aria-label={brandName} className="min-w-0 rounded-md">
+      <div className="mx-auto flex min-h-(--header-height) max-w-7xl items-center justify-between gap-4 px-4 sm:px-6 lg:px-8">
+        <Link href={homePath} aria-label={brandName} className="min-w-0 flex-1 rounded-md xl:flex-none">
           <Logo size="md" nameLang={locale === "ar" ? "ar" : "en"} />
         </Link>
 
-        <nav aria-label={content.nav.home + " — " + brandName} className="hidden lg:block">
+        <nav aria-label={content.nav.home + " — " + brandName} className="hidden xl:block">
           <ul className="flex items-center gap-1">
             {items.map((item) => (
               <li key={item.href + item.label}>
@@ -87,7 +87,7 @@ export function SiteHeader({ locale, content, items, auth }: SiteHeaderProps) {
           </ul>
         </nav>
 
-        <div className="hidden shrink-0 items-center gap-2.5 lg:flex">
+        <div className="hidden shrink-0 items-center gap-2.5 xl:flex">
           <ThemeToggle locale={locale}/>
           <LanguageSwitcher locale={locale} common={content.common} />
           {accountLink}
@@ -110,7 +110,7 @@ export function SiteHeader({ locale, content, items, auth }: SiteHeaderProps) {
           )}
         </div>
 
-        <div className="flex shrink-0 items-center gap-2 lg:hidden [&>a]:px-2 [&>a>svg]:hidden sm:[&>a>svg]:block">
+        <div className="flex shrink-0 items-center gap-2 xl:hidden [&>a]:px-2 [&>a>svg]:hidden sm:[&>a>svg]:block">
           <LanguageSwitcher locale={locale} common={content.common} />
           <ThemeToggle compact locale={locale}/>
           <button
@@ -128,7 +128,7 @@ export function SiteHeader({ locale, content, items, auth }: SiteHeaderProps) {
 
       {/* درج الجوال */}
       {open && (
-        <div id="mobile-nav" className="border-t border-border bg-card lg:hidden">
+        <div id="mobile-nav" className="border-t border-border bg-card xl:hidden">
           <nav aria-label={content.common.openMenu} className="mx-auto max-w-7xl px-4 py-4 sm:px-6">
             <ul className="flex flex-col">
               {items.map((item) => (

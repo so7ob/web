@@ -30,21 +30,20 @@ export function ServicesGridBlock({ props, locale }: { props: ServicesGridBlockP
   return (
     <Section className="bg-card">
       <SectionHeading kicker={props.kicker} title={props.title} description={props.description} />
-      <div className="mt-12 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+      <div className="mt-6 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
         {featured.map((card) => (
           <BlockLink
             key={card.service}
             href={`${localePath(locale, "services")}#${card.service}`}
             locale={locale}
-            className="group relative block overflow-hidden rounded-2xl border border-border bg-gradient-to-br from-inverse to-inverse-soft p-7 text-inverse-foreground transition-transform hover:-translate-y-1"
+            className="ds-card group block border-t-3 border-t-primary p-4 transition-colors hover:border-primary"
           >
-            <div className="absolute -end-10 -top-10 h-36 w-36 rounded-full bg-skydrop/10 blur-2xl" aria-hidden="true" />
-            <span className="inline-flex h-12 w-12 items-center justify-center rounded-xl bg-card/10 text-skydrop">
+            <span className="inline-flex h-12 w-12 items-center justify-center rounded-lg bg-primary text-primary-foreground">
               <ServiceIcon service={card.service as ServiceType} />
             </span>
-            <h3 className="mt-5 text-xl font-bold">{card.name}</h3>
-            <p className="mt-3 text-sm leading-7 text-emphasis-muted">{card.blurb}</p>
-            <span className="mt-5 inline-flex items-center gap-1.5 text-sm font-semibold text-skydrop">
+            <h3 className="mt-3 text-lg font-medium">{card.name}</h3>
+            <p className="mt-3 text-sm leading-7 text-muted-foreground">{card.blurb}</p>
+            <span className="mt-5 inline-flex items-center gap-1.5 text-sm font-semibold text-primary">
               {learnMore}
               <Chevron />
             </span>
@@ -55,12 +54,12 @@ export function ServicesGridBlock({ props, locale }: { props: ServicesGridBlockP
             key={card.service}
             href={`${localePath(locale, "services")}#${card.service}`}
             locale={locale}
-            className="group block rounded-2xl border border-border bg-background p-6 transition-[color,background-color,border-color,box-shadow,opacity,transform] hover:border-brand/40 hover:shadow-md"
+            className="ds-card group block p-4 transition-colors hover:border-primary"
           >
             <span className="inline-flex h-11 w-11 items-center justify-center rounded-xl bg-accent text-brand-strong">
               <ServiceIcon service={card.service as ServiceType} />
             </span>
-            <h3 className="mt-4 text-base font-bold text-navy">{card.name}</h3>
+            <h3 className="mt-3 text-lg font-medium text-navy">{card.name}</h3>
             <p className="mt-2 text-sm leading-7 text-muted-foreground">{card.blurb}</p>
             <span className="mt-4 inline-flex items-center gap-1 text-sm font-semibold text-brand">
               {learnMore}
@@ -69,7 +68,7 @@ export function ServicesGridBlock({ props, locale }: { props: ServicesGridBlockP
           </BlockLink>
         ))}
       </div>
-      <div className="mt-8">
+      <div className="mt-4">
         <BlockLink
           href={viewAllHref}
           locale={locale}

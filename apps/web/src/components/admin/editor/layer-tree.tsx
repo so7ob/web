@@ -270,7 +270,7 @@ export function LayerTree({
               <div
                 data-editor-drag-overlay="layers"
                 dir={uiLocale === "ar" ? "rtl" : "ltr"}
-                className="flex items-center gap-2 rounded-xl border border-brand bg-card px-3 py-1.5 shadow-lg"
+                className="ds-card flex items-center gap-2 rounded-xl border border-brand bg-card px-3 py-1.5 shadow-lg"
               >
                 <GripVertical className="size-3.5 text-brand" aria-hidden="true" />
                 {(() => {

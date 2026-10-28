@@ -295,7 +295,7 @@ export function EditorCanvas({
             DEVICE_WIDTHS[device]
           )}
         >
-          <div className="min-h-full rounded-2xl border border-border bg-card shadow-sm">
+          <div className="ds-card min-h-full rounded-2xl border border-border bg-card shadow-sm">
             {nodes.length === 0 ? (
               <div className="flex min-h-64 flex-col items-center justify-center gap-3 p-8 text-center">
                 <span className="flex size-12 items-center justify-center rounded-2xl bg-accent text-brand-strong">
@@ -342,7 +342,7 @@ export function EditorCanvas({
             <div
               data-editor-drag-overlay="canvas"
               dir={uiLocale === "ar" ? "rtl" : "ltr"}
-              className="flex items-center gap-2 rounded-xl border border-brand bg-card px-4 py-2.5 shadow-lg"
+              className="ds-card flex items-center gap-2 rounded-xl border border-brand bg-card px-4 py-2.5 shadow-lg"
             >
               <GripVertical className="size-4 text-brand" aria-hidden="true" />
               <span className="text-sm font-semibold text-navy">{nodeLabel(draggingNode.type, uiLocale)}</span>

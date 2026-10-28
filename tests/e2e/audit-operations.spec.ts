@@ -70,8 +70,11 @@ for (const locale of ["ar", "en"] as const)
           })
         ).status(),
       ).toBe(200);
-      for (let n = 0; n < 1000 && (await ops.processOne()); n++) {
-        /* bounded actual outbox processing */
+      const [backlog] = await db.query(
+        "SELECT COUNT(*) count FROM AuditWork w JOIN AuditLog a ON a.id=w.eventId COLLATE utf8mb4_nopad_bin WHERE w.status='queued' AND w.availableAt<=UTC_TIMESTAMP(3)",
+      );
+      for (let n = 0; n < Number(backlog.count) && (await ops.processOne()); n++) {
+        /* Bound real processing by this isolated database's ready work. */
       }
       const [alert] = await db.query(
         "SELECT * FROM AuditAlert WHERE ruleId='privilege' AND ruleRevision=? ORDER BY createdAt DESC LIMIT 1",
