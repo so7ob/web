@@ -76,7 +76,25 @@ for(const locale of ['ar','en'] as const)for(const mode of ['light','dark'] as c
     const tabs=scope.getByRole('tab').filter({visible:true});
     await expect(tabs.first()).toBeVisible();
     const count=await tabs.count();
-    for(let i=0;i<count;i++){await tabs.nth(i).click();await expect.soft(tabs.nth(i)).toHaveCSS('color',rgb(appearanceTokens(palette,mode).primary));await capture(`${name}-tab-${i+1}`);}
+    const tokens=appearanceTokens(palette,mode);
+    for(let i=0;i<count;i++){
+      const tab=tabs.nth(i);
+      await tab.click();
+      await expect(tab).toHaveAttribute('aria-selected','true');
+      await expect(tab).toHaveAttribute('data-state','active');
+      // Dialog content can resize beneath the pointer after selection. Establish
+      // each state explicitly so accidental hover cannot mask the active style.
+      await movePointerOutside(page,tab);
+      await expect.soft(tab).toHaveCSS('color',rgb(tokens['card-foreground']));
+      await expect.soft(tab).toHaveCSS('background-color',rgb(tokens.card));
+      await tab.hover();
+      await expect.soft(tab).toHaveCSS('color',rgb(tokens['accent-foreground']));
+      await expect.soft(tab).toHaveCSS('background-color',rgb(tokens.accent));
+      await movePointerOutside(page,tab);
+      await expect.soft(tab).toHaveCSS('color',rgb(tokens['card-foreground']));
+      await expect.soft(tab).toHaveCSS('background-color',rgb(tokens.card));
+      await capture(`${name}-tab-${i+1}`);
+    }
   }
   async function visit(path:string,name=path.replaceAll('/','-').replaceAll('?','-').replaceAll('=','-')){
     const response=await ledger.measure('navigation',()=>page.goto(`/${locale}${path}`));

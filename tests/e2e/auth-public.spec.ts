@@ -1,7 +1,7 @@
 import { test, expect } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
-import { readFileSync } from 'node:fs';
-import { createDataSource, PayloadCipher } from '@so7ob/server';
+import { mkdirSync, readFileSync } from 'node:fs';
+import { createDataSource, PayloadCipher, sha256 } from '@so7ob/server';
 const fixture=()=>JSON.parse(readFileSync('.migration/e2e/run.json','utf8')) as {prefix:string;password:string};
 for (const locale of ['ar','en']) {
   test(`${locale}: SSR, direct reload, language and authentication navigation`,async({page})=>{
@@ -63,3 +63,83 @@ test('forgot/reset forms preserve one-use tokens and reject a mismatched confirm
   await fields.nth(1).fill(password);await page.locator('form button[type=submit]').click();await expect(page).toHaveURL(/\/ar\/auth\/login$/);
   await page.goto(link);await fields.nth(0).fill(password);await fields.nth(1).fill(password);await page.locator('form button[type=submit]').click();await expect(page.getByRole('alert')).toBeVisible();
 });
+
+for (const locale of ['ar', 'en'] as const) {
+  test(`${locale}: delayed registration hydration retains first keyboard input and validation recovery`, async ({ page }, info) => {
+    const { prefix, password } = fixture();
+    const email = prefix + 'hydrated-' + locale + '-' + info.project.name + '@example.invalid';
+    // Whole-bucket snapshot restoration requires one worker and a database owned
+    // exclusively by this test process (each shard must use a different database).
+    expect(info.config.workers).toBe(1);
+    expect(info.config.fullyParallel).toBe(false);
+    const db = await createDataSource().initialize();
+    const bucketKey = sha256('register:127.0.0.1');
+    const [savedBucket] = await db.query('SELECT timestamps,updatedAt FROM RateLimitBucket WHERE bucketKey=?', [bucketKey]);
+    const savedTimestamps: number[] = savedBucket ? JSON.parse(savedBucket.timestamps) : [];
+    const seededTimestamps = [Date.now() - 2 * 86400000, ...savedTimestamps];
+    let release!: () => void;
+    const gate = new Promise<void>(resolve => { release = resolve; });
+    let intercepted = 0, registrations = 0;
+    const errors: string[] = [];
+    page.on('pageerror', error => errors.push(error.message));
+    page.on('request', request => { if (request.url().endsWith('/api/auth/register') && request.method() === 'POST') registrations++; });
+    await page.route('**/assets/auth-*.js', async route => { intercepted++; await gate; await route.continue(); });
+    try {
+      // Exercise real daily-window pruning without removing earlier attempts or
+      // changing production limits. Finally restores the entire original snapshot.
+      await db.query('INSERT INTO RateLimitBucket(bucketKey,timestamps) VALUES(?,?) ON DUPLICATE KEY UPDATE timestamps=VALUES(timestamps)', [bucketKey, JSON.stringify(seededTimestamps)]);
+      await page.goto(`/${locale}/auth/register`, { waitUntil: 'commit' });
+      const form = page.locator('form');
+      const name = page.locator('#register-name'), address = page.locator('#register-email');
+      const secret = page.locator('#register-password'), confirm = page.locator('#register-confirm');
+      const submit = form.locator('button[type=submit]');
+      await expect(name).toBeVisible();
+      await expect.poll(() => intercepted).toBeGreaterThan(0);
+      for (const field of [name, address, secret, confirm, submit]) await expect(field).toBeDisabled();
+      await expect(form).toHaveAttribute('aria-busy', 'true');
+      expect(registrations).toBe(0);
+      release();
+      for (const field of [name, address, secret, confirm, submit]) await expect(field).toBeEnabled();
+      await expect(form).toHaveAttribute('aria-busy', 'false');
+      await expect(submit).toHaveCSS('opacity', '1');
+      expect((await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa', 'wcag21aa', 'wcag22aa']).analyze()).violations).toEqual([]);
+      const screenshots = '.migration/design-system/screenshots/registration-hydration';
+      mkdirSync(screenshots, { recursive: true });
+      await page.screenshot({ path: `${screenshots}/${locale}-${info.project.name}.png`, fullPage: true });
+      await name.focus(); await page.keyboard.type('Synthetic First Input');
+      await page.keyboard.press('Tab'); await expect(address).toBeFocused(); await page.keyboard.type(email);
+      await page.keyboard.press('Tab'); await expect(secret).toBeFocused(); await page.keyboard.type(password);
+      await page.keyboard.press('Tab'); await expect(confirm).toBeFocused(); await page.keyboard.type(password + '-mismatch');
+      await page.keyboard.press('Tab'); await page.keyboard.press('Enter');
+      await expect(confirm).toHaveAttribute('aria-invalid', 'true');
+      expect(registrations).toBe(0);
+      await expect(name).toHaveValue('Synthetic First Input'); await expect(address).toHaveValue(email); await expect(secret).toHaveValue(password);
+      await confirm.fill(password);
+      const submitted = page.waitForResponse(response => response.url().endsWith('/api/auth/register') && response.request().method() === 'POST');
+      const submissionStarted = Date.now();
+      await submit.click();
+      const response = await submitted;
+      const submissionFinished = Date.now();
+      expect(response.status()).toBe(201);
+      expect(await response.json()).toEqual({ ok: true, emailStatus: 'queued' });
+      const payload = response.request().postDataJSON();
+      expect(payload).toEqual({ name: 'Synthetic First Input', email, password, locale });
+      await expect(form).toHaveCount(0);
+      expect(registrations).toBe(1); expect(errors).toEqual([]);
+      const [consumed] = await db.query('SELECT timestamps FROM RateLimitBucket WHERE bucketKey=?', [bucketKey]);
+      const timestamps: number[] = JSON.parse(consumed.timestamps);
+      const chargedAt = timestamps.at(-1)!;
+      expect(chargedAt).toBeGreaterThanOrEqual(submissionStarted);
+      expect(chargedAt).toBeLessThanOrEqual(submissionFinished);
+      // The limiter appends its exact clock value after pruning. Use that value
+      // so a saved timestamp expiring during this request cannot cause a false failure.
+      expect(timestamps).toEqual([...seededTimestamps.filter(timestamp => chargedAt - timestamp < 86400000), chargedAt]);
+    } finally {
+      release(); await page.unroute('**/assets/auth-*.js');
+      try {
+        if (savedBucket) await db.query('UPDATE RateLimitBucket SET timestamps=?,updatedAt=? WHERE bucketKey=?', [savedBucket.timestamps, savedBucket.updatedAt, bucketKey]);
+        else await db.query('DELETE FROM RateLimitBucket WHERE bucketKey=?', [bucketKey]);
+      } finally { await db.destroy(); }
+    }
+  });
+}
