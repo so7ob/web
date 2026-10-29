@@ -45,6 +45,20 @@ successful. Issues #179/#180/#147 remain open. No production or main change occu
 The first post-fix focused run passed 15 cases and failed 3 with real HTTP429:
 the four extra successful registrations exceeded the unchanged three-attempt
 shared-IP limit across projects. Each new synthetic test now snapshots the exact
-registration bucket, verifies its one actual attempt was counted, and restores
-only that test's contribution afterward. Earlier attempts and all original
-assertions remain; no rate limit, proxy identity or auth policy is changed.
+registration bucket and restores that entire snapshot afterward; it does not
+identify and remove an individual contribution. This requires one worker,
+fullyParallel:false and an exclusively owned database per shard. The test asserts
+the two runner settings; separate database ownership is a harness prerequisite.
+The completed local full run used so7ob_registration_shard1_test through
+so7ob_registration_shard4_test, respectively, on loopback ports 3602/3603,
+3604/3605, 3606/3607 and 3608/3609 (HTTPS/API). No database was shared by shards.
+
+The original saved-length-plus-one assertion was invalid if an existing timestamp
+expired from the 24-hour window during the test. The follow-up seeds one already
+expired timestamp, then checks the exact surviving timestamps plus the newly
+charged server timestamp, bounded by the request's start/end time. This exercises
+actual pruning and handles expiry during the request without relaxing the count
+of charged attempts. Finally restores the original timestamps and updatedAt, or
+removes the test-created bucket if none existed. Earlier attempts and all original
+auth assertions remain; no production rate limit, proxy identity or auth policy
+is changed. Snapshot restoration is not safe with another writer to this bucket.
